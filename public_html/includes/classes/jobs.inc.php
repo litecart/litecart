@@ -1,0 +1,38 @@
+<?php
+  
+  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'module.inc.php');
+  
+  class jobs extends module {
+    public $data;
+    public $cheapest = '';
+    public $items = array();
+    public $destination = array();
+
+    public function __construct($type='session') {
+      global $system;
+      
+      parent::set_type('jobs');
+     
+      $this->load();
+    }
+    
+    public function process() {
+      global $order;
+      
+      $output = '';
+      
+      if (empty($this->modules)) return;
+      
+      foreach ($this->modules as $module_id => $module) {
+        $module->process();
+      }
+    }
+    
+    public function run($method_name, $module_id) {
+      if (method_exists($this->modules[$module_id], $method_name)) {
+        return $this->modules[$module_id]->$method_name();
+      }
+    }
+  }
+  
+?>

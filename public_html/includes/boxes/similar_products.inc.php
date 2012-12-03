@@ -1,0 +1,44 @@
+<?php
+  if (!is_object($product)) return;
+  
+  $product_groups = array();
+  if ($product->product_groups) {
+    foreach ($product->product_groups as $product_group) {
+      $product_groups[] = "find_in_set('". $system->database->input($product_group) ."', p.product_groups)";
+    }
+  }
+  
+  $keywords = array();
+  if ($product->keywords != '') {
+    foreach (explode(',', $product->keywords) as $keyword) {
+      $keyword = trim($keyword);
+      if (empty($keyword)) continue;
+      $keywords[] = $keyword;
+    }
+  }
+  
+  $products_query = $system->functions->catalog_products_query(array(
+    'product_name' => $product->name[$system->language->selected['code']],
+    //'category_id' => array_shift(array_values($product->categories)),
+    'product_groups' => $product_groups,
+    'exclude_products' => $product->id,
+    'keywords' => $keywords,
+    'sort' => 'occurrences',
+    'limit' => 4,
+  ));
+  if ($system->database->num_rows($products_query) == 0) return;
+  
+  $system->functions->draw_fancybox('a.fancybox');
+?>
+<div class="box" id="box-similar-products">
+  <div class="heading"><h3><?php echo $system->language->translate('title_similar_products', 'Similar Products'); ?></h3></div>
+  <div class="content">
+    <div class="listing-wrapper">
+<?php
+  while ($listing_product = $system->database->fetch($products_query)) {
+    echo $system->functions->draw_listing_product($listing_product);
+  }
+?>
+    </div>
+  </div>
+</div>

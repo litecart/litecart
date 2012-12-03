@@ -1,0 +1,107 @@
+.box {
+  clear: both;
+  width: 100%;
+  margin: 0px 0px 10px 0px;
+}
+
+.box .heading {
+  padding: 0;
+  overflow: hidden;
+}
+
+.box .heading h1, .box .heading h2, .box .heading h3 {
+  margin: 0;
+}
+
+.box .content {
+  padding: 10px 0;
+  margin: 0;
+}
+
+/* Custom boxes */
+#box-category-tree li.active {
+  background: #f3f3f3;
+}
+
+#box-checkout-shipping .option-wrapper, #box-checkout-payment .option-wrapper {
+  display: inline-block;
+  float: left;
+  
+  margin: 10px;
+  
+  width: 162px;
+  padding: 10px;
+  
+  background: rgba(255,255,255,1);
+  
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
+  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
+  
+  -moz-box-shadow: 0px 0px 2px #aaa;
+  -webkit-box-shadow: 0px 0px 2px #aaa;
+  box-shadow: 0px 0px 2px #aaa;
+}
+#box-checkout-shipping .option-wrapper .icon, #box-checkout-payment .option-wrapper .icon {
+  width: 160px;
+  height: 60px;
+  border: 1px #ccc solid;
+  text-align: center;
+  background-color: #fff;
+}
+#box-checkout-shipping .option-wrapper .name, #box-checkout-payment .option-wrapper .name {
+  margin-bottom: 10px;
+}
+#box-checkout-shipping .option-wrapper .title, #box-checkout-payment .option-wrapper .title {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#box-checkout-shipping .option-wrapper .description, #box-checkout-payment .option-wrapper .description {
+  position: relative;
+  height: 100px;
+  overflow-y: auto;
+}
+#box-checkout-shipping .option-wrapper .description, #box-checkout-payment .option-wrapper .description {
+}
+#box-checkout-shipping .option-wrapper .price, #box-checkout-payment .option-wrapper .price {
+}
+#box-checkout-shipping .option-wrapper .select, #box-checkout-payment .option-wrapper .select {
+}
+#box-checkout-shipping .option-wrapper .footer, #box-checkout-payment .option-wrapper .footer {
+  height: 30px;
+}
+
+#box-checkout-shipping .option-wrapper.selected, #box-checkout-payment .option-wrapper.selected {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafdff', endColorstr='#e0e7ed');
+  background-image: linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -o-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -moz-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -webkit-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -ms-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #e0e7ed), color-stop(0.55, #fafdff));
+  
+  -moz-box-shadow: 0px 0px 2px #069;
+  -webkit-box-shadow: 0px 0px 2px #069;
+  box-shadow: 0px 0px 2px #069;
+}
+
+/*
+#box-product .price {
+  text-align: right;
+}
+#box-product .tax {
+  text-align: right;
+}
+
+#box-product .stock {
+  text-align: right;
+}
+#box-product .buy_now {
+  text-align: right;
+}
+*/

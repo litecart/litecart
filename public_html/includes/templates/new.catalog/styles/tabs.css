@@ -1,0 +1,59 @@
+.tabs {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.tabs .index {
+  margin: 0px;
+  padding: 0px 5px;
+  vertical-align: text-bottom;
+}
+
+.tabs .index li {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tabs .index li a {
+  display: block;
+  padding: 5px 10px;
+  
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
+  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
+  
+  border: 1px solid #ccc;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  
+  color: #999;
+  text-decoration: none;
+  text-shadow: 0 1px 1px white;
+}
+.tabs .index li a:hover {
+}
+.tabs .index li.active a {
+  color: #666;
+  font-weight: bold;
+}
+.tabs .index li.active a:hover {
+}
+
+.tabs .content {
+  clear: both;
+  padding: 10px;
+  border: 1px solid #d1d1d1;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+}

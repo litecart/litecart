@@ -1,0 +1,269 @@
+<?php
+
+  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'option_group.inc.php');
+  $option_group = new ctrl_option_group();
+  
+  if (!empty($_GET['option_group_id'])) {
+  
+    $option_group->load($_GET['option_group_id']);
+    
+    if (empty($option_group)) die('Invalid option group id');
+    
+    if (empty($_POST)) {
+      foreach ($option_group->data as $key => $value) {
+        $_POST[$key] = $value;
+      }
+    }
+  }
+  
+  if (!empty($_POST['save'])) {
+    
+    if (empty($errors)) {
+      $fields = array(
+        'name',
+        'description',
+        'function',
+        'required',
+        'sort',
+        'values',
+      );
+      
+      foreach ($fields as $field) {
+        if (isset($_POST[$field])) $option_group->data[$field] = $_POST[$field];
+      }
+      
+      $option_group->save();
+ 
+      header('Location: '. $system->document->link('', array('doc' => 'option_groups.php'), array('app')));
+      exit;
+    }
+  }
+  
+  if (!empty($_POST['delete'])) {
+    
+    if (empty($errors)) {
+      $option_group->delete();
+ 
+      header('Location: '. $system->document->link('', array('doc' => 'option_groups.php'), array('app')));
+      exit;
+    }
+  }
+  
+?>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo !empty($option_group->data['id']) ? $system->language->translate('title_edit_option_group', 'Edit Option Group') : $system->language->translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
+<?php echo $system->functions->form_draw_form_begin('form_option_group', 'post'); ?>
+
+<table border="0" cellpadding="5" cellspacing="0">
+  <tr>
+    <td><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
+<?php
+  $use_br = false;
+  foreach (array_keys($system->language->languages) as $language_code) {
+    if ($use_br) echo '<br />';
+    echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 175px;"');
+    $use_br = true;
+  }
+?>
+    </td>
+  </tr>
+  <tr>
+    <td><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
+<?php
+  $use_br = false;
+  foreach (array_keys($system->language->languages) as $language_code) {
+    if ($use_br) echo '<br />';
+    echo $system->functions->form_draw_regional_input_field($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'text', 'style="width: 360px;"');
+    $use_br = true;
+  }
+?>
+    </td>
+  </tr>
+  <tr>
+    <td><strong><?php echo $system->language->translate('title_required', 'Required'); ?></strong><br />
+      <?php echo $system->functions->form_draw_checkbox('required', '1', isset($_POST['required']) ? $_POST['required'] : ''); ?> <?php echo $system->language->translate('title_required', 'Required'); ?>
+    </td>
+  </tr>
+  <tr>
+    <td><strong><?php echo $system->language->translate('title_sort', 'Sort'); ?></strong><br />
+      <?php echo $system->functions->form_draw_radio_button('sort', 'alphabetical', isset($_POST['sort']) ? $_POST['sort'] : ''); ?> <?php echo $system->language->translate('title_alphabetical', 'Alphabetical'); ?><br />
+      <?php echo $system->functions->form_draw_radio_button('sort', 'priority', isset($_POST['sort']) ? $_POST['sort'] : ''); ?> <?php echo $system->language->translate('title_priority', 'Priority'); ?><br />
+      <?php echo $system->functions->form_draw_radio_button('sort', 'product', isset($_POST['sort']) ? $_POST['sort'] : ''); ?> <?php echo $system->language->translate('text_set_by_product', 'Set by product'); ?>
+    </td>
+  </tr>
+  <tr>
+    <td><strong><?php echo $system->language->translate('title_function', 'Function'); ?></strong><br />
+      <?php echo $system->functions->form_draw_select_field('function', array(array('input'), array('checkbox'), array('radio'), array('select'), array('textarea')), isset($_POST['function']) ? $_POST['function'] : ''); ?>
+    </td>
+  </tr>
+</table>
+<script>
+  $("select[name='function']").change(function() {
+    $("div[id^='option-values']").hide();
+    $("div[id^='option-values'] input").attr("disabled", "disabled");
+    switch ($(this).find("option:selected").val()) {
+      case "select":
+      case "checkbox":
+      case "radio":
+        $("#option-values-multiset").show();
+        $("#option-values-multiset input").removeAttr("disabled");
+        break;
+      case "range":
+        $("#option-values-range").show();
+        $("#option-values-range input").removeAttr("disabled");
+        break;
+      case "input":
+        $("#option-values-input").show();
+        $("#option-values-input input").removeAttr("disabled");
+        break;
+      case "textarea":
+        $("#option-values-textarea").show();
+        $("#option-values-textarea input").removeAttr("disabled");
+        break;
+    }
+  });
+</script>
+
+<div id="option-values-multiset">
+  <h2><?php echo $system->language->translate('title_values', 'Values'); ?></h2>
+  <table border="0" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
+    <tr class="header">
+      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
+      <th align="left" valign="top" nowrap="nowrap" width="100%"><?php echo $system->language->translate('title_values', 'Values'); ?></th>
+      <th align="center" valign="top" nowrap="nowrap">&nbsp;</th>
+    </tr>
+<?php
+    if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) {
+?>
+    <tr>
+      <td align="left" valign="top"><?php echo $_POST['values'][$key]['id']; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', $_POST['values'][$key]['id']); ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
+      <td align="left" valign="top">
+<?php
+      $use_br = false;
+      foreach (array_keys($system->language->languages) as $language_code) {
+        if ($use_br) echo '<br />';
+        echo $system->functions->form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', (isset($_POST['values'][$key]['name'][$language_code]) ? $_POST['values'][$key]['name'][$language_code] : ''), 'text', 'style="width: 360px;"');
+        $use_br = true;
+      }
+?>
+      </td>
+      <td align="right" valign="top" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' id="remove-value"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" /></a></td>
+    </tr>
+<?php
+    }
+?>
+    <tr>
+      <td colspan="5"><a id="add-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" /> <?php echo $system->language->translate('title_add_value', 'Add Value'); ?></a></td>
+    </tr>  
+  </table>
+  <script>
+    var new_value_index = 1;
+    $("#add-value").live("click", function(event) {
+      event.preventDefault();
+      while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
+<?php
+    $name_fields = '';
+    $use_br = false;
+    foreach (array_keys($system->language->languages) as $language_code) {
+      if ($use_br) $name_fields .=  '<br />';
+      $name_fields .= $system->functions->form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', 'text', 'style="width: 360px;"');
+      $use_br = true;
+    }
+?>
+      var output = '<tr>'
+                 + '  <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('values[new_value_index][id]', '') . $system->functions->form_draw_hidden_field('values[new_value_index][value]', '')); ?></td>'
+                 + '  <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
+                 + '  <td align="left" valign="top" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '</tr>';
+      output = output.replace(/new_value_index/g, 'new_' + new_value_index);
+      $(this).closest('tr').before(output);
+    });
+    
+    $("#move-value-up, #move-value-down").live("click", function(event) {
+      event.preventDefault();
+      var row = $(this).parents("tr:first");
+      var firstrow = $('table tr:first');
+
+      if ($(this).is("#move-value-up") && row.prevAll().length > 1) {
+          row.insertBefore(row.prev());
+      } else if ($(this).is("#move-value-down") && row.nextAll().length-1 > 0) {
+          row.insertAfter(row.next());
+      } else {
+        return false;
+      }
+    });
+    
+    $("#remove-value").live("click", function(event) {
+      event.preventDefault();
+      $(this).closest('tr').remove();
+    });
+  </script>
+</div>
+
+<div id="option-values-range">
+  <h2><?php echo $system->language->translate('title_values', 'Values'); ?></h2>
+  <table border="0" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
+    <tr class="header">
+      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
+      <th align="left" valign="top" nowrap="nowrap" width="100%"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
+    </tr>
+<?php
+    if (!empty($_POST['values'])) {
+      $key = array_shift(array_keys($_POST['values']));
+    } else {
+      $key = 0;
+    }
+?>
+    <tr>
+      <td align="left" valign="top" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''); ?></td>
+      <td align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_range', 'Range'); ?>: <?php echo $system->functions->form_draw_input_field('values['. $key .'][value]', (isset($_POST['values'][$key]['value']) ? $_POST['values'][$key]['value'] : ''), 'text', 'style="width: 50px;"'); ?> (<?php echo $system->language->translate('title_example', 'Example'); ?>: 100-400)
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="option-values-input">
+  <h2><?php echo $system->language->translate('title_values', 'Values'); ?></h2>
+  <table border="0" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
+    <tr class="header">
+      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
+      <th align="left" valign="top" nowrap="nowrap" width="100%"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
+    </tr>
+<?php
+    if (!empty($_POST['values'])) {
+      $key = array_shift(array_keys($_POST['values']));
+    } else {
+      $key = 0;
+    }
+?>
+    <tr>
+      <td align="left" valign="top" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''); ?></td>
+      <td align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_input_field('values['. $key .'][value]', isset($_POST['values'][$key]['value']) ? $_POST['values'][$key]['value'] : '', 'text'); ?>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="option-values-textarea">
+  <h2><?php echo $system->language->translate('title_values', 'Values'); ?></h2>
+  <table border="0" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
+    <tr class="header">
+      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
+      <th align="left" valign="top" nowrap="nowrap" width="100%"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
+    </tr>
+<?php
+    if (!empty($_POST['values'])) {
+      $key = array_shift(array_keys($_POST['values']));
+    } else {
+      $key = 0;
+    }
+?>
+    <tr>
+      <td align="left" valign="top" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''); ?></td>
+      <td align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_textarea('values['. $key .'][value]', isset($_POST['values'][$key]['value']) ? $_POST['values'][$key]['value'] : ''); ?>
+      </td>
+    </tr>
+  </table>
+</div>
+<script>
+  $('select[name=function]').trigger('change');
+</script>
+<p><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (!empty($option_group->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></p>
+<?php echo $system->functions->form_draw_form_end(); ?>

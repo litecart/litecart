@@ -1,0 +1,44 @@
+<?php
+
+  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'module.inc.php');
+
+  class order_total extends module {
+    public $options;
+    public $rows = array();
+
+    public function __construct() {
+      
+      parent::set_type('order_total');
+      
+      $this->load();
+    }
+    
+    public function process() {
+      global $order;
+      
+      if (empty($this->modules)) return;
+      
+      foreach ($this->modules as $module_id => $module) {
+        if ($rows = $module->process()) {
+          foreach ($rows as $row) {
+            $order->add_ot_row(array(
+              'id' => $module_id,
+              'title' => $row['title'],
+              'value' => $row['value'],
+              'tax' => $row['tax'],
+              'tax_class_id' => $row['tax_class_id'],
+              'calculate' => $row['tax_class_id'],
+            ));
+          }
+        }
+      }
+    }
+    
+    public function run($method_name, $module_id) {
+      if (method_exists($this->modules[$module_id], $method_name)) {
+        return $this->modules[$module_id]->$method_name();
+      }
+    }
+  }
+
+?>

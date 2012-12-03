@@ -1,0 +1,103 @@
+.box {
+  clear: both;
+  width: 100%;
+  margin: 0px 0px 10px 0px;
+}
+
+.box .heading {
+  font-weight: bold;
+  padding: 10px 10px;
+  
+  border: 1px #d1d1d1 solid;
+  
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
+  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
+  
+  -moz-box-shadow: 0px 0px 2px #eee;
+  -webkit-box-shadow: 0px 0px 2px #eee;
+  box-shadow: 0px 0px 2px #eee;
+
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.box .content {
+  padding: 10px 5px;
+}
+
+/* Custom boxes */
+
+#box-checkout-shipping .option-wrapper, #box-checkout-payment .option-wrapper {
+  display: inline-block;
+  float: left;
+  
+  margin: 10px;
+  
+  width: 162px;
+  padding: 10px;
+  
+  background: rgba(255,255,255,1);
+  
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
+  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
+  
+  -moz-box-shadow: 0px 0px 2px #aaa;
+  -webkit-box-shadow: 0px 0px 2px #aaa;
+  box-shadow: 0px 0px 2px #aaa;
+}
+#box-checkout-shipping .option-wrapper .icon, #box-checkout-payment .option-wrapper .icon {
+  width: 160px;
+  height: 60px;
+  border: 1px #ccc solid;
+  text-align: center;
+  background-color: #fff;
+}
+#box-checkout-shipping .option-wrapper .name, #box-checkout-payment .option-wrapper .name {
+  margin-bottom: 10px;
+}
+#box-checkout-shipping .option-wrapper .title, #box-checkout-payment .option-wrapper .title {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#box-checkout-shipping .option-wrapper .description, #box-checkout-payment .option-wrapper .description {
+  height: 75px;
+  overflow-y: auto;
+}
+#box-checkout-shipping .option-wrapper .description, #box-checkout-payment .option-wrapper .description {
+  font-size: .8em !important;
+  line-height: 1.25em;
+}
+#box-checkout-shipping .option-wrapper .price, #box-checkout-payment .option-wrapper .price {
+}
+#box-checkout-shipping .option-wrapper .select, #box-checkout-payment .option-wrapper .select {
+}
+#box-checkout-shipping .option-wrapper .footer, #box-checkout-payment .option-wrapper .footer {
+  height: 30px;
+}
+
+#box-checkout-shipping .option-wrapper.selected, #box-checkout-payment .option-wrapper.selected {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafdff', endColorstr='#e0e7ed');
+  background-image: linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -o-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -moz-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -webkit-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -ms-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
+  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #e0e7ed), color-stop(0.55, #fafdff));
+  
+  -moz-box-shadow: 0px 0px 2px #069;
+  -webkit-box-shadow: 0px 0px 2px #069;
+  box-shadow: 0px 0px 2px #069;
+}

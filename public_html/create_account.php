@@ -1,0 +1,217 @@
+<?php
+  require_once('includes/app_header.inc.php');
+  
+  $system->breadcrumbs->add($system->language->translate('title_create_account', 'Create Account'), $system->document->link());
+  
+  $system->document->snippets['title'][] = $system->language->translate('title_create_account', 'Create');
+  //$system->document->snippets['keywords'] = '';
+  //$system->document->snippets['description'] = '';
+  
+  if (!$_POST) {
+    foreach ($system->customer->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+  
+  if (!empty($system->customer->data['id'])) die('Error: Already logged in with an account');
+  
+  if (!empty($_POST['create_account'])) {
+  
+    if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
+    
+    if (empty($_POST['firstname']) || empty($_POST['lastname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_must_enter_your_name', 'You must enter your name.'));
+    if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_must_enter_email_address', 'You must enter an e-mail address.'));
+    if (empty($_POST['password']) || empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_must_enter_password', 'You must enter a password.'));
+    if (!empty($_POST['email']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". $system->database->input($_POST['email']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_already_registered', 'The e-mail address already exists in our customer database. Please login or select a different e-mail address.'));
+    
+    if (empty($system->customer->data['id']) && $system->settings->get('register_guests') == 'true') {
+      
+      if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_missing', 'You must enter your e-mail address.'));
+      
+      if (empty($_POST['password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_password', 'You must enter a password.'));
+      if (empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_confirmed_password', 'You must confirm your password.'));
+      if (isset($_POST['password']) && isset($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) $system->notices->add('errors', $system->language->translate('checkout.php/error_passwords_missmatch', 'The passwords did not match.'));
+      
+      if (empty($_POST['firstname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_firstname', 'You must enter a first name.'));
+      if (empty($_POST['lastname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_lastname', 'You must enter a last name.'));
+      if (empty($_POST['address1'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_address1', 'You must enter an address.'));
+      if (empty($_POST['city'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_city', 'You must enter a city.'));
+      if (empty($_POST['postcode'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_postcode', 'You must enter a postcode.'));
+      if (empty($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_country', 'You must select a country.'));
+      if (empty($_POST['country_code']) && $system->functions->reference_country_num_zones($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_zone', 'You must select a zone.'));
+    }
+    
+    if (!$system->notices->get('errors')) {
+      
+      $fields = array(
+        'email',
+        'tax_id',
+        'company',
+        'firstname',
+        'lastname',
+        'address1',
+        'address2',
+        'postcode',
+        'city',
+        'country_code',
+        'zone_code',
+        'phone',
+        'mobile',
+        'different_shipping_address',
+        'shipping_company',
+        'shipping_firstname',
+        'shipping_lastname',
+        'shipping_address1',
+        'shipping_address2',
+        'shipping_postcode',
+        'shipping_city',
+        'shipping_country_code',
+        'shipping_zone_code',
+      );
+      
+      foreach ($fields as $field) {
+        if (isset($_POST[$field])) $system->customer->data[$field] = $_POST[$field];
+      }
+      
+      $system->customer->data['country_name'] = $system->functions->reference_get_country_name($system->customer->data['country_code']);
+      $system->customer->data['zone_name'] = $system->functions->reference_get_zone_name($system->customer->data['country_code'], $system->customer->data['zone_code']);
+      
+      $system->customer->data['shipping_country_name'] = $system->functions->reference_get_country_name($system->customer->data['shipping_country_code']);
+      $system->customer->data['shipping_zone_name'] = $system->functions->reference_get_zone_name($system->customer->data['shipping_country_code'], $system->customer->data['shipping_zone_code']);
+        
+      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
+      $customer = new ctrl_customer();
+      $customer->data = $system->customer->data;
+      $customer->save();
+      
+      if (empty($_POST['password'])) $_POST['password'] = $system->functions->password_generate(6);
+      $customer->set_password($_POST['password']);
+      
+      $email_message = $system->language->translate('email_subject_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your e-mail address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
+      
+      $translations = array(
+        '%store_name' => $system->settings->get('store_name'),
+        '%store_link' => $system->document->link(WS_DIR_HTTP_HOME),
+        '%customer_firstname' => $_POST['firstname'],
+        '%customer_lastname' => $_POST['lastname'],
+        '%customer_email' => $_POST['email'],
+        '%customer_password' => $_POST['password']
+      );
+      
+      foreach ($translations as $needle => $replace) {
+        $email_message = str_replace($needle, $replace, $email_message);
+      }
+      
+      $system->functions->email_send(
+        $system->settings->get('store_email'),
+        $_POST['email'],
+        $system->language->translate('email_subject_customer_account_created', 'Customer Account Created'),
+        $email_message
+      );
+      
+      $system->notices->add('success', $system->language->translate('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
+      
+    // Login user
+      $system->customer->load($customer->data['id']);
+      
+      header('Location: '. $system->document->link(WS_DIR_HTTP_HOME));
+      exit;
+    }
+  }
+  
+?>
+
+<div class="box">
+  <div class="heading"><h1><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></h1></div>
+  <div class="content">
+    <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
+      <table border="0" cellpadding="2" cellspacing="0" style="margin: 5px 0;">
+        <tr>
+          <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
+          <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('tax_id', isset($_POST['tax_id']) ? $_POST['tax_id'] : ''); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('firstname', isset($_POST['firstname']) ? $_POST['firstname'] : ''); ?></td>
+          <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('lastname', isset($_POST['lastname']) ? $_POST['lastname'] : ''); ?></td>
+        </tr>
+        <tr>
+          <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : ''); ?></td>
+          <td width="50%" nowrap="nowrap">&nbsp;</td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_password', 'Password'); ?><br />
+          <?php echo $system->functions->form_draw_input_field('password', '', 'password'); ?></td>
+          <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?><br />
+          <?php echo $system->functions->form_draw_input_field('confirmed_password', '', 'password'); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
+          <?php echo $system->functions->form_draw_input_field('phone', isset($_POST['phone']) ? $_POST['phone'] : ''); ?></td>
+          <td nowrap="nowrap">&nbsp;</td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('address1', isset($_POST['address1']) ? $_POST['address1'] : ''); ?></td>
+          <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
+          <?php echo $system->functions->form_draw_input_field('address2', isset($_POST['address2']) ? $_POST['address2'] : ''); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_city', 'City'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('city', isset($_POST['city']) ? $_POST['city'] : ''); ?></td>
+          <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?><br />
+            <?php echo $system->functions->form_draw_input_field('postcode', isset($_POST['postcode']) ? $_POST['postcode'] : ''); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
+            <?php echo $system->functions->form_draw_countries_list('country_code', isset($_POST['country_code']) ? $_POST['country_code'] : ''); ?></td>
+          <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
+            <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', isset($_POST['zone_code']) ? $_POST['zone_code'] : ''); ?></td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2"><?php echo $system->functions->form_draw_button('create_account', $system->language->translate('title_create_account', 'Create Account')); ?></td>
+        </tr>
+      </table>
+    <?php echo $system->functions->form_draw_form_end(); ?>
+  </div>
+</div>
+
+<script>
+  $("select[name='country_code']").change(function(){
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo WS_DIR_AJAX .'zones.json.php'; ?>?country_code=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+      },
+      success: function(data) {
+        $("select[name='zone_code']").html('');
+        if ($("select[name='zone_code']").attr('disabled')) $("select[name='zone_code']").removeAttr('disabled');
+        if (data) {
+          $.each(data, function(i, zone) {
+            $("select[name='zone_code']").append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $("select[name='zone_code']").attr('disabled', 'disabled');
+        }
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+</script>
+<?php
+  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+?>

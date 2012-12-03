@@ -1,0 +1,32 @@
+<IfModule mod_rewrite.c>
+  Options +FollowSymLinks
+  RewriteEngine on
+  RewriteBase /projects/catalog/
+  
+  # Non-www to www
+  RewriteCond %{HTTP_HOST} !^www\.
+  RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+  
+  # SEO translation
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)$ category.php?category_id=$1&%{QUERY_STRING}
+  RewriteRule ^(?:[a-z]{2}/)?.*-d-([0-9]+)$ designer.php?designer_id=$1&%{QUERY_STRING}
+  RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING}
+  RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ page.php?page_id=$1&%{QUERY_STRING}
+  RewriteRule ^(?:[a-z]{2}/)?.*-p-([0-9]+)$ product.php?product_id=$1&%{QUERY_STRING}
+  RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING}
+</IfModule>
+
+# Cacheable external content
+<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
+  Header set Cache-Control "max-age=864000, public, must-revalidate"
+  Header unset Last-Modified
+</FilesMatch>
+
+# GZip Compress external content
+<IfModule mod_deflate.c>
+  <FilesMatch "\.(css|js)$">
+     SetOutputFilter DEFLATE
+  </FilesMatch>
+</IfModule>

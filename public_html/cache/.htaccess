@@ -1,0 +1,4 @@
+<FilesMatch "^_cache_">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>

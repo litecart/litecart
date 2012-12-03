@@ -1,0 +1,875 @@
+<?php
+  
+  /*
+   * Developed by TiM-International.net
+   *
+   * Commissioned by Fraktjakt.se
+   */
+  
+  class fraktjakt {
+    
+    var $code, $title, $description, $enabled;
+    
+    function fraktjakt() {
+      
+      $this->code = 'fraktjakt';
+      
+      $this->moduleinfo = array(
+        'name'        => 'Fraktjakt',
+        'description' => 'Den här modulen ger dig alltid de senaste förmånliga priserna från Fraktjakt.se genom dubbelriktad kommunikation mot Fraktjakts API!',
+        'changelog'   => array(
+          //'200X-XX-XX' => '*/+/- Din changelog text.',
+          '2011-01-13' => '* Mindre justeringar inför publicering.',
+          '2010-11-10' => '+ Logotyp vid metodval. // Tim',
+          '2010-11-08' => '* Ny formel för volymberäkning. // Tim',
+          '2010-11-06' => '- CURLOPT_FOLLOWLOCATION skapar mer problem än lösningar. // Tim',
+          '2010-10-17' => '* Kommunikationsfel vid fopen anropade ett curl_error. // Tim',
+          '2010-05-15' => '* Hårdkodad valuta SEK vid anrop. // Tim',
+          '2010-01-25' => '* Kvantitet saknades i volymberäkning. // Tim',
+          '2009-12-09' => '+ Rensning av cache vid orderslutförande. // Tim',
+          '2009-12-08' => '* Bättre debug. // Tim',
+          '2009-12-07' => '* Förbättrad felhantering vid serveranrop. // Tim',
+          '2009-12-06' => '+ Stöd för variabel moms i proportion till produkterna. // Tim',
+          '2009-12-05' => '* Momsstöd för ot_shipping saknades. // Tim',
+          '2009-11-11' => '! Skarp version. // Tim',
+          '2009-11-10 (RC)' => '+ Inbyggt stöd för fopen som alternativ kommunikationsmetod. // Tim',
+          '2009-11-09 (RC)' => '* Kringgå PHP buggar #27040 och #47906. // Tim',
+          '2009-11-08 (RC)' => '* Kraftigare UTF-8 avkodning samt mer debug info. // Tim',
+          '2009-11-04 (RC)' => '! Release Candidate. // Tim',
+          '2009-11-03 (Beta)' => '* Testserver ändrad. // Tim',
+          '2009-10-31 (Beta)' => '* Supportlänk justerad. // Tim',
+          '2009-05-20 (Beta)' => '+ Stöd för testläge. // Tim',
+          '2009-05-01 (Beta)' => '+ Fallback metod. // Tim',
+          '2009-04-17 (Beta)' => '+ Kontroll av svensk valuta (SEK). // Tim',
+          '2009-04-17 (Beta)' => '* Fel i SimpleXML funktion åtgärdat. // Tim',
+          '2009-04-14 (Beta)' => '* Kod optimerad // Tim',
+          '2009-04-09 (Alpha)' => '* Fel i funktion för momsklass åtgärdat. // Tim',
+          '2009-04-09 (Alpha)' => '+ Behandling av dimensionerna för separata kollin enligt branschstandrad. // Tim',
+          '2009-04-02 (Alpha)' => '+ Stöd för att skicka utvalda produkter som egna kollin. // Tim',
+          '2009-03-30 (Alpha)' => '* Använder SimpleXML istället för xml2array via XML Parser. // Tim',
+          '2009-03-23 (Alpha)' => '+ Stöd för Fraktjakts order API. // Tim',
+          '2009-02-06 (Alpha)' => '+ Stöd för cache vid query. // Tim',
+          '2009-01-18 (Alpha)' => '+ Stöd för dimensioner. // Tim',
+          '2008-11-05 (Alpha)' => '+ Modul skapad. // Tim',
+        ),
+        'author'      => 'T. Almroth',
+        'platform'    => 'osCommerce 2.2',
+        'homepage'    => 'http://www.fraktjakt.se',
+        'support'     => 'http://www.fraktjakt.se/om_fraktjakt/kontakt',
+      );
+      
+      $this->api_server = ((MODULE_SHIPPING_FRAKTJAKT_TEST_MODE == 'Ja') ? 'http://api2.fraktjakt.se' : 'http://api1.fraktjakt.se');
+      $this->report_email = 'error_reports@fraktjakt.se';
+      
+      if (basename($_SERVER['PHP_SELF']) == 'modules.php') {
+        
+        $this->title = '[TiM\'s osC Modules] Version '. key($this->moduleinfo['changelog']) .' :: '. $this->moduleinfo['name'];
+        
+        $this->description = $this->moduleinfo['description'] . '<br><br>
+          <script language="javascript">
+          function changeloggg() {
+            alert(\'* = Ändrat\\\\n+ = Tillagt\\\n- = Borttaget\\\n\\\n' . implode('\\\n', $this->moduleinfo['changelog']) . '\')
+          }
+          </script>
+          <table border="0" cellpadding="2" cellspacing="0" bgcolor="#F0F1F1" align="center">
+            <tr class"dataTableHeadingRow">
+              <td colspan="2"  valign="top" bgcolor="cecbce" class="dataTableHeadingContent" nowrap><strong>Om modulen</strong></td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Modulnamn: </strong></td>
+              <td valign="top" class="dataTableContent">'. $this->moduleinfo['name'] .'</td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Skapad av: </strong></td>
+              <td valign="top" class="dataTableContent">'. $this->moduleinfo['author'] .'</td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Plattform:</strong></td>
+              <td valign="top" class="dataTableContent">'. $this->moduleinfo['platform'] .'</td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Modulversion:</strong></td>
+              <td valign="top" class="dataTableContent">'. key($this->moduleinfo['changelog']) .'</td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Ändringslogg:</strong></td>
+              <td valign="top" class="dataTableContent"><a href="javascript:changeloggg();">&lt;Klicka f&ouml;r att se&gt;</a></td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Programlänk: </strong></td>
+              <td valign="top" class="dataTableContent"><a href="'. $this->moduleinfo['homepage'] .'" target="_blank">'. $this->moduleinfo['homepage'] .'</a></td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Supportlänk:</strong></td>
+              <td valign="top" class="dataTableContent"><a href="'. $this->moduleinfo['support'] .'" target="_blank">'. $this->moduleinfo['support'] .'</a></td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" class="dataTableContent" nowrap><strong>Kapabilitetstest:</strong></td>
+              <td valign="top" class="dataTableContent">
+              <table>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent">PHP5+</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((version_compare(PHP_VERSION, '5.0.0', '>')) ? '<span style="color: #009900;">'. phpversion() .'</span>' : '<span style="color: #FF0000;">'. phpversion() .'</span>') .'</td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent">register_globals</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((ini_get('register_globals') == 'On') ? '<span style="color: #FF0000;">På</span>' : '<span style="color: #009900;">Av</span>') .'</td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent">allow_url_fopen</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((ini_get('allow_url_fopen') > 0) ? '<span style="color: #009900;">OK</span>' : '<span style="color: #FF0000;">Nekad</span>') .'</td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent">cURL (libcurl)</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((function_exists('curl_init')) ? '<span style="color: #009900;">OK</span>' : '<span style="color: #FF0000;">Saknas</span>') .'</td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent">SimpleXML</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((class_exists('SimpleXMLElement')) ? '<span style="color: #009900;">OK</span>' : '<span style="color: #FF0000;">Saknas</span>') .'</td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent">Standardvaluta: SEK</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((tep_db_fetch_array(tep_db_query("select * from ". TABLE_CURRENCIES ." where code='SEK';")) && tep_db_fetch_array(tep_db_query("select * from ". TABLE_CONFIGURATION ." where configuration_key='DEFAULT_CURRENCY' and configuration_value='SEK';"))) ? '<span style="color: #009900;">OK</span>' : '<span style="color: #FF0000;">Nej</span>') .'</td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent" nowrap>osC - Country of Origin</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((tep_get_country_name(SHIPPING_ORIGIN_COUNTRY) != 'Sweden') ? '<span style="color: #FF0000;">'. tep_get_country_name(SHIPPING_ORIGIN_COUNTRY) .'</span>' : '<span style="color: #009900;">Sweden</span>') .'</td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent" nowrap>osC - Postal Code</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;"><span style="color: #999999;">'. SHIPPING_ORIGIN_ZIP .'</span></td>
+                </tr>
+                <tr class"dataTableRow">
+                  <td valign="top" class="dataTableContent" nowrap>osC - Package Tare weight</td>
+                  <td valign="top" class="dataTableContent" style="padding-left: 10px;">'. ((SHIPPING_BOX_WEIGHT > 0) ? '<span style="color: #FF0000;">'. SHIPPING_BOX_WEIGHT .'</span>' : '<span style="color: #009900;">'. SHIPPING_BOX_WEIGHT .'</span>') .'</td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+            <tr class"dataTableRow">
+              <td valign="top" align="center" class="dataTableContent" colspan="2"><form method="post" action="'. $this->api_server .'/account/login?redirect=ecommerce" target="_blank"><input type="hidden" name="login" value="'. MODULE_SHIPPING_FRAKTJAKT_USERNAME .'"><input type="hidden" name="password" value="'. MODULE_SHIPPING_FRAKTJAKT_PASSWORD .'"><input type="hidden" name="redirect" value="ecommerce"><input type="submit" value="Fraktjakt adminpanel'. ((MODULE_SHIPPING_FRAKTJAKT_TEST_MODE == 'Ja') ? ' [TEST]' : false) .'"></form></td>
+            </tr>
+          </table>';
+        
+      } else {
+        $this->title = $this->moduleinfo['name'];
+      }
+      
+      $this->tax_class = (MODULE_SHIPPING_FRAKTJAKT_TAX_TYPE == 'Standard') ? MODULE_SHIPPING_FRAKTJAKT_TAX_CLASS : 'Proportional';
+      $this->enabled = ((MODULE_SHIPPING_FRAKTJAKT_STATUS == 'Ja') ? true : false);
+      $this->sort_order = MODULE_SHIPPING_FRAKTJAKT_SORT_ORDER;
+    }
+    
+    function quote($method = '') {
+      global $language, $order, $shipping_num_boxes, $PHP_SELF;
+      
+    // Make sure currency SEK exists in database and is default currency
+      if (!tep_db_fetch_array(tep_db_query("select * from ". TABLE_CURRENCIES ." where code='SEK';")) && !tep_db_fetch_array(tep_db_query("select * from ". TABLE_CONFIGURATION ." where configuration_key='DEFAULT_CURRENCY' and configuration_value='SEK';"))) {
+      
+      // Halt
+        return $this->fallback('Valuta SEK är ej standardvaluta i butiken.');
+      }
+      
+    // On lacking SimpleXML
+      if (!class_exists('SimpleXMLElement') || !function_exists('curl_init')) {
+        
+      // Halt
+        return $this->fallback('PHP-komponenten SimpleXML saknas.');
+      }
+      
+    // On lacking server capabilities
+      if (MODULE_SHIPPING_FRAKTJAKT_HTTP_METHOD == 'fopen' && ini_get('allow_url_fopen') < 1) {
+        
+      // Halt
+        return $this->fallback('PHP fopen tillåter inte externa anslutningar. Använd kommunikationsmetod libcurl istället.');
+      }
+      
+    // On lacking server capabilities
+      if (MODULE_SHIPPING_FRAKTJAKT_HTTP_METHOD == 'libcurl' && !function_exists('curl_init')) {
+        
+      // Halt
+        return $this->fallback('PHP-komponenten cURL saknas. Använd kommunikationsmetod fopen istället.');
+      }
+      
+    // On unsupported standard currency
+      if (!tep_db_fetch_array(tep_db_query("select * from ". TABLE_CURRENCIES ." where code='SEK';")) && !tep_db_fetch_array(tep_db_query("select * from ". TABLE_CONFIGURATION ." where configuration_key='DEFAULT_CURRENCY' and configuration_value='SEK';"))) {
+        
+      // Halt
+        return $this->fallback('Standardvalutan i osCommerce stöds ej. Sätt standardvaluta till SEK.');
+      }
+      
+    // Build XML
+      $this->debug[] = 'Building query XML.';
+      $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\r\n"
+           . '<shipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' . "\r\n"
+           . '  <value>'. round($order->info['subtotal'] + $order->info['tax'], 2) .'</value>' . "\r\n"
+           . '  <consignor>' . "\r\n"
+           . '    <id>'. MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_ID .'</id>' . "\r\n"
+           . '    <key>'. MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_PASSWORD .'</key>' . "\r\n"
+           . '    <currency>SEK</currency>' . "\r\n"
+           . '    <language>'. $this->get_iso_language($language) .'</language>' . "\r\n"
+           . '  </consignor>' . "\r\n"
+           . '  <parcels>' . "\r\n";
+           
+    // Create an empty package
+      $package_dimensions = array(0, 0, 0);
+      
+    // Go through every product
+      foreach ($order->products as $product) {
+        
+      
+      // If product itself should be sent as an own package
+        if ($product['own_package'] == '1') {
+          
+        // Set item dimensions
+          $product_dimensions = array($product['width'], $product['height'], $product['length']);
+        
+        // Twist and turn the item, longest side first ([0]=length, [1]=width, [2]=height)
+          rsort($product_dimensions, SORT_NUMERIC); // Sort $product_dimensions by highest to lowest
+          
+          for ($i=0; $i<$product['qty']; $i++) {
+          
+          // Write the package to XML
+            $xml .= '    <parcel>' . "\r\n"
+                  . '      <weight>'. $product['weight'] .'</weight>' . "\r\n"
+                  . '      <length>'. $product_dimensions[0] .'</length>' . "\r\n"
+                  . '      <width>'. $product_dimensions[1] .'</width>' . "\r\n"
+                  . '      <height>'. $product_dimensions[2] .'</height>' . "\r\n"
+                  . '    </parcel>' . "\r\n";
+          }
+        
+      // Or if this item should be sent among the others
+        } else {
+        
+          for ($i=0; $i<$product['qty']; $i++) {
+            
+          // Create an array of product dimensions
+            $product_dimensions = array($product['width'], $product['height'], $product['length']);
+
+          // Twist and turn the item, longest side first ([0]=length, [1]=width, [2]=height)
+            rsort($product_dimensions, SORT_NUMERIC); // Sort $product_dimensions by highest to lowest
+            
+          // Package height + item height
+            $package_dimensions[2] += $product_dimensions[2];
+            
+          // If this is the widest item so far, set item width as package width
+            if($product_dimensions[1] > $package_dimensions[1]) $package_dimensions[1] = $product_dimensions[1];
+            
+          // If this is the longest item so far, set item length as package length
+            if($product_dimensions[0] > $package_dimensions[0]) $package_dimensions[0] = $product_dimensions[0];
+            
+          // Add weight to package
+            $shipping_weight += $product['weight'];
+            
+          // Add quantity to package
+            $shipping_num_items++;
+            
+          // Twist and turn the package, longest side first ([0]=length, [1]=width, [2]=height)
+            rsort($package_dimensions, SORT_NUMERIC);
+          }
+        }
+      }
+      
+    // Write package with various items to XML
+      if ($shipping_num_items > 0) {
+        $xml .= '    <parcel>' . "\r\n"
+              . '      <weight>'. $shipping_weight .'</weight>' . "\r\n"
+              . '      <length>'. $package_dimensions[0] .'</length>' . "\r\n"
+              . '      <width>'. $package_dimensions[1] .'</width>' . "\r\n"
+              . '      <height>'. $package_dimensions[2] .'</height>' . "\r\n"
+              . '    </parcel>' . "\r\n";
+      }
+      
+    // Continue writing XML
+      $xml .= '  </parcels>' . "\r\n"
+            . '  <address>' . "\r\n"
+            . '    <street_address_1>'. $order->delivery['street_address'] .'</street_address_1>' . "\r\n"
+            . '    <street_address_2></street_address_2>' . "\r\n"
+            . '    <postal_code>'. $order->delivery['postcode'] .'</postal_code>' . "\r\n"
+            . '    <city_name>'. $order->delivery['city'] .'</city_name>' . "\r\n"
+            . '    <residential>1</residential>' . "\r\n"
+            . '    <country_code>'. $order->delivery['country']['iso_code_2'] .'</country_code>' . "\r\n"
+            . '    <country_subdivision_code>F</country_subdivision_code>' . "\r\n"
+            . '  </address>' . "\r\n"
+            . '  <referrer_code></referrer_code>' . "\r\n"
+            . '</shipment>' . "\r\n";
+      
+      $this->debug[] = "\r\n". $xml . "\r\n";
+      
+      if ($_SESSION['fraktjakt_api']['query_xml'] != $xml || empty($_SESSION['fraktjakt_api']['query_response_xml'])) {
+        
+      // Define the API URL
+        $api_url = $this->api_server . '/fraktjakt/query_xml';
+        $this->debug[] = 'Setting API URL to '. $api_url .'.';
+        
+      // Set HTTP request headers
+        $httpHeaders = array(
+        // BOF: PHP bug #47906 circumvention (http://bugs.php.net/bug.php?id=47906)
+          "Expect: ", // Disable the 100-continue header
+        // EOF: PHP bug #47906 circumvention
+          "Accept-Charset: UTF-8",
+          "Content-type: application/x-www-form-urlencoded"
+        );
+        $this->debug[] = "Setting HTTP request headers to:\r\n   " . implode("\r\n   ", $httpHeaders) ."\r\n\r\n";
+        
+      // Build HTTP POST parameters
+        $httpPostParams = array(
+          'md5_checksum' => md5($xml),
+          'xml' => utf8_encode($xml)
+        );
+        $this->debug[] = 'Setting '. count($httpPostParams) .' post parameters ('. implode(', ', array_keys($httpPostParams)) .').';
+        
+      // Cache query xml
+        $this->debug[] = 'Caching XML query incase it will be used again.';
+        $_SESSION['fraktjakt_api']['query_xml'] = $xml;
+        
+      // Contact remote API and get data
+        $_SESSION['fraktjakt_api']['query_response_xml'] = $this->http_post($api_url, $httpHeaders, $httpPostParams);
+
+      } else {
+        
+        $this->debug[] = 'Using cached data instead of new API connection.';      
+      }
+      
+    // On no data
+      if (empty($_SESSION['fraktjakt_api']['query_response_xml'])) {
+        
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Query Error');
+        
+      // Send technical e-mail report to fraktjakt
+        $this->send_report($this->report_email, 'Fraktjakt Query Error');
+        
+      // Halt
+        return $this->fallback('Anslutning till Fraktjakt API misslyckades, vänligen försök igen senare. Prova annars alternativ kommunikationsmetod.');
+      }
+      
+    // Treat libxml errors internally instead
+      libxml_use_internal_errors(true);
+      
+    // Create a SimpleXMLElement object
+      $objXML = simplexml_load_string($_SESSION['fraktjakt_api']['query_response_xml']);
+      
+    // On XML class error
+      if (!$objXML || libxml_get_errors()) {
+      
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Query Error');
+        
+      // Send technical e-mail report to fraktjakt
+        $this->send_report($this->report_email, 'Fraktjakt Query Error');
+        
+      // Halt
+        return $this->fallback('Ogiltig XML nod. Felaktig svarskod?');
+      }
+
+    // On no shipment node
+      if (utf8_decode($objXML->getName()) != 'shipment') {
+      
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Query Error');
+        
+      // Send technical e-mail report to fraktjakt
+        $this->send_report($this->report_email, 'Fraktjakt Query Error');
+        
+      // Halt
+        return $this->fallback('Ogiltig XML nod. Felaktig svarskod?');
+      }
+      
+    // On error
+      if (trim(utf8_decode($objXML->error_message)) != '') {
+        
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Query Error');
+        
+      // Halt
+        return $this->fallback(utf8_decode($objXML->error_message));
+      }
+      
+    // On no methods
+      if (empty($objXML->shipping_products)) {
+        
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Query Error');
+        
+      // Send technical e-mail report to fraktjakt
+        $this->send_report($this->report_email, 'Fraktjakt Query Error');
+        
+      // Halt
+        if (MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS == 'Ja') {
+          return $this->fallback('Inga metodval att lista.');
+        } else {
+          return $this->fallback();
+        }
+      }
+      
+    // On debug
+      if ($method == '' && MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS == 'Ja') {
+        
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Query Debug');
+      }
+      
+    // Go through every option
+      foreach ($objXML->shipping_products->children() as $option) {
+        
+        $gross = utf8_decode($option->price) * $shipping_num_boxes;
+        
+      // Should option be output?
+        if ($method == '' || $method == trim(utf8_decode($objXML->id)) .'-'. trim(utf8_decode($option->id))) {
+        
+        // Build output option variable
+        /*
+          if (!empty($method)) {
+            $shipping_methods[] = array(
+              'id' => trim(utf8_decode($objXML->id)) .'-'. trim(utf8_decode($option->id)),
+              'title' => (($method != '') ? utf8_decode($option->description) : utf8_decode($option->description) . '<font color="#666666">' . (($option->agent_info != '') ? '<br />&nbsp;&nbsp;&nbsp;' . MODULE_SHIPPING_FRAKTJAKT_AGENT . '<a href="'. utf8_decode($option->agent_link) .'" target="_blank" style="color: #666666;">' . utf8_decode($option->agent_info) .'</a>' : false) . (($option->arrival_time != '') ? '<br />&nbsp;&nbsp;&nbsp;'. MODULE_SHIPPING_FRAKTJAKT_ARRIVAL_TIME . utf8_decode($option->arrival_time) : false) . '</font>'),
+              'cost' => $gross
+            );
+          } else {
+          */
+            $shipping_methods[] = array(
+              'id' => trim(utf8_decode($objXML->id)) .'-'. trim(utf8_decode($option->id)),
+              'title' => utf8_decode($option->description),
+              'cost' => $gross
+            );
+          //}
+        }
+      }
+      
+      if ($method != '') {
+        $output_string = ((MODULE_SHIPPING_FRAKTJAKT_ICON == '') ? $this->moduleinfo['name'] : false);
+      } else {
+        $output_string = $this->moduleinfo['name'];
+        $output_string .= ((MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS == 'Ja') ? ' #' . utf8_decode($objXML->id) : false);
+        $output_string .= ((MODULE_SHIPPING_FRAKTJAKT_TEST_MODE == 'Ja') ? ' [TEST]' : false);
+        $output_string .= ((MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS == 'Ja' && trim($objXML->warning) != '') ? ' (Varning:' . utf8_decode($objXML->warning) . ')' : false);
+      }
+      
+    // Get tax rate
+      if (MODULE_SHIPPING_FRAKTJAKT_TAX_TYPE == 'Standard') {
+        if ($this->tax_class > 0) {
+          $tax_rate = tep_get_tax_rate($this->tax_class, $order->delivery['country']['id'], $order->delivery['zone_id']);
+        }
+      } else {
+        $tax_rate = $this->get_proportional_tax_rate();
+      }
+      
+    // Output
+      return array(
+        'id' => $this->code,
+        'icon' => (MODULE_SHIPPING_FRAKTJAKT_ICON != '') ? tep_image(MODULE_SHIPPING_FRAKTJAKT_ICON, $output_string) : false,
+        'module' => (($PHP_SELF == 'checkout_shipping.php' && MODULE_SHIPPING_FRAKTJAKT_ICON != '') ? false : $output_string),
+        'methods' => $shipping_methods,
+        'tax' => $tax_rate
+      );
+    }
+    
+    function after_process() {
+      global $language, $order, $shipping, $insert_id;
+      
+    // Rensning av cache
+      $_SESSION['fraktjakt_api']['query_xml'] = '';
+      
+    // Extract query id and product/method id
+      list($shipment_id, $shipping_product_id) = explode('-', substr($shipping['id'], strpos($shipping['id'], '_')+1));
+      
+    // Halt on fallback method
+      if ($shipping_product_id == 'fallback') return;
+      
+    // Build XML
+      $this->debug[] = 'Building order XML.';
+      $xml =   '<?xml version="1.0" encoding="UTF-8"?>' . "\r\n"
+             . '<order xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' . "\r\n"
+             . '  <consignor>' . "\r\n"
+             . '    <id>'. MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_ID .'</id>' . "\r\n"
+             . '    <key>'. MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_PASSWORD .'</key>' . "\r\n"
+             . '    <currency>'. $order->info['currency'] .'</currency>' . "\r\n"
+             . '    <language>'. $this->get_iso_language($language) .'</language>' . "\r\n"
+             . '  </consignor>' . "\r\n"
+             . '  <shipment_id>'. $shipment_id .'</shipment_id>' . "\r\n"
+             . '  <shipping_product_id>'. $shipping_product_id .'</shipping_product_id>' . "\r\n"
+             . '  <reference>osCommerce order #'. $insert_id .'</reference>' . "\r\n"
+             . '  <commodities>' . "\r\n";
+      foreach ($order->products as $product) {
+      $xml .=  '    <commodity>' . "\r\n"
+             . '      <name>'. $product['name'] .'</name>' . "\r\n"
+             . '      <quantity>'. $product['qty'] .'</quantity>' . "\r\n"
+             . '      <taric>'. $product['taric_code'] .'</taric>' . "\r\n"
+             . '      <quantity_units>EA</quantity_units>' . "\r\n"
+             . '      <description></description>' . "\r\n"
+             . '      <country_of_manufacture>'. $product['country_of_manufacture'] .'</country_of_manufacture>' . "\r\n"
+             . '      <weight>'. $product['weight'] .'</weight>' . "\r\n"
+             . '      <unit_price>'. round($product['final_price'], 2) .'</unit_price>' . "\r\n"
+             . '    </commodity>' . "\r\n";
+      }
+      $xml .=  '  </commodities>' . "\r\n"
+             . '  <recipient>' . "\r\n"
+             . '    <company_to>'. $order->delivery['company'] .'</company_to>' . "\r\n"
+             . '    <name_to>'. trim($order->delivery['firstname'] . ' ' . $order->delivery['lastname']) .'</name_to>' . "\r\n"
+             . '    <telephone_to>'. $order->customer['telephone'] .'</telephone_to>' . "\r\n"
+             . '    <email_to>'. $order->customer['email_address'] .'</email_to>' . "\r\n"
+             . '  </recipient>' . "\r\n"
+             . '</order>' . "\r\n";
+      
+      $this->debug[] = "\r\n". $xml . "\r\n";
+      
+    // Define the API URL
+      $api_url = $this->api_server . '/orders/order_xml';
+      $this->debug[] = "Setting API URL to ". $api_url . '.';
+      
+    // Set HTTP request headers
+      $httpHeaders = array(
+      // BOF: PHP bug #47906 circumvention (http://bugs.php.net/bug.php?id=47906)
+        "Expect: ", // Disable the 100-continue header
+      // EOF: PHP bug #47906 circumvention
+        "Accept-Charset: UTF-8",
+        "Content-type: application/x-www-form-urlencoded"
+      );
+      $this->debug[] = "Setting HTTP request headers to:\r\n   " . implode("\r\n   ", $httpHeaders) ."\r\n\r\n";
+      
+    // Build HTTP POST parameters
+      $httpPostParams = array(
+        'md5_checksum' => md5($xml),
+        'xml' => utf8_encode($xml)
+      );
+      $this->debug[] = 'Setting '. count($httpPostParams) .' post parameters ('. implode(', ', array_keys($httpPostParams)) .').';
+      
+    // Contact remote API and send data
+      $response_xml = $this->http_post($this->api_server . '/orders/order_xml', $httpHeaders, $httpPostParams);
+      
+    // Treat libxml errors internally instead
+      libxml_use_internal_errors(true);
+      
+    // Create a SimpleXMLElement object
+      $objXML = simplexml_load_string($response_xml);
+      
+    // On XML class errors
+      if (!$objXML || libxml_get_errors()) {
+        
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Order Error');
+        
+      // Send technical e-mail report to fraktjakt
+        $this->send_report($this->report_email, 'Fraktjakt Order Error');
+        
+        return;
+      }
+      
+    // On invalid XML or returned error
+      if (utf8_decode($objXML->getName()) != 'result' || utf8_decode($objXML->error) != '') {
+      
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Order Error');
+        
+      // Send technical e-mail report to fraktjakt
+        $this->send_report($this->report_email, 'Fraktjakt Order Error');
+        
+        return;
+      }
+      
+    // On warning
+      if (trim(utf8_decode($objXML->warning)) != '') {
+      
+      if (MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS == 'Ja') {
+      
+        // Send technical e-mail report
+          $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Order Warning');
+          
+          return;
+        }
+      }
+      
+    // on debug
+      if (MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS == 'Ja') {
+      
+      // Send technical e-mail report
+        $this->send_report(MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL, 'Fraktjakt Order Debug');
+      }
+    }
+    
+    function send_report($recipient, $subject) {
+      
+    // Send technical e-mail report
+      if (MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL != '') {
+        
+      // Create mail object
+        $message = new email(array('X-Mailer: osCommerce Mailer'));
+        
+      // Prepare mail mody
+        $body = "Versions:\r\n"
+              . "- Fraktjakt Module: " . key($this->moduleinfo['changelog']) . "\r\n"
+              . "- " . $_SERVER['SERVER_SOFTWARE'] ."\r\n"
+              . "- PHP: " . phpversion() . "\r\n"
+              . "- cURL: " . $curl_ver['version'] . ' (' . implode(', ', curl_version()) . ')' ."\r\n"
+              . "- SimpleXML: " . phpversion('SimpleXML') . "\r\n\r\n"
+              . "Configuration:\r\n"
+              . "- allow_url_fopen: " . ini_get('allow_url_fopen') . "\r\n\r\n"
+              . "--------------------------------------------\r\n\r\n"
+              . "Script debug data:\r\n\r\n"
+              . "  " . @implode("\r\n  ", $this->debug) . "\r\n";
+        
+      $message->add_text($body);
+        
+      // Send mail
+        $message->build_message();
+        $message->send($recipient, $recipient, STORE_NAME, STORE_OWNER_EMAIL_ADDRESS, $subject);
+      }
+    }
+    
+    function fallback($error_message='') {
+      global $order, $shipping_weight, $shipping_num_boxes;
+      
+      $this->debug[] = 'Executing fallback function for error:' . ($error_message) ? $error_message : 'NULL';
+      
+      if ($order->delivery['country']['iso_code_2'] == 'SE') {
+        
+      // Shipping within Sweden
+        $shipping_table = MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_DOMESTIC;
+        
+      } else {
+        
+        if (in_array($order->delivery['country']['iso_code_2'], explode(',', 'AT,BE,CH,DK,ES,GB,FR,DE,GL,GR,IL,IS,IE,IT,NO,NL,PL,FI,PT'))) {
+          
+        // Shipping outside Sweden - Within Europe
+          $shipping_table = MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_EUROPE;
+          
+        } else {
+          
+        // Shipping outside Sweden - Outside Europe
+          $shipping_table = MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_WORLD;
+        }
+      }
+      
+    // Calculate cost
+      $gross = $this->calculate_table_cost($shipping_table, ($shipping_weight)) * $shipping_num_boxes + MODULE_SHIPPING_POSTEN_INRIKESPAKET_HANDLING;
+      
+    // Get tax rate
+      if (MODULE_SHIPPING_FRAKTJAKT_TAX_TYPE == 'Standard') {
+        if ($this->tax_class > 0) {
+          $tax_rate = tep_get_tax_rate($this->tax_class, $order->delivery['country']['id'], $order->delivery['zone_id']);
+        }
+      } else {
+        $tax_rate = $this->get_proportional_tax_rate();
+      }
+
+    // Return the options
+      return array(
+        'id' => $this->code,
+        'icon' => false,
+        'module' => $this->moduleinfo['name'] . ((MODULE_SHIPPING_FRAKTJAKT_TEST_MODE == 'Ja') ? ' [TEST]' : false) . ' (Fel: '. $error_message .')',
+        'methods' => array(
+          array(
+            'id' => 'fallback',
+            'title' => MODULE_SHIPPING_FRAKTJAKT_FALLBACK_METHOD_NAME,            
+            'cost' => $gross
+          )
+        ),
+        'tax' => $tax_rate
+      );
+    }
+    
+    function get_iso_language($language) {
+      switch ($language) {
+        case 'english':
+          return 'en';
+        case 'svenska':
+        case 'swedish':
+          return 'sv';
+        default:
+          return 'en';
+      }
+    }
+
+    function get_proportional_tax_rate() {
+    
+    // Give access to global variables
+      global $order;
+      
+    // Step through every product in shopping cart
+      foreach ($order->products as $product) {
+        
+      // Summarize the total gross cost for all products, no matter which tax groups
+        $products_gross_total += $product['qty'] * $product['final_price'];
+        
+      // Summarize the total gross cost for all products, no matter which tax groups
+        $products_tax_total += $product['qty'] * $product['final_price'] * $product['tax'] / 100;
+      }
+      
+    // Return proportional tax rate
+      return $products_tax_total / $products_gross_total * 100;
+    }
+    
+    function calculate_table_cost($table, $weight) {
+      
+    // Split weight table
+      $table = array_reverse(explode("|" , $table));
+      
+    // Step through every class entry
+      foreach ($table as $entry) {
+        $entry = explode(':', $entry);
+        
+        // Set cost
+          if ($weight <= $entry[0]) $this_cost = $entry[1];
+      }
+      return $this_cost;
+    }
+    
+    function http_post($url, $headers='', $postfields) {
+    
+    // Using fopen()
+      if (MODULE_SHIPPING_FRAKTJAKT_HTTP_METHOD == 'fopen') {
+      
+        if (is_array($postfields)) {
+          foreach ($postfields as $key => $value) {
+            $postfields[$key] = $key .'='. urlencode($value);
+          }
+          $postfields = implode('&', $postfields); 
+        }
+        
+        $params = array(
+          'http' => array(
+            'method' => 'POST',
+            'content' => $postfields,
+            'header' => @implode("\r\n", $headers),
+          )
+        );
+          
+        while ($response == false && $tries < 2) {
+        
+          $this->debug[] = '[fopen] Connecting to ' . $url .' at '. date('H:i:s') . '.';
+          
+          $ctx = @stream_context_create($params);
+          $fp = @fopen($url, 'rb', false, $ctx);
+          $response = @stream_get_contents($fp);
+          
+          $this->debug[] = '[fopen] ' . ((!$response) ? 'No response data at '. date('H:i:s') : "Got the following HTTP response at ". date('H:i:s') .":\r\n\r\n" . utf8_decode($this->xmlpp($response)) ."\r\n\r\n");
+          
+          $tries++;
+        }
+        return $response;
+        
+    // Using libcurl
+      } else {
+      
+      // BOF: PHP bug #27040 circumvention (http://bugs.php.net/bug.php?id=27040)
+      // Solution for known bug where CURLOPT_POSTFIELDS doesnt work with arrays
+        if (is_array($postfields)) {
+          foreach ($postfields as $key => $value) {
+            $postfields[$key] = $key .'='. urlencode($value);
+          }
+          $postfields = implode('&', $postfields);
+        }
+      // EOF: PHP bug #27040 circumvention
+        
+        while ($response == false && $tries < 2) {
+        
+          $this->debug[] = '[cURL] Connecting to '. $url .' at '. date('H:i:s') .'.';
+          
+          $ch = curl_init($url);
+          curl_setopt($ch, CURLOPT_FAILONERROR, false); // fail on errors
+          curl_setopt($ch, CURLOPT_FRESH_CONNECT, true); // forces a non-cached connection
+          if ($headers) curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // set http headers
+          curl_setopt($ch, CURLOPT_POST, true); // initialize post method
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields); // variables to post
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // return into a variable
+          curl_setopt($ch, CURLOPT_TIMEOUT, 30); // timeout after 30s
+          $response = curl_exec($ch);
+          
+          $this->debug[] = '[cURL] ' . ((!$response) ? 'No response data at '. date('H:i:s') . '('. curl_error() .')' : "Got the following HTTP response at ". date('H:i:s') .":\r\n\r\n" . utf8_decode($response) ."\r\n\r\n");
+          
+          curl_close($ch);
+          $tries++;
+        }
+        return $response;
+      }
+    }
+    
+    function check() {
+      if (!isset($this->_check)) {
+        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_SHIPPING_FRAKTJAKT_STATUS'");
+        $this->_check = tep_db_num_rows($check_query);
+      }
+      return $this->_check;
+    }
+    
+    function xmlpp($xml, $html_output=false) {
+      $xml_obj = new SimpleXMLElement($xml);
+      $level = 4;
+      $indent = 0; // current indentation level
+      $pretty = array();
+
+      // get an array containing each XML element
+      $xml = explode("\n", preg_replace('/>\s*</', ">\n<", $xml_obj->asXML()));
+
+      // shift off opening XML tag if present
+      if (count($xml) && preg_match('/^<\?\s*xml/', $xml[0])) {
+        $pretty[] = array_shift($xml);
+      }
+
+      foreach ($xml as $el) {
+        if (preg_match('/^<([\w])+[^>\/]*>$/U', $el)) {
+            // opening tag, increase indent
+            $pretty[] = str_repeat(' ', $indent) . $el;
+            $indent += $level;
+        } else {
+          if (preg_match('/^<\/.+>$/', $el)) {
+            $indent -= $level;  // closing tag, decrease indent
+          }
+          if ($indent < 0) {
+            $indent += $level;
+          }
+          $pretty[] = str_repeat(' ', $indent) . $el;
+        }
+      }
+      $xml = implode("\n", $pretty);
+      return ($html_output) ? htmlentities($xml) : $xml;
+    }
+    
+    function install() {
+      $this->remove();
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) VALUES ('Tjänsten aktiverad?', 'MODULE_SHIPPING_FRAKTJAKT_STATUS', 'Ja', 'Vill du hämta priser för frakt från Fraktjakt.se?', '6', '0', 'tep_cfg_select_option(array(\'Ja\', \'Nej\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Ikon', 'MODULE_SHIPPING_FRAKTJAKT_ICON', 'images/frakt/fraktjakt.png', 'Om du vill visa en ikon istället för ett textalternativ, ange webbsökväg ex. images/icon.gif', '6', '1', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Fraktjakt användarnamn', 'MODULE_SHIPPING_FRAKTJAKT_USERNAME', '', 'Ange användarnamn till adminpanelen hos Fraktjakt.', '6', '2', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Fraktjakt lösenord', 'MODULE_SHIPPING_FRAKTJAKT_PASSWORD', '', 'Ange lösenord till adminpanelen hos Fraktjakt.', '6', '3', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Fraktjakt Consignor ID', 'MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_ID', '', 'Ange ditt id för Fraktjakt API.', '6', '4', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Fraktjakt Consignor Key', 'MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_PASSWORD', '', 'Ange ditt lösenord för API.', '6', '5', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Testläge', 'MODULE_SHIPPING_FRAKTJAKT_TEST_MODE', 'Ja', 'Vill du köra mot Fraktjakts testserver? (Kräver separat konto på testserver)', '6', '6', 'tep_cfg_select_option(array(\'Ja\', \'Nej\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) VALUES ('Kommunikationsmetod', 'MODULE_SHIPPING_FRAKTJAKT_HTTP_METHOD', 'libcurl', 'Ange önskad serverkomponent för kommunicering.', '6', '0', 'tep_cfg_select_option(array(\'fopen\', \'libcurl\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) VALUES ('Felsökningsläge?', 'MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS', 'Ja', 'Vill du köra i felsökningsläge? Rapporter kommer att skickas till dig via e-post vid varje API anslutning. Om du inte kör felsökningsläge kommer endast felrapporteringar skickas via e-post.', '6', '7', 'tep_cfg_select_option(array(\'Ja\', \'Nej\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('E-postadress för rapporter', 'MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL', '', 'Ange en mottagaradress för tekniska rapporteringar.', '6', '8', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Pristabell för reservutväg vid inrikes sändning', 'MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_DOMESTIC', '3:112|5:128|10:168|15:204|20:236', '', '6', '9', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Pristabell för reservutväg vid utrikes sändning inom Europa', 'MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_EUROPE', '3:210|5:250|10:350|15:450|20:550|25:650|30:750', '', '6', '10', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Pristabell för reservutväg vid utrikes sändning utanför Europa', 'MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_WORLD', '3:321|5:435|10:720|15:1005|20:1290|25:1575|30:1860', '', '6', '11', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) VALUES ('Momsfunktion', 'MODULE_SHIPPING_FRAKTJAKT_TAX_TYPE', 'Standard', 'Ange önskad momsfunktion ex. Standard för att själv ange momsklass nedan eller Variabel för att frakten regelriktigt skall ärva momsen från varorna (OBS! kräver TiM\'s ordertotal-moduler).', '6', '12', 'tep_cfg_select_option(array(\'Standard\', \'Variabel\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Momsklass', 'MODULE_SHIPPING_FRAKTJAKT_TAX_CLASS', '0', 'Ange momsklass för fraktavgiften.', '6', '13', 'tep_get_tax_class_title', 'tep_cfg_pull_down_tax_classes(', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Sortering', 'MODULE_SHIPPING_FRAKTJAKT_SORT_ORDER', '0', 'Ange plats i modulernas sorteringsordning.', '6', '14', now())");
+    }
+    
+    function remove() {
+      tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "')");
+    }
+    
+    function keys() {
+      return array (
+        'MODULE_SHIPPING_FRAKTJAKT_STATUS',
+        'MODULE_SHIPPING_FRAKTJAKT_ICON',
+        'MODULE_SHIPPING_FRAKTJAKT_USERNAME',
+        'MODULE_SHIPPING_FRAKTJAKT_PASSWORD',
+        'MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_ID',
+        'MODULE_SHIPPING_FRAKTJAKT_CONSIGNOR_PASSWORD',
+        'MODULE_SHIPPING_FRAKTJAKT_TEST_MODE',
+        'MODULE_SHIPPING_FRAKTJAKT_HTTP_METHOD',
+        'MODULE_SHIPPING_FRAKTJAKT_DEBUG_STATUS',
+        'MODULE_SHIPPING_FRAKTJAKT_REPORT_EMAIL',
+        'MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_DOMESTIC',
+        'MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_EUROPE',
+        'MODULE_SHIPPING_FRAKTJAKT_SHIPIPNG_TABLE_WORLD',
+        'MODULE_SHIPPING_FRAKTJAKT_TAX_TYPE',
+        'MODULE_SHIPPING_FRAKTJAKT_TAX_CLASS',
+        'MODULE_SHIPPING_FRAKTJAKT_SORT_ORDER'
+      );
+    }
+  }
+
+?>

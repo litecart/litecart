@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<title>dynDateTime: jQuery date time calendar plugin, based on Dynarch calendar </title>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+		
+		<script type="text/javascript" src="jquery.dynDateTime.js"></script>
+		<script type="text/javascript" src="lang/calendar-en.js"></script>
+
+		<link rel="stylesheet" type="text/css" media="all" href="css/calendar-win2k-cold-1.css"  />
+
+	</head>
+	<body>
+	
+	<h1>dynDateTime</h1>
+	
+	<p>See project <a href="http://code.google.com/p/dyndatetime/">home page</a> for details.</p>
+	
+		<form action="/nothing/to/post.to">
+			<div>
+				<h3>Default with no options</h3>
+				<script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery("#dateDefault").dynDateTime(); //defaults
+					});
+				</script>
+				<input type="text" name="dateDef" id="dateDefault"/>
+				<hr/>
+	
+				<h3>Bind to multiple inputs in one go</h3>
+				<script type="text/javascript">
+					jQuery(document).ready(function() {
+	
+						jQuery("#multi input").dynDateTime({				
+							button: ".next()" //next sibling
+						}); 
+						
+					});
+				</script>
+				<div id="multi">
+					<input type="text" name="dateA"/>
+					<button type="button">PICKER</button>
+					<br/>
+					
+					<input type="text" name="dateB"/>
+					<button type="button">PICKER</button>
+					<br/>
+					
+					<input type="text" name="dateC" value="2001/09/11"/>
+					<button type="button">PICKER</button>
+					<br/>
+				</div>
+				<hr/>
+	
+				<h3>Using time, custom format, display output, and different pop-up location</h3>
+				<script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery("#dateTimeCustom").dynDateTime({
+							showsTime: true,
+							ifFormat: "%Y/%m/%d-%H:%M",
+							daFormat: "%l;%M %p, %e %m,  %Y",
+							align: "TL",
+							electric: false,
+							singleClick: false,
+							displayArea: ".siblings('.dtcDisplayArea')",
+							button: ".next()" //next sibling
+						});
+					});
+				</script>
+				The selected date is <span class="dtcDisplayArea"></span> <br/>
+				<input type="text" name="dateTimeCust" id="dateTimeCustom"/>
+				<button type="button">PICKER</button>
+				<hr/>
+	
+				<h3>Flat example</h3>
+				<script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery("#dateFlat").dynDateTime({
+								flat: ".next()"
+							});
+					});
+				</script>
+				<input type="text" name="dateDef" id="dateFlat" value="2001/09/11"/>
+				<div style="float: left;">&nbsp;</div>
+				<hr style="clear: both;"/>
+	
+			</div>
+		</form>
+
+		<p>
+			<a href="http://validator.w3.org/check?uri=referer">
+		    	<img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Strict" height="31" width="88" />
+			</a>
+		</p>
+    </body>
+</html>

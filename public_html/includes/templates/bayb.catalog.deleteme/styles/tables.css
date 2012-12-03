@@ -1,0 +1,41 @@
+table.dataTable {
+  margin-bottom: 10px;
+  border: 1px solid #dfdfdf;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+}
+
+table.dataTable .header {
+  text-shadow: 0px 1px 1px #fff;
+  font-weight: bold;
+  /*text-decoration: underline;*/
+  
+  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
+  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
+}
+table.dataTable th {
+  padding: 10px 10px;
+  border-bottom: 1px solid #dfdfdf;
+}
+table.dataTable td {
+  padding: 5px 10px;
+}
+table.dataTable tr.odd {
+  background-color: #fcfcfc;
+}
+table.dataTable tr.even {
+  background-color: #f5f5f5;
+}
+table.dataTable tr.odd:hover, table.dataTable tr.even:hover {
+  background-color: #ececec;
+  cursor: arrow;
+}
+table.dataTable tr.footer {
+  background-color: #f4f4f4;
+}

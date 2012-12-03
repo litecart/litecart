@@ -1,0 +1,131 @@
+.listing-wrapper {
+  overflow: auto;
+  
+  text-decoration: none;
+  color: #000000;
+  margin: 0 -5px;
+}
+
+.listing-wrapper .category-image {
+  display: inline-block;
+  float: left;
+  
+  width: 330px;
+  height: 180px;
+  
+  padding: 0px;
+  margin: 5px;
+  
+  text-align: left;
+}
+
+.listing-wrapper .category-image {
+  padding: 0px !important;
+}
+
+.listing-wrapper .category-description {
+  display: inline-block;
+  float: left;
+  
+  width: 320px;
+  height: 180px;
+  
+  padding: 0px;
+  margin: 5px;
+  
+  text-align: left;
+}
+
+.listing-wrapper .subcategory {
+  display: inline-block;
+  float: left;
+  
+  padding: 0px;
+  margin: 5px;
+  
+  background: rgb(255, 255, 255);
+  
+  -moz-box-shadow: 0px 0px 2px #aaa;
+  -webkit-box-shadow: 0px 0px 2px #aaa;
+  box-shadow: 0px 0px 2px #aaa;
+  
+  text-align: center;
+}
+.listing-wrapper .subcategory:hover {
+  -moz-box-shadow: 0px 0px 2px #c00;
+  -webkit-box-shadow: 0px 0px 2px #c00;
+  box-shadow: 0px 0px 2px #c00;
+}
+.listing-wrapper .subcategory a.link {
+  display: block;
+  
+  width: 320px;
+  height: 180px;
+  
+  margin: 0px;
+  padding: 5px;
+  
+  text-decoration: none;
+  color: #333333;
+}
+.listing-wrapper .subcategory .footer {
+  width: 310px;
+  display: block;
+  padding: 5px;
+  background: rgba(100, 100, 100, 0.75);
+  color: #fff;
+}
+.listing-wrapper .subcategory .title {
+  font-weight: bold;
+}
+
+.listing-wrapper .manufacturer-description {
+  display: block;
+  float: left;
+  
+  width: 330px;
+  height: 180px;
+  
+  padding: 0px;
+  margin: 5px;
+  
+  text-align: left;
+}
+
+.listing-wrapper .product {
+  display: inline-block;
+  float: left;
+  
+  padding: 0px;
+  margin: 5px;
+  
+  -moz-box-shadow: 0px 0px 2px #aaa;
+  -webkit-box-shadow: 0px 0px 2px #aaa;
+  box-shadow: 0px 0px 2px #aaa;
+}
+.listing-wrapper .product:hover {
+  -moz-box-shadow: 0px 0px 2px #069;
+  -webkit-box-shadow: 0px 0px 2px #069;
+  box-shadow: 0px 0px 2px #069;
+}
+
+.listing-wrapper .product a.link {
+  display: block;
+  
+  width: 170px;
+  height: 180px;
+  
+  margin: 0px;
+  padding: 5px;
+  
+  background: #fff;
+
+  text-decoration: none;
+  color: #333333;
+  
+  text-align: center;
+}
+.listing-wrapper .product .price {
+  color: #660000;
+  font-size: 1.0em;
+}

@@ -1,0 +1,101 @@
+@import url(boxes.css);
+@import url(content.css);
+@import url(forms.css);
+@import url(notices.css);
+@import url(tables.css);
+@import url(tabs.css);
+
+* {
+  line-height: 125%;
+}
+
+@media print {
+  @page {
+    size: A4; /* auto is the initial value */
+    margin: 20mm;
+    zoom: 100%;
+    padding: 0;
+  }
+  
+  /*#header {
+    position: absolute;  
+    top: 0;  
+  }*/
+  
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-size: 10pt;
+    font-family: Arial, Helvetica,sans-serif;
+    color: #000;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #window {
+    position: absolute;
+    top: 44mm;
+    right: 15mm;
+    width: 95mm;
+    height: 29mm;
+    padding: 5mm 0 0 5mm;
+    margin: -20mm;
+  }
+  
+  h1 {
+    margin-top: 0;
+  }
+  
+  a {
+    color: #000;
+  }
+  
+  #footer {
+    position: absolute;
+    bottom: 0;
+    margin-top: 20mm;
+    font-size: 0.9em;
+  }
+  
+  .page-break  {
+    page-break-before: always;
+  }
+}
+
+@media screen {
+  #header {
+  
+  }
+  
+  body {
+    margin: 0 auto;
+    max-width: 640px;
+    font-size: 10pt;
+    font-family: Arial, Helvetica,sans-serif;
+    color: 333;
+  }
+  
+  #window {
+    display: none;
+  }
+  
+  a:link, a:visited{
+    color: #0000cc;
+  }
+  a:hover, a:active{
+    color: #ff0000;
+  }
+  
+  #footer {
+    display: none;
+  }
+
+  .page-break  {
+    border: 1px #ccc dashed;
+  }
+}
