@@ -51,7 +51,7 @@
       $this->data = $this->system->database->fetch($categories_query);
       
       $categories_info_query = $this->system->database->query(
-        "select name, short_description, description, keywords, head_title, h1_title, meta_description, meta_keywords, language_code from ". DB_TABLE_CATEGORIES_INFO ."
+        "select name, short_description, description, head_title, h1_title, meta_description, meta_keywords, language_code from ". DB_TABLE_CATEGORIES_INFO ."
         where category_id = '". (int)$category_id ."';"
       );
       while ($category_info = $this->system->database->fetch($categories_info_query)) {
@@ -77,6 +77,7 @@
         set parent_id = '". (int)$this->data['parent_id'] ."',
           status = '". (int)$this->data['status'] ."',
           code = '". $this->system->database->input($this->data['code']) ."',
+          keywords = '". $this->system->database->input($this->data['keywords'][$language_code]) ."',
           priority = '". (int)$this->data['priority'] ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -105,7 +106,6 @@
           name = '". $this->system->database->input($this->data['name'][$language_code]) ."',
           short_description = '". $this->system->database->input($this->data['short_description'][$language_code]) ."',
           description = '". $this->system->database->input($this->data['description'][$language_code], true) ."',
-          keywords = '". $this->system->database->input($this->data['keywords'][$language_code]) ."',
           head_title = '". $this->system->database->input($this->data['head_title'][$language_code]) ."',
           h1_title = '". $this->system->database->input($this->data['h1_title'][$language_code]) ."',
           meta_description = '". $this->system->database->input($this->data['meta_description'][$language_code]) ."',

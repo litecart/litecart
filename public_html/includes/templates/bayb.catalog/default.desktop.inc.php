@@ -20,7 +20,7 @@
     <header id="header" class="">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+        <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
         <?php /*<script>
           $(function() {
             $('img[data-hover]').hover(function() {
@@ -119,11 +119,11 @@
               <p><strong><?php echo $system->language->translate('title_account', 'Account'); ?></strong></p>
               <ul class="navigation-vertical">
                 <?php if (empty($system->customer->data['id'])) { ?>
-                <li><a href="<?php echo $system->document->link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
-                <li><a href="<?php echo $system->document->link('create_account.php'); ?>"><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></a></li>
+                <li><a href="<?php echo $system->document->href_link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
+                <li><a href="<?php echo $system->document->href_link('create_account.php'); ?>"><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></a></li>
                 <?php } else { ?>
-                <li><a href="<?php echo $system->document->link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
-                <li><a href="<?php echo $system->document->link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
+                <li><a href="<?php echo $system->document->href_link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
+                <li><a href="<?php echo $system->document->href_link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
                 <li><a href="javascript:logout();"><?php echo $system->language->translate('title_logout', 'Logout'); ?></a></li>
                 <script>
                   function logout() {
@@ -154,7 +154,7 @@
                   order by p.priority, pi.title;"
                 );
                 while ($page = $system->database->fetch($pages_query)) {
-                  echo '<li><a href="'. $system->document->link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+                  echo '<li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
                 }
               ?>
               </ul>

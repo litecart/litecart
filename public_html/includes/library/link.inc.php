@@ -180,7 +180,20 @@
       
       // Magic Quotes Fix
       if (ini_get('magic_quotes_gpc')) {
-        $parts['query'] = array_map('stripslashes', $parts['query']);
+        if (!function_exists('stripslashes_recursive')) {
+          function stripslashes_recursive($value) {
+            if (is_array($value)) {
+              $return = array();
+              foreach ($value as $k => $v) {
+                $return[$k] = stripslashes_recursive($v);
+              }
+            } else {
+              $return = stripslashes($value);
+            }
+            return $return;
+          }
+        }
+        $parts['query'] = stripslashes_recursive($parts['query']);
       }
       
       if (!isset($parts['fragment'])) $parts['fragment'] = '';

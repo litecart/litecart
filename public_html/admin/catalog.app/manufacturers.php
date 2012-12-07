@@ -17,7 +17,7 @@
   
 ?>
 
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer.php')); ?>"><?php echo $system->language->translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer.php')); ?>"><?php echo $system->language->translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?></a></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('manufacturers_form', 'post'); ?>
@@ -48,7 +48,7 @@
            . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($manufacturer['status']) ? 'on' : 'off') .'.png" width="16" height="16" border="0" align="absbottom" /> '. $system->functions->form_draw_checkbox('manufacturers['. $manufacturer['id'] .']', $manufacturer['id']) .'</td>' . PHP_EOL
            . '  <td nowrap="nowrap"><img src="'. (($manufacturer['image']) ?  $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" /> '. $manufacturer['name'] .'</td>' . PHP_EOL
            . '  <td nowrap="nowrap" align="right">'. (int)$num_products .'</td>' . PHP_EOL
-           . '  <td nowrap="nowrap"><a href="'. $system->document->link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer.php', 'manufacturer_id' => $manufacturer['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>' . PHP_EOL
+           . '  <td nowrap="nowrap"><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer.php', 'manufacturer_id' => $manufacturer['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>' . PHP_EOL
            . '</tr>' . PHP_EOL;
       }
     }

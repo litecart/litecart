@@ -16,7 +16,7 @@
     exit;
   }
 ?>
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('doc' => 'edit_language.php'), true); ?>"><?php echo $system->language->translate('title_add_new_language', 'Add New Language'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_language.php'), true); ?>"><?php echo $system->language->translate('title_add_new_language', 'Add New Language'); ?></a></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_languages', 'Languages'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('languages_form', 'post'); ?>
@@ -54,7 +54,7 @@
     <td align="center" valign="top"><?php echo $language['code']; ?></td>
     <td align="left" valign="top"><?php echo $language['name']; ?></td>
     <td align="right" valign="top"><?php echo $language['priority']; ?></td>
-    <td align="right"><a href="<?php echo $system->document->link('', array('doc' => 'edit_language.php', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_language.php', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;

@@ -89,7 +89,7 @@
     if ($first_image) {
     
       if (empty($product->campaigns) == false) {
-        $sticker = '<img src="{snippet:template_path}images/icons/16x16/sticker_campaign_'. $system->language->selected['code'] .'.png" width="96" height="86" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
+        $sticker = '<img src="{snippet:template_path}images/sticker_campaign_'. $system->language->selected['code'] .'.png" width="96" height="86" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
       } else if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
         $sticker = '<img src="{snippet:template_path}images/sticker_new_'. $system->language->selected['code'] .'.png" width="96" height="86" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="" />';
       } else {
@@ -157,9 +157,9 @@
           <div style="margin-bottom: 10px; color: #999;" class="manufacturer">
 <?php
       if ($product->manufacturer['image']) {
-        echo '<a href="'. $system->document->link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30) .'" height="30" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" /></a>';
+        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30) .'" height="30" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" /></a>';
       } else {
-        echo '<a href="'. $system->document->link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'">'. $product->manufacturer['name'] .'</a>';
+        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'">'. $product->manufacturer['name'] .'</a>';
       }
 ?>
           </div>
@@ -167,7 +167,7 @@
     }
 ?>
       
-          <div style="margin-bottom: 10px; font-size: 22px;" class="price"><?php echo $product->campaign['price'] ? '<s class="old-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong style="color: #cc0000; color: #c00;" class="special-price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span style="color: #cc0000; color: #c00;" class="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
+          <div style="margin-bottom: 10px; font-size: 22px;" class="price"><?php echo $product->campaign['price'] ? '<s class="old-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong style="color: #c00;" class="special-price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span style="color: #c00;" class="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
           
           <div style="margin-bottom: 10px; color: #999;" class="tax">
 <?php

@@ -110,8 +110,9 @@
         ". (isset($filter['designer_id']) ? "+ if(p.designer_id = '". (int)$filter['designer_id'] ."', 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", $filter['keywords']) ."', p.keywords), 1, 0)" : false) ."
         ". (isset($filter['manufacturer_id']) ? "+ if(p.manufacturer_id = '". (int)$filter['manufacturer_id'] ."', 1, 0)" : false) ."
+        ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id in ('". implode("', '", $system->database->input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
         ". (isset($filter['product_group_id']) ? "+ if(find_in_set('". (int)$filter['product_group_id'] ."', p.product_groups), 1, 0)" : false) ."
-        ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", $filter['products']) ."'), 1, 0)" : false) ."
+        ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", $system->database->input($filter['products'])) ."'), 1, 0)" : false) ."
         ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", $filter['product_groups']) ."', p.product_groups), 1, 0)" : false) ."
       ) as occurrences";
       $sql_andor = "or";
@@ -144,6 +145,7 @@
         ". (!empty($filter['campaign']) ? "$sql_andor campaign_price" : false) ."
         ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", $filter['keywords']) ."', p.keywords))" : false) ."
         ". (isset($filter['manufacturer_id']) ? "$sql_andor p.manufacturer_id = '". (int)$filter['manufacturer_id'] ."'" : false) ."
+        ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", $system->database->input($filter['manufacturers'])) ."')" : false) ."
         ". (isset($filter['product_group_id']) ? "$sql_andor find_in_set('". (int)$filter['product_group_id'] ."', p.product_groups)" : false) ."
         ". (isset($filter['products']) ? "$sql_andor p.id in ('". implode("', '", $filter['products']) ."')" : false) ."
         ". (!empty($filter['product_groups']) ? "$sql_andor (find_in_set('". implode("', p.product_groups) or find_in_set('", $filter['product_groups']) ."', p.product_groups))" : false) ."

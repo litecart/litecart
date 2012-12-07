@@ -71,12 +71,8 @@
   $system->document->snippets['head_tags']['ckeditor'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/ckeditor.js"></script>' . PHP_EOL
                                                        . ' <script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/adapters/jquery.js"></script>' . PHP_EOL
                                                        . ' <script type="text/javascript">' . PHP_EOL
-                                                       . ' var config = {' . PHP_EOL
-                                                       . ' };' . PHP_EOL
                                                        . '   $(document).ready(function() {' . PHP_EOL
-                                                       . '     $("textarea[name=description]").ckeditor({' . PHP_EOL
-                                                       . '       width: "690",' . PHP_EOL
-                                                       . '       height: "700",' . PHP_EOL
+                                                       . '     $("textarea[name^=description]").ckeditor({' . PHP_EOL
                                                        . '       toolbar: [' . PHP_EOL
                                                        . '         ["Source", "-", "DocProps", "Preview", "Print", "-", "Templates", "Maximize", "ShowBlocks"],' . PHP_EOL
                                                        . '         ["NumberedList", "BulletedList", "-", "Outdent", "Indent", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],' . PHP_EOL
@@ -125,10 +121,15 @@
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 175px"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 360px"');
   $use_br = true;
 }
 ?>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
+              <?php echo $system->functions->form_draw_input_field('keywords', (isset($_POST['keywords']) ? $_POST['keywords'] : ''), 'text', 'style="width: 360px;"'); ?>
             </td>
           </tr>
           <tr>
@@ -230,17 +231,6 @@ $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
   echo $system->functions->form_draw_regional_textarea($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="width: 360px; height: 160px;"');  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys($system->language->languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'keywords['. $language_code .']', (isset($_POST['keywords'][$language_code]) ? $_POST['keywords'][$language_code] : ''), 'text', 'style="width: 360px;"');  $use_br = true;
 }
 ?>
             </td>

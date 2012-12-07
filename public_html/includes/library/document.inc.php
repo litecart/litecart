@@ -104,6 +104,10 @@
       }
     }
     
+    public function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array()) {
+      return htmlspecialchars($this->link($document, $new_params, $inherit_params, $skip_params));
+    }
+    
   // Substituted
     public function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array()) {
       return $this->system->link->build_link($document, $new_params, $inherit_params, $skip_params);

@@ -1,7 +1,7 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('doc' => 'edit_geo_zone.php'), true, array('geo_zone_id')); ?>"><?php echo $system->language->translate('title_add_new_geo_zone', 'Add New Geo Zone'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_geo_zone.php'), true, array('geo_zone_id')); ?>"><?php echo $system->language->translate('title_add_new_geo_zone', 'Add New Geo Zone'); ?></a></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_geo_zones', 'Geo Zones'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('geo_zones_form', 'post'); ?>
@@ -38,7 +38,7 @@
     <td align="left" valign="top"><?php echo $geo_zone['id']; ?></td>
     <td align="left" valign="top" nowrap="nowrap"><?php echo $geo_zone['name']; ?></td>
     <td align="left" valign="top"><?php echo $system->database->num_rows($system->database->query("select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ." where geo_zone_id = '". (int)$geo_zone['id'] ."'")); ?></td>
-    <td align="right"><a href="<?php echo $system->document->link('', array('doc' => 'edit_geo_zone.php', 'geo_zone_id' => $geo_zone['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_geo_zone.php', 'geo_zone_id' => $geo_zone['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;

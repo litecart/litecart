@@ -272,7 +272,7 @@
         ),
         array(
           'key' => 'check_frequency',
-          'default_value' => 'Daily',
+          'default_value' => 'Weekly',
           'title' => $this->system->language->translate(__CLASS__.':title_check_frequency', 'Check Frequency'),
           'description' => $this->system->language->translate(__CLASS__.':description_check_frequency', 'How often the inconsistency check should be performed.'),
           'function' => 'radio("Daily","Weekly","Monthly")',

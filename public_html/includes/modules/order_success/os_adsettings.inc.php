@@ -31,8 +31,8 @@
       }
       
       $params = array(
-        'advertiserid' => $this->settings['advertiser_id'],
-        'orderid' => (int)$order->data['id'],
+        'advertiser_id' => $this->settings['advertiser_id'],
+        'order_id' => (int)$order->data['id'],
         'ordervalue' => $this->system->currency->convert($subtotal, null, 'SEK'),
       );
       

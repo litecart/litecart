@@ -62,7 +62,7 @@
       }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td nowrap="nowrap" align="left" nowrap="nowrap"><a href="<?php echo $system->document->link('printable_order_copy.php', array('order_id' => $order['id'], 'checksum' => $system->functions->general_order_public_checksum($order['id']), 'media' => 'print')); ?>" class="fancybox"><?php echo $system->language->translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
+    <td nowrap="nowrap" align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('printable_order_copy.php', array('order_id' => $order['id'], 'checksum' => $system->functions->general_order_public_checksum($order['id']), 'media' => 'print')); ?>" class="fancybox"><?php echo $system->language->translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
     <td nowrap="nowrap" align="center" nowrap="nowrap"><?php echo $order['order_status_name']; ?></td>
     <td nowrap="nowrap" align="right" nowrap="nowrap"><?php echo strftime($system->language->selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td nowrap="nowrap" align="right" nowrap="nowrap"><?php echo $system->currency->format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>

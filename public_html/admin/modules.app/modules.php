@@ -68,7 +68,7 @@
     <td align="left" valign="top"><?php echo $module->name; ?></td>
     <td align="left" valign="top" nowrap="nowrap"><?php echo $module->id; ?></td>
     <td align="left" valign="top" nowrap="nowrap"><?php echo $module->settings['priority']; ?></td>
-    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>
+    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>
   </tr>
 <?php
     }
@@ -92,7 +92,7 @@
     <td align="left" valign="top" nowrap="nowrap"><?php echo $module->name; ?></td>
     <td align="left" valign="top" nowrap="nowrap"><?php echo $module->id; ?></td>
     <td align="left" valign="top" nowrap="nowrap"></td>
-    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" align="absbottom" /> Install</a></td>
+    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" align="absbottom" /> Install</a></td>
   </tr>
 <?php
     }

@@ -17,7 +17,7 @@
   
 ?>
 
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('app' => $_GET['app'], 'doc' => 'edit_designer.php')); ?>"><?php echo $system->language->translate('title_add_new_designer', 'Add New Designer'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_designer.php')); ?>"><?php echo $system->language->translate('title_add_new_designer', 'Add New Designer'); ?></a></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_designers', 'Designers'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('designers_form', 'post'); ?>
@@ -43,7 +43,7 @@
         echo '<tr class="'. $rowclass . ($designer['status'] ? false : ' semi-transparent') .'">' . PHP_EOL
            . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($designer['status']) ? 'on' : 'off') .'.png" width="16" height="16" border="0" align="absbottom" /> '. $system->functions->form_draw_checkbox('designers['. $designer['id'] .']', $designer['id']) .'</td>' . PHP_EOL
            . '  <td nowrap="nowrap"><img src="'. (($designer['image']) ?  $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $designer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" /> '. $designer['name'] .'</td>' . PHP_EOL
-           . '  <td nowrap="nowrap"> <a href="'. $system->document->link('', array('app' => $_GET['app'], 'doc' => 'edit_designer.php', 'designer_id' => $designer['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>' . PHP_EOL
+           . '  <td nowrap="nowrap"> <a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_designer.php', 'designer_id' => $designer['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>' . PHP_EOL
            . '</tr>' . PHP_EOL;
       }
     }

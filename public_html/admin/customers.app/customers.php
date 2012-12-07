@@ -1,4 +1,4 @@
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('doc' => 'edit_customer.php'), true); ?>"><?php echo $system->language->translate('title_add_new_customer', 'Add New Customer'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_customer.php'), true); ?>"><?php echo $system->language->translate('title_add_new_customer', 'Add New Customer'); ?></a></div>
 <div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : '', 'text', 'style="width: 175px;" onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_customers', 'Customers'); ?></h1>
 
@@ -44,7 +44,7 @@
     <td nowrap="nowrap" align="left"><?php echo $customer['id']; ?></td>
     <td nowrap="nowrap" align="left"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
     <td nowrap="nowrap" align="right"><?php echo strftime($system->language->selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-    <td nowrap="nowrap"><a href="<?php echo $system->document->link('', array('doc' => 'edit_customer.php', 'customer_id' => $customer['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a></td>
+    <td nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_customer.php', 'customer_id' => $customer['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a></td>
   </tr>
 <?php
     }

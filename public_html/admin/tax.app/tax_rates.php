@@ -1,7 +1,7 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('doc' => 'edit_tax_rate.php'), true); ?>"><?php echo $system->language->translate('title_add_new_tax_rate', 'Add New Tax Rate'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_rate.php'), true); ?>"><?php echo $system->language->translate('title_add_new_tax_rate', 'Add New Tax Rate'); ?></a></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_tax_rates', 'Tax Rates'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('tax_rates_form', 'post'); ?>
@@ -49,7 +49,7 @@
     <td align="left" valign="top"><?php echo $tax_rate['description']; ?></td>
     <td align="left" valign="top"><?php echo number_format($tax_rate['rate'], 2); ?></td>
     <td align="left" valign="top"><?php echo $tax_rate['type']; ?></td>
-    <td align="right"><a href="<?php echo $system->document->link('', array('doc' => 'edit_tax_rate.php', 'tax_rate_id' => $tax_rate['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_rate.php', 'tax_rate_id' => $tax_rate['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;

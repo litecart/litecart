@@ -31,7 +31,7 @@
 <?php echo $system->functions->form_draw_form_begin('settings_form', 'post'); ?>
 <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_key', 'Key'); ?></th>
+    <th nowrap="nowrap" align="left" width="250"><?php echo $system->language->translate('title_key', 'Key'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
     <th>&nbsp;</th>
   </tr>
@@ -60,7 +60,7 @@
     if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" valign="top"><u><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></u><br /><?php echo $system->language->translate('settings_key_description:'.$setting['key'], $setting['description'], ''); ?></td>
+    <td align="left" valign="top" nowrap="nowrap"><u><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></u><br /><?php echo $system->language->translate('settings_key_description:'.$setting['key'], $setting['description'], ''); ?></td>
     <td align="left" valign="middle"><?php echo $system->functions->form_draw_hidden_field('key', $setting['key']) . $system->functions->form_draw_function($setting['function'], 'value', $setting['value']); ?></td>
     <td align="right" valign="middle" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'disk'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''. $system->document->link('', array(), true, array('action', 'key')) .'\'"'); ?></td>
   </tr>
@@ -68,9 +68,9 @@
 	} else {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" valign="top"><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></td>
-    <td align="left" valign="top" nowrap="nowrap"><?php echo nl2br((strlen($setting['value']) > 50) ? substr($setting['value'], 0, 50) : $setting['value']); ?></td>
-    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></td>
+    <td align="left" valign="top"><?php echo nl2br((strlen($setting['value']) > 50) ? substr($setting['value'], 0, 50) : $setting['value']); ?></td>
+    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
     }

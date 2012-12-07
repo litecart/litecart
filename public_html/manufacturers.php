@@ -10,14 +10,14 @@
     <div class="content">
 <?php
     $manufacturers_query = $system->database->query(
-      "select m.id, m.name, m.image, mi.description, mi.keywords, mi.link
+      "select m.id, m.name, m.image, mi.short_description, mi.link
       from ". DB_TABLE_MANUFACTURERS ." m
       left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (mi.manufacturer_id = m.id and mi.language_code = '". $system->language->selected['code'] ."')
       where status
       order by name;"
     );
     while($manufacturer = $system->database->fetch($manufacturers_query)) {
-      echo $system->functions->draw_listing_category($manufacturer);
+      echo $system->functions->draw_listing_manufacturer($manufacturer);
     }
 ?>
     </div>

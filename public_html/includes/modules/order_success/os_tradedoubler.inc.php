@@ -33,9 +33,7 @@
         'currency' => $this->system->settings->get('store_currency_code'),
       );
       
-      $output = '<!-- BOF: '. $this->name .' -->' . PHP_EOL
-              . '<img src="'. $this->system->document->link('https://tbs.tradedoubler.com/report', $params) .'" width="0" height="0" border="0" />'
-              . '<!-- BOF: '. $this->name .' -->' . PHP_EOL;
+      $output = '<img src="'. $this->system->document->link('https://tbs.tradedoubler.com/report', $params) .'" width="0" height="0" border="0" />';
       
       return $output;
     }

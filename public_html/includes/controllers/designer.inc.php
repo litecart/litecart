@@ -74,7 +74,9 @@
       $this->system->database->query(
         "update ". DB_TABLE_DESIGNERS ." set
         status = '". (int)$this->data['status'] ."',
-        name = '". $this->system->database->input($this->data['name']) ."'
+        code = '". $this->system->database->input($this->data['code']) ."',
+        name = '". $this->system->database->input($this->data['name']) ."',
+        keywords = '". $this->system->database->input($this->data['keywords']) ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
@@ -101,8 +103,8 @@
           "update ". DB_TABLE_DESIGNERS_INFO ." set
           short_description = '". $this->system->database->input($this->data['short_description'][$language_code]) ."',
           description = '". $this->system->database->input($this->data['description'][$language_code], true) ."',
-          keywords = '". $this->system->database->input($this->data['keywords'][$language_code]) ."',
           head_title = '". $this->system->database->input($this->data['head_title'][$language_code]) ."',
+          h1_title = '". $this->system->database->input($this->data['h1_title'][$language_code]) ."',
           meta_description = '". $this->system->database->input($this->data['meta_description'][$language_code]) ."',
           meta_keywords = '". $this->system->database->input($this->data['meta_keywords'][$language_code]) ."',
           link = '". $this->system->database->input($this->data['link'][$language_code]) ."'

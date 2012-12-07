@@ -8,7 +8,7 @@
     global $system;
     
     $output = '<div class="category">' . PHP_EOL
-            . '  <a class="link" href="'. $system->document->link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'">' . PHP_EOL
+            . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
             . '    <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 330, 180, 'CROP') .'" width="330" height="180" border="0" />' . PHP_EOL
             . '      <div class="footer" style="position: absolute; bottom: 0;">' . PHP_EOL
@@ -26,7 +26,7 @@
     global $system;
     
     $output = '<div class="manufacturer">' . PHP_EOL
-            . '  <a class="link" href="'. $system->document->link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">' . PHP_EOL
+            . '  <a class="link" href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
             . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 215, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="215" height="60" border="0" title="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
             . '    </div>' . PHP_EOL
@@ -49,7 +49,7 @@
     }
     
     $output = '<div class="product" style="position: relative">' . PHP_EOL
-            . '  <a class="link" href="'. $system->document->link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'">' . PHP_EOL
+            . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">'. PHP_EOL
             . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 145, 193, 'CROP') .'" width="145" height="193" border="0" title="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
             . '      ' . $sticker . PHP_EOL
@@ -85,7 +85,7 @@
     
     if (empty($system->document->snippets['head_tags']['fancybox'])) {
       $system->document->snippets['head_tags']['fancybox'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.pack.js"></script>' . PHP_EOL
-                                                           . '<link rel="stylesheet" href="<!--snippet:template_path-->/styles/fancybox.css" type="text/css" media="screen" />';
+                                                           . '<link rel="stylesheet" href="{snippet:template_path}styles/fancybox.css" media="screen" />';
     }
     
     $system->document->snippets['javascript']['fancybox-'.$selector] = '  $(document).ready(function() {' . PHP_EOL
@@ -135,11 +135,11 @@
     $html = '<div class="pagination">'. PHP_EOL;
     
     if ($_GET['page'] > 1) {
-      //$html .= '  <a class="page button" href="'. $system->document->link('', array('page' => 1), true) .'">'. $system->language->translate('title_first', 'First') .'</a>' . PHP_EOL;
-      $html .= '  <a class="page button" href="'. $system->document->link('', array('page' => $_GET['page']-1), true) .'">'. $system->language->translate('title_previous', 'Previous') .'</a>' . PHP_EOL;
+      //$html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => 1), true) .'">'. $system->language->translate('title_first', 'First') .'</a>' . PHP_EOL;
+      $html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => $_GET['page']-1), true) .'">'. $system->language->translate('title_previous', 'Previous') .'</a>' . PHP_EOL;
     } else {
-      //$html .= '  <span class="page button disabled" href="'. $system->document->link('', array('page' => 1), true) .'">'. $system->language->translate('title_first', 'First') .'</span>' . PHP_EOL;
-      $html .= '  <span class="page button disabled" href="'. $system->document->link('', array('page' => $_GET['page']-1), true) .'">'. $system->language->translate('title_previous', 'Previous') .'</span>' . PHP_EOL;
+      //$html .= '  <span class="page button disabled" href="'. $system->document->href_link('', array('page' => 1), true) .'">'. $system->language->translate('title_first', 'First') .'</span>' . PHP_EOL;
+      $html .= '  <span class="page button disabled" href="'. $system->document->href_link('', array('page' => $_GET['page']-1), true) .'">'. $system->language->translate('title_previous', 'Previous') .'</span>' . PHP_EOL;
     }
     
     for ($i=1; $i<=$pages; $i++) {
@@ -147,7 +147,7 @@
       if ($i < $pages-5) {
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
           $rewind = round(($_GET['page']-1)/2);
-          $html .= '  <a class="page button" href="'. $system->document->link('', array('page' => $rewind), true) .'">'. (($rewind == $_GET['page']-2) ? $rewind : '...') .'</a>' . PHP_EOL;
+          $html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => $rewind), true) .'">'. (($rewind == $_GET['page']-2) ? $rewind : '...') .'</a>' . PHP_EOL;
           $i = $_GET['page'] - 1;
           if ($i > $pages-4) $i = $pages-4;
         }
@@ -156,7 +156,7 @@
       if ($i > 5) {  
         if ($i > $_GET['page'] + 1 && $i < $pages) {
           $forward = round(($_GET['page']+1+$pages)/2);
-          $html .= '  <a class="page button" href="'. $system->document->link('', array('page' => $forward), true) .'">'. (($forward == $_GET['page']+2) ? $forward : '...') .'</a>' . PHP_EOL;
+          $html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => $forward), true) .'">'. (($forward == $_GET['page']+2) ? $forward : '...') .'</a>' . PHP_EOL;
           $i = $pages;
         }
       }
@@ -164,13 +164,13 @@
       if ($i == $_GET['page']) {
         $html .= '  <span class="page button active">'. $i .'</span>' . PHP_EOL;
       } else {
-        $html .= '  <a class="page button" href="'. $system->document->link('', array('page' => $i), true) .'">'. $i .'</a>' . PHP_EOL;
+        $html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => $i), true) .'">'. $i .'</a>' . PHP_EOL;
       }
     }
     
     if ($_GET['page'] < $pages) {
-      $html .= '  <a class="page button" href="'. $system->document->link('', array('page' => $_GET['page']+1), true) .'">'. $system->language->translate('title_next', 'Next') .'</a>' . PHP_EOL;
-      //$html .= '  <a class="page button" href="'. $system->document->link('', array('page' => $pages), true) .'">'. $system->language->translate('title_last', 'Last') .'</a>' . PHP_EOL;
+      $html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => $_GET['page']+1), true) .'">'. $system->language->translate('title_next', 'Next') .'</a>' . PHP_EOL;
+      //$html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => $pages), true) .'">'. $system->language->translate('title_last', 'Last') .'</a>' . PHP_EOL;
     } else {
       $html .= '  <span class="page button disabled">'. $system->language->translate('title_next', 'Next') .'</span>' . PHP_EOL;
       //$html .= '  <span class="page button disabled">'. $system->language->translate('title_last', 'Last') .'</span>' . PHP_EOL;

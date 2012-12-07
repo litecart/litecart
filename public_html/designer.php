@@ -10,7 +10,7 @@
   $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('', array(), array('designer_id'))) .'" />';
 
   $designers_query = $system->database->query(
-    "select d.id, d.name, di.short_description, di.description, di.keywords, di.head_title, di.meta_description, di.meta_keywords, di.link
+    "select d.id, d.name, d.keywords, di.short_description, di.description, di.head_title, di.meta_description, di.meta_keywords, di.link
     from ". DB_TABLE_DESIGNERS ." d
     left join ". DB_TABLE_DESIGNERS_INFO ." di on (di.designer_id = d.id and di.language_code = '". $system->language->selected['code'] ."')
     where status
@@ -67,7 +67,7 @@
   $separator = false;
   foreach ($sort_alternatives as $key => $title) {
     if ($separator) echo ' | ';
-    echo ($_GET['sort'] == $key) ? $title : '<a href="'. $system->document->link('', array('sort' => $key), true) .'">'. $title .'</a>';
+    echo ($_GET['sort'] == $key) ? $title : '<a href="'. $system->document->href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
     $separator = true;
   }
 ?>

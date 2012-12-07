@@ -1,6 +1,5 @@
 <?php
-  require_once('includes/config.inc.php');
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
+  require_once('includes/app_header.inc.php');
   
   if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
   if (empty($_GET['page'])) $_GET['page'] = 1;
@@ -11,7 +10,7 @@
   $system->breadcrumbs->add($system->language->translate('title_categories', 'Categories'), $system->document->link('categories.php'));
 
   $categories_query = $system->database->query(
-    "select c.id, c.image, ci.name, ci.description, ci.short_description, ci.keywords, ci.head_title, ci.h1_title, ci.meta_description, ci.meta_keywords
+    "select c.id, c.image, c.keywords, ci.name, ci.description, ci.short_description, ci.head_title, ci.h1_title, ci.meta_description, ci.meta_keywords
     from ". DB_TABLE_CATEGORIES ." c
     left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". $system->language->selected['code'] ."')
     where c.id = '". (int)$_GET['category_id'] ."'
@@ -32,7 +31,7 @@
                                               . '    if ($(window).scrollTop() >= $(document).height() - $(window).height() - 400) {' . PHP_EOL
                                               . '      if (!scrollInProgress && !endOfContent) {' . PHP_EOL
                                               . '        scrollInProgress = true;' . PHP_EOL
-                                              . '        var url = "'. $system->document->link('ajax/products.html.php', array('category_id' => $category['id'], 'sort' => $_GET['sort'], 'page' => 'nextPage')) .'";' . PHP_EOL
+                                              . '        var url = "'. $system->document->href_link('ajax/products.html.php', array('category_id' => $category['id'], 'sort' => $_GET['sort'], 'page' => 'nextPage')) .'";' . PHP_EOL
                                               . '        $.get(url.replace(/nextPage/g, nextPage), function(data) {' . PHP_EOL
                                               . '          if (data == "") {' . PHP_EOL
                                               . '            endOfContent = true;' . PHP_EOL
@@ -89,7 +88,7 @@
       if ($_GET['sort'] == $key) {
         echo '<span class="button active">'. $title .'</span>';
       } else {
-        echo '<a class="button" href="'. $system->document->link('', array('sort' => $key), true) .'">'. $title .'</a>';
+        echo '<a class="button" href="'. $system->document->href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
       }
       $separator = true;
     }

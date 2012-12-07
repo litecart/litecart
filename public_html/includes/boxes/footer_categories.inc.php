@@ -17,7 +17,7 @@
     if ($depth > 0 && $system->database->num_rows($categories_query) > 0) $output .= str_repeat('  ', $depth) .'<ul>' . PHP_EOL;
     while ($category = $system->database->fetch($categories_query)) {
     
-      $output .= str_repeat('  ', $depth) .'  <li><a href="'. $system->document->link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a></li>' . PHP_EOL;
+      $output .= str_repeat('  ', $depth) .'  <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a></li>' . PHP_EOL;
       
       /*
       $subcategories_query = $system->database->query(

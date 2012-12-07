@@ -30,7 +30,7 @@
     public function after_capture() {
       if ($this->get('page_parse_time') > 5) {
         $this->system->notices->add('warnings', sprintf($this->system->language->translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
-        error_log('Warning: Long page execution time ('. number_format($page_parse_time, 3, ',', ' ') .' s).');
+        error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. $_SERVER['REQUEST_URI']);
       }
     }
     

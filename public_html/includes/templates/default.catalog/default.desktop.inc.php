@@ -20,7 +20,7 @@
       <div id="currencies-wrapper"><?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'currencies.inc.php'); ?></div>
       <div id="search-wrapper"><?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php'); ?></div>
     </div>
-    <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+    <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
   </div>
   
   <div id="menu-wrapper">

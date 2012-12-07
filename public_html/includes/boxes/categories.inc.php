@@ -9,7 +9,7 @@
     while ($subcategory = $system->database->fetch($categories_query)) {
 ?>
     <div class="subcategory">
-      <a class="link" href="<?php echo $system->document->link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $subcategory['id'])); ?>">
+      <a class="link" href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $subcategory['id'])); ?>">
         <div class="image" style="position: relative;">
           <img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $subcategory['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 320, 180, 'CROP'); ?>" width="320" height="180" border="0" style="padding-right: 10px;" />
           <div class="footer" style="position: absolute; bottom: 0;">

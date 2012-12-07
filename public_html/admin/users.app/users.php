@@ -1,4 +1,4 @@
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('doc' => 'edit_user.php'), true); ?>"><?php echo $system->language->translate('title_create_new_user', 'Create New User'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_user.php'), true); ?>"><?php echo $system->language->translate('title_create_new_user', 'Create New User'); ?></a></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_users', 'Users'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('users_form', 'post'); ?>
@@ -31,7 +31,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td align="left" valign="top"><?php echo $system->functions->form_draw_checkbox('users['. $user .']', $user); ?></td>
     <td align="left" valign="top"><?php echo $user; ?></td>
-    <td align="right"><a href="<?php echo $system->document->link('', array('doc' => 'edit_user.php', 'user' => $user), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_user.php', 'user' => $user), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
     }

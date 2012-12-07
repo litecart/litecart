@@ -26,9 +26,9 @@
         limit 1;"
       );
       if ($parent_id == 0) {
-        $output .= str_repeat('  ', $depth) .'  <li><a href="'. $system->document->link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a>' . PHP_EOL;
+        $output .= str_repeat('  ', $depth) .'  <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a>' . PHP_EOL;
       } else {
-        $output .= str_repeat('  ', $depth) .'  <li><a href="'. $system->document->link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP') .'" width="24" height="24" border="0" align="absmiddle" style="margin-right: 5px;" />'. $category['name'] .'</a>' . PHP_EOL;
+        $output .= str_repeat('  ', $depth) .'  <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP') .'" width="24" height="24" border="0" align="absmiddle" style="margin-right: 5px;" />'. $category['name'] .'</a>' . PHP_EOL;
       }
       
       if ($system->database->num_rows($subcategories_query) > 0) {

@@ -10,7 +10,7 @@
   $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('', array(), array('manufacturer_id'))) .'" />';
 
   $manufacturers_query = $system->database->query(
-    "select m.id, m.name, mi.short_description, mi.description, mi.keywords, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
+    "select m.id, m.name, m.keywords, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
     from ". DB_TABLE_MANUFACTURERS ." m
     left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (mi.manufacturer_id = m.id and mi.language_code = '". $system->language->selected['code'] ."')
     where status
@@ -61,7 +61,7 @@
       if ($_GET['sort'] == $key) {
         echo '<span class="button active">'. $title .'</span>';
       } else {
-        echo '<a class="button" href="'. $system->document->link('', array('sort' => $key), true) .'">'. $title .'</a>';
+        echo '<a class="button" href="'. $system->document->href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
       }
       $separator = true;
     }

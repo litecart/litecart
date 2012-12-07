@@ -59,7 +59,7 @@
     }
     
     function settings() {
-      
+       
       return array(
         array(
           'key' => 'status',

@@ -102,7 +102,7 @@ var config = {
   if (!empty($_GET['script'])) {
 ?>
 <?php echo $system->functions->form_draw_form_begin('translation_form', 'post'); ?>
-<p><a href="<?php echo $system->document->link('', array('action' => 'edit_all'), true, array('id')); ?>"><?php echo $system->language->translate('text_edit_all_on_page', 'Edit all on page'); ?></a></p>
+<p><a href="<?php echo $system->document->href_link('', array('action' => 'edit_all'), true, array('id')); ?>"><?php echo $system->language->translate('text_edit_all_on_page', 'Edit all on page'); ?></a></p>
 <table border="0" align="center" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
   <tr class="header">
     <th align="left"><?php echo $system->language->translate('title_code', 'Code');?></th>
@@ -147,7 +147,7 @@ var config = {
   <tr class="<?php echo $rowclass; ?>">
     <td align="left" valign="top"><?php echo $row['code']; ?></td>
     <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td valign="top">'. $system->functions->form_draw_static_field('', (strlen($row['text_'.$language_code]) > 300) ? substr($row['text_'.$language_code], 0, 250).' ...' : $row['text_'.$language_code]) .'</td>'; ?>
-    <td align="right"><a href="<?php echo $system->document->link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo $system->language->translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo $system->language->translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php
       }

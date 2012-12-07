@@ -54,7 +54,7 @@
       <?php echo $system->functions->form_draw_form_begin('cart_form') . $system->functions->form_draw_hidden_field('key', $key); ?>
         <div style="float: left; text-align: left; width: 690px;" class="slide">
           <div style="float: left;">
-            <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" border="0" class="shadow" /></a>
+            <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" border="0" class="shadow" /></a>
           </div>
           <div style="float: left; margin-left: 20px;">
             <p style="margin-top: 0;"><strong><?php echo $item['name'][$system->language->selected['code']]; ?></strong>

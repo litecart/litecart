@@ -1,4 +1,4 @@
-<div style="float: right;"><a class="button" href="<?php echo $system->document->link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier.php')); ?>"><?php echo $system->language->translate('title_add_new_supplier', 'Add New Supplier'); ?></a></div>
+<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier.php')); ?>"><?php echo $system->language->translate('title_add_new_supplier', 'Add New Supplier'); ?></a></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_suppliers', 'Suppliers'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('suppliers_form', 'post'); ?>
@@ -24,7 +24,7 @@
         echo '<tr class="'. $rowclass .'">' . PHP_EOL
            . '  <td>'. $system->functions->form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']) .'</td>' . PHP_EOL
            . '  <td>'. $supplier['name'] .'</td>' . PHP_EOL
-           . '  <td><a href="'. $system->document->link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier.php', 'supplier_id' => $supplier['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>' . PHP_EOL
+           . '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier.php', 'supplier_id' => $supplier['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>' . PHP_EOL
            . '</tr>' . PHP_EOL;
       }
     }

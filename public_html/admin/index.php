@@ -53,7 +53,7 @@
            
   foreach ($apps as $app) {
     $params = !empty($app['params']) ? array_merge(array('app' => $app['code'], 'doc' => $app['index']), $app['params']) : array('app' => $app['code'], 'doc' => $app['index']);
-    $sidebar .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" border="0" align="absmiddle" /> '. $app['name'] .'</a>' . PHP_EOL;
+    $sidebar .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" border="0" align="absmiddle" /> '. $app['name'] .'</a>' . PHP_EOL;
     
     if (!empty($_GET['app']) && $_GET['app'] == $app['code']) {
     
@@ -76,7 +76,7 @@
           }
           
           $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['link']), $item['params']) : array('app' => $app['code'], 'doc' => $item['link']);
-          $sidebar .= '        <li'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->link(WS_DIR_ADMIN, $params) .'"> &bull;&nbsp; '. $item['name'] .'</a></li>' . PHP_EOL;
+          $sidebar .= '        <li'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'"> &bull;&nbsp; '. $item['name'] .'</a></li>' . PHP_EOL;
         }
         
         $sidebar .= '      </ul>' . PHP_EOL;

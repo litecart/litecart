@@ -20,7 +20,7 @@
     <header id="header" class="rounded-corners-top">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+        <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
       </div>
 
       <div id="languages-wrapper">
@@ -127,7 +127,7 @@
                   order by p.priority, pi.title;"
                 );
                 while ($page = $system->database->fetch($pages_query)) {
-                  echo '    <li><a href="'. $system->document->link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+                  echo '    <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
                 }
               ?>
               </ul>

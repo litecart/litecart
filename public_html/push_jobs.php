@@ -2,7 +2,7 @@
   require_once('includes/app_header.inc.php');
   header('X-Robots-Tag: noindex');
   header('Content-type: text/plain; charset='. $system->language->selected['code']);
-  //if (strtotime($system->settings->get('jobs_last_run')) > strtotime('-'. $system->settings->get('jobs_interval') .' minutes')) die('Already did my duty!');
+  if (strtotime($system->settings->get('jobs_last_run')) > strtotime('-'. $system->settings->get('jobs_interval') .' minutes')) die('Already did my duty!');
   
   $system->database->query(
     "update ". DB_TABLE_SETTINGS ."

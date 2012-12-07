@@ -31,7 +31,7 @@
       if ($_GET['sort'] == $key) {
         echo '<span class="button active">'. $title .'</span>';
       } else {
-        echo '<a class="button" href="'. $system->document->link('', array('sort' => $key), true) .'">'. $title .'</a>';
+        echo '<a class="button" href="'. $system->document->href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
       }
       $separator = true;
     }
