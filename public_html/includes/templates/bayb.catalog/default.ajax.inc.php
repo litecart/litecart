@@ -1,2 +1,0 @@
-<!--snippet:alerts-->
-<!--snippet:content-->
