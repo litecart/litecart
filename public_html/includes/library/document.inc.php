@@ -34,7 +34,7 @@
           $this->system->functions->draw_fancybox('', array(
             'centerOnScroll' => true,
             'hideOnContentClick' => false,
-            'href' => $this->system->document->link(WS_DIR_HTTP_HOME . 'select_region.php'),
+            'href' => $this->system->document->link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
             'modal' => true,
             'speedIn' => 600,
             'transitionIn' => 'fade',

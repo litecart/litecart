@@ -53,7 +53,7 @@
   
 ?>
 <div class="widget">
-  <table cellpadding="5" cellspacing="0" border="0" width="100%" class="dataTable">
+  <table width="100%" class="dataTable">
     <tr class="header">
       <th colspan="2" align="left"><?php echo $system->language->translate('title_statistics', 'Statistics'); ?></th>
     </tr>

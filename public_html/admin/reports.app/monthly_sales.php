@@ -1,6 +1,6 @@
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_monthly_sales', 'Monthly Sales'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_monthly_sales', 'Monthly Sales'); ?></h1>
 
-<table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" class="dataTable">
+<table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_month', 'Month'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_total_sales', 'Total Sales'); ?></th>
@@ -31,9 +31,9 @@
     }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" valign="top"><?php echo strftime('%B', $timestamp); ?></td>
-    <td align="right" valign="top" nowrap="nowrap"><?php echo $system->currency->format($order['total_sales'], false, false, $system->settings->get('store_currency_code')); ?></td>
-    <td align="right" valign="top" nowrap="nowrap"><?php echo $system->currency->format($order['total_tax'], false, false, $system->settings->get('store_currency_code')); ?></td>
+    <td align="left"><?php echo strftime('%B', $timestamp); ?></td>
+    <td align="right" nowrap="nowrap"><?php echo $system->currency->format($order['total_sales'], false, false, $system->settings->get('store_currency_code')); ?></td>
+    <td align="right" nowrap="nowrap"><?php echo $system->currency->format($order['total_tax'], false, false, $system->settings->get('store_currency_code')); ?></td>
   </tr>
 <?php
   }

@@ -90,7 +90,7 @@
                                                        . '</script>' . PHP_EOL;
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo (empty($category->data['id'])) ? $system->language->translate('title_add_new_category', 'Add New Category') : $system->language->translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][$system->language->selected['code']]; ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (empty($category->data['id'])) ? $system->language->translate('title_add_new_category', 'Add New Category') : $system->language->translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][$system->language->selected['code']]; ?></h1>
 
 <?php
   if (!empty($category->data['image'])) {
@@ -108,14 +108,14 @@
     
     <div class="content">
       <div id="tab-general">
-        <table border="0" cellpadding="5" cellspacing="0">
+        <table>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_parent_category', 'Parent Category'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_parent_category', 'Parent Category'); ?></strong><br />
               <?php echo $system->functions->form_draw_categories_list('parent_id', (isset($_POST['parent_id'])) ? $_POST['parent_id'] : ''); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">
+            <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
 <?php
 $use_br = false;
@@ -128,35 +128,35 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('keywords', (isset($_POST['keywords']) ? $_POST['keywords'] : ''), 'text', 'style="width: 360px;"'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('code', (isset($_POST['code']) ? $_POST['code'] : ''), 'text', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? $system->language->translate('title_new_image', 'New Image') : $system->language->translate('title_image', 'Image')); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? $system->language->translate('title_new_image', 'New Image') : $system->language->translate('title_image', 'Image')); ?></strong><br />
             <?php echo $system->functions->form_draw_file_field('image', 'style="width: 360px"'); ?><?php if (isset($category->data['image']) && $category->data['image'] != '') echo '<br />' . PHP_EOL . $category->data['image']; ?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('priority', (isset($_POST['priority']) ? $_POST['priority'] : '0'), 'text', 'style="width: 50px;"'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
             <?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></td>
           </tr>
           <?php if (isset($category->data['id'])) { ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_updated', 'Date Updated'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_updated', 'Date Updated'); ?></strong><br />
               <?php echo strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_created', 'Date Created'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_created', 'Date Created'); ?></strong><br />
               <?php echo strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></td>
           </tr>
           <?php } ?>
@@ -164,9 +164,9 @@ foreach (array_keys($system->language->languages) as $language_code) {
       </div>
     
       <div id="tab-information">
-        <table border="0" cellpadding="5" cellspacing="0">
+        <table>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -178,7 +178,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_h1_title', 'H1 Title'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_h1_title', 'H1 Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -190,7 +190,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_description', 'Meta Description'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_description', 'Meta Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -202,7 +202,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -214,7 +214,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_short_description', 'Short Description'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_short_description', 'Short Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -225,7 +225,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {

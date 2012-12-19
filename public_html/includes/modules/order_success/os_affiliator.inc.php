@@ -52,7 +52,7 @@
       );
       
       $output = '<!-- BOF: '. $this->name .' -->' . PHP_EOL
-              . '<img src="'. $this->system->document->link('https://report.affiliator.com/report_info.php', $params) .'" width="0" height="0" border="0" />' . PHP_EOL
+              . '<img src="'. $this->system->document->link('https://report.affiliator.com/report_info.php', $params) .'" width="0" height="0" />' . PHP_EOL
               . '<!-- EOF: '. $this->name .' -->' . PHP_EOL;
       
       return $output;

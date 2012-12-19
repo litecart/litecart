@@ -53,7 +53,7 @@
            
   foreach ($apps as $app) {
     $params = !empty($app['params']) ? array_merge(array('app' => $app['code'], 'doc' => $app['index']), $app['params']) : array('app' => $app['code'], 'doc' => $app['index']);
-    $sidebar .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" border="0" align="absmiddle" /> '. $app['name'] .'</a>' . PHP_EOL;
+    $sidebar .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> '. $app['name'] .'</a>' . PHP_EOL;
     
     if (!empty($_GET['app']) && $_GET['app'] == $app['code']) {
     
@@ -87,7 +87,7 @@
   }
   
   
-  $sidebar .= '    <li><a href="'. str_replace('://', '://logout:logout@', $system->document->link(WS_DIR_ADMIN)) .'"><img src="'. WS_DIR_IMAGES .'icons/48x48/exit.png" width="24" height="24" border="0" align="absmiddle" /> '. $system->language->translate('title_logout', 'Logout') .'</a></li>' . PHP_EOL
+  $sidebar .= '    <li><a href="'. str_replace('://', '://logout:logout@', $system->document->link(WS_DIR_ADMIN)) .'"><img src="'. WS_DIR_IMAGES .'icons/48x48/exit.png" width="24" height="24" style="vertical-align: middle;" alt="'. $system->language->translate('title_logout', 'Logout') .'" title="'. $system->language->translate('title_logout', 'Logout') .'" /> '. $system->language->translate('title_logout', 'Logout') .'</a></li>' . PHP_EOL
             . '  </ul>' . PHP_EOL
             . '</div>';
   

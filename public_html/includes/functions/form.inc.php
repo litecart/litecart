@@ -3,7 +3,7 @@
   function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters=false) {
     global $system;
     
-    $html = '<form'. (($name) ? ' name="'. $name .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" action="'. $action .'"' . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL;
+    $html = '<form'. (($name) ? ' name="'. $name .'"' : false) . (($action) ? ' action="' . $action .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'"' . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL;
     if (strtolower($method) == 'post') $html .= '<input type="hidden" name="token" value="'. $system->form->session_post_token() .'" />';
     return $html;
   }
@@ -143,7 +143,7 @@
   }
   
   function form_draw_regional_input_field($language_code, $name, $value='', $type='text', $parameters=false, $hint=false) {
-    $html = '<div class="regional-input-wrapper"><input type="'. (($type != 'password') ? 'text' : 'password') .'" name="'. $name .'" value="'. htmlspecialchars($value) .'" class="regional-input-field" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' /><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
+    $html = '<div class="regional-input-wrapper"><input type="'. (($type != 'password') ? 'text' : 'password') .'" name="'. $name .'" value="'. htmlspecialchars($value) .'" class="regional-input-field" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' /><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" /></div>';
     return $html;
   }
   
@@ -174,7 +174,7 @@
   }
   
   function form_draw_regional_textarea($language_code, $name, $value='', $parameters=false, $hint=false) {
-    $html = '<div class="regional-input-wrapper"><textarea name="'. $name .'" class="regional-input-field" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
+    $html = '<div class="regional-input-wrapper"><textarea name="'. $name .'" class="regional-input-field" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" /></div>';
     return $html;
   }
     

@@ -59,11 +59,11 @@
   }
  
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo !empty($customer->data['id']) ? $system->language->translate('title_edit_customer', 'Edit Customer Profile') : $system->language->translate('title_add_new_customer_profile', 'Add New Customer Profile'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($customer->data['id']) ? $system->language->translate('title_edit_customer', 'Edit Customer Profile') : $system->language->translate('title_add_new_customer_profile', 'Add New Customer Profile'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
 
-<table border="0" cellpadding="0" cellspacing="5" style="margin: -5px;">
+<table>
   <tr>
     <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
       <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
@@ -107,7 +107,7 @@
   </tr>
 </table>
 
-<script>
+<script type="text/javascript">
   $("select[name='country[code]']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({

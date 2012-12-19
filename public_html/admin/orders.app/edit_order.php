@@ -142,13 +142,13 @@
 }
 </style>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo !empty($order->data['id']) ? $system->language->translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : $system->language->translate('title_create_new_order', 'Create New Order'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($order->data['id']) ? $system->language->translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : $system->language->translate('title_create_new_order', 'Create New Order'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('form_order', 'post'); ?>
 
 <div style="float: left; padding-right: 10px; width: 50%;">
   <h2 style="margin-top: 0px;"><?php echo $system->language->translate('title_customer_info', 'Customer Info'); ?></h2>
-  <table border="0" cellpadding="0" cellspacing="5" class="dataTable" style="margin: -5px;">
+  <table>
     <tr>
       <td colspan="2"><?php echo $system->language->translate('title_account', 'Account'); ?><br />
         <?php echo $system->functions->form_draw_customers_list('customer[id]', isset($_POST['customer']['id']) ? $_POST['customer']['id'] : 0); ?></td>
@@ -191,7 +191,7 @@
     </tr>
   </table>
   
-  <script>
+  <script type="text/javascript">
     $("select[name='customer[country_code]']").change(function(){
       $('body').css('cursor', 'wait');
       $.ajax({
@@ -223,7 +223,7 @@
 </div>
 
 <h2><?php echo $system->language->translate('title_shipping_address', 'Shipping Address'); ?></h2>
-<table border="0" cellpadding="0" cellspacing="5" class="dataTable" style="margin: -5px;">
+<table>
   <tr>
     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
       <?php echo $system->functions->form_draw_input_field('customer[shipping_address][firstname]', isset($_POST['customer']['shipping_address']['firstname']) ? $_POST['customer']['shipping_address']['firstname'] : ''); ?></td>
@@ -253,7 +253,7 @@
 <br />
 
 <h2><?php echo $system->language->translate('title_order_informations', 'Order Information'); ?></h2>
-<table border="0" cellpadding="0" cellspacing="5" class="dataTable" style="margin: -5px;">
+<table>
   <tr>
     <td><?php echo $system->language->translate('title_currency', 'Currency'); ?><br />
       <?php echo $order->data['currency_code']; ?></td>
@@ -264,7 +264,7 @@
   </tr>
 </table>
 
-<script>
+<script type="text/javascript">
   $("select[name='customer[shipping_country_code]']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({
@@ -297,7 +297,7 @@
 <div style="clear: both;">&nbsp;</div>
 
 <h2><?php echo $system->language->translate('title_order_items', 'Order Items'); ?></h2>
-<table cellpadding="5" cellspacing="0" border="0" width="100%" class="dataTable">
+<table width="100%" class="dataTable">
   <tr class="header">
     <th nowrap="nowrap" align="center">&nbsp;</th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_item', 'Item'); ?></th>
@@ -311,7 +311,7 @@
   foreach (array_keys($_POST['items']) as $key) {
 ?>
   <tr class="">
-    <td nowrap="nowrap" align="center"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" class="add_item" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
+    <td nowrap="nowrap" align="center"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_item" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
     <td nowrap="nowrap" align="left">
 <?php
     foreach (array_keys($_POST['items'][$key]) as $field) {
@@ -324,29 +324,29 @@
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][price]', $_POST['items'][$key]['price']); ?></td>
     <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][tax]', $_POST['items'][$key]['tax']); ?></td>
     <td nowrap="nowrap" align="right"><?php echo $system->tax->get_class_name($_POST['items'][$key]['tax_class_id']); ?></td>-->
-    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" class="remove_item" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
+    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_item" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php
   }
 ?>
   <tr>
-    <td nowrap="nowrap" align="left" colspan="7"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" class="add_item" title="<?php echo $system->language->translate('title', 'Insert'); ?>" /></a></td>
+    <td nowrap="nowrap" align="left" colspan="7"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_item" title="<?php echo $system->language->translate('title', 'Insert'); ?>" /></a></td>
   </tr>
 </table>
 
-<script>
+<script type="text/javascript">
   var new_item_index = 0;
   $(".add_item").live("click", function(event) {
     while ($("input[name='items["+new_item_index+"][id]']").length) new_item_index++;
     event.preventDefault();
     var new_row = '  <tr>'
-                + '    <td nowrap="nowrap" align="center"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" class="add_item" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
+                + '    <td nowrap="nowrap" align="center"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_item" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
                 + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', 'style="width: 350px; text-align: left;"')); ?></td>'
                 + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_input_field('items[new_item_index][quantity]', '', 'text', 'style="width: 25px; text-align: right;"'); ?></td>'
                 + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][price]', 0); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][tax]', 0); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right">&nbsp;</td>'
-                + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" class="remove_item" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_item" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                 + '  </tr>';
     new_row = new_row.replace(/new_item_index/g, 'new_' + new_item_index);
     $(this).closest("tr").before(new_row);
@@ -366,7 +366,7 @@
 </script>
 
 <h2><?php echo $system->language->translate('title_order_total', 'Order Total'); ?></h2>
-<table cellpadding="5" cellspacing="0" border="0" width="100%" class="dataTable">
+<table width="100%" class="dataTable">
   <tr>
     <th nowrap="nowrap" align="left">&nbsp;</th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_module_id', 'Module ID'); ?></th>
@@ -380,34 +380,34 @@
   foreach (array_keys($_POST['order_total']) as $key) {
 ?>
   <tr>
-    <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
+    <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
     <td nowrap="nowrap" align="right"><?php foreach (array_keys($_POST['order_total'][$key]) as $field) echo $system->functions->form_draw_hidden_field('order_total['. $key .']['. $field .']', $_POST['order_total'][$key][$field]); ?><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][module_id]', $_POST['order_total'][$key]['module_id'], 'text', 'style="width: 75px;"'); ?></td>
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][title]', $_POST['order_total'][$key]['title'], 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][value]', $_POST['order_total'][$key]['value']); ?><?php echo $system->functions->form_draw_checkbox('order_total['. $key .'][calculate]', 'true', !empty($_POST['order_total'][$key]['calculate']) ? 'true' : '', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>
     <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][tax]', $_POST['order_total'][$key]['tax']); ?></td>-->
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_function('tax_classes()', 'order_total['. $key .'][tax_class_id]', $_POST['order_total'][$key]['tax_class_id']); ?></td>
-    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" class="remove_ot_row" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
+    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_ot_row" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php
   }
 ?>
   <tr>
-    <td colspan="7" nowrap="nowrap" align="left"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" class="add_ot_row" title="<?php echo $system->language->translate('title_insert_', 'Insert'); ?>" /></a></td>
+    <td colspan="7" nowrap="nowrap" align="left"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('title_insert_', 'Insert'); ?>" /></a></td>
   </tr>
 </table>
-<script>
+<script type="text/javascript">
   var new_ot_row_index = 0;
   $(".add_ot_row").live("click", function(event) {
     while ($("input[name='order_total["+new_ot_row_index+"][id]']").length) new_ot_row_index++;
     event.preventDefault();
     var output = '  <tr>'
-               + '    <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
+               + '    <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][module_id]', '', 'text', 'style="width: 75px;"'); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][title]', '', 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>'
                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][tax]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total[new_ot_row_index][calculate]', 'true', 'true', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][value]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_function('tax_classes()', 'order_total[new_ot_row_index][tax_class_id]', '', 'text', 'style="width: 75px; text-align: right;"')); ?></td>'
-               + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" class="remove_ot_row" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+               + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_ot_row" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '  </tr>';
 	output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
 	$(this).closest("tr").before(output);
@@ -422,7 +422,7 @@
 
 
 <h2><?php echo $system->language->translate('title_comments', 'Comments'); ?></h2>
-<table cellpadding="5" cellspacing="0" border="0" class="dataTable">
+<table class="dataTable">
   <tr>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_date', 'Date'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_comment', 'Comment'); ?></th>
@@ -436,16 +436,16 @@
     <td nowrap="nowrap" align="left"><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo $system->functions->form_draw_hidden_field('comments['. $key .']['. $field .']', $_POST['comments'][$key][$field]); ?><?php echo strftime($system->language->selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
     <td nowrap="nowrap" align="left"><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
     <td nowrap="nowrap" align="left"><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
-    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" class="remove_comment" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
+    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_comment" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php
   }
 ?>
   <tr>
-    <td nowrap="nowrap" align="left" colspan="4"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" class="add_comment" title="<?php echo $system->language->translate('title_insert_', 'Insert'); ?>" /></a></td>
+    <td nowrap="nowrap" align="left" colspan="4"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_comment" title="<?php echo $system->language->translate('title_insert_', 'Insert'); ?>" /></a></td>
   </tr>
 </table>
-<script>
+<script type="text/javascript">
   var new_comment_index = 0;
   $(".add_comment").live("click", function(event) {
     while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
@@ -454,7 +454,7 @@
                + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('comments[new_comment_index][id]', '') . $system->functions->form_draw_hidden_field('comments[new_comment_index][date_created]', strftime($system->language->selected['format_datetime'])) . strftime($system->language->selected['format_datetime'])); ?></td>'
                + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_textarea('comments[new_comment_index][text]', '')); ?></td>'
                + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', $system->language->translate('title_hidden', 'Hidden'))); ?></td>'
-               + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" class="remove_comment" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+               + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_comment" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '  </tr>';
 	output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
 	$(this).closest("tr").before(output);

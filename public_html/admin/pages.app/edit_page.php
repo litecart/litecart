@@ -20,6 +20,7 @@
     
     if (empty($_POST['dock_menu'])) $_POST['dock_menu'] = 0;
     if (empty($_POST['dock_support'])) $_POST['dock_support'] = 0;
+	if (empty($_POST['status'])) $_POST['status'] = 0;
     
     if (!$system->notices->get('errors')) {
     
@@ -78,17 +79,15 @@
                                                        . '</script>' . PHP_EOL;
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo !empty($pages->data['id']) ? $system->language->translate('title_edit_page', 'Edit Page') : $system->language->translate('title_create_new_pages', 'Create New Page'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($pages->data['id']) ? $system->language->translate('title_edit_page', 'Edit Page') : $system->language->translate('title_create_new_pages', 'Create New Page'); ?></h1>
   <?php echo $system->functions->form_draw_form_begin('pages_form', 'post'); ?>
-  <table border="0" cellpadding="5" cellspacing="0">
+  <table>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
-        <?php echo $system->functions->form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_enabled', 'Enabled'); ?>
-        <?php echo $system->functions->form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_disabled', 'Disabled'); ?>
-      </td>
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
+      <?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap">
+      <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_title', 'Title'); ?></strong><br />
 <?php
 $use_br = false;
@@ -101,18 +100,18 @@ foreach (array_keys($system->language->languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_content', 'Content'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_content', 'Content'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo '<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" align="top" /> ' . $system->functions->form_draw_textarea('content['. $language_code .']', (isset($_POST['content'][$language_code]) ? $_POST['content'][$language_code] : ''), 'style="width: 720px; height: 400px;"');
+  echo $system->functions->form_draw_regional_textarea($language_code, 'content['. $language_code .']', (isset($_POST['content'][$language_code]) ? $_POST['content'][$language_code] : ''), 'style="width: 720px; height: 400px;"');
 }
 ?>
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -124,7 +123,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_description', 'Meta Description'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_description', 'Meta Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -136,7 +135,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -148,18 +147,18 @@ foreach (array_keys($system->language->languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dock', 'Dock'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dock', 'Dock'); ?></strong><br />
         <?php echo $system->functions->form_draw_checkbox('dock_menu', '1', isset($_POST['dock_menu']) ? $_POST['dock_menu'] : '0'); ?> <?php echo $system->language->translate('text_dock_in_dock_menu', 'Dock in site menu'); ?><br />
         <?php echo $system->functions->form_draw_checkbox('dock_support', '1', isset($_POST['dock_support']) ? $_POST['dock_support'] : '0'); ?> <?php echo $system->language->translate('text_dock_in_support_page', 'Dock in support page'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
         <?php echo $system->functions->form_draw_input_field('priority', (isset($_POST['priority']) ? $_POST['priority'] : '0'), 'text', 'style="width: 50px;"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (isset($pages->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (isset($pages->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></td>
     </tr>
   </table>
 <?php echo $system->functions->form_draw_form_end(); ?>

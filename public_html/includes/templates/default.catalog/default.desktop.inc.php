@@ -20,7 +20,7 @@
       <div id="currencies-wrapper"><?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'currencies.inc.php'); ?></div>
       <div id="search-wrapper"><?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php'); ?></div>
     </div>
-    <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+    <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
   </div>
   
   <div id="menu-wrapper">
@@ -33,15 +33,15 @@
   <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'top_menu.inc.php'); ?>
   
   <div id="content-wrapper">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <table width="100%">
       <tr>
-        <td valign="top" id="sidebar">
+        <td id="sidebar">
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'categories.inc.php'); ?>
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php'); ?>
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php'); ?>
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php'); ?>
         </td>
-        <td valign="top" id="content">
+        <td id="content">
           <!--snippet:alerts-->
           <!--snippet:content-->
         </td>

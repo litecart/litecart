@@ -18,7 +18,7 @@
     while($designer = $system->database->fetch($designers_query)) {
 ?>
       <div style="display: inline-block;" class="subCategory">
-        <a href="<?php echo $system->document->href_link('designer.php', array('designer_id' => $designer['id'])); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $designer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 234, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" width="234" height="60" border="0" title="<?php echo $designer['name']; ?>" /></a>
+        <a href="<?php echo $system->document->href_link('designer.php', array('designer_id' => $designer['id'])); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $designer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 234, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" width="234" height="60" title="<?php echo $designer['name']; ?>" /></a>
       </div>
 <?php
     }

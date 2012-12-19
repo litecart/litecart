@@ -98,7 +98,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_csv_import_export_translations', 'CSV Import/Export Translations'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_csv_import_export_translations', 'CSV Import/Export Translations'); ?></h1>
 <p><?php echo $system->language->translate('title_example', 'Example'); ?>:<br />
   <pre>code;en;sv
 "title_catalog";"Catalog";"Katalog"
@@ -106,12 +106,12 @@
 </pre>
 </p>
 
-<table border="0" cellpadding="5" cellspacing="0"  width="100%">
+<table  width="100%">
   <tr>
     <td width="50%">
       <?php echo $system->functions->form_draw_form_begin('import_form', 'post', '', true); ?>
       <h2><?php echo $system->language->translate('title_import_to_csv', 'Import From CSV'); ?></h2>
-      <table border="0" cellpadding="5" cellspacing="0">
+      <table>
         <tr>
           <td><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
@@ -125,11 +125,11 @@
     <td width="50%">
       <?php echo $system->functions->form_draw_form_begin('export_form', 'post'); ?>
       <h2><?php echo $system->language->translate('title_export_to_csv', 'Export To CSV'); ?></h2>
-      <table border="0" cellpadding="5" cellspacing="0">
+      <table>
         <tr>
           <td>
             <?php echo $system->language->translate('title_languages', 'Languages'); ?><br />
-            <table border="0" cellpadding="5" cellspacing="0" style="margin: -5px;">
+            <table style="margin: -5px;">
               <tr>
                 <td><?php for ($i=0; $i<count($system->language->languages); $i++) echo $system->functions->form_draw_languages_list('language_codes[]').' '; ?></td>
               </tr>

@@ -49,7 +49,7 @@
     public function after_capture() {
       
       if ($this->system->document->viewport == 'desktop') {
-        $this->system->document->snippets['content'] = '<div style="position: absolute;"><a href="?c87acf3b=1" rel="nofollow"><img src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="1" height="1" border="0" /></a></div>' . PHP_EOL
+        $this->system->document->snippets['content'] = '<div style="position: absolute;"><a href="?c87acf3b=1" rel="nofollow"><img src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="1" height="1" alt="" /></a></div>' . PHP_EOL
                                                . $this->system->document->snippets['content'];
       }
     }

@@ -10,7 +10,7 @@
     $output = '<div class="category">' . PHP_EOL
             . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '    <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 330, 180, 'CROP') .'" width="330" height="180" border="0" />' . PHP_EOL
+            . '    <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 330, 180, 'CROP') .'" width="330" height="180" alt="'. $category['name'] .'" title="'. $category['name'] .'" />' . PHP_EOL
             . '      <div class="footer" style="position: absolute; bottom: 0;">' . PHP_EOL
             . '        <div class="title">'. $category['name'] .'</div>' . PHP_EOL
             . '        <div class="description">'. $category['short_description'] .'</div>' . PHP_EOL
@@ -28,7 +28,7 @@
     $output = '<div class="manufacturer">' . PHP_EOL
             . '  <a class="link" href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 215, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="215" height="60" border="0" title="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
+            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 215, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="215" height="60" alt="'. $manufacturer['name'] .'" title="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="title">'. $manufacturer['name'] .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL
@@ -41,9 +41,9 @@
     global $system;
     
     if ($product['campaign_price']) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'icons/48x48/sale.png" width="48" height="48" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
+      $sticker = '<img src="'. WS_DIR_IMAGES .'icons/48x48/sale.png" width="48" height="48" alt="" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" />';
     } else if ($product['date_created'] > date('Y-m-d', strtotime('-1 month'))) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'icons/48x48/new.png" width="48" height="48" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="" />';
+      $sticker = '<img src="'. WS_DIR_IMAGES .'icons/48x48/new.png" width="48" height="48" alt="" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" />';
     } else {
       $sticker = '';
     }
@@ -51,14 +51,14 @@
     $output = '<div class="product" style="position: relative">' . PHP_EOL
             . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">'. PHP_EOL
-            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 145, 193, 'CROP') .'" width="145" height="193" border="0" title="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
+            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 145, 193, 'CROP') .'" width="145" height="193" alt="'. htmlspecialchars($product['name']) .'" title="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
             . '      ' . $sticker . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
             . '    <div class="manufacturer">'. $product['manufacturer_name'] .'</div>' . PHP_EOL
             . '    <div class="price">'. ($product['campaign_price'] ? '<s class="old-price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="special-price">'. $system->currency->format($system->tax->calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL
-            . (($product['image']) ? '  <a href="'. WS_DIR_IMAGES . $product['image'] .'" class="fancybox" rel="product-listing" title="'. htmlspecialchars($product['name']) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/preview.png"  width="16" height="16" border="0" style="position: absolute; top: 15px; right: 15px;" /></a>' . PHP_EOL : '')
+            . (($product['image']) ? '  <a href="'. WS_DIR_IMAGES . $product['image'] .'" class="fancybox" data-fancybox-group="product-listing" title="'. htmlspecialchars($product['name']) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/preview.png" alt="" width="16" height="16" style="position: absolute; top: 15px; right: 15px;" /></a>' . PHP_EOL : '')
           //. '  <div style="text-align: center;" class="buy_now">'.  $system->functions->form_draw_form_begin('buy_now_form') . $system->functions->form_draw_hidden_field('product_id', $product['id']) . $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit') . $system->functions->form_draw_form_end() .'</div>' . PHP_EOL
             . '</div>' . PHP_EOL;
     
@@ -89,6 +89,9 @@
     }
     
     $system->document->snippets['javascript']['fancybox-'.$selector] = '  $(document).ready(function() {' . PHP_EOL
+                                                                     . '    $("a").each(function() {' . PHP_EOL
+                                                                     . '      $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
+                                                                     . '    }); ' . PHP_EOL
                                                                      . '    $("a.fancybox").live("hover", function() { ' . PHP_EOL // Fixes ajax content
                                                                      . '      $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
     
@@ -139,7 +142,7 @@
       $html .= '  <a class="page button" href="'. $system->document->href_link('', array('page' => $_GET['page']-1), true) .'">'. $system->language->translate('title_previous', 'Previous') .'</a>' . PHP_EOL;
     } else {
       //$html .= '  <span class="page button disabled" href="'. $system->document->href_link('', array('page' => 1), true) .'">'. $system->language->translate('title_first', 'First') .'</span>' . PHP_EOL;
-      $html .= '  <span class="page button disabled" href="'. $system->document->href_link('', array('page' => $_GET['page']-1), true) .'">'. $system->language->translate('title_previous', 'Previous') .'</span>' . PHP_EOL;
+      $html .= '  <a class="page button disabled" href="'. $system->document->href_link('', array('page' => $_GET['page']-1), true) .'">'. $system->language->translate('title_previous', 'Previous') .'</a>' . PHP_EOL;
     }
     
     for ($i=1; $i<=$pages; $i++) {

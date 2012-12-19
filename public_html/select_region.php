@@ -23,14 +23,16 @@
     $system->customer->data['shipping_address']['country_code'] = $_POST['country_code'];
     $system->customer->data['shipping_address']['zone_code'] = $_POST['zone_code'];
     
-    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME));
+    if (empty($_GET['redirect'])) $_GET['redirect'] = WS_DIR_HTTP_HOME;
+    
+    header('Location: '. $_GET['redirect']);
     exit;
   }
 
 ?>
 <h1><?php echo $system->language->translate('title_regional_settings', 'Regional Settings'); ?></h1>
 <?php echo $system->functions->form_draw_form_begin('region_form', 'post', $system->document->link()); ?>
-<table border="0" cellpadding="10" cellspacing="0">
+<table>
   <tr>
     <td><?php echo $system->language->translate('title_language', 'Language'); ?><br />
       <?php echo $system->functions->form_draw_languages_list('language_code', $system->language->selected['code'], 'style="width: 175px;"', 'code'); ?></td>
@@ -48,7 +50,7 @@
   </tr>
 </table>
 <?php echo $system->functions->form_draw_form_end(); ?>
-<script>
+<script type="text/javascript">
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({

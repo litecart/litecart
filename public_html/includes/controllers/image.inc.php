@@ -87,6 +87,8 @@
         trigger_error('Could not load image ('. $this->_src .').', E_USER_WARNING);
         return false;
       }
+	  
+	  return true;
     }
     
     function load_from_string($string, $type='jpg') {
@@ -312,6 +314,8 @@
         default:
           trigger_error('Unknown filter effect for image');
       }
+	  
+	  return true;
     }
     
     function watermark($watermark, $align_x, $align_y, $padding=5) {
@@ -384,6 +388,11 @@
         trigger_error('Destination already exists: '. $destination, E_USER_WARNING);
         return false;
       }
+	
+    if (!is_writable($destination)) {
+      trigger_error('Could not write image to file: '. $destination .'.', E_USER_WARNING);
+      return false;
+    }
       
     // Load image object if not made previously
       if (!is_resource($this->_image)) $this->load();
@@ -466,9 +475,10 @@
     function destroy() {
     
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
-      
-      ImageDestroy($this->_image);
+      if (is_resource($this->_image)) {
+        ImageDestroy($this->_image);
+	  }
+      return true;
     }
     
     function width() {

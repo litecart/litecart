@@ -17,151 +17,11 @@ body {
   font: 12px  Helvetica, Arial, Verdana, sans-serif;
 }
 
-.glass-effect {
-  background: #fff;
-  
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-              inset 0 1px rgba(255,255,255,0.3),
-              inset 0 10px rgba(255,255,255,0.2),
-              inset 0 10px 20px rgba(255,255,255,0.25),
-              inset 0 -15px 30px rgba(0,0,0,0.3);
-  -o-box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-                 inset 0 1px rgba(255,255,255,0.3),
-                 inset 0 10px rgba(255,255,255,0.2),
-                 inset 0 10px 20px rgba(255,255,255,0.25),
-                 inset 0 -15px 30px rgba(0,0,0,0.3);
-  -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-                      inset 0 1px rgba(255,255,255,0.3),
-                      inset 0 10px rgba(255,255,255,0.2),
-                      inset 0 10px 20px rgba(255,255,255,0.25),
-                      inset 0 -15px 30px rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-                   inset 0 1px rgba(255,255,255,0.3),
-                   inset 0 10px rgba(255,255,255,0.2),
-                   inset 0 10px 20px rgba(255,255,255,0.25),
-                   inset 0 -15px 30px rgba(0,0,0,0.3);
-}
-
-.box-gradient1 {
-  background: -moz-linear-gradient(center bottom , rgb(223, 223, 223) 0%, rgb(242, 242, 242) 66%, rgb(242, 242, 242) 100%) repeat scroll 0% 0% transparent;
-  background: -webkit-gradient(linear, left bottom, left top, from(rgba(223, 223, 223, 1)), color-stop(66%, rgba(242, 242, 242, 1)), color-stop(100%, rgba(242, 242, 242, 1)));
-}
-
-.rounded-corners {
-  border-radius: 4px 4px 4px 4px;
-  -moz-border-radius: 4px 4px 4px 4px;
-  -webkit-border-radius: 4px;
-  -webkit-border-radius: 4px;
-}
-
-.rounded-corners-top {
-  border-radius: 4px 4px 0px 0px;
-  -khtml-border-radius: 4px 4px 0px 0px;
-  -moz-border-radius: 4px 4px 0px 0px;
-  -o-border-radius: 4px 4px 0px 0px;
-  -webkit-border-top-left-radius: 4px;
-  -webkit-border-top-right-radius: 4px;
-}
-
-.rounded-corners-bottom {
-  border-radius: 0px 0px 4px 4px;
-  -khtml-border-radius: 0px 0px 4px 4px;
-  -moz-border-radius: 0px 0px 4px 4px;
-  -o-border-radius: 0px 0px 4px 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-}
-
-.semi-transparent {
-  opacity: 0.5;
-}
-
-.shadow {
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.inner-shadow-top {
-  box-shadow: inset 0px 4px 4px -4px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: inset 0px 4px 4px -4px rgba(0, 0, 0, 0.3); 
-}
-
-.inner-shadow {
-  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.3); 
-}
-
-.engraved-text {
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
-}
-
-.column {
-  position: relative;
-  float: left;
-}
-
-ul.navigation-vertical {
-  margin: 0;
-  padding: 0;
-}
-ul.navigation-vertical li {
-  margin: 0;
-  padding: 2px;
-  list-style: none;
-}
-ul.navigation-vertical ul {
-  margin-left: 18px;
-  padding: 0;
-  border:1px #000;
-}
-
-ul.navigation-horizontal {
-  margin: 0;
-  padding: 0;
-}
-ul.navigation-horizontal li {
-  display: inline-block;
-  margin: 0;
-  padding: 2px;
-  list-style: none;
-}
-
-.columns-two {
-  -moz-column-count: 2;
-  -webkit-column-count: 2;
-  column-count: 2;
-
-  -moz-column-gap: 20px;
-  -webkit-column-gap: 20px;
-  column-gap: 20px;
-
-  -moz-column-rule:  1px #ccc solid;
-  -webkit-column-rule: 1px #ccc solid;
-  column-rule: 1px #ccc solid;
-}
- 
-.columns-three {
-  -moz-column-count: 3;
-  -webkit-column-count: 3;
-  column-count: 3;
-
-  -moz-column-gap: 20px;
-  -webkit-column-gap: 20px;
-  column-gap: 20px;
-
-  -moz-column-rule:  1px #ccc solid;
-  -webkit-column-rule: 1px #ccc solid;
-  column-rule: 1px #ccc solid;
-}
-
-img.zoomable {
-  cursor: url(../cursors/magnify.cur), pointer;
-}
-
-a:link, a:visited{
+a:link, a:visited {
   color: rgb(0, 136, 204);
   text-decoration: none;
 }
-a:hover, a:active{
+a:hover, a:active {
   color: rgb(0, 136, 204);
   text-decoration: underline;
 }
@@ -178,7 +38,6 @@ h3{
   font-size: 1.5em;
   font-weight: bold ;
 }
-
 
 #page {
   min-width: 590px;
@@ -277,9 +136,8 @@ h3{
 
 #checkout-button-wrapper {
   position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
+  top: 8px;
+  right: 5px;
 }
 
 #site-menu {

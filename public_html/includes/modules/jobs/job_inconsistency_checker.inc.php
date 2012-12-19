@@ -21,6 +21,9 @@
       if (empty($this->settings['email_receipient'])) return;
       
       switch ($this->settings['check_frequency']) {
+        case 'Hourly':
+          if (strtotime($this->system->settings->get('inconsistency_checker_last_run')) > strtotime('-1 hour')) return; 
+          break;
         case 'Daily':
           if (strtotime($this->system->settings->get('inconsistency_checker_last_run')) > strtotime('-1 day')) return; 
           break;
@@ -275,7 +278,7 @@
           'default_value' => 'Weekly',
           'title' => $this->system->language->translate(__CLASS__.':title_check_frequency', 'Check Frequency'),
           'description' => $this->system->language->translate(__CLASS__.':description_check_frequency', 'How often the inconsistency check should be performed.'),
-          'function' => 'radio("Daily","Weekly","Monthly")',
+          'function' => 'radio("Hourly","Daily","Weekly","Monthly")',
         ),
         array(
           'key' => 'email_receipient',

@@ -4,7 +4,8 @@
   $pages_query = $system->database->query(
     "select p.id, pi.title, pi.content, pi.head_title, pi.meta_keywords, pi.meta_description from ". DB_TABLE_PAGES ." p
     left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
-    where p.id = '". (int)$_GET['page_id'] ."'
+    where status
+    and p.id = '". (int)$_GET['page_id'] ."'
     limit 1;"
   );
   $page = $system->database->fetch($pages_query);

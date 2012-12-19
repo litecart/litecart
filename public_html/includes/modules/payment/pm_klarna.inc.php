@@ -73,7 +73,7 @@
           'description' => $this->system->language->translate(__CLASS__.':description_option_invoice', '')
                          . '<a href="javascript:ShowKlarnaInvoicePopup();" id="klarna_invoice"></a> ' . PHP_EOL
                          . '<script type="text/javascript" src="https://integration.klarna.com/js/klarnainvoice.js"></script>' . PHP_EOL
-                         . '<script>' . PHP_EOL
+                         . '<script type="text/javascript">' . PHP_EOL
                          . '  if (addKlarnaInvoiceEvent) {' . PHP_EOL
                          . '      InitKlarnaInvoiceElements("klarna_invoice", '. $this->settings['merchant_id'] .', "'. $conditions_lang .'", "'. $this->system->tax->calculate($this->settings['invoice_fee'], $this->settings['tax_class_id']) .'");' . PHP_EOL
                          . '  } else {' . PHP_EOL
@@ -106,7 +106,7 @@
             }
           }
           
-          $pclass_script = '<script>' . PHP_EOL
+          $pclass_script = '<script type="text/javascript">' . PHP_EOL
                          . '  function show_pclass_info() {' . PHP_EOL
                          . '    var pclass = $("select[name=\'pclass\']").val();' . PHP_EOL
                          . '    switch (pclass) {' . PHP_EOL;
@@ -131,7 +131,7 @@
               'name' => $this->system->language->translate(__CLASS__.':title_option_installment', 'Installment'),
               'description' => '<a href="javascript:ShowKlarnaPartPaymentPopup();" id="klarna_partpayment"></a>' . PHP_EOL
                              . '<script type="text/javascript" src="https://integration.klarna.com/js/klarnapart.js"></script>' . PHP_EOL
-                             . '<script>' . PHP_EOL
+                             . '<script type="text/javascript">' . PHP_EOL
                              . '  if (addKlarnaPartPaymentEvent) {' . PHP_EOL
                              . '      InitKlarnaPartPaymentElements("klarna_partpayment", '. $this->settings['merchant_id'] .', "'. $conditions_lang .'", 0);' . PHP_EOL
                              . '  } else {' . PHP_EOL

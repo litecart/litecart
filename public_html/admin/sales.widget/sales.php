@@ -28,7 +28,7 @@
 ?>
 <div class="widget">
   <div id="chart1" style="height: 150px;"></div>
-  <script class="code" type="text/javascript">
+  <script type="text/javascript">
     var line1 = [<?php echo implode(',', $sales); ?>];
     var plot1 = $.jqplot('chart1', [line1], {
         title: '<?php echo $system->language->translate('title_sales', 'Sales'); ?> (<?php echo sprintf($system->language->translate('title_s_days', '%s days'), '30'); ?>)',

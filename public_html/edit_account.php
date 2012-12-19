@@ -127,10 +127,10 @@
     <div class="heading"><h1><?php echo $system->language->translate('title_customer_information', 'Customer Information'); ?></h1></div>
     <div class="content" style="padding: 0px;">
       <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
-        <table width="100%" border="0" cellpadding="10" cellspacing="0">
+        <table width="100%">
           <tr>
-            <td width="50%" align="left" valign="top">
-              <table width="100%" border="0" cellpadding="2" cellspacing="0" style="margin: -2px;">
+            <td width="50%" align="left">
+              <table width="100%">
                 <tr>
                   <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
                     <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
@@ -179,10 +179,10 @@
                 </tr>
               </table>
             </td>
-            <td align="left" valign="top" style="border-top: 1px #e1e1e1 dotted;">
+            <td align="left" style="border-top: 1px #e1e1e1 dotted;">
               <h3 style="margin-top: 0px;"><label for="different_shipping_address"><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', (empty($_POST['different_shipping_address'])) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
               <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
-                <table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin: -2px;">
+                <table>
                   <tr>
                     <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
                       <?php echo $system->functions->form_draw_input_field('shipping_company', isset($_POST['shipping_company']) ? $_POST['shipping_company'] : ''); ?></td>
@@ -224,7 +224,7 @@
     </div>
   </div>
   
-  <script>
+  <script type="text/javascript">
     $("select[name='country_code']").change(function(){
       $('body').css('cursor', 'wait');
       $.ajax({

@@ -20,8 +20,8 @@
     <header id="header" class="">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
-        <?php /*<script>
+        <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+        <?php /*<script type="text/javascript">
           $(function() {
             $('img[data-hover]').hover(function() {
               $(this)
@@ -60,9 +60,9 @@
   </div>
   
   <div id="main">
-    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <table width="100%">
       <tr>
-        <td valign="top">
+        <td>
         
           <aside id="column-left-wrapper">
             <!--snippet:column_left-->
@@ -70,7 +70,7 @@
           
         </td>
         
-        <td valign="top" width="100%">
+        <td width="100%">
         
           <div id="leaderboard-wrapper">
             <!--snippet:leaderboard-->
@@ -85,7 +85,7 @@
           
         </td>
         
-        <td valign="top">
+        <td>
         
           <aside id="column-right-wrapper" class="shadow">
             <!--snippet:column_right-->
@@ -99,21 +99,21 @@
   <div id="footer-wrapper">
   
     <footer id="footer" class="box-gradient1 shadow rounded-corners-bottom inner-shadow">
-      <table cellspacing="0" cellpadding="0" border="0" width="100%">
+      <table width="100%">
         <tr>
-          <td valign="top">
+          <td>
             <nav class="categories">
               <p><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong></p>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
             </nav>
           </td>
-          <td valign="top">
+          <td>
             <nav class="manufacturers">
               <p><strong><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></strong></p>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
             </nav>
           </td>
-          <td valign="top">
+          <td>
             <nav class="account">
               <p><strong><?php echo $system->language->translate('title_account', 'Account'); ?></strong></p>
               <ul class="navigation-vertical">
@@ -124,7 +124,7 @@
                 <li><a href="<?php echo $system->document->href_link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
                 <li><a href="<?php echo $system->document->href_link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
                 <li><a href="javascript:logout();"><?php echo $system->language->translate('title_logout', 'Logout'); ?></a></li>
-                <script>
+                <script type="text/javascript">
                   function logout() {
                     var form = $('<?php
                       echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('logout_form', 'post')
@@ -140,7 +140,7 @@
               </ul>
             </nav>
           </td>
-          <td valign="top">
+          <td>
             <nav class="information">
               <p><strong><?php echo $system->language->translate('title_information', 'Information'); ?></strong></p>
               <ul class="navigation-vertical">
@@ -158,7 +158,7 @@
               </ul>
             </nav>
           </td>
-          <td valign="top" width="175">
+          <td width="175">
             <div class="contact">
               <p><strong><?php echo $system->language->translate('title_contact', 'Contact'); ?></strong></p>
               <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p>

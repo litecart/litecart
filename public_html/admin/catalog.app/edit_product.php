@@ -34,6 +34,7 @@
       if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
       if (!isset($_POST['options'])) $_POST['options'] = array();
       if (!isset($_POST['options_stock'])) $_POST['options_stock'] = array();
+      if (!isset($_POST['product_groups'])) $_POST['product_groups'] = array();
       
       $fields = array(
         'manufacturer_id',
@@ -125,7 +126,7 @@
                                                        . '</script>' . PHP_EOL;
   
 ?>
-  <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo (!empty($product->data['id'])) ? $system->language->translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][$system->language->selected['code']] : $system->language->translate('title_add_new_product', 'Add New Product'); ?></h1>
+  <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (!empty($product->data['id'])) ? $system->language->translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][$system->language->selected['code']] : $system->language->translate('title_add_new_product', 'Add New Product'); ?></h1>
   
 <?php
   if (isset($product->data['id'])) {
@@ -152,18 +153,18 @@
     
     <div class="content">
       <div id="tab-general">
-        <table border="0" cellpadding="5" cellspacing="0">
+        <table>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
               <?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '0'); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('code', (isset($_POST['code']) ? $_POST['code'] : ''), 'text'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">
+            <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
 <?php
 $use_br = false;
@@ -176,9 +177,9 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong><br />
             <div style="max-height: 200px; overflow-y: auto;" class="input-field">
-              <table cellpadding="0" cellspacing="0" border="0">
+              <table>
 <?php
   function custom_catalog_tree($category_id=0, $depth=1) {
     global $system;
@@ -224,9 +225,9 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_product_groups', 'Product Groups'); ?></strong><br />
-            <div style="max-height: 200px; overflow-y: auto;" class="input-field">
-              <table cellpadding="0" cellspacing="0" border="0">
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_product_groups', 'Product Groups'); ?></strong><br />
+            <div style="" class="input-field">
+              <table>
 <?php
   // Output product groups
     $product_groups_query = $system->database->query(
@@ -265,16 +266,16 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">
-              <table border="0" cellpadding="5" cellspacing="0" style="margin: -5px;">
+            <td align="left" nowrap="nowrap">
+              <table style="margin: -5px;">
                 <tr>
-                  <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_quantity', 'Quantity'); ?></strong><br />
+                  <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_quantity', 'Quantity'); ?></strong><br />
                     <?php echo $system->functions->form_draw_input_field('quantity', (isset($_POST['quantity']) ? $_POST['quantity'] : ''), 'text', 'style="width: 50px"'); ?>
                   </td>
-                  <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_delivery_status', 'Delivery Status'); ?></strong><br />
+                  <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_delivery_status', 'Delivery Status'); ?></strong><br />
                     <?php echo $system->functions->form_draw_delivery_status_list('delivery_status_id', isset($_POST['delivery_status_id']) ? $_POST['delivery_status_id'] : 0); ?>
                   </td>
-                  <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_sold_out_status', 'Sold Out Status'); ?></strong><br />
+                  <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_sold_out_status', 'Sold Out Status'); ?></strong><br />
                     <?php echo $system->functions->form_draw_sold_out_status_list('sold_out_status_id', isset($_POST['sold_out_status_id']) ? $_POST['sold_out_status_id'] : 0); ?>
                   </td>
                 </tr>
@@ -283,21 +284,21 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <?php if (isset($product->data['id'])) { ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_product_images', 'Product Images'); ?></strong><br />
-              <table cellpadding="0" cellspacing="0" border="0">
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_product_images', 'Product Images'); ?></strong><br />
+              <table>
 <?php
   if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) {
 ?>
     <tr>
       <td><?php echo $system->functions->form_draw_hidden_field('images['.$key.'][id]', $_POST['images'][$key]['id']); ?><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 75); ?>" align="left" style="margin: 5px;" /></td>
       <td><?php echo $system->functions->form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo $system->functions->form_draw_input_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename'], 'text'); ?></td>
-      <td><a id="move-image-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-image-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-image" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
+      <td><a id="move-image-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-image-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-image" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
   }
 ?>
               </table>
-              <script>
+              <script type="text/javascript">
                 $("#move-image-up, #move-image-down").live("click", function(event) {
                   event.preventDefault();
                   var row = $(this).parents("tr:first");
@@ -321,10 +322,10 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <?php } ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upload_images', 'Upload Images'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upload_images', 'Upload Images'); ?></strong><br />
               <div><?php echo $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"'); ?></div>
-               <a href="#" id="add-new-image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_add', 'Add'); ?>" /></a>
-              <script>
+               <a href="#" id="add-new-image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo $system->language->translate('text_add', 'Add'); ?>" /></a>
+              <script type="text/javascript">
                 $("#add-new-image").live("click", function(event) {
                   event.preventDefault();
                   $(this).before('<div><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"')); ?></div>');
@@ -333,20 +334,20 @@ foreach (array_keys($system->language->languages) as $language_code) {
               </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_valid_from', 'Date Valid From'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_valid_from', 'Date Valid From'); ?></strong><br />
               <?php echo $system->functions->form_draw_date_field('date_valid_from', (isset($_POST['date_valid_from'])) ? $_POST['date_valid_from'] : ''); ?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_valid_to', 'Date Valid To'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_valid_to', 'Date Valid To'); ?></strong><br />
               <?php echo $system->functions->form_draw_date_field('date_valid_to', (isset($_POST['date_valid_to'])) ? $_POST['date_valid_to'] : ''); ?></td>
           </tr>
           <?php if (isset($product->data['id'])) { ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_updated', 'Date Updated'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_updated', 'Date Updated'); ?></strong><br />
               <?php echo strftime('%e %b %Y %H:%M', strtotime($product->data['date_updated'])); ?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_created', 'Date Created'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_created', 'Date Created'); ?></strong><br />
               <?php echo strftime('%e %b %Y %H:%M', strtotime($product->data['date_created'])); ?></td>
           </tr>
           <?php } ?>
@@ -354,32 +355,32 @@ foreach (array_keys($system->language->languages) as $language_code) {
       </div>
     
       <div id="tab-information">
-        <table border="0" cellpadding="5" cellspacing="0">
+        <table>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">
+            <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_manufacturer', 'Manufacturer'); ?></strong><br />
                 <?php echo $system->functions->form_draw_manufacturers_list('manufacturer_id', !empty($_POST['manufacturer_id']) ? $_POST['manufacturer_id'] : ''); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">
+            <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_designer', 'Designer'); ?></strong><br />
                 <?php echo $system->functions->form_draw_designers_list('designer_id', !empty($_POST['designer_id']) ? $_POST['designer_id'] : ''); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">
+            <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_supplier', 'Supplier'); ?></strong><br />
                 <?php echo $system->functions->form_draw_suppliers_list('supplier_id', !empty($_POST['supplier_id']) ? $_POST['supplier_id'] : ''); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('keywords', (isset($_POST['keywords']) ? $_POST['keywords'] : ''), 'text', 'style="width: 360px;"'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_short_description', 'Short Description'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_short_description', 'Short Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -391,19 +392,19 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo '<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" align="top" /> ' . $system->functions->form_draw_textarea('description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="width: 360px; height: 160px;"');
+  echo '<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" /> ' . $system->functions->form_draw_textarea('description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="width: 360px; height: 160px;"');
   $use_br = true;
 }
 ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -415,7 +416,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_description', 'Meta Description'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_description', 'Meta Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -427,7 +428,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -442,34 +443,34 @@ foreach (array_keys($system->language->languages) as $language_code) {
       </div>
       
       <div id="tab-data">
-        <table border="0" cellpadding="5" cellspacing="0">
+        <table>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_sku', 'SKU'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_sku', 'SKU'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('sku', (isset($_POST['sku']) ? $_POST['sku'] : ''), 'text'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upc', 'UPC'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upc', 'UPC'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('upc', (isset($_POST['upc']) ? $_POST['upc'] : ''), 'text'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_taric', 'TARIC'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_taric', 'TARIC'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('taric', (isset($_POST['taric']) ? $_POST['taric'] : ''), 'text'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_weight', 'Weight'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_weight', 'Weight'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('weight', (isset($_POST['weight']) ? $_POST['weight'] : ''), 'text', 'style="width: 50px"'); ?> <?php echo $system->weight->draw_select_field('weight_class', (isset($_POST['weight_class']) ? $_POST['weight_class'] : ''), 'style="width: 50px"'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dimensions', 'Dimensions'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dimensions', 'Dimensions'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('dim_x', (isset($_POST['dim_x']) ? $_POST['dim_x'] : ''), 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input_field('dim_y', (isset($_POST['dim_y']) ? $_POST['dim_y'] : ''), 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input_field('dim_z', (isset($_POST['dim_z']) ? $_POST['dim_z'] : ''), 'text', 'style="width: 50px"'); ?> <?php echo $system->length->draw_select_field('dim_class', (isset($_POST['dim_class']) ? $_POST['dim_class'] : ''), 'style="width: 50px"'); ?> (<?php echo $system->language->translate('description_width_height_length', 'width x height x length'); ?>)
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_attributes', 'Attributes'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_attributes', 'Attributes'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -485,37 +486,37 @@ foreach (array_keys($system->language->languages) as $language_code) {
       <div id="tab-prices">
         <h2><?php echo $system->language->translate('title_prices', 'Prices'); ?></h2>
         
-        <table border="0" cellpadding="5" cellspacing="0">
+        <table>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_purchase_price', 'Purchase Price'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_purchase_price', 'Purchase Price'); ?></strong><br />
               <?php echo $system->currency->currencies[$system->settings->get('store_currency_code')]['prefix']; ?><?php echo $system->functions->form_draw_input_field('purchase_price', (isset($_POST['purchase_price']) ? $_POST['purchase_price'] : ''), 'text', 'style="width: 50px"'); ?><?php echo $system->currency->currencies[$system->settings->get('store_currency_code')]['suffix']; ?>
             </td>
           </tr>
         </table>
         
-        <table id="table-prices" border="0" cellpadding="5" cellspacing="0">
+        <table id="table-prices">
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_tax_class', 'Tax Class'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_tax_class', 'Tax Class'); ?></strong><br />
               <?php echo $system->functions->form_draw_tax_classes_list('tax_class_id', isset($_POST['tax_class_id']) ? $_POST['tax_class_id'] : 0); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
           </tr>
         </table>
         
-        <table border="0" cellpadding="5" cellspacing="0" style="margin: 0 -5px;">
+        <table style="margin: 0 -5px;">
           <tr>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_currency', 'Currency'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_price', 'Price'); ?></th>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_conversion_value', 'Conversion Value'); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</td>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_currency', 'Currency'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_price', 'Price'); ?></th>
+            <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_conversion_value', 'Conversion Value'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</td>
           </tr>
           <tr>
             <td><strong><?php echo $system->settings->get('store_currency_code'); ?></strong></td>
             <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', isset($_POST['prices'][$system->settings->get('store_currency_code')]) ? $_POST['prices'][$system->settings->get('store_currency_code')] : 0); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'currency_prices['. $system->settings->get('store_currency_code') .']', '', 'disabled="disabled"'); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'net_prices['. $system->settings->get('store_currency_code') .']', ''); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'currency_prices['. $system->settings->get('store_currency_code') .']', '', 'disabled="disabled"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'net_prices['. $system->settings->get('store_currency_code') .']', ''); ?></td>
             <td></td>
           </tr>
 <?php
@@ -523,18 +524,18 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
   if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $currency_code; ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'prices['. $currency_code .']', isset($_POST['prices'][$currency_code]) ? number_format($_POST['prices'][$currency_code], 4, '.', '') : ''); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'currency_prices['. $currency_code .']', '', 'disabled="disabled"'); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'net_prices['. $currency_code .']', ''); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"></td>
+            <td align="left" nowrap="nowrap"><?php echo $currency_code; ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'prices['. $currency_code .']', isset($_POST['prices'][$currency_code]) ? number_format($_POST['prices'][$currency_code], 4, '.', '') : ''); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'currency_prices['. $currency_code .']', '', 'disabled="disabled"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'net_prices['. $currency_code .']', ''); ?></td>
+            <td align="left" nowrap="nowrap"></td>
           </tr>
 <?php
 }
 ?>
           </tr>
         </table>
-        <script>
+        <script type="text/javascript">
           function get_tax_rate() {
             switch ($("select[name=tax_class_id]").val()) {
 <?php
@@ -587,7 +588,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
         </script>
         
         <h2><?php echo $system->language->translate('title_campaigns', 'Campaigns'); ?></h2>
-        <table id="table-campaigns" border="0" cellpadding="5" cellspacing="0">
+        <table id="table-campaigns">
           <?php if (!empty($_POST['campaigns'])) foreach (array_keys($_POST['campaigns']) as $key) { ?>
           <tr>
             <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_start_date', 'Start Date'); ?></strong><br />
@@ -612,15 +613,15 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 <?php
   }
 ?>
-            <td><a id="remove-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" /></a></td>
+            <td><a id="remove-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
           <?php } ?>
           <tr>
-            <td colspan="5"><a id="add-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" /></a></td>
+            <td colspan="5"><a id="add-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /></a></td>
           </tr>
         </table>
         
-        <script>
+        <script type="text/javascript">
           $("input[name^='campaigns'][name$='[percentage]']").live("keyup", function() {
             var index = $(this).attr('name').match(/^campaigns\[([^\]]+)\]\[percentage\]$/);
             var index = index[1];
@@ -666,7 +667,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 <?php
   }
 ?>
-                       + '  <td><a id="remove-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" /></a></td>'
+                       + '  <td><a id="remove-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>'
                        + '</tr>';
            while ($("input[name='campaigns[new_"+new_campaign_i+"]']").length) new_campaign_i++;
             output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);
@@ -678,33 +679,33 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
       
       <div id="tab-options">
         <h2><?php echo $system->language->translate('title_options', 'Options'); ?></h2>
-        <table id="table-options" border="0" cellpadding="5" cellspacing="0" width="100%">
+        <table id="table-options" width="100%">
           <tr>
-            <th align="left" valign="top" nowrap="nowrap">&nbsp;</th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_group', 'Group'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_price_operator', 'Price Operator'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->settings->get('store_currency_code'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_group', 'Group'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_price_operator', 'Price Operator'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->settings->get('store_currency_code'); ?></th>
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {
     if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $currency_code; ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $currency_code; ?></td>
 <?php
   }
 ?>
-            <th align="left" valign="top" nowrap="nowrap">&nbsp;</th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
           </tr>
   <?php
   if (!empty($_POST['options'])) {
     foreach (array_keys($_POST['options']) as $key) {
   ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo $system->functions->form_draw_hidden_field('options['.$key.'][id]', $_POST['options'][$key]['id']); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_option_groups_list('options['.$key.'][group_id]', $_POST['options'][$key]['group_id']); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_option_values_list($_POST['options'][$key]['group_id'], 'options['.$key.'][value_id]', $_POST['options'][$key]['value_id']); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_select_field('options['.$key.'][price_operator]', array('+','*'), $_POST['options'][$key]['price_operator']); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'options['.$key.']['.$system->settings->get('store_currency_code').']', $_POST['options'][$key][$system->settings->get('store_currency_code')]); ?></td>
+            <td align="left" nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo $system->functions->form_draw_hidden_field('options['.$key.'][id]', $_POST['options'][$key]['id']); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_option_groups_list('options['.$key.'][group_id]', $_POST['options'][$key]['group_id']); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_option_values_list($_POST['options'][$key]['group_id'], 'options['.$key.'][value_id]', $_POST['options'][$key]['value_id']); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_select_field('options['.$key.'][price_operator]', array('+','*'), $_POST['options'][$key]['price_operator']); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'options['.$key.']['.$system->settings->get('store_currency_code').']', $_POST['options'][$key][$system->settings->get('store_currency_code')]); ?></td>
 <?php
       foreach (array_keys($system->currency->currencies) as $currency_code) {
         if ($currency_code == $system->settings->get('store_currency_code')) continue;
@@ -713,21 +714,21 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 <?php
       }
 ?>
-            <td align="left" valign="top" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" /></a></td>
+            <td align="left" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
 <?php
     }
   }
 ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
           </tr>
         </table>
-        <script>
+        <script type="text/javascript">
           $("#remove-option").live("click", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
@@ -780,7 +781,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           $("#add-option").live("click", function(event) {
             event.preventDefault();
             var output = '<tr>'
-                       + '  <td nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
+                       + '  <td nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_option_groups_list('options[new_option_i][group_id]', '')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_select_field('options[new_option_i][price_operator]', array('+','*'), '+')); ?></td>'
@@ -793,7 +794,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 <?php
   }
 ?>
-                       + '  <td nowrap="nowrap" align="left" valign="top"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                       + '  <td nowrap="nowrap" align="left"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                        + '</tr>';
             output = output.replace(/new_option_i/g, 'new_' + new_option_i);
             $(this).closest('tr').before(output);
@@ -804,28 +805,28 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
       
       <div id="tab-options-stock">
         <h2><?php echo $system->language->translate('title_options_stock', 'Options Stock'); ?></h2>
-        <table id="table-options" border="0" cellpadding="5" cellspacing="0">
+        <table id="table-options">
           <tr>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_option', 'Option'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_SKU', 'SKU'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_qty', 'Qty'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_weight', 'Weight'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_dimensions', 'Dimensions'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap">&nbsp;</th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_option', 'Option'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_SKU', 'SKU'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_qty', 'Qty'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_weight', 'Weight'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_dimensions', 'Dimensions'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
           </tr>
 <?php
   if (!empty($_POST['options_stock'])) {
     foreach (array_keys($_POST['options_stock']) as $key) {
 ?>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][id]', $_POST['options_stock'][$key]['id']); ?><?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][combination]', $_POST['options_stock'][$key]['combination']); ?>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][id]', $_POST['options_stock'][$key]['id']); ?><?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][combination]', $_POST['options_stock'][$key]['combination']); ?>
             <?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][name]['. $system->language->selected['name'] .']', $_POST['options_stock'][$key]['name'][$system->language->selected['code']]); ?>
             <?php echo $_POST['options_stock'][$key]['name'][$system->language->selected['code']]; ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][sku]', $_POST['options_stock'][$key]['sku'], 'text', 'style="width: 75px;"'); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][quantity]', $_POST['options_stock'][$key]['quantity'], 'text', 'style="width: 25px;"'); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][weight]', $_POST['options_stock'][$key]['weight'], 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', $_POST['options_stock'][$key]['weight_class']); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_x]', $_POST['options_stock'][$key]['dim_x'], 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_y]', $_POST['options_stock'][$key]['dim_y'], 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_z]', $_POST['options_stock'][$key]['dim_z'], 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_length_classes_list('options_stock['.$key.'][dim_class]', (isset($_POST['options_stock'][$key]['dim_class']) ? $_POST['options_stock'][$key]['dim_class'] : '')); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" /></a></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][sku]', $_POST['options_stock'][$key]['sku'], 'text', 'style="width: 75px;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][quantity]', $_POST['options_stock'][$key]['quantity'], 'text', 'style="width: 25px;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][weight]', $_POST['options_stock'][$key]['weight'], 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', $_POST['options_stock'][$key]['weight_class']); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_x]', $_POST['options_stock'][$key]['dim_x'], 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_y]', $_POST['options_stock'][$key]['dim_y'], 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_z]', $_POST['options_stock'][$key]['dim_z'], 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_length_classes_list('options_stock['.$key.'][dim_class]', (isset($_POST['options_stock'][$key]['dim_class']) ? $_POST['options_stock'][$key]['dim_class'] : '')); ?></td>
+            <td align="left" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
 <?php
     }
@@ -833,28 +834,28 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 ?>
         </table>
         <h3><?php echo $system->language->translate('title_new_option', 'New Option'); ?></h3>
-        <table id="table-option-combo" border="0" cellpadding="5" cellspacing="0">
+        <table id="table-option-combo">
           <tr>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_group', 'Group'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
-            <th align="left" valign="top" nowrap="nowrap">&nbsp;</th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_group', 'Group'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_option_groups_list('new_option[new_1][group_id]', '')); ?></td>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_option_groups_list('new_option[new_1][group_id]', '')); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><a id="add-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" /> <?php echo $system->language->translate('title_add_combination', 'Add Combination'); ?></a></td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap"><a id="add-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo $system->language->translate('title_add_combination', 'Add Combination'); ?></a></td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_button('add_option', $system->language->translate('title_add_option', 'Add Option'), 'button'); ?></td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
-            <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('add_option', $system->language->translate('title_add_option', 'Add Option'), 'button'); ?></td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
+            <td align="left" nowrap="nowrap">&nbsp;</td>
           </tr>
         </table>
-        <script>
+        <script type="text/javascript">
           $("#remove-option").live("click", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
@@ -878,9 +879,9 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           $("#add-group-value").live("click", function(event) {
             event.preventDefault();
             var output = '<tr>'
-                       + '  <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
-                       + '  <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>'
-                       + '  <td align="left" valign="top" nowrap="nowrap"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                       + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
+                       + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>'
+                       + '  <td align="left" nowrap="nowrap"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                        + '</tr>';
             output = output.replace(/option_index/g, 'new_' + option_index);
             $(this).closest('tr').before(output);
@@ -953,7 +954,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('options_stock[new_option_stock_i][quantity]', '0', 'text', 'style="width: 25px;"')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('options_stock[new_option_stock_i][weight]', '0.00', 'text', 'style="width: 40px;"') .' '. $system->functions->form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('options_stock[new_option_stock_i][dim_x]', '0.00', 'text', 'style="width: 40px;"') .' x '. $system->functions->form_draw_input_field('options_stock[new_option_stock_i][dim_y]', '0.00', 'text', 'style="width: 40px;"') .' x '. $system->functions->form_draw_input_field('options_stock[new_option_stock_i][dim_z]', '0.00', 'text', 'style="width: 40px;"') .' '. $system->functions->form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
-                       + '  <td nowrap="nowrap" align="left" valign="top"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                       + '  <td nowrap="nowrap" align="left"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                        + '</tr>';
             while ($("input[name='options_stock[new_"+new_option_stock_i+"]']").length) new_option_stock_i++;
             output = output.replace(/new_option_stock_i/g, 'new_' + new_option_stock_i);

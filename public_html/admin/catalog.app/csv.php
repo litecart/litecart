@@ -330,7 +330,7 @@
             }
             
           // Set new product data
-            foreach (array('status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'quantity', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
+            foreach (array('status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
               if (isset($data[$field])) $product->data[$field] = $data[$field];
             }
             
@@ -341,9 +341,9 @@
             
           // Set product info data
             if (!empty($data['language_code'])) {
-              foreach (array('name', 'short_description', 'description', 'keywords', 'attributes', 'head_title', 'meta_description', 'meta_keywords') as $field) {
+              foreach (array('name', 'short_description', 'description', 'attributes', 'head_title', 'meta_description', 'meta_keywords') as $field) {
                 if (isset($data[$field])) {
-                  if (empty($data[$field])) echo "Empty name $field on line $line\r\n" ;
+                  //if (empty($data[$field])) echo "Empty name $field on line $line\r\n" ;
                   $product->data[$field][$data['language_code']] = $data[$field];
                 }
               }
@@ -518,15 +518,15 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_csv_import_export', 'CSV Import/Export'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_csv_import_export', 'CSV Import/Export'); ?></h1>
 
 <h2><?php echo $system->language->translate('title_categories', 'Categories'); ?></h2>
-<table border="0" cellpadding="5" cellspacing="0"  width="100%">
+<table  width="100%">
   <tr>
-    <td width="50%" valign="top">
+    <td width="50%">
       <?php echo $system->functions->form_draw_form_begin('import_categories_form', 'post', '', true); ?>
       <h3><?php echo $system->language->translate('title_import_from_csv', 'Import From CSV'); ?></h3>
-      <table border="0" cellpadding="5" cellspacing="0">
+      <table>
         <tr>
           <td><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
@@ -540,14 +540,14 @@
       </table>
       <?php echo $system->functions->form_draw_form_end(); ?>
     </td>
-    <td width="50%" valign="top">
+    <td width="50%">
       <?php echo $system->functions->form_draw_form_begin('export_categories_form', 'post'); ?>
       <h3><?php echo $system->language->translate('title_export_to_csv', 'Export To CSV'); ?></h3>
-      <table border="0" cellpadding="5" cellspacing="0">
+      <table>
         <tr>
           <td>
             <?php echo $system->language->translate('title_language', 'Language'); ?><br />
-            <table border="0" cellpadding="5" cellspacing="0" style="margin: -5px;">
+            <table style="margin: -5px;">
               <tr>
                 <td><?php echo $system->functions->form_draw_languages_list('language_code').' '; ?></td>
               </tr>
@@ -566,11 +566,11 @@
 <hr />
 
 <h2><?php echo $system->language->translate('title_products', 'Products'); ?></h2>
-<table border="0" cellpadding="5" cellspacing="0"  width="100%">
+<table  width="100%">
   <tr>
-    <td width="50%" valign="top"><?php echo $system->functions->form_draw_form_begin('import_products_form', 'post', '', true); ?>
+    <td width="50%"><?php echo $system->functions->form_draw_form_begin('import_products_form', 'post', '', true); ?>
       <h3><?php echo $system->language->translate('title_import_from_csv', 'Import From CSV'); ?></h3>
-      <table border="0" cellpadding="5" cellspacing="0">
+      <table>
         <tr>
           <td><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
@@ -583,9 +583,9 @@
         </tr>
       </table>
       <?php echo $system->functions->form_draw_form_end(); ?></td>
-    <td width="50%" valign="top"><?php echo $system->functions->form_draw_form_begin('export_products_form', 'post'); ?>
+    <td width="50%"><?php echo $system->functions->form_draw_form_begin('export_products_form', 'post'); ?>
       <h3><?php echo $system->language->translate('title_export_to_csv', 'Export To CSV'); ?></h3>
-      <table border="0" cellpadding="5" cellspacing="0">
+      <table>
         <tr>
           <td><?php echo $system->language->translate('title_language', 'Language'); ?><br />
             <?php echo $system->functions->form_draw_languages_list('language_code'); ?>

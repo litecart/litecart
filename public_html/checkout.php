@@ -36,7 +36,7 @@
 </div>
 
 <?php if ($system->settings->get('checkout_ajax_enabled') == 'true') { ?>
-<script>
+<script type="text/javascript">
 
   function keepAlive() {
     $.get('<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/keep_alive.php'); ?>');

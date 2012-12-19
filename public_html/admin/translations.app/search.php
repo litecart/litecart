@@ -67,7 +67,7 @@ var config = {
     <?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : $system->language->translate('text_search_phrase_or_keyword', 'Search phrase or keyword')); ?>
     <?php echo $system->functions->form_draw_button('search', $system->language->translate('title_search', 'Search'), 'submit'); ?>
   <?php echo $system->functions->form_draw_form_end(); ?>
-  <script>
+  <script type="text/javascript">
     $("input[name=query]").live("click", function(event) {
       if ($(this).val() == "<?php echo $system->language->translate('text_search_phrase_or_keyword'); ?>") {
         $(this).val("");
@@ -81,11 +81,11 @@ var config = {
   </script>
 </div>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_search_translations', 'Search Translations'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_search_translations', 'Search Translations'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('translation_form', 'post'); ?>
 
-<table border="0" align="center" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
+<table align="center" width="100%" class="dataTable">
   <tr class="header">
     <th align="left"><?php echo $system->language->translate('title_code', 'Code');?></th>
     <?php foreach (array_keys($system->language->languages) as $language_code) echo '<th nowrap="nowrap" align="left">'. $system->language->languages[$language_code]['name'] .'</th>'; ?>
@@ -120,12 +120,12 @@ var config = {
       $row['pages'] = rtrim($row['pages'], ',');
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" valign="top" nowrap="nowrap"><?php echo $row['code']; ?><br />
+    <td align="left" nowrap="nowrap"><?php echo $row['code']; ?><br />
       (<a href="javascript:alert('<?php echo str_replace(array('\'', ','), array('', '\\n'), rtrim($row['pages'], ',')); ?>');"><?php echo sprintf($system->language->translate('text_shared_by_pages', 'Shared by %d pages'), count(explode(',', $row['pages']))); ?></a>)<br />
       <?php echo $system->functions->form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo $system->language->translate('text_html_enabled', 'HTML enabled'); ?>
     </td>
     <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td>'. $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px" rel="ckeditor"') .'</td>'; ?>
-    <td><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo $system->language->translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
+    <td><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo $system->language->translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php      
         if (++$page_items == $system->settings->get('data_table_rows_per_page')) break;
@@ -141,7 +141,7 @@ var config = {
 </table>
 <p align="right"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?></p>
 <?php echo $system->functions->form_draw_form_end(); ?>
-<script>
+<script type="text/javascript">
   function delete_translation(id) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('delete_translation_form', 'post')

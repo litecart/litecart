@@ -57,7 +57,7 @@
 <div style="float: left; display: inline-block; margin-left: 20px;">
   <h1><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></h1>
   <?php echo $system->functions->form_draw_form_begin('contact_form', 'post'); ?>
-  <table border="0" cellpadding="5" cellspacing="0">
+  <table>
     <tr>
       <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
         <?php echo $system->functions->form_draw_input_field('name', isset($_POST['name']) ? $_POST['name'] : '', 'text', 'style="width: 175px;"'); ?></td>

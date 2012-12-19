@@ -49,13 +49,13 @@
   }
 
 ?>
-  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <table width="100%">
     <tr>
-      <td><h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo !empty($order_status->data['id']) ? $system->language->translate('title_edit_order_status', 'Edit Order Status') : $system->language->translate('title_create_new_order_status', 'Create New Order Status'); ?></h1>
+      <td><h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($order_status->data['id']) ? $system->language->translate('title_edit_order_status', 'Edit Order Status') : $system->language->translate('title_create_new_order_status', 'Create New Order Status'); ?></h1>
         <?php echo $system->functions->form_draw_form_begin('order_status_form', 'post'); ?>
-        <table border="0" cellpadding="5" cellspacing="0">
+        <table>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap">
+            <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
 <?php
 $use_br = false;
@@ -68,7 +68,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
@@ -79,13 +79,13 @@ foreach (array_keys($system->language->languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo $system->language->translate('text_is_sale', 'Is sale');?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo $system->language->translate('text_is_sale', 'Is sale');?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo $system->language->translate('text_notify_customer', 'Notify customer');?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo $system->language->translate('text_notify_customer', 'Notify customer');?></td>
           </tr>
           <tr>
-            <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (isset($order_status->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (isset($order_status->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></td>
           </tr>
         </table>
       <?php echo $system->functions->form_draw_form_end(); ?></td>

@@ -10,12 +10,12 @@
   # SEO translation
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)$ category.php?category_id=$1&%{QUERY_STRING}
-  RewriteRule ^(?:[a-z]{2}/)?.*-d-([0-9]+)$ designer.php?designer_id=$1&%{QUERY_STRING}
-  RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING}
-  RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ page.php?page_id=$1&%{QUERY_STRING}
-  RewriteRule ^(?:[a-z]{2}/)?.*-p-([0-9]+)$ product.php?product_id=$1&%{QUERY_STRING}
-  RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING}
+  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)$ category.php?category_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-d-([0-9]+)$ designer.php?designer_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ page.php?page_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-p-([0-9]+)$ product.php?product_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING} [L]
 </IfModule>
 
 # Cacheable external content

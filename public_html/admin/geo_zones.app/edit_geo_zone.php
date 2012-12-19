@@ -45,30 +45,30 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo !empty($geo_zone->data['id']) ? $system->language->translate('title_edit_geo_zone', 'Edit Geo Zone') : $system->language->translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($geo_zone->data['id']) ? $system->language->translate('title_edit_geo_zone', 'Edit Geo Zone') : $system->language->translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('form_geo_zone', 'post'); ?>
 
-  <table border="0" cellpadding="5" cellspacing="0">
+  <table>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
         <?php echo $system->functions->form_draw_input_field('name', isset($_POST['name']) ? $_POST['name'] : '', 'text', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
         <?php echo $system->functions->form_draw_input_field('description', isset($_POST['description']) ? $_POST['description'] : '', 'text', 'style="width: 360px;"'); ?>
       </td>
     </tr>
   </table>
 
   <h2><?php echo $system->language->translate('title_zones', 'Zones'); ?></h2>
-  <table border="0" cellpadding="5" cellspacing="0" width="100%" class="dataTable" id="table-zones">
+  <table width="100%" class="dataTable" id="table-zones">
     <tr class="header">
-      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
-      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_country', 'Country'); ?></th>
-      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_zone', 'Zone'); ?></th>
-      <th align="center" valign="top" nowrap="nowrap">&nbsp;</th>
+      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
+      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_country', 'Country'); ?></th>
+      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_zone', 'Zone'); ?></th>
+      <th align="center" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
     </tr>
 <?php
     if (!empty($_POST['zones'])) {
@@ -78,7 +78,7 @@
       <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][id]', $_POST['zones'][$key]['id']); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
       <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_code]', $_POST['zones'][$key]['country_code']); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_name]', $_POST['zones'][$key]['country_name']); ?><?php echo $_POST['zones'][$key]['country_name']; ?></td>
       <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_code]', $_POST['zones'][$key]['zone_code']); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_name]', $_POST['zones'][$key]['zone_name']); ?><?php echo $_POST['zones'][$key]['zone_name']; ?></td>
-      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
       }
@@ -92,7 +92,7 @@
     </tr>
   </table>
   
-  <script>
+  <script type="text/javascript">
     $("#remove-zone").live("click", function(event) {
       event.preventDefault();
       $(this).closest('tr').remove();
@@ -137,7 +137,7 @@
                  + '      <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                  + '      <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('zones[new_zone_i][country_code]', 'new_country_code') . $system->functions->form_draw_hidden_field('zones[new_zone_i][country_name]', 'new_country_name')); ?>new_country_name</td>'
                  + '      <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('zones[new_zone_i][zone_code]', 'new_zone_code') . $system->functions->form_draw_hidden_field('zones[new_zone_i][zone_name]', 'new_zone_name')); ?>new_zone_name</td>'
-                 + '      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       output = output.replace(/new_country_code/g, $("select[name='country[code]']").find("option:selected").val());

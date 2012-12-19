@@ -45,7 +45,7 @@ input.date, input.datetime {
 option {
   margin: 3px 5px;
 }
-
+/*
 button, a.button, span.button {
   display: inline-block;
   
@@ -62,8 +62,6 @@ button, a.button, span.button {
   -moz-border-radius: 10px;
   border-radius: 10px;
   
-  /*box-shadow: inset 0px 1px 0px rgba(255,255,255, .6), 0px 1px 3px rgba(0,0,0, .1);*/
-  
   color: #866800;
   font: inherit;
   text-decoration: none;
@@ -74,12 +72,50 @@ button, a.button, span.button {
   
   cursor: pointer;
 }
+*/
+button, a.button, span.button {
+  display: inline-block;
+  
+  padding: 3px 8px;
+  margin: 0 2px;
+  
+  background: #e9e9e9;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8f8f8), to(#e9e9e9));
+  background: -moz-linear-gradient(0% 0% 270deg,#f8f8f8, #e9e9e9);
+  
+  border: 1px solid #d1d1d1;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  
+  box-shadow: inset 0px 1px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
+  
+  text-decoration: none;
+  color: #717171;
+  text-shadow: 0px 1px 0px rgba(255,255,255, 1);
 
-button:hover, button:focus, a.button:hover, a.button:focus {
+  white-space: nowrap;
+  vertical-align: middle;
+  
+  cursor: pointer;
 }
 
+button:hover, button:focus, a.button:hover, a.button:focus {
+  background: #fefefe;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FEFEFE), to(#f0f0f0));
+  background: -moz-linear-gradient(0% 0% 270deg,#FEFEFE, #f0f0f0);
+}
+
+/*
 button:active, button.active, a.button:active,  a.button.active, span.button:active, span.button.active {
   background: #e6d8a1;
+  box-shadow: inset 1px 1px 1px rgba(0,0,0, .5), 0px 1px 0px rgba(255,255,255, .5);
+}
+*/
+
+button:active, button.active, a.button:active,  a.button.active, span.button:active, span.button.active {
+  border: 1px solid #fff;
+  background: #e9e9e9;
   box-shadow: inset 1px 1px 1px rgba(0,0,0, .5), 0px 1px 0px rgba(255,255,255, .5);
 }
 
@@ -89,10 +125,10 @@ button[type=button] {
 button[type=submit] {
 }
 
-button[disabled=disabled] {
+button[disabled=disabled], a.button.disabled, span.button.disabled {
+  color: #ccc;
   text-shadow: 0 1px 1px white;
   -webkit-box-shadow: 0 1px 1px #fff;
   -moz-box-shadow: 0 1px 1px #fff;
   box-shadow: 0 1px 1px #fff;
-  background: transparent;
 }

@@ -42,7 +42,7 @@
     
     while ($category = $system->database->fetch($categories_query)) {
     
-      $output .= '<li'. ((!empty($_GET['category_id']) && $category['id'] == $_GET['category_id']) ? ' class="active"' : '') .'><img src="'. WS_DIR_IMAGES .'icons/16x16/'. ((@in_array($category['id'], $category_trail)) ? 'collapse.png' : 'expand.png') .'" width="16" height="16" align="absmiddle" /> <a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id']), false) .'">'. $category['name'] .'</a></li>';
+      $output .= '<li'. ((!empty($_GET['category_id']) && $category['id'] == $_GET['category_id']) ? ' class="active"' : '') .'><img src="'. WS_DIR_IMAGES .'icons/16x16/'. ((@in_array($category['id'], $category_trail)) ? 'collapse.png' : 'expand.png') .'" width="16" height="16" alt="" style="vertical-align: middle;" /> <a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id']), false) .'">'. $category['name'] .'</a></li>';
       
       if (in_array($category['id'], $category_trail)) {
         $sub_categories_query = $system->database->query(

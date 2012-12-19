@@ -50,7 +50,7 @@
 ?>
     <div class="option-wrapper<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
       <?php echo $system->functions->form_draw_form_begin('payment_form', 'post') . $system->functions->form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
-        <div class="icon"><?php echo is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon']) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" border="0" />' : '&nbsp;'; ?></div>
+        <div class="icon"><?php echo is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon']) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" />' : '&nbsp;'; ?></div>
         <div class="title"><?php echo $module['title']; ?></div>
         <div class="name"><?php echo $option['name']; ?></div>
         <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>

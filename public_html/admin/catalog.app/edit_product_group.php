@@ -48,7 +48,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo !empty($product_group->data['id']) ? $system->language->translate('title_edit_product_group', 'Edit Product Group') : $system->language->translate('title_new_product_group', 'Create New Product Group'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($product_group->data['id']) ? $system->language->translate('title_edit_product_group', 'Edit Product Group') : $system->language->translate('title_new_product_group', 'Create New Product Group'); ?></h1>
 <?php echo $system->functions->form_draw_form_begin('form_product_group', 'post'); ?>
 <p></p>
 <?php
@@ -62,12 +62,12 @@
 
 <div id="product-values">
   <h2><?php echo $system->language->translate('title_values', 'Values'); ?></h2>
-  <table border="0" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
+  <table width="100%" class="dataTable">
     <tr class="header">
-      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
-      <th align="left" valign="top" nowrap="nowrap"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
-      <th align="center" valign="top" nowrap="nowrap"><?php echo empty($product_group->data['id']) ? '' : $system->language->translate('title_products', 'Products'); ?></th>
-      <th align="center" valign="top" nowrap="nowrap">&nbsp;</th>
+      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
+      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
+      <th align="center" style="vertical-align: text-top" nowrap="nowrap"><?php echo empty($product_group->data['id']) ? '' : $system->language->translate('title_products', 'Products'); ?></th>
+      <th align="center" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
     </tr>
 <?php
     if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) {
@@ -91,16 +91,16 @@
 ?>
       </td>
       <td align="center"><?php echo $num_products; ?></td>
-      <td align="right"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value"><img src="'. WS_DIR_IMAGES . 'icons/16x16/remove.png' .'" width="16" height="16" border="0" /></a>' : false; ?></td>
+      <td align="right"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value"><img src="'. WS_DIR_IMAGES . 'icons/16x16/remove.png' .'" width="16" height="16" /></a>' : false; ?></td>
     </tr>
   <?php
     }
   ?>
     <tr>
-      <td colspan="4"><a id="add-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" /> <?php echo $system->language->translate('title_add_group', 'Add Group Value'); ?></a></td>
+      <td colspan="4"><a id="add-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo $system->language->translate('title_add_group', 'Add Group Value'); ?></a></td>
     </tr>  
   </table>
-<script>
+<script type="text/javascript">
   var new_value_index = 1;
   $("#add-group-value").live("click", function(event) {
     event.preventDefault();
@@ -115,10 +115,10 @@
         }
 ?>
     var output = '<tr>'
-               + '  <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
-               + '  <td align="left" valign="top" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
-               + '  <td align="left" valign="top" nowrap="nowrap">&nbsp;</td>'
-               + '  <td align="left" valign="top" nowrap="nowrap"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+               + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
+               + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
+               + '  <td align="left" nowrap="nowrap">&nbsp;</td>'
+               + '  <td align="left" nowrap="nowrap"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '</tr>';
     output = output.replace(/new_value_index/g, 'new_' + new_value_index);
     $(this).closest('tr').before(output);

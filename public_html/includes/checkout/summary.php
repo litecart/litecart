@@ -39,36 +39,36 @@
 <div class="box" id="box-checkout-summary">
   <div class="heading"><h1><?php echo $system->language->translate('title_order_summary', 'Order Summary'); ?></h1></div>
   <div class="content" id="order_confirmation-wrapper">
-    <table width="100%" cellspacing="0" cellpadding="2" border="0" style="margin-bottom: 20px;">
+    <table width="100%">
       <tr>
-        <th valign="top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_product', 'Quantity'); ?></th>
-        <th valign="top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_product', 'Product'); ?></th>
-        <th valign="top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_sku', 'SKU'); ?></th>
-        <th valign="top" align="left" nowrap="nowrap">&nbsp;</th>
-        <th valign="top" align="right" nowrap="nowrap" width="100"><?php echo $system->language->translate('title_unit_cost', 'Unit Cost'); ?></th>
-        <th valign="top" align="right" nowrap="nowrap" width="100"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_incl_tax', 'Incl. Tax') : $system->language->translate('title_excl_tax', 'Excl. Tax'); ?></th>
-        <th valign="top" align="right" nowrap="nowrap" width="100"><?php echo $system->language->translate('title_total', 'Total'); ?></th>
+        <th style="vertical-align: text-top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_product', 'Quantity'); ?></th>
+        <th style="vertical-align: text-top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_product', 'Product'); ?></th>
+        <th style="vertical-align: text-top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_sku', 'SKU'); ?></th>
+        <th style="vertical-align: text-top" align="left" nowrap="nowrap">&nbsp;</th>
+        <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo $system->language->translate('title_unit_cost', 'Unit Cost'); ?></th>
+        <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_incl_tax', 'Incl. Tax') : $system->language->translate('title_excl_tax', 'Excl. Tax'); ?></th>
+        <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo $system->language->translate('title_total', 'Total'); ?></th>
       </tr>
 <?php
   foreach ($order->data['items'] as $item) {
 ?>
       <tr>
-        <td valign="top" align="left" nowrap="nowrap"><?php echo $item['quantity']; ?></td>
-        <td valign="top" align="left" nowrap="nowrap"><?php echo $item['name']; ?></td>
-        <td valign="top" align="left" nowrap="nowrap"><?php echo $item['sku']; ?></td>
-        <td valign="top" align="left" nowrap="nowrap">&nbsp;</td>
+        <td align="left" nowrap="nowrap"><?php echo $item['quantity']; ?></td>
+        <td align="left" nowrap="nowrap"><?php echo $item['name']; ?></td>
+        <td align="left" nowrap="nowrap"><?php echo $item['sku']; ?></td>
+        <td align="left" nowrap="nowrap">&nbsp;</td>
 <?php
     if ($system->settings->get('display_prices_including_tax') == 'true') {
 ?>
-        <td valign="top" align="right" nowrap="nowrap"><?php echo $system->currency->format($item['price'] + $item['tax'], false); ?></td>
-        <td valign="top" align="right" nowrap="nowrap"><?php echo $system->currency->format($item['tax'], false); ?></td>
-        <td valign="top" align="right" nowrap="nowrap"><?php echo $system->currency->format(($item['price'] + $item['tax']) * $item['quantity'], false); ?></td>
+        <td align="right" nowrap="nowrap"><?php echo $system->currency->format($item['price'] + $item['tax'], false); ?></td>
+        <td align="right" nowrap="nowrap"><?php echo $system->currency->format($item['tax'], false); ?></td>
+        <td align="right" nowrap="nowrap"><?php echo $system->currency->format(($item['price'] + $item['tax']) * $item['quantity'], false); ?></td>
 <?php
     } else {
 ?>
-        <td valign="top" align="right" nowrap="nowrap"><?php echo $system->currency->format($item['price'], false); ?></td>
-        <td valign="top" align="right" nowrap="nowrap"><?php echo $system->currency->format($item['tax'], false); ?></td>
-        <td valign="top" align="right" nowrap="nowrap"><?php echo $system->currency->format($item['price'] * $item['quantity'], false); ?></td>
+        <td align="right" nowrap="nowrap"><?php echo $system->currency->format($item['price'], false); ?></td>
+        <td align="right" nowrap="nowrap"><?php echo $system->currency->format($item['tax'], false); ?></td>
+        <td align="right" nowrap="nowrap"><?php echo $system->currency->format($item['price'] * $item['quantity'], false); ?></td>
 <?php
     }
 ?>
@@ -87,13 +87,13 @@
         </div>
         <div class="confirm" style="display: inline-block; float: right;">
       
-          <table cellspacing="0" cellpadding="2" border="0" style="margin-bottom: 10px; float: right;">
+          <table>
 <?php 
   foreach ($order->data['order_total'] as $row) {
 ?>
               <tr>
-                <td valign="top" align="right"><strong><?php echo $row['title']; ?>:</strong></td>
-                <td valign="top" align="right" width="100" nowrap="nowrap">
+                <td align="right"><strong><?php echo $row['title']; ?>:</strong></td>
+                <td align="right" width="100" nowrap="nowrap">
 <?php
     if ($system->settings->get('display_prices_including_tax') == 'true') {
       echo $system->currency->format($row['value'] + $row['tax'], false);
@@ -107,7 +107,7 @@
   }
 ?>
             <tr>
-              <td valign="top" align="right" colspan="2">&nbsp;</td>
+              <td align="right" colspan="2">&nbsp;</td>
             </tr>
 <?php
   if ($order->data['tax']['total']) {
@@ -115,8 +115,8 @@
       if ($system->settings->get('display_prices_including_tax') == 'true') {
 ?>
             <tr>
-              <td valign="top" align="right" style="color: #999999;"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?> (<?php echo $rate['name']; ?>):</td>
-              <td valign="top" align="right" width="100" nowrap="nowrap" style="color: #999999;"><?php echo $system->currency->format($rate['tax'], false); ?></td>
+              <td align="right" style="color: #999999;"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?> (<?php echo $rate['name']; ?>):</td>
+              <td align="right" width="100" nowrap="nowrap" style="color: #999999;"><?php echo $system->currency->format($rate['tax'], false); ?></td>
             </tr>
 <?php
       }
@@ -124,14 +124,14 @@
   }
 ?>
             <tr>
-              <td valign="top" align="right"><strong><?php echo $system->language->translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
-              <td valign="top" align="right" width="100" nowrap="nowrap"><strong><?php echo $system->currency->format($order->data['payment_due'], false); ?></strong></td>
+              <td align="right"><strong><?php echo $system->language->translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
+              <td align="right" width="100" nowrap="nowrap"><strong><?php echo $system->currency->format($order->data['payment_due'], false); ?></strong></td>
             </tr>
           </table>
           
           <div style="clear: both;"></div>
           
-          <!--<p align="right"><?php echo (is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" border="0" />' : '<strong>'. $payment->data['selected']['title'] .'</strong>'; ?></p>-->
+          <!--<p align="right"><?php echo (is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" />' : '<strong>'. $payment->data['selected']['title'] .'</strong>'; ?></p>-->
 <?php
   if ($checkout_error = $order->checkout_forbidden()) $errors[] = $checkout_error;
   

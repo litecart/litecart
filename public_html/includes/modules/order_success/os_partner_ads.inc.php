@@ -40,7 +40,7 @@
       );
       
       $output = '<!-- BOF: '. $this->name .' -->' . PHP_EOL
-              . '<img src="'. $this->system->document->link('http://www.partner-ads.com/dk/leadtrack.php', $params) .'" width="1" height="1" border="0" />' . PHP_EOL
+              . '<img src="'. $this->system->document->link('http://www.partner-ads.com/dk/leadtrack.php', $params) .'" width="1" height="1" />' . PHP_EOL
               . '<!-- EOF: '. $this->name .' -->' . PHP_EOL;
       
       return $output;

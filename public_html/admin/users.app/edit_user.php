@@ -63,29 +63,29 @@
   
   if (empty($_POST['user']) && !empty($_GET['user'])) $_POST['user'] = $_GET['user'];
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo (!empty($user->data['username'])) ? $system->language->translate('title_edit_user', 'Edit User') : $system->language->translate('title_create_new_user', 'Create New User'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (!empty($user->data['username'])) ? $system->language->translate('title_edit_user', 'Edit User') : $system->language->translate('title_create_new_user', 'Create New User'); ?></h1>
 <?php echo $system->functions->form_draw_form_begin(false, 'post'); ?>
-  <table border="0" cellpadding="5" cellspacing="0">
+  <table>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap">
+      <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_username', 'Username'); ?></strong><br />
           <?php echo $system->functions->form_draw_input_field('username', (isset($_POST['username']) ? $_POST['username'] : ''), 'text', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap">
+      <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_password', 'Password'); ?></strong><br />
           <?php echo $system->functions->form_draw_input_field('password', (isset($_POST['password']) ? $_POST['password'] : ''), 'password', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap">
+      <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?></strong><br />
           <?php echo $system->functions->form_draw_input_field('confirmed_password', (isset($_POST['confirmed_password']) ? $_POST['confirmed_password'] : ''), 'password', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (isset($manufacturer['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (isset($manufacturer['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></td>
     </tr>
   </table>
 <?php echo $system->functions->form_draw_form_end(); ?>

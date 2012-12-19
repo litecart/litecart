@@ -14,7 +14,7 @@
   echo ' '. $system->functions->form_draw_button('checkout', $system->language->translate('title_checkout', 'Checkout'), 'button', 'onclick="location=\''. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php') .'\'"') . $system->functions->form_draw_form_end();
 ?>
 <!--
-<script>
+<script type="text/javascript">
   $("button[name=clear_cart_items]").live('click', function() {
     var form = $('<?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('clear_cart_form', 'post') . $system->functions->form_draw_hidden_field('clear_cart_items', 'true') . $system->functions->form_draw_form_end()); ?>');
     $(document.body).append(form);

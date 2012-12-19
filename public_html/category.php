@@ -103,7 +103,7 @@
 ?>    
       <?php /*if ($category['image']) { ?>
       <div class="category-image">
-        <img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 330, 180, 'FIT_USE_WHITESPACING'); ?>" width="330" height="180" border="0" />
+        <img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 330, 180, 'FIT_USE_WHITESPACING'); ?>" width="330" height="180" />
       </div>
       <?php }*/ ?>
   
@@ -139,10 +139,12 @@
 
 ?>
     </div>
-  </div>
 <?php
     echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
-    
+?>
+  </div>
+</div>
+<?php
     $system->cache->end_capture($category_cache_id);
   }
   

@@ -5,8 +5,11 @@
 <meta charset="{snippet:charset}" />
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
-<meta name="viewport" content="width=device-width">
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/stylesheet.css" media="screen" />
+<meta name="viewport" content="width=1024" />
+<link rel="stylesheet" href="<!--snippet:template_path-->styles/stylesheet.css" media="screen, print" />
+<!--[if IE]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
+<!--[if IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
+<!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
 <script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>jquery/jquery-1.8.0.min.js"></script>
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
@@ -20,7 +23,7 @@
     <header id="header" class="">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+        <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo $system->settings->get('store_name'); ?>" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
         <?php /*<script>
           $(function() {
             $('img[data-hover]').hover(function() {
@@ -46,13 +49,11 @@
     <div id="navigation" class="box-gradient1 shadow rounded-corners-top">
       
       <div id="breadcrumbs-wrapper">
-        <nav id="breadcrumbs">
-          <!--snippet:breadcrumbs-->
-        </nav>
+        <!--snippet:breadcrumbs-->
       </div>
       
       <div id="checkout-button-wrapper">
-        <?php echo $system->functions->form_draw_button('checkout', $system->language->translate('title_checkout', 'Checkout') .' &gt;&gt;', 'button', 'onclick="location=\''. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php') .'\'"') . $system->functions->form_draw_form_end(); ?>
+        <?php echo $system->functions->form_draw_button('checkout', $system->language->translate('title_checkout', 'Checkout') .' &gt;&gt;', 'button', 'onclick="location=\''. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php') .'\'"'); ?>
       </div>
       
     </div>
@@ -60,9 +61,9 @@
   </div>
   
   <div id="main">
-    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <table width="100%">
       <tr>
-        <td valign="top">
+        <td>
         
           <aside id="column-left-wrapper">
             <!--snippet:column_left-->
@@ -70,7 +71,7 @@
           
         </td>
         
-        <td valign="top" width="100%">
+        <td width="100%">
         
           <div id="leaderboard-wrapper">
             <!--snippet:leaderboard-->
@@ -85,7 +86,7 @@
           
         </td>
         
-        <td valign="top">
+        <td>
         
           <aside id="column-right-wrapper" class="shadow">
             <!--snippet:column_right-->
@@ -99,31 +100,30 @@
   <div id="footer-wrapper">
   
     <footer id="footer" class="box-gradient1 shadow rounded-corners-bottom inner-shadow">
-      <table cellspacing="0" cellpadding="0" border="0" width="100%">
+      <table width="100%">
         <tr>
-          <td valign="top">
+          <td>
             <nav class="categories">
               <p><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong></p>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
             </nav>
           </td>
-          <td valign="top">
+          <td>
             <nav class="manufacturers">
               <p><strong><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></strong></p>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
             </nav>
           </td>
-<?php /*
-          <td valign="top">
+          <td>
             <nav class="account">
               <p><strong><?php echo $system->language->translate('title_account', 'Account'); ?></strong></p>
               <ul class="navigation-vertical">
                 <?php if (empty($system->customer->data['id'])) { ?>
-                <li><a href="<?php echo $system->document->href_link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
-                <li><a href="<?php echo $system->document->href_link('create_account.php'); ?>"><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></a></li>
+                <li><a href="<?php echo $system->document->link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
+                <li><a href="<?php echo $system->document->link('create_account.php'); ?>"><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></a></li>
                 <?php } else { ?>
-                <li><a href="<?php echo $system->document->href_link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
-                <li><a href="<?php echo $system->document->href_link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
+                <li><a href="<?php echo $system->document->link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
+                <li><a href="<?php echo $system->document->link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
                 <li><a href="javascript:logout();"><?php echo $system->language->translate('title_logout', 'Logout'); ?></a></li>
                 <script>
                   function logout() {
@@ -141,8 +141,7 @@
               </ul>
             </nav>
           </td>
-*/ ?>
-          <td valign="top" width="100">
+          <td>
             <nav class="information">
               <p><strong><?php echo $system->language->translate('title_information', 'Information'); ?></strong></p>
               <ul class="navigation-vertical">
@@ -154,13 +153,13 @@
                   order by p.priority, pi.title;"
                 );
                 while ($page = $system->database->fetch($pages_query)) {
-                  echo '<li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+                  echo '<li><a href="'. $system->document->link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
                 }
               ?>
               </ul>
             </nav>
           </td>
-          <td valign="top" width="150">
+          <td width="150">
             <div class="contact">
               <p><strong><?php echo $system->language->translate('title_contact', 'Contact'); ?></strong></p>
               <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p>

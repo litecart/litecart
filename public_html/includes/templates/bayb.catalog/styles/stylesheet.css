@@ -3,6 +3,7 @@
 /* Additional stylesheets */
 
 @import url(boxes.css);
+@import url(common.css);
 @import url(effects.css);
 @import url(forms.css);
 @import url(listing.css);

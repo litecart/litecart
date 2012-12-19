@@ -120,7 +120,7 @@ a:hover, a:active{
   <h2>Installation Parameters</h2>
   <form id="form1" name="form1" method="post" action="install.php">
     <h3>MySQL</h3>
-    <table border="0" cellspacing="0" cellpadding="5">
+    <table>
       <tr>
         <td><strong>Hostname</strong><br />
           <input name="db_server" type="text" value="localhost" style="width: 175px;" />
@@ -142,7 +142,7 @@ a:hover, a:active{
       </tr>
     </table>
     <h3>Store Information</h3>
-    <table border="0" cellspacing="0" cellpadding="5">
+    <table>
       <tr>
         <td><strong>Store Name</strong><br />
           <input name="store_name" type="text" value="My Store" style="width: 175px;" /></td>
@@ -171,7 +171,7 @@ a:hover, a:active{
       </tr>
     </table>
     <h3>Administration</h3>
-    <table border="0" cellspacing="0" cellpadding="5">
+    <table>
       <tr>
         <td><strong>Folder Name</strong><br />
           <input name="admin_folder" type="text" value="admin/" style="width: 175px;" /></td>
@@ -185,7 +185,7 @@ a:hover, a:active{
       </tr>
     </table>
     <h3>File System</h3>
-    <table border="0" cellspacing="0" cellpadding="5">
+    <table>
       <tr>
         <td><strong>Installation Path</strong><br />
           <input name="installation_path" type="text"  value="<?php echo $document_root; ?>" style="width: 360px;" /></td>

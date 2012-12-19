@@ -33,7 +33,7 @@
         'currency' => $this->system->settings->get('store_currency_code'),
       );
       
-      $output = '<img src="'. $this->system->document->link('https://tbs.tradedoubler.com/report', $params) .'" width="0" height="0" border="0" />';
+      $output = '<img src="'. $this->system->document->link('https://tbs.tradedoubler.com/report', $params) .'" width="0" height="0" />';
       
       return $output;
     }

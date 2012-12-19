@@ -42,9 +42,9 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $title; ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $title; ?></h1>
 <?php echo $system->functions->form_draw_form_begin('modules_form', 'post'); ?>
-<table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" class="dataTable">
+<table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th><?php echo $system->functions->form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
@@ -64,11 +64,11 @@
       }
 ?>
   <tr class="<?php echo $rowclass . (isset($module->settings['status']) && $module->settings['status'] == 'Enabled' ? false : ' semi-transparent'); ?>">
-    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (isset($module->settings['status']) && $module->settings['status'] == 'Enabled' ? 'on.png' : 'off.png') ?>" width="16" height="16" border="0" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
-    <td align="left" valign="top"><?php echo $module->name; ?></td>
-    <td align="left" valign="top" nowrap="nowrap"><?php echo $module->id; ?></td>
-    <td align="left" valign="top" nowrap="nowrap"><?php echo $module->settings['priority']; ?></td>
-    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" border="0" align="absbottom" /></a></td>
+    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (isset($module->settings['status']) && $module->settings['status'] == 'Enabled' ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
+    <td align="left"><?php echo $module->name; ?></td>
+    <td align="left" nowrap="nowrap"><?php echo $module->id; ?></td>
+    <td align="left" nowrap="nowrap"><?php echo $module->settings['priority']; ?></td>
+    <td align="right" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>
   </tr>
 <?php
     }
@@ -89,10 +89,10 @@
 ?>
   <tr class="<?php echo $rowclass; ?> semi-transparent">
     <td></td>
-    <td align="left" valign="top" nowrap="nowrap"><?php echo $module->name; ?></td>
-    <td align="left" valign="top" nowrap="nowrap"><?php echo $module->id; ?></td>
-    <td align="left" valign="top" nowrap="nowrap"></td>
-    <td align="right" valign="top" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" border="0" align="absbottom" /> Install</a></td>
+    <td align="left" nowrap="nowrap"><?php echo $module->name; ?></td>
+    <td align="left" nowrap="nowrap"><?php echo $module->id; ?></td>
+    <td align="left" nowrap="nowrap"></td>
+    <td align="right" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_module.php', 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" align="absbottom" /> Install</a></td>
   </tr>
 <?php
     }
@@ -103,7 +103,7 @@
   </tr>
 </table>
 
-<script>
+<script type="text/javascript">
   $(".dataTable input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));

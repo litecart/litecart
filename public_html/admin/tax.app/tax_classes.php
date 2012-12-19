@@ -2,10 +2,10 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 <div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_class.php'), true); ?>"><?php echo $system->language->translate('title_add_new_tax_class', 'Add New Tax Class'); ?></a></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_tax_classs', 'Tax Classes'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_tax_classs', 'Tax Classes'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('tax_classs_form', 'post'); ?>
-<table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" class="dataTable">
+<table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th><?php echo $system->functions->form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
@@ -36,10 +36,10 @@
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo $system->functions->form_draw_checkbox('tax_classes['. $tax_class['id'] .']', $tax_class['id']); ?></td>
-    <td align="left" valign="top"><?php echo $tax_class['id']; ?></td>
-    <td align="left" valign="top" nowrap="nowrap"><?php echo $tax_class['name']; ?></td>
-    <td align="left" valign="top" style="color: #999;"><?php echo $tax_class['description']; ?></td>
-    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_class.php', 'tax_class_id' => $tax_class['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="left"><?php echo $tax_class['id']; ?></td>
+    <td align="left" nowrap="nowrap"><?php echo $tax_class['name']; ?></td>
+    <td align="left" style="color: #999;"><?php echo $tax_class['description']; ?></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_class.php', 'tax_class_id' => $tax_class['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
@@ -51,7 +51,7 @@
   </tr>
 </table>
 
-<script>
+<script type="text/javascript">
   $(".dataTable input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));

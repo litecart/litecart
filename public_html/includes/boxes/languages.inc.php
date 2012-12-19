@@ -1,11 +1,11 @@
 <?php
   foreach ($system->language->languages as $language) {
     if ($language['status']) {
-      echo '<a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" border="0" alt="'. $language['name'] .'" /></a> ';
+      echo '<a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" /></a> ';
     }
   }
 ?>
-<script>
+<script type="text/javascript">
   function set_language(code) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('language_form', 'post')

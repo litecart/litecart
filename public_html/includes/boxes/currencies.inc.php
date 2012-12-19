@@ -5,7 +5,7 @@
     }
   }
 ?>
-<script>
+<script type="text/javascript">
   function set_currency(code) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('currency_form', 'post')

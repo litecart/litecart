@@ -23,7 +23,7 @@
     <header id="header" class="rounded-corners-top">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" border="0" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+        <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
       </div>
 
       <div id="languages-wrapper">
@@ -65,9 +65,9 @@
           </div>
   
   <div id="main">
-    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <table width="100%">
       <tr>
-        <td valign="top">
+        <td>
         
           <aside id="column-left-wrapper">
             <!--snippet:column_left-->
@@ -75,7 +75,7 @@
           
         </td>
         
-        <td valign="top" width="100%">
+        <td width="100%">
         
           <div id="leaderboard-wrapper">
             <!--snippet:leaderboard-->
@@ -90,7 +90,7 @@
           
         </td>
         
-        <td valign="top">
+        <td>
         
           <aside id="column-right-wrapper" class="shadow rounded-corners-bottom">
             <!--snippet:column_right-->
@@ -103,21 +103,21 @@
   
   <div id="footer-wrapper" class="box-gradient1 shadow rounded-corners">
     <footer id="footer">
-      <table cellspacing="0" cellpadding="0" border="0" width="100%">
+      <table width="100%">
         <tr>
-          <td valign="top">
+          <td>
             <nav class="categories">
               <p><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong></p>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
             </nav>
           </td>
-          <td valign="top">
+          <td>
             <nav class="manufacturers">
               <p><strong><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></strong></p>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
             </nav>
           </td>
-          <td valign="top">
+          <td>
             <nav class="information">
               <p><strong><?php echo $system->language->translate('title_information', 'Information'); ?></strong></p>
               <ul>
@@ -135,7 +135,7 @@
               </ul>
             </nav>
           </td>
-          <td valign="top">
+          <td>
             <div class="contact">
               <p><strong><?php echo $system->language->translate('title_contact', 'Contact'); ?></strong></p>
               <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p>
@@ -143,7 +143,7 @@
               <p><?php echo $system->settings->get('store_email'); ?></p>
             </div>
           </td>
-          <td valign="top">
+          <td>
             <!--snippet:stats-->
           </td>
         </tr>

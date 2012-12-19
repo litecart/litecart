@@ -31,7 +31,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></h1>
 
-<table cellpadding="5" cellspacing="0" border="0" width="100%" class="dataTable">
+<table width="100%" class="dataTable">
   <tr class="header">
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_order', 'Order'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_order_status', 'Order Status'); ?></th>

@@ -69,7 +69,7 @@ var config = {
   });
 </script>
 -->
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_translations_by_page', 'Translations by Page'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_translations_by_page', 'Translations by Page'); ?></h1>
 <?php
   $pages_query = $system->database->query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
   $pages = array();
@@ -103,7 +103,7 @@ var config = {
 ?>
 <?php echo $system->functions->form_draw_form_begin('translation_form', 'post'); ?>
 <p><a href="<?php echo $system->document->href_link('', array('action' => 'edit_all'), true, array('id')); ?>"><?php echo $system->language->translate('text_edit_all_on_page', 'Edit all on page'); ?></a></p>
-<table border="0" align="center" cellpadding="5" cellspacing="0" width="100%" class="dataTable">
+<table align="center" width="100%" class="dataTable">
   <tr class="header">
     <th align="left"><?php echo $system->language->translate('title_code', 'Code');?></th>
     <?php foreach (array_keys($system->language->languages) as $language_code) echo '<th nowrap="nowrap" align="left">'. $system->language->languages[$language_code]['name'] .'</th>'; ?>
@@ -136,7 +136,7 @@ var config = {
     if (isset($_GET['action']) && ($_GET['action'] == 'edit_all' || ($_GET['action'] == 'edit' && isset($_GET['id']) && $_GET['id'] == $row['id']))) {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" valign="top"><?php echo $row['code']; ?><br />
+    <td align="left"><?php echo $row['code']; ?><br />
     <?php echo $system->functions->form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo $system->language->translate('text_html_enabled', 'HTML enabled'); ?></td>
     <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td>'. $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px" rel="ckeditor"') .'</td>'; ?>
     <td align="right" valign="middle"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''.$system->document->link('', array(), true, array('action', 'id')).'\'"'); ?></td>
@@ -145,9 +145,9 @@ var config = {
       } else {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" valign="top"><?php echo $row['code']; ?></td>
-    <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td valign="top">'. $system->functions->form_draw_static_field('', (strlen($row['text_'.$language_code]) > 300) ? substr($row['text_'.$language_code], 0, 250).' ...' : $row['text_'.$language_code]) .'</td>'; ?>
-    <td align="right"><a href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo $system->language->translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
+    <td align="left"><?php echo $row['code']; ?></td>
+    <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td>'. $system->functions->form_draw_static_field('', (strlen($row['text_'.$language_code]) > 300) ? substr($row['text_'.$language_code], 0, 250).' ...' : $row['text_'.$language_code]) .'</td>'; ?>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo $system->language->translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php
       }
@@ -165,7 +165,7 @@ var config = {
 ?>
 </table>
 <?php echo $system->functions->form_draw_form_end(); ?>
-<script>
+<script type="text/javascript">
   function delete_translation(id) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('delete_translation_form', 'post')

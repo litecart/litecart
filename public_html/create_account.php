@@ -125,7 +125,7 @@
   <div class="heading"><h1><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></h1></div>
   <div class="content">
     <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
-      <table border="0" cellpadding="2" cellspacing="0" style="margin: 5px 0;">
+      <table>
         <tr>
           <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
             <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
@@ -183,7 +183,7 @@
   </div>
 </div>
 
-<script>
+<script type="text/javascript">
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({

@@ -9,7 +9,7 @@
 </head>
 <body>
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
-<script>
+<script type="text/javascript">
   window.onload = function() {
     window.print();
   }

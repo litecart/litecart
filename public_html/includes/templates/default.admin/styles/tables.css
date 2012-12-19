@@ -1,3 +1,18 @@
+table { 
+  border-spacing:0;
+  border-collapse:collapse;
+}
+
+th {
+  padding: 0;
+  vertical-align: top;
+}
+
+td {
+  padding: 0;
+  vertical-align: top;
+}
+
 table.dataTable {
   margin-bottom: 10px;
   border: 1px solid #dfdfdf;
@@ -7,9 +22,10 @@ table.dataTable {
   border-radius: 5px;
 }
 
-table.dataTable tr.header {
+table.dataTable .header {
   text-shadow: 0px 1px 1px #fff;
   font-weight: bold;
+  /*text-decoration: underline;*/
   
   background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
   background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
@@ -35,19 +51,14 @@ table.dataTable tr.odd:hover, table.dataTable tr.even:hover {
   background-color: #ececec;
   cursor: arrow;
 }
-table.dataTable .footer {
-  color: #666;
-  text-shadow: 0px 1px 1px #fff;
-  font-weight: normal;
-  border-top: 1px solid #dfdfdf;
-  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
+table.dataTable tr.footer {
+  background-color: #f4f4f4;
 }
-table.dataTable tr.footer td {
-  padding: 10px 10px;
-  border-top: 1px solid #dfdfdf;
+
+form table td {
+  padding: 5px;
+}
+
+div.input-field table td {
+  padding: 2px 5px;
 }

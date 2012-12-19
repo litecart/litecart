@@ -6,7 +6,7 @@
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="robots" content="noindex, nofollow" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <link href="<!--snippet:template_path-->styles/desktop.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>jquery/jquery-1.8.0.min.js"></script>
 <!--snippet:head_tags-->
@@ -17,17 +17,17 @@
 <div id="body-wrapper">
   <div id="body">
     <div id="content-wrapper">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <table style="width: 100%;">
       <tr>
-        <td valign="top" id="sidebar">
+        <td id="sidebar">
           <div class="logotype">
             <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 70, 'FIT_ONLY_BIGGER'); ?>" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
           </div>
           <div class="header">
-            <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/48x48/home.png'; ?>" width="24" height="24" border="0" alt="<?php echo $system->language->translate('title_back_to_index', 'Back To Index'); ?>" title="<?php echo $system->language->translate('title_back_to_index', 'Back To Index'); ?>" /></a>
-            <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/48x48/cart.png'; ?>" width="24" height="24" border="0" alt="<?php echo $system->language->translate('text_go_to_store_front', 'Go to store front'); ?>" title="<?php echo $system->language->translate('text_go_to_store_front', 'Go to store front'); ?>" /></a>
+            <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/48x48/home.png'; ?>" width="24" height="24" alt="<?php echo $system->language->translate('title_back_to_index', 'Back To Index'); ?>" title="<?php echo $system->language->translate('title_back_to_index', 'Back To Index'); ?>" /></a>
+            <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/48x48/cart.png'; ?>" width="24" height="24" alt="<?php echo $system->language->translate('text_go_to_store_front', 'Go to store front'); ?>" title="<?php echo $system->language->translate('text_go_to_store_front', 'Go to store front'); ?>" /></a>
             <?php if ($system->settings->get('database_admin_link')) { ?>
-              <a href="<?php echo $system->settings->get('database_admin_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/48x48/database.png'; ?>" width="24" height="24" border="0" alt="<?php echo $system->language->translate('title_database_manager', 'Database Manager'); ?>" title="<?php echo $system->language->translate('title_database_manager', 'Database Manager'); ?>" /></a>
+              <a href="<?php echo $system->settings->get('database_admin_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/48x48/database.png'; ?>" width="24" height="24" alt="<?php echo $system->language->translate('title_database_manager', 'Database Manager'); ?>" title="<?php echo $system->language->translate('title_database_manager', 'Database Manager'); ?>" /></a>
             <?php } ?>
           </div>
           
@@ -39,11 +39,11 @@
 <?php
   foreach ($system->language->languages as $language) {
     if ($language['status']) {
-      echo '<a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" border="0" alt="'. $language['name'] .'" /></a> ';
+      echo '<a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" /></a> ';
     }
   }
 ?>
-<script>
+<script type="text/javascript">
   function set_language(code) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('language_form', 'post')
@@ -59,7 +59,7 @@
             <div class="stats"><!--snippet:stats--></div>
           </div>
         </td>
-        <td valign="top" id="content">
+        <td id="content">
           <!--snippet:alerts-->
           <!--snippet:content-->
         </td>
