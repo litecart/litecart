@@ -4,7 +4,7 @@
     public $id = __CLASS__;
     public $name = 'Inconsistency Checker';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = '';
     public $website = 'http://www.tim-international.net';
@@ -34,6 +34,13 @@
           if (strtotime($this->system->settings->get('inconsistency_checker_last_run')) > strtotime('-1 month')) return; 
           break;
       }
+      
+      $this->system->database->query(
+        "update ". DB_TABLE_SETTINGS ."
+        set value = '". date('Y-m-d H:i:s') ."'
+        where `key` = 'inconsistency_checker_last_run'
+        limit 1;"
+      );
       
       $log = $this->inconsistency_check();
       

@@ -42,7 +42,7 @@
   
 ?>
 <div class="box" id="box-checkout-payment">
-  <div class="heading"><h1><?php echo $system->language->translate('title_payment', 'Payment'); ?></h1></div>
+  <div class="heading"><h2><?php echo $system->language->translate('title_payment', 'Payment'); ?></h2></div>
   <div class="content listing-wrapper">
 <?php
   foreach ($options as $module) {

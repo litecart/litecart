@@ -98,7 +98,7 @@
     public function format($value, $auto_decimals=true, $raw=false, $code='', $currency_value=null) {
       
       if (empty($code)) $code = $this->selected['code'];
-      if ($currency_value === null) $currency_value = $this->system->currency->selected['value'];
+      if ($currency_value === null) $currency_value = $this->system->currency->currencies[$code]['value'];
       
       $value = $value * $currency_value;
       

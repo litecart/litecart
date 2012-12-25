@@ -20,8 +20,10 @@
   $manufacturer = $system->database->fetch($manufacturers_query);
   
   if (empty($manufacturer)) {
-    header('HTTP/1.0 410 Gone');
-    die('Error: Manufacturer could not be found');
+    $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
+    header('Location: HTTP/1.1 301 Moved Permanently');
+    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
+    exit;
   }
   
   $system->breadcrumbs->add($manufacturer['name'], $_SERVER['REQUEST_URI']);

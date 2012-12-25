@@ -5,7 +5,7 @@
     public $id = __CLASS__;
     public $name = 'Paypal';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'https://www.paypal.com/cgi-bin/webscr?cmd=_help';
     public $website = 'https://www.paypal.com/cgi-bin/webscr?cmd=_help';

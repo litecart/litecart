@@ -4,7 +4,7 @@
     public $id = __CLASS__;
     public $name = 'Partner-Ads Pixel';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://www.partner-ads.dk';
     public $website = 'http://www.partner-ads.dk';

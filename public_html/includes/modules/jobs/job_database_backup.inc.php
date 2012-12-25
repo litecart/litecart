@@ -4,7 +4,7 @@
     public $id = __CLASS__;
     public $name = 'Database Backup';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://www.google.com/finance/converter';
     public $website = 'http://www.tim-international.net';

@@ -5,7 +5,7 @@
     public $id = __CLASS__;
     public $name = 'Flat Rate';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://www.forum.com';
     public $website = 'http://www.site.com';

@@ -496,7 +496,7 @@
         $product->name[$_POST['language_code']],
         $product->short_description[$_POST['language_code']],
         $product->description[$_POST['language_code']],
-        $product->keywords[$_POST['language_code']],
+        $product->keywords,
         $product->attributes[$_POST['language_code']],
         $product->head_title[$_POST['language_code']],
         $product->meta_description[$_POST['language_code']],

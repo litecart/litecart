@@ -1,7 +1,7 @@
 <?php
-  $system->document->snippets['head_tags']['nivo-slider'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'nivo-slider/jquery.nivo.slider.pack.js"></script>' . PHP_EOL
-                                                         . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/nivo-slider.css" type="text/css" media="screen" />' . PHP_EOL
-                                                         . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/themes/default/default.css" type="text/css" media="screen" />';
+  $system->document->snippets['head_tags']['nivo-slider'] = '<script src="'. WS_DIR_EXT .'nivo-slider/jquery.nivo.slider.pack.js"></script>' . PHP_EOL
+                                                         . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/nivo-slider.css" media="screen" />' . PHP_EOL
+                                                         . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/themes/default/default.css" media="screen" />';
 ?>
 <div class="slider-wrapper theme-default" style="margin-bottom: 10px; position: relative;">
   <div id="slider" class="nivoSlider">

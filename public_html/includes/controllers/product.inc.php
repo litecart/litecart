@@ -508,9 +508,9 @@
       
       if (substr($file, 0, 8) == 'https://' || substr($file, 0, 7) == 'http://') {
         $image = new ctrl_image();
-        $image->load_from_string($this->system->functions->http_request($file));
+        if (!$image->load_from_string($this->system->functions->http_request($file))) return false;
       } else {
-        $image = new ctrl_image($file);
+        if (!$image = new ctrl_image($file)) return false;
       }
       
     // 456-Fancy-product-title-N.jpg
@@ -521,9 +521,9 @@
       
       $priority = count($this->data['images'])+1;
       
-      $image->resample(1024, 1024, 'FIT_ONLY_BIGGER');
+      if (!$image->resample(1024, 1024, 'FIT_ONLY_BIGGER')) return false;
       
-      $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, '', 90);
+      if (!$image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, '', 90)) return false;
       
       $this->system->functions->image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
       

@@ -12,5 +12,6 @@
   }
 ?>
     </div>
+    <p align="right"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'search.php', array('sort' => 'date')); ?>"><?php echo $system->language->translate('title_view_more', 'View more'); ?></a></p>
   </div>
 </div>

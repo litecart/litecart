@@ -4,7 +4,7 @@
     public $id = __CLASS__;
     public $name = 'CJ Pixel Tracer';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://www.cj.com';
     public $website = 'http://www.cj.com';

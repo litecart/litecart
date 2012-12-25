@@ -47,7 +47,7 @@
   
 ?>
 <div class="box" id="box-checkout-shipping">
-  <div class="heading"><h1><?php echo $system->language->translate('title_shipping', 'Shipping'); ?></h1></div>
+  <div class="heading"><h2><?php echo $system->language->translate('title_shipping', 'Shipping'); ?></h2></div>
   <div class="content listing-wrapper">
 <?php
   foreach ($options as $module) {

@@ -42,14 +42,13 @@
   
 // Execute background jobs
   if (strtotime($system->settings->get('jobs_last_run')) < strtotime('-'. $system->settings->get('jobs_interval') .' minutes')) {
-  
-    //error_log('Jobs executed manually because last run was '. $system->settings->get('jobs_last_run').'.');
-  
+    
+    //error_log('Jobs executed manually because last run was '. $system->settings->get('jobs_last_run').'. Is the cron job set up?');
+    
     $url = $system->document->link(WS_DIR_HTTP_HOME . 'push_jobs.php');
     
     if (!in_array('exec', explode(',', str_replace(' ', '', ini_get('disable_functions'))))) {
       exec('wget -q -O - '. $url .' > /dev/null 2>&1 &');
-      
     } else {
       $parts = parse_url($url);
       $fp = fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $errno, $errstr, 30);

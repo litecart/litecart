@@ -5,7 +5,7 @@
     public $id = __CLASS__;
     public $name = 'Certitrade';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'https://www.certitrade.se';
     public $website = 'https://www.certitrade.se';

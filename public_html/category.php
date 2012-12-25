@@ -18,10 +18,12 @@
   );
   $category = $system->database->fetch($categories_query);
   
-  if (empty($category)) {
-    header('HTTP/1.0 410 Gone');
-    die('Category could not be found');
-  }
+    if (empty($category)) {
+      $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
+      header('Location: HTTP/1.1 301 Moved Permanently');
+      header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'categories.php'));
+      exit;
+    }
   
   /*
   $system->document->snippets['javascript'][] = '  var nextPage = '. ($_GET['page']+1) .';'. PHP_EOL

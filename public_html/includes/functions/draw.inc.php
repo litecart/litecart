@@ -84,7 +84,7 @@
     ksort($params);
     
     if (empty($system->document->snippets['head_tags']['fancybox'])) {
-      $system->document->snippets['head_tags']['fancybox'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.pack.js"></script>' . PHP_EOL
+      $system->document->snippets['head_tags']['fancybox'] = '<script src="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.pack.js"></script>' . PHP_EOL
                                                            . '<link rel="stylesheet" href="{snippet:template_path}styles/fancybox.css" media="screen" />';
     }
     

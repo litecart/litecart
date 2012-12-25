@@ -1,3 +1,5 @@
+ErrorDocument 404 /error_document.php?code=404
+
 <IfModule mod_rewrite.c>
   Options +FollowSymLinks
   RewriteEngine on

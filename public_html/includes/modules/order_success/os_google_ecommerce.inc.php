@@ -4,7 +4,7 @@
     public $id = __CLASS__;
     public $name = 'Google Analytics E-commerce Tracking';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://adwords.google.com';
     public $website = 'http://adwords.google.com';

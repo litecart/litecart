@@ -3,15 +3,25 @@
   
   if (empty($_GET['query'])) $_GET['query'] = '';
   if (empty($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'date';
+  if (empty($_GET['sort'])) $_GET['sort'] = 'occurences';
   
-  $system->document->snippets['title'][] = sprintf($system->language->translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), $_GET['query']);
+  $system->document->snippets['title'][] = empty($_GET['query']) ? $system->language->translate('title_search_results', 'Search Results') : sprintf($system->language->translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), $_GET['query']);
   //$system->document->snippets['keywords'] = '';
   //$system->document->snippets['description'] = '';
   
   $system->breadcrumbs->add($system->language->translate('title_search_results', 'Search Results'), $_SERVER['REQUEST_URI']);
   
   $system->functions->draw_fancybox('a.fancybox');
+  
+  ob_start();
+  echo '<div id="sidebar" class="shadow rounded-corners">' . PHP_EOL;
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php');
+  echo '</div>' . PHP_EOL;
+  $system->document->snippets['column_left'] = ob_get_clean();
   
 ?>
 <div class="box" id="search-results">
@@ -23,6 +33,7 @@
       'name' => $system->language->translate('title_name', 'Name'),
       'price' => $system->language->translate('title_price', 'Price') ,
       'date' => $system->language->translate('title_date', 'Date'),
+      'occurences' => $system->language->translate('title_occurences', 'Occurences'),
     );
     
     $separator = false;
@@ -36,8 +47,10 @@
       $separator = true;
     }
 ?>
-      </span>  
+      </span>
+      <?php if ($_GET['query']) { ?>
     <h1 class="title"><?php echo sprintf($system->language->translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), $_GET['query']); ?></h1>
+    <?php } ?>
   </div>
   <div class="content">
     <div class="listing-wrapper">

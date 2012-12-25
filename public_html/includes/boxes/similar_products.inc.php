@@ -2,8 +2,8 @@
   if (!is_object($product)) return;
   
   $product_groups = array();
-  if ($product->product_groups) {
-    foreach ($product->product_groups as $product_group) {
+  if ($product->product_group_ids) {
+    foreach ($product->product_group_ids as $product_group) {
       $product_groups[] = "find_in_set('". $system->database->input($product_group) ."', p.product_groups)";
     }
   }
@@ -24,7 +24,7 @@
     'exclude_products' => $product->id,
     'keywords' => $keywords,
     'sort' => 'occurrences',
-    'limit' => 4,
+    'limit' => 8,
   ));
   if ($system->database->num_rows($products_query) == 0) return;
   

@@ -4,7 +4,7 @@
     public $id = __CLASS__;
     public $name = 'Tradedoubler Sales Tracking';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://www.tradedoubler.com';
     public $website = 'http://www.tradedoubler.com';

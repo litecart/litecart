@@ -5,10 +5,10 @@
     public $id = __CLASS__;
     public $name = 'Cash on Delivery';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
-    public $support_link = 'http://www.forum.com';
-    public $website = 'http://www.site.com';
+    public $support_link = 'http://www.litecart.net';
+    public $website = 'http://www.litecart.net';
     public $priority = 0;
     
     public function __construct() {

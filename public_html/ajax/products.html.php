@@ -7,12 +7,19 @@
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
   
-  //$category_cache_id = $system->cache->cache_id('ajax_products', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  //if ($system->cache->capture($category_cache_id, 'file')) {
+  $category_cache_id = $system->cache->cache_id('ajax_products', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
+  if ($system->cache->capture($category_cache_id, 'file')) {
+    
+    if (!empty($_GET['category_id'])) $_GET['categories'] = array($_GET['category_id']);
+    if (!empty($_GET['designer_id'])) $_GET['designers'] = array($_GET['designer_id']);
+    if (!empty($_GET['manufacturer_id'])) $_GET['manufacturers'] = array($_GET['manufacturer_id']);
+    if (!empty($_GET['product_group'])) $_GET['product_groups'] = array($_GET['product_group']);
     
     $filter = array();
-    if (!empty($_GET['category_id'])) $filter['category_id'] = $_GET['category_id'];
-    if (!empty($_GET['manufacturer_id'])) $filter['manufacturer_id'] = $_GET['manufacturer_id'];
+    if (!empty($_GET['categories'])) $filter['categories'] = $_GET['categories'];
+    if (!empty($_GET['designers'])) $filter['designers'] = $_GET['designers'];
+    if (!empty($_GET['manufacturers'])) $filter['manufacturers'] = $_GET['manufacturers'];
+    if (!empty($_GET['product_groups'])) $filter['product_groups'] = $_GET['product_groups'];
     if (!empty($_GET['page'])) $filter['page'] = (int)$_GET['page'];
     if (!empty($_GET['sort'])) $filter['sort'] = $_GET['sort'];
     
@@ -32,8 +39,8 @@
       }
     }
     
-    //$system->cache->end_capture($category_cache_id);
-  //}
+    $system->cache->end_capture($category_cache_id);
+  }
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

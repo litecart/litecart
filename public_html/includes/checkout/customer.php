@@ -159,7 +159,7 @@
   
 ?>
   <div class="box" id="box-checkout-account">
-    <div class="heading"><h1><?php echo $system->language->translate('title_customer_information', 'Customer Information'); ?></h1></div>
+    <div class="heading"><h2><?php echo $system->language->translate('title_customer_information', 'Customer Information'); ?></h2></div>
     <div class="content" style="padding: 0px;">
       <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
         <table style="width: 100%;">

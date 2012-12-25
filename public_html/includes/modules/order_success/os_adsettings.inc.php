@@ -4,7 +4,7 @@
     public $id = __CLASS__;
     public $name = 'Adsettings Pixel';
     public $description = '';
-    public $author = 'ACME Corporation';
+    public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://www.adsettings.com';
     public $website = 'http://www.adsettings.com';

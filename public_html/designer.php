@@ -20,8 +20,10 @@
   $designer = $system->database->fetch($designers_query);
   
   if (empty($designer)) {
-    header('HTTP/1.0 410 Gone');
-    die('Error: Designer could not be found');
+    $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
+    header('Location: HTTP/1.1 301 Moved Permanently');
+    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'designers.php'));
+    exit;
   }
   
   $system->breadcrumbs->add($designer['name'], $_SERVER['REQUEST_URI']);

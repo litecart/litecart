@@ -77,7 +77,7 @@
         set parent_id = '". (int)$this->data['parent_id'] ."',
           status = '". (int)$this->data['status'] ."',
           code = '". $this->system->database->input($this->data['code']) ."',
-          keywords = '". $this->system->database->input($this->data['keywords'][$language_code]) ."',
+          keywords = '". $this->system->database->input($this->data['keywords']) ."',
           priority = '". (int)$this->data['priority'] ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"

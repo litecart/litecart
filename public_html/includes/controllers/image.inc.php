@@ -388,9 +388,15 @@
         trigger_error('Destination already exists: '. $destination, E_USER_WARNING);
         return false;
       }
-	
-    if (!is_writable($destination)) {
-      trigger_error('Could not write image to file: '. $destination .'.', E_USER_WARNING);
+      
+    // Return false if target is folder
+      if (is_dir($destination)) {
+        trigger_error('Destination is a folder: '. $destination, E_USER_WARNING);
+        return false;
+      }
+      
+    if (!is_writable(pathinfo($destination, PATHINFO_DIRNAME))) {
+      trigger_error('Destination is not writable: '. $destination .'.', E_USER_WARNING);
       return false;
     }
       
