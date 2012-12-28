@@ -55,6 +55,8 @@
     // Import cached translations
       $this->cache_id = $this->system->cache->cache_id('translations', array('language', 'basename'));
       $this->cache = $this->system->cache->get($this->cache_id, 'file');
+      
+      header('Content-Language: '. $this->selected['code']);
     }
     
     public function before_capture() {

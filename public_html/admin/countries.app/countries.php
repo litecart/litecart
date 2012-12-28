@@ -58,7 +58,7 @@
     <td align="left" nowrap="nowrap"><?php echo $country['iso_code_3']; ?></td>
     <td align="left"><?php echo $country['name']; ?></td>
     <td align="left"><?php echo $system->database->num_rows($system->database->query("select id from ". DB_TABLE_ZONES ." where country_code = '". $system->database->input($country['iso_code_2']) ."'")); ?></td>
-    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_country.php', 'country_code' => $country['iso_code_2']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_country.php', 'country_code' => $country['iso_code_2']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;

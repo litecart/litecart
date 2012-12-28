@@ -31,7 +31,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td align="left"><?php echo $system->functions->form_draw_checkbox('users['. $user .']', $user); ?></td>
     <td align="left"><?php echo $user; ?></td>
-    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_user.php', 'user' => $user), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_user.php', 'user' => $user), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
     }

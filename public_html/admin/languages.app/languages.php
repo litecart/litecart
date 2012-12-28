@@ -54,7 +54,7 @@
     <td align="center"><?php echo $language['code']; ?></td>
     <td align="left"><?php echo $language['name']; ?></td>
     <td align="right"><?php echo $language['priority']; ?></td>
-    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_language.php', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_language.php', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;

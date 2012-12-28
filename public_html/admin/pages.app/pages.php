@@ -42,7 +42,7 @@
     <td align="left" nowrap="nowrap"><?php echo $page['title']; ?></td>
     <td align="center" nowrap="nowrap"><?php echo !empty($page['dock_menu']) ? 'x' : ''; ?></td>
     <td align="center" nowrap="nowrap"><?php echo !empty($page['dock_support']) ? 'x' : ''; ?></td>
-    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_page.php', 'pages_id' => $page['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_page.php', 'pages_id' => $page['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;

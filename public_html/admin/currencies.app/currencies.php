@@ -62,7 +62,7 @@
     <td align="center"><?php echo $currency['prefix']; ?></td>
     <td align="center"><?php echo $currency['suffix']; ?></td>
     <td align="right"><?php echo $currency['priority']; ?></td>
-    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_currency.php', 'currency_code' => $currency['code']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_currency.php', 'currency_code' => $currency['code']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;

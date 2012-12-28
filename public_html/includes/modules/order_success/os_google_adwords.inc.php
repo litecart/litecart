@@ -20,18 +20,20 @@
       
       if ($this->settings['status'] != 'Enabled') return;
       
-    // Tweak per domain
+    /*
+    // Tweak per top-domain
       switch (substr($_SERVER['HTTP_HOST'], strrpos($_SERVER['HTTP_HOST'], '.'))) {
         case '.dk':
-          $this->settings['account_id'] = 'UA-35148917-2';
+          $this->settings['account_id'] = '';
           break;
         case '.no':
-          $this->settings['account_id'] = 'UA-35148917-3';
+          $this->settings['account_id'] = '';
           break;
         case '.se':
-          $this->settings['account_id'] = 'UA-35148917-1';
+          $this->settings['account_id'] = '';
           break;
       }
+    */
       
       $output = '<!-- BOF: '. $this->name .' -->' . PHP_EOL
               . '<script type="text/javascript">' . PHP_EOL

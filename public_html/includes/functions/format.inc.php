@@ -36,12 +36,15 @@
     );
     
     $output = $country['address_format'] ? $country['address_format'] : $system->settings->get('default_address_format');
+    
     foreach ($translation_map as $search => $replace) {
       $output = str_replace($search, $replace, $output);
     }
     
-    $output = str_replace("\r\n\r\n", "\r\n", $output);
-    $output = str_replace("\r\n ", "\r\n", $output);
+    while (strpos($output, "\r\n\r\n") !== false) $output = str_replace("\r\n\r\n", "\r\n", $output);
+    while (strpos($output, "\r\r") !== false) $output = str_replace("\r\r", "\n\n", $output);
+    while (strpos($output, "\n\n") !== false) $output = str_replace("\n\n", "\n\n", $output);
+    
     $output = trim($output);
     
     return $output;

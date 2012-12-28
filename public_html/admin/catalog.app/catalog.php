@@ -217,7 +217,7 @@
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png'); ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
     <td><?php echo '<img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
     <td align="right" nowrap="nowrap"></td>
-    <td><a href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'product_id' => $product['id'])); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>
+    <td><a href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'product_id' => $product['id'])); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" align="absbottom" /></a></td>
   </tr>
 <?php
       }

@@ -2,6 +2,34 @@
   require_once('includes/config.inc.php');
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
   
+  ob_start();
+?>
+<div id="sidebar" class="shadow rounded-corners">
+  <div class="box" id="box-information">
+    <div class="heading"><h3><?php echo $system->language->translate('title_information', 'Information'); ?></h3></div>
+    <div class="content">
+      <nav>
+        <ul class="navigation-vertical">
+        <?php
+          $pages_query = $system->database->query(
+            "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+            left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
+            where status
+            and dock_support
+            order by p.priority, pi.title;"
+          );
+          while ($page = $system->database->fetch($pages_query)) {
+            echo '<li><a href="'. $system->document->link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+          }
+        ?>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<?php
+  $system->document->snippets['column_left'] = ob_get_clean();
+  
   $pages_query = $system->database->query(
     "select p.id, pi.title, pi.content, pi.head_title, pi.meta_keywords, pi.meta_description from ". DB_TABLE_PAGES ." p
     left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')

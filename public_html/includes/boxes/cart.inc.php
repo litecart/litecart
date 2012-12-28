@@ -10,7 +10,7 @@
     echo ' - '. $system->currency->format($system->cart->data['total']['value']);
   }
   
-  //echo ' '. $system->functions->form_draw_button('clear_cart_items', $system->language->translate('title_reset', 'Reset'), 'button')
+  //echo ' '. $system->functions->form_draw_button('clear_cart_items', $system->language->translate('title_reset', 'Reset'), 'button');
   echo ' '. $system->functions->form_draw_button('checkout', $system->language->translate('title_checkout', 'Checkout'), 'button', 'onclick="location=\''. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php') .'\'"') . $system->functions->form_draw_form_end();
 ?>
 <!--

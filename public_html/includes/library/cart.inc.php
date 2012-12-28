@@ -41,7 +41,7 @@
         $this->update($_POST['key'], (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
       
-      if (!empty($_POST['reset_cart'])) {
+      if (!empty($_POST['clear_cart_items'])) {
         $this->reset();
       }
       

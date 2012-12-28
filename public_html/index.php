@@ -26,11 +26,13 @@
   $system->document->snippets['column_left'] = ob_get_clean();
 ?>
 
-<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'bestsellers.inc.php'); ?>
-
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'new_products.inc.php'); ?>
 
+<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'most_popular.inc.php'); ?>
+
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'campaigns.inc.php'); ?>
+
+<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'categories.inc.php'); ?>
 
 <?php
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
