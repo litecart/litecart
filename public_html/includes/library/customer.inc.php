@@ -17,19 +17,17 @@
     
     public function startup() {
     
-      if (!isset($this->system->session->data['customer']) || !is_array($this->system->session->data['customer'])) {
+      if (empty($this->system->session->data['customer']) || !is_array($this->system->session->data['customer'])) {
         $this->reset();
       }
     
-      if (!empty($this->data['id'])) {
-        if ($this->data['last_ip'] != $_SERVER['REMOTE_ADDR'] || $this->data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) {
-          session_regenerate_id();
-          $this->reset();
-          error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' on '. $_SERVER['REQUEST_URI']);
-          $this->system->notices->add('warnings', $this->system->language->translate('warning_session_hijacking_attempt_blocked', 'Warning: Session hijacking attempt blocked.'));
-          header('Location: ' . $this->system->document->link(WS_DIR_HTTP_HOME));
-          exit;
-        }
+      if (!empty($this->data['id']) && ($this->data['last_ip'] != $_SERVER['REMOTE_ADDR'] || $this->data['last_agent'] != $_SERVER['HTTP_USER_AGENT'])) {
+        session_regenerate_id();
+        $this->reset();
+        error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' on '. $_SERVER['REQUEST_URI']);
+        $this->system->notices->add('warnings', $this->system->language->translate('warning_session_hijacking_attempt_blocked', 'Warning: Session hijacking attempt blocked.'));
+        header('Location: ' . $this->system->document->link(WS_DIR_HTTP_HOME));
+        exit;
       }
       
       if (!empty($_POST['login'])) $this->login($_POST['email'], $_POST['password']);
@@ -74,7 +72,7 @@
     // Return country from cookie
       if (isset($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $countries)) return $_COOKIE['country_code'];
       
-    // Return language from browser
+    // Return country from browser
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $browser_locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
       } elseif (isset($_SERVER['LC_CTYPE'])) {
@@ -93,21 +91,6 @@
     }
     
     public function reset() {
-      $countries_query = $this->system->database->query(
-        "select * from ". DB_TABLE_COUNTRIES ."
-        where iso_code_2 = '". $this->system->database->input($this->system->settings->get('default_country_code')) ."'
-        limit 1;"
-      );
-      $country = $this->system->database->fetch($countries_query);
-      
-      $zones_query = $this->system->database->query(
-        "select * from ". DB_TABLE_ZONES ."
-        where country_code = '". $this->system->database->input($this->system->settings->get('default_country_code')) ."'
-        and code = '". $this->system->database->input($this->system->settings->get('default_zone_code')) ."'
-        limit 1;"
-      );
-      $zone = $this->system->database->fetch($zones_query);
-      
       $this->system->session->data['customer'] = array(
         'id' => '',
         'email' => '',

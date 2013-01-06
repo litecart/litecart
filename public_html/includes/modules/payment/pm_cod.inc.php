@@ -38,6 +38,7 @@
             'fields' => '',
             'cost' => $this->settings['fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
+            'confirm' => $this->system->language->translate(__CLASS__.':title_confirm_order', 'Confirm Order'),
           ),
         )
       );

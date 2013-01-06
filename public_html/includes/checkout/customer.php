@@ -321,7 +321,7 @@
     $("button[name='get_address']").click(function(){
       $('body').css('cursor', 'wait');
       $.ajax({
-        url: '<?php echo $system->document->link(WS_DIR_AJAX .'sveawebpay_getaddress.json.php'); ?>?country_code=' + $("select[name='country_code']").val() + '&tax_id=' + $("input[name='tax_id']").val() + '&company=' + $("input[name='company']").length,
+        url: '<?php echo $system->document->link(WS_DIR_AJAX .'getaddress.json.php'); ?>?country_code=' + $("select[name='country_code']").val() + '&tax_id=' + $("input[name='tax_id']").val() + '&company=' + $("input[name='company']").length,
         type: 'get',
         cache: false,
         async: true,
@@ -337,7 +337,6 @@
           }
           $("input[name='firstname']").val(data['firstname']);
           $("input[name='lastname']").val(data['lastname']);
-          $("input[name='legalname']").val(data['legalname']);
           $("input[name='address1']").val(data['address1']);
           $("input[name='address2']").val(data['address2']);
           $("input[name='postcode']").val(data['postcode']);

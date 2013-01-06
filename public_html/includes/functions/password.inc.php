@@ -26,7 +26,7 @@
   }
   
   function password_hash($login, $password) {
-    if (!defined('PASSWORD_SALT')) trigger_error('There is no password salt defined.');
+    if (!defined('PASSWORD_SALT')) trigger_error('There is no password salt defined.', E_USER_ERROR);
     $password = str_split($password, ceil(strlen($password)/2)); 
     return hash('sha256', $login . $password[0] . PASSWORD_SALT . $password[1]);
   }

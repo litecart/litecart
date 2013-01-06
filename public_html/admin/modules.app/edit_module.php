@@ -4,15 +4,17 @@
   $module_id = basename($_GET['module_id']);
   
   switch ($_GET['type']) {
-    case 'shipping':
+    case 'get_address':
       break;
-    case 'payment':
-      break;
-    case 'order_total':
+    case 'jobs':
       break;
     case 'order_success':
       break;
-    case 'jobs':
+    case 'order_total':
+      break;
+    case 'payment':
+      break;
+    case 'shipping':
       break;
     default:
       die('Unknown module type');

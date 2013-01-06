@@ -73,10 +73,10 @@
       
       if ($from == $to) return $value;
       
-      if (isset($this->classes[$from])) trigger_error('The unit '. $from .' is not a valid weight unit.', E_USER_WARNING);
-      if (isset($this->classes[$to])) trigger_error('The unit '. $to .' is not a valid weight unit.', E_USER_WARNING);
+      if (!isset($this->classes[$from])) trigger_error('The unit '. $from .' is not a valid weight class.', E_USER_WARNING);
+      if (!isset($this->classes[$to])) trigger_error('The unit '. $to .' is not a valid weight class.', E_USER_WARNING);
       
-      return $value * ($to['value'] / $from['value']);
+      return $value * ($this->classes[$to]['value'] / $this->classes[$from]['value']);
     }
 
     public function format($value, $class) {

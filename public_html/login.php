@@ -1,7 +1,6 @@
 <?php
-  require_once('includes/config.inc.php');
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
-    
+  require_once('includes/app_header.inc.php');
+  
   if (!empty($system->customer->data['id'])) $system->notices->add('notice', $system->language->translate('text_already_logged_in', 'You are already logged in'));
  ?>
  

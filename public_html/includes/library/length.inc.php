@@ -10,27 +10,32 @@
     
     public function load_dependencies() {
       $this->classes = array(
-        array(
-          'name' => 'Millimeters',
-          'unit' => 'mm',
-          'value' => 1000,
-        ),
-        array(
-          'name' => 'Centimeters',
-          'unit' => 'cm',
-          'value' => 100,
-        ),
-        array(
-          'name' => 'Meters',
+        'm' => array(
+          'name' => 'Metres',
           'unit' => 'm',
           'value' => 1,
         ),
-        array(
+        'dm' => array(
+          'name' => 'Decimetres',
+          'unit' => 'dm',
+          'value' => 10,
+        ),
+        'cm' => array(
+          'name' => 'Centimetres',
+          'unit' => 'cm',
+          'value' => 100,
+        ),
+        'mm' => array(
+          'name' => 'Millimetres',
+          'unit' => 'mm',
+          'value' => 1000,
+        ),
+        'ft' => array(
           'name' => 'Feet',
           'unit' => 'ft',
           'value' => 3.2808,
         ),
-        array(
+        'in' => array(
           'name' => 'Inches',
           'unit' => 'in',
           'value' => 39.37,
@@ -62,19 +67,20 @@
     ######################################################################
     
     public function convert($value, $from, $to) {
-      if ($from == $to) {
-        return $value;
-      }
       
-      if (isset($this->classes[$from])) trigger_error('The unit '. $from .' is not a valid length unit.', E_USER_WARNING);
-      if (isset($this->classes[$to])) trigger_error('The unit '. $to .' is not a valid length unit.', E_USER_WARNING);
+      if ($value == 0) return 0;
       
-      return $value * ($to['value'] / $from['value']);
+      if ($from == $to) return $value;
+      
+      if (!isset($this->classes[$from])) trigger_error('The unit '. $from .' is not a valid length class.', E_USER_WARNING);
+      if (!isset($this->classes[$to])) trigger_error('The unit '. $to .' is not a valid length class.', E_USER_WARNING);
+      
+      return $value * ($this->classes[$to]['value'] / $this->classes[$from]['value']);
     }
 
     public function format($value, $unit) {
     
-      if (isset($this->classes[$unit])) trigger_error('The unit '. $unit .' is not a valid length unit.', E_USER_WARNING);
+      if (!isset($this->classes[$unit])) trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);
       
       return number_format($value, 2, $this->system->language->decimal_point, $this->system->language->thousands_sep) .' '. $this->cache[$unit]['unit'];
     }

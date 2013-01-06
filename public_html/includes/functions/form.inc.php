@@ -205,6 +205,8 @@
         return $system->functions->form_draw_input_field($name, $input, 'text', 'style="width: 50px"');
       case 'input':
         return $system->functions->form_draw_input_field($name, $input, 'text', 'style="width: 200px"');
+      case 'password':
+        return $system->functions->form_draw_input_field($name, $input, 'password', 'style="width: 200px"');
       case 'smalltext':
         return $system->functions->form_draw_textarea($name, $input, 'rows="2" style="width: 200px"');
       case 'mediumtext':

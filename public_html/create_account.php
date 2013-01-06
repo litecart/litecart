@@ -1,9 +1,7 @@
 <?php
-  require_once('includes/app_header.inc.php');
-  
   $system->breadcrumbs->add($system->language->translate('title_create_account', 'Create Account'), $system->document->link());
   
-  $system->document->snippets['title'][] = $system->language->translate('title_create_account', 'Create');
+  $system->document->snippets['title'][] = $system->language->translate('title_create_account', 'Create Account');
   //$system->document->snippets['keywords'] = '';
   //$system->document->snippets['description'] = '';
   
@@ -212,6 +210,3 @@
     });
   });
 </script>
-<?php
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
-?>

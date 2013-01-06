@@ -1,0 +1,25 @@
+# Exclude from filter #
+#######################
+!.htaccess
+!public_html/includes/templates/default*
+
+
+# Project files #
+#################
+public_html/includes/config.inc.php
+public_html/data/backups/*
+public_html/cache/*
+public_html/includes/templates/*
+*.bak
+*.ignore
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
