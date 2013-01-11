@@ -1,8 +1,11 @@
 ErrorDocument 404 /error_document.php?code=404
 
+# URL-rewriting
 <IfModule mod_rewrite.c>
   Options +FollowSymLinks
   RewriteEngine on
+  
+  # Web path to catalog root
   RewriteBase /
   
   # Non-www to www
@@ -26,7 +29,7 @@ ErrorDocument 404 /error_document.php?code=404
   Header unset Last-Modified
 </FilesMatch>
 
-# GZip Compress external content
+# GZip compress external content
 <IfModule mod_deflate.c>
   <FilesMatch "\.(css|js)$">
      SetOutputFilter DEFLATE
