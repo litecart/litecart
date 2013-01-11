@@ -9,9 +9,11 @@
 public_html/includes/config.inc.php
 public_html/data/backups/*
 public_html/cache/*
-public_html/includes/templates/*
+public_html/images/banners/*
 public_html/images/categories/*
+public_html/images/manufacturers/*
 public_html/images/products/*
+public_html/includes/templates/*
 *.bak
 *.ignore
 
@@ -25,3 +27,5 @@ public_html/images/products/*
 Icon?
 ehthumbs.db
 Thumbs.db
+error_log
+.ftpquota
