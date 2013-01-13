@@ -27,3 +27,5 @@ public_html/includes/templates/*
 Icon?
 ehthumbs.db
 Thumbs.db
+error_log
+.ftpquota
