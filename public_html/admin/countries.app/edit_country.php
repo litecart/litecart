@@ -22,6 +22,8 @@
     if (empty($_POST['iso_code_3'])) $system->notices->add('errors', $system->language->translate('error_missing_code', 'You must enter a code'));
     if (empty($_POST['name'])) $system->notices->add('errors', $system->language->translate('error_must_enter_name', 'You must enter a name'));
     
+    if (empty($_POST['zones'])) $_POST['zones'] = array();
+    
     if (!$system->notices->get('errors')) {
     
       $fields = array(

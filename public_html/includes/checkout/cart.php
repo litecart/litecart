@@ -88,6 +88,7 @@
   <?php } ?>
 </div>
 
+<?php if (count($system->cart->data['items']) > 1) { ?>
 <script type="text/javascript">
     var totWidth=0;
     var positions = new Array();
@@ -133,6 +134,7 @@
     if (itvl) clearInterval(itvl);
     var itvl = setInterval(function(){autoAdvance()}, cartStepInterval * 1000);
 </script>
+<?php } ?>
 
 <?php
   if ($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME'] == __FILE__) {

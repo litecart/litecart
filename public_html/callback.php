@@ -1,4 +1,9 @@
 <?php
+  
+  /*
+   * This script requires that the order has been made and is identified with the unique order id.
+   */
+  
   define('REQUIRE_POST_TOKEN', false);
   require_once('includes/app_header.inc.php');
   

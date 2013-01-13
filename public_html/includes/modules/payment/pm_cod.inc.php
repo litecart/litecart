@@ -23,17 +23,17 @@
       
     // If not in geo zone
       if (!empty($this->settings['geo_zone_id'])) {
-        if (!$this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $destination['country_code'], $destination['zone_code'])) return;
+        if (!$this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $this->system->customer->data['country_code'], $this->system->customer->data['zone_code'])) return;
       }
       
       $method = array(
-        'title' => 'Cash On Delivery',
-        'description' => 'This is a description.',
+        'title' => $this->system->language->translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
+        'description' => '',
         'options' => array(
           array(
-            'id' => 'a',
+            'id' => 'cod',
             'icon' => '',
-            'name' => 'Text Way',
+            'name' => $this->system->functions->reference_get_country_name($this->system->customer->data['shipping_address']['country_code']),
             'description' => '',
             'fields' => '',
             'cost' => $this->settings['fee'],
@@ -88,7 +88,7 @@
           'default_value' => '0',
           'title' => $this->system->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee'),
           'description' => $this->system->language->translate(__CLASS__.':description_payment_fee', 'Adds a payment fee to the order.'),
-          'function' => 'int()',
+          'function' => 'decimal()',
         ),
         array(
           'key' => 'tax_class_id',

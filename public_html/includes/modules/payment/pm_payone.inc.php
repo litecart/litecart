@@ -7,7 +7,7 @@
     public $description = '';
     public $author = 'TiM International';
     public $version = '1.0';
-    public $support_link = 'http://www.payone.de';
+    public $support_link = 'https://pmi.pay1.de/';
     public $website = 'http://www.payone.de';
     public $priority = 0;
     
@@ -61,7 +61,7 @@
       switch($option_id) {
         case 'card':
           $clearingtype = 'cc';
-          $request = 'creditcardcheck';
+          $request = 'authorization';
           break;
         case 'invoice':
           $clearingtype = 'rec';
@@ -73,23 +73,24 @@
       
       $fields = array(
       // Front-end specific data
-        'mid' => $this->settings['merchant_id'],
+        //'mid' => $this->settings['merchant_id'],
         'aid' => $this->settings['aid'],
         'portalid' => $this->settings['portal_id'],
         'mode' => ($this->settings['gateway'] == 'Live') ? 'live' : 'test',
-        'response_type' => 'REDIRECT',
-        'reference' => $order->data['uid'],
-        'successurl' => $this->system->document->link(WS_DIR_HTTP_HOME . 'order_process.php'),
-        'errorurl' => $this->system->document->link(WS_DIR_HTTP_HOME . 'order_process.php'),
+        'request' => $request,
         'encoding' => $this->system->language->selected['charset'],
+        'clearingtype' => $clearingtype,
+        'reference' => $order->data['uid'],
+        'display_name' => 'no',
+        //'response_type' => 'REDIRECT',
+        'targetwindow' => '_top',
+        'successurl' => $this->system->document->link(WS_DIR_HTTP_HOME . 'order_process.php'),
+        'backurl' => $this->system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'),
         //'settleaccount' => '',
         
       // Order data
-        'request' => 'creditcardcheck',
-        'amount' => $order->data['payment_due'],
-        'currency' => $order->data['currency_code'],
-        'clearingtype' => $clearingtype,
-        'request' => $request,
+        'amount' => number_format($this->system->currency->calculate($order->data['payment_due'], 'EUR'), 2, '', ''),
+        'currency' => 'EUR',
 
       // Personal data
         'customerid' => $order->data['customer']['id'],
@@ -97,15 +98,15 @@
         'lastname' => $order->data['customer']['lastname'],
         'company' => $order->data['customer']['company'],
         'street' => $order->data['customer']['address1'],
-        'addressaddition' => $order->data['customer']['address2'],
+        //'addressaddition' => $order->data['customer']['address2'],
         'zip' => $order->data['customer']['postcode'],
         'city' => $order->data['customer']['city'],
         'country' => $order->data['customer']['country_code'],
         'email' => $order->data['customer']['email'],
         'telephonenumber' => $order->data['customer']['phone'],
         'language' => $order->data['language_code'],
-        'vatid' => $order->data['customer']['tax_id'],
-        'ip' => $_SERVER['REMOTE_ADDR'],
+        //'vatid' => $order->data['customer']['tax_id'],
+        //'ip' => $_SERVER['REMOTE_ADDR'],
         
       // Shipping data
         'firstname' => $order->data['customer']['shipping_address']['firstname'],
@@ -122,9 +123,9 @@
       foreach ($order->data['items'] as $item) {
         $fields['id['.$item_no.']'] = $item['product_id'] . (!empty($item['option_id']) ? ':'.$item['product_id'] : ''); // item no
         $fields['no['.$item_no.']'] = $item['quantity']; // quantity
-        $fields['pr['.$item_no.']'] = number_format($this->system->currency->calculate($item['price'], $order->data['currency_code']), 2, '', ''); // price in cents
+        $fields['pr['.$item_no.']'] = number_format($this->system->currency->calculate($item['price'] + $item['tax'], 'EUR'), 2, '', ''); // price in cents
         $fields['de['.$item_no.']'] = $item['name']; // item description
-        $fields['va['.$item_no.']'] = round($item['tax'] / $item['price']); // vat percentage
+        $fields['va['.$item_no.']'] = round($item['tax'] / $item['price'] * 100); // vat percentage
         $item_no++;
       }
       
@@ -132,34 +133,33 @@
         if (!empty($row['calculate'])) {
           $fields['id['.$item_no.']'] = $row['code']; // item no
           $fields['no['.$item_no.']'] = 1; // quantity
-          $fields['pr['.$item_no.']'] = number_format($this->system->currency->calculate($row['value'], $order->data['currency_code']), 2, '', ''); // price in cents
+          $fields['pr['.$item_no.']'] = number_format($this->system->currency->calculate($row['value'] + $row['tax'], 'EUR'), 2, '', ''); // price in cents
           $fields['de['.$item_no.']'] = $row['title']; // item description
-          $fields['va['.$item_no.']'] = round($row['tax'] / $row['value']); // vat percentage
+          $fields['va['.$item_no.']'] = round($row['tax'] / $row['value'] * 100); // vat percentage
           $item_no++;
         }
       }
       
-      
-      $hash_params = array(
-        'mid', 'amount', 'productid', 'aid', 'currency', 'accessname',
-        'portalid', 'due_time', 'accesscode', 'mode', 'storecarddata',
-        'access_expiretime', 'request', 'checktype', 'access_canceltime',
-        'responsetype', 'addresschecktype', 'access_starttime', 'reference',
-        'consumerscoretype', 'access_period', 'userid', 'invoiceid',
-        'access_aboperiod', 'customerid', 'invoiceappendix', 'access_price',
-        'param', 'invoice_deliverymode', 'access_aboprice', 'narrative_text',
-        'eci', 'access_vat', 'successurl', 'id', 'settleperiod', 'errorurl',
-        'pr', 'settletime', 'backurl', 'no', 'vaccountname', 'exiturl',
-        'de', 'vreference', 'clearingtype', 'ti', 'document_date', 'encoding',
-        'va', 'booking_date', 'settleaccount'
+      $hash_keys = array(
+        'aid', 'portalid', 'mode', 'request', 'encoding', 'clearingtype', 'reference',
+        'customerid', 'invoiceid', 'param', 'narrative_text', 'display_name', 'display_address',
+        'autosubmit', 'successurl', 'backurl', 'targetwindow', 'amount', 'currency',
       );
       
-      $hash_string = '';
-      foreach ($hash_params as $key) {
-        if (!isset($fields['key'])) continue;
-        $hash_string .= is_array($fields[$key]) ? implode('', $fields[$key]) : $fields[$key];
+      $i = 1;
+      while ($i < $item_no) {
+        $hash_keys = array_merge($hash_keys, array('id['.$i.']', 'pr['.$i.']', 'no['.$i.']', 'de['.$i.']', 'va['.$i.']'));
+        $i++;
       }
       
+      sort($hash_keys);
+      
+      $hash_string = '';
+      foreach ($hash_keys as $key) {
+        if (!isset($fields[$key])) continue;
+        $hash_string .= $fields[$key];
+      }
+      var_dump($hash_keys, $hash_string);
       $fields['hash'] = hash('md5', $hash_string . $this->settings['merchant_key']);
       
       return array(
@@ -172,6 +172,8 @@
     public function verify() {
       global $order;
       
+      var_dump($_POST, $_GET);
+      exit;
       
       return array(
         'order_status_id' => '',
@@ -213,7 +215,7 @@
           'default_value' => '',
           'title' => $this->system->language->translate(__CLASS__.':title_merchant_key', 'Merchant Key'),
           'description' => $this->system->language->translate(__CLASS__.':description_merchant_key', 'Your merchant key provided by Payone.'),
-          'function' => 'input()',
+          'function' => 'password()',
         ),
         array(
           'key' => 'portal_id',

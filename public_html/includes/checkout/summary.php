@@ -131,7 +131,7 @@
               <?php echo $system->functions->form_draw_textarea('comments', !empty($system->session->data['order_comments']) ? $system->session->data['order_comments'] : '', 'style="width: 400px; height: 50px;"'); ?></p>
           </td>
           <td align="right" style="vertical-align: bottom;">
-            <p align="right"><?php echo (is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" />' : '<strong>'. $payment->data['selected']['title'] .'</strong>'; ?></p>
+            <p align="right"><?php echo (is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" alt="'. htmlspecialchars($payment->data['selected']['title']) .'" />' : '<strong>'. $payment->data['selected']['title'] .'</strong>'; ?></p>
 <?php
   if ($checkout_error = $order->checkout_forbidden()) $errors[] = $checkout_error;
   

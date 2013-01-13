@@ -24,7 +24,7 @@
       $options = array();
       
       for ($i=1; $i <= 3; $i++) {
-        if (empty($this->settings['geo_zone_id_'.$i])) return;
+        if (empty($this->settings['geo_zone_id_'.$i])) continue;
         
         if (!$this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
         
@@ -39,7 +39,21 @@
         );
       }
       
-      if (empty($options)) return;
+      if (empty($options)) {
+        if ($this->settings['cost_x'] == 0) {
+          return;
+        } else {
+          $options[] = array(
+            'id' => 'zone_x',
+            'icon' => '',
+            'name' => $this->system->language->translate('title_flat_rate', 'Flat Rate'),
+            'description' => $this->system->functions->reference_get_country_name($customer['country_code']),
+            'fields' => '',
+            'cost' => $this->settings['cost_x'],
+            'tax_class_id' => $this->settings['tax_class_id'],
+          );
+        }
+      }
       
       $options = array(
         'title' => $this->name,
@@ -111,6 +125,13 @@
           'default_value' => '0.00',
           'title' => $this->system->language->translate(__CLASS__.':title_zone', 'Zone') .' 3: '. $this->system->language->translate(__CLASS__.':title_cost', 'Cost'),
           'description' => $this->system->language->translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
+          'function' => 'decimal()',
+        ),
+        array(
+          'key' => 'cost_x',
+          'default_value' => '0.00',
+          'title' => $this->system->language->translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. $this->system->language->translate(__CLASS__.':title_cost', 'Cost'),
+          'description' => $this->system->language->translate(__CLASS__.':description_title_cost_x', 'The shipping cost excluding tax for any zones not matched above.'),
           'function' => 'decimal()',
         ),
         array(

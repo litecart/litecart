@@ -87,8 +87,8 @@
   }
   
   
-  $sidebar .= '    <li><a href="'. str_replace('://', '://logout:logout@', $system->document->link(WS_DIR_ADMIN)) .'"><img src="'. WS_DIR_IMAGES .'icons/48x48/exit.png" width="24" height="24" style="vertical-align: middle;" alt="'. $system->language->translate('title_logout', 'Logout') .'" title="'. $system->language->translate('title_logout', 'Logout') .'" /> '. $system->language->translate('title_logout', 'Logout') .'</a></li>' . PHP_EOL
-            . '  </ul>' . PHP_EOL
+  //$sidebar .= '    <li><a href="'. str_replace('://', '://logout:logout@', $system->document->link(WS_DIR_ADMIN)) .'"><img src="'. WS_DIR_IMAGES .'icons/48x48/exit.png" width="24" height="24" style="vertical-align: middle;" alt="'. $system->language->translate('title_logout', 'Logout') .'" title="'. $system->language->translate('title_logout', 'Logout') .'" /> '. $system->language->translate('title_logout', 'Logout') .'</a></li>' . PHP_EOL
+  $sidebar .= '  </ul>' . PHP_EOL
             . '</div>';
   
   $system->document->snippets['sidebar_content'] = '<div id="apps-list-menu">'. $sidebar . '</div>';
