@@ -1,10 +1,12 @@
+<ul id="languages">
 <?php
   foreach ($system->language->languages as $language) {
     if ($language['status']) {
-      echo '<a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" /></a> ';
+      echo '  <li><a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" /></a></li>' . PHP_EOL;
     }
   }
 ?>
+</ul>
 <script>
   function set_language(code) {
     var form = $('<?php

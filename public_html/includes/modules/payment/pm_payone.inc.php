@@ -29,7 +29,6 @@
         if (!$this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $destination['country_code'], $destination['zone_code'])) return;
       }
       
-      if (empty($this->settings['merchant_id'])) return;
       if (empty($this->settings['merchant_key'])) return;
       
       $method = array(
@@ -73,7 +72,6 @@
       
       $fields = array(
       // Front-end specific data
-        //'mid' => $this->settings['merchant_id'],
         'aid' => $this->settings['aid'],
         'portalid' => $this->settings['portal_id'],
         'mode' => ($this->settings['gateway'] == 'Live') ? 'live' : 'test',
@@ -82,16 +80,14 @@
         'clearingtype' => $clearingtype,
         'reference' => $order->data['uid'],
         'display_name' => 'no',
-        //'response_type' => 'REDIRECT',
-        'targetwindow' => '_top',
+        'targetwindow' => 'top',
         'successurl' => $this->system->document->link(WS_DIR_HTTP_HOME . 'order_process.php'),
         'backurl' => $this->system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'),
-        //'settleaccount' => '',
         
       // Order data
         'amount' => number_format($this->system->currency->calculate($order->data['payment_due'], 'EUR'), 2, '', ''),
         'currency' => 'EUR',
-
+        
       // Personal data
         'customerid' => $order->data['customer']['id'],
         'firstname' => $order->data['customer']['firstname'],
@@ -131,7 +127,7 @@
       
       foreach ($order->data['order_total'] as $row) {
         if (!empty($row['calculate'])) {
-          $fields['id['.$item_no.']'] = $row['code']; // item no
+          $fields['id['.$item_no.']'] = $row['id']; // item no
           $fields['no['.$item_no.']'] = 1; // quantity
           $fields['pr['.$item_no.']'] = number_format($this->system->currency->calculate($row['value'] + $row['tax'], 'EUR'), 2, '', ''); // price in cents
           $fields['de['.$item_no.']'] = $row['title']; // item description
@@ -159,7 +155,7 @@
         if (!isset($fields[$key])) continue;
         $hash_string .= $fields[$key];
       }
-      var_dump($hash_keys, $hash_string);
+      
       $fields['hash'] = hash('md5', $hash_string . $this->settings['merchant_key']);
       
       return array(
@@ -172,12 +168,32 @@
     public function verify() {
       global $order;
       
-      var_dump($_POST, $_GET);
-      exit;
+      $attempts = 0;
+      while(empty($payone) && $attempts < 20) {
+        if (!empty($attempts)) sleep(1);
+        $payone_query = $this->system->database->query(
+          "select * from ". DB_TABLE_PREFIX ."payone
+          where order_uid = '". $this->system->database->input($order->data['uid']) ."'
+          order by date_created
+          limit 1;"
+        );
+        $payone = $this->system->database->fetch($payone_query);
+        $attempts++;
+      }
+      
+      if (empty($payone)) return array('error' => 'Missing transaction status');
+      
+      $result = unserialize($payone['parameters']);
+      
+      if (!empty($result['failedcause'])) return array('error' => $result['failedcause']);
+      if (!in_array($result['txaction'], array('appointed'))) return array('error' => 'Checksum error');
+      if ($result['key'] != md5($this->settings['merchant_key'])) return array('error' => 'Checksum error');
+      if ($result['price'] != number_format($this->system->currency->calculate($order->data['payment_due'], 'EUR'), 2, '.', '')) return array('error' => 'The paid amount did not match the order amount.');
+      if ($result['currency'] != 'EUR') return array('error' => 'Invalid currency');
       
       return array(
-        'order_status_id' => '',
-        'transaction_id' => '',
+        'order_status_id' => $this->settings['order_status_id'],
+        'transaction_id' => $result['txid'],
       );
     }
     
@@ -193,7 +209,7 @@
           'key' => 'status',
           'default_value' => 'Enabled',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', ''),
+          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'radio("Enabled", "Disabled")',
         ),
         array(
@@ -201,13 +217,6 @@
           'default_value' => 'images/payment/payone.png',
           'title' => $this->system->language->translate(__CLASS__.':title_icon', 'Icon'),
           'description' => $this->system->language->translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
-          'function' => 'input()',
-        ),
-        array(
-          'key' => 'merchant_id',
-          'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_merchant_id', 'Merchant ID'),
-          'description' => $this->system->language->translate(__CLASS__.':description_merchant_email', 'Your merchant id provided by Payone.'),
           'function' => 'input()',
         ),
         array(
@@ -262,7 +271,19 @@
       );
     }
     
-    public function install() {}
+    public function install() {
+      $this->system->database->query(
+        "CREATE TABLE IF NOT EXISTS `". DB_TABLE_PREFIX ."_payone` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `order_uid` varchar(13) NOT NULL,
+          `txid` varchar(32) NOT NULL,
+          `parameters` varchar(4096) NOT NULL,
+          `ip` varchar(15) NOT NULL,
+          `date_created` datetime NOT NULL,
+          PRIMARY KEY (`id`)
+        );"
+      );
+    }
     
     public function uninstall() {}
   }

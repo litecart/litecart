@@ -3,6 +3,7 @@
   <div class="heading"><h3><?php echo $system->language->translate('title_login', 'Login'); ?></h3></div>
   <div class="content">
     <?php echo $system->functions->form_draw_form_begin('login_form', 'post'); ?>
+     <?php echo $system->functions->form_draw_hidden_field('redirect_url', $_SERVER['REQUEST_URI']); ?>
       <table style="width: 100%;">
         <tr>
           <td><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />

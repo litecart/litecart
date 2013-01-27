@@ -1,7 +1,7 @@
 <?php
   require_once('../includes/app_header.inc.php');
   
-  header('Content-type: text/plain; charset='. $system->language->selected['charset']);
+  header('Content-type: application/json; charset='. $system->language->selected['charset']);
   
   if (!isset($_GET['country_code'])) exit;
   

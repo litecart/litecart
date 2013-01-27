@@ -121,7 +121,7 @@
     }
     
     $products_query = $system->database->query(
-      "select p.id, p.product_groups, p.image, p.tax_class_id, p.date_created, pi.name, pi.short_description, (if(pp.". $system->database->input($system->currency->selected['code']) .", pp.". $system->database->input($system->currency->selected['code']) ."  / ". $system->currency->selected['value'] .", pp.". $system->database->input($system->settings->get('store_currency_code')) .")) as price, pc_tmp.campaign_price, if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp.". $system->database->input($system->currency->selected['code']) ." / ". $system->currency->selected['value'] .") as final_price, p.manufacturer_id, m.name as manufacturer_name
+      "select p.id, p.product_groups, p.image, p.tax_class_id, p.quantity, p.date_created, pi.name, pi.short_description, (if(pp.". $system->database->input($system->currency->selected['code']) .", pp.". $system->database->input($system->currency->selected['code']) ."  / ". $system->currency->selected['value'] .", pp.". $system->database->input($system->settings->get('store_currency_code')) .")) as price, pc_tmp.campaign_price, if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp.". $system->database->input($system->currency->selected['code']) ." / ". $system->currency->selected['value'] .") as final_price, p.manufacturer_id, m.name as manufacturer_name
       ". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ."
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". $system->database->input($system->language->selected['code']) ."')

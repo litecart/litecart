@@ -24,7 +24,7 @@
   if ($system->database->num_rows($sold_out_status_query) > 0) {
     
   // Jump to data for current page
-    if ($_GET['page'] > 1) $system->database->seek($sold_out_status_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+    if ($_GET['page'] > 1) $system->database->seek($sold_out_status_query, ($system->settings->get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
     while ($sold_out_status = $system->database->fetch($sold_out_status_query)) {
@@ -43,7 +43,7 @@
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_sold_out_status.php', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
-      if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+      if (++$page_items == $system->settings->get('data_table_rows_per_page')) break;
     }
   }
 ?>
@@ -70,5 +70,5 @@
 <?php
   echo $system->functions->form_draw_form_end();
   
-  echo $system->functions->draw_pagination(ceil($system->database->num_rows($sold_out_status_query)/$system->settings->get('data_table_rows_per_page', 20)));
+  echo $system->functions->draw_pagination(ceil($system->database->num_rows($sold_out_status_query)/$system->settings->get('data_table_rows_per_page')));
 ?>

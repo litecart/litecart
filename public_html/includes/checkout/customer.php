@@ -18,9 +18,9 @@
   
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     
-    if (!empty($_POST['email']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". $system->database->input($_POST['email']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_already_registered', 'The e-mail address already exists in our customer database. Please login or select a different e-mail address.'));
- 
     if (empty($system->customer->data['id']) && $system->settings->get('register_guests') == 'true') {
+      
+      if (!empty($_POST['email']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". $system->database->input($_POST['email']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_already_registered', 'The e-mail address already exists in our customer database. Please login or select a different e-mail address.'));
       
       if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_missing', 'You must enter your e-mail address.'));
       
@@ -90,11 +90,11 @@
       
       if (!empty($system->customer->data['different_shipping_address'])) {
         foreach ($fields as $field) {
-          $system->customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
+          if (isset($_POST['shipping_address'][$field])) $system->customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
         }
       } else {
         foreach ($fields as $field) {
-          $system->customer->data['shipping_address'][$field] = $_POST[$field];
+          if (isset($_POST[$field])) $system->customer->data['shipping_address'][$field] = $_POST[$field];
         }
       }
       

@@ -1,39 +1,45 @@
-<div id="header">
-  <img src="<?php echo $this->system->document->link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo $this->system->settings->get('store_name'); ?>" style="float: left;" />
-  <h1 align="right"><?php echo $this->system->language->translate('title_packing_slip', 'Packing Slip'); ?></h1>
-  <p align="right"><?php echo date($this->system->language->selected['raw_date']); ?><br />
-    &nbsp;
-  </p>
+<div id="header" style="margin-bottom: 10px; position: relative; height: 75px;">
+  <img style="position: absolute; top: 0; left: 0; max-width: 300px; max-height: 75px; font-size: 32px;" src="<?php echo $this->system->document->link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo $this->system->settings->get('store_name'); ?>" />
+  <h1 style="display: inline; position: absolute; right: 0; top: 0; margin: 0;"><?php echo $this->system->language->translate('title_order_copy', 'Order Copy'); ?></h1>
+  <div style="display: inline; position: absolute; right: 0; bottom: 18px;"><?php echo $this->system->language->translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
+  <div style="display: inline; position: absolute; right: 0; bottom: 0;"><?php echo date($this->system->language->selected['raw_date']); ?></div>
 </div>
 
 <div id="body">
-  <table width="100%" style="border: 1px solid #666;">
+  <table id="addresses" class="dataTable" style="width: 100%;">
     <tr>
-      <td><strong><?php echo $this->system->language->translate('title_payment_address', 'Payment Address'); ?>:</strong></td>
-      <td><strong><?php echo $this->system->language->translate('title_shipping_address', 'Shipping Address'); ?>:</strong></td>
+      <td style="width: 55%;"><strong><?php echo $this->system->language->translate('title_payment_address', 'Payment Address'); ?>:</strong></td>
+      <td style="width: 45%;"><strong><?php echo $this->system->language->translate('title_shipping_address', 'Shipping Address'); ?>:</strong></td>
     </tr>
     <tr>
-      <td width="50%"><?php echo nl2br($this->system->functions->format_address($order['customer'])); ?></td>
-      <td width="50%"><?php echo nl2br($this->system->functions->format_address($order['customer']['shipping_address'])); ?></td>
+      <td><?php echo nl2br($this->system->functions->format_address($order['customer'])); ?></td>
+      <td><?php echo nl2br($this->system->functions->format_address($order['customer']['shipping_address'])); ?></td>
     </tr>
   </table>
   
-  <p>&nbsp;</p>
-  <table width="100%" style="border: 1px solid #666; font-size: 0.9;">
-    <tr>
-      <th width="30" align="center" nowrap="nowrap"><?php echo $this->system->language->translate('title_qty', 'Qty'); ?></th>
-      <th align="left"><?php echo $this->system->language->translate('title_item', 'Item'); ?></th>
+  <table id="items" class="dataTable" style="width: 100%; clear: both;">
+    <tr class="header">
+      <th style="text-align: center; width: 30px;"><?php echo $this->system->language->translate('title_qty', 'Qty'); ?></th>
+      <th style="text-align: left;"><?php echo $this->system->language->translate('title_item', 'Item'); ?></th>
     </tr>
-    <?php foreach ($order['items'] as $item) { ?>
-    <tr>
-      <td nowrap="nowrap" align="center"><?php echo $item['quantity']; ?></td>
+<?php
+  $rowclass = '';
+  foreach ($order['items'] as $item) {
+    if ($rowclass == 'odd') {
+      $rowclass = 'even';
+    } else {
+      $rowclass = 'odd';
+    }
+?>
+    <tr class="<?php echo $rowclass; ?>">
+      <td align="center"><?php echo $item['quantity']; ?></td>
       <td align="left"><?php echo $item['name']; ?>
 <?php
-  if (!empty($item['options'])) {
-    foreach ($item['options'] as $key => $value) {
-      echo '<br />- '.$key .': '. $value;
+    if (!empty($item['options'])) {
+      foreach ($item['options'] as $key => $value) {
+        echo '<br />- '.$key .': '. $value;
+      }
     }
-  }
 ?>
       </td>
     </tr>
@@ -41,7 +47,7 @@
   </table>
 </div>
 
-<table id="footer">
+<table id="footer" style="width: 100%;">
   <tr>
     <td><strong><?php echo $this->system->language->translate('title_address', 'Address'); ?>:</strong><br />
       <?php echo nl2br($this->system->settings->get('store_postal_address')); ?>

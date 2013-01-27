@@ -35,9 +35,10 @@
     $payment->set_cheapest();
   }
   
-  if (count($options) == 1
-  && count($options[key($options)]['options']) == 1
-  && empty($options[key($options)][key($options[key($options)]['options'])]['fields'])) return;
+// Hide if only 1 option
+  //if (count($options) == 1
+  //&& count($options[key($options)]['options']) == 1
+  //&& empty($options[key($options)][key($options[key($options)]['options'])]['fields'])) return;
   
 ?>
 <div class="box" id="box-checkout-payment">

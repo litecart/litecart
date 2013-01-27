@@ -21,15 +21,6 @@
         $this->reset();
       }
     
-      if (!empty($this->data['id']) && ($this->data['last_ip'] != $_SERVER['REMOTE_ADDR'] || $this->data['last_agent'] != $_SERVER['HTTP_USER_AGENT'])) {
-        session_regenerate_id();
-        $this->reset();
-        error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' on '. $_SERVER['REQUEST_URI']);
-        $this->system->notices->add('warnings', $this->system->language->translate('warning_session_hijacking_attempt_blocked', 'Warning: Session hijacking attempt blocked.'));
-        header('Location: ' . $this->system->document->link(WS_DIR_HTTP_HOME));
-        exit;
-      }
-      
       if (!empty($_POST['login'])) $this->login($_POST['email'], $_POST['password']);
       if (!empty($_POST['logout'])) $this->logout();
       if (!empty($_POST['lost_password'])) $this->password_reset($_POST['email']);
@@ -228,11 +219,10 @@
       
       $this->system->cart->load();
       
-      $this->data['last_agent'] = $_SERVER['HTTP_USER_AGENT'];
-      $this->data['last_ip'] = $_SERVER['REMOTE_ADDR'];
+      if (empty($_POST['redirect_url'])) $_POST['redirect_url'] = $this->system->document->link(WS_DIR_HTTP_HOME);
       
       $this->system->notices->add('success', str_replace(array('%firstname', '%lastname'), array($this->data['firstname'], $this->data['lastname']), $this->system->language->translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
-      header('Location: '. $_SERVER['REQUEST_URI']);
+      header('Location: '. $_POST['redirect_url']);
       exit;
     }
     

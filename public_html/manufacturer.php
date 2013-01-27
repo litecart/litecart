@@ -21,7 +21,7 @@
   
   if (empty($manufacturer)) {
     $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: HTTP/1.1 301 Moved Permanently');
+    header('Location: HTTP/1.1 404 Not Found');
     header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
     exit;
   }
@@ -71,33 +71,31 @@
       </span>
       <h1><?php echo $manufacturer['name']; ?></h1>
     </div>
-    <div class="content listing-wrapper">
+    <div class="content">
       <?php if ($manufacturer['description']) { ?>
       <div class="manufacturer-description"><?php echo $manufacturer['description'] ?></div>
       <?php } ?>
+      <ul class="listing-wrapper products">
 <?php
     $system->functions->draw_fancybox('a.fancybox');
     
     $products_query = $system->functions->catalog_products_query(array('manufacturer_id' => $manufacturer['id'], 'sort' => $_GET['sort']));
     if ($system->database->num_rows($products_query) > 0) {
-      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
       
       $page_items = 0;
       while ($listing_item = $system->database->fetch($products_query)) {
         echo $system->functions->draw_listing_product($listing_item);
         
-        if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+        if (++$page_items == $system->settings->get('items_per_page')) break;
       }
-      
-    } else {
-    
-      echo '<p><em>'. $system->language->translate('text_no_products_for_manufacturer', 'There are currently no products by this manufacturer in stock.') .'</em></p>';
     }
 ?>
+      </ul>
     </div>
 
 <?php
-    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
+    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page')));
   
     $system->cache->end_capture($manufacturer_cache_id);
   }

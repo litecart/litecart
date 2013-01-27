@@ -2,7 +2,7 @@
   require_once('../includes/app_header.inc.php');
   $system->document->viewport = 'ajax';
   
-  header('Content-type: text/plain; charset='. $system->language->selected['charset']);
+  header('Content-type: application/xhtml+xml; charset='. $system->language->selected['charset']);
   
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';

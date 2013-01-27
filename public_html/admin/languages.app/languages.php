@@ -37,7 +37,7 @@
 
   if ($system->database->num_rows($languages_query) > 0) {
     
-    if ($_GET['page'] > 1) $system->database->seek($languages_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+    if ($_GET['page'] > 1) $system->database->seek($languages_query, ($system->settings->get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
     while ($language = $system->database->fetch($languages_query)) {
@@ -57,7 +57,7 @@
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_language.php', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
-      if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+      if (++$page_items == $system->settings->get('data_table_rows_per_page')) break;
     }
   }
 ?>
@@ -87,5 +87,5 @@
 <?php
   echo $system->functions->form_draw_form_end();
   
-  echo $system->functions->draw_pagination(ceil($system->database->num_rows($languages_query)/$system->settings->get('data_table_rows_per_page', 20)));
+  echo $system->functions->draw_pagination(ceil($system->database->num_rows($languages_query)/$system->settings->get('data_table_rows_per_page')));
 ?>

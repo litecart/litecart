@@ -3,32 +3,40 @@
     "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
     where status
     and image != ''
-    order by name asc;"
+    order by rand();"
   );
   
   if ($system->database->num_rows($manufacturers_query) == 0) return;
   
   $system->document->snippets['head_tags']['jquery-marquee'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.marquee.js"></script>';
-  
 ?>
-<div id="manufacturer-logotypes" style="margin-bottom: 10px; max-width: 980px; height: 30px; overflow: hidden; position: relative; text-align: center;">
-  <span>
+<style>
+  #manufacturer-logotypes {
+    margin-bottom: 20px;
+    max-width: 700px;
+    height: 35px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+  }
+</style>
+<div id="manufacturer-logotypes-wrapper">
+    <ul id="manufacturer-logotypes" class="navigation-horizontal">
 <?php
   while($manufacturer = $system->database->fetch($manufacturers_query)) {
-    echo '<a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30, 'FIT') .'" alt="" style="margin: 0px 15px;"></a>';
+    echo '  <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30, 'FIT') .'" alt="" style="margin: 0px 15px;"></a></li>' . PHP_EOL;
   }
 ?>
-  </span>
+    </ul>
 </div>
 
-<script type="text/javascript">
-  $(function(){
-    $('#manufacturer-logotypes').each(function(){
-      var $span = $(this).find('span');
-      if ($(this).height() < $span.height()) {
-        $span.css('white-space', 'nowrap');
-        $(this).html('<marquee behavior="alternate" direction="right" scrollamount="1" onmouseover="this.scrollAmount=0" onmouseout="this.scrollAmount=1">'+ $(this).html() +'</marquee>');
-      }
-    })
+<script>
+  $('#manufacturer-logotypes').each(function(){
+    if($(this)[0].scrollWidth>$(this).outerWidth()){
+      var scroll = $(this)[0].scrollWidth-$(this).outerWidth();
+      $(this).scrollLeft(0);
+      $(this).animate({scrollLeft:scroll},scroll*75,'linear');
+    }
   });
 </script>

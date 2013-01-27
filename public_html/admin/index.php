@@ -104,7 +104,7 @@
     
     $system->document->snippets['javascript'][] = '  $(document).ready(function() {' . PHP_EOL
                                                 . '    if ($("h1")) {' . PHP_EOL
-                                                . '      document.title = document.title +" - "+ $("h1:first").text();' . PHP_EOL
+                                                . '      document.title = $("h1:first").text() +" | "+ document.title;' . PHP_EOL
                                                 . '    }' . PHP_EOL
                                                 . '  });';
     

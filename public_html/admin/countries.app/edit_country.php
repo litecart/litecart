@@ -149,7 +149,7 @@
         }
       }
   ?>
-      <tr class="<?php echo $rowclass; ?>">
+      <tr>
         <td align="left">&nbsp;</td>
         <td align="left"><?php echo $system->functions->form_draw_input_field('zone[code]', '', 'text', 'style="width: 50px;"'); ?></td>
         <td align="left"><?php echo $system->functions->form_draw_input_field('zone[name]', '', 'text', 'style="width: 175px;"'); ?></td>

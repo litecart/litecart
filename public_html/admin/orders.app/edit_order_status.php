@@ -18,6 +18,9 @@
 
     if (empty($_POST['name'])) $system->notices->add('errors', $system->language->translate('error_must_enter_name', 'You must enter a name'));
     
+    if (empty($_POST['notify'])) $_POST['notify'] = 0;
+    if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
+    
     if (!$system->notices->get('errors')) {
     
       $fields = array(

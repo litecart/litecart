@@ -36,7 +36,7 @@
   function form_draw_currency_field($currency_code, $name, $value='', $parameters=false, $hint=false) {
     global $system;
     //$html = '<div class="regional-input-wrapper"><input type="text" name="'. $name .'" value="'. htmlspecialchars($value) .'" class="currency-field" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' /><span style="position: absolute; left: 5px; top: 6px;"></span></div>';
-    $html = '<input type="text" name="'. $name .'" value="'. number_format((float)$value, $system->currency->currencies[$currency_code]['decimals'], '.', '') .'" class="currency-field" title="'. htmlspecialchars($hint) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false) .' />';
+    $html = $system->currency->currencies[$currency_code]['prefix'] . '<input type="text" name="'. $name .'" value="'. number_format((float)$value, $system->currency->currencies[$currency_code]['decimals'], '.', '') .'" class="currency-field" title="'. htmlspecialchars($hint) .'" style="width: 50px; text-align: right;"'. (($parameters) ? ' '.$parameters : false) .' />' . $system->currency->currencies[$currency_code]['suffix'];
     return $html;
   }
   
@@ -588,8 +588,7 @@
     
     $products_query = $system->functions->catalog_products_query(array('sort' => 'name'));
     while ($product = $system->database->fetch($products_query)) {
-      $product = new ref_product($product['id']);
-      $options[] = array($product->name[$system->language->selected['code']] .' ['. $product->quantity .'] '. $system->currency->format($product->price), $product->id);
+      $options[] = array($product['name'] .' ['. $product['quantity'] .'] '. $system->currency->format($product['final_price']), $product['id']);
     }
     
     return $system->functions->form_draw_select_field($name, $options, $insert, false, false, $parameters);

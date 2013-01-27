@@ -7,6 +7,7 @@
   <div class="box" style="margin-top: 0px" id="box-designers">
     <div class="heading"><h1><?php echo $system->language->translate('title_designers', 'Designers'); ?></h1></div>
     <div class="content">
+      <ul class="listing-wrapper designers">
 <?php
     $designers_query = $system->database->query(
       "select d.id, d.name, d.image, di.short_description, di.link
@@ -17,12 +18,13 @@
     );
     while($designer = $system->database->fetch($designers_query)) {
 ?>
-      <div style="display: inline-block;" class="subCategory">
+      <li style="display: inline-block;" class="designer">
         <a href="<?php echo $system->document->href_link('designer.php', array('designer_id' => $designer['id'])); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $designer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 234, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" width="234" height="60" title="<?php echo $designer['name']; ?>" /></a>
-      </div>
+      </li>
 <?php
     }
 ?>
+      </ul>
     </div>
   </div>
 <?php  

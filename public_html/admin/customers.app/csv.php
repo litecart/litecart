@@ -18,10 +18,6 @@
             continue;
             
           } else {
-            if (count($keys) != count($data)) {
-              var_dump($keys, $data);
-              die('Error: Invalid column amount');
-            }
             $data = array_combine($keys, $data);
             
             foreach ($data as $key => $value) {
@@ -34,35 +30,36 @@
               }
             }
             
-            $translation_query = $system->database->query(
-              "select code from ". DB_TABLE_TRANSLATIONS ."
-              where code = '". $data['code'] ."'
+            $customers_query = $system->database->query(
+              "select id from ". DB_TABLE_CUSTOMERS ."
+              where email = '". $data['email'] ."'
               limit 1;"
             );
-
-            if ($system->database->num_rows($translation_query) > 0) {
-              foreach (array_slice($keys, 1) as $language_code) {
-                $system->database->query(
-                  "update ". DB_TABLE_TRANSLATIONS ."
-                  set text_". $language_code ." = '". $data[$language_code] ."'
-                  where code = '". $data['code'] ."'
-                  limit 1;"
-                );
-              }
+            $customer = $system->database->fetch($customers_query);
+            
+            require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
+            
+            if (!empty($customer['id'])) {
+              $customer = new ctrl_customer($customer['id']);
             } else {
-              $system->database->query(
-                "insert into ". DB_TABLE_TRANSLATIONS ."
-                (code, text_". implode(", text_", array_slice($keys, 1)) .")
-                values ('". implode("', '", $data) ."');"
-              );
-
+              $customer = new ctrl_customer();
             }
+            
+          // Set new category data
+            foreach (array('email', 'tax_id', 'gender', 'company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone', 'newsletter') as $field) {
+              if (isset($data[$field])) $customer->data[$field] = $data[$field];
+            }
+            
+            if (empty($customer->data['id'])) $customer->set_password(md5(serialize($data)));
+            
+            $customer->save();
           }
         }
+        
         fclose($handle);
       }
       
-      $system->notices->add('success', $system->language->translate('success_translations_imported', 'Translations successfully imported.'));
+      $system->notices->add('success', $system->language->translate('success_customers_imported', 'Customers successfully imported.'));
       
       header('Location: '. $system->document->link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
@@ -89,7 +86,7 @@
     $_POST['language_codes'] = array_filter($_POST['language_codes']);
     
     if (empty($_POST['language_codes'])) die('Error: You must select at least one language');
-    
+    die('Not implemented yet');
     $translations_query = $system->database->query(
       "select * from ". DB_TABLE_TRANSLATIONS ."
       order by date_created asc;"
@@ -133,15 +130,10 @@
 
 ?>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_csv_import_export_translations', 'CSV Import/Export Translations'); ?></h1>
-<p><?php echo $system->language->translate('title_example', 'Example'); ?>:<br />
-  <pre>code;en;sv
-title_catalog;Catalog;Katalog</pre>
-</pre>
-</p>
 
 <div id="import-wrapper" style="margin-bottom: 20px;">
   <?php echo $system->functions->form_draw_form_begin('import_form', 'post', '', true); ?>
-  <h2><?php echo $system->language->translate('title_import_from_csv', 'Import From CSV'); ?></h2>
+  <h2><?php echo $system->language->translate('title_import_to_csv', 'Import From CSV'); ?></h2>
   <p><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
     <?php echo $system->functions->form_draw_file_field('file'); ?></p>
   <p>

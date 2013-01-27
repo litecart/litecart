@@ -187,16 +187,66 @@
       
       if (empty($language_code)) $language_code = $this->selected['code'];
       
+    // Return from cache
       if (isset($this->cache['translations'][$language_code][$code])) {
         return $this->cache['translations'][$language_code][$code];
       }
       
+    // Get translation from database
       $translations_query = $this->system->database->query(
         "select id, text_en, text_". $this->system->database->input($language_code) .", pages from ". DB_TABLE_TRANSLATIONS ."
         where code = '". $this->system->database->input($code) ."'
         limit 0, 1;"
       );
       $row = $this->system->database->fetch($translations_query);
+      
+    // Set translation
+      if (!empty($row['text_'.$language_code])) {
+        $translation = $row['text_'.$language_code];
+      }
+      
+    // Get identical translation
+      if (empty($translation) && (!empty($row['text_en']) || !empty($default))) {
+      
+        $secondary_translations_query = $this->system->database->query(
+          "select * from ". DB_TABLE_TRANSLATIONS ."
+          where text_". $this->system->database->input($language_code) ." != ''
+          and text_en = '". $this->system->database->input(!empty($row['text_en']) ? $row['text_en'] : $default) ."'
+          limit 1;"
+        );
+        $secondary_translation = $this->system->database->fetch($secondary_translations_query);
+        
+        if (!empty($secondary_translation)) {
+          $this->system->database->query(
+            "update ". DB_TABLE_TRANSLATIONS ."
+            set text_". $this->system->database->input($language_code) ." = '". $this->system->database->input($secondary_translation['text_'.$language_code]) ."',
+            date_updated = '". date('Y-m-d H:i:s') ."'
+            where code = '". $this->system->database->input($code) ."'
+            limit 1;"
+          );
+          $translation = $secondary_translation['text_'.$language_code];
+        }
+      }
+      
+    // Fallback on english translation
+      if (empty($translation) && !empty($row['text_en'])) {
+        $translation = $row['text_en'];
+      }
+      
+    // Fallback on injection translation
+      if (empty($translation)) {
+        $translation = $default;
+      }
+      
+    // Fallback on code
+      //if (empty($translation)) {
+      //  $translation = '{'.$code.'}';
+      //}
+      
+      $this->cache['translations'][$language_code][$code] = $translation;
+      
+      $backtrace = current(debug_backtrace());
+      $page = $this->system->database->input(substr($backtrace['file'], strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME)));
       
       if (empty($row)) {
         $this->system->database->query(
@@ -207,32 +257,14 @@
         $row = array(
           'id' => $this->system->database->insert_id(),
           'text_en' => $default,
-          'pages' => $this->system->database->input($_SERVER['SCRIPT_NAME']) .',',
+          'pages' => '\''.$page.'\'',
         );
       }
-      
-    // Do we have a translation?
-      if (!empty($row['text_'.$language_code])) {
-        $this->cache['translations'][$language_code][$code] = $row['text_'.$language_code];
-        
-      // Do we have english as fallback translation
-      } else if (!empty($row['text_en'])) {
-        $this->cache['translations'][$language_code][$code] = $row['text_en'];
-        
-    // Is there a default translation
-      } else if (!empty($default)) {
-        $this->cache['translations'][$language_code][$code] = $default;
-    
-      } else {
-        $this->cache['translations'][$language_code][$code] = '';
-      }
-      
-      $backtrace = current(debug_backtrace());
       
       $this->system->database->query(
         "update ". DB_TABLE_TRANSLATIONS ."
         set date_accessed = '". date('Y-m-d H:i:s') ."'
-        ". ((strpos($row['pages'], '\''. substr($backtrace['file'], strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME)) .'\'') === false) ? ",pages = concat(pages, '\'". $this->system->database->input(substr($backtrace['file'], strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME))) ."\',')" : false) ."
+        ". (!in_array($page, explode(',', trim($row['pages'],','))) ? ",pages = '". $this->system->database->input(implode(',', array_merge(array($page), explode(',', $row['pages'])))) ."'" : false) ."
         where id = '". $this->system->database->input($row['id']) ."';"
       );
         

@@ -2,12 +2,16 @@
   require_once('includes/app_header.inc.php');
   
   if (!empty($system->customer->data['id'])) $system->notices->add('notice', $system->language->translate('text_already_logged_in', 'You are already logged in'));
- ?>
+  
+  $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('')) .'" />';
+
+?>
  
 <div class="box">
   <div class="heading"><h1><?php echo $system->language->translate('title_login', 'Login'); ?></h1></div>
   <div class="content">
     <?php echo $system->functions->form_draw_form_begin('login_form', 'post'); ?>
+    <?php echo $system->functions->form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : $system->document->link(WS_DIR_HTTP_HOME)); ?>
       <table width="100%">
         <tr>
           <td><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />

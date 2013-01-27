@@ -4,14 +4,14 @@
 <div class="box" id="box-latest-products">
   <div class="heading"><h3><?php echo $system->language->translate('title_new_products', 'New Products'); ?></h3></div>
   <div class="content">
-    <div class="listing-wrapper">
+    <ul class="listing-wrapper products">
 <?php
   $products_query = $system->functions->catalog_products_query(array('sort' => 'date', 'limit' => 8));
   while ($listing_product = $system->database->fetch($products_query)) {
     echo $system->functions->draw_listing_product($listing_product);
   }
 ?>
-    </div>
-    <p align="right"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'search.php', array('sort' => 'date')); ?>"><?php echo $system->language->translate('title_view_more', 'View more'); ?></a></p>
+    </ul>
+    <p style="text-align: right"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'search.php', array('sort' => 'date')); ?>"><?php echo $system->language->translate('title_view_more', 'View more'); ?></a></p>
   </div>
 </div>

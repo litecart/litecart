@@ -20,7 +20,7 @@
   
     if (empty($category)) {
       $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-      header('Location: HTTP/1.1 301 Moved Permanently');
+      header('Location: HTTP/1.1 404 Not Found');
       header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'categories.php'));
       exit;
     }
@@ -99,10 +99,10 @@
     <h1><?php echo $category['h1_title'] ? $category['h1_title'] : $category['name']; ?></h1>
   </div>
   <div class="content">
-    <div class="listing-wrapper">
 <?php
     if ($_GET['page'] == 1) {
 ?>    
+    <ul class="listing-wrapper categories">
       <?php /*if ($category['image']) { ?>
       <div class="category-image">
         <img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 330, 180, 'FIT_USE_WHITESPACING'); ?>" width="330" height="180" />
@@ -120,29 +120,31 @@
         echo $system->functions->draw_listing_category($subcategory);
       }
 ?>
-    </div>
-    <div class="listing-wrapper">
+    </ul>
 <?php
     }
+?>
+    <ul class="listing-wrapper products">
+<?php
     
     $products_query = $system->functions->catalog_products_query(array('category_id' => $category['id'], 'sort' => $_GET['sort']));
     if ($system->database->num_rows($products_query) > 0) {
-      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
       
       $page_items = 0;
       while ($listing_product = $system->database->fetch($products_query)) {
       
         echo $system->functions->draw_listing_product($listing_product);
         
-        if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+        if (++$page_items == $system->settings->get('items_per_page')) break;
       }
     }
     
 
 ?>
-    </div>
+    </ul>
 <?php
-    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
+    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page')));
 ?>
   </div>
 </div>

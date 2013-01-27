@@ -5,6 +5,9 @@ ErrorDocument 404 /error_document.php?code=404
   Options +FollowSymLinks
   RewriteEngine on
   
+  # Tell PHP that the mod_rewrite module is enabled
+  SetEnv HTTP_MOD_REWRITE On
+  
   # Web path to catalog root
   RewriteBase /
   
@@ -15,12 +18,12 @@ ErrorDocument 404 /error_document.php?code=404
   # SEO translation
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^([a-z]{2}/)?.*-c-([0-9]+)$ category.php?category_id=$2&%{QUERY_STRING} [L]
-  RewriteRule ^([a-z]{2}/)?.*-d-([0-9]+)$ designer.php?designer_id=$2&%{QUERY_STRING} [L]
-  RewriteRule ^([a-z]{2}/)?.*-m-([0-9]+)$ manufacturer.php?manufacturer_id=$2&%{QUERY_STRING} [L]
-  RewriteRule ^([a-z]{2}/)?.*-i-([0-9]+)$ page.php?page_id=$2&%{QUERY_STRING} [L]
-  RewriteRule ^([a-z]{2}/)?.*-p-([0-9]+)$ product.php?product_id=$2&%{QUERY_STRING} [L]
-  RewriteRule ^([a-z]{2}/)?(.*) $2?%{QUERY_STRING}
+  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)$ category.php?category_id=$2&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-d-([0-9]+)$ designer.php?designer_id=$2&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)$ manufacturer.php?manufacturer_id=$2&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ page.php?page_id=$2&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-p-([0-9]+)$ product.php?product_id=$2&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING}
 </IfModule>
 
 # Cacheable external content

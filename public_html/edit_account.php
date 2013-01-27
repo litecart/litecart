@@ -127,10 +127,10 @@
     <div class="heading"><h1><?php echo $system->language->translate('title_customer_information', 'Customer Information'); ?></h1></div>
     <div class="content" style="padding: 0px;">
       <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
-        <table width="100%">
+        <table style="width: 100%">
           <tr>
-            <td width="50%" align="left">
-              <table width="100%">
+            <td style="width: 50%;">
+              <table>
                 <tr>
                   <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
                     <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
@@ -144,20 +144,10 @@
                     <?php echo $system->functions->form_draw_input_field('lastname', isset($_POST['lastname']) ? $_POST['lastname'] : ''); ?></td>
                 </tr>
                 <tr>
-                  <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
+                  <td><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
                     <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : ''); ?></td>
-                  <td width="50%" nowrap="nowrap">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td><?php echo $system->language->translate('title_new_password', 'New Password'); ?><br />
-                  <?php echo $system->functions->form_draw_input_field('new_password', '', 'password'); ?></td>
-                  <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?><br />
-                  <?php echo $system->functions->form_draw_input_field('confirmed_password', '', 'password'); ?></td>
-                </tr>
-                <tr>
                   <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
                   <?php echo $system->functions->form_draw_input_field('phone', isset($_POST['phone']) ? $_POST['phone'] : ''); ?></td>
-                  <td nowrap="nowrap">&nbsp;</td>
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
@@ -177,9 +167,18 @@
                   <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
                     <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', isset($_POST['zone_code']) ? $_POST['zone_code'] : ''); ?></td>
                 </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td><?php echo $system->language->translate('title_new_password', 'New Password'); ?><br />
+                  <?php echo $system->functions->form_draw_input_field('new_password', '', 'password'); ?></td>
+                  <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?><br />
+                  <?php echo $system->functions->form_draw_input_field('confirmed_password', '', 'password'); ?></td>
+                </tr>
               </table>
             </td>
-            <td align="left" style="border-top: 1px #e1e1e1 dotted;">
+            <td>
               <h3 style="margin-top: 0px;"><label for="different_shipping_address"><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', (empty($_POST['different_shipping_address'])) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
               <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
                 <table>

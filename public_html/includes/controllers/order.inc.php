@@ -35,10 +35,10 @@
         'uid' => uniqid(),
         'items' => array(),
         'weight' => 0,
-        'weight_class' => '',
-        'currency_code' => '',
-        'currency_value' => '',
-        'language_code' => '',
+        'weight_class' => $this->system->settings->get('store_weight_class'),
+        'currency_code' => $this->system->currency->selected['code'],
+        'currency_value' => $this->system->currency->selected['value'],
+        'language_code' => $this->system->language->selected['code'],
         'customer' => array(
           'id' => '',
           'email' => '',
@@ -258,11 +258,31 @@
             $this->system->functions->email_send(
               '"'. $this->system->settings->get('store_name') .'" <'. $this->system->settings->get('store_email') .'>',
               $this->data['customer']['email'],
-              sprintf($this->system->language->translate('title_order_d_updated', 'Order #%d Updated: %s'), $this->data['id'], $order_status['name']),
+              sprintf($this->system->language->translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $order_status['name']),
               $this->draw_printable_copy(),
               true
             );
           }
+        }
+      }
+      
+    // Link guests to customer profile
+      if (empty($this->data['customer']['id'])) {
+        $customers_query = $this->system->database->query(
+          "select id from ". DB_TABLE_CUSTOMERS ."
+          where email = '". $this->system->database->input($this->data['customer']['email']) ."'
+          limit 1;"
+        );
+        $customer = $this->system->database->fetch($customers_query);
+        if (!empty($customer['id'])) {
+          $this->data['customer']['id'] = $customer['id'];
+        } else {
+          require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
+          $customer = new ctrl_customer();
+          $customer->data = $this->data['customer'];
+          $customer->set_password($this->system->functions->password_generate());
+          $customer->save();
+          $this->data['customer']['id'] = $customer->data['id'];
         }
       }
       
@@ -494,6 +514,7 @@
               values ('". (int)$this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
             );
             $this->data['comments'][$key]['id'] = $this->system->database->insert_id();
+            $this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
           }
           $this->system->database->query(
             "update ". DB_TABLE_ORDERS_COMMENTS ." 

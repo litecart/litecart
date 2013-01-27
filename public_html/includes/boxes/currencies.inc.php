@@ -1,10 +1,12 @@
+<ul id="currencies">
 <?php
   foreach ($system->currency->currencies as $currency) {
     if ($currency['status']) {
-      echo '<a href="javascript:set_currency(\''. $currency['code'] .'\');">'. ($currency['prefix']) . trim($currency['suffix']) .'</a> ';
+      echo '<li><a href="javascript:set_currency(\''. $currency['code'] .'\');">'. ($currency['prefix']) . trim($currency['suffix']) .'</a></li>' . PHP_EOL;
     }
   }
 ?>
+</ul>
 <script type="text/javascript">
   function set_currency(code) {
     var form = $('<?php

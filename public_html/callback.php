@@ -14,7 +14,7 @@
   $system->document->viewport = 'printable';
   
   if (empty($_GET['order_uid'])) {
-    header('HTTP/1.0 400 Bad Request');
+    header('HTTP/1.1 400 Bad Request');
     echo 'Error: Bad Request';
     exit;
   }
@@ -27,7 +27,7 @@
   $order = $system->database->fetch($orders_query);
   
   if (empty($order)) {
-    header('HTTP/1.0 400 Bad Request');
+    header('HTTP/1.1 400 Bad Request');
     echo 'Error: Bad Request';
     exit;
   }

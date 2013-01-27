@@ -48,15 +48,9 @@
         <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo $system->language->translate('title_total', 'Total'); ?></th>
       </tr>
 <?php
-  $class = '';
   foreach ($order->data['items'] as $item) {
-    if ($class == 'even') {
-      $class = 'odd';
-    } else {
-      $class = 'even';
-    }
 ?>
-      <tr class="<?php echo $rowclass; ?>">
+      <tr>
         <td align="left" nowrap="nowrap"><?php echo $item['quantity']; ?></td>
         <td align="left" nowrap="nowrap"><?php echo $item['name']; ?></td>
         <td align="left" nowrap="nowrap"><?php echo $item['sku']; ?></td>

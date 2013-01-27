@@ -26,7 +26,6 @@
   // Save data to database
   if (isset($_POST['save'])) {
     
-    
     if (empty($_POST['items'])) $_POST['items'] = array();
     if (empty($_POST['order_total'])) $_POST['order_total'] = array();
     if (empty($_POST['comments'])) $_POST['comments'] = array();
@@ -39,17 +38,14 @@
       // Add item
         foreach (array_keys($_POST['items']) as $key) {
           
-          $_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] / $order->data['currency_value'];
-          $_POST['items'][$key]['tax'] = $_POST['items'][$key]['tax'] / $order->data['currency_value'];
-          
           if (empty($_POST['items'][$key]['id'])) {
             
             require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
-            $product = new ref_product($product_id);
+            $product = new ref_product($_POST['items'][$key]['product_id']);
             
             $name = array();
             foreach(array_keys($product->name) as $language_code) {
-              $name[$language_code] = $product->name[$language_code] . (!empty($product->options[$option_id]) ? ' (' . $product->options[$option_id]['name'][$language_code] .')' : '');
+              $name[$language_code] = $product->name[$language_code];
             }
             
             $_POST['items'][$key] = array(
@@ -62,24 +58,24 @@
               'sku' => $product->sku,
               'upc' => $product->upc,
               'taric' => $product->taric,
-              'price' => $_POST['items'][$key]['price'],
-              'tax' => $system->tax->get_tax($_POST['items'][$key]['price'], $product->tax_class_id, $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
-              //'tax' => $_POST['items'][$key]['tax'],
+              'price' => $_POST['items'][$key]['price'] / $order->data['currency_value'],
+              'tax' => $system->tax->get_tax($_POST['items'][$key]['price'] * $order->data['currency_value'], $product->tax_class_id, $order->data['customer']['country_code'], $order->data['customer']['zone_code']) / $order->data['currency_value'],
               'tax_class_id' => $product->tax_class_id,
               'quantity' => $_POST['items'][$key]['quantity'],
               'weight' => $product->weight,
               'weight_class' => $product->weight_class,
             );
-            
+          
         // Update item
           } else {
-            $_POST['items'][$key]['tax'] = $system->tax->get_tax($_POST['items'][$key]['price'], $_POST['items'][$key]['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']);
+            $_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] / $order->data['currency_value'];
+            $_POST['items'][$key]['tax'] = $system->tax->get_tax($_POST['items'][$key]['price'] * $order->data['currency_value'], $_POST['items'][$key]['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']) / $order->data['currency_value'];
           }
         }
         
         foreach (array_keys($_POST['order_total']) as $key) {
           $_POST['order_total'][$key]['value'] = $_POST['order_total'][$key]['value'] / $order->data['currency_value'];
-          $_POST['order_total'][$key]['tax'] = $system->tax->get_tax($_POST['order_total'][$key]['value'], $_POST['order_total'][$key]['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']);
+          $_POST['order_total'][$key]['tax'] = $system->tax->get_tax($_POST['order_total'][$key]['value'] * $order->data['currency_value'], $_POST['order_total'][$key]['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']) / $order->data['currency_value'];
         }
       }
       
@@ -260,7 +256,7 @@
     <td><?php echo $system->language->translate('title_currency_value', 'Currency Value'); ?><br />
       <?php echo $order->data['currency_value']; ?></td>
     <td><?php echo $system->language->translate('title_order_total', 'Order Total'); ?><br />
-      <?php echo $system->currency->format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?> (<?php echo $system->currency->format($order->data['payment_due'], false, false, '', 1); ?>)</td>
+      <?php echo $system->currency->format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?> (<?php echo $system->currency->format($order->data['payment_due'], false, false, $system->settings->get('store_currency_code'), 1); ?>)</td>
   </tr>
 </table>
 
@@ -319,7 +315,7 @@
       echo $system->functions->form_draw_hidden_field('items['.$key.']['.$field.']', $_POST['items'][$key][$field]);
     }
 ?>
-    <?php echo $_POST['items'][$key]['name']; ?></td>
+    <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])); ?>" target="_blank"><?php echo $_POST['items'][$key]['name']; ?></a></td>
     <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_input_field('items['. $key .'][quantity]', $_POST['items'][$key]['quantity'], 'text', 'style="width: 25px; text-align: right;"'); ?></td>
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][price]', $_POST['items'][$key]['price']); ?></td>
     <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][tax]', $_POST['items'][$key]['tax']); ?></td>
@@ -330,11 +326,24 @@
   }
 ?>
   <tr>
-    <td nowrap="nowrap" align="left" colspan="7"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_item" title="<?php echo $system->language->translate('title', 'Insert'); ?>" /></a></td>
+    <td nowrap="nowrap" align="left" colspan="7"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_item" title="<?php echo $system->language->translate('title_insert', 'Insert'); ?>" /></a></td>
   </tr>
 </table>
 
 <script type="text/javascript">
+
+  function calculate_total() {
+    var subtotal = 0;
+    $("input[type='text'][name$='[price]']").each(function() {
+      subtotal += $(this).val() * $(this).closest('tr').find("input[type='text'][name$='[quantity]']").val();
+    });
+    $("input[type=text][name^='order_total['][value='ot_subtotal']").closest('tr').find("input[type='text'][name$='[value]']").val(subtotal);
+  }
+  
+  $("input[type='text'][name^='items['][name$='[price]'], #remove_item").keyup(function() {
+    calculate_total();
+  });
+
   var new_item_index = 0;
   $(".add_item").live("click", function(event) {
     while ($("input[name='items["+new_item_index+"][id]']").length) new_item_index++;
@@ -342,7 +351,7 @@
     var new_row = '  <tr>'
                 + '    <td nowrap="nowrap" align="center"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_item" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
                 + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', 'style="width: 350px; text-align: left;"')); ?></td>'
-                + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_input_field('items[new_item_index][quantity]', '', 'text', 'style="width: 25px; text-align: right;"'); ?></td>'
+                + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_input_field('items[new_item_index][quantity]', '1', 'text', 'style="width: 25px; text-align: right;"'); ?></td>'
                 + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][price]', 0); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][tax]', 0); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right">&nbsp;</td>'
@@ -361,13 +370,14 @@
   
   $(".remove_item").live("click", function(event) {
     event.preventDefault();
-	$(this).closest("tr").remove();
+    $(this).closest("tr").remove();
+    calculate_total();
   });
 </script>
 
 <h2><?php echo $system->language->translate('title_order_total', 'Order Total'); ?></h2>
 <table width="100%" class="dataTable">
-  <tr>
+  <tr class="header">
     <th nowrap="nowrap" align="left">&nbsp;</th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_module_id', 'Module ID'); ?></th>
     <th nowrap="nowrap" align="center" width="100%"><?php echo $system->language->translate('title_title', 'Title'); ?></th>
@@ -404,8 +414,8 @@
                + '    <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][module_id]', '', 'text', 'style="width: 75px;"'); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][title]', '', 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>'
-               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][tax]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total[new_ot_row_index][calculate]', 'true', 'true', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>'
-               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][value]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
+               //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][tax]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total[new_ot_row_index][calculate]', 'true', 'true', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>'
+               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][value]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_function('tax_classes()', 'order_total[new_ot_row_index][tax_class_id]', '', 'text', 'style="width: 75px; text-align: right;"')); ?></td>'
                + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_ot_row" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '  </tr>';
@@ -423,7 +433,7 @@
 
 <h2><?php echo $system->language->translate('title_comments', 'Comments'); ?></h2>
 <table class="dataTable">
-  <tr>
+  <tr class="header">
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_date', 'Date'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_comment', 'Comment'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_hidden', 'Hidden'); ?></th>

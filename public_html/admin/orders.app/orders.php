@@ -58,7 +58,7 @@
   
   if ($system->database->num_rows($orders_query) > 0) {
   
-    if ($_GET['page'] > 1) $system->database->seek($orders_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+    if ($_GET['page'] > 1) $system->database->seek($orders_query, ($system->settings->get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
     while ($order = $system->database->fetch($orders_query)) {
@@ -79,7 +79,7 @@
     <td nowrap="nowrap"><a class="fancybox" href="<?php echo $system->document->href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/box.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a> <a class="fancybox" href="<?php echo $system->document->href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/printer.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a> <a href="<?php echo $system->document->href_link('', array('doc' => 'edit_order.php', 'order_id' => $order['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
   </tr>
 <?php
-      if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+      if (++$page_items == $system->settings->get('data_table_rows_per_page')) break;
     }
   }
 ?>
@@ -106,5 +106,5 @@
 <?php
   echo $system->functions->form_draw_form_end();
   
-  echo $system->functions->draw_pagination(ceil($system->database->num_rows($orders_query)/$system->settings->get('data_table_rows_per_page', 20)));
+  echo $system->functions->draw_pagination(ceil($system->database->num_rows($orders_query)/$system->settings->get('data_table_rows_per_page')));
 ?>

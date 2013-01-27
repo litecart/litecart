@@ -50,7 +50,7 @@
   if ($system->database->num_rows($orders_query) > 0) {
   
 // Jump to data for current page
-  if ($_GET['page'] > 1) $system->database->seek($orders_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) $system->database->seek($orders_query, ($system->settings->get('data_table_rows_per_page') * ($_GET['page']-1)));
   
     $page_items = 0;
     
@@ -68,7 +68,7 @@
     <td nowrap="nowrap" align="right" nowrap="nowrap"><?php echo $system->currency->format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
   </tr>
 <?php
-      if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+      if (++$page_items == $system->settings->get('data_table_rows_per_page')) break;
     }
   } else {
 ?>
@@ -81,7 +81,7 @@
 </table>
 <?php
 // Display page links
-  echo $system->functions->draw_pagination(ceil($system->database->num_rows($orders_query)/$system->settings->get('data_table_rows_per_page', 20)));
+  echo $system->functions->draw_pagination(ceil($system->database->num_rows($orders_query)/$system->settings->get('data_table_rows_per_page')));
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

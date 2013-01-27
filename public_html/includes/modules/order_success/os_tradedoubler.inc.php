@@ -45,7 +45,7 @@
           'key' => 'status',
           'default_value' => 'Enabled',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Status'),
+          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'radio("Enabled", "Disabled")',
         ),
         array(

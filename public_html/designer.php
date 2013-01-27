@@ -21,7 +21,7 @@
   
   if (empty($designer)) {
     $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: HTTP/1.1 301 Moved Permanently');
+    header('Location: HTTP/1.1 404 Not Found');
     header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'designers.php'));
     exit;
   }
@@ -76,10 +76,11 @@
       </span>
       <h1 style="margin: 0; font: inherit;"><?php echo $designer['name']; ?></h1>
     </div>
-    <div class="content listing-wrapper">
-      <?php if ($designer['description']) { ?>
-      <div class="designer-description"><?php echo $designer['description'] ?></div>
-      <?php } ?>
+    <div class="content">
+      <ul class="listing-wrapper products">
+        <?php if ($designer['description']) { ?>
+        <li class="description"><?php echo $designer['description'] ?></li>
+        <?php } ?>
 <?php
   $system->document->snippets['head_tags']['fancybox'] = '<script type="text/javascript" src="ext/fancybox/jquery.fancybox-1.3.4.pack.js"></script>' . PHP_EOL
                                                         . '<link rel="stylesheet" href="ext/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />' . PHP_EOL;
@@ -97,24 +98,21 @@
   
   $products_query = $system->functions->catalog_products_query(array('designer_id' => $designer['id'], 'sort' => $_GET['sort']));
   if ($system->database->num_rows($products_query) > 0) {
-    if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+    if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
     while ($listing_item = $system->database->fetch($products_query)) {
       echo $system->functions->draw_listing_product($listing_item);
       
-      if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+      if (++$page_items == $system->settings->get('items_per_page')) break;
     }
-    
-  } else {
-  
-    echo '<p><em>'. $system->language->translate('text_no_products_for_designer', 'There are currently no products by this designer in stock.') .'</em></p>';
   }
 ?>
+      </ul>
     </div>
 
 <?php
-    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
+    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page')));
   
     $system->cache->end_capture($designer_cache_id);
   }

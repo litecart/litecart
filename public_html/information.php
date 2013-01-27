@@ -40,7 +40,7 @@
   
   if (empty($page)) {
     $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: HTTP/1.1 301 Moved Permanently');
+    header('Location: HTTP/1.1 404 Not Found');
     header('Location: '. $system->document->link(WS_DIR_HTTP_HOME));
     exit;
   }

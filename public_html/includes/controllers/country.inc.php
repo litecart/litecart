@@ -52,7 +52,7 @@
           domestic_name = '". $this->system->database->input($this->data['domestic_name']) ."',
           address_format = '". $this->system->database->input($this->data['address_format']) ."',
           postcode_required = '". (int)$this->data['postcode_required'] ."',
-          currency_code = '". $this->system->database->input($this->data['currency']) ."',
+          currency_code = '". $this->system->database->input($this->data['currency_code']) ."',
           phone_code = '". $this->system->database->input($this->data['phone_code']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'

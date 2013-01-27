@@ -18,6 +18,8 @@
 
     if (!$system->notices->get('errors')) {
       
+      if (!isset($_POST['newsletter'])) $_POST['newsletter'] = 0;
+      
       $fields = array(
         'email',
         'password',
@@ -33,6 +35,7 @@
         'zone_code',
         'phone',
         'mobile',
+        'newsletter',
       );
       
       foreach ($fields as $field) {
@@ -65,22 +68,16 @@
 
 <table>
   <tr>
-    <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-      <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
     <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
       <?php echo $system->functions->form_draw_input_field('tax_id', isset($_POST['tax_id']) ? $_POST['tax_id'] : ''); ?></td>
+    <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
+      <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
       <?php echo $system->functions->form_draw_input_field('firstname', isset($_POST['firstname']) ? $_POST['firstname'] : ''); ?></td>
     <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
       <?php echo $system->functions->form_draw_input_field('lastname', isset($_POST['lastname']) ? $_POST['lastname'] : ''); ?></td>
-  </tr>
-  <tr>
-    <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
-      <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : ''); ?></td>
-    <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-    <?php echo $system->functions->form_draw_input_field('phone', isset($_POST['phone']) ? $_POST['phone'] : ''); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
@@ -101,9 +98,16 @@
       <?php echo $system->functions->form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', isset($_POST['zone_code']) ? $_POST['zone_code'] : ''); ?></td>
   </tr>
   <tr>
+    <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
+      <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : ''); ?></td>
+    <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
+    <?php echo $system->functions->form_draw_input_field('phone', isset($_POST['phone']) ? $_POST['phone'] : ''); ?></td>
+  </tr>
+  <tr>
+    <td><?php echo $system->language->translate('title_newsletter', 'Newsletter'); ?><br />
+      <?php echo $system->functions->form_draw_checkbox('newsletter', '1', !empty($_POST['newsletter']) ? '1' : '0'); ?> <?php echo $system->language->translate('title_subscribe', 'Subscribe'); ?></td>
     <td><?php echo !empty($customer->data['id']) ? $system->language->translate('title_new_password', 'New Password') : $system->language->translate('title_password', 'Password'); ?><br />
       <?php echo $system->functions->form_draw_input_field('new_password', '', 'password'); ?></td>
-    <td>&nbsp;</td>
   </tr>
 </table>
 

@@ -1,9 +1,9 @@
 <?php
   
-  class seo_link_page {
+  class seo_link_information {
     
     public $config = array(
-      'doc' => 'page.php',
+      'doc' => 'information.php',
       'params' => array('page_id'),
       'seo_path' => '%title-i-%page_id',
     );

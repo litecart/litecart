@@ -37,13 +37,13 @@
 <div class="box" id="box-also-purchased-products">
   <div class="heading"><h3><?php echo $system->language->translate('title_also_purchased_products', 'Also Purchased Products'); ?></h3></div>
   <div class="content">
-    <div class="listing-wrapper">
+    <ul class="listing-wrapper products">
 <?php
 
   while ($listing_product = $system->database->fetch($products_query)) {
     echo $system->functions->draw_listing_product($listing_product);
   }
 ?>
-    </div>
+    </ul>
   </div>
 </div>

@@ -53,7 +53,7 @@
     <?php } ?>
   </div>
   <div class="content">
-    <div class="listing-wrapper">
+    <ul class="listing-wrapper">
 <?php
     $categories_info_query = $system->database->query(
       "select c.id
@@ -129,23 +129,23 @@
     $products_query = $system->functions->catalog_products_query(array('products' => $product_ids, 'sort' => $_GET['sort']));
     if ($system->database->num_rows($products_query) > 0) {
     
-      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
       
       $page_items = 0;
       while ($listing_product = $system->database->fetch($products_query)) {
         echo $system->functions->draw_listing_product($listing_product);
         
-        if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+        if (++$page_items == $system->settings->get('items_per_page')) break;
       }
       
     } else {
       echo '<em>'. $system->language->translate('text_no_products_found_for_search_string', 'No products found for search string.') .'</em>' . PHP_EOL;
     }
 ?>
-    </div>
+    </ul>
   </div>
 <?php
-  echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
+  echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page')));
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

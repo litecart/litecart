@@ -153,7 +153,7 @@
         'sku' =>  $product->sku,
         'upc' =>  $product->upc,
         'taric' =>  $product->taric,
-        'price' => $product->price,
+        'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
         'tax_class_id' => $product->tax_class_id,
         'quantity' => (int)$quantity,
         'weight' => $product->weight,

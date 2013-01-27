@@ -1,9 +1,9 @@
 <?php
 
-  class pm_invoice {
+  class pm_bank_transfer {
     private $system;
     public $id = __CLASS__;
-    public $name = 'Invoice';
+    public $name = 'Bank Transfer';
     public $description = '';
     public $author = 'TiM International';
     public $version = '1.0';
@@ -25,12 +25,12 @@
       }
       
       $method = array(
-        'title' => 'Invoice',
+        'title' => 'Bank Transfer',
         'options' => array(
           array(
-            'id' => 'invoice',
+            'id' => 'bank_transfer',
             'icon' => '',
-            'name' => $this->system->language->translate(__CLASS__.':title_invoice', 'Invoice'),
+            'name' => $this->system->language->translate(__CLASS__.':title_bank_account', 'Bank Account'),
             'description' => '',
             'fields' => '',
             'cost' => $this->settings['fee'],
@@ -55,6 +55,12 @@
     }
     
     public function verify() {
+      global $order;
+      
+      $order->data['comments'][] = array(
+        'text' => str_replace('%bank_account', $this->settings['bank_account'], $this->system->language->translate(__CLASS__.':text_instructions', 'Payment to bank account %bank_account.')),
+      );
+      
       return array(
         'order_status_id' => $this->settings['order_status_id'],
         'payment_transaction_id' => '',
@@ -87,6 +93,13 @@
           'title' => $this->system->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee'),
           'description' => $this->system->language->translate(__CLASS__.':description_payment_fee', 'Adds a payment fee to the order.'),
           'function' => 'int()',
+        ),
+        array(
+          'key' => 'bank_account',
+          'default_value' => '',
+          'title' => $this->system->language->translate(__CLASS__.':title_bank_account', 'Bank Account'),
+          'description' => $this->system->language->translate(__CLASS__.':description_bank_account', 'The bank account to where the customer should transfer the payment.'),
+          'function' => 'input()',
         ),
         array(
           'key' => 'tax_class_id',

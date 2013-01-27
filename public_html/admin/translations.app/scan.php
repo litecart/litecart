@@ -15,18 +15,28 @@
       if (pathinfo($file, PATHINFO_EXTENSION) != 'php') continue;
       $found_files++;
       $contents = file_get_contents($file);
-      //preg_match_all('/system->language->translate\([\s]?[\'"](.*?)[\'"],[\s]?[\'"](.*?)[\'"]\)/', $contents, $matches);
-      preg_match_all('/system->language->translate\(((__CLASS__)?\.)?[\'"](.*?)[\'"],[\s]?[\'"](.*?)[\'"]\)/', $contents, $matches);
+      
+      $regexp = array(
+        'system->language->translate\((?:(?!\$)',
+        '(?:(__CLASS__)?\.)?',
+        '(?:[\'"])([^\'"]+)(?:[\'"])',
+        '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?',
+        '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?',
+        ')\)',
+      );
+      $regexp = '/'. implode('', $regexp) .'/s';
+
+      preg_match_all($regexp, $contents, $matches);
       $translations = array();
       
       if (!empty($matches)) {
-        for ($i=0; $i<count($matches[0]); $i++) {
-          if ($matches[2][$i]) {
-            $key = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[3][$i];
+        for ($i=0; $i<count($matches[1]); $i++) {
+          if ($matches[1][$i]) {
+            $key = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[2][$i];
           } else {
-            $key = $matches[3][$i];
+            $key = $matches[2][$i];
           }
-          $translations[$key] = $matches[4][$i];
+          $translations[$key] = $matches[3][$i];
           $translation_keys[] = $key;
         }
       }
@@ -35,18 +45,24 @@
         $found_translations++;
         if ($system->database->num_rows($system->database->query("select text_en from ". DB_TABLE_TRANSLATIONS ." where code = '". $system->database->input($code) ."' limit 1;")) == 0) {
           $new_translations++;
-          echo $code ." = ". $translation ."<br />";
+          //echo $code ." = ". $translation ."<br />";
           $system->database->query(
             "insert into ". DB_TABLE_TRANSLATIONS ."
             (code, text_en, pages, date_created)
-            values ('". $system->database->input($code) ."', '". $system->database->input($translation) ."', '\'". str_replace(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '', $file) ."\',', '". date('Y-m-d H:i:s') ."');"
+            values ('". $system->database->input($code) ."', '". $system->database->input($translation) ."', '". str_replace(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '', $file) ."', '". date('Y-m-d H:i:s') ."');"
           );
+          echo  $code . ' [ADDED]<br/>' . PHP_EOL;
         }
       }
     }
     
-    echo '<p>'. sprintf($system->language->translate('text_found_d_translations', 'Found %d translations in %d files.'), $found_translations, $found_files) .'</p>';
-    echo '<p>'. sprintf($system->language->translate('text_added_d_new_translations', 'Added %d new translations.'), $new_translations) .'</p>';
+    $settings_groups_query = $system->database->query(
+      "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
+    );
+    while ($group = $system->database->fetch($settings_groups_query)) {
+      $translation_keys[] = 'settings_group:'.$group['key'];
+      $translation_keys[] = 'settings_group:'.$group['key'];
+    }
     
     $settings_query = $system->database->query(
       "select `key` from ". DB_TABLE_SETTINGS ."
@@ -67,10 +83,13 @@
           where code = '". $system->database->input($translation['code']) ."'
           limit 1;"
         );
+        echo $translation['code'] . ' [DELETED]<br/>' . PHP_EOL;
         $deleted_translations++;
       }
     }
     
+    echo '<p>'. sprintf($system->language->translate('text_found_d_translations', 'Found %d translations in %d files.'), $found_translations, $found_files) .'</p>';
+    echo '<p>'. sprintf($system->language->translate('text_added_d_new_translations', 'Added %d new translations.'), $new_translations) .'</p>';
     echo '<p>'. sprintf($system->language->translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) .'</p>';
     
   } else {

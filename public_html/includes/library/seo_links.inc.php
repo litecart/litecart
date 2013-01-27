@@ -207,28 +207,9 @@
       return $full_seo_link;
     }
     
+    // Deprecated
     public function url_friendly_string($text) {
-    
-    // Remove <tags>
-      $text = strip_tags($text);
-      
-    // Decode special characters
-      $text = htmlspecialchars_decode($text, ENT_QUOTES);
-      
-    // Remove system characters []
-      $text = preg_replace("/\[.*\]/U", "", $text);
-      
-    // Convert foreign characters
-      $text = htmlentities($text, ENT_COMPAT, $this->system->language->selected['charset']);
-      $text = preg_replace('/&(.*)(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '$1', $text);
-      
-    // Keep a-z0-9 and convert symbols to -
-      $text = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $text);
-      $text = preg_replace(array('/[^a-z0-9]/i', '/[-]+/'), '-', $text);
-      
-    // Leave no trailing -
-      $text = strtolower(trim($text, '-'));
-      return $text;
+      return $this->system->functions->general_url_friendly($text);
     }
   }
 ?>

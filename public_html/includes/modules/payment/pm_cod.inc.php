@@ -32,7 +32,7 @@
         'options' => array(
           array(
             'id' => 'cod',
-            'icon' => '',
+            'icon' => $this->settings['icon'],
             'name' => $this->system->functions->reference_get_country_name($this->system->customer->data['shipping_address']['country_code']),
             'description' => '',
             'fields' => '',
@@ -73,7 +73,7 @@
           'key' => 'status',
           'default_value' => 'Enabled',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Status'),
+          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'radio("Enabled", "Disabled")',
         ),
         array(

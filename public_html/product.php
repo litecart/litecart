@@ -6,9 +6,17 @@
   
   if ($product->status == 0) {
     $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: HTTP/1.1 301 Moved Permanently');
+    header('Location: HTTP/1.1 404 Not Found');
     header('Location: '. $system->document->link(WS_DIR_HTTP_HOME));
     exit;
+  }
+  
+  if (substr($product->date_valid_from, 0, 10) != '0000-00-00 00:00:00' && $product->date_valid_from > date('Y-m-d H:i:s')) {
+    $system->notices->add('errors', sprintf($system->language->translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime($this->system->language->selected['format_date'], strtotime($product->date_valid_from))));
+  }
+  
+  if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && $product->date_valid_to < date('Y-m-d H:i:s')) {
+    $system->notices->add('errors', $system->language->translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
   }
   
   $system->database->query(

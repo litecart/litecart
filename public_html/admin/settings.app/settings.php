@@ -46,7 +46,7 @@
   if ($system->database->num_rows($settings_query) > 0) {
     
   // Jump to data for current page
-    if ($_GET['page'] > 1) $system->database->seek($settings_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['Page']-1)));
+    if ($_GET['page'] > 1) $system->database->seek($settings_query, ($system->settings->get('data_table_rows_per_page') * ($_GET['Page']-1)));
     
     $page_items = 0;
     while ($setting = $system->database->fetch($settings_query)) {
@@ -76,7 +76,7 @@
     }
     
     // Escape if enough page items
-      if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+      if (++$page_items == $system->settings->get('data_table_rows_per_page')) break;
     }
   } else {
 ?>
@@ -91,5 +91,5 @@
   echo $system->functions->form_draw_form_end();
   
 // Display page links
-  echo $system->functions->draw_pagination(ceil($system->database->num_rows($settings_query)/$system->settings->get('data_table_rows_per_page', 20)));
+  echo $system->functions->draw_pagination(ceil($system->database->num_rows($settings_query)/$system->settings->get('data_table_rows_per_page')));
 ?>
