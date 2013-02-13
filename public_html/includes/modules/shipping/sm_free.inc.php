@@ -41,7 +41,7 @@
         'options' => array(
           array(
             'id' => 'free',
-            'icon' => '',
+            'icon' => $this->settings['icon'],
             'name' => $this->system->language->translate('title_free', 'Free'),
             'description' => sprintf('Free shipping for orders above %s (excluding tax).', $this->system->currency->format($this->settings['minimum_amount'])),
             'fields' => '',

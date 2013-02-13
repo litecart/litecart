@@ -88,7 +88,7 @@
       return true;
     }
     
-    public function get_cached_link($link='', $text='', $language_code='') {
+    public function get_cached_link($link='', $language_code='') {
     
       if (!$this->enabled) return '';
       
@@ -178,7 +178,7 @@
       }
       $full_seo_link = $this->system->link->unparse_link($full_seo_link);
       
-    // If cache is out of date
+    // If cache is outdated
       if ($seo_link != $this->get_cached_link($link)) {
         $seo_cache_query = $this->system->database->query(
           "select seo_uri from ". DB_TABLE_SEO_LINKS_CACHE ."

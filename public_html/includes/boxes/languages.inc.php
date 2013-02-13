@@ -1,4 +1,4 @@
-<ul id="languages">
+<ul id="languages" class="navigation-horizontal">
 <?php
   foreach ($system->language->languages as $language) {
     if ($language['status']) {

@@ -432,10 +432,10 @@
 
 
 <h2><?php echo $system->language->translate('title_comments', 'Comments'); ?></h2>
-<table class="dataTable">
+<table class="dataTable" style="width: 100%;">
   <tr class="header">
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_date', 'Date'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_comment', 'Comment'); ?></th>
+    <th nowrap="nowrap" align="center" style="width: 100%;"><?php echo $system->language->translate('title_comment', 'Comment'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_hidden', 'Hidden'); ?></th>
     <th nowrap="nowrap">&nbsp;</th>
   </tr>
@@ -444,7 +444,7 @@
 ?>
   <tr>
     <td nowrap="nowrap" align="left"><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo $system->functions->form_draw_hidden_field('comments['. $key .']['. $field .']', $_POST['comments'][$key][$field]); ?><?php echo strftime($system->language->selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
-    <td nowrap="nowrap" align="left"><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
+    <td align="left"><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
     <td nowrap="nowrap" align="left"><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
     <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_comment" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
@@ -462,7 +462,7 @@
     event.preventDefault();
     var output = '  <tr>'
                + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('comments[new_comment_index][id]', '') . $system->functions->form_draw_hidden_field('comments[new_comment_index][date_created]', strftime($system->language->selected['format_datetime'])) . strftime($system->language->selected['format_datetime'])); ?></td>'
-               + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_textarea('comments[new_comment_index][text]', '')); ?></td>'
+               + '    <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
                + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', $system->language->translate('title_hidden', 'Hidden'))); ?></td>'
                + '    <td nowrap="nowrap"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" class="remove_comment" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '  </tr>';

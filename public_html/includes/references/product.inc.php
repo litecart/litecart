@@ -361,16 +361,17 @@
           
           break;
           
+        case 'product_group_ids':
         case 'product_groups':
           
           $this->_data['product_groups'] = array();
           
           if (count($this->product_group_ids)) {
             foreach ($this->product_group_ids as $pair) {
-            var_dump($this->product_group_ids);
+              
               list($group_id, $value_id) = explode('-', $pair);
               
-              $query = $system->database->query(
+              $query = $this->system->database->query(
                 "select name, language_code from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
                 where product_group_id = '". (int)$group_id ."';"
               );
@@ -385,7 +386,7 @@
                 }
               }
               
-              $query = $system->database->query(
+              $query = $this->system->database->query(
                 "select name, language_code from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
                 where product_group_value_id = '". (int)$value_id ."';"
               );

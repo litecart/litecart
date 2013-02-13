@@ -101,7 +101,6 @@
       header('Content-type: application/csv; charset='. $_POST['charset']);
       header("Content-Disposition: attachment; filename=translations-". implode('-', $_POST['language_codes']) .".csv");
     }
-
     echo implode($_POST['delimiter'], array_merge(array('code'), $_POST['language_codes'])) . $_POST['EOL'];
     
     while ($translation = $system->database->fetch($translations_query)) {
@@ -112,7 +111,7 @@
       }
       
       foreach (array_keys($columns) as $key) {
-        if (strpos($columns[$key], $_POST['wrapper']) !== false || strpos($columns[$key], "\r") !== false || strpos($columns[$key], "\n") !== false) {
+        if (strpos($columns[$key], $_POST['delimiter']) !== false || strpos($columns[$key], "\r") !== false || strpos($columns[$key], "\n") !== false) {
           $columns[$key] = $_POST['wrapper'] . str_replace($_POST['wrapper'], $_POST['escapechar'].$_POST['wrapper'], $columns[$key]) . $_POST['wrapper'];
         }
       }

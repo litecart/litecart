@@ -60,7 +60,7 @@
           </div>
         </td>
         <td id="content">
-          <!--snippet:alerts-->
+          <!--snippet:notices-->
           <!--snippet:content-->
         </td>
       </tr>

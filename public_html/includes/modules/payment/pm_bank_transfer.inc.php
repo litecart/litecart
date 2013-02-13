@@ -25,13 +25,13 @@
       }
       
       $method = array(
-        'title' => 'Bank Transfer',
+        'title' => $this->system->language->translate(__CLASS__.':title_module', 'Bank Transfer'),
         'options' => array(
           array(
             'id' => 'bank_transfer',
-            'icon' => '',
-            'name' => $this->system->language->translate(__CLASS__.':title_bank_account', 'Bank Account'),
-            'description' => '',
+            'icon' => $this->settings['icon'],
+            'name' => $this->system->language->translate(__CLASS__.':title_option_bank_account', 'Bank Account'),
+            'description' => $this->system->language->translate(__CLASS__.':description_option_bank_account', ''),
             'fields' => '',
             'cost' => $this->settings['fee'],
             'tax_class_id' => $this->settings['tax_class_id'],

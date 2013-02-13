@@ -507,16 +507,16 @@ foreach (array_keys($system->language->languages) as $language_code) {
         
         <table style="margin: 0 -5px;">
           <tr>
-            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_currency', 'Currency'); ?></th>
-            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_price', 'Price'); ?></th>
-            <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_conversion_value', 'Conversion Value'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</td>
+            <th align="center" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_currency', 'Currency'); ?></th>
+            <th align="center" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_price', 'Price'); ?></th>
+            <td align="center" nowrap="nowrap"><?php echo $system->language->translate('title_conversion_value', 'Conversion Value'); ?></td>
+            <td align="center" nowrap="nowrap"><?php echo $system->language->translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</td>
           </tr>
           <tr>
             <td><strong><?php echo $system->settings->get('store_currency_code'); ?></strong></td>
-            <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', isset($_POST['prices'][$system->settings->get('store_currency_code')]) ? $_POST['prices'][$system->settings->get('store_currency_code')] : 0); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'currency_prices['. $system->settings->get('store_currency_code') .']', '', 'disabled="disabled"'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'net_prices['. $system->settings->get('store_currency_code') .']', ''); ?></td>
+            <td><?php echo $system->functions->form_draw_input_field('prices['. $system->settings->get('store_currency_code') .']', isset($_POST['prices'][$system->settings->get('store_currency_code')]) ? $_POST['prices'][$system->settings->get('store_currency_code')] : 0, 'text', 'style="width: 50px;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('currency_prices['. $system->settings->get('store_currency_code') .']', '', 'text', 'style="width: 50px;" disabled="disabled" '); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('net_prices['. $system->settings->get('store_currency_code') .']', '', 'text', 'style="width: 50px;"'); ?></td>
             <td></td>
           </tr>
 <?php
@@ -525,9 +525,9 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 ?>
           <tr>
             <td align="left" nowrap="nowrap"><?php echo $currency_code; ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'prices['. $currency_code .']', isset($_POST['prices'][$currency_code]) ? number_format($_POST['prices'][$currency_code], 4, '.', '') : ''); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'currency_prices['. $currency_code .']', '', 'disabled="disabled"'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency_code, 'net_prices['. $currency_code .']', ''); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('prices['. $currency_code .']', isset($_POST['prices'][$currency_code]) ? number_format($_POST['prices'][$currency_code], 4, '.', '') : '', 'text', 'style="width: 50px;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('currency_prices['. $currency_code .']', '', 'text', 'style="width: 50px;" disabled="disabled"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('net_prices['. $currency_code .']', '', 'text', 'style="width: 50px;"'); ?></td>
             <td align="left" nowrap="nowrap"></td>
           </tr>
 <?php
@@ -597,18 +597,18 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_end_date', 'End Date'); ?></strong><br />
               <?php echo $system->functions->form_draw_datetime_field('campaigns['.$key.'][end_date]', isset($_POST['campaigns'][$key]['end_date']) ? $_POST['campaigns'][$key]['end_date'] : '', 'style="width: 110px;"'); ?>
             </td>
-            <td nowrap="nowrap"><?php echo $currency_code; ?><br />
-              <?php echo $system->functions->form_draw_input_field('campaigns['.$key.'][percent]', '', 'text', 'style="width: 50px;"'); ?>
+            <td nowrap="nowrap">%<br />
+              <?php echo $system->functions->form_draw_input_field('campaigns['.$key.'][percentage]', '', 'text', 'style="width: 50px;"'); ?>
             </td>
             <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />
-              <?php echo $system->functions->form_draw_currency_field($system->currency->selected['code'], 'campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', isset($_POST['campaigns'][$key][$system->settings->get('store_currency_code')]) ? $_POST['campaigns'][$key][$system->settings->get('store_currency_code')] : 0, 'text', 'style="width: 50px;"'); ?>
+              <?php echo $system->functions->form_draw_input_field('campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', isset($_POST['campaigns'][$key][$system->settings->get('store_currency_code')]) ? $_POST['campaigns'][$key][$system->settings->get('store_currency_code')] : 0, 'text', 'style="width: 50px;"'); ?>
             </td>
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {
     if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
             <td nowrap="nowrap"><?php echo $currency_code; ?><br />
-              <?php echo $system->functions->form_draw_currency_field($currency_code, 'campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'text', 'style="width: 50px;"'); ?>
+              <?php echo $system->functions->form_draw_input_field('campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'text', 'style="width: 50px;"'); ?>
             </td>
 <?php
   }
@@ -623,18 +623,15 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
         
         <script type="text/javascript">
           $("input[name^='campaigns'][name$='[percentage]']").live("keyup", function() {
-            var index = $(this).attr('name').match(/^campaigns\[([^\]]+)\]\[percentage\]$/);
-            var index = index[1];
-            <?php foreach ($system->currency->currencies as $currency) { ?>
-            $("input[name^='campaigns["+ index +"][<?php echo $currency['code']; ?>]']").val($("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100));
-            <?php } ?>
+            var parent = $(this).closest('tr');
+            <?php foreach ($system->currency->currencies as $currency) { ?>if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() != 0) $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val($("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100));<?php } ?>
           });
           
-          $("input[name^='campaigns'][name$='[<?php echo $system->currency->selected['code']; ?>]']").live("keyup", function() {
-            var index = $(this).attr('name').match(/^campaigns\[([^\]]+)\]\[<?php echo $system->currency->selected['code']; ?>\]$/);
-            var index = index[1];
-            $("input[name^='campaigns["+ index +"][percentage]']").val(($("input[name='prices[<?php echo $system->currency->selected['code']; ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo $system->currency->selected['code']; ?>]']").val() * 100);
+          $("input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']").live("keyup", function() {
+            var parent = $(this).closest('tr');
+            $(parent).find("input[name$='[percentage]']").val(($("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() * 100);
           });
+          $("input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']").trigger("keyup");
           
           $("#remove-campaign").live("click", function(event) {
             event.preventDefault();
@@ -655,14 +652,14 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
                        + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('campaigns[new_campaign_i][percentage]', '', 'text', 'style="width: 50px;"')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'campaigns[new_campaign_i]['. $system->settings->get('store_currency_code') .']', '')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('campaigns[new_campaign_i]['. $system->settings->get('store_currency_code') .']', '', 'text', 'style="width: 50px;"')); ?>'
                        + '  </td>'
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {
     if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
                        + '  <td nowrap="nowrap"><?php echo $currency_code; ?><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code. ']', '')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('campaigns[new_campaign_i]['. $currency_code. ']', '', 'text', 'style="width: 50px;"')); ?>'
                        + '  </td>'
 <?php
   }

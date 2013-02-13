@@ -109,7 +109,7 @@
       }
       
       foreach (array_keys($columns) as $key) {
-        if (strpos($columns[$key], $_POST['wrapper']) !== false || strpos($columns[$key], "\r") !== false || strpos($columns[$key], "\n") !== false) {
+        if (strpos($columns[$key], $_POST['delimiter']) !== false || strpos($columns[$key], $_POST['wrapper']) !== false || strpos($columns[$key], "\r") !== false || strpos($columns[$key], "\n") !== false) {
           $columns[$key] = $_POST['wrapper'] . str_replace($_POST['wrapper'], $_POST['escapechar'].$_POST['wrapper'], $columns[$key]) . $_POST['wrapper'];
         }
       }

@@ -62,9 +62,9 @@
   if (!empty($item['options'])) {
     echo '<p>';
     $use_br = false;
-    foreach ($item['options'] as $key => $value) {
+    foreach ($item['options'] as $k => $v) {
       if ($use_br) echo '<br />';
-      echo $key .': '. $value;
+      echo $k .': '. $v;
       $use_br = true;
     }
     echo '</p>' . PHP_EOL;

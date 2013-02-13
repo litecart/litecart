@@ -42,7 +42,7 @@
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php'); ?>
         </td>
         <td id="content">
-          <!--snippet:alerts-->
+          <!--snippet:notices-->
           <!--snippet:content-->
         </td>
       </tr>

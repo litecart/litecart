@@ -31,7 +31,7 @@
         'options' => array(
           array(
             'id' => 'flat',
-            'icon' => '',
+            'icon' => $this->settings['icon'],
             'name' => $this->system->language->translate('title_flat_rate', 'Flat Rate'),
             'description' => '',
             'fields' => '',

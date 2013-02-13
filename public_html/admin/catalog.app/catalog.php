@@ -284,8 +284,8 @@
         
         if (in_array($category['id'], $category_trail)) {
         
-          if ($system->database->num_rows($system->database->query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". (int)$category['id'] ."' limit 1;")) > 0
-           || $system->database->num_rows($system->database->query("select * from ". DB_TABLE_PRODUCTS ." where find_in_set ('". (int)$category['id'] ."', categories) limit 1;")) > 0) {
+          if ($system->database->num_rows($system->database->query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = '". (int)$category['id'] ."' limit 1;")) > 0
+           || $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where find_in_set ('". (int)$category['id'] ."', categories) limit 1;")) > 0) {
             $output .= admin_catalog_category_tree($category['id'], $depth+1);
             
             // Output products
@@ -342,10 +342,12 @@
         }
         $output .= '<tr class="'. $rowclass . (($product['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
                  . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $system->functions->form_draw_checkbox('products['. $product['id'] .']', $product['id'], !empty($_POST['products'][$product['id']]) ? $_POST['products'][$product['id']] : '') .'</td>' . PHP_EOL
-                 . '  <td align="left"><img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></td>' . PHP_EOL
+                 //. '  <td align="left"><img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></td>' . PHP_EOL
+                 . '  <td align="left"><img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="?app='. $_GET['app'] .'&doc=edit_product.php&category_id='. $category_id .'&product_id='. $product['id'] .'">'. $product['name'] .'</a></td>' . PHP_EOL
                  //. '  <td align="left"><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL
                  . '  <td align="right" nowrap="nowrap"></td>' . PHP_EOL
-                 . '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
+                 //. '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
+                 . '  <td><a href="?app='. $_GET['app'] .'&doc=edit_product.php&category_id='. $category_id .'&product_id='. $product['id'] .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
       $system->database->free($products_query);

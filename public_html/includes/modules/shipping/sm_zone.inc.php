@@ -30,7 +30,7 @@
         
         $options[] = array(
           'id' => 'zone_'.$i,
-          'icon' => '',
+          'icon' => $this->settings['icon'],
           'name' => $this->system->language->translate('title_flat_rate', 'Flat Rate'),
           'description' => $this->system->functions->reference_get_country_name($customer['country_code']),
           'fields' => '',
@@ -45,7 +45,7 @@
         } else {
           $options[] = array(
             'id' => 'zone_x',
-            'icon' => '',
+            'icon' => $this->settings['icon'],
             'name' => $this->system->language->translate('title_flat_rate', 'Flat Rate'),
             'description' => $this->system->functions->reference_get_country_name($customer['country_code']),
             'fields' => '',

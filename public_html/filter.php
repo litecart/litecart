@@ -22,7 +22,7 @@
                                               . '      if (!scrollInProgress && !endOfContent) {' . PHP_EOL
                                               . '        $("body").css("cursor", "wait");' . PHP_EOL
                                               . '        scrollInProgress = true;' . PHP_EOL
-                                              . '        var url = "'. $system->document->link('ajax/products.html.php', array('manufacturers' => isset($_GET['manufacturers']) ? $_GET['manufacturers'] : null, 'product_groups' => isset($_GET['product_groups']) ? $_GET['product_groups'] : null, 'sort' => $_GET['sort'], 'page' => 'nextPage')) .'";' . PHP_EOL
+                                              . '        var url = "'. $system->document->link('ajax/products.html.php', array('categories' => isset($_GET['categories']) ? $_GET['categories'] : null, 'manufacturers' => isset($_GET['manufacturers']) ? $_GET['manufacturers'] : null, 'product_groups' => isset($_GET['product_groups']) ? $_GET['product_groups'] : null, 'price_ranges' => isset($_GET['price_ranges']) ? $_GET['price_ranges'] : null, 'campaign' => isset($_GET['campaign']) ? $_GET['campaign'] : null, 'sort' => $_GET['sort'], 'page' => 'nextPage')) .'";' . PHP_EOL
                                               . '        $.get(url.replace(/nextPage/g, nextPage), function(data) {' . PHP_EOL
                                               . '          if (data.replace(/^\s\s*/, "") == "") {' . PHP_EOL
                                               . '            endOfContent = true;' . PHP_EOL
@@ -48,7 +48,7 @@
                                               . '  })' . PHP_EOL;
   
   ob_start();
-  echo '<div id="sidebar" class="shadow rounded-corners">' . PHP_EOL;
+  echo '<div style="padding: 0; width: 230px;" id="sidebar">' . PHP_EOL;
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'product_filter.inc.php');
   echo '</div>' . PHP_EOL;
   $system->document->snippets['column_left'] = ob_get_clean();
@@ -84,21 +84,23 @@
 <?php
     $products_query = $system->functions->catalog_products_query(
       array(
-        'categories' => isset($_GET['categories']) ? $_GET['categories'] : null,
-        'product_groups' => isset($_GET['product_groups']) ? $_GET['product_groups'] : null,
-        'manufacturers' => isset($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
+        'categories' => !empty($_GET['categories']) ? $_GET['categories'] : null,
+        'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
+        'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
+        'campaign' => !empty($_GET['campaign']) ? $_GET['campaign'] : null,
+        'price_ranges' => !empty($_GET['price_ranges']) ? $_GET['price_ranges'] : null,
         'sort' => $_GET['sort']
       )
     );
     if ($system->database->num_rows($products_query) > 0) {
     
-      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
       
       $page_items = 0;
       while ($listing_product = $system->database->fetch($products_query)) {
         echo $system->functions->draw_listing_product($listing_product);
         
-        if (++$page_items == $system->settings->get('items_per_page')) break;
+        if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
       }
       
     } else {
@@ -109,7 +111,7 @@
   </div>
   
 <?php
-  echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page')));
+  echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

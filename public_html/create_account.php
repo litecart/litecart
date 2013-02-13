@@ -21,27 +21,21 @@
   
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     
-    if (empty($_POST['firstname']) || empty($_POST['lastname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_must_enter_your_name', 'You must enter your name.'));
-    if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_must_enter_email_address', 'You must enter an e-mail address.'));
-    if (empty($_POST['password']) || empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_must_enter_password', 'You must enter a password.'));
     if (!empty($_POST['email']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". $system->database->input($_POST['email']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_already_registered', 'The e-mail address already exists in our customer database. Please login or select a different e-mail address.'));
+      
+    if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_missing', 'You must enter your e-mail address.'));
     
-    if (empty($system->customer->data['id']) && $system->settings->get('register_guests') == 'true') {
-      
-      if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_email_missing', 'You must enter your e-mail address.'));
-      
-      if (empty($_POST['password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_password', 'You must enter a password.'));
-      if (empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_confirmed_password', 'You must confirm your password.'));
-      if (isset($_POST['password']) && isset($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) $system->notices->add('errors', $system->language->translate('checkout.php/error_passwords_missmatch', 'The passwords did not match.'));
-      
-      if (empty($_POST['firstname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_firstname', 'You must enter a first name.'));
-      if (empty($_POST['lastname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_lastname', 'You must enter a last name.'));
-      if (empty($_POST['address1'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_address1', 'You must enter an address.'));
-      if (empty($_POST['city'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_city', 'You must enter a city.'));
-      if (empty($_POST['postcode'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_postcode', 'You must enter a postcode.'));
-      if (empty($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_country', 'You must select a country.'));
-      if (empty($_POST['country_code']) && $system->functions->reference_country_num_zones($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_zone', 'You must select a zone.'));
-    }
+    if (empty($_POST['password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_password', 'You must enter a password.'));
+    if (empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_confirmed_password', 'You must confirm your password.'));
+    if (isset($_POST['password']) && isset($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) $system->notices->add('errors', $system->language->translate('checkout.php/error_passwords_missmatch', 'The passwords did not match.'));
+    
+    if (empty($_POST['firstname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_firstname', 'You must enter a first name.'));
+    if (empty($_POST['lastname'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_lastname', 'You must enter a last name.'));
+    if (empty($_POST['address1'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_address1', 'You must enter an address.'));
+    if (empty($_POST['city'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_city', 'You must enter a city.'));
+    if (empty($_POST['postcode'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_postcode', 'You must enter a postcode.'));
+    if (empty($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_country', 'You must select a country.'));
+    if (empty($_POST['country_code']) && $system->functions->reference_country_num_zones($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('checkout.php/error_missing_zone', 'You must select a zone.'));
     
     if (!$system->notices->get('errors')) {
       

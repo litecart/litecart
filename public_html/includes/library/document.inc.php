@@ -104,13 +104,13 @@
       }
     }
     
-    public function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array()) {
-      return htmlspecialchars($this->link($document, $new_params, $inherit_params, $skip_params));
+    public function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars($this->link($document, $new_params, $inherit_params, $skip_params, $language_code));
     }
     
   // Substituted
-    public function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array()) {
-      return $this->system->link->build_link($document, $new_params, $inherit_params, $skip_params);
+    public function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      return $this->system->link->build_link($document, $new_params, $inherit_params, $skip_params, $language_code);
     }
   }
   

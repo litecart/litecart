@@ -1,2 +1,2 @@
-<!--snippet:alerts-->
+<!--snippet:notices-->
 <!--snippet:content-->

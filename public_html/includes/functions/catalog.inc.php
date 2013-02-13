@@ -101,6 +101,7 @@
     
     $sql_select_occurrences = "";
     $sql_andor = "and";
+
     
     if ($filter['sort'] == 'occurrences') {
       $sql_select_occurrences = "(0
@@ -120,20 +121,45 @@
       $sql_andor = "or";
     }
     
-    $products_query = $system->database->query(
-      "select p.id, p.product_groups, p.image, p.tax_class_id, p.quantity, p.date_created, pi.name, pi.short_description, (if(pp.". $system->database->input($system->currency->selected['code']) .", pp.". $system->database->input($system->currency->selected['code']) ."  / ". $system->currency->selected['value'] .", pp.". $system->database->input($system->settings->get('store_currency_code')) .")) as price, pc_tmp.campaign_price, if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp.". $system->database->input($system->currency->selected['code']) ." / ". $system->currency->selected['value'] .") as final_price, p.manufacturer_id, m.name as manufacturer_name
+  // Create levels of product groups
+    $sql_where_product_groups = "";
+    if (!empty($filter['product_groups'])) {
+      $product_groups = array();
+      foreach ($filter['product_groups'] as $group_value) {
+        list($group,) = explode('-', $group_value);
+        $product_groups[$group][] = $group_value;
+      }
+      foreach ($product_groups as $group_value) {
+        $sql_where_product_groups .= "$sql_andor (find_in_set('". implode("', p.product_groups) or find_in_set('", $group_value) ."', p.product_groups))";
+      }
+    }
+    
+    $sql_where_prices = "";
+    if (!empty($filter['price_ranges'])) {
+      foreach ($filter['price_ranges'] as $price_range) {
+        list($min,$max) = explode('-', $price_range);
+        $sql_where_prices .= " or (if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp_tmp.price) >= ". (float)$min ." and if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp_tmp.price) <= ". (float)$max .")";
+      }
+      $sql_where_prices = "$sql_andor (". ltrim($sql_where_prices, " or ") .")";
+    }
+    
+    $query =
+      "select p.id, p.product_groups, p.image, p.tax_class_id, p.quantity, p.date_created, pi.name, pi.short_description, pp_tmp.price, pc_tmp.campaign_price, if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp_tmp.price) as final_price, p.manufacturer_id, m.name as manufacturer_name
       ". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ."
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". $system->database->input($system->language->selected['code']) ."')
       left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
       left join (
-        select pc.product_id, (pc.". $system->database->input($system->currency->selected['code']) ." / ". $system->currency->selected['value'] .") as campaign_price
+        select pp.product_id, if(pp.". $system->database->input($system->currency->selected['code']) .", pp.". $system->database->input($system->currency->selected['code']) ."  / ". $system->currency->selected['value'] .", pp.". $system->database->input($system->settings->get('store_currency_code')) .") as price
+        from ". DB_TABLE_PRODUCTS_PRICES ." pp
+      ) pp_tmp on (pp_tmp.product_id = p.id)
+      left join (
+        select pc.product_id, if(pc.". $system->database->input($system->currency->selected['code']) .", pc.". $system->database->input($system->currency->selected['code']) ." / ". $system->currency->selected['value'] .", pc.". $system->database->input($system->settings->get('store_currency_code')) .") as campaign_price
         from ". DB_TABLE_PRODUCTS_CAMPAIGNS ." pc
         where (pc.start_date = '0000-00-00 00:00:00' or pc.start_date <= '". date('Y-m-d H:i:s') ."')
         and (pc.end_date = '0000-00-00 00:00:00' or pc.end_date >= '". date('Y-m-d H:i:s') ."')
         order by pc.end_date asc
-        limit 1
       ) pc_tmp on (pc_tmp.product_id = p.id)
       where p.status
       and (p.date_valid_from = '0000-00-00 00:00:00' or p.date_valid_from <= '". date('Y-m-d H:i:00') ."')
@@ -152,12 +178,16 @@
         ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", $system->database->input($filter['manufacturers'])) ."')" : false) ."
         ". (isset($filter['product_group_id']) ? "$sql_andor find_in_set('". (int)$filter['product_group_id'] ."', p.product_groups)" : false) ."
         ". (isset($filter['products']) ? "$sql_andor p.id in ('". implode("', '", $filter['products']) ."')" : false) ."
-        ". (!empty($filter['product_groups']) ? "$sql_andor (find_in_set('". implode("', p.product_groups) or find_in_set('", $filter['product_groups']) ."', p.product_groups))" : false) ."
+        ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
+        ". (!empty($sql_where_prices) ? $sql_where_prices : false) ."
         ". (!empty($filter['purchased']) ? "$sql_andor purchases" : false) ."
       )
       order by $sql_sort
       ". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";"
-    );
+    ;
+    
+    if (!empty($_GET['debug'])) die($query);
+    $products_query = $system->database->query($query);
     
     return $products_query;
   }

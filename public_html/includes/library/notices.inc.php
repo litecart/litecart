@@ -26,20 +26,22 @@
     //}
     
     public function prepare_output() {
-    
+      
+      $notices = array();
+      
       foreach(array('debugs', 'errors', 'notices', 'warnings', 'success') as $notice_type) {
         if ($this->system->notices->get($notice_type)) {
-          $alerts[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', $this->system->notices->dump($notice_type)) . '</div>' . PHP_EOL;
+          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', $this->system->notices->dump($notice_type)) . '</div>' . PHP_EOL;
         }
       }
       
       $this->reset();
       
-      if (isset($alerts)) {
-        $this->system->document->snippets['alerts'] = '<div id="notices-wrapper">' . PHP_EOL
-                                                    . '  <div id="notices">'. PHP_EOL . implode(PHP_EOL, $alerts) . '</div>' . PHP_EOL
+      if (isset($notices)) {
+        $this->system->document->snippets['notices'] = '<div id="notices-wrapper">' . PHP_EOL
+                                                    . '  <div id="notices">'. PHP_EOL . implode(PHP_EOL, $notices) . '</div>' . PHP_EOL
                                                     . '</div>' . PHP_EOL;
-        unset($alerts);
+        unset($notices);
       }
     }
     

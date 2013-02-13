@@ -2,7 +2,7 @@
   require_once('../includes/app_header.inc.php');
   $system->document->viewport = 'ajax';
   
-  header('Content-type: application/xhtml+xml; charset='. $system->language->selected['charset']);
+  header('Content-type: text/plain; charset='. $system->language->selected['charset']);
   
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
@@ -16,17 +16,20 @@
     if (!empty($_GET['product_group'])) $_GET['product_groups'] = array($_GET['product_group']);
     
     $filter = array();
+    if (!empty($_GET['query'])) $filter['query'] = $_GET['query'];
     if (!empty($_GET['categories'])) $filter['categories'] = $_GET['categories'];
     if (!empty($_GET['designers'])) $filter['designers'] = $_GET['designers'];
     if (!empty($_GET['manufacturers'])) $filter['manufacturers'] = $_GET['manufacturers'];
     if (!empty($_GET['product_groups'])) $filter['product_groups'] = $_GET['product_groups'];
+    if (!empty($_GET['price_ranges'])) $filter['price_ranges'] = $_GET['price_ranges'];
+    if (!empty($_GET['campaign'])) $filter['campaign'] = $_GET['campaign'];
     if (!empty($_GET['page'])) $filter['page'] = (int)$_GET['page'];
     if (!empty($_GET['sort'])) $filter['sort'] = $_GET['sort'];
     
     $products_query = $system->functions->catalog_products_query($filter);
     if ($system->database->num_rows($products_query) > 0 && $system->database->num_rows($products_query) > ($_GET['page']-1) * $system->settings->get('data_table_rows_per_page', 20)) {
       
-      echo '<h3 style="clear: both; padding-top: 10px;">'. $system->language->translate('title_page', 'Page') .' '.  $_GET['page'] .'</h3>' . PHP_EOL;
+      echo '<div style="margin-left: -2px;"><h3 class="subdivision">&#8226; '. $system->language->translate('title_page', 'Page') .' '.  $_GET['page'] .' &#8226;</h3></div>' . PHP_EOL;
     
       if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
       

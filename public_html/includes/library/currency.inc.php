@@ -74,7 +74,7 @@
           $currencies[] = $currency['code'];
         }
       }
-    
+      
     // Return currency from cookie
       if (isset($_COOKIE['currency_code']) && in_array($_COOKIE['currency_code'], $currencies)) return $_COOKIE['currency_code'];
       

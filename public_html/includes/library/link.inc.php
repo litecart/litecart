@@ -40,9 +40,7 @@
     ######################################################################
     
     public function get_base_link() {
-      
       $link = $_SERVER['PHP_SELF'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-      
       return $this->full_link($link);
     }
     
@@ -50,7 +48,7 @@
       return $this->full_link($_SERVER['REQUEST_URI']);
     }
     
-    public function build_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array()) {
+    public function build_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
       
       if ($document === null) {
         $document = parse_url($this->get_base_link(), PHP_URL_PATH);
@@ -95,8 +93,8 @@
       if (!empty($this->cache[$checksum])) return $this->cache[$checksum];
       
       if ($this->system->settings->get('seo_links_enabled') == 'true') {
-        $seo_link = $this->system->seo_links->get_cached_link($link);
-        if (empty($seo_link)) $seo_link = $this->system->seo_links->create_link($link);
+        $seo_link = $this->system->seo_links->get_cached_link($link, $language_code);
+        if (empty($seo_link)) $seo_link = $this->system->seo_links->create_link($link, $language_code);
       }
       
       $link = !empty($seo_link) ? $seo_link : $link;

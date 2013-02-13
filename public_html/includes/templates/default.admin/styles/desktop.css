@@ -174,11 +174,7 @@ ul.navigation-horizontal li {
   margin: 0;
 }
 #widgets ul li{
-  display: inline-block;
-  float: left;
-
-  width: 50%;
-  
+  margin-bottom: 20px;
   /*border: 1px #d1d1d1 solid;*/
   font-size: 0.9em;
 }

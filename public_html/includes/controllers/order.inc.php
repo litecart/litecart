@@ -644,7 +644,7 @@
       );
       
       if ($this->system->functions->reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'postcode';
-      if ($this->system->functions->reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
+      if ($this->system->functions->reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
       
       foreach ($required_fields as $field) {
         if (empty($this->data['customer'][$field])) return $this->system->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ('.$field.')';
@@ -663,7 +663,7 @@
         if ($this->system->functions->reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'shipping_address[zone_code]';
         
         foreach ($required_fields as $field) {
-          if (empty($this->data['customer']['shipping_address'][$field])) return $this->system->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ('.$field.')';
+          if (empty($this->data['customer']['shipping_address'][$field])) return $this->system->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' (shipping_address['.$field.'])';
         }
       }
       

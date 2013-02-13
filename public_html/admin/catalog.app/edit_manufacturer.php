@@ -98,7 +98,7 @@
 
 <?php
   if (!empty($manufacturer->data['image'])) {
-    echo '<p><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 400, 300) .'" /></p>';
+    echo '<p><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 400, 100, 'FIT') .'" /></p>';
   }
 ?>
 

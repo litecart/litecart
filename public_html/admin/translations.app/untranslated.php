@@ -5,20 +5,21 @@
   
   if (empty($_GET['language_1'])) $_GET['language_1'] = 'en';
   if (empty($_GET['language_2'])) $_GET['language_2'] = $system->settings->get('store_language_code');
+  if (isset($_GET['language_1']) && isset($_GET['language_2']) && $_GET['language_1'] == $_GET['language_2']) {
+    $_GET['language_1'] = $_GET['language_2'];
+    unset($_GET['language_2']);
+  }
   
   if (!isset($_GET['page'])) $_GET['page'] = 1;
   
   if (isset($_POST['save'])) {
   
     foreach ($_POST['translations'] as $translation) {
-      $sql_update_fields = '';
-      foreach (array_keys($system->language->languages) as $language) {
-        $sql_update_fields .= "text_".$language ." = '". $system->database->input(trim($translation['text_'.$language]), !empty($translation['html']) ? true : false) ."', ";
-      }
       $system->database->query(
         "update ". DB_TABLE_TRANSLATIONS ."
         set html = ". (!empty($translation['html']) ? 1 : 0) .",
-          ". $sql_update_fields ."
+          text_". $_GET['language_1'] ." = '". $system->database->input(trim($translation['text_'.$_GET['language_1']]), !empty($translation['html']) ? true : false) ."',
+          ". (isset($_GET['language_2']) ? "text_". $_GET['language_2'] ." = '". $system->database->input(trim($translation['text_'.$_GET['language_2']]), !empty($translation['html']) ? true : false) ."', " : "") ."
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". $system->database->input($translation['id']) ."'
         limit 1;"
@@ -58,7 +59,8 @@
 <?php
   $translations_query = $system->database->query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
-    where (text_".$system->database->input($_GET['language_1']) ." = '' or text_".$system->database->input($_GET['language_2']) ." = '')
+    where text_".$system->database->input($_GET['language_1']) ." = ''
+    ". (isset($_GET['language_2']) ? "or text_".$system->database->input($_GET['language_2']) ." = ''" : "") ."
     order by date_accessed desc;"
   );
   

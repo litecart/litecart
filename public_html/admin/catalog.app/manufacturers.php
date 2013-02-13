@@ -42,12 +42,13 @@
           $rowclass = 'even';
         }
         
+        $num_active = $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where status and manufacturer_id = ". (int)$manufacturer['id'] .";"));
         $num_products = $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where manufacturer_id = ". (int)$manufacturer['id'] .";"));
         
         echo '<tr class="'. $rowclass . ($manufacturer['status'] ? false : ' semi-transparent') .'">' . PHP_EOL
            . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($manufacturer['status']) ? 'on' : 'off') .'.png" width="16" height="16" align="absbottom" /> '. $system->functions->form_draw_checkbox('manufacturers['. $manufacturer['id'] .']', $manufacturer['id']) .'</td>' . PHP_EOL
            . '  <td nowrap="nowrap"><img src="'. (($manufacturer['image']) ?  $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" /> '. $manufacturer['name'] .'</td>' . PHP_EOL
-           . '  <td nowrap="nowrap" align="right">'. (int)$num_products .'</td>' . PHP_EOL
+           . '  <td nowrap="nowrap" align="right">'. (int)$num_active .' ('. (int)$num_products .')' .'</td>' . PHP_EOL
            . '  <td nowrap="nowrap"><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer.php', 'manufacturer_id' => $manufacturer['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
            . '</tr>' . PHP_EOL;
       }

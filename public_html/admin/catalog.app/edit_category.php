@@ -166,24 +166,46 @@ foreach (array_keys($system->language->languages) as $language_code) {
       <div id="tab-information">
         <table>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys($system->language->languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', (isset($_POST['head_title'][$language_code]) ? $_POST['head_title'][$language_code] : ''), 'text', 'style="width: 360px;"');
-  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_h1_title', 'H1 Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
   echo $system->functions->form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', (isset($_POST['h1_title'][$language_code]) ? $_POST['h1_title'][$language_code] : ''), 'text', 'style="width: 360px;"');
+  $use_br = true;
+}
+?>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_short_description', 'Short Description'); ?></strong><br />
+<?php
+$use_br = false;
+foreach (array_keys($system->language->languages) as $language_code) {
+  if ($use_br) echo '<br />';
+  echo $system->functions->form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', (isset($_POST['short_description'][$language_code]) ? $_POST['short_description'][$language_code] : ''), 'text', 'style="width: 360px;"');  $use_br = true;
+}
+?>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
+<?php
+$use_br = false;
+foreach (array_keys($system->language->languages) as $language_code) {
+  if ($use_br) echo '<br />';
+  echo $system->functions->form_draw_regional_textarea($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="width: 360px; height: 160px;"');  $use_br = true;
+}
+?>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_head_title', 'Head Title'); ?></strong><br />
+<?php
+$use_br = false;
+foreach (array_keys($system->language->languages) as $language_code) {
+  if ($use_br) echo '<br />';
+  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', (isset($_POST['head_title'][$language_code]) ? $_POST['head_title'][$language_code] : ''), 'text', 'style="width: 360px;"');
   $use_br = true;
 }
 ?>
@@ -209,28 +231,6 @@ foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
   echo $system->functions->form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', (isset($_POST['meta_keywords'][$language_code]) ? $_POST['meta_keywords'][$language_code] : ''), 'text', 'style="width: 360px;"');
   $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_short_description', 'Short Description'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys($system->language->languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', (isset($_POST['short_description'][$language_code]) ? $_POST['short_description'][$language_code] : ''), 'text', 'style="width: 360px;"');  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys($system->language->languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_textarea($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="width: 360px; height: 160px;"');  $use_br = true;
 }
 ?>
             </td>

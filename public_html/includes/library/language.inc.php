@@ -211,7 +211,7 @@
         $secondary_translations_query = $this->system->database->query(
           "select * from ". DB_TABLE_TRANSLATIONS ."
           where text_". $this->system->database->input($language_code) ." != ''
-          and text_en = '". $this->system->database->input(!empty($row['text_en']) ? $row['text_en'] : $default) ."'
+          and binary text_en = '". $this->system->database->input(!empty($row['text_en']) ? $row['text_en'] : $default) ."'
           limit 1;"
         );
         $secondary_translation = $this->system->database->fetch($secondary_translations_query);

@@ -29,7 +29,7 @@
         'options' => array(
           array(
             'id' => 'invoice',
-            'icon' => '',
+            'icon' => $this->settings['icon'],
             'name' => $this->system->language->translate(__CLASS__.':title_invoice', 'Invoice'),
             'description' => '',
             'fields' => '',

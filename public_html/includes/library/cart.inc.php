@@ -366,7 +366,7 @@
     }
     
     public function checksum() {
-      $this->data['checksum'] = sha1(serialize($this->data['items']));
+      $this->data['checksum'] = sha1(serialize(array_merge($this->data['items'], $this->system->language->selected)));
     }
   }
   

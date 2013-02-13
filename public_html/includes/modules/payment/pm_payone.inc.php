@@ -3,7 +3,7 @@
   class pm_payone {
     private $system;
     public $id = __CLASS__;
-    public $name = 'Payone';
+    public $name = 'PAYONE';
     public $description = '';
     public $author = 'TiM International';
     public $version = '1.0';
@@ -60,7 +60,7 @@
       switch($option_id) {
         case 'card':
           $clearingtype = 'cc';
-          $request = 'authorization';
+          $request = 'preauthorization';
           break;
         case 'invoice':
           $clearingtype = 'rec';
@@ -131,7 +131,7 @@
           $fields['no['.$item_no.']'] = 1; // quantity
           $fields['pr['.$item_no.']'] = number_format($this->system->currency->calculate($row['value'] + $row['tax'], 'EUR'), 2, '', ''); // price in cents
           $fields['de['.$item_no.']'] = $row['title']; // item description
-          $fields['va['.$item_no.']'] = round($row['tax'] / $row['value'] * 100); // vat percentage
+          $fields['va['.$item_no.']'] = !empty($row['value']) ? round($row['tax'] / $row['value'] * 100) : 0; // vat percentage
           $item_no++;
         }
       }
@@ -209,7 +209,7 @@
           'key' => 'status',
           'default_value' => 'Enabled',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'description' => $this->system->language->translate(__CLASS__.':description_status', ''),
           'function' => 'radio("Enabled", "Disabled")',
         ),
         array(

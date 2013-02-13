@@ -40,7 +40,8 @@
     }
     
     function sort_widget_modules($a, $b) {
-      return ($a['name'] < $b['name']) ? -1 : 1;
+      //return ($a['name'] < $b['name']) ? -1 : 1;
+      return ($a['priority'] < $b['priority']) ? -1 : 1;
     }
     usort($widgets, 'sort_widget_modules');
     
