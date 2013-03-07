@@ -14,7 +14,7 @@
       
       $this->load();
       
-      $this->cache = &$this->system->session->data['get_address_cache'];
+      //$this->_cache = &$this->system->session->data['get_address_cache'];
     }
     
     public function query($data) {
@@ -23,12 +23,12 @@
       
       $checksum = sha1(serialize($data));
       
-      if (isset($this->_cache[$checksum])) return $this->_cache[$checksum];
+      //if (isset($this->_cache[$checksum])) return $this->_cache[$checksum];
       
       $this->_cache[$checksum] = array('error' => $this->system->language->translate('error_failed_getting_address'));
       
       foreach ($this->modules as $module) {
-        if (!$result = $module->query($data)) {
+        if ($result = $module->query($data)) {
           if (empty($result['error'])) {
             $this->_cache[$checksum] = $result;
             return $result;

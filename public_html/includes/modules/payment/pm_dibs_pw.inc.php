@@ -42,7 +42,7 @@
             'id' => 'payment_window',
             'icon' => 'images/payment/dibs.png',
             'name' => $this->system->language->translate(__CLASS__.':title_option_payment_window', 'Payment Window'),
-            'description' => $this->system->language->translate(__CLASS__.':description_option_payment_window', ''),
+            'description' => $this->system->language->translate(__CLASS__.':description_option_payment_window', 'Safe and secure card money transactions by DIBS.'),
             'fields' => '',
             'cost' => 0,
             'tax_class_id' => 0,
@@ -69,7 +69,7 @@
         'language' => $order->data['language_code'],
         //'addFee' => '1',
         'payType' => $this->settings['payment_types'],
-        'captureNow' => '1',
+        'captureNow' => '0',
 
       );
       

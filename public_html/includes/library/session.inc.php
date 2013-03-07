@@ -55,7 +55,7 @@
     
     ######################################################################
     
-    public function destroy() {
+    public function reset() {
       session_destroy();
     }
     

@@ -17,43 +17,48 @@
       
       if ($this->settings['status'] != 'Enabled') return;
       
-    // Call Soap and set up data
-      $client = new SoapClient($this->settings['gateway'] ? 'https://webservices.sveaekonomi.se/webpay_test/SveaWebPay.asmx?WSDL' : 'https://webservices.sveaekonomi.se/webpay/SveaWebPay.asmx?WSDL');
+      if (empty($data['trigger']) || $data['trigger'] != 'tax_id') return;
       
-    // Handle response
-      $response = $client->GetAddresses(array(
-        'request' => array(
-          'Auth' => array(
-            'ClientNumber' => $this->settings['client_no'],
-            'Username' => $this->settings['username'],
-            'Password' => $this->settings['password'],
-           ),
-          'IsCompany' => empty($data['company']) ? 0 : 1,
-          'CountryCode' => isset($data['country_code']) ? $data['country_code'] : '',
-          'SecurityNumber' => isset($data['tax_id']) ? $data['tax_id'] : '',
-        )
-      ));
+      if (empty($data['tax_id'])) return;
       
-      if (empty($response->GetAddressesResult)) {
+      require_once(FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'sveawebpay/Includes.php');
+      
+      $swp = WebPay::getAddresses();
+      
+      if (empty($data['company'])) {
+        $swp->setIndividual($data['tax_id']);
+      } else {
+        $swp->setCompany($data['tax_id']);
+      }
+      
+      if ($this->settings['gateway'] != 'Live') {
+        $swp->setTestmode()
+          ->setIndividual(194605092222);
+      }
+      
+      $response = $swp->setOrderTypeInvoice()
+                    ->setCountryCode("SE")
+                    ->doRequest();
+                    
+      
+      if (empty($response->customerIdentity)) {
         return array('error' => $this->system->language->translate(__CLASS__.':error_no_response_from_server', 'No response from server'));
       }
       
-      if (!empty($response->GetAddressesResult->ErrorMessage)) {
-        return array('error' => $response->GetAddressesResult->ErrorMessage);
-      }
+      $response = array_shift(array_values($response->customerIdentity));
       
-      $info = array_shift(array_values($response->GetAddressesResult->Addresses->CustomerAddress));
+      list($lastname, $firstname) = explode(', ', $response->fullName);
       
       $info = array(
         'company' => '',
         //'firstname' => $info->LegalName,
-        'firstname' => $info->FirstName,
-        'lastname' => $info->LastName,
-        'address1' => $info->AddressLine1,
-        'address2' => $info->AddressLine2,
-        'postcode' => $info->Postcode,
-        'city' => $info->Postarea,
-        'country_code' => 'SE',
+        'firstname' => $firstname,
+        'lastname' => $lastname,
+        'address1' => $response->street,
+        'address2' => $response->coAddress,
+        'postcode' => $response->zipCode,
+        'city' => $response->locality,
+        'country_code' => '',
         'zone_code' => '',
       );
       
@@ -78,32 +83,11 @@
           'function' => 'radio("Enabled", "Disabled")',
         ),
         array(
-          'key' => 'client_no',
-          'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_client_no', 'Client No'),
-          'description' => $this->system->language->translate(__CLASS__.':description_client_no', 'Your client no provided by SveaWebPay.'),
-          'function' => 'input()',
-        ),
-        array(
-          'key' => 'username',
-          'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_username', 'Username'),
-          'description' => $this->system->language->translate(__CLASS__.':description_username', 'Your API username provided by SveaWebPay.'),
-          'function' => 'input()',
-        ),
-        array(
-          'key' => 'password',
-          'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_password', 'Password'),
-          'description' => $this->system->language->translate(__CLASS__.':description_username', 'Your API password provided by SveaWebPay.'),
-          'function' => 'password()',
-        ),
-        array(
           'key' => 'gateway',
           'default_value' => 'Test',
           'title' => $this->system->language->translate(__CLASS__.':title_gateway', 'Gateway'),
           'description' => $this->system->language->translate(__CLASS__.':description_gateway', 'Select your gateway.'),
-          'function' => 'radio(\'Production\',\'Test\')',
+          'function' => 'radio(\'Test\',\'Live\')',
         ),
         array(
           'key' => 'priority',

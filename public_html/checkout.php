@@ -189,9 +189,13 @@
       });
     });
     
+    var customer_checksum;
     var stateCustomerChanged = false;
     $('form[name=customer_form] *').live('change', function(e) {
-      stateCustomerChanged = true;
+      if (customer_checksum != $(this).closest('form').serialize()) {
+        stateCustomerChanged = true;
+      }
+      customer_checksum = $(this).closest('form').serialize();
     });
     
     var timerSubmitCustomer;
@@ -205,12 +209,18 @@
               clearTimeout(timerSubmitCustomer);
             }
           }
-        },
-        1
+        }, 1
       );
     });
     $('form[name=customer_form]').live('focusin', function() {
       clearTimeout(timerSubmitCustomer);
+    });
+    
+    $('form[name="order_form"]').live('submit', function(e) {
+      if (stateCustomerChanged) {
+        e.preventDefault();
+        alert("<?php echo $system->language->translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
+      }
     });
     
     $('form[name=customer_form]').live('submit', function(e) {
@@ -232,6 +242,7 @@
           $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
         },
         success: function(data) {
+          stateCustomerChanged = false;
           $('#checkout-customer-wrapper').html(data);
           refreshCart();
           refreshShipping();

@@ -8,7 +8,19 @@
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
   
   $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('', array(), array('manufacturer_id'))) .'" />';
-
+  
+  $system->functions->draw_fancybox('a.fancybox');
+  
+  ob_start();
+  echo '<div id="sidebar" class="shadow rounded-corners">' . PHP_EOL;
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php');
+  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php');
+  echo '</div>' . PHP_EOL;
+  $system->document->snippets['column_left'] = ob_get_clean();
+  
   $manufacturers_query = $system->database->query(
     "select m.id, m.name, m.keywords, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
     from ". DB_TABLE_MANUFACTURERS ." m
@@ -32,16 +44,7 @@
   $system->document->snippets['keywords'] = $manufacturer['meta_keywords'] ? $manufacturer['meta_keywords'] : $manufacturer['keywords'];
   $system->document->snippets['description'] = $manufacturer['meta_description'] ? $manufacturer['meta_description'] : $manufacturer['short_description'];
   
-  ob_start();
-  echo '<div id="sidebar" class="shadow rounded-corners">' . PHP_EOL;
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
-  //include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php');
-  echo '</div>' . PHP_EOL;
-  $system->document->snippets['column_left'] = ob_get_clean();
-  
+
   $manufacturer_cache_id = $system->cache->cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if ($system->cache->capture($manufacturer_cache_id, 'file')) {
 ?>
@@ -72,22 +75,20 @@
       <h1><?php echo $manufacturer['name']; ?></h1>
     </div>
     <div class="content">
-      <?php if ($manufacturer['description']) { ?>
-      <div class="manufacturer-description"><?php echo $manufacturer['description'] ?></div>
+      <?php if ($_GET['page'] == 1) { ?>
+      <?php if ($manufacturer['description']) { ?><div class="manufacturer-description"><?php echo $manufacturer['description'] ?></div><?php } ?>
       <?php } ?>
       <ul class="listing-wrapper products">
 <?php
-    $system->functions->draw_fancybox('a.fancybox');
-    
     $products_query = $system->functions->catalog_products_query(array('manufacturer_id' => $manufacturer['id'], 'sort' => $_GET['sort']));
     if ($system->database->num_rows($products_query) > 0) {
-      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
       
       $page_items = 0;
       while ($listing_item = $system->database->fetch($products_query)) {
         echo $system->functions->draw_listing_product($listing_item);
         
-        if (++$page_items == $system->settings->get('items_per_page')) break;
+        if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
       }
     }
 ?>
@@ -95,7 +96,7 @@
     </div>
 
 <?php
-    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page')));
+    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
   
     $system->cache->end_capture($manufacturer_cache_id);
   }

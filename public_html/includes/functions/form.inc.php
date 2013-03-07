@@ -13,18 +13,14 @@
   }
   
   function form_reinsert_value($name) {
-    $value = isset($_GET[$name]) ? $_GET[$name] : null;
+    $value = isset($_GET[$name]) ? $_GET[$name] : '';
     $value = isset($_POST[$name]) ? $_POST[$name] : $value;
     return $value;
   }
   
-  function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
-    if ($input === true) $input = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'radio', ((isset($input) && $input === $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
-  }
-  
-  function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='', $hint='') {
-    return form_draw_input_field($name, $value, 'range', 'min="'. $min .'" max="'. $max .'" step="'. $step .'"'. (($parameters) ? ' ' . $parameters : false));
+  function form_draw_image($name, $src, $parameters=false) {
+    $html = '<input type="hidden" name="'. $name .'" value="true" /><input type="image" src="'. $src .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return $html;
   }
   
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
@@ -39,7 +35,7 @@
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='', $hint='') {
     global $system;
     if ($value === true) $value = form_reinsert_value($name);
-    $html = form_draw_input_field($name, number_format($value, $system->currency->currencies[$currency_code]['decimals'], '.', ''), 'number', 'style="width: 75px; text-align: right;"', $hint);
+    $html = form_draw_input_field($name, number_format((float)$value, $system->currency->currencies[$currency_code]['decimals'], '.', ''), 'number', 'style="width: 75px; text-align: right;"', $hint);
     return $html;
   }
   
@@ -130,8 +126,13 @@
     return form_draw_input($name, $value, 'hidden');
   }
   
-  function form_draw_image_field($name, $src, $title=false, $parameters='') {
-    return form_draw_input($name, '', 'image', 'src="'. $src .'" alt="'. $title .'" title="'. $title .'"' . (($parameters) ? ' '.$parameters : false));
+  function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
+    if ($input === true) $input = form_reinsert_value($name);
+    return form_draw_input($name, $value, 'radio', ((isset($input) && $input === $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
+  }
+  
+  function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='', $hint='') {
+    return form_draw_input_field($name, $value, 'range', 'min="'. $min .'" max="'. $max .'" step="'. $step .'"'. (($parameters) ? ' ' . $parameters : false));
   }
   
   function form_draw_input($name, $value=true, $type='text', $parameters='', $hint='') {
@@ -150,12 +151,12 @@
   function form_draw_select_field($name, $options=array(), $input=true, $size=false, $multiple=false, $parameters='', $hint='') {
     
     if (!is_array($options)) $options = array($options);
-    if (!is_array($input)) $input = array($input);
+    if ($input === true) $input = form_reinsert_value($name);
     
     $html = '<select name="'. $name .'"'. (($size) ? ' size="' . $size .'"' : false) . (($multiple && $size > 1) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
     foreach ($options as $option) {
-      $html .= '<option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (in_array(isset($option[1]) ? $option[1] : $option[0], $input) ? ' selected="selected"' : false) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+      $html .= '<option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $input) ? ' selected="selected"' : false) : (($option[0] == $input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
     
     $html .= '</select>';

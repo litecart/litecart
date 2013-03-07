@@ -273,7 +273,7 @@
     
     public function install() {
       $this->system->database->query(
-        "CREATE TABLE IF NOT EXISTS `". DB_TABLE_PREFIX ."_payone` (
+        "CREATE TABLE IF NOT EXISTS `". DB_TABLE_PREFIX ."payone` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `order_uid` varchar(13) NOT NULL,
           `txid` varchar(32) NOT NULL,

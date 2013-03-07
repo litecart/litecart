@@ -41,7 +41,40 @@
   
 // Payment transaction
   if (isset($_POST['confirm_order'])) {
-    $payment->transfer();
+    
+    if ($gateway = $payment->transfer()) {
+    
+      if (!empty($gateway['error'])) {
+        $system->notices->add('errors', $gateway['error']);
+        header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'));
+        exit;
+      }
+      
+      if (strtolower($gateway['method']) == 'post') {
+        echo '<p><img src="'. WS_DIR_IMAGES .'icons/16x16/loading.gif" width="16" height="16" /> '. $system->language->translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
+           . '<form name="gateway_form" method="post" action="'. $gateway['action'].'">' . PHP_EOL;
+        if (is_array($gateway['fields'])) {
+          foreach ($gateway['fields'] as $key => $value) echo '  ' . $system->functions->form_draw_hidden_field($key, $value) . PHP_EOL;
+        } else {
+          echo $gateway['fields'];
+        }
+        echo '</form>' . PHP_EOL
+           . '<script language="javascript">' . PHP_EOL;
+        if (!empty($gateway['delay'])) {
+          echo '  var t=setTimeout(function(){' . PHP_EOL
+             . '    document.forms["gateway_form"].submit();' . PHP_EOL
+             . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
+        } else {
+          echo '  document.forms["gateway_form"].submit();' . PHP_EOL;
+        }
+        echo '</script>';
+        exit;
+        
+      } else {
+        header('Location: '. $gateway['action']);
+        exit;
+      }
+    }
   }
   
 // Verify transaction

@@ -27,7 +27,7 @@
       }
       
       $options = array(
-        'title' => $this->name,
+        'title' => $this->system->language->translate(__CLASS__.':title_flat_rate_shipping', 'Flat Rate Shipping'),
         'options' => array(
           array(
             'id' => 'flat',

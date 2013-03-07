@@ -90,7 +90,9 @@
     
     public function get_cached_link($link='', $language_code='') {
     
-      if (!$this->enabled) return '';
+      if (!$this->enabled) return;
+      
+      if (substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) return;
       
       if (empty($link)) $link = $this->system->link->get_called_link();
       
@@ -123,6 +125,9 @@
       $parsed_link = $this->system->link->parse_link($link);
       
       if ($parsed_link['host'] != $_SERVER['HTTP_HOST']) return $link;
+      
+    // Don't use seo for admin links
+      if (substr($parsed_link['path'], 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) return $link;
       
     // Full webpath, if relative
       $parsed_link['path'] = $this->system->link->fullpath($parsed_link['path']);

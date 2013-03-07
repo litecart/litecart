@@ -4,7 +4,6 @@
     
     private $system;
     private $_data = array();
-    private $_language_code;
     private $_currency_code;
     
     function __construct($product_id, $currency_code=null) {
@@ -100,7 +99,7 @@
             foreach ($this->category_ids as $category_id) {
               $query = $this->system->database->query(
                 "select name, language_code from ". DB_TABLE_CATEGORIES_INFO ."
-                where id = '". (int)$category_id ."';"
+                where category_id = '". (int)$category_id ."';"
               );
               
               while ($row = $this->system->database->fetch($query)) {
@@ -195,6 +194,7 @@
           
           while ($product_option = $this->system->database->fetch($products_options_query)) {
           
+          // Groups
             if (isset($this->_data['options'][$product_option['group_id']]['function']) == false) {
               $option_group_query = $this->system->database->query(
                 "select * from ". DB_TABLE_OPTION_GROUPS ."
@@ -204,18 +204,6 @@
               $option_group = $this->system->database->fetch($option_group_query);
               foreach (array('id', 'function', 'required') as $key) {
                 $this->_data['options'][$product_option['group_id']][$key] = $option_group[$key];
-              }
-            }
-            
-            if (isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['value']) == false) {
-              $option_value_query = $this->system->database->query(
-                "select * from ". DB_TABLE_OPTION_VALUES ."
-                where id = '". (int)$product_option['value_id'] ."'
-                limit 1;"
-              );
-              $option_value = $this->system->database->fetch($option_value_query);
-              foreach (array('id', 'value') as $key) {
-                $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $option_value[$key];
               }
             }
             
@@ -233,8 +221,21 @@
             // Fix missing translations
               foreach (array('name', 'description') as $key) {
                 foreach (array_keys($this->system->language->languages) as $language_code) {
-                  if (!isset($this->_data['options'][$product_option['group_id']][$key][$language_code])) $this->_data['options'][$product_option['group_id']][$key] = $this->_data['options'][$product_option['group_id']][$key][$this->system->settings->get('default_language_code')];
+                  if (!isset($this->_data['options'][$product_option['group_id']][$key][$language_code])) $this->_data['options'][$product_option['group_id']][$key][$language_code] = $this->_data['options'][$product_option['group_id']][$key][$this->system->settings->get('default_language_code')];
                 }
+              }
+            }
+            
+          // Values
+            if (isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['value']) == false) {
+              $option_value_query = $this->system->database->query(
+                "select * from ". DB_TABLE_OPTION_VALUES ."
+                where id = '". (int)$product_option['value_id'] ."'
+                limit 1;"
+              );
+              $option_value = $this->system->database->fetch($option_value_query);
+              foreach (array('id', 'value') as $key) {
+                $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $option_value[$key];
               }
             }
             
@@ -251,7 +252,7 @@
               foreach (array('name') as $key) {
                 foreach (array_keys($this->system->language->languages) as $language_code) {
                   if (empty($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$this->system->settings->get('default_language_code')])) break;
-                  if (isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code]) == false) $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$this->system->settings->get('default_language_code')];
+                  if (isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code]) == false) $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code] = $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$this->system->settings->get('default_language_code')];
                 }
               }
             }

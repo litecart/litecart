@@ -9,7 +9,7 @@
       $this->system = &$system;
     }
     
-    public function load_dependencies() {
+ public function load_dependencies() {
       $this->classes = array(
         'L' => array(
           'name' => 'Litres',
@@ -56,13 +56,13 @@
         'dm3' => array(
           'name' => 'Cubic Decimetres',
           'unit' => 'dm3',
-          'value' => 0.000000001,
+          'value' => 1,
           'decimals' => 3,
         ),
         'cm3' => array(
           'name' => 'Cubic Centimetres',
           'unit' => 'cm3',
-          'value' => 0.000000000001,
+          'value' => 1000,
           'decimals' => 3,
         ),
         'oz' => array(

@@ -37,7 +37,6 @@
         case 'name':
         case 'description':
         case 'short_description':
-        case 'keywords':
         case 'head_title':
         case 'meta_description':
         case 'meta_keywords':
@@ -45,7 +44,7 @@
           $this->_data['info'] = array();
           
           $query = $this->system->database->query(
-            "select language_code, name, description, short_description, keywords, head_title, meta_description, meta_keywords from ". DB_TABLE_CATEGORIES_INFO ."
+            "select language_code, name, description, short_description, head_title, meta_description, meta_keywords from ". DB_TABLE_CATEGORIES_INFO ."
             where category_id = '". (int)$this->_data['id'] ."'
             and language_code in ('". implode("', '", array_keys($this->system->language->languages)) ."');"
           );
@@ -55,7 +54,7 @@
           }
           
         // Fix missing translations
-          foreach (array('name', 'description', 'short_description', 'keywords', 'head_title', 'meta_description', 'meta_keywords') as $key) {
+          foreach (array('name', 'description', 'short_description', 'head_title', 'meta_description', 'meta_keywords') as $key) {
             foreach (array_keys($this->system->language->languages) as $language_code) {
               if (empty($this->_data[$key][$language_code])) $this->_data[$key][$language_code] = $this->_data[$key][$this->system->settings->get('default_language_code')];
             }

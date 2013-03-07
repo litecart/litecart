@@ -174,7 +174,7 @@
               <table>
                 <tr>
                   <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
-                    <?php echo $system->functions->form_draw_input_field('tax_id', isset($_POST['tax_id']) ? $_POST['tax_id'] : '', 'text', 'style="width: 125px;"'); ?> <?php echo $system->functions->form_draw_button('get_address', $system->language->translate('title_get', 'Get'), 'button'); ?></td>
+                    <?php echo $system->functions->form_draw_input_field('tax_id', isset($_POST['tax_id']) ? $_POST['tax_id'] : '', 'text', 'style="width: 175px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
                     <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : '', 'text', 'style="width: 175px;"'); ?></td>
                 </tr>
@@ -265,6 +265,36 @@
   </div>
   
   <script type="text/javascript">
+    
+    $("#box-checkout-account input, #box-checkout-account select").change(function() {
+      $('body').css('cursor', 'wait');
+      $.ajax({
+        url: '<?php echo $system->document->link(WS_DIR_AJAX .'get_address.json.php'); ?>?trigger='+$(this).attr('name'),
+        type: 'post',
+        data: $(this).closest('form').serialize(),
+        cache: false,
+        async: true,
+        dataType: 'json',
+        error: function(jqXHR, textStatus, errorThrown) {
+          //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+          alert(errorThrown.message);
+        },
+        success: function(data) {
+          if (data['alert']) {
+            alert(data['alert']);
+            return;
+          }
+          $.each(data, function(key, value) {
+            console.log(key +" "+ value);
+            if ($("input[name='"+key+"']").length && $("input[name='"+key+"']").val() == '') $("input[name='"+key+"']").val(data[key]);
+          });
+        },
+        complete: function() {
+          $('body').css('cursor', 'auto');
+        }
+      });
+    });
+    
     $("select[name='country_code']").change(function(){
       $('body').css('cursor', 'wait');
       $.ajax({
@@ -300,7 +330,7 @@
         url: '<?php echo $system->document->link(WS_DIR_AJAX .'zones.json.php'); ?>?country_code=' + $(this).val(),
         type: 'get',
         cache: true,
-        async: true,
+        async: false,
         dataType: 'json',
         error: function(jqXHR, textStatus, errorThrown) {
           //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
@@ -316,36 +346,6 @@
           } else {
             $("select[name='shipping_address[zone_code]']").attr('disabled', 'disabled');
           }
-        },
-        complete: function() {
-          $('body').css('cursor', 'auto');
-        }
-      });
-    });
-    
-    $("button[name='get_address']").click(function(){
-      $('body').css('cursor', 'wait');
-      $.ajax({
-        url: '<?php echo $system->document->link(WS_DIR_AJAX .'getaddress.json.php'); ?>?country_code=' + $("select[name='country_code']").val() + '&tax_id=' + $("input[name='tax_id']").val() + '&company=' + $("input[name='company']").length,
-        type: 'get',
-        cache: false,
-        async: true,
-        dataType: 'json',
-        error: function(jqXHR, textStatus, errorThrown) {
-          //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-          alert(errorThrown.message);
-        },
-        success: function(data) {
-          if (data['error']) {
-            alert(data['error']);
-            return;
-          }
-          $("input[name='firstname']").val(data['firstname']);
-          $("input[name='lastname']").val(data['lastname']);
-          $("input[name='address1']").val(data['address1']);
-          $("input[name='address2']").val(data['address2']);
-          $("input[name='postcode']").val(data['postcode']);
-          $("input[name='city']").val(data['city']);
         },
         complete: function() {
           $('body').css('cursor', 'auto');

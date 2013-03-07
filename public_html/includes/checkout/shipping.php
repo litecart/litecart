@@ -11,7 +11,7 @@
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'shipping.inc.php');
   $shipping = new shipping();
   
-  if (empty($system->customer->data['shipping_address']['country_code'])) return;
+  if (empty($system->customer->data['country_code'])) return;
   
   if (!empty($_POST['set_shipping'])) {
     list($module_id, $option_id) = explode(':', $_POST['selected_shipping']);

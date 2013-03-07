@@ -35,6 +35,7 @@
     <tr class="header">
       <th style="text-align: center; width: 30px;"><?php echo $this->system->language->translate('title_qty', 'Qty'); ?></th>
       <th style="text-align: left;"><?php echo $this->system->language->translate('title_item', 'Item'); ?></th>
+      <th style="text-align: left;"><?php echo $this->system->language->translate('title_sku', 'SKU'); ?></th>
       <th style="text-align: left;"><?php echo $this->system->language->translate('title_unit_price', 'Unit Price'); ?></th>
       <th style="text-align: right;"><?php echo $this->system->language->translate('title_tax', 'Tax'); ?> </th>
       <th style="text-align: right;"><?php echo $this->system->language->translate('title_sum', 'Sum'); ?></th>
@@ -59,6 +60,7 @@
     }
 ?>
       </td>
+      <td align="left"><?php echo $item['sku']; ?>
     <?php if ($this->system->settings->get('display_prices_including_tax') == 'true') { ?>
       <td style="text-align: right; width: 75px;"><?php echo $this->system->currency->format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <td style="text-align: right; width: 75px;"><?php echo $this->system->currency->format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>

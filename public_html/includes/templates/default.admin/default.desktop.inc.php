@@ -6,7 +6,7 @@
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="robots" content="noindex, nofollow" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
 <link href="<!--snippet:template_path-->styles/desktop.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>jquery/jquery-1.8.0.min.js"></script>
 <!--snippet:head_tags-->

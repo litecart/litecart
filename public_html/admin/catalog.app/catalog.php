@@ -193,7 +193,8 @@
       left join ". DB_TABLE_MANUFACTURERS ." m on (p.manufacturer_id = m.id)
       left join ". DB_TABLE_DESIGNERS ." d on (p.designer_id = d.id)
       where (
-        pi.name like '%". $system->database->input($_GET['query']) ."%'
+        p.id = '". $system->database->input($_GET['query']) ."'
+        or pi.name like '%". $system->database->input($_GET['query']) ."%'
         or p.code like '%". $system->database->input($_GET['query']) ."%'
         or pi.short_description like '%". $system->database->input($_GET['query']) ."%'
         or pi.description like '%". $system->database->input($_GET['query']) ."%'
@@ -332,6 +333,12 @@
         and (pi.product_id = p.id and pi.language_code = '". $system->language->selected['code'] ."')
         order by pi.name asc;"
       );
+      
+      $display_images = true;
+      if ($system->database->num_rows($products_query) > 100) {
+        $display_images = false;
+      }
+      
       while ($product=$system->database->fetch($products_query)) {
         $num_product_rows++;
         
@@ -340,14 +347,18 @@
         } else {
           $rowclass = 'even';
         }
+        
         $output .= '<tr class="'. $rowclass . (($product['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $system->functions->form_draw_checkbox('products['. $product['id'] .']', $product['id'], !empty($_POST['products'][$product['id']]) ? $_POST['products'][$product['id']] : '') .'</td>' . PHP_EOL
-                 //. '  <td align="left"><img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></td>' . PHP_EOL
-                 . '  <td align="left"><img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="?app='. $_GET['app'] .'&doc=edit_product.php&category_id='. $category_id .'&product_id='. $product['id'] .'">'. $product['name'] .'</a></td>' . PHP_EOL
-                 //. '  <td align="left"><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL
-                 . '  <td align="right" nowrap="nowrap"></td>' . PHP_EOL
-                 //. '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
-                 . '  <td><a href="?app='. $_GET['app'] .'&doc=edit_product.php&category_id='. $category_id .'&product_id='. $product['id'] .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
+                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $system->functions->form_draw_checkbox('products['. $product['id'] .']', $product['id'], !empty($_POST['products'][$product['id']]) ? $_POST['products'][$product['id']] : '') .'</td>' . PHP_EOL;
+        
+        if ($display_images) {
+          $output .= '  <td align="left"><img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></td>' . PHP_EOL;
+        } else {
+          $output .= '  <td align="left"><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+        }
+        
+        $output .= '  <td align="right" nowrap="nowrap"></td>' . PHP_EOL
+                 . '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product.php', 'category_id' => $category_id, 'product_id' => $product['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
       $system->database->free($products_query);
@@ -375,7 +386,7 @@
 
   $('.dataTable tr').click(function(event) {
     if ($(event.target).is('input:checkbox')) return;
-    if ($(event.target).is('a *')) return;
+    if ($(event.target).is('a, a *')) return;
     if ($(event.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });

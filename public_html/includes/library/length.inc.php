@@ -82,7 +82,7 @@
     
       if (!isset($this->classes[$unit])) trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);
       
-      return number_format($value, 2, $this->system->language->decimal_point, $this->system->language->thousands_sep) .' '. $this->cache[$unit]['unit'];
+      return number_format($value, 2, $this->system->language->selected['decimal_point'], $this->system->language->selected['thousands_sep']) .' '. $this->classes[$unit]['unit'];
     }
     
     public function draw_select_field($name, $input='', $parameters) {

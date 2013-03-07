@@ -10,7 +10,7 @@
   $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('', array(), array('designer_id'))) .'" />';
 
   $designers_query = $system->database->query(
-    "select d.id, d.name, d.keywords, di.short_description, di.description, di.head_title, di.meta_description, di.meta_keywords, di.link
+    "select d.id, d.name, d.keywords, di.short_description, di.description, di.head_title, di.h1_title, di.meta_description, di.meta_keywords, di.link
     from ". DB_TABLE_DESIGNERS ." d
     left join ". DB_TABLE_DESIGNERS_INFO ." di on (di.designer_id = d.id and di.language_code = '". $system->language->selected['code'] ."')
     where status
@@ -74,7 +74,7 @@
   }
 ?>
       </span>
-      <h1 style="margin: 0; font: inherit;"><?php echo $designer['name']; ?></h1>
+      <h1 style="margin: 0; font: inherit;"><?php echo $designer['h1_title'] ? $designer['h1_title'] : $designer['name']; ?></h1>
     </div>
     <div class="content">
       <ul class="listing-wrapper products">

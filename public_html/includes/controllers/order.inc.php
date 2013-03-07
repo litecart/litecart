@@ -362,7 +362,7 @@
         );
         
       // Restock
-        if ($order_item['option_stock_combination']) $this->system->functions->catalog_stock_adjust($order_item['product_id'], $order_item['option_stock_combination'], $order_item['quantity']);
+        $this->system->functions->catalog_stock_adjust($order_item['product_id'], $order_item['option_stock_combination'], $order_item['quantity']);
       }
       
     // Insert/update order items
@@ -375,7 +375,7 @@
               values ('". (int)$this->data['id'] ."');"
             );
             $this->data['items'][$key]['id'] = $this->system->database->insert_id();
-            if ($this->data['items'][$key]['option_stock_combination']) $this->system->functions->catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
+            $this->system->functions->catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
           } else {
           // Update stock qty
             $orders_items_query = $this->system->database->query(
@@ -384,7 +384,7 @@
               and order_id = '". (int)$this->data['id'] ."';"
             );
             $order_item = $this->system->database->fetch($orders_items_query);
-            if ($this->data['items'][$key]['option_stock_combination']) $this->system->functions->catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -($this->data['items'][$key]['quantity'] - $order_item['quantity']));
+            $this->system->functions->catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -($this->data['items'][$key]['quantity'] - $order_item['quantity']));
           }
           $this->system->database->query(
             "update ". DB_TABLE_ORDERS_ITEMS ." 

@@ -29,6 +29,11 @@ $app_config = array(
       'params' => array('type' => 'order_success'),
     ),
     array(
+      'name' => $system->language->translate('title_get_address', 'Get Address'),
+      'link' => 'modules.php',
+      'params' => array('type' => 'get_address'),
+    ),
+    array(
       'name' => $system->language->translate('title_background_jobs', 'Background Jobs'),
       'link' => 'modules.php',
       'params' => array('type' => 'jobs'),

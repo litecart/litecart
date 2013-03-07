@@ -37,6 +37,10 @@
       
       $this->references = array();
       $this->session = array();
+      $this->skip_list = preg_split('/$\R?^:/m', $this->settings['skip_list']);;
+      
+      $this->skip_list[] = $database;
+      
       
       ob_start();
       $num_references = $this->load($database);
@@ -77,21 +81,24 @@
       
       $count = 0;
       
-      $files = glob($directory . '/*');
+      $files = glob(rtrim($directory, '/') . '/*');
       
       if (is_array($files)) {
         
         foreach ($files as $file) {
+        
+          if (in_array($file, $this->skip_list)) continue;
           
           if (is_dir($file)) {
             $count += $this->scan($file, $initial_scan);
             
           } else {
+            
             $count++;
             $checksum = md5_file($file);
             $this->session[$file] = $checksum;
             
-            if (isset($this->archive[$file])) {
+            if (isset($this->references[$file])) {
               if ($this->references[$file] != $checksum) $this->log("* $file has been modified");
             } else if (!$initial_scan) {
               $this->log("* $file is a new file");
@@ -132,6 +139,13 @@
           'title' => $this->system->language->translate(__CLASS__.':title_check_frequency', 'Check Frequency'),
           'description' => $this->system->language->translate(__CLASS__.':description_check_frequency', 'How often the modification scanner should run.'),
           'function' => 'radio("Daily","Weekly","Monthly")',
+        ),
+        array(
+          'key' => 'skip_list',
+          'default_value' => FS_DIR_HTTP_ROOT . WS_DIR_CACHE,
+          'title' => $this->system->language->translate(__CLASS__.':title_check_frequency', 'Skip List'),
+          'description' => $this->system->language->translate(__CLASS__.':description_skip_list', 'Line breaked list of paths and files to skip.'),
+          'function' => 'bigtext()',
         ),
         array(
           'key' => 'email_receipient',

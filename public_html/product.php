@@ -106,7 +106,7 @@
       }
       
       echo '<div style="position: relative;">' . PHP_EOL
-         . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT') .'" border="0" class="productImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a>' . PHP_EOL
+         . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="productImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a>' . PHP_EOL
          . '  '. $sticker . PHP_EOL
          . '</div>' . PHP_EOL;
       $first_image = false;
@@ -257,7 +257,7 @@
             <div class="options">
 <?php
   if (count($product->options) > 0) {
-  
+    
     foreach ($product->options as $group) {
     
       echo '  <p><strong>'. $group['name'][$system->language->selected['code']] .'</strong>'. (empty($group['required']) == false ? ' ('. $system->language->translate('title_required', 'Required') .')' : '') .'<br />'
@@ -313,7 +313,9 @@
               }
             }
             
-            echo $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']', $group['values'][$value_id]['name'][$system->language->selected['code']], isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
+            echo $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']',
+            $group['values'][$value_id]['name'][$system->language->selected['code']],
+            isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
             $use_br = true;
           }
           break;

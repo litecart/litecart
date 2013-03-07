@@ -195,25 +195,27 @@
   function catalog_stock_adjust($product_id, $option_stock_combination, $quantity) {
     global $system;
     
-    $products_options_stock_query = $system->database->query(
-      "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-      where product_id = '". (int)$product_id ."'
-      and combination = '". $system->database->input($option_stock_combination) ."';"
-    );
-    if ($system->database->num_rows($products_options_stock_query) > 0) {
-      if (empty($option_stock_combination)) {
-        trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
+    if (!empty($option_stock_combination)) {
+      $products_options_stock_query = $system->database->query(
+        "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        where product_id = '". (int)$product_id ."'
+        and combination = '". $system->database->input($option_stock_combination) ."';"
+      );
+      if ($system->database->num_rows($products_options_stock_query) > 0) {
+        if (empty($option_stock_combination)) {
+          trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
+        } else {
+          $system->database->query(
+            "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+            set quantity = quantity + ". (int)$quantity ."
+            where product_id = '". (int)$product_id ."'
+            and combination =  '". $system->database->input($option_stock_combination) ."'
+            limit 1;"
+          );
+        }
       } else {
-        $system->database->query(
-          "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-          set quantity = quantity + ". (int)$quantity ."
-          where product_id = '". (int)$product_id ."'
-          and combination =  '". $system->database->input($option_stock_combination) ."'
-          limit 1;"
-        );
+        $option_id = 0;
       }
-    } else {
-      $option_id = 0;
     }
     
     $system->database->query(

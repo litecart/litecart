@@ -21,6 +21,7 @@
     <tr class="header">
       <th style="text-align: center; width: 30px;"><?php echo $this->system->language->translate('title_qty', 'Qty'); ?></th>
       <th style="text-align: left;"><?php echo $this->system->language->translate('title_item', 'Item'); ?></th>
+      <th style="text-align: left;"><?php echo $this->system->language->translate('title_sku', 'SKU'); ?></th>
     </tr>
 <?php
   $rowclass = '';
@@ -42,6 +43,7 @@
     }
 ?>
       </td>
+      <td align="left"><?php echo $item['sku']; ?>
     </tr>
     <?php } ?>
   </table>

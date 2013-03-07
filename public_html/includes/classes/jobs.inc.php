@@ -16,15 +16,21 @@
       $this->load();
     }
     
-    public function process() {
+    public function process($module_id=null) {
       global $order;
       
       $output = '';
       
       if (empty($this->modules)) return;
       
-      foreach ($this->modules as $module_id => $module) {
-        $module->process();
+      if (!empty($module_id)) {
+        $this->modules[$module_id]->process();
+        echo $module_id . PHP_EOL;
+      } else {
+        foreach (array_keys($this->modules) as $module_id) {
+          $this->modules[$module_id]->process();
+          echo $module_id . PHP_EOL;
+        }
       }
     }
     

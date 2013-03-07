@@ -63,7 +63,7 @@
 
   $('.dataTable tr').click(function(event) {
     if ($(event.target).is('input:checkbox')) return;
-    if ($(event.target).is('a *')) return;
+    if ($(event.target).is('a, a *')) return;
     if ($(event.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
