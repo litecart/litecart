@@ -1,7 +1,5 @@
 <?php
 
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'sold_out_status.inc.php');
-  
   if (isset($_GET['sold_out_status_id'])) {
     $sold_out_status = new ctrl_sold_out_status($_GET['sold_out_status_id']);
     

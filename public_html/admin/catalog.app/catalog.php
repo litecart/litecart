@@ -34,8 +34,6 @@
     
     if (empty($system->notices->data['errors'])) {
       
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'product.inc.php');
-      
       foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
         $product->data['categories'][] = $_POST['category_id'];
@@ -67,8 +65,6 @@
     if (empty($system->notices->data['errors'])) {
       
       if (!empty($_POST['products'])) {
-        require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'product.inc.php');
-        
         foreach ($_POST['products'] as $product_id) {
           $product = new ctrl_product($product_id);
           $product->data['categories'] = array($_POST['category_id']);
@@ -78,8 +74,6 @@
       }
       
       if (!empty($_POST['categories'])) {
-        require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'category.inc.php');
-        
         foreach ($_POST['categories'] as $category_id) {
           $category = new ctrl_category($category_id);
           $category->data['parent_id'] = $_POST['category_id'];
@@ -102,7 +96,6 @@
     if (empty($system->notices->data['errors'])) {
       
       if (!empty($_POST['categories'])) {
-        require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'category.inc.php');
         foreach ($_POST['categories'] as $category_id) {
           $category->load($category_id);
           if ($category->data['parent_id'] == $_GET['category_id']) {
@@ -114,7 +107,6 @@
       }
       
       if (!empty($_POST['products'])) {
-        require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'product.inc.php');
         foreach ($_POST['products'] as $product_id) {
           $product = new ctrl_product($product_id);
           foreach (array_keys($product->data['categories']) as $key) {
@@ -141,9 +133,6 @@
     if (empty($_POST['products'])) $system->notices->add('errors', $system->language->translate('error_must_select_products', 'You must select products'));
     
     if (empty($system->notices->data['errors'])) {
-      
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'product.inc.php');
-      
       foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
         $product->delete();

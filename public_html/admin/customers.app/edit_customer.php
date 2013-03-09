@@ -1,5 +1,4 @@
 <?php
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
   
   if (isset($_GET['customer_id'])) {
     $customer = new ctrl_customer($_GET['customer_id']);

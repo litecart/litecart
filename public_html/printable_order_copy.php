@@ -16,7 +16,6 @@
   //$system->document->snippets['keywords'] = '';
   //$system->document->snippets['description'] = '';
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'order.inc.php');
   $order = new ctrl_order('load', $_GET['order_id']);
   
   if ($_GET['checksum'] != $system->functions->general_order_public_checksum($order->data['id'])) {

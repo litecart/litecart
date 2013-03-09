@@ -12,7 +12,7 @@
     
     public function __construct() {
       global $system;
-      $this->system = $system;
+      $this->system = &$system;
     }
     
     public function process() {

@@ -1,1 +1,4 @@
-Allow: *
+Sitemap: /feeds/sitemap.xml.php
+
+User-agent: *
+Allow: /

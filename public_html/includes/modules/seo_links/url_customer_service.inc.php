@@ -1,6 +1,6 @@
 <?php
   
-  class seo_link_customer_service {
+  class url_customer_service {
     
     public $config = array(
       'doc' => 'customer_service.php',
@@ -9,7 +9,7 @@
     );
     
   	function __construct($system) {
-      $this->system = $system;
+      $this->system = &$system;
       $this->config['seo_path'] = $this->system->seo_links->url_friendly_string($this->system->language->translate('title_customer_service', 'Customer Service'));
     }
     

@@ -580,8 +580,6 @@
   function form_draw_products_list($name, $insert, $parameters) {
     global $system;
     
-    require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
-    
     $options = array(
       array('-- '. $system->language->translate('title_select', 'Select') .' --', ''),
     );
@@ -596,8 +594,6 @@
   
   function form_draw_product_stock_options_list($product_id, $name, $insert, $parameters) {
     global $system;
-    
-    require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
     
     $options = array(
       array('-- '. $system->language->translate('title_select', 'Select') .' --', ''),

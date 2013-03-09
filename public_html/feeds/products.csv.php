@@ -1,6 +1,5 @@
 <?php
   require_once('../includes/app_header.inc.php');
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
   
   $language_code = 'en';
   $currency_code = 'EUR';

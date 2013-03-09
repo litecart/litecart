@@ -1,6 +1,6 @@
 <?php
   
-  class seo_link_information {
+  class url_information {
     
     public $config = array(
       'doc' => 'information.php',
@@ -9,7 +9,7 @@
     );
     
   	function __construct($system) {
-      $this->system = $system;
+      $this->system = &$system;
     }
     
     function title($parsed_link, $language_code) {

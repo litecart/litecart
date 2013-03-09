@@ -8,7 +8,7 @@
     function __construct($category_id) {
       global $system;
     
-      $this->system = $system;
+      $this->system = &$system;
       
       if (empty($category_id)) trigger_error('Missing category id');
       

@@ -1,14 +1,12 @@
 <?php
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'module.inc.php');
-  
   class get_address extends module {
     private $_cache;
 
     public function __construct($type='session') {
       
       global $system;
-      $this->system = $system;
+      $this->system = &$system;
       
       parent::set_type('get_address');
       

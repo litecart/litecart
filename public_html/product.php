@@ -1,7 +1,6 @@
 <?php
   require_once('includes/app_header.inc.php');
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
   $product = new ref_product($_GET['product_id']);
   
   if ($product->status == 0) {
@@ -98,9 +97,9 @@
     if ($first_image) {
     
       if (empty($product->campaigns) == false) {
-        $sticker = '<img src="{snippet:template_path}images/icons/16x16/sticker_campaign_'. $system->language->selected['code'] .'.png" width="96" height="86" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
+        $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/campaign_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
       } else if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
-        $sticker = '<img src="{snippet:template_path}images/sticker_new_'. $system->language->selected['code'] .'.png" width="96" height="86" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="" />';
+        $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="" />';
       } else {
         $sticker = '';
       }
@@ -166,9 +165,9 @@
           <div style="margin-bottom: 10px; color: #999;" class="manufacturer">
 <?php
       if ($product->manufacturer['image']) {
-        echo '<a href="'. $system->document->link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 60) .'" height="60" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" /></a>';
+        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 60) .'" height="60" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" /></a>';
       } else {
-        echo '<a href="'. $system->document->link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'">'. $product->manufacturer['name'] .'</a>';
+        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'">'. $product->manufacturer['name'] .'</a>';
       }
 ?>
           </div>

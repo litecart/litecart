@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'country.inc.php');
   
   if (isset($_GET['country_code'])) {
     $country = new ctrl_country($_GET['country_code']);

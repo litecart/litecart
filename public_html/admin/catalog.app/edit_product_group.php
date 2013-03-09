@@ -1,6 +1,5 @@
 <?php
 
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'product_group.inc.php');
   $product_group = new ctrl_product_group();
   
   if (!empty($_GET['product_group_id'])) {

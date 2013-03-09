@@ -13,7 +13,7 @@
     
     public function __construct() {
       global $system;
-      $this->system = $system;
+      $this->system = &$system;
       
       $this->name = $this->system->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee');
     }

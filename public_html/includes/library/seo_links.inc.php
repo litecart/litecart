@@ -75,14 +75,14 @@
       
       $this->classes[$class] = null;
       
-      $file = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/' . $class . '.inc.php';
+      $file = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_urls/url_' . $class .'.inc.php';
       
       if (file_exists($file)) {
         require_once($file);
       } else {
         return false;
       }
-      $class_name = 'seo_link_'.$class;
+      $class_name = 'url_'.$class;
       $this->classes[$class] = new $class_name($this->system);
       
       return true;

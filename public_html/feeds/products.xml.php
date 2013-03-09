@@ -1,6 +1,5 @@
 <?php
   require_once('../includes/app_header.inc.php');
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
   
   $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
           . '<products>' . PHP_EOL;

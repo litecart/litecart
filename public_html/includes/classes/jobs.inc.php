@@ -1,7 +1,5 @@
 <?php
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'module.inc.php');
-  
   class jobs extends module {
     public $data;
     public $cheapest = '';

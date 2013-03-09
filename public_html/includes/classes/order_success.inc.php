@@ -1,7 +1,5 @@
 <?php
 
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'module.inc.php');
-
   class order_success extends module {
     public $options;
     public $rows = array();

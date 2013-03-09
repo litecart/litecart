@@ -100,6 +100,8 @@
       if (empty($code)) $code = $this->selected['code'];
       if ($currency_value === null) $currency_value = $this->system->currency->currencies[$code]['value'];
       
+      if (!isset($this->currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_ERROR);
+      
       $value = $value * $currency_value;
       
       if ($auto_decimals == false || $value - floor($value) > 0) {

@@ -504,8 +504,6 @@
       
       if (!is_dir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'products/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'products/', 0777);
       
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'image.inc.php');
-      
       if (substr($file, 0, 8) == 'https://' || substr($file, 0, 7) == 'http://') {
         $image = new ctrl_image();
         if (!$image->load_from_string($this->system->functions->http_request($file))) return false;

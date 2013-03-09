@@ -2,7 +2,8 @@
   require_once('../includes/app_header.inc.php');
   header('Content-type: text/plain; charset='. $system->language->selected['charset']);
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'get_address.inc.php');
+  if (empty($_GET['trigger'])) die('{}');
+  
   $get_address = new get_address();
   
   $result = $get_address->query(array_merge($_GET, $_POST));

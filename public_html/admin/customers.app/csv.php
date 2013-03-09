@@ -37,8 +37,6 @@
             );
             $customer = $system->database->fetch($customers_query);
             
-            require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
-            
             if (!empty($customer['id'])) {
               $customer = new ctrl_customer($customer['id']);
             } else {

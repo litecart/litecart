@@ -16,37 +16,32 @@
 ?>
 
 <div id="checkout-cart-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'checkout/cart.php'); ?>
+  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_cart.html.php'); ?>
 </div>
 
 <div id="checkout-customer-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'checkout/customer.php'); ?>
+  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_customer.html.php'); ?>
 </div>
 
 <div id="checkout-shipping-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'checkout/shipping.php'); ?>
+  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_shipping.html.php'); ?>
 </div>
 
 <div id="checkout-payment-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'checkout/payment.php'); ?>
+  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_payment.html.php'); ?>
 </div>
 
 <div id="checkout-summary-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'checkout/summary.php'); ?>
+  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_summary.html.php'); ?>
 </div>
 
 <?php if ($system->settings->get('checkout_ajax_enabled') == 'true') { ?>
 <script type="text/javascript">
 
-  function keepAlive() {
-    $.get('<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/keep_alive.php'); ?>');
-    setTimeout(keepAlive, 1 *60*1000);
-  }
-  
   function refreshCart() {
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/cart.php'); ?>',
+      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -67,7 +62,7 @@
   
   function refreshCustomer() {
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/customer.php'); ?>',
+      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -88,7 +83,7 @@
 
   function refreshShipping() {
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/shipping.php'); ?>',
+      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -109,7 +104,7 @@
 
   function refreshPayment() {
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/payment.php'); ?>',
+      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -131,7 +126,7 @@
   function refreshConfirmation() {
     var comments = $('textarea[name=comments]').val();
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/summary.php'); ?>',
+      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_summary.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -164,7 +159,7 @@
       $('body').css('cursor', 'wait');
       $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
       $.ajax({
-        url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/cart.php'); ?>',
+        url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
         data: $(this).serialize(),
         type: 'post',
         cache: false,
@@ -228,7 +223,7 @@
       $('*').css('cursor', 'wait');
       //$('#checkout-customer-wrapper').slideUp('slow');
       $.ajax({
-        url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/customer.php'); ?>',
+        url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
         data: $(this).serialize(),
         type: 'post',
         cache: false,
@@ -261,7 +256,7 @@
       $('*').css('cursor', 'wait');
       $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
       $.ajax({
-        url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/shipping.php'); ?>',
+        url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
         data: $(this).serialize(),
         type: 'post',
         cache: false,
@@ -290,7 +285,7 @@
       $('*').css('cursor', 'wait');
       $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
       $.ajax({
-        url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/payment.php'); ?>',
+        url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
         data: $(this).serialize(),
         type: 'post',
         cache: false,
@@ -319,7 +314,7 @@
       $('*').css('cursor', 'wait');
       $('#checkout-comments-wrapper').fadeTo('slow', 0.25);
       $.ajax({
-        url: '<?php echo $system->document->link(WS_DIR_INCLUDES .'checkout/comments.php'); ?>',
+        url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_comments.html.php'); ?>',
         data: $(this).serialize(),
         type: 'post',
         cache: false,

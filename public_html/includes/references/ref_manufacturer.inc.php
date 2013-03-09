@@ -8,7 +8,7 @@
     function __construct($manufacturer_id) {
       global $system;
     
-      $this->system = $system;
+      $this->system = &$system;
       
       if (empty($manufacturer_id)) trigger_error('Missing manufacturer id');
       

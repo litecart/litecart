@@ -1,6 +1,6 @@
 <?php
   
-  class seo_link_manufacturers {
+  class url_manufacturers {
     
     public $config = array(
       'doc' => 'manufacturers.php',
@@ -9,7 +9,7 @@
     );
     
   	function __construct($system) {
-      $this->system = $system;
+      $this->system = &$system;
       $this->config['seo_path'] = $this->system->seo_links->url_friendly_string($this->system->language->translate('manufacturers.php:url_manufacturers', 'Manufacturers'));
     }
     

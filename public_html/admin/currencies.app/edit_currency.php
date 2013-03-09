@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'currency.inc.php');
   
   if (isset($_GET['currency_code'])) {
     $currency = new ctrl_currency($_GET['currency_code']);

@@ -39,7 +39,6 @@
     
     if (!$system->notices->get('errors')) {
       
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
       $customer = new ctrl_customer();
       
       $fields = array(

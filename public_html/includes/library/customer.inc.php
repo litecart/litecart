@@ -227,7 +227,7 @@
     }
     
     public function logout() {
-      $this->system->session->destroy();
+      $this->system->session->reset();
       header('Location: ' . $this->system->document->link(WS_DIR_HTTP_HOME));
       exit;
     }

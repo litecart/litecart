@@ -1,5 +1,4 @@
 <?php
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'category.inc.php');
   
   if (isset($_GET['category_id'])) {
     $category = new ctrl_category($_GET['category_id']);

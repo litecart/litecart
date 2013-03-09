@@ -21,7 +21,7 @@
       foreach ($load_modules as $module_id) {
       
       // Uninstall non-existent module
-        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type.'/' . $module_id .'.inc.php')) {
+        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type . '/' . $module_id .'.inc.php')) {
           
           $installed_modules = explode(';', $system->settings->get($this->type.'_modules'));
           
@@ -43,7 +43,6 @@
           continue;
         }
         
-        include_once(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type.'/' . $module_id .'.inc.php');
         $module = new $module_id;
         
       // Get settings from database

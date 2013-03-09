@@ -1,7 +1,5 @@
 <?php
 
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'supplier.inc.php');
-  
   if (isset($_GET['supplier_id'])) {
     $supplier = new ctrl_supplier($_GET['supplier_id']);
   } else {

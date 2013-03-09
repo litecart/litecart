@@ -20,7 +20,6 @@
       die('Unknown module type');
   }
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'module.inc.php');
   $module = new ctrl_module(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $_GET['type'] . '/' . $module_id .'.inc.php');
   
   if (isset($_POST['save'])) {
@@ -59,4 +58,4 @@
 </table>
 <?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'disk'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''. $system->document->link('', array('doc' => 'modules.php'), true, array('module_id')) .'\'"'); ?> <?php echo $system->functions->form_draw_button('uninstall', $system->language->translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'disk'); ?>
 <?php echo $system->functions->form_draw_form_end(); ?>
-<p><a href="<?php echo $system->document->link('', array('app' => 'translations', 'doc' => 'search.php', 'query' => $module_id)); ?>"><?php echo $system->language->translate('title_edit_translations', 'Edit Translations'); ?></a></p>
+<p><a href="<?php echo $system->document->href_link('', array('app' => 'translations', 'doc' => 'search.php', 'query' => $module_id)); ?>"><?php echo $system->language->translate('title_edit_translations', 'Edit Translations'); ?></a></p>

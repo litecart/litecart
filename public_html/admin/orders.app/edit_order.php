@@ -1,5 +1,4 @@
 <?php
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'order.inc.php');
   
   if (empty($_GET['order_id'])) {
     $order = new ctrl_order('new');
@@ -40,7 +39,6 @@
           
           if (empty($_POST['items'][$key]['id'])) {
             
-            require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
             $product = new ref_product($_POST['items'][$key]['product_id']);
             
             $name = array();

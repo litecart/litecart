@@ -1,10 +1,7 @@
 <?php
 
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'module.inc.php');
-  
   class payment extends module {
     public $options;
-    public $window;
     public $data;
 
     public function __construct() {
@@ -34,7 +31,7 @@
     // Attach userdata to module
       if (!empty($this->data['selected'])) {
         list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
-        $this->modules[$module_id]->userdata = &$this->data['userdata'][$module_id];
+        if (!empty($this->modules[$module_id])) $this->modules[$module_id]->userdata = &$this->data['userdata'][$module_id];
       }
     }
     

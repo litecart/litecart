@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'page.inc.php');
   
   if (isset($_GET['pages_id'])) {
     $pages = new ctrl_pages($_GET['pages_id']);

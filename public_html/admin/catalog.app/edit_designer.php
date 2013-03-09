@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'designer.inc.php');
   
   if (isset($_GET['designer_id'])) {
     $designer = new ctrl_designer($_GET['designer_id']);

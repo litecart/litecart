@@ -277,7 +277,6 @@
         if (!empty($customer['id'])) {
           $this->data['customer']['id'] = $customer['id'];
         } else {
-          require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
           $customer = new ctrl_customer();
           $customer->data = $this->data['customer'];
           $customer->set_password($this->system->functions->password_generate());

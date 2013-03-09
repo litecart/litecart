@@ -32,10 +32,8 @@
     exit;
   }
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'order.inc.php');
   $order = new ctrl_order('load', $order['id']);
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'payment.inc.php');
   $payment = new payment();
   list($payment_module_id, $payment_option_id) = explode(':', $order->data['payment_option']['id']);
   

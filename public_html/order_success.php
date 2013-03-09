@@ -2,7 +2,6 @@
   require_once('includes/app_header.inc.php');
   header('X-Robots-Tag: noindex');
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'order.inc.php');
   $order = new ctrl_order('resume');
   
   if (empty($order->data['id'])) die('Error: Missing session order object');

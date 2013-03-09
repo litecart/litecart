@@ -1,6 +1,5 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'option_group.inc.php');
+  
   $option_group = new ctrl_option_group();
   
   if (!empty($_GET['option_group_id'])) {

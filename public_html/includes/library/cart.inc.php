@@ -119,7 +119,6 @@
       
       $item_key = md5(serialize(array($product_id, $options)));
       
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
       $product = new ref_product($product_id);
       
       if ($product->status == 0) {
@@ -287,7 +286,6 @@
         return;
       }
       
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
       $product = new ref_product($this->data['items'][$item_key]['product_id']);
       
       /*

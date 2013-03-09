@@ -1,7 +1,5 @@
 <?php
 
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'tax_class.inc.php');
-  
   if (isset($_GET['tax_class_id'])) {
     $tax_class = new ctrl_tax_class($_GET['tax_class_id']);
   } else {

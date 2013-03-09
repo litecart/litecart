@@ -9,7 +9,7 @@
     function __construct($product_id, $currency_code=null) {
       global $system;
     
-      $this->system = $system;
+      $this->system = &$system;
       $this->_currency_code = !empty($currency_code) ? $currency_code : $this->system->currency->selected['code'];
       
       if (empty($product_id)) trigger_error('Missing product id', E_USER_ERROR);

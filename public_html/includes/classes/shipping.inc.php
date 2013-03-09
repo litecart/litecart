@@ -1,7 +1,5 @@
 <?php
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'module.inc.php');
-  
   class shipping extends module {
     public $data;
     public $cheapest = '';
@@ -11,7 +9,7 @@
     public function __construct($type='session') {
       
       global $system;
-      $this->system = $system;
+      $this->system = &$system;
       
       parent::set_type('shipping');
       

@@ -67,7 +67,6 @@
     }
     
   // Create image object
-    require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'image.inc.php');
     if (!$image = new ctrl_image($source)) return;
   
   // Set extension

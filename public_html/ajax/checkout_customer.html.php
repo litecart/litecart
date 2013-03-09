@@ -1,6 +1,6 @@
 <?php
   if ($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME'] == __FILE__) {
-    require_once('../app_header.inc.php');
+    require_once('../includes/app_header.inc.php');
     header('Content-type: text/html; charset='. $system->language->selected['charset']);
     $system->document->layout = 'default';
     $system->document->viewport = 'ajax';
@@ -107,7 +107,6 @@
       if (empty($system->customer->data['id'])) {
         if ($system->settings->get('register_guests') == 'true') {
           
-          require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
           $customer = new ctrl_customer();
           $customer->data = $system->customer->data;
           $customer->save();
@@ -145,7 +144,6 @@
         
       } else if (!empty($_POST['set_default_addresses'])) {
         
-          require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
           $customer = new ctrl_customer();
           $customer->data = $system->customer->data;
           $customer->save();

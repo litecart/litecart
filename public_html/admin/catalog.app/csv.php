@@ -29,8 +29,6 @@
       
       if (($handle = fopen($_FILES['file']['tmp_name'], "r")) !== FALSE) {
         
-        require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'category.inc.php');
-        
         $map = array(
           'parent_code' => 'parent_code',
           'code' => 'code',
@@ -145,8 +143,6 @@
     
     if (empty($_POST['language_code'])) die('Error: You must select a language code');
     
-    require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'category.inc.php');
-    
     header('Content-type: application/csv; charset=iso-8859-1');
     header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
     
@@ -200,9 +196,6 @@
          . "----------\r\n";
       
       if (($handle = fopen($_FILES['file']['tmp_name'], "r")) !== FALSE) {
-        
-        require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'category.inc.php');
-        require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'product.inc.php');
         
         $map = array(
           'category_codes' => 'category_codes',
@@ -381,15 +374,19 @@
               $manufacturer = $system->database->fetch($manufacturer_query);
             
               if (empty($manufacturer)) {
+              
                 echo "Inserting new manufacturer {$data['manufacturer_name']}\r\n";
-                require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'manufacturer.inc.php');
                 $manufacturer = new ctrl_manufacturer();
                 $manufacturer->data['status'] = 1;
+                
                 foreach (array_keys($system->language->languages) as $language_code) {
                   $manufacturer->data['name'] = $data['manufacturer_name'];
                 }
+                
                 $manufacturer->save();
+                
               } else {
+              
                 if ($product->data['manufacturer_id'] != $manufacturer['id']) {
                   $product->data['manufacturer_id'] = $manufacturer['id'];
                 }
@@ -428,8 +425,6 @@
   if (!empty($_POST['export_products'])) {
     
     if (empty($_POST['language_code'])) die('Error: You must select a language code');
-    
-    require_once(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'product.inc.php');
     
     header('Content-type: application/csv; charset=iso-8859-1');
     header('Content-Disposition: attachment; filename=products-'. $_POST['language_code'] .'.csv');

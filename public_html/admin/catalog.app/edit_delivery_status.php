@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'delivery_status.inc.php');
   
   if (isset($_GET['delivery_status_id'])) {
     $delivery_status = new ctrl_delivery_status($_GET['delivery_status_id']);

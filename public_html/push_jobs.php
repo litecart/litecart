@@ -16,7 +16,6 @@
     limit 1;"
   );
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'jobs.inc.php');
   $jobs = new jobs();
   
   if (!empty($_GET['module_id'])) {

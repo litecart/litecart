@@ -14,13 +14,10 @@
     }
   }
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'shipping.inc.php');
   $shipping = new shipping();
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'payment.inc.php');
   $payment = new payment();
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'order.inc.php');
   $order = new ctrl_order('resume');
   
   if (empty($shipping->data['selected'])) die('No shipping selected');

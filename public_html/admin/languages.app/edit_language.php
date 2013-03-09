@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'language.inc.php');
   
   if (isset($_GET['language_code'])) {
     $language = new ctrl_language($_GET['language_code']);

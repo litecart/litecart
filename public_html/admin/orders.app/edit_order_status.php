@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'order_status.inc.php');
   
   if (isset($_GET['order_status_id'])) {
     $order_status = new ctrl_order_status($_GET['order_status_id']);

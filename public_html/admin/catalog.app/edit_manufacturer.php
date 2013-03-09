@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'manufacturer.inc.php');
   
   if (isset($_GET['manufacturer_id'])) {
     $manufacturer = new ctrl_manufacturer($_GET['manufacturer_id']);

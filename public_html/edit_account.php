@@ -13,7 +13,6 @@
   $system->breadcrumbs->add($system->language->translate('title_account', 'Account'), '');
   $system->breadcrumbs->add($system->language->translate('title_edit_account', 'Edit Account'), 'edit_account.php');
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'customer.inc.php');
   $customer = new ctrl_customer($system->customer->data['id']);
   
   if (!$_POST) {
@@ -44,13 +43,13 @@
     if (empty($_POST['country_code']) && $system->functions->reference_country_num_zones($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_zone', 'You must select a zone.'));
       
     if (!empty($_POST['different_shipping_address'])) {
-      if (empty($_POST['shipping_firstname'])) $system->notices->add('errors', $system->language->translate('error_missing_firstname', 'You must enter a first name.'));
-      if (empty($_POST['shipping_lastname'])) $system->notices->add('errors', $system->language->translate('error_missing_lastname', 'You must enter a last name.'));
-      if (empty($_POST['shipping_address1'])) $system->notices->add('errors', $system->language->translate('error_missing_address1', 'You must enter an address.'));
-      if (empty($_POST['shipping_city'])) $system->notices->add('errors', $system->language->translate('error_missing_city', 'You must enter a city.'));
-      if (empty($_POST['shipping_postcode'])) $system->notices->add('errors', $system->language->translate('error_missing_postcode', 'You must enter a postcode.'));
-      if (empty($_POST['shipping_country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_country', 'You must select a country.'));
-      if (empty($_POST['shipping_country_code']) && $system->functions->reference_country_num_zones($_POST['shipping_country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_zone', 'You must select a zone.'));
+      if (empty($_POST['shipping_address']['firstname'])) $system->notices->add('errors', $system->language->translate('error_missing_firstname', 'You must enter a first name.'));
+      if (empty($_POST['shipping_address']['lastname'])) $system->notices->add('errors', $system->language->translate('error_missing_lastname', 'You must enter a last name.'));
+      if (empty($_POST['shipping_address']['address1'])) $system->notices->add('errors', $system->language->translate('error_missing_address1', 'You must enter an address.'));
+      if (empty($_POST['shipping_address']['city'])) $system->notices->add('errors', $system->language->translate('error_missing_city', 'You must enter a city.'));
+      if (empty($_POST['shipping_address']['postcode'])) $system->notices->add('errors', $system->language->translate('error_missing_postcode', 'You must enter a postcode.'));
+      if (empty($_POST['shipping_address']['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_country', 'You must select a country.'));
+      if (empty($_POST['shipping_address']['country_code']) && $system->functions->reference_country_num_zones($_POST['shipping_address']['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_zone', 'You must select a zone.'));
     }
     
     if (!$system->notices->get('errors')) {
@@ -72,22 +71,28 @@
         'phone',
         'mobile',
         'different_shipping_address',
-        'shipping_company',
-        'shipping_firstname',
-        'shipping_lastname',
-        'shipping_address1',
-        'shipping_address2',
-        'shipping_postcode',
-        'shipping_city',
-        'shipping_country_code',
-        'shipping_zone_code',
       );
       
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
       
-      if (!$customer->data['different_shipping_address']) {
+      $fields = array(
+        'company',
+        'firstname',
+        'lastname',
+        'address1',
+        'address2',
+        'postcode',
+        'city',
+        'country_code',
+        'zone_code',
+      );
+      foreach ($fields as $field) {
+        if (isset($_POST['shipping_address'][$field])) $customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
+      }
+      
+      if (empty($_POST['different_shipping_address'])) {
         $fields = array(
           'company',
           'firstname',
@@ -100,15 +105,9 @@
           'zone_code',
         );
         foreach ($fields as $key) {
-          $customer->data['shipping_'.$key] = $customer->data[$key];
+          $customer->data['shipping_address'][$key] = $customer->data[$key];
         }
       }
-      
-      $customer->data['country_name'] = $system->functions->reference_get_country_name($customer->data['country_code']);
-      $customer->data['zone_name'] = $system->functions->reference_get_zone_name($customer->data['country_code'], $customer->data['zone_code']);
-      
-      $customer->data['shipping_country_name'] = $system->functions->reference_get_country_name($customer->data['shipping_country_code']);
-      $customer->data['shipping_zone_name'] = $system->functions->reference_get_zone_name($customer->data['shipping_country_code'], $customer->data['shipping_zone_code']);
       
       if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
       
@@ -184,32 +183,32 @@
                 <table>
                   <tr>
                     <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_company', isset($_POST['shipping_company']) ? $_POST['shipping_company'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_input_field('shipping_address[company]', isset($_POST['shipping_address']['company']) ? $_POST['shipping_address']['company'] : ''); ?></td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_firstname', isset($_POST['shipping_firstname']) ? $_POST['shipping_firstname'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_input_field('shipping_address[firstname]', isset($_POST['shipping_address']['firstname']) ? $_POST['shipping_address']['firstname'] : ''); ?></td>
                     <td><?php echo $system->language->translate('title_lastname', 'LastName'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_lastname', isset($_POST['shipping_lastname']) ? $_POST['shipping_lastname'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_input_field('shipping_address[lastname]', isset($_POST['shipping_address']['lastname']) ? $_POST['shipping_address']['lastname'] : ''); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address1', isset($_POST['shipping_address1']) ? $_POST['shipping_address1'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_input_field('shipping_address[address1]', isset($_POST['shipping_address']['address1']) ? $_POST['shipping_address']['address1'] : ''); ?></td>
                     <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address2', isset($_POST['shipping_address2']) ? $_POST['shipping_address2'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_input_field('shipping_address[address2]', isset($_POST['shipping_address']['address2']) ? $_POST['shipping_address']['address2'] : ''); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_city', 'City'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_city', isset($_POST['shipping_city']) ? $_POST['shipping_city'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_input_field('shipping_address[city]', isset($_POST['shipping_address']['city']) ? $_POST['shipping_address']['city'] : ''); ?></td>
                     <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_postcode', isset($_POST['shipping_postcode']) ? $_POST['shipping_postcode'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_input_field('shipping_address[postcode]', isset($_POST['shipping_address']['postcode']) ? $_POST['shipping_address']['postcode'] : ''); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
-                      <?php echo $system->functions->form_draw_countries_list('shipping_country_code', isset($_POST['shipping_country_code']) ? $_POST['shipping_country_code'] : ''); ?></td>
+                      <?php echo $system->functions->form_draw_countries_list('shipping_address[country_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : ''); ?></td>
                     <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
-                      <?php echo form_draw_zones_list(isset($_POST['shipping_country_code']) ? $_POST['shipping_country_code'] : '', 'shipping_zone_code', isset($_POST['shipping_zone_code']) ? (isset($_POST['shipping_zone_code']) ? $_POST['shipping_zone_code'] : '') : ''); ?></td>
+                      <?php echo form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : '', 'shipping_address[zone_code]', isset($_POST['shipping_address']['zone_code']) ? (isset($_POST['shipping_address']['zone_code']) ? $_POST['shipping_address']['zone_code'] : '') : ''); ?></td>
                   </tr>
                 </table>
               </div>

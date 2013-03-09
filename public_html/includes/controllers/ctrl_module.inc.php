@@ -10,13 +10,12 @@
     public function __construct($file) {
       global $system;
       
-      $this->system = $system;
+      $this->system = &$system;
       
       preg_match('/.*'. str_replace('/', '\/', ltrim(WS_DIR_MODULES, '/')) .'(.*)\/(.*).inc.php/', $file, $matches);
       $this->type = $matches[1];
       $module_id = $matches[2];
       
-      include_once(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type .'/'. $module_id .'.inc.php');
       $this->_module = new $module_id;
       
       $this->name = $this->_module->name;

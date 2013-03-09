@@ -31,7 +31,7 @@
       }
       
     // Set language
-      if ($this->system->settings->get('seo_links_enabled') == 'true' || empty($this->selected) || empty($this->currencies[$this->selected['code']]['status'])) {
+      if (empty($this->language[$this->selected['code']]['status'])) {
         $this->set($this->identify());
       }
       
@@ -112,6 +112,7 @@
       $this->system->session->data['language'] = $this->languages[$code];
       setcookie('language_code', $code, (time()+3600*24)*30, WS_DIR_HTTP_HOME);
       
+    // Chain select currency
       if ($this->system->settings->get('set_currency_by_language') == 'true') {
         if (!empty($this->selected['currency_code'])) {
           if (!empty($this->system->currency->currencies[$this->selected['currency_code']])) {
@@ -130,30 +131,6 @@
           $languages[] = $language['code'];
         }
       }
-      
-      /*
-    // Return language from domain (if regional domains)
-      switch (substr($_SERVER['HTTP_HOST'], strrpos($_SERVER['HTTP_HOST'], '.'))) {
-        case '.com':
-          $code =  'en';
-          break;
-        case '.de':
-          $code =  'de';
-        case '.dk':
-          $code =  'da';
-          break;
-        case '.no':
-          $code =  'nb';
-          break;
-        case '.se':
-          $code =  'sv';
-          break;
-        default:
-          $code = '';
-          break;
-      }
-      if (in_array($code, $languages)) return $code;
-      */
       
     // Return language from URI
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_HTTP_HOME))));

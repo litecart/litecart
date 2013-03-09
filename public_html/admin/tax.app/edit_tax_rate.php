@@ -1,6 +1,4 @@
 <?php
-
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'tax_rate.inc.php');
   
   if (isset($_GET['tax_rate_id'])) {
     $tax_rate = new ctrl_tax_rate($_GET['tax_rate_id']);

@@ -1,6 +1,4 @@
 <?php
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'product.inc.php');
-  
   if (isset($_GET['product_id'])) {
     $product = new ctrl_product($_GET['product_id']);
     

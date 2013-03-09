@@ -1,5 +1,4 @@
 <?php
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'geo_zone.inc.php');
   
   if (isset($_GET['geo_zone_id'])) {
     $geo_zone = new ctrl_geo_zone($_GET['geo_zone_id']);

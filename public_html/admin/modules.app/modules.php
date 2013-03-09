@@ -6,42 +6,36 @@
       $title = $system->language->translate('title_get_address_modules', 'Get Address Modules');
       $installed_modules = explode(';', $system->settings->get('get_address_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'get_address/*.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'get_address.inc.php');
       $modules = new get_address;
       break;
     case 'jobs':
       $title = $system->language->translate('title_job_modules', 'Job Modules');
       $installed_modules = explode(';', $system->settings->get('jobs_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/*.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'jobs.inc.php');
       $modules = new jobs;
       break;
     case 'order_total':
       $title = $system->language->translate('title_order_total_modules', 'Order Total Modules');
       $installed_modules = explode(';', $system->settings->get('order_total_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/*.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'order_total.inc.php');
       $modules = new order_total;
       break;
     case 'payment':
       $title = $system->language->translate('title_payment_modules', 'Payment Modules');
       $installed_modules = explode(';', $system->settings->get('payment_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/*.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'payment.inc.php');
       $modules = new payment;
       break;
     case 'order_success':
       $title = $system->language->translate('title_order_success_modules', 'Order Success Modules');
       $installed_modules = explode(';', $system->settings->get('order_success_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/*.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'order_success.inc.php');
       $modules = new order_success;
       break;
     case 'shipping':
       $title = $system->language->translate('title_shipping_modules', 'Shipping Modules');
       $installed_modules = explode(';', $system->settings->get('shipping_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/*.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'shipping.inc.php');
       $modules = new shipping;
       break;
     default:

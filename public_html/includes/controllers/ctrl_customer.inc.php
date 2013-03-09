@@ -8,55 +8,56 @@
       
       $this->system = &$system;
       
-      $this->reset();
-      
       if ($customer_id !== null) $this->load($customer_id);
     }
     
-    public function reset() {
-      $this->data = array(
-        'id' => '',
-        'email' => '',
-        'tax_id' => '',
-        'phone' => '',
-        'mobile' => '',
-        'company' => '',
-        'firstname' => '',
-        'lastname' => '',
-        'address1' => '',
-        'address2' => '',
-        'city' => '',
-        'postcode' => '',
-        'country_code' => '',
-        'zone_code' => '',
-        'different_shipping_address' => false,
-        'shipping_address' => array(
-          'company' => '',
-          'firstname' => '',
-          'lastname' => '',
-          'address1' => '',
-          'address2' => '',
-          'city' => '',
-          'postcode' => '',
-          'country_code' => '',
-          'zone_code' => '',
-        ),
-        'newsletter' => 1,
-      );
-    }
-    
     public function load($customer_id) {
-      
-      $this->reset();
-      
+    
       $customer_query = $this->system->database->query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where id = '". $this->system->database->input($customer_id) ."'
         limit 1;"
       );
-      $this->data = $this->system->database->fetch($customer_query);
+      $customer = $this->system->database->fetch($customer_query);
+      if (empty($customer)) trigger_error('Could not find customer ('. $customer_id .') in database.', E_USER_ERROR);
       
-      if (empty($this->data)) trigger_error('Could not find customer ('. $customer_id .') in database.', E_USER_ERROR);
+      $key_map = array(
+        'id' => 'id',
+        'email' => 'email',
+        'password' => 'password',
+        'tax_id' => 'tax_id',
+        'company' => 'company',
+        'firstname' => 'firstname',
+        'lastname' => 'lastname',
+        'address1' => 'address1',
+        'address2' => 'address2',
+        'postcode' => 'postcode',
+        'country_code' => 'country_code',
+        'zone_code' => 'zone_code',
+        'city' => 'city',
+        'phone' => 'phone',
+        'mobile' => 'mobile',
+        'different_shipping_address' => 'different_shipping_address',
+        'newsletter' => 'newsletter',
+      );
+      foreach ($key_map as $skey => $tkey) {
+        $this->data[$tkey] = $customer[$skey];
+      }
+      
+      $key_map = array(
+        'shipping_company' => 'company',
+        'shipping_firstname' => 'firstname',
+        'shipping_lastname' => 'lastname',
+        'shipping_address1' => 'address1',
+        'shipping_address2' => 'address2',
+        'shipping_postcode' => 'postcode',
+        'shipping_city' => 'city',
+        'shipping_country_code' => 'country_code',
+        'shipping_zone_code' => 'zone_code',
+      );
+      foreach ($key_map as $skey => $tkey){
+        $this->data['shipping_address'][$tkey] = $customer[$skey];
+      }
     }
     
     public function save() {
@@ -96,7 +97,6 @@
           shipping_city = '". $this->system->database->input($this->data['shipping_address']['city']) ."',
           shipping_country_code = '". $this->system->database->input($this->data['shipping_address']['country_code']) ."',
           shipping_zone_code = '". $this->system->database->input($this->data['shipping_address']['zone_code']) ."',
-          newsletter = '". (empty($this->data['newsletter']) ? 0 : 1) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"

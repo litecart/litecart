@@ -7,7 +7,6 @@
   
   if (empty($_GET['order_id'])) die('Missing order ID');
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'order.inc.php');
   $order = new ctrl_order('load', $_GET['order_id']);
   
   echo $order->draw_printable_packing_slip();

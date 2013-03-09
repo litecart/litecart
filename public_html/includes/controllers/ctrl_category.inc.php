@@ -178,7 +178,6 @@
       
       if (!is_dir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'categories/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'categories/', 0777);
       
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'image.inc.php');
       $image = new ctrl_image($file);
       
     // 456-12345_Fancy-title.jpg

@@ -46,10 +46,10 @@
             order by p.priority, pi.title;"
           );
           while ($page = $system->database->fetch($pages_query)) {
-            echo '<li><a href="'. $system->document->link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+            echo '<li><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
           }
         ?>
-        <li><a href="<?php echo $system->document->link('', array()); ?>"><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></a></li>
+        <li><a href="<?php echo $system->document->href_link('', array()); ?>"><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></a></li>
         </ul>
       </nav>
     </div>
