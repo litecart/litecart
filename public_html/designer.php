@@ -10,7 +10,7 @@
   $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('', array(), array('designer_id'))) .'" />';
 
   $designers_query = $system->database->query(
-    "select d.id, d.name, d.keywords, di.short_description, di.description, di.head_title, di.h1_title, di.meta_description, di.meta_keywords, di.link
+    "select d.id, d.status, d.name, d.keywords, di.short_description, di.description, di.head_title, di.h1_title, di.meta_description, di.meta_keywords, di.link
     from ". DB_TABLE_DESIGNERS ." d
     left join ". DB_TABLE_DESIGNERS_INFO ." di on (di.designer_id = d.id and di.language_code = '". $system->language->selected['code'] ."')
     where status
@@ -19,9 +19,9 @@
   );
   $designer = $system->database->fetch($designers_query);
   
-  if (empty($designer)) {
+  if (empty($designer['status'])) {
     $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: HTTP/1.1 404 Not Found');
+    header('HTTP/1.1 404 Not Found');
     header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'designers.php'));
     exit;
   }

@@ -155,11 +155,6 @@
   }
   
 ?>
-<style>
-  span.required {
-    color: #f00;
-  }
-</style>
   <div class="box" id="box-checkout-account">
     <div class="heading"><h2><?php echo $system->language->translate('title_customer_information', 'Customer Information'); ?></h2></div>
     <div class="content" style="padding: 0px;">

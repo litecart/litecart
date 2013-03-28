@@ -16,14 +16,12 @@
       $this->system = &$system;
     }
     
-    public function options() {
+    public function options($items, $subtotal, $tax, $currency_code, $customer) {
     
-    // If not enabled
       if ($this->settings['status'] != 'Enabled') return;
       
-    // If not in geo zone
       if (!empty($this->settings['geo_zone_id'])) {
-        if (!$this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $this->system->customer->data['country_code'], $this->system->customer->data['zone_code'])) return;
+        if ($this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $customer['country_code'], $customer['zone_code']) != true) return;
       }
       
       $method = array(

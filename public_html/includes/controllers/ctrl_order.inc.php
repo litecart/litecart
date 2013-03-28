@@ -236,6 +236,20 @@
     // Re-calculate total if there are changes
       $this->calculate_total();
       
+    // Update purchase count
+      if (empty($this->data['id'])) {
+        if (!empty($this->data['items'])) {
+          foreach (array_keys($this->data['items']) as $key) {
+            $this->system->database->query(
+              "update ". DB_TABLE_PRODUCTS ."
+              set purchases = purchases + ". (int)$this->data['items'][$key]['quantity'] ."
+              where id = ". (int)$this->data['items'][$key]['product_id'] ."
+              limit 1;"
+            );
+          }
+        }
+      }
+      
       if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
       
     // Send update notice e-mail

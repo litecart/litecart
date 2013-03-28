@@ -72,6 +72,7 @@
         }
         
         foreach (array_keys($_POST['order_total']) as $key) {
+          if (empty($_POST['order_total'][$key]['calculate'])) $_POST['order_total'][$key]['calculate'] = false;
           $_POST['order_total'][$key]['value'] = $_POST['order_total'][$key]['value'] / $order->data['currency_value'];
           $_POST['order_total'][$key]['tax'] = $system->tax->get_tax($_POST['order_total'][$key]['value'] * $order->data['currency_value'], $_POST['order_total'][$key]['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']) / $order->data['currency_value'];
         }
@@ -136,7 +137,7 @@
 }
 </style>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($order->data['id']) ? $system->language->translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : $system->language->translate('title_create_new_order', 'Create New Order'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($order->data['id']) ? $system->language->translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : $system->language->translate('title_create_new_order', 'Create New Order'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('form_order', 'post'); ?>
 
@@ -340,7 +341,7 @@
     $("input[type='text'][name$='[price]']").each(function() {
       subtotal += $(this).val() * $(this).closest('tr').find("input[type='text'][name$='[quantity]']").val();
     });
-    $("input[type=text][name^='order_total'][value='ot_subtotal']").closest('tr').find("input[type='text'][name$='[value]']").val(subtotal);
+    $("input[type='text'][name^='order_total'][value='ot_subtotal']").closest('tr').find("input[type='text'][name$='[value]']").val(subtotal);
   }
   
   $("input[type='text'][name^='items'][name$='[price]'], input[type='text'][name^='items'][name$='[quantity]'], #remove_item").keyup(function() {
@@ -353,7 +354,7 @@
     event.preventDefault();
     var new_row = '  <tr>'
                 + '    <td nowrap="nowrap" align="center"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_item" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
-                + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', 'style="width: 350px; text-align: left;"')); ?></td>'
+                + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', 'style="width: 350px; text-align: left;"')); ?></td>'
                 + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_input_field('items[new_item_index][quantity]', '1', 'text', 'style="width: 25px; text-align: center;"'); ?></td>'
                 + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('items[new_item_index][price]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('items[new_item_index][tax]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
@@ -365,11 +366,13 @@
     new_item_index++;
   });
   
+  /*
   $(".add_item").live("click", function(event) {
     $.fancybox({
       content: 'it works!'
     });
   });
+  */
   
   $(".remove_item").live("click", function(event) {
     event.preventDefault();
@@ -394,7 +397,15 @@
 ?>
   <tr>
     <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
-    <td nowrap="nowrap" align="right"><?php foreach (array_keys($_POST['order_total'][$key]) as $field) echo $system->functions->form_draw_hidden_field('order_total['. $key .']['. $field .']', $_POST['order_total'][$key][$field]); ?><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][module_id]', $_POST['order_total'][$key]['module_id'], 'text', 'style="width: 75px;"'); ?></td>
+    <td nowrap="nowrap" align="right">
+<?php
+  foreach (array_keys($_POST['order_total'][$key]) as $field) {
+    if (in_array($field, array('calculate'))) continue;
+    echo $system->functions->form_draw_hidden_field('order_total['. $key .']['. $field .']', $_POST['order_total'][$key][$field]);
+  }
+?>
+      <?php echo $system->functions->form_draw_input_field('order_total['. $key .'][module_id]', $_POST['order_total'][$key]['module_id'], 'text', 'style="width: 75px;"'); ?>
+    </td>
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][title]', $_POST['order_total'][$key]['title'], 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][value]', $_POST['order_total'][$key]['value'], 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total['. $key .'][calculate]', 'true', !empty($_POST['order_total'][$key]['calculate']) ? 'true' : '', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>
     <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][tax]', $_POST['order_total'][$key]['tax'], 'text', 'style="width: 75px; text-align: right;"'); ?></td>-->

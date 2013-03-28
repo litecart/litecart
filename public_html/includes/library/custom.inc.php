@@ -1,6 +1,6 @@
 <?php
   
-  class language {
+  class custom {
   
     private $system;
     

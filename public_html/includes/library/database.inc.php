@@ -83,6 +83,7 @@
       }
       
       $this->query("set character set ". DB_DATABASE_CHARSET);
+      $this->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'");
       
     // Make sure link was established
       if (!is_resource($this->links[$link]) && !is_object($this->links[$link])) {
@@ -248,13 +249,7 @@
     }
     
     function error($query, $errno, $error) {
-    
-    // Log
-      error_log($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
-    
-    // Halt script and output error
-      //die('MySQL error code '. $errno .' at '. date('Y-m-d H:i:s') .'. Please consult the webmaster.');
-      die($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query));
+      trigger_error($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
     }
   }
   

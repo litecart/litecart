@@ -95,11 +95,6 @@
         return;
       }
       
-      if ($this->data['code'] == $this->system->settings->get('store_language_code')) {
-        trigger_error('Cannot delete the store system language', E_USER_ERROR);
-        return;
-      }
-      
       if ($this->data['code'] == $this->system->settings->get('default_language_code')) {
         trigger_error('Cannot delete the store default language', E_USER_ERROR);
         return;

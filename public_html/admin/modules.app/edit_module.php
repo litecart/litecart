@@ -35,7 +35,7 @@
   }
 ?>
 
-<h1 style="margin-top: 0;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_edit_module', 'Edit Module'); ?></h1>
+<h1 style="margin-top: 0;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_edit_module', 'Edit Module'); ?></h1>
 <h2 style="margin-top: 0;"><?php echo $module->name; ?></h2>
 <?php echo isset($module->description) ? '<p>'. $module->description .'</p>': false; ?>
 <?php echo $system->functions->form_draw_form_begin('module_form', 'post'); ?>
@@ -49,7 +49,7 @@
     }
 ?>
   <tr class="<?=$rowclass?>-Hover">
-    <td align="left"><strong><?=$setting['title']?></strong><? echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
+    <td align="left"><strong><?=$setting['title']?></strong><?php echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
     <?php echo $system->functions->form_draw_hidden_field('key', $setting['key']) . $system->functions->form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
   </tr>
 <?php 

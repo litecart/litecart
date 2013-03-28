@@ -17,7 +17,7 @@
              . 'Return-Path: '. $from . PHP_EOL
              . 'MIME-Version: 1.0' . "\r\n"
              . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary . '"' . "\r\n"
-             . 'X-Mailer: PHP/' . phpversion() . "\r\n\r\n";
+             . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
      
   // Add a multipart boundary above the plain message
     $message = 'This is a multi-part message in MIME format.' . "\r\n\r\n"

@@ -63,7 +63,7 @@
   
   if (empty($_POST['user']) && !empty($_GET['user'])) $_POST['user'] = $_GET['user'];
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (!empty($user->data['username'])) ? $system->language->translate('title_edit_user', 'Edit User') : $system->language->translate('title_create_new_user', 'Create New User'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($user->data['username'])) ? $system->language->translate('title_edit_user', 'Edit User') : $system->language->translate('title_create_new_user', 'Create New User'); ?></h1>
 <?php echo $system->functions->form_draw_form_begin(false, 'post'); ?>
   <table>
     <tr>

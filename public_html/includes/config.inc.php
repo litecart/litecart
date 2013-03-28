@@ -11,8 +11,8 @@
   define('WS_DIR_HTTP_HOME', str_replace(FS_DIR_HTTP_ROOT, '', realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR));
   
   define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . 'admin' . DIRECTORY_SEPARATOR);
-  define('WS_DIR_AJAX',        WS_DIR_HTTP_HOME  . 'ajax' . DIRECTORY_SEPARATOR);
-  define('WS_DIR_CACHE',       WS_DIR_HTTP_HOME  . 'cache' . DIRECTORY_SEPARATOR);
+  define('WS_DIR_AJAX',        WS_DIR_HTTP_HOME . 'ajax' . DIRECTORY_SEPARATOR);
+  define('WS_DIR_CACHE',       WS_DIR_HTTP_HOME . 'cache' . DIRECTORY_SEPARATOR);
   define('WS_DIR_DATA',        WS_DIR_HTTP_HOME . 'data' . DIRECTORY_SEPARATOR);
   define('WS_DIR_EXT',         WS_DIR_HTTP_HOME . 'ext' . DIRECTORY_SEPARATOR);
   define('WS_DIR_IMAGES',      WS_DIR_HTTP_HOME . 'images' . DIRECTORY_SEPARATOR);

@@ -1,9 +1,11 @@
 <?php
-
+  ini_set('display_errors', 'On');
+  
 // Function to get object from a relative path to this script
-  function get_absolute_path($path) {
-    $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
-    $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+  function get_absolute_path($path=null) {
+    if (empty($path)) $path = dirname(__FILE__);
+    $path = str_replace('\\', '/', $path);
+    $parts = array_filter(explode('/', $path), 'strlen');
     $absolutes = array();
     foreach ($parts as $part) {
       if ('.' == $part) continue;
@@ -13,10 +15,10 @@
         $absolutes[] = $part;
       }
     }
-    return DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $absolutes);
+    return implode('/', $absolutes);
   }
   
-  $document_root = get_absolute_path(dirname(__FILE__) . '/..') . '/';
+  $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
   
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -28,7 +30,7 @@
 body {
   margin: 10px;
   
-  background: #31353e;
+  background: none repeat scroll 0% 0% rgb(184, 211, 244);
   
   font-size: 12px;
   font-family: Arial, Helvetica,sans-serif;
@@ -65,7 +67,7 @@ a:hover, a:active{
 #body{
   padding: 20px;
   background-color: #fff;
-  border: 1px #919191 solid;
+  border: 1px rgba(128,128,128,0.5) solid;
   
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -77,7 +79,7 @@ a:hover, a:active{
 <div id="body-wrapper">
   <div id="body">
   <img src="../images/logotype.png" height="60" align="right" />
-  <h1>Install LiteCart</h1>
+  <h1>Installer</h1>
   <h2>System Requirements</h2>
   <ul>
     <li>Linux Machine</li>
@@ -119,6 +121,13 @@ a:hover, a:active{
   
   <h2>Installation Parameters</h2>
   <form id="form1" name="form1" method="post" action="install.php">
+    <h3>File System</h3>
+    <table>
+      <tr>
+        <td><strong>Installation Path</strong><br />
+          <input type="hidden" name="installation_path" value="<?php echo $document_root; ?>" /><?php echo $document_root; ?></td>
+      </tr>
+    </table>
     <h3>MySQL</h3>
     <table>
       <tr>
@@ -132,7 +141,7 @@ a:hover, a:active{
         <td><strong>Username</strong><br />
         <input type="text" name="db_username" style="width: 175px;" /></td>
         <td><strong>Password</strong><br />
-        <input type="text" name="db_password" style="width: 175px;" /></td>
+        <input type="password" name="db_password" style="width: 175px;" /></td>
       </tr>
       <tr>
         <td><strong>Table Prefix</strong><br />
@@ -163,7 +172,7 @@ a:hover, a:active{
       if (!empty($zone[1])) {
         echo '<option>'. $zone[0]. '/' . $zone[1]  .'</option>';
       }
-   }
+    }
   }
 ?>
         </select></td>
@@ -174,7 +183,7 @@ a:hover, a:active{
     <table>
       <tr>
         <td><strong>Folder Name</strong><br />
-          <input name="admin_folder" type="text" value="admin/" style="width: 175px;" /></td>
+          <input name="admin_folder" type="text" value="admin" style="width: 175px;" /></td>
         <td>&nbsp;</td>
       </tr>
       <tr>
@@ -184,15 +193,14 @@ a:hover, a:active{
           <input name="password" type="text" id="password" style="width: 175px;" /></td>
       </tr>
     </table>
-    <h3>File System</h3>
-    <table>
-      <tr>
-        <td><strong>Installation Path</strong><br />
-          <input name="installation_path" type="text"  value="<?php echo $document_root; ?>" style="width: 360px;" /></td>
-        </tr>
-    </table>
+    <h3>Errors
+      <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" style="width: 175px;" />
+    </h3>
+    <p>Errros will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
+    <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.<br />
+    </p>
     <p>
-      <input type="submit" name="install" value="Install Now" />
+      <input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing installations may be overwritten with new data.')) return false;" />
   </p>
   </form>
   </div>

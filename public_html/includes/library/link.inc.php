@@ -2,7 +2,8 @@
 
   class link {
     private $system;
-    private $cache = array();
+    private $_cache = array();
+    private $_cache_id = '';
     
     public function __construct(&$system) {
       $this->system = &$system;
@@ -14,8 +15,8 @@
     public function startup() {
       
     // Import cached translations
-      $this->cache_id = $this->system->cache->cache_id('links', array('language', 'basename'));
-      $this->cache = $this->system->cache->get($this->cache_id, 'file');
+      $this->_cache_id = $this->system->cache->cache_id('links', array('language', 'basename'));
+      $this->_cache = $this->system->cache->get($this->_cache_id, 'file');
     }
     
     //public function initiate() {
@@ -34,13 +35,14 @@
     }
     
     public function shutdown() {
-      $this->system->cache->set($this->cache_id, 'file', $this->cache);
+      $this->system->cache->set($this->_cache_id, 'file', $this->_cache);
     }
     
     ######################################################################
     
     public function get_base_link() {
       $link = $_SERVER['PHP_SELF'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+      
       return $this->full_link($link);
     }
     
@@ -64,7 +66,7 @@
         );
       }
       
-      if (empty($base_link['path'])) $base_link['path'] = $_SERVER['SCRIPT_NAME'];
+      if (empty($base_link['path'])) $base_link['path'] = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
       
       if ($inherit_params === true) {
         $base_link['query'] = $_GET;
@@ -90,7 +92,7 @@
       $link = $this->unparse_link($base_link);
       
       $checksum = md5($link);
-      if (!empty($this->cache[$checksum])) return $this->cache[$checksum];
+      if (!empty($this->_cache[$checksum])) return $this->_cache[$checksum];
       
       if ($this->system->settings->get('seo_links_enabled') == 'true') {
         $seo_link = $this->system->seo_links->get_cached_link($link, $language_code);
@@ -99,7 +101,7 @@
       
       $link = !empty($seo_link) ? $seo_link : $link;
       
-      $this->cache[$checksum] = $link;
+      $this->_cache[$checksum] = $link;
       
       return $link;
     }
@@ -126,7 +128,7 @@
       
       if (substr($path, 0, 4) == 'http') return parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
       
-      $dir = dirname(parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH));
+      $dir = str_replace('\\', '/', dirname(parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH)));
       if (substr($dir, -1) != '/') $dir .= '/';
       
       $path = $dir . $path;
@@ -200,7 +202,7 @@
     }
     
     function unparse_link($parts=array()) {
-    
+      
       if (empty($parts['host'])) {
         $parts['scheme'] = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
         $parts['host'] = $_SERVER['HTTP_HOST'];

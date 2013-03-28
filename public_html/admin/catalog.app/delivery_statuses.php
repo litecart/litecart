@@ -2,7 +2,7 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 <div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_delivery_status.php'), true); ?>"><?php echo $system->language->translate('title_create_new_delivery_status', 'Create New Delivery Status'); ?></a></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_delivery_statuses', 'Delivery Statuses'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_delivery_statuses', 'Delivery Statuses'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('delivery_statuses_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">

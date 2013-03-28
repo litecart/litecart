@@ -69,7 +69,7 @@ var config = {
   });
 </script>
 -->
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_translations_by_page', 'Translations by Page'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_translations_by_page', 'Translations by Page'); ?></h1>
 <?php
   $pages_query = $system->database->query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
   $pages = array();

@@ -81,7 +81,7 @@ var config = {
   </script>
 </div>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_search_translations', 'Search Translations'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_search_translations', 'Search Translations'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('translation_form', 'post'); ?>
 

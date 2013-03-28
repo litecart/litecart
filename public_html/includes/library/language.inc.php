@@ -6,7 +6,8 @@
     
     public $selected = array();
     public $languages = array();
-    private $cache = array();
+    private $_cache = array();
+    private $_cache_id = '';
     
     public function __construct(&$system) {
       $this->system = &$system;
@@ -31,7 +32,7 @@
       }
       
     // Set language
-      if (empty($this->language[$this->selected['code']]['status'])) {
+      if (empty($this->selected['code']) || empty($this->language[$this->selected['code']]['status'])) {
         $this->set($this->identify());
       }
       
@@ -49,12 +50,12 @@
     
     // Set system locale
       if (!setlocale(LC_TIME, explode(',', $this->selected['locale']))) {
-        trigger_error('Warning: Failed setting locale for '. $this->selected['code'], E_USER_WARNING);
+        trigger_error('Warning: Failed setting locale '. $this->selected['locale'] .' for '. $this->selected['code'], E_USER_WARNING);
       }
       
     // Import cached translations
-      $this->cache_id = $this->system->cache->cache_id('translations', array('language', 'basename'));
-      $this->cache = $this->system->cache->get($this->cache_id, 'file');
+      $this->_cache_id = $this->system->cache->cache_id('translations', array('language', 'basename'));
+      $this->_cache = $this->system->cache->get($this->_cache_id, 'file');
       
       header('Content-Language: '. $this->selected['code']);
     }
@@ -72,10 +73,10 @@
       while ($row = $this->system->database->fetch($translations_query)) {
       
         if (!empty($row['text_'.$this->selected['code']])) {
-          $this->cache['translations'][$this->selected['code']][$row['code']] = $row['text_'.$this->selected['code']];
+          $this->_cache['translations'][$this->selected['code']][$row['code']] = $row['text_'.$this->selected['code']];
           
         } else if (!empty($row['text_en'])) {
-          $this->cache['translations'][$this->selected['code']][$row['code']] = $row['text_en'];
+          $this->_cache['translations'][$this->selected['code']][$row['code']] = $row['text_en'];
         }
         
         $translation_ids[] = $row['id'];
@@ -100,7 +101,7 @@
     }
     
     public function shutdown() {
-      $this->system->cache->set($this->cache_id, 'file', $this->cache);
+      $this->system->cache->set($this->_cache_id, 'file', $this->_cache);
     }
     
     ######################################################################
@@ -165,8 +166,8 @@
       if (empty($language_code)) $language_code = $this->selected['code'];
       
     // Return from cache
-      if (isset($this->cache['translations'][$language_code][$code])) {
-        return $this->cache['translations'][$language_code][$code];
+      if (isset($this->_cache['translations'][$language_code][$code])) {
+        return $this->_cache['translations'][$language_code][$code];
       }
       
     // Get translation from database
@@ -215,12 +216,7 @@
         $translation = $default;
       }
       
-    // Fallback on code
-      //if (empty($translation)) {
-      //  $translation = '{'.$code.'}';
-      //}
-      
-      $this->cache['translations'][$language_code][$code] = $translation;
+      $this->_cache['translations'][$language_code][$code] = $translation;
       
       $backtrace = current(debug_backtrace());
       $page = $this->system->database->input(substr($backtrace['file'], strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME)));
@@ -245,7 +241,7 @@
         where id = '". $this->system->database->input($row['id']) ."';"
       );
         
-      return $this->cache['translations'][$language_code][$code];
+      return $this->_cache['translations'][$language_code][$code];
     }
     
     public function number_format($number, $decimals=2) {

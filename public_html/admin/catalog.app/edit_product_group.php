@@ -47,7 +47,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($product_group->data['id']) ? $system->language->translate('title_edit_product_group', 'Edit Product Group') : $system->language->translate('title_new_product_group', 'Create New Product Group'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($product_group->data['id']) ? $system->language->translate('title_edit_product_group', 'Edit Product Group') : $system->language->translate('title_new_product_group', 'Create New Product Group'); ?></h1>
 <?php echo $system->functions->form_draw_form_begin('form_product_group', 'post'); ?>
 <p></p>
 <?php

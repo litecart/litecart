@@ -1,4 +1,4 @@
-<?php echo $system->functions->form_draw_form_begin('search_form', 'get', $system->document->link('search.php')); ?>
+<?php echo $system->functions->form_draw_form_begin('search_form', 'get', $system->document->link(WS_DIR_HTTP_HOME . 'search.php')); ?>
   <?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : ''); ?>
   <?php echo $system->functions->form_draw_button('search', $system->language->translate('title_search', 'Search'), 'submit'); ?>
 <?php echo $system->functions->form_draw_form_end(); ?>

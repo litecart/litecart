@@ -1,4 +1,4 @@
-ErrorDocument 404 /error_document.php?code=404
+ErrorDocument 404 \error_document.php?code=404
 
 # URL-rewriting
 <IfModule mod_rewrite.c>
@@ -9,7 +9,7 @@ ErrorDocument 404 /error_document.php?code=404
   SetEnv HTTP_MOD_REWRITE On
   
   # Web path to catalog root
-  RewriteBase /
+  RewriteBase \
   
   # Non-www to www
   #RewriteCond %{HTTP_HOST} !^www\.

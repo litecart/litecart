@@ -27,7 +27,7 @@
       if (substr($target, -1) != '/') $target .= '/';
       
     // Set webpath path of source
-      $source_webpath = str_replace(realpath(FS_DIR_HTTP_ROOT), '', realpath($source));
+      $source_webpath = str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($source)));
       
     // Set filename
       switch ($method) {
@@ -63,7 +63,7 @@
     }
     
     if (is_file($target . $filename)) {
-      return str_replace(realpath(FS_DIR_HTTP_ROOT), '', realpath($target . $filename));
+      return str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($target . $filename)));
     }
     
   // Create image object
@@ -96,7 +96,7 @@
     
     if (!$image->write($target . $filename, $target_extension, 90)) return;
     
-    return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath($target . $filename));
+    return str_replace(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '', str_replace('\\', '/', realpath($target . $filename)));
   }
   
 ?>

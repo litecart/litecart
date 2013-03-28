@@ -47,7 +47,7 @@
 ?>
   <table width="100%">
     <tr>
-      <td><h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($delivery_status->data['id']) ? $system->language->translate('title_edit_delivery_status', 'Edit Delivery Status') : $system->language->translate('title_create_new_delivery_status', 'Create New Delivery Status'); ?></h1>
+      <td><h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($delivery_status->data['id']) ? $system->language->translate('title_edit_delivery_status', 'Edit Delivery Status') : $system->language->translate('title_create_new_delivery_status', 'Create New Delivery Status'); ?></h1>
         <?php echo $system->functions->form_draw_form_begin('delivery_status_form', 'post'); ?>
         <table>
           <tr>

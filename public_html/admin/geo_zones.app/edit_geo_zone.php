@@ -44,7 +44,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo !empty($geo_zone->data['id']) ? $system->language->translate('title_edit_geo_zone', 'Edit Geo Zone') : $system->language->translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($geo_zone->data['id']) ? $system->language->translate('title_edit_geo_zone', 'Edit Geo Zone') : $system->language->translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('form_geo_zone', 'post'); ?>
 

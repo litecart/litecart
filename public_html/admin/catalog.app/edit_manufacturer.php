@@ -92,7 +92,7 @@
 
 ?>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (empty($manufacturer->data['id'])) ? $system->language->translate('title_add_new_manufacturer', 'Add New Manufacturer') : $system->language->translate('title_edit_manufacturer', 'Edit Manufacturer'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (empty($manufacturer->data['id'])) ? $system->language->translate('title_add_new_manufacturer', 'Add New Manufacturer') : $system->language->translate('title_edit_manufacturer', 'Edit Manufacturer'); ?></h1>
 
 <?php
   if (!empty($manufacturer->data['image'])) {

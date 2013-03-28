@@ -9,10 +9,10 @@
   if (ini_get('register_globals')) {
     ini_set('session.use_cookies', 'On');
     ini_set('session.use_trans_sid', 'Off');
-      
+    
     session_set_cookie_params(0, '/');
     session_start();
-
+    
     foreach (array($_REQUEST, $_SESSION, $_SERVER, $_FILES) as $global) {
       foreach(array_keys($global) as $key) {
         global $$key;
@@ -20,7 +20,7 @@
       }
     }
   }
-
+  
 // Magic Quotes Fix
   if (ini_get('magic_quotes_gpc')) {
     function clean($data) {
@@ -40,5 +40,8 @@
     $_REQUEST = clean($_REQUEST);
     $_COOKIE = clean($_COOKIE);
   }
+  
+// Windows Paths
+  $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
   
 ?>

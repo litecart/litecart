@@ -80,7 +80,13 @@
 
     public function format($value, $unit) {
     
-      if (!isset($this->classes[$unit])) trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);
+      if (!isset($this->classes[$unit])) {
+        trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);
+        return;
+      }
+      
+      $num_decimals = $this->classes[$class]['decimals'];
+      if (round($value) == $value) $num_decimals = 0;
       
       return number_format($value, 2, $this->system->language->selected['decimal_point'], $this->system->language->selected['thousands_sep']) .' '. $this->classes[$unit]['unit'];
     }

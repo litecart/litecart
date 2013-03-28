@@ -1,16 +1,21 @@
 <?php
-  
   header('Content-type: text/plain; charset=utf-8');
   
   error_reporting(E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'Off');
   ini_set('display_errors', 'On');
+  ini_set('html_errors', 'Off');
 
   if (empty($_POST['install'])) {
     header('Location: index.php');
     exit;
   }
+  
+  ### Set ###################################
+  
+  $_POST['admin_folder'] = str_replace('\\', '/', $_POST['admin_folder']);
+  $_POST['admin_folder'] = rtrim($_POST['admin_folder'], '/') . '/';
   
   ### Config ###################################
   
@@ -27,6 +32,7 @@
     '{DB_TABLE_PREFIX}' => $_POST['db_table_prefix'],
     '{DB_DATABASE_CHARSET}' => 'utf8',
     '{DB_PERSISTENT_CONNECTIONS}' => 'false',
+    '{CLIENT_IP}' => $_POST['client_ip'],
     '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
   );
   
@@ -52,7 +58,7 @@
   
   require('database.class.php');
   $database = new database(null);
-  
+  /*
   $sql = file_get_contents('structure.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
   
@@ -103,7 +109,7 @@
     
     echo ' [OK]' . PHP_EOL;
   }
-  
+  */
   ### Settings ###################################
   
   echo 'Applying settings...';
@@ -133,13 +139,14 @@
   
   ### .htaccess mod rewrite ###################################
   
-  echo 'Securing admin folder...';
+  echo 'Setting mod_rewrite base path...';
   
   $htaccess = file_get_contents('htaccess');
   
-  function get_absolute_path($path) {
-    $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
-    $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+  function get_absolute_path($path=null) {
+    if (empty($path)) $path = dirname(__FILE__);
+    $path = str_replace('\\', '/', $path);
+    $parts = array_filter(explode('/', $path), 'strlen');
     $absolutes = array();
     foreach ($parts as $part) {
       if ('.' == $part) continue;
@@ -149,14 +156,14 @@
         $absolutes[] = $part;
       }
     }
-    return DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $absolutes);
+    return implode('/', $absolutes);
   }
   
-  $rewrite_base = str_replace(rtrim($_POST['installation_path'], '/'), '', get_absolute_path(dirname(__FILE__) . '/..') .'/');
+  $base_dir = str_replace(rtrim($_POST['installation_path'], '/'), '', get_absolute_path(dirname(__FILE__) .'/..') .'/');
   
-  $htaccess = str_replace('{REWRITE_BASE}', $rewrite_base, $htaccess);
+  $htaccess = str_replace('{BASE_DIR}', $base_dir, $htaccess);
   
-  file_put_contents('../.htaccess', $htaccess);
+  file_put_contents('../.htaccess', $htaccess) or die();
   
   echo ' [OK]' . PHP_EOL;
   
@@ -166,23 +173,23 @@
   
   ### .htaccess Protection ###################################
   
-  echo 'Setting mod_rewrite base path...';
-  
+  echo 'Securing admin folder...';
+    
   $htaccess = 'AuthType Basic' . PHP_EOL
             . 'AuthName "Restricted Area"' . PHP_EOL
-            . 'AuthUserFile '. $_POST['installation_path'] . $_POST['admin_folder'] .'.htpasswd' . PHP_EOL
+            . 'AuthUserFile ' . $_POST['installation_path'] . $_POST['admin_folder'] . '.htpasswd' . PHP_EOL
             . 'Require valid-user' . PHP_EOL;
   
-  file_put_contents('../'. $_POST['admin_folder'] .'.htaccess', $htaccess);
+  file_put_contents('../'. $_POST['admin_folder'] .'.htaccess', $htaccess) or die();
   
   echo ' [OK]' . PHP_EOL;
   
   ### .htpasswd Users ###################################
   
-  echo 'Granting access for user '. $_POST['username'] .'...';
+  echo 'Granting admin access for user '. $_POST['username'] .'...';
   
   $htpasswd = $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
-  file_put_contents('../'. $_POST['admin_folder'] .'.htpasswd', $htpasswd);
+  file_put_contents('..' . DIRECTORY_SEPARATOR . $_POST['admin_folder'] . '.htpasswd', $htpasswd) or die();
   
   echo ' [OK]' . PHP_EOL;
   

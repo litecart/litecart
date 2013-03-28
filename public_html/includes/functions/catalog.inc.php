@@ -186,7 +186,6 @@
       ". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";"
     ;
     
-    if (!empty($_GET['debug'])) die($query);
     $products_query = $system->database->query($query);
     
     return $products_query;

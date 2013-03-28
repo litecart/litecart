@@ -89,7 +89,7 @@
                                                        . '</script>' . PHP_EOL;
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (empty($category->data['id'])) ? $system->language->translate('title_add_new_category', 'Add New Category') : $system->language->translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][$system->language->selected['code']]; ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (empty($category->data['id'])) ? $system->language->translate('title_add_new_category', 'Add New Category') : $system->language->translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][$system->language->selected['code']]; ?></h1>
 
 <?php
   if (!empty($category->data['image'])) {
@@ -108,6 +108,10 @@
     <div class="content">
       <div id="tab-general">
         <table>
+          <tr>
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
+            <?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></td>
+          </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_parent_category', 'Parent Category'); ?></strong><br />
               <?php echo $system->functions->form_draw_categories_list('parent_id', (isset($_POST['parent_id'])) ? $_POST['parent_id'] : ''); ?>
@@ -144,10 +148,6 @@ foreach (array_keys($system->language->languages) as $language_code) {
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
               <?php echo $system->functions->form_draw_input_field('priority', (isset($_POST['priority']) ? $_POST['priority'] : '0'), 'text', 'style="width: 50px;"'); ?>
             </td>
-          </tr>
-          <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
-            <?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></td>
           </tr>
           <?php if (isset($category->data['id'])) { ?>
           <tr>

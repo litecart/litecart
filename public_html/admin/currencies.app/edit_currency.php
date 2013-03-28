@@ -52,7 +52,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (isset($currency->data['id'])) ? $system->language->translate('title_edit_currency', 'Edit Currency') : $system->language->translate('title_add_new_currency', 'Add New Currency'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (isset($currency->data['id'])) ? $system->language->translate('title_edit_currency', 'Edit Currency') : $system->language->translate('title_add_new_currency', 'Add New Currency'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('', 'post'); ?>
 

@@ -49,7 +49,7 @@
 <div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_order.php'), true); ?>"><?php echo $system->language->translate('title_create_new_order', 'Create New Order'); ?></a></div>
 <div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_order_status_list('order_status_id', isset($_GET['order_status_id']) ? $_GET['order_status_id'] : false, 'onchange="location=(\''. $system->document->link('', array(), true, array('page', 'order_status_id')) .'&order_status_id=\' + this.options[this.selectedIndex].value)"'); ?></div>
 <div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : $system->language->translate('title_search', 'Search'), 'text', 'style="width: 175px;" onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"'); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_orders', 'Orders'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_orders', 'Orders'); ?></h1>
 
 <script type="text/javascript">
   $("input[name=query]").live("click", function(event) {
@@ -81,7 +81,7 @@
     "select o.*, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
     left join ". DB_TABLE_ORDERS_STATUS_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". $system->language->selected['code'] ."')
     where o.id
-    ". ((!empty($_GET['query'])) ? "and (o.customer_email like '%". $system->database->input($_GET['query']) ."%' or o.customer_firstname like '%". $system->database->input($_GET['query']) ."%' or o.customer_lastname like '%". $system->database->input($_GET['query']) ."%')" : "") ."
+    ". ((!empty($_GET['query'])) ? "and (o.id = '". $system->database->input($_GET['query']) ."' or o.uid = '". $system->database->input($_GET['query']) ."' or o.customer_email like '%". $system->database->input($_GET['query']) ."%' or o.customer_firstname like '%". $system->database->input($_GET['query']) ."%' or o.customer_lastname like '%". $system->database->input($_GET['query']) ."%')" : "") ."
     ". ((!empty($_GET['order_status_id'])) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
     order by o.date_created desc;"
   );
@@ -101,9 +101,9 @@
   <tr class="<?php echo $rowclass; ?>"<?php echo ($order['order_status_id'] == 0) ? ' style="color: #999;"' : false; ?>>
     <td nowrap="nowrap"><?php echo $system->functions->form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
     <td nowrap="nowrap" align="left"><?php echo $order['id']; ?></td>
-    <td align="left"><?php echo $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. $system->language->translate('title_guest', 'Guest') .')</em>' : ''; ?></td>
-    <td align="left"><?php echo $system->functions->reference_get_country_name($order['customer_country_code']); ?></td>
-    <td align="center"><?php echo ($order['order_status_id'] == 0) ? $system->language->translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
+    <td nowrap="nowrap" align="left"><?php echo $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. $system->language->translate('title_guest', 'Guest') .')</em>' : ''; ?></td>
+    <td nowrap="nowrap" align="left"><?php echo $system->functions->reference_get_country_name($order['customer_country_code']); ?></td>
+    <td nowrap="nowrap" align="center"><?php echo ($order['order_status_id'] == 0) ? $system->language->translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
     <td nowrap="nowrap" align="right"><?php echo $system->currency->format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
     <td nowrap="nowrap" align="right"><?php echo strftime($system->language->selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td nowrap="nowrap">

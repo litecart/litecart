@@ -148,8 +148,6 @@
   
   $(document).ready(function() {
     
-    setTimeout(keepAlive, 1 * 60 * 1000);
-    
     $("form button[type=submit]").live('click', function(e) {
       $(this).closest("form").append('<input type="hidden" name="'+ $(this).attr("name") +'" value="'+ $(this).text() +'" />');
     });

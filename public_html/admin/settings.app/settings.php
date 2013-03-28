@@ -26,7 +26,7 @@
     if ($_GET['setting_group_key'] == $group['key']) $setting_group = $group;
   }
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_settings', 'Settings'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_settings', 'Settings'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('settings_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
@@ -46,7 +46,7 @@
   if ($system->database->num_rows($settings_query) > 0) {
     
   // Jump to data for current page
-    if ($_GET['page'] > 1) $system->database->seek($settings_query, ($system->settings->get('data_table_rows_per_page') * ($_GET['Page']-1)));
+    if ($_GET['page'] > 1) $system->database->seek($settings_query, ($system->settings->get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
     while ($setting = $system->database->fetch($settings_query)) {

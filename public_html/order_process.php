@@ -68,7 +68,7 @@
         exit;
         
       } else {
-        header('Location: '. $gateway['action']);
+        header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : $system->document->link()));
         exit;
       }
     }

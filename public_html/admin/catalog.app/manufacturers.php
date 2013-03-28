@@ -18,7 +18,7 @@
 ?>
 
 <div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer.php')); ?>"><?php echo $system->language->translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?></a></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('manufacturers_form', 'post'); ?>
 <table class="dataTable" width="100%">

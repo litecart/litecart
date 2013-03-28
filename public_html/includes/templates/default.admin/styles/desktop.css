@@ -5,15 +5,20 @@
 @import url(tables.css);
 @import url(tabs.css);
 
+html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper table {
+  height: 100%;
+}
+
 body {
-  margin: 10px;
+  margin: 0;
   
-  background: #31353e;
+  background: #fff;
   
   font-size: 12px;
   font-family: Arial, Helvetica,sans-serif;
   color: #333;
 }
+
 a:link, a:visited{
   color: #3863c5;
   text-decoration: none;
@@ -35,47 +40,16 @@ h3{
   font-size: 1.1em;
 }
 
-#body-wrapper {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-  
-  max-width: 980px;
-  
-  padding: 10px;
-  
-  border: 1px solid rgba(128,128,128,0.5);
-  
-  border-radius: 15px 15px 15px 15px;
-  -moz-border-radius: 15px 15px 15px 15px;
-  -webkit-border-radius: 15px;
-  
-  /*background: rgba(128,128,128,0.25);*/
-  /*background: url(../images/background-tile-blurry.jpg) fixed;*/
-  
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-  -o-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-  -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
+hr {
+  margin: 10px 0;
+  width: 100%;
+  height: 1px;
+  border: none;
+  border-bottom: 1px #ccc dotted;
 }
 
-
-#body{
-  padding: 0px;
-  background-color: #fff;
-  border: 1px #919191 solid;
-  
-  border-radius: 15px;
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
-}
-
-#header {
-  padding: 0px;
-}
-
-#header .title {
-  font-size: 28px;
+img {
+  border: none;
 }
 
 .semi-transparent {
@@ -108,17 +82,21 @@ ul.navigation-horizontal li {
   list-style: none;
 }
 
+#body-wrapper {
+}
+
+#body{
+}
+
+#header {
+  padding: 0px;
+}
+
+#header .title {
+  font-size: 28px;
+}
+
 #content-wrapper {
-  margin: 0px;
-  padding: 0;
-  
-  background: rgba(255,255,255,1.0);
-  
-  /*border: 1px #919191 solid;*/
-  
-  border-radius: 15px;
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
 }
 
 #sidebar {
@@ -128,17 +106,9 @@ ul.navigation-horizontal li {
   
   background: #f5f5f5;
   
-  border-top-left-radius: 15px;
-  -moz-border-radius-topleft: 15px;
-  -webkit-border-radius-topleft: 15px;
-  
-  border-bottom-left-radius: 15px;
-  -moz-border-radius-bottomleft: 15px;
-  -webkit-border-radius-bottomleft: 15px;
-  
   -moz-box-shadow: inset 0px 0px 10px #aaa;
   -webkit-box-shadow: inset 0px 0px 10px #aaa;
-  box-shadow: inset 0px 0px 10px #aaa;
+  box-shadow: inset 5px 0px 10px #aaa;
 }
 #sidebar .logotype {
   text-align: center;
@@ -181,7 +151,6 @@ ul.navigation-horizontal li {
 #widgets ul li > .widget {
   margin: 5px;
 }
-
 
 #apps-list-menu-wrapper ul {
   list-style: none;
@@ -233,42 +202,6 @@ ul.navigation-horizontal li {
 #copyright {
   text-align: center;
   font-size: 0.8em;
-  color: #fff;
 }
 #copyright a {
-  color: #fff;
-}
-
-.link-button {
-  display: inline-block;
-  
-  background: #f5f5f5;
-  
-  margin: 0;
-  margin-left: 3px;
-  
-  border: 1px solid #dfdfdf;
-  
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-}
-.link-button:hover {
-  background: #fff;
-}
-.link-button a {
-  display: block;
-  padding: 5px 10px;
-  
-  color: #333;
-  text-decoration: none;
-  text-shadow: 1px 1px 0px #fff;
-}
-
-hr {
-  margin: 10px 0;
-  width: 100%;
-  height: 1px;
-  border: none;
-  border-bottom: 1px #ccc dotted;
 }

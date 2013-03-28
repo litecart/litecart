@@ -22,7 +22,7 @@
   $system->document->snippets['column_left'] = ob_get_clean();
   
   $manufacturers_query = $system->database->query(
-    "select m.id, m.name, m.keywords, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
+    "select m.id, m.status, m.name, m.keywords, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
     from ". DB_TABLE_MANUFACTURERS ." m
     left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (mi.manufacturer_id = m.id and mi.language_code = '". $system->language->selected['code'] ."')
     where status
@@ -31,9 +31,9 @@
   );
   $manufacturer = $system->database->fetch($manufacturers_query);
   
-  if (empty($manufacturer)) {
+  if (empty($manufacturer['status'])) {
     $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: HTTP/1.1 404 Not Found');
+    header('HTTP/1.1 404 Not Found');
     header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
     exit;
   }

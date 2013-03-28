@@ -10,7 +10,7 @@
   $system->breadcrumbs->add($system->language->translate('title_categories', 'Categories'), $system->document->link('categories.php'));
 
   $categories_query = $system->database->query(
-    "select c.id, c.image, c.keywords, ci.name, ci.description, ci.short_description, ci.head_title, ci.h1_title, ci.meta_description, ci.meta_keywords
+    "select c.id, c.status, c.image, c.keywords, ci.name, ci.description, ci.short_description, ci.head_title, ci.h1_title, ci.meta_description, ci.meta_keywords
     from ". DB_TABLE_CATEGORIES ." c
     left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". $system->language->selected['code'] ."')
     where c.id = '". (int)$_GET['category_id'] ."'
@@ -18,12 +18,12 @@
   );
   $category = $system->database->fetch($categories_query);
   
-    if (empty($category)) {
-      $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-      header('Location: HTTP/1.1 404 Not Found');
-      header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'categories.php'));
-      exit;
-    }
+  if (empty($category['status'])) {
+    $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
+    header('HTTP/1.1 404 Not Found');
+    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'categories.php'));
+    exit;
+  }
   
   /*
   $system->document->snippets['javascript'][] = '  var nextPage = '. ($_GET['page']+1) .';'. PHP_EOL

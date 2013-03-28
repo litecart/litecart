@@ -166,7 +166,7 @@
     function error($query, $errno, $error) {
     
     // Log
-      error_log($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
+      trigger_error($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
     
     // Halt script and output error
       //die('MySQL error code '. $errno .' at '. date('Y-m-d H:i:s') .'. Please consult the webmaster.');

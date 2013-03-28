@@ -2,7 +2,7 @@
 
   class seo_links {
     
-    public $enabled = false;
+    public $enabled;
     
     public function __construct(&$system) {
       $this->system = &$system;
@@ -15,11 +15,18 @@
     //}
     
     public function startup() {
-      if ($this->system->settings->get('seo_links_enabled') == 'true') $this->enabled = true;
+    
+      $this->enabled = false;
+      
+      if ($this->system->settings->get('seo_links_enabled') == 'true') {
+        if (isset($_SERVER['HTTP_MOD_REWRITE'])) {
+          $this->enabled = true;
+        }
+      }
     }
     
     public function before_capture() {
-    
+      
       if (!$this->enabled) return;
     
     // Set urls
@@ -110,6 +117,8 @@
     }
     
     public function create_link($link='', $language_code='') {
+      
+      if (!$this->enabled) return;
       
       if (empty($link)) $link = $this->system->link->get_called_link();
       if (empty($language_code)) $language_code = $this->system->language->selected['code'];

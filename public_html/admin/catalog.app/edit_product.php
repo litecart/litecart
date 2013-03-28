@@ -20,10 +20,10 @@
     if ($_POST['name'][$system->language->selected['code']] == '') $system->notices->add('errors', $system->language->translate('error_must_enter_name', 'You must enter a name'));
     if (empty($_POST['categories'])) $system->notices->add('errors', $system->language->translate('error_must_select_category', 'You must select a category'));
     
-    if (!empty($_POST['code']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and code = '". $system->database->input($_POST['code']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
-    if (!empty($_POST['sku']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and sku = '". $system->database->input($_POST['sku']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
-    if (!empty($_POST['ean']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and ean = '". $system->database->input($_POST['ean']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('error_ean_database_conflict', 'Another entry with the given EAN already exists in the database'));
-    if (!empty($_POST['upc']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and upc = '". $system->database->input($_POST['upc']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('error_upc_database_conflict', 'Another entry with the given UPC already exists in the database'));
+    if (!empty($_POST['code']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and code = '". $system->database->input($_POST['code']) ."' limit 1;"))) $system->notices->add('warnings', $system->language->translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+    if (!empty($_POST['sku']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and sku = '". $system->database->input($_POST['sku']) ."' limit 1;"))) $system->notices->add('warnings', $system->language->translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+    if (!empty($_POST['ean']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and ean = '". $system->database->input($_POST['ean']) ."' limit 1;"))) $system->notices->add('warnings', $system->language->translate('error_ean_database_conflict', 'Another entry with the given EAN already exists in the database'));
+    if (!empty($_POST['upc']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and upc = '". $system->database->input($_POST['upc']) ."' limit 1;"))) $system->notices->add('warnings', $system->language->translate('error_upc_database_conflict', 'Another entry with the given UPC already exists in the database'));
     
     if (!$system->notices->get('errors')) {
       
@@ -124,7 +124,7 @@
                                                        . '</script>' . PHP_EOL;
   
 ?>
-  <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle;" style="margin-right: 10px;" /><?php echo (!empty($product->data['id'])) ? $system->language->translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][$system->language->selected['code']] : $system->language->translate('title_add_new_product', 'Add New Product'); ?></h1>
+  <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($product->data['id'])) ? $system->language->translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][$system->language->selected['code']] : $system->language->translate('title_add_new_product', 'Add New Product'); ?></h1>
   
 <?php
   if (isset($product->data['id'])) {
@@ -523,7 +523,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 ?>
           <tr>
             <td align="left" nowrap="nowrap"><?php echo $currency_code; ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('prices['. $currency_code .']', isset($_POST['prices'][$currency_code]) ? number_format($_POST['prices'][$currency_code], 4, '.', '') : '', 'text', 'style="width: 50px;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('prices['. $currency_code .']', isset($_POST['prices'][$currency_code]) ? number_format((float)$_POST['prices'][$currency_code], 4, '.', '') : '', 'text', 'style="width: 50px;"'); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('currency_prices['. $currency_code .']', '', 'text', 'style="width: 50px;" disabled="disabled"'); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('net_prices['. $currency_code .']', '', 'text', 'style="width: 50px;"'); ?></td>
             <td align="left" nowrap="nowrap"></td>

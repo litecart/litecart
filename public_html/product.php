@@ -3,9 +3,9 @@
   
   $product = new ref_product($_GET['product_id']);
   
-  if ($product->status == 0) {
+  if ($product->id == 0 || $product->status == 0) {
     $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: HTTP/1.1 404 Not Found');
+    header('HTTP/1.1 404 File Not Found');
     header('Location: '. $system->document->link(WS_DIR_HTTP_HOME));
     exit;
   }
@@ -83,7 +83,7 @@
 
 <div class="box" id="box-product">
   <div class="heading">
-    <?php echo (!empty($product->code)) ? '<div style="float: right; color: #999;">'. $product->code .'</div>' : false; ?>
+    <?php echo (!empty($product->sku)) ? '<div class="sku">'. $product->sku .'</div>' : false; ?>
     <h1><?php echo $product->name[$system->language->selected['code']]; ?></h1>
   </div>
   <div class="content">
@@ -126,7 +126,7 @@
             
             <div class="content">
               <div class="tab" id="tab-information">
-                <p><?php echo $product->description[$system->language->selected['code']] ? $product->description[$system->language->selected['code']] : '<em style="color: #999;">'. $system->language->translate('text_no_product_description', 'There is no description for this product yet.') .'</em>'; ?></p>
+                <p><?php echo $product->description[$system->language->selected['code']] ? $product->description[$system->language->selected['code']] : '<em style="opacity: 0.65;">'. $system->language->translate('text_no_product_description', 'There is no description for this product yet.') .'</em>'; ?></p>
               </div>
               
               <?php if (!empty($product->attributes[$system->language->selected['code']])) { ?>
@@ -162,10 +162,10 @@
 <?php
     if ($product->manufacturer_id) {
 ?>
-          <div style="margin-bottom: 10px; color: #999;" class="manufacturer">
+          <div style="margin-bottom: 10px;" class="manufacturer">
 <?php
       if ($product->manufacturer['image']) {
-        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 60) .'" height="60" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" /></a>';
+        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) .'" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" /></a>';
       } else {
         echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'">'. $product->manufacturer['name'] .'</a>';
       }
@@ -175,9 +175,9 @@
     }
 ?>
       
-          <div style="margin-bottom: 10px; font-size: 22px;" class="price"><?php echo $product->campaign['price'] ? '<s class="old-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong style="color: #cc0000; color: #c00;" class="special-price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span style="color: #cc0000; color: #c00;" class="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
+          <div style="margin-bottom: 10px; font-size: 22px;" class="price"><?php echo $product->campaign['price'] ? '<s class="old-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong class="special-price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span class="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
           
-          <div style="margin-bottom: 10px; color: #999;" class="tax">
+          <div style="margin-bottom: 10px;" class="tax">
 <?php
     if ($system->settings->get('display_prices_including_tax') == 'true') {
       echo $system->language->translate('title_including_tax', 'Including Tax') .':<br/>' . PHP_EOL;
@@ -201,13 +201,13 @@
           <div style="margin-bottom: 10px;" class="quantity">
 <?php
   if ($product->quantity > 0) {
-    echo $system->language->translate('title_stock_status', 'Stock Status') .': <span style="color: #080;">'. (($system->settings->get('display_stock_count') == 'true') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span>';
+    echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="stock-available">'. (($system->settings->get('display_stock_count') == 'true') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span>';
     if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<br />' . $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']];
   } else {
     if (!empty($product->sold_out_status['name'][$system->language->selected['code']])) {
-      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span style="color: '. ($product->sold_out_status['orderable'] ? '#f90' : '#c00') .';">'. $product->sold_out_status['name'][$system->language->selected['code']] .'</span>';
+      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="'. ($product->sold_out_status['orderable'] ? 'stock-unavailable' : 'stock-partly-available') .'">'. $product->sold_out_status['name'][$system->language->selected['code']] .'</span>';
     } else {
-      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span style="color: #c00;">'. $system->language->translate('title_sold_out', 'Sold Out') .'</span>';
+      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="stock-unavailable">'. $system->language->translate('title_sold_out', 'Sold Out') .'</span>';
     }
   }
 ?>
@@ -278,7 +278,7 @@
               }
             }
             
-            echo $system->functions->form_draw_checkbox('options['.$group['name'][$system->language->selected['code']].'][]', $group['values'][$value_id]['name'][$system->language->selected['code']], isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
+            echo $system->functions->form_draw_checkbox('options['.$group['name'][$system->language->selected['code']].'][]', $group['values'][$value_id]['name'][$system->language->selected['code']], isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
             $use_br = true;
           }
           break;
@@ -295,7 +295,7 @@
             }
           }
           
-          echo $system->functions->form_draw_input_field('options['.$group['name'][$system->language->selected['code']].']', isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', 'input') . $price_adjust_text . PHP_EOL;
+          echo $system->functions->form_draw_input_field('options['.$group['name'][$system->language->selected['code']].']', isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', 'input', !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
           break;
           
         case 'radio':
@@ -312,9 +312,7 @@
               }
             }
             
-            echo $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']',
-            $group['values'][$value_id]['name'][$system->language->selected['code']],
-            isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
+            echo $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']', $group['values'][$value_id]['name'][$system->language->selected['code']], isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
             $use_br = true;
           }
           break;
@@ -334,7 +332,7 @@
 
             $options[] = array($group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text, $group['values'][$value_id]['name'][$system->language->selected['code']]);
           }
-          echo $system->functions->form_draw_select_field('options['.$group['name'][$system->language->selected['code']].']', $options, isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '');
+          echo $system->functions->form_draw_select_field('options['.$group['name'][$system->language->selected['code']].']', $options, isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', false, false, !empty($group['required']) ? 'required="required"' : '');
           break;
           
         case 'textarea':
@@ -347,7 +345,7 @@
             }
           }
 
-          echo $system->functions->form_draw_textarea('options['.$group['name'][$system->language->selected['code']].']', isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '') . $price_adjust_text. PHP_EOL;
+          echo $system->functions->form_draw_textarea('options['.$group['name'][$system->language->selected['code']].']', isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
           break;
       }
     }
@@ -382,11 +380,10 @@
   </div>
 </div>
 
-<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'also_purchased_products.inc.php'); ?>
-
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'similar_products.inc.php'); ?>
 
+<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'also_purchased_products.inc.php'); ?>
+
 <?php
-  
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

@@ -86,6 +86,9 @@
         return;
       }
       
+      $num_decimals = $this->classes[$class]['decimals'];
+      if (round($value) == $value) $num_decimals = 0;
+      
       return number_format($value, $this->classes[$class]['decimals'], $this->system->language->selected['decimal_point'], $this->system->language->selected['thousands_sep']) .' '. $this->classes[$class]['unit'];
     }
     

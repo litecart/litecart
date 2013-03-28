@@ -99,16 +99,16 @@
 <?php
   } else {
     $pages_query = $system->database->query(
-      "select p.id, pi.title, pi.content, pi.head_title, pi.meta_keywords, pi.meta_description from ". DB_TABLE_PAGES ." p
+      "select p.id, p.status, pi.title, pi.content, pi.head_title, pi.meta_keywords, pi.meta_description from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
       where p.id = '". (int)$_GET['page_id'] ."'
       limit 1;"
     );
     $page = $system->database->fetch($pages_query);
     
-    if (empty($page)) {
+    if (empty($page['status'])) {
       $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-      header('Location: HTTP/1.1 404 Not Found');
+      header('HTTP/1.1 404 Not Found');
       header('Location: '. $system->document->link(WS_DIR_HTTP_HOME));
       exit;
     }
@@ -123,7 +123,7 @@
   <div class="box" id="box-customer-service">
     <div class="heading"><h1><?php echo $page['title']; ?></h1></div>
     <div class="content">
-<?php echo $page['content']; ?>
+      <?php echo $page['content']; ?>
     </div>
   </div>
   

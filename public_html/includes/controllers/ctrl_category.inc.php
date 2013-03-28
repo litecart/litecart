@@ -78,7 +78,8 @@
           status = '". (int)$this->data['status'] ."',
           code = '". $this->system->database->input($this->data['code']) ."',
           keywords = '". $this->system->database->input($this->data['keywords']) ."',
-          priority = '". (int)$this->data['priority'] ."'
+          priority = '". (int)$this->data['priority'] ."',
+          date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
@@ -181,7 +182,7 @@
       $image = new ctrl_image($file);
       
     // 456-12345_Fancy-title.jpg
-      $filename = 'categories/' . $this->data['id'] .'-'. $this->system->functions->general_url_friendly($this->data['name'][$this->system->settings->get('store_language_code')]) .'.'. $image->type();
+      $filename = 'categories/' . $this->data['id'] .'-'. $this->system->functions->general_url_friendly($this->data['name'][$this->system->settings->get('default_language_code')]) .'.'. $image->type();
       
       if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
       
