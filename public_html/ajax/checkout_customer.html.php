@@ -228,7 +228,7 @@
                       <?php echo $system->functions->form_draw_input_field('shipping_address[lastname]', isset($_POST['shipping_address']['lastname']) ? $_POST['shipping_address']['lastname'] : '', 'text', 'style="width: 175px;"'); ?></td>
                   </tr>
                   <tr>
-                    <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
+                    <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
                       <?php echo $system->functions->form_draw_input_field('shipping_address[address1]', isset($_POST['shipping_address']['address1']) ? $_POST['shipping_address']['address1'] : '', 'text', 'style="width: 175px;"'); ?></td>
                     <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
                       <?php echo $system->functions->form_draw_input_field('shipping_address[address2]', isset($_POST['shipping_address']['address2']) ? $_POST['shipping_address']['address2'] : '', 'text', 'style="width: 175px;"'); ?></td>

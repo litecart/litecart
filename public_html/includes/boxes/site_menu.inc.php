@@ -12,6 +12,6 @@
     echo '    <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'information.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
   }
 ?>
-    <li><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'support.php'); ?>"><?php echo $system->language->translate('title_support', 'Support'); ?></a></li>
+    <li><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'customer_service.php'); ?>"><?php echo $system->language->translate('title_customer_service', 'Customer Service'); ?></a></li>
   </ul>
 </div>

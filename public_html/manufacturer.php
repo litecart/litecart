@@ -22,7 +22,7 @@
   $system->document->snippets['column_left'] = ob_get_clean();
   
   $manufacturers_query = $system->database->query(
-    "select m.id, m.status, m.name, m.keywords, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
+    "select m.id, m.status, m.name, m.keywords, m.image, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
     from ". DB_TABLE_MANUFACTURERS ." m
     left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (mi.manufacturer_id = m.id and mi.language_code = '". $system->language->selected['code'] ."')
     where status
@@ -72,12 +72,20 @@
     }
 ?>
       </span>
-      <h1><?php echo $manufacturer['name']; ?></h1>
+      <h1><?php echo (!empty($manufacturer['image'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60, 'FIT') .'" alt="'. $manufacturer['name'] .'" title="'. $manufacturer['name'] .'" />' : $manufacturer['name']; ?></h1>
     </div>
     <div class="content">
-      <?php if ($_GET['page'] == 1) { ?>
-      <?php if ($manufacturer['description']) { ?><div class="manufacturer-description"><?php echo $manufacturer['description'] ?></div><?php } ?>
+<?php
+    if ($_GET['page'] == 1) {
+?>    
+      <?php if ($manufacturer['description']) { ?>
+      <div class="description-wrapper">
+        <?php echo $manufacturer['description'] ? $manufacturer['description'] : ''; ?>
+      </div>
       <?php } ?>
+<?php
+    }
+?>
       <ul class="listing-wrapper products">
 <?php
     $products_query = $system->functions->catalog_products_query(array('manufacturer_id' => $manufacturer['id'], 'sort' => $_GET['sort']));

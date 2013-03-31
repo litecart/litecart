@@ -104,7 +104,7 @@
 
   $system->document->snippets['head_tags']['ckeditor'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/ckeditor.js"></script>' . PHP_EOL
                                                        . ' <script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/adapters/jquery.js"></script>' . PHP_EOL
-                                                       . ' <script type="text/javascript">' . PHP_EOL
+                                                       . ' <script>' . PHP_EOL
                                                        . '   $(document).ready(function() {' . PHP_EOL
                                                        . '     $("textarea[name^=description]").ckeditor({' . PHP_EOL
                                                        . '       toolbar: [' . PHP_EOL
@@ -290,14 +290,14 @@ foreach (array_keys($system->language->languages) as $language_code) {
     <tr>
       <td><?php echo $system->functions->form_draw_hidden_field('images['.$key.'][id]', $_POST['images'][$key]['id']); ?><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 75); ?>" align="left" style="margin: 5px;" /></td>
       <td><?php echo $system->functions->form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo $system->functions->form_draw_input_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename'], 'text'); ?></td>
-      <td><a id="move-image-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-image-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-image" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
+      <td><a id="move-image-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-image-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-image" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
   }
 ?>
               </table>
-              <script type="text/javascript">
-                $("#move-image-up, #move-image-down").live("click", function(event) {
+              <script>
+                $("#move-image-up, #move-image-down").on("click", function(event) {
                   event.preventDefault();
                   var row = $(this).parents("tr:first");
                   var firstrow = $('table tr:first');
@@ -311,7 +311,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
                   }
                 });
                 
-                $("#remove-image").live("click", function(event) {
+                $("#remove-image").on("click", function(event) {
                   event.preventDefault();
                   $(this).closest('tr').remove();
                 });
@@ -323,8 +323,8 @@ foreach (array_keys($system->language->languages) as $language_code) {
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upload_images', 'Upload Images'); ?></strong><br />
               <div><?php echo $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"'); ?></div>
                <a href="#" id="add-new-image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo $system->language->translate('text_add', 'Add'); ?>" /></a>
-              <script type="text/javascript">
-                $("#add-new-image").live("click", function(event) {
+              <script>
+                $("#add-new-image").on("click", function(event) {
                   event.preventDefault();
                   $(this).before('<div><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"')); ?></div>');
                 });
@@ -533,7 +533,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 ?>
           </tr>
         </table>
-        <script type="text/javascript">
+        <script>
           function get_tax_rate() {
             switch ($("select[name=tax_class_id]").val()) {
 <?php
@@ -579,7 +579,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             currency_convert_prices();
           });
           
-          $("#net-price-tooltip").live('click', function(e) {
+          $("#net-price-tooltip").on('click', function(e) {
             e.preventDefault;
             alert("<?php echo str_replace(array("\r", "\n", "\""), array('', '', "\\\""), $system->language->translate('text_net_price_tooltip', 'The net price field helps you calculate gross price based on the store country tax. But all prices input to database are always excluding tax.')); ?>");
           });
@@ -619,25 +619,25 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           </tr>
         </table>
         
-        <script type="text/javascript">
-          $("input[name^='campaigns'][name$='[percentage]']").live("keyup", function() {
+        <script>
+          $("input[name^='campaigns'][name$='[percentage]']").on("keyup", function() {
             var parent = $(this).closest('tr');
             <?php foreach ($system->currency->currencies as $currency) { ?>if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() != 0) $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val($("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100));<?php } ?>
           });
           
-          $("input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']").live("keyup", function() {
+          $("input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']").on("keyup", function() {
             var parent = $(this).closest('tr');
             $(parent).find("input[name$='[percentage]']").val(($("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() * 100);
           });
           $("input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']").trigger("keyup");
           
-          $("#remove-campaign").live("click", function(event) {
+          $("#remove-campaign").on("click", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
           var new_campaign_i = 1;
-          $("#add-campaign").live("click", function(event) {
+          $("#add-campaign").on("click", function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_start_date', 'Start Date'); ?></strong><br />'
@@ -709,7 +709,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 <?php
       }
 ?>
-            <td align="left" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+            <td align="left" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
 <?php
     }
@@ -723,13 +723,13 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             <td align="left" nowrap="nowrap">&nbsp;</td>
           </tr>
         </table>
-        <script type="text/javascript">
-          $("#remove-option").live("click", function(event) {
+        <script>
+          $("#remove-option").on("click", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
-          $("#move-option-up, #move-option-down").live("click", function(event) {
+          $("#move-option-up, #move-option-down").on("click", function(event) {
             event.preventDefault();
             var row = $(this).parents("tr:first");
             var firstrow = $('table tr:first');
@@ -743,7 +743,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             }
           });
           
-          $("select[name^='options'][name$='[group_id]']").live("change", function(){
+          $("select[name^='options'][name$='[group_id]']").on("change", function(){
             var valueField = this.name.replace(/group/, 'value');
             $('body').css('cursor', 'wait');
             $.ajax({
@@ -773,7 +773,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           });
           
           var new_option_i = 1;
-          $("#add-option").live("click", function(event) {
+          $("#add-option").on("click", function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
@@ -789,7 +789,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
 <?php
   }
 ?>
-                       + '  <td nowrap="nowrap" align="left"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                       + '  <td nowrap="nowrap" align="left"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                        + '</tr>';
             output = output.replace(/new_option_i/g, 'new_' + new_option_i);
             $(this).closest('tr').before(output);
@@ -821,7 +821,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][quantity]', $_POST['options_stock'][$key]['quantity'], 'text', 'style="width: 25px;"'); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][weight]', $_POST['options_stock'][$key]['weight'], 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', $_POST['options_stock'][$key]['weight_class']); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_x]', $_POST['options_stock'][$key]['dim_x'], 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_y]', $_POST['options_stock'][$key]['dim_y'], 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input_field('options_stock['.$key.'][dim_z]', $_POST['options_stock'][$key]['dim_z'], 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_length_classes_list('options_stock['.$key.'][dim_class]', (isset($_POST['options_stock'][$key]['dim_class']) ? $_POST['options_stock'][$key]['dim_class'] : '')); ?></td>
-            <td align="left" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+            <td align="left" nowrap="nowrap"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
 <?php
     }
@@ -850,13 +850,13 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             <td align="left" nowrap="nowrap">&nbsp;</td>
           </tr>
         </table>
-        <script type="text/javascript">
-          $("#remove-option").live("click", function(event) {
+        <script>
+          $("#remove-option").on("click", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
-          $("#move-option-up, #move-option-down").live("click", function(event) {
+          $("#move-option-up, #move-option-down").on("click", function(event) {
             event.preventDefault();
             var row = $(this).parents("tr:first");
             var firstrow = $('table tr:first');
@@ -871,7 +871,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           });
           
           var option_index = 2;
-          $("#add-group-value").live("click", function(event) {
+          $("#add-group-value").on("click", function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
@@ -883,12 +883,12 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             option_index++;
           });
           
-          $("#remove-group-value").live("click", function(event) {
+          $("#remove-group-value").on("click", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
-          $("select[name^='new_option'][name$='[group_id]']").live("change", function(){
+          $("select[name^='new_option'][name$='[group_id]']").on("change", function(){
             var valueField = this.name.replace(/group/, 'value');
             $('body').css('cursor', 'wait');
             $.ajax({
@@ -918,7 +918,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           });
           
           var new_option_stock_i = 1;
-          $("button[name=add_option]").live("click", function(event) {
+          $("button[name=add_option]").on("click", function(event) {
             event.preventDefault();
             var new_option_code = '';
             var new_option_name = '';
@@ -949,7 +949,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('options_stock[new_option_stock_i][quantity]', '0', 'text', 'style="width: 25px;"')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('options_stock[new_option_stock_i][weight]', '0.00', 'text', 'style="width: 40px;"') .' '. $system->functions->form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input_field('options_stock[new_option_stock_i][dim_x]', '0.00', 'text', 'style="width: 40px;"') .' x '. $system->functions->form_draw_input_field('options_stock[new_option_stock_i][dim_y]', '0.00', 'text', 'style="width: 40px;"') .' x '. $system->functions->form_draw_input_field('options_stock[new_option_stock_i][dim_z]', '0.00', 'text', 'style="width: 40px;"') .' '. $system->functions->form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
-                       + '  <td nowrap="nowrap" align="left"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                       + '  <td nowrap="nowrap" align="left"><a id="move-option-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-option-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                        + '</tr>';
             while ($("input[name='options_stock[new_"+new_option_stock_i+"]']").length) new_option_stock_i++;
             output = output.replace(/new_option_stock_i/g, 'new_' + new_option_stock_i);

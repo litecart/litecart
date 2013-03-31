@@ -32,23 +32,7 @@
   $system->document->snippets['keywords'] = $designer['meta_keywords'] ? $designer['meta_keywords'] : $designer['keywords'];
   $system->document->snippets['description'] = $designer['meta_description'] ? $designer['meta_description'] : $designer['short_description'];
   
-  if (empty($system->document->snippets['head_tags']['fancybox'])) {
-    $system->document->snippets['head_tags']['fancybox'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.pack.js"></script>' . PHP_EOL
-                                                         . '<link rel="stylesheet" href="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />';
-  }
-  
-  if (empty($system->document->snippets['javascript']['fancybox'])) {
-    $system->document->snippets['javascript']['fancybox'] = '  $(document).ready(function() {' . PHP_EOL
-                                                          . '      $("a.fancybox").fancybox({' . PHP_EOL
-                                                          . '        "transitionIn"  : "elastic",' . PHP_EOL
-                                                          . '        "transitionOut" : "elastic",' . PHP_EOL
-                                                          . '        "speedIn"       : 600,' . PHP_EOL
-                                                          . '        "speedOut"      : 200,' . PHP_EOL
-                                                          . '        "overlayShow"   : false,' . PHP_EOL
-                                                          . '        "titlePosition" : "inside",' . PHP_EOL
-                                                          . '      });' . PHP_EOL
-                                                          . '  });';
-  }
+  $system->functions->draw_fancybox('a.fancybox');
   
   $designer_cache_id = $system->cache->cache_id('box_designer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if ($system->cache->capture($designer_cache_id, 'file')) {
@@ -74,27 +58,22 @@
   }
 ?>
       </span>
-      <h1 style="margin: 0; font: inherit;"><?php echo $designer['h1_title'] ? $designer['h1_title'] : $designer['name']; ?></h1>
+      <h1><?php echo (!empty($designer['image'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $designer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60, 'FIT') .'" alt="'. $designer['name'] .'" title="'. $designer['name'] .'" />' : $designer['name']; ?></h1>
     </div>
     <div class="content">
-      <ul class="listing-wrapper products">
-        <?php if ($designer['description']) { ?>
-        <li class="description"><?php echo $designer['description'] ?></li>
-        <?php } ?>
 <?php
-  $system->document->snippets['head_tags']['fancybox'] = '<script type="text/javascript" src="ext/fancybox/jquery.fancybox-1.3.4.pack.js"></script>' . PHP_EOL
-                                                        . '<link rel="stylesheet" href="ext/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />' . PHP_EOL;
-                                                        
-  $system->document->snippets['javascript'][] = '  $(document).ready(function() {' . PHP_EOL
-                                               . '    $("a.fancybox").fancybox({' . PHP_EOL
-                                               . '      "transitionIn"	:	"elastic",' . PHP_EOL
-                                               . '      "transitionOut"	:	"elastic",' . PHP_EOL
-                                               . '      "speedIn"		:	600,' . PHP_EOL
-                                               . '      "speedOut"		:	200,' . PHP_EOL
-                                               . '      "overlayShow"	:	false,' . PHP_EOL
-                                               . '      "titlePosition" : "inside"' . PHP_EOL
-                                               . '    });' . PHP_EOL
-                                               . '  });' . PHP_EOL;
+    if ($_GET['page'] == 1) {
+?>    
+      <?php if ($designer['description']) { ?>
+      <div class="description-wrapper">
+        <?php echo $designer['description'] ? $designer['description'] : ''; ?>
+      </div>
+      <?php } ?>
+<?php
+    }
+?>
+      <ul class="listing-wrapper products">
+<?php
   
   $products_query = $system->functions->catalog_products_query(array('designer_id' => $designer['id'], 'sort' => $_GET['sort']));
   if ($system->database->num_rows($products_query) > 0) {

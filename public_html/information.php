@@ -15,11 +15,11 @@
             "select p.id, pi.title from ". DB_TABLE_PAGES ." p
             left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
             where status
-            and dock_support
+            and dock_menu
             order by p.priority, pi.title;"
           );
           while ($page = $system->database->fetch($pages_query)) {
-            echo '<li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'page.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+            echo '<li><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
           }
         ?>
         </ul>

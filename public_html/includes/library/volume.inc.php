@@ -9,7 +9,7 @@
       $this->system = &$system;
     }
     
- public function load_dependencies() {
+    public function load_dependencies() {
       $this->classes = array(
         'L' => array(
           'name' => 'Litres',
@@ -139,19 +139,6 @@
       if (round($value) == $value) $num_decimals = 0;
       
       return number_format($value, $this->classes[$class]['decimals'], $this->system->language->selected['decimal_point'], $this->system->language->selected['thousands_sep']) .' '. $this->classes[$class]['unit'];
-    }
-    
-    public function draw_select_field($name, $input='', $parameters) {
-    
-      $options = array();
-      
-      if ($input == '') $input = $this->system->settings->get('store_volume_class');
-      
-      foreach ($this->classes as $class) {
-        $options[] = array($class['unit']);
-      }
-      
-      echo $this->system->functions->form_draw_select_field($name, $options, $input, false, false, $parameters);
     }
   }
   

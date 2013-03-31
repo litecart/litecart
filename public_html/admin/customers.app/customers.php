@@ -6,12 +6,12 @@
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_customers', 'Customers'); ?></h1>
 
 <script type="text/javascript">
-  $("input[name=query]").live("click", function(event) {
+  $("input[name=query]").on("click", function(event) {
     if ($(this).val() == "<?php echo $system->language->translate('title_search', 'Search'); ?>") {
       $(this).val("");
     }
   });
-  $("input[name=query]").live("blur", function(event) {
+  $("input[name=query]").on("blur", function(event) {
     if ($(this).val() == "") {
       $(this).val("<?php echo $system->language->translate('title_search', 'Search'); ?>");
     }

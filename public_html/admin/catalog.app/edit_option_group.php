@@ -95,7 +95,7 @@
     </td>
   </tr>
 </table>
-<script type="text/javascript">
+<script>
   $("select[name='function']").change(function() {
     $("div[id^='option-values']").hide();
     $("div[id^='option-values'] input").attr("disabled", "disabled");
@@ -145,7 +145,7 @@
       }
 ?>
       </td>
-      <td align="right" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' id="remove-value"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+      <td align="right" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' id="remove-value"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
     </tr>
 <?php
     }
@@ -154,9 +154,9 @@
       <td colspan="5"><a id="add-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo $system->language->translate('title_add_value', 'Add Value'); ?></a></td>
     </tr>  
   </table>
-  <script type="text/javascript">
+  <script>
     var new_value_index = 1;
-    $("#add-value").live("click", function(event) {
+    $("#add-value").on("click", function(event) {
       event.preventDefault();
       while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
@@ -171,13 +171,13 @@
       var output = '<tr>'
                  + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('values[new_value_index][id]', '') . $system->functions->form_draw_hidden_field('values[new_value_index][value]', '')); ?></td>'
                  + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
-                 + '  <td align="left" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/arrow_down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '  <td align="left" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '</tr>';
       output = output.replace(/new_value_index/g, 'new_' + new_value_index);
       $(this).closest('tr').before(output);
     });
     
-    $("#move-value-up, #move-value-down").live("click", function(event) {
+    $("#move-value-up, #move-value-down").on("click", function(event) {
       event.preventDefault();
       var row = $(this).parents("tr:first");
       var firstrow = $('table tr:first');
@@ -191,7 +191,7 @@
       }
     });
     
-    $("#remove-value").live("click", function(event) {
+    $("#remove-value").on("click", function(event) {
       event.preventDefault();
       $(this).closest('tr').remove();
     });
@@ -261,7 +261,7 @@
     </tr>
   </table>
 </div>
-<script type="text/javascript">
+<script>
   $('select[name=function]').trigger('change');
 </script>
 <p><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (!empty($option_group->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></p>

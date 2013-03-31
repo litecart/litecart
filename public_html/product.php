@@ -32,19 +32,6 @@
   $system->functions->draw_fancybox('a.fancybox');
   
   $system->document->snippets['head_tags']['animate_from_to'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
-  $system->document->snippets['javascript'][] =  '  $(document).ready(function(){' . PHP_EOL
-                                               . '    $("button[name=\'add_cart_product\']").click(function(){' . PHP_EOL
-                                               . '      $("button[name=\'add_cart_product\']").animate_from_to("#cart", {' . PHP_EOL
-                                               . '          initial_css: {' . PHP_EOL
-                                               . '            "border": "1px rgba(0,0,200,1) solid",' . PHP_EOL
-                                               . '            "background-color": "rgba(0,0,200,0.5)",' . PHP_EOL
-                                               . '          },' . PHP_EOL
-                                               . '          callback: function(){' . PHP_EOL
-                                               . '            // done, do something' . PHP_EOL
-                                               . '          }' . PHP_EOL
-                                               . '      });' . PHP_EOL
-                                               . '    });' . PHP_EOL
-                                               . '  });';
   
   if (empty($_GET['category_id']) && empty($product->manufacturer)) {
     if (count($product->category_ids)) $_GET['category_id'] = array_shift(array_values($product->category_ids));
@@ -92,26 +79,30 @@
         <td style="width: 320px">
           <div class="product-images-wrapper">
 <?php
-  $first_image = true;
-  foreach ($product->images as $image) {
-    if ($first_image) {
-    
-      if (empty($product->campaigns) == false) {
-        $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/campaign_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
-      } else if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
-        $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="" />';
-      } else {
-        $sticker = '';
-      }
+  if (count($product->images) > 0) {
+    $first_image = true;
+    foreach ($product->images as $image) {
+      if ($first_image) {
       
-      echo '<div style="position: relative;">' . PHP_EOL
-         . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="productImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a>' . PHP_EOL
-         . '  '. $sticker . PHP_EOL
-         . '</div>' . PHP_EOL;
-      $first_image = false;
-    } else {
-      echo '<div style="display: inline;"><a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 133, 'CROP') .'" border="0" style="margin: 5px 5px 0px 0px;" class="productImage-extraImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a></div>';
+        if (empty($product->campaigns) == false) {
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/campaign_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
+        } else if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="" />';
+        } else {
+          $sticker = '';
+        }
+        
+        echo '<div style="position: relative;">' . PHP_EOL
+           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="productImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a>' . PHP_EOL
+           . '  '. $sticker . PHP_EOL
+           . '</div>' . PHP_EOL;
+        $first_image = false;
+      } else {
+        echo '<div style="display: inline;"><a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 133, 'CROP') .'" border="0" style="margin: 5px 5px 0px 0px;" class="productImage-extraImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a></div>';
+      }
     }
+  } else {
+    echo '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="productImage" alt="" />' . PHP_EOL;
   }
 ?>
           </div>
@@ -259,7 +250,7 @@
     
     foreach ($product->options as $group) {
     
-      echo '  <p><strong>'. $group['name'][$system->language->selected['code']] .'</strong>'. (empty($group['required']) == false ? ' ('. $system->language->translate('title_required', 'Required') .')' : '') .'<br />'
+      echo '  <p><strong>'. $group['name'][$system->language->selected['code']] .'</strong>'. (empty($group['required']) == false ? ' <span class="required">*</span>' : '') .'<br />'
          . (!empty($group['description'][$system->language->selected['code']]) ? $group['description'][$system->language->selected['code']] . '<br />' . PHP_EOL : '');
       
       switch ($group['function']) {
@@ -379,6 +370,43 @@
     </table>
   </div>
 </div>
+<script>
+  $('form[name=buy_now_form]').on('submit', function(e) {
+    var form = $(this);
+    e.preventDefault();
+    $("button[name='add_cart_product']").animate_from_to("#cart", {
+      initial_css: {
+        "border": "1px rgba(0,0,200,1) solid",
+        "background-color": "rgba(0,0,200,0.5)",
+      },
+      callback: function() {
+        $('*').css('cursor', 'wait');
+        $.ajax({
+          url: '<?php echo $system->document->link(WS_DIR_AJAX .'cart.json.php'); ?>',
+          data: $(form).serialize() + '&add_cart_product=true',
+          type: 'post',
+          cache: false,
+          async: true,
+          dataType: 'json',
+          beforeSend: function(jqXHR) {
+            jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('Error');
+          },
+          success: function(data) {
+            if (data['alert']) alert(data['alert']);
+            $('#cart .quantity').html(data['quantity']);
+            $('#cart .formatted_value').html(data['formatted_value']);
+          },
+          complete: function() {
+            $('*').css('cursor', '');
+          }
+        });
+      }
+    });
+  });
+</script>
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'similar_products.inc.php'); ?>
 

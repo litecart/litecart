@@ -2,6 +2,8 @@
 
   class seo_links {
     
+    private $_cache = array();
+    private $_cache_id = '';
     public $enabled;
     
     public function __construct(&$system) {
@@ -17,11 +19,16 @@
     public function startup() {
     
       $this->enabled = false;
-      
       if ($this->system->settings->get('seo_links_enabled') == 'true') {
         if (isset($_SERVER['HTTP_MOD_REWRITE'])) {
           $this->enabled = true;
         }
+      }
+      
+      if ($this->enabled) {
+      // Import cached translations
+        $this->_cache_id = $this->system->cache->cache_id('links', array('language'));
+        $this->_cache = $this->system->cache->get($this->_cache_id, 'file');
       }
     }
     
@@ -35,9 +42,11 @@
       $seo_link = $this->create_link($base_link);
       
     // If current url is not seo url
-      if ($called_link != $seo_link && empty($_POST)) {
-      
+      if ($seo_link != '' && $called_link != $seo_link) {
+        
         $redirect = true;
+        
+        if (!empty($_POST)) $redirect = false;
         
         if (defined('SEO_REDIRECT') && SEO_REDIRECT == false) $redirect = false;
         
@@ -51,7 +60,6 @@
           header('HTTP/1.1 301 Moved Permanently');
           header('Location: '. $seo_link);
           exit;
-          
         }
       }
     }
@@ -65,12 +73,15 @@
     public function before_output() {
     }
     
-    //public function shutdown() {
-    //}
+    public function shutdown() {
+      if ($this->enabled) {
+        $this->system->cache->set($this->_cache_id, 'file', $this->_cache);
+      }
+    }
     
     ######################################################################
     
-    private function load_class($class) {
+    private function _load_class($class) {
       
       if (isset($this->classes[$class])) {
         if (is_object($this->classes[$class])) {
@@ -81,22 +92,38 @@
       }
       
       $this->classes[$class] = null;
+
+      if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/url_' . $class .'.inc.php')) return false;
       
-      $file = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_urls/url_' . $class .'.inc.php';
-      
-      if (file_exists($file)) {
-        require_once($file);
-      } else {
-        return false;
-      }
       $class_name = 'url_'.$class;
       $this->classes[$class] = new $class_name($this->system);
       
       return true;
     }
     
-    public function get_cached_link($link='', $language_code='') {
+    public function link($link, $language_code) {
+      
+      $checksum = md5($link . $language_code);
+      //if (!empty($this->cache[$checksum])) return $this->cache[$checksum];
+      
+      $seo_link = $this->get_link($link, $language_code);
+      if (!empty($seo_link)) {
+        $this->cache[$checksum] = $seo_link;
+        //return $seo_link;
+      }
+      
+      $seo_link = $this->create_link($link, $language_code);
+      
+      if (!empty($seo_link)) {
+        $this->cache[$checksum] = $seo_link;
+        return $seo_link;
+      }
+      
+      return $link;
+    }
     
+    public function get_link($link='', $language_code='') {
+      
       if (!$this->enabled) return;
       
       if (substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) return;
@@ -116,18 +143,11 @@
       return !empty($seo_cache['seo_uri']) ? $this->system->link->full_link(WS_DIR_HTTP_HOME . $seo_cache['seo_uri']) : '';
     }
     
-    public function create_link($link='', $language_code='') {
+    public function create_link($link, $language_code='') {
       
       if (!$this->enabled) return;
       
-      if (empty($link)) $link = $this->system->link->get_called_link();
       if (empty($language_code)) $language_code = $this->system->language->selected['code'];
-      
-      if ($this->system->settings->get('seo_links_language_prefix') == 'true') {
-        $http_home_dir = WS_DIR_HTTP_HOME . $language_code .'/';
-      } else {
-        $http_home_dir = WS_DIR_HTTP_HOME;
-      }
       
       if (!in_array($language_code, array_keys($this->system->language->languages))) trigger_error('Invalid language code ('. $language_code .')', E_USER_ERROR);
       
@@ -143,6 +163,13 @@
       
       if (substr($parsed_link['path'], -9) == 'index.php') $parsed_link['path'] = substr($parsed_link['path'], 0, -9);
       
+    // Set home path
+      if ($this->system->settings->get('seo_links_language_prefix') == 'true') {
+        $http_home_dir = WS_DIR_HTTP_HOME . $language_code .'/';
+      } else {
+        $http_home_dir = WS_DIR_HTTP_HOME;
+      }
+      
     // Extract class from URL
       if (substr($parsed_link['path'], 0, strlen(WS_DIR_HTTP_HOME)) == WS_DIR_HTTP_HOME) {
         $class = substr($parsed_link['path'], strlen(WS_DIR_HTTP_HOME));
@@ -153,47 +180,26 @@
       $class = substr($class, 0, strrpos($class, '.'));
       
     // No class, bake default link
-      if (!$this->load_class($class)) {
+      if (!$this->_load_class($class)) {
         $seo_link = $parsed_link;
         $seo_link['path'] = $http_home_dir . $this->system->link->relpath($parsed_link['path']);
         return $this->system->link->unparse_link($seo_link);
       }
       
-    // Halt if insufficient parameters
-      foreach ($this->classes[$class]->config['params'] as $param) {
-        if (!isset($parsed_link['query'][$param])) return '';
-      }
-      
     // Bake base link
       $base_link = $parsed_link;
-      $base_link['query'] = array();
-      foreach ($this->classes[$class]->config['params'] as $param) {
-        $base_link['query'][$param] = $parsed_link['query'][$param];
-      }
-      $base_link = $this->system->link->unparse_link($base_link);
+      $base_link = $this->system->link->unparse_link($parsed_link);
       
     // Bake SEO link (for database)
-      $seo_link = $parsed_link;
-      $seo_link['path'] = $http_home_dir . $this->classes[$class]->config['seo_path'];
-      $seo_link['path'] = str_replace('%title', $this->classes[$class]->title($parsed_link, $language_code), $seo_link['path']);
-      $seo_link['query'] = array();
-      foreach ($this->classes[$class]->config['params'] as $param) {
-        $seo_link['path'] = str_replace('%'.$param, $parsed_link['query'][$param], $seo_link['path']);
+      $seo_link = $this->classes[$class]->process($parsed_link, $language_code);
+      if (empty($seo_link)) return $link;
+      if (substr($seo_link['path'], 0, strlen(WS_DIR_HTTP_HOME))) {
+        $seo_link['path'] = $http_home_dir . substr($seo_link['path'], strlen(WS_DIR_HTTP_HOME));
       }
       $seo_link = $this->system->link->unparse_link($seo_link);
       
-    // Bake full seo link (for output)
-      $full_seo_link = $parsed_link;
-      $full_seo_link['path'] = $http_home_dir . $this->classes[$class]->config['seo_path'];
-      $full_seo_link['path'] = str_replace('%title', $this->classes[$class]->title($parsed_link, $language_code), $full_seo_link['path']);
-      foreach ($this->classes[$class]->config['params'] as $param) {
-        $full_seo_link['path'] = str_replace('%'.$param, $parsed_link['query'][$param], $full_seo_link['path']);
-        unset($full_seo_link['query'][$param]);
-      }
-      $full_seo_link = $this->system->link->unparse_link($full_seo_link);
-      
     // If cache is outdated
-      if ($seo_link != $this->get_cached_link($link)) {
+      if ($seo_link != $this->get_link($link)) {
         $seo_cache_query = $this->system->database->query(
           "select seo_uri from ". DB_TABLE_SEO_LINKS_CACHE ."
           where uri = '". $this->system->database->input($this->system->link->relpath($base_link)) ."'
@@ -218,7 +224,7 @@
         }
       }
       
-      return $full_seo_link;
+      return $seo_link;
     }
     
     // Deprecated

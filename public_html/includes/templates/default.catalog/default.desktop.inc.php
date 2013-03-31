@@ -10,8 +10,13 @@
 <!--[if IE]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
-<!--[if lt IE 9]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>jquery/jquery-1.8.0.min.js"></script>
+<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script type="text/javascript">
+  if (typeof jQuery == 'undefined') document.write(unescape("%3Cscript src='<?php echo WS_DIR_EXT; ?>jquery/jquery-1.9.1.min.js' type='text/javascript'%3E%3C/script%3E"));
+  if (typeof jQuery.migrateTrace == 'undefined') document.write(unescape("%3Cscript src='<?php echo WS_DIR_EXT; ?>jquery/jquery-migrate-1.1.1.min.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
 </head>
@@ -40,14 +45,14 @@
         <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
         </div>
         
-      </header>
-      
-      <div id="navigation" class="box-gradient1 rounded-corners shadow">
-      
         <div id="cart-wrapper">
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
         </div>
         
+      </header>
+      
+      <div id="navigation" class="box-gradient1 rounded-corners shadow">
+      
         <div id="top-menu-wrapper">
           <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'top_menu.inc.php'); ?>
         </div>
@@ -68,14 +73,14 @@
           </td>
           
           <td style="width: 100%;">
-          
+            <!--snippet:notices-->
+            
             <div id="leaderboard-wrapper">
               <!--snippet:leaderboard-->
             </div>
             
             <div id="content-wrapper">
               <div id="content" class="">
-                <!--snippet:notices-->
                 <!--snippet:content-->
               </div>
             </div>
@@ -154,6 +159,22 @@
     </div>
     
     <!--<p><!--snippet:stats--></p>-->
+    
+    <a href="#" id="scroll-up">Scroll</a>
+    <script>
+      $(window).scroll(function(){
+        if ($(this).scrollTop() > 100) {
+          $('#scroll-up').fadeIn();
+        } else {
+          $('#scroll-up').fadeOut();
+        }
+      });
+      
+      $('#scroll-up').click(function(){
+        $("html, body").animate({ scrollTop: 0 }, 600);
+        return false;
+      });
+    </script>
     
   </div>
 </div>

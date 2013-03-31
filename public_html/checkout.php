@@ -148,11 +148,11 @@
   
   $(document).ready(function() {
     
-    $("form button[type=submit]").live('click', function(e) {
+    $("form button[type=submit]").on('click', function(e) {
       $(this).closest("form").append('<input type="hidden" name="'+ $(this).attr("name") +'" value="'+ $(this).text() +'" />');
     });
     
-    $('form[name=cart_form]').live('submit', function(e) {
+    $('form[name=cart_form]').on('submit', function(e) {
       e.preventDefault();
       $('body').css('cursor', 'wait');
       $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
@@ -171,6 +171,7 @@
         },
         success: function(data) {
           $('#checkout-cart-wrapper').html(data).fadeTo('slow', 1);
+          if (jQuery.isFunction(updateCart)) updateCart();
           refreshCustomer();
           refreshShipping();
           refreshPayment();
@@ -184,7 +185,7 @@
     
     var customer_checksum;
     var stateCustomerChanged = false;
-    $('form[name=customer_form] *').live('change', function(e) {
+    $('form[name=customer_form] *').on('change', function(e) {
       if (customer_checksum != $(this).closest('form').serialize()) {
         stateCustomerChanged = true;
       }
@@ -192,7 +193,7 @@
     });
     
     var timerSubmitCustomer;
-    $('form[name=customer_form]').live('focusout', function() {
+    $('form[name=customer_form]').on('focusout', function() {
       timerSubmitCustomer = setTimeout(
         function() {
           if ($('form[name=customer_form]').blur()) {
@@ -205,21 +206,20 @@
         }, 1
       );
     });
-    $('form[name=customer_form]').live('focusin', function() {
+    $('form[name=customer_form]').on('focusin', function() {
       clearTimeout(timerSubmitCustomer);
     });
     
-    $('form[name="order_form"]').live('submit', function(e) {
+    $('form[name="order_form"]').on('submit', function(e) {
       if (stateCustomerChanged) {
         e.preventDefault();
         alert("<?php echo $system->language->translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
       }
     });
     
-    $('form[name=customer_form]').live('submit', function(e) {
+    $('form[name=customer_form]').on('submit', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
-      //$('#checkout-customer-wrapper').slideUp('slow');
       $.ajax({
         url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
         data: $(this).serialize(),
@@ -237,6 +237,7 @@
         success: function(data) {
           stateCustomerChanged = false;
           $('#checkout-customer-wrapper').html(data);
+          if (jQuery.isFunction(updateCart)) updateCart();
           refreshCart();
           refreshShipping();
           refreshPayment();
@@ -249,7 +250,7 @@
       });
     });
     
-    $('form[name=shipping_form]').live('submit', function(e) {
+    $('form[name=shipping_form]').on('submit', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
       $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
@@ -278,7 +279,7 @@
       });
     });
     
-    $('form[name=payment_form]').live('submit', function(e) {
+    $('form[name=payment_form]').on('submit', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
       $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
@@ -307,7 +308,7 @@
       });
     });
     
-    $('form[name=comments_form]').live('blur', function(e) {
+    $('form[name=comments_form]').on('blur', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
       $('#checkout-comments-wrapper').fadeTo('slow', 0.25);

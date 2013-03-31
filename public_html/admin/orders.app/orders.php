@@ -52,12 +52,12 @@
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_orders', 'Orders'); ?></h1>
 
 <script type="text/javascript">
-  $("input[name=query]").live("click", function(event) {
+  $("input[name=query]").on("click", function(event) {
     if ($(this).val() == "<?php echo $system->language->translate('title_search', 'Search'); ?>") {
       $(this).val("");
     }
   });
-  $("input[name=query]").live("blur", function(event) {
+  $("input[name=query]").on("blur", function(event) {
     if ($(this).val() == "") {
       $(this).val("<?php echo $system->language->translate('title_search', 'Search'); ?>");
     }
@@ -108,7 +108,7 @@
     <td nowrap="nowrap" align="right"><?php echo strftime($system->language->selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td nowrap="nowrap">
       <a class="fancybox" href="<?php echo $system->document->href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/box.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a>
-      <a class="fancybox" href="<?php echo $system->document->href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/printer.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a>
+      <a class="fancybox" href="<?php echo $system->document->href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/print.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a>
       <a class="fancybox" href="<?php echo $system->document->href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_label.php', array('order_id' => $order['id'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/label.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a>
       <a href="<?php echo $system->document->href_link('', array('doc' => 'edit_order.php', 'order_id' => $order['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a>
     </td>

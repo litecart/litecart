@@ -102,18 +102,13 @@
 <?php
     if ($_GET['page'] == 1) {
 ?>    
+    <?php if ($category['description']) { ?>
+    <div class="description-wrapper">
+      <?php echo $category['description'] ? '<p class="category-description">'. $category['description'] .'</p>' : false; ?>
+    </div>
+    <?php } ?>
+    
     <ul class="listing-wrapper categories">
-      <?php /*if ($category['image']) { ?>
-      <div class="category-image">
-        <img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 330, 180, 'FIT_USE_WHITESPACING'); ?>" width="330" height="180" />
-      </div>
-      <?php }*/ ?>
-  
-      <?php /*if ($category['description']) { ?>
-      <div class="category-description">
-        <?php echo $category['description'] ? '<div class="category-description">'. $category['description'] .'</div>' : false; ?>
-      </div>
-      <?php }*/ ?>
 <?php
       $subcategories_query = $system->functions->catalog_categories_query($category['id']);
       while ($subcategory = $system->database->fetch($subcategories_query)) {

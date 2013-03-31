@@ -54,7 +54,7 @@
                                                             . '<link rel="stylesheet" type="text/css" media="screen" href="'. WS_DIR_EXT .'dynDateTime/css/calendar-system.css" />' . PHP_EOL;
                                                                  
     $system->document->snippets['javascript']['date_picker'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                   . '    $("input.date").live("mouseover", function() {' . PHP_EOL
+                                                                   . '    $("input.date").on("mouseover", function() {' . PHP_EOL
                                                                    . '      $(this).dynDateTime({' . PHP_EOL
                                                                    . '        showsTime: false,' . PHP_EOL
                                                                    . '        ifFormat: "'. $strf .'",' . PHP_EOL
@@ -89,7 +89,7 @@
                                                             . '<link rel="stylesheet" type="text/css" media="screen" href="'. WS_DIR_EXT .'dynDateTime/css/calendar-system.css" />' . PHP_EOL;
     
     $system->document->snippets['javascript']['datetime_picker'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                 . '    $("input.datetime").live("mouseover", function() {' . PHP_EOL
+                                                                 . '    $("input.datetime").on("mouseover", function() {' . PHP_EOL
                                                                  . '      $(this).dynDateTime({' . PHP_EOL
                                                                  . '        showsTime: true,' . PHP_EOL
                                                                  . '        ifFormat: "'. $strf .'",' . PHP_EOL

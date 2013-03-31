@@ -3,12 +3,12 @@
   <?php echo $system->functions->form_draw_button('search', $system->language->translate('title_search', 'Search'), 'submit'); ?>
 <?php echo $system->functions->form_draw_form_end(); ?>
 <script type="text/javascript">
-  $("input[name=query]").live("click", function(event) {
+  $("input[name=query]").on("click", function(event) {
     if ($(this).val() == "<?php echo $system->language->translate('text_search_phrase_or_keyword', 'Search phrase or keyword'); ?>") {
       $(this).val("");
     }
   });
-  $("input[name=query]").live("blur", function(event) {
+  $("input[name=query]").on("blur", function(event) {
     if ($(this).val() == "") {
       $(this).val("<?php echo $system->language->translate('text_search_phrase_or_keyword', 'Search phrase or keyword'); ?>");
     }

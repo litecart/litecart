@@ -2,8 +2,6 @@
 
   class link {
     private $system;
-    private $_cache = array();
-    private $_cache_id = '';
     
     public function __construct(&$system) {
       $this->system = &$system;
@@ -13,10 +11,6 @@
     //}
     
     public function startup() {
-      
-    // Import cached translations
-      $this->_cache_id = $this->system->cache->cache_id('links', array('language', 'basename'));
-      $this->_cache = $this->system->cache->get($this->_cache_id, 'file');
     }
     
     //public function initiate() {
@@ -35,7 +29,7 @@
     }
     
     public function shutdown() {
-      $this->system->cache->set($this->_cache_id, 'file', $this->_cache);
+
     }
     
     ######################################################################
@@ -50,7 +44,7 @@
       return $this->full_link($_SERVER['REQUEST_URI']);
     }
     
-    public function build_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+    public function create_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
       
       if ($document === null) {
         $document = parse_url($this->get_base_link(), PHP_URL_PATH);
@@ -91,17 +85,11 @@
       
       $link = $this->unparse_link($base_link);
       
-      $checksum = md5($link);
-      if (!empty($this->_cache[$checksum])) return $this->_cache[$checksum];
-      
-      if ($this->system->settings->get('seo_links_enabled') == 'true') {
-        $seo_link = $this->system->seo_links->get_cached_link($link, $language_code);
-        if (empty($seo_link)) $seo_link = $this->system->seo_links->create_link($link, $language_code);
+      if (!empty($this->system->seo_links->enabled)) {
+        $seo_link = $this->system->seo_links->link($link, $language_code);
       }
       
       $link = !empty($seo_link) ? $seo_link : $link;
-      
-      $this->_cache[$checksum] = $link;
       
       return $link;
     }

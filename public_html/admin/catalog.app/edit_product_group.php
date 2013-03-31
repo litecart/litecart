@@ -99,9 +99,9 @@
       <td colspan="4"><a id="add-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo $system->language->translate('title_add_group', 'Add Group Value'); ?></a></td>
     </tr>  
   </table>
-<script type="text/javascript">
+<script>
   var new_value_index = 1;
-  $("#add-group-value").live("click", function(event) {
+  $("#add-group-value").on("click", function(event) {
     event.preventDefault();
     while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
@@ -123,7 +123,7 @@
     $(this).closest('tr').before(output);
   });
   
-  $("#remove-group-value").live("click", function(event) {
+  $("#remove-group-value").on("click", function(event) {
     event.preventDefault();
     $(this).closest('tr').remove();
   });

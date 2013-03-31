@@ -349,7 +349,7 @@
   });
 
   var new_item_index = 0;
-  $(".add_item").live("click", function(event) {
+  $(".add_item").on("click", function(event) {
     while ($("input[name='items["+new_item_index+"][id]']").length) new_item_index++;
     event.preventDefault();
     var new_row = '  <tr>'
@@ -367,14 +367,14 @@
   });
   
   /*
-  $(".add_item").live("click", function(event) {
+  $(".add_item").on("click", function(event) {
     $.fancybox({
       content: 'it works!'
     });
   });
   */
   
-  $(".remove_item").live("click", function(event) {
+  $(".remove_item").on("click", function(event) {
     event.preventDefault();
     $(this).closest("tr").remove();
     calculate_total();
@@ -421,7 +421,7 @@
 </table>
 <script type="text/javascript">
   var new_ot_row_index = 0;
-  $(".add_ot_row").live("click", function(event) {
+  $(".add_ot_row").on("click", function(event) {
     while ($("input[name='order_total["+new_ot_row_index+"][id]']").length) new_ot_row_index++;
     event.preventDefault();
     var output = '  <tr>'
@@ -438,7 +438,7 @@
 	new_ot_row_index++;
   });
   
-  $(".remove_ot_row").live("click", function(event) {
+  $(".remove_ot_row").on("click", function(event) {
     event.preventDefault();
 	$(this).closest("tr").remove();
   });
@@ -471,7 +471,7 @@
 </table>
 <script type="text/javascript">
   var new_comment_index = 0;
-  $(".add_comment").live("click", function(event) {
+  $(".add_comment").on("click", function(event) {
     while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
     event.preventDefault();
     var output = '  <tr>'
@@ -485,7 +485,7 @@
 	new_comment_index++;
   });
   
-  $(".remove_comment").live("click", function(event) {
+  $(".remove_comment").on("click", function(event) {
     event.preventDefault();
 	$(this).closest("tr").remove();
   });

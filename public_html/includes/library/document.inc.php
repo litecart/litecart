@@ -110,7 +110,7 @@
     
   // Substituted
     public function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return $this->system->link->build_link($document, $new_params, $inherit_params, $skip_params, $language_code);
+      return $this->system->link->create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
     }
   }
   

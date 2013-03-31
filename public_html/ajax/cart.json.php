@@ -2,8 +2,28 @@
   require_once('../includes/app_header.inc.php');
   header('Content-type: application/json; charset='. $system->language->selected['charset']);
   
-  echo '{'
-     . '"num_items":"'.$system->cart->data['total']['items'].'",'
-     . '"total":"'. (($system->settings->get('display_prices_including_tax')) ? $system->currency->format($system->cart->data['total']['value'] + $system->cart->data['total']['tax']) : $system->currency->format($system->cart->data['total']['value'])) .'",'
-     . '}';
+  $params = array(
+    'quantity' => $system->cart->data['total']['items'],
+    'value' => $system->settings->get('display_prices_including_tax') ? $system->cart->data['total']['value'] + $system->cart->data['total']['tax'] : $system->cart->data['total']['value'],
+    'formatted_value' => $system->settings->get('display_prices_including_tax') ? $system->currency->format($system->cart->data['total']['value'] + $system->cart->data['total']['tax']) : $system->currency->format($system->cart->data['total']['value']),
+  );
+  
+  if (!empty($system->notices->data['warnings'])) {
+    $params['alert'] = array_shift(array_values($system->notices->data['warnings']));
+  }
+  
+  if (!empty($system->notices->data['errors'])) {
+    $params['alert'] = array_shift(array_values($system->notices->data['errors']));
+  }
+  
+  $system->notices->reset();
+  
+  echo '{';
+  foreach ($params as $key => $value) {
+    if (!empty($use_coma)) echo ',';
+    echo '"'.$key.'":"'. $value .'"';
+    $use_coma = true;
+  }
+  echo '}';
+  
 ?>

@@ -94,7 +94,7 @@
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong><br />
           <?php echo $system->functions->form_draw_textarea('address_format', isset($_POST['address_format']) ? $_POST['address_format'] : '', 'style="width: 175px; height: 150px;"'); ?>
           <script type="text/javascript">
-            $("#address-format-hint").live("click", function() {
+            $("#address-format-hint").on("click", function() {
               alert(
                 "<?php echo $system->language->translate('title_syntax', 'Syntax'); ?>:\n\n" +
                 "%company, %firstname, %lastname, \n" +
@@ -156,7 +156,7 @@
     </table>
     
     <script type="text/javascript">
-      $("#remove-zone").live("click", function(event) {
+      $("#remove-zone").on("click", function(event) {
         event.preventDefault();
         $(this).closest('tr').remove();
       });
@@ -191,7 +191,7 @@
       });
       
       var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
-      $("button[name=add_zone]").live("click", function(event) {
+      $("button[name=add_zone]").on("click", function(event) {
         event.preventDefault();
         if ($("select[name='country[code]']").find("option:selected").val() == "") return;
         new_zone_i++;

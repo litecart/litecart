@@ -148,13 +148,13 @@
 <div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : $system->language->translate('title_search', 'Search'), 'text', 'style="width: 175px;" onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_catalog', 'Catalog'); ?></h1>
 
-<script type="text/javascript">
-  $("input[name=query]").live("click", function(event) {
+<script>
+  $("input[name=query]").on("click", function(event) {
     if ($(this).val() == "<?php echo $system->language->translate('title_search', 'Search'); ?>") {
       $(this).val("");
     }
   });
-  $("input[name=query]").live("blur", function(event) {
+  $("input[name=query]").on("blur", function(event) {
     if ($(this).val() == "") {
       $(this).val("<?php echo $system->language->translate('title_search', 'Search'); ?>");
     }
@@ -365,7 +365,7 @@
 ?>
 </table>
 
-<script type="text/javascript">
+<script>
   $(".dataTable input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));

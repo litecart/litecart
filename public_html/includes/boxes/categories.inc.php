@@ -8,19 +8,7 @@
     <ul class="listing-wrapper categories">
 <?php
     while ($category = $system->database->fetch($categories_query)) {
-?>
-      <li class="category">
-        <a class="link" href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])); ?>">
-          <div class="image" style="position: relative;">
-            <img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 320, 180, 'CROP'); ?>" width="320" height="180" alt="<?php echo $category['name']; ?>" title="<?php echo $category['name']; ?>" />
-            <div class="footer" style="position: absolute; bottom: 0;">
-              <div class="title"><?php echo $category['name']; ?></div>
-              <?php if (!empty($category['short_description'])) echo '<div class="description">'. $category['short_description'] .'</div>'; ?>
-            </div>
-          </div>
-        </a>
-      </li>
-<?php
+      echo $system->functions->draw_listing_category($category);
     }
 ?>
     </ul>

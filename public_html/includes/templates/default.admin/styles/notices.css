@@ -4,10 +4,6 @@
 #notices .notice {
   margin-bottom: 5px;
   padding: 10px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -khtml-border-radius: 3px;
-  border-radius: 3px;
 }
 #notices .errors {
   color: #000000;

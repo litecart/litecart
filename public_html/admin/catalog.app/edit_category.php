@@ -69,7 +69,7 @@
   
   $system->document->snippets['head_tags']['ckeditor'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/ckeditor.js"></script>' . PHP_EOL
                                                        . ' <script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/adapters/jquery.js"></script>' . PHP_EOL
-                                                       . ' <script type="text/javascript">' . PHP_EOL
+                                                       . ' <script>' . PHP_EOL
                                                        . '   $(document).ready(function() {' . PHP_EOL
                                                        . '     $("textarea[name^=description]").ckeditor({' . PHP_EOL
                                                        . '       toolbar: [' . PHP_EOL

@@ -25,19 +25,6 @@ ul.listing-wrapper > .category-image {
   padding: 0;
 }
 
-ul.listing-wrapper > .category-description {
-  display: inline-block;
-  float: left;
-  
-  width: 320px;
-  height: 190px;
-  
-  padding: 0px;
-  margin: 5px;
-  
-  text-align: left;
-}
-
 ul.listing-wrapper > .category {
   display: inline-block;
   float: left;
@@ -53,11 +40,7 @@ ul.listing-wrapper > .category {
   
   text-align: center;
 }
-ul.listing-wrapper > .category:hover {
-  -moz-box-shadow: 0px 0px 2px #c00;
-  -webkit-box-shadow: 0px 0px 2px #c00;
-  box-shadow: 0px 0px 2px #c00;
-}
+
 ul.listing-wrapper > .category a.link {
   display: block;
   
@@ -80,19 +63,6 @@ ul.listing-wrapper > .category .footer {
 }
 ul.listing-wrapper > .category .title {
   font-weight: bold;
-}
-
-ul.listing-wrapper > .manufacturer-description {
-  display: block;
-  float: left;
-  
-  width: 330px;
-  height: 180px;
-  
-  padding: 0px;
-  margin: 5px;
-  
-  text-align: left;
 }
 
 ul.listing-wrapper  > .manufacturer {
@@ -118,11 +88,7 @@ ul.listing-wrapper > .manufacturer a.link {
   text-decoration: none;
   color: #333333;
 }
-ul.listing-wrapper > .manufacturer:hover {
-  -moz-box-shadow: 0px 0px 2px #c00;
-  -webkit-box-shadow: 0px 0px 2px #c00;
-  box-shadow: 0px 0px 2px #c00;
-}
+
 ul.listing-wrapper > .manufacturer .title {
   display: block;
 
@@ -144,11 +110,7 @@ ul.listing-wrapper > .product {
   -webkit-box-shadow: 0px 0px 2px #aaa;
   box-shadow: 0px 0px 2px #aaa;
 }
-ul.listing-wrapper > .product:hover {
-  -moz-box-shadow: 0px 0px 2px #069;
-  -webkit-box-shadow: 0px 0px 2px #069;
-  box-shadow: 0px 0px 2px #069;
-}
+
 
 ul.listing-wrapper > .product a.link {
   display: block;

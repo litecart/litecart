@@ -49,7 +49,7 @@
   $xml .= '  </categories>' . PHP_EOL
         . '  <products>' . PHP_EOL;
   
-  $products_query = tep_db_query("SELECT p.* FROM ". TABLE_PRODUCTS ." p WHERE p.products_status = 1 ORDER BY p.products_id;");
+  $products_query = tep_db_query("SELECT p.* FROM ". TABLE_PRODUCTS ." p ORDER BY p.products_id;");
   while ($products = tep_db_fetch_array($products_query)) {
     
     $products_description_query = tep_db_query("SELECT * FROM ". TABLE_PRODUCTS_DESCRIPTION ." WHERE products_id = '". $products['products_id'] ."' AND language_id = '". $languages['languages_id'] ."' limit 0, 1;");
@@ -65,7 +65,7 @@
           . '      <status>'. (empty($products['products_status']) ? 0 : 1) .'</status>' . PHP_EOL
           . '      <name>'. htmlspecialchars($products_description['products_name']) .'</name>' . PHP_EOL
           . '      <code>'. (int)$products['products_id'] .'</code>' . PHP_EOL
-          . '      <sku>'. $products['model'] .'</sku>' . PHP_EOL
+          . '      <sku>'. $products['products_model'] .'</sku>' . PHP_EOL
           . '      <upc></upc>' . PHP_EOL
           . '      <ean></ean>' . PHP_EOL
           . '      <taric></taric>' . PHP_EOL

@@ -2,32 +2,28 @@
   
   class url_category {
     
-    public $config = array(
-      'doc' => 'category.php',
-      'params' => array('category_id'),
-      'seo_path' => '%title-c-%category_id',
-    );
-    
   	function __construct($system) {
       $this->system = &$system;
     }
     
-    function title($parsed_link, $language_code) {
+    function process($parsed_link, $language_code) {
       
-      if (!isset($parsed_link['query']['category_id'])) return '';
+      if (!isset($parsed_link['query']['category_id'])) return;
       
       $category_query = $this->system->database->query(
-        "select name from ". DB_TABLE_CATEGORIES_INFO ."
+        "select category_id, name from ". DB_TABLE_CATEGORIES_INFO ."
         where category_id = '". (int)$parsed_link['query']['category_id'] ."'
         and language_code = '". $this->system->database->input($language_code) ."'
         limit 1;"
       );
       $category = $this->system->database->fetch($category_query);
-      if (empty($category)) return '';
+      if (empty($category)) return;
       
-      $title = $category['name'];
+      $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->seo_links->url_friendly_string($category['name']) .'-c-'. $category['category_id'];
       
-      return $this->system->seo_links->url_friendly_string($title);
+      unset($parsed_link['query']['category_id']);
+      
+      return $parsed_link;
     }
   }
   

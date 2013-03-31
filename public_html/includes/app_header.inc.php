@@ -33,8 +33,8 @@
       case (substr($name, 0, 2) == 'sm'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 2) == 'url'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_urls/url_' . $name . '.inc.php';
+      case (substr($name, 0, 3) == 'url'):
+        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/' . $name . '.inc.php';
         break;
       default:
         require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $name . '.inc.php';

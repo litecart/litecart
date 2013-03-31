@@ -15,6 +15,17 @@ public_html/images/manufacturers/*
 public_html/images/products/*
 public_html/includes/templates/*
 *.bak
+*.000
+*.001
+*.002
+*.003
+*.004
+*.005
+*.006
+*.007
+*.008
+*.009
+*.old
 *.ignore
 
 # OS generated files #

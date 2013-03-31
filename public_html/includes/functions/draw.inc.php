@@ -7,7 +7,7 @@
   function draw_listing_category($category) {
     global $system;
     
-    $output = '<li class="category">' . PHP_EOL
+    $output = '<li class="category hover-light">' . PHP_EOL
             . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
             . '    <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" width="340" height="180" alt="'. $category['name'] .'" title="'. $category['name'] .'" />' . PHP_EOL
@@ -25,7 +25,7 @@
   function draw_listing_manufacturer($manufacturer) {
     global $system;
     
-    $output = '<li class="manufacturer">' . PHP_EOL
+    $output = '<li class="manufacturer hover-light">' . PHP_EOL
             . '  <a class="link" href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
             . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 215, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="215" height="60" alt="'. $manufacturer['name'] .'" title="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
@@ -48,10 +48,10 @@
       $sticker = '';
     }
     
-    $output = '<li class="product" style="position: relative">' . PHP_EOL
+    $output = '<li class="product hover-light" style="position: relative">' . PHP_EOL
             . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">'. PHP_EOL
-            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'CROP') .'" width="150" height="150" alt="'. htmlspecialchars($product['name']) .'" title="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
+            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING') .'" width="150" height="150" alt="'. htmlspecialchars($product['name']) .'" title="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
             . '      ' . $sticker . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
@@ -92,7 +92,7 @@
                                                                      . '    $("a").each(function() {' . PHP_EOL
                                                                      . '      $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
                                                                      . '    }); ' . PHP_EOL
-                                                                     . '    $("a.fancybox").live("hover", function() { ' . PHP_EOL // Fixes ajax content
+                                                                     . '    $("a.fancybox").on("hover", function() { ' . PHP_EOL // Fixes ajax content
                                                                      . '      $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
     
     foreach (array_keys($params) as $key) {

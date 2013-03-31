@@ -1,25 +1,39 @@
 <div id="cart">
+  <strong><?php echo $system->language->translate('title_cart', 'Cart'); ?>:</strong>
+  <span class="quantity"><?php echo $system->cart->data['total']['items']; ?></span> <?php echo $system->language->translate('text_items', 'item(s)'); ?>
+  - <span class="formatted_value">
 <?php
-  echo '<strong>'. $system->language->translate('title_cart', 'Cart') .':</strong> ';
-  
-  echo sprintf($system->language->translate('text_x_items', '%d item(s)'), $system->cart->data['total']['items']);
-  
   if ($system->settings->get('display_prices_including_tax')) {
-    echo ' - '. $system->currency->format($system->cart->data['total']['value'] + $system->cart->data['total']['tax']);
+    echo $system->currency->format($system->cart->data['total']['value'] + $system->cart->data['total']['tax']);
   } else {
-    echo ' - '. $system->currency->format($system->cart->data['total']['value']);
+    echo $system->currency->format($system->cart->data['total']['value']);
   }
-  
-  //echo ' '. $system->functions->form_draw_button('clear_cart_items', $system->language->translate('title_reset', 'Reset'), 'button');
-  echo ' '. $system->functions->form_draw_button('checkout', $system->language->translate('title_checkout', 'Checkout'), 'button', 'onclick="location=\''. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php') .'\'"') . $system->functions->form_draw_form_end();
 ?>
-<!--
-<script type="text/javascript">
-  $("button[name=clear_cart_items]").live('click', function() {
-    var form = $('<?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('clear_cart_form', 'post') . $system->functions->form_draw_hidden_field('clear_cart_items', 'true') . $system->functions->form_draw_form_end()); ?>');
-    $(document.body).append(form);
-    form.submit();
-  });
-</script>
--->
+  </span>
+  <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>" class="button"><?php echo $system->language->translate('title_checkout', 'Checkout'); ?></a>
 </div>
+<script>
+  function updateCart() {
+    $.ajax({
+      url: '<?php echo $system->document->link(WS_DIR_AJAX .'cart.json.php'); ?>',
+      type: 'get',
+      cache: false,
+      async: true,
+      dataType: 'json',
+      beforeSend: function(jqXHR) {
+        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert('Error');
+      },
+      success: function(data) {
+        $('#cart .quantity').html(data['quantity']);
+        $('#cart .formatted_value').html(data['formatted_value']);
+      },
+      complete: function() {
+        $('*').css('cursor', '');
+      }
+    });
+  }
+  var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
+</script>

@@ -22,6 +22,7 @@ ErrorDocument 404 \error_document.php?code=404
   RewriteRule ^(?:[a-z]{2}/)?.*-d-([0-9]+)$ designer.php?designer_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ information.php?page_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-cs-([0-9]+)$ customer_service.php?page_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-p-([0-9]+)$ product.php?product_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING}
 </IfModule>
