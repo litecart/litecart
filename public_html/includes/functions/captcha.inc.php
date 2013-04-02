@@ -13,7 +13,7 @@
     global $system;
     
     $code = '';
-    $font = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'vivaldi.ttf';
+    $font = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'captcha.ttf';
   
     switch ($set) {
       case 'alphabet':

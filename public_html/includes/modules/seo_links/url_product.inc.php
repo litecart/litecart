@@ -18,7 +18,7 @@
       );
       $product = $this->system->database->fetch($product_query);
       
-      if (empty($product)) die('ee');
+      if (empty($product)) return false;
       
       $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->seo_links->url_friendly_string($product['name']) .'-p-'. $product['product_id'];
       

@@ -4,6 +4,7 @@
     private $system;
     public $id = __CLASS__;
     public $name = 'Subtotal';
+    public $description = '';
     public $author = 'TiM International';
     public $version = '1.0';
     public $support_link = 'http://www.forum.com';
@@ -48,7 +49,7 @@
       return array(
         array(
           'key' => 'priority',
-          'default_value' => '10',
+          'default_value' => '1',
           'title' => $this->system->language->translate(__CLASS__.':title_priority', 'Priority'),
           'description' => $this->system->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',

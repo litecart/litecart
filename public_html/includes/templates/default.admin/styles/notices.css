@@ -3,7 +3,7 @@
 }
 #notices .notice {
   margin-bottom: 5px;
-  padding: 10px;
+  padding: 5px 10px;
 }
 #notices .errors {
   color: #000000;

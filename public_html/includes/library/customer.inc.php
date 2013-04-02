@@ -139,7 +139,8 @@
       $customer = $this->system->database->fetch($customer_query);
       
       if (empty($customer)) {
-        $this->system->notices->add('errors', $this->system->language->translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
+        sleep(10);
+        $this->system->notices->add('errors', $this->system->language->translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
         return;
       }
       

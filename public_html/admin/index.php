@@ -50,7 +50,7 @@
   
 // Build apps list menu
   $sidebar = '<div id="apps-list-menu-wrapper">' . PHP_EOL
-           . '  <ul>';
+           . '  <ul class="navigation-vertical">';
            
   foreach ($apps as $app) {
     $params = !empty($app['params']) ? array_merge(array('app' => $app['code'], 'doc' => $app['index']), $app['params']) : array('app' => $app['code'], 'doc' => $app['index']);
@@ -92,7 +92,7 @@
   $sidebar .= '  </ul>' . PHP_EOL
             . '</div>';
   
-  $system->document->snippets['sidebar_content'] = '<div id="apps-list-menu">'. $sidebar . '</div>';
+  $system->document->snippets['column_left'] = '<div id="apps-list-menu">'. $sidebar .'</div>';
   
 // App content
   if (!empty($_GET['app'])) {
