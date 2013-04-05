@@ -17,6 +17,8 @@
   
   if (!empty($_POST['save'])) {
     
+    if (empty($_POST['required'])) $_POST['required'] = 0;
+    
     if (empty($errors)) {
       $fields = array(
         'name',

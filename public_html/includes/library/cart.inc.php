@@ -169,9 +169,11 @@
       if (count($product->options) > 0) {
         foreach (array_keys($product->options) as $key) {
           
-          if (empty($product->options[$key]['name'][$this->system->language->selected['code']]['required']) == false && empty($options[$product->options[$key]['name'][$this->system->language->selected['code']]])) {
-            if (!$silent) $this->system->notices->add('errors', $this->system->language->translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][$this->system->language->selected['code']] .')');
-            return;
+          if ($product->options[$key]['required'] != 0) {
+            if (empty($options[$product->options[$key]['name'][$this->system->language->selected['code']]])) {
+              if (!$silent) $this->system->notices->add('errors', $this->system->language->translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][$this->system->language->selected['code']] .')');
+              return;
+            }
           }
           
           if (!empty($options[$product->options[$key]['name'][$this->system->language->selected['code']]])) {

@@ -386,7 +386,7 @@
   <tr class="header">
     <th nowrap="nowrap" align="left">&nbsp;</th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_module_id', 'Module ID'); ?></th>
-    <th nowrap="nowrap" align="center" width="100%"><?php echo $system->language->translate('title_title', 'Title'); ?></th>
+    <th nowrap="nowrap" align="right" width="100%"><?php echo $system->language->translate('title_title', 'Title'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
     <!--<th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_tax', 'Tax'); ?></th>-->
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_tax_class', 'Tax Class'); ?></th>
@@ -449,7 +449,7 @@
 <table class="dataTable" style="width: 100%;">
   <tr class="header">
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_date', 'Date'); ?></th>
-    <th nowrap="nowrap" align="center" style="width: 100%;"><?php echo $system->language->translate('title_comment', 'Comment'); ?></th>
+    <th nowrap="nowrap" align="left" style="width: 100%;"><?php echo $system->language->translate('title_comment', 'Comment'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_hidden', 'Hidden'); ?></th>
     <th nowrap="nowrap">&nbsp;</th>
   </tr>

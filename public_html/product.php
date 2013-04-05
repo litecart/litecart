@@ -224,10 +224,11 @@
       'dim_class' => $product->dim_class,
     );
     $shipping->destination = $system->customer->data;
-    $cheapest_shipping = explode(':', $shipping->cheapest());
+    $cheapest_shipping = $shipping->cheapest();
     if (!empty($cheapest_shipping)) {
-      $shipping_cost = $shipping->data['options'][$cheapest_shipping[0]]['options'][$cheapest_shipping[1]]['cost'];
-      $shipping_tax_class_id = $shipping->data['options'][$cheapest_shipping[0]]['options'][$cheapest_shipping[1]]['tax_class_id'];
+      list($module_id, $option_id) = explode(':', $cheapest_shipping);
+      $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
+      $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
       echo str_replace(
              '%price',
              $system->currency->format($system->tax->calculate($shipping_cost, $shipping_tax_class_id)),
@@ -350,7 +351,17 @@
                 <?php echo $system->functions->form_draw_input_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 'text', 'style="width: 20px;"'); ?>
               </p>
             </div>
-            <?php echo $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit'); ?>
+<?php
+  if ($product->quantity > 0) {
+    echo $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
+  } else {
+    if ($product->sold_out_status['orderable']) {
+      echo $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
+    } else {
+      echo $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit', 'disabled="disabled"'); 
+    }
+  }
+?>
             <?php echo $system->functions->form_draw_form_end(); ?>
           </div>
           

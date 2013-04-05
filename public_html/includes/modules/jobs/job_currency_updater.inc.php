@@ -21,7 +21,7 @@
       
       switch ($this->settings['update_frequency']) {
         case 'Daily':
-          if (strtotime($this->system->settings->get('currencies_last_updated')) > strtotime('-1 hour')) return; 
+          if (strtotime($this->system->settings->get('currencies_last_updated')) > strtotime('-1 day')) return; 
           break;
         case 'Weekly':
           if (strtotime($this->system->settings->get('currencies_last_updated')) > strtotime('-1 week')) return; 

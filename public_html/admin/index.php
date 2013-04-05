@@ -99,12 +99,13 @@
     
     require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
     
-    $system->document->snippets['title'][] = $app_config['name'];
+    //$system->document->snippets['title'][] = $app_config['name'];
     
     $system->breadcrumbs->add($app_config['name'], $app_config['index']);
     
     $system->document->snippets['javascript'][] = '  $(document).ready(function() {' . PHP_EOL
                                                 . '    if ($("h1")) {' . PHP_EOL
+                                                . '      if (document.title.substring(0, $("h1:first").text().length) == $("h1:first").text()) return;' . PHP_EOL
                                                 . '      document.title = $("h1:first").text() +" | "+ document.title;' . PHP_EOL
                                                 . '    }' . PHP_EOL
                                                 . '  });';

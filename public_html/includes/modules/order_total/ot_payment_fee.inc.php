@@ -21,7 +21,7 @@
     public function process() {
       global $payment;
       
-      if (empty($payment->data['selected']['cost'])) return;
+      if (isset($payment->data['selected']['cost']) && $payment->data['selected']['cost'] == 0) return;
       
       $output = array();
       

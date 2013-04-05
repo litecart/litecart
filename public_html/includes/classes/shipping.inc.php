@@ -106,6 +106,8 @@
         }
       }
       
+      if (empty($module_id) || empty($option_id)) return false;
+      
       return $module_id.':'.$option_id;
     }
     
