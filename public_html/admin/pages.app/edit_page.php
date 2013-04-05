@@ -1,7 +1,7 @@
 <?php
   
   if (isset($_GET['pages_id'])) {
-    $pages = new ctrl_pages($_GET['pages_id']);
+    $pages = new ctrl_page($_GET['pages_id']);
     
     if (!$_POST) {
       foreach ($pages->data as $key => $value) {
@@ -9,7 +9,7 @@
       }
     }
   } else {
-    $pages = new ctrl_pages();
+    $pages = new ctrl_page();
   }
   
   if (isset($_POST['save'])) {

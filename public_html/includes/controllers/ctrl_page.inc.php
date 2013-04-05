@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_pages {
+  class ctrl_page {
     public $data = array();
     
     public function __construct($page_id=null) {

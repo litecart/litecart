@@ -13,7 +13,6 @@ public_html/images/banners/*
 public_html/images/categories/*
 public_html/images/manufacturers/*
 public_html/images/products/*
-public_html/includes/templates/*
 *.bak
 *.000
 *.001
