@@ -459,12 +459,12 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_weight', 'Weight'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('weight', (isset($_POST['weight']) ? $_POST['weight'] : ''), 'text', 'style="width: 50px"'); ?> <?php echo $system->weight->draw_select_field('weight_class', (isset($_POST['weight_class']) ? $_POST['weight_class'] : ''), 'style="width: 50px"'); ?>
+              <?php echo $system->functions->form_draw_input_field('weight', (isset($_POST['weight']) ? $_POST['weight'] : ''), 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('weight_class', (isset($_POST['weight_class']) ? $_POST['weight_class'] : ''), 'style="width: 50px"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dimensions', 'Dimensions'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('dim_x', (isset($_POST['dim_x']) ? $_POST['dim_x'] : ''), 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input_field('dim_y', (isset($_POST['dim_y']) ? $_POST['dim_y'] : ''), 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input_field('dim_z', (isset($_POST['dim_z']) ? $_POST['dim_z'] : ''), 'text', 'style="width: 50px"'); ?> <?php echo $system->length->draw_select_field('dim_class', (isset($_POST['dim_class']) ? $_POST['dim_class'] : ''), 'style="width: 50px"'); ?> (<?php echo $system->language->translate('description_width_height_length', 'width x height x length'); ?>)
+              <?php echo $system->functions->form_draw_input_field('dim_x', (isset($_POST['dim_x']) ? $_POST['dim_x'] : ''), 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input_field('dim_y', (isset($_POST['dim_y']) ? $_POST['dim_y'] : ''), 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input_field('dim_z', (isset($_POST['dim_z']) ? $_POST['dim_z'] : ''), 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_length_classes_list('dim_class', (isset($_POST['dim_class']) ? $_POST['dim_class'] : ''), 'style="width: 50px"'); ?> (<?php echo $system->language->translate('description_width_height_length', 'width x height x length'); ?>)
             </td>
           </tr>
           <tr>

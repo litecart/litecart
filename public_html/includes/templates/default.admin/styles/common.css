@@ -1,0 +1,29 @@
+.semi-transparent {
+  opacity: 0.5;
+}
+
+ul.navigation-vertical {
+  margin: 0;
+  padding: 0;
+}
+ul.navigation-vertical li {
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+}
+ul.navigation-vertical ul {
+  margin-left: 18px;
+  padding: 0;
+  border:1px #000;
+}
+
+ul.navigation-horizontal {
+  margin: 0;
+  padding: 0;
+}
+ul.navigation-horizontal li {
+  display: inline-block;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+}

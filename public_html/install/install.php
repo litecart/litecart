@@ -58,7 +58,7 @@
   
   require('database.class.php');
   $database = new database(null);
-  /*
+  
   $sql = file_get_contents('structure.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
   
@@ -109,7 +109,7 @@
     
     echo ' [OK]' . PHP_EOL;
   }
-  */
+  
   ### Settings ###################################
   
   echo 'Applying settings...';
