@@ -2,8 +2,9 @@ form {
   margin: 0;
 }
 
-input[type=text], input[type=password], select, textarea, .input-field {
-  padding: 3px 5px;
+input[type=email], input[type=float], input[type=number], input[type=text], input[type=password], select, textarea, .input-field {
+  margin: 0;
+  padding: 4px;
   border: 1px solid #d1d1d1;
   border-radius: 3px;
   background-color: #f9f9f9;
@@ -14,9 +15,14 @@ input[type=text], input[type=password], select, textarea, .input-field {
   background-image: -ms-linear-gradient(top, #ececec, #f9f9f9);
   background-image: -o-linear-gradient(top, #ececec, #f9f9f9);
   
-  font: normal 11px Sans-Serif;
+  font: normal 12px Sans-serif;
   color: #333;
+  
   vertical-align: middle;
+}
+
+textarea {
+  padding: 5px;
 }
 
 input[disabled=disabled] {
@@ -27,7 +33,6 @@ input[disabled=disabled] {
   display: inline-block;
   position: relative;
   vertical-align: middle;
-  margin: 3px 0;
 }
 
 input.regional-input-field, textarea.regional-input-field {
@@ -39,16 +44,14 @@ input.date, input.datetime {
 }
 
 option {
-  margin: 3px 5px;
+  margin: 3px 6px;
 }
 
-button, a.button {
+button, a.button, span.button {
   display: inline-block;
   
-  margin: 0px;
-  margin-top: 2px;
-  
-  padding: 3px 5px;
+  margin: 0px 1px;
+  padding: 4px 6px;
   
   border: 1px solid #d1d1d1;
   border-radius: 3px;
@@ -61,13 +64,13 @@ button, a.button {
   
   -webkit-box-shadow: 0 1px 1px #ccc, inset 0 0 1px #fff;
   -moz-box-shadow: 0 1px 1px #ccc, inset 0 0 1px #fff;
-  box-shadow: 0 1px 1px #ccc, inset 0 0 1px #fff;
+  box-shadow: inset 0px 1px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
   
-  color: #666 !important;
-  font: bold 11px Sans-Serif;
-  text-decoration: none !important;
+  color: #666;
+  text-decoration: none;
   text-shadow: 0 1px 1px white;
-
+  font: normal 11px Sans-serif;
+  
   white-space: nowrap;
   vertical-align: middle;
   
@@ -77,14 +80,14 @@ button, a.button {
 button[type=submit] {
   font-weight: bold;
 }
-button[type=button], a.button {
+button[type=button], a.button, span.button {
   font-weight: normal;
 }
 
-button:hover, button:focus, a.button:hover, a.button:focus {
+button:hover, button:focus, a.button:hover, a.button:focus, span.button:hover, span.button, span.button:focus  {
 }
 
-button:active, a.button:active {
+button.active, button:active, a.button:active, a.button.active, span.button:active, span.button.active {
   border: 1px solid #aaa;
   border-bottom-color: #ccc;
   border-top-color: #999;
@@ -97,7 +100,7 @@ button:active, a.button:active {
   box-shadow: inset 0 1px 2px #aaa;
 }
 
-button[disabled=disabled] {
+button[disabled=disabled], a.button.disabled, span.button.disabled {
   border: 1px solid #DDD;
   border-radius: 3px;
   text-shadow: 0 1px 1px white;
@@ -105,4 +108,11 @@ button[disabled=disabled] {
   -moz-box-shadow: 0 1px 1px #fff;
   box-shadow: 0 1px 1px #fff;
   background: transparent;
+  color: #ccc;
+}
+
+button img, a.button img, span.button img {
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
 }

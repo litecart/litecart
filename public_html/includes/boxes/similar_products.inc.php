@@ -21,7 +21,6 @@
     'product_name' => $product->name[$system->language->selected['code']],
     'category_id' => isset($_GET['category_id']) ? $_GET['category_id'] : array_shift(array_keys($product->categories)),
     'manufacturer_id' => $product->manufacturer_id,
-    'designer_id' => $product->designer_id,
     'product_groups' => $product_groups,
     'exclude_products' => $product->id,
     'keywords' => $keywords,

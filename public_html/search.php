@@ -71,22 +71,6 @@
       $sql_where_categories[] = "find_in_set('". (int)$category['id'] ."', p.categories)";
     }
     
-    $designers_info_query = $system->database->query(
-      "select d.id
-      from ". DB_TABLE_DESIGNERS ." d, ". DB_TABLE_DESIGNERS_INFO ." di
-      where d.status
-      and (di.designer_id = d.id and di.language_code = '". $system->language->selected['code'] ."')
-      and (
-        d.name like '%". $system->database->input($_GET['query']) ."%'
-        or di.description like '%". $system->database->input($_GET['query']) ."%'
-      );"
-    );
-    
-    $designer_ids = array();
-    while ($designer = $system->database->fetch($designers_info_query)) {
-      $designer_ids[] = $designer['id'];
-    }
-    
     $manufacturers_info_query = $system->database->query(
       "select m.id
       from ". DB_TABLE_MANUFACTURERS ." m, ". DB_TABLE_MANUFACTURERS_INFO ." mi
@@ -112,7 +96,6 @@
         find_in_set('". $system->database->input($_GET['query']) ."', p.keywords)
         ". (!empty($sql_where_categories) ? "or " . implode(" or ", $sql_where_categories) : false) ."
         ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in ('". implode("', '", $manufacturer_ids) . "')" : false) ."
-        ". (!empty($designer_ids) ? "or p.designer_id in ('". implode("', '", $designer_ids) . "')" : false) ."
         or (
           pi.name like '%". $system->database->input($_GET['query']) ."%'
           or pi.short_description like '%". $system->database->input($_GET['query']) ."%'

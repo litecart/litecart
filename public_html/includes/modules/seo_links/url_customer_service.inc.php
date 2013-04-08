@@ -18,13 +18,13 @@
         $page = $this->system->database->fetch($page_query);
         
         if (!empty($page)) {
-          $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->seo_links->url_friendly_string($page['title']) .'-cs-'. $page['page_id'];
+          $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->functions->general_path_friendly($page['title']) .'-s-'. $page['page_id'];
         }
         
       } else {
       
         $title = $this->system->language->translate('title_customer_service', 'Customer Service', $language_code);
-        $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->seo_links->url_friendly_string($title) .'-cs-0';
+        $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->functions->general_path_friendly($title) .'-s-0';
       }
       
       if (isset($parsed_link['query']['page_id'])) unset($parsed_link['query']['page_id']);

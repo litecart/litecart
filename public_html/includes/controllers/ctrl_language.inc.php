@@ -23,6 +23,11 @@
     
     public function save() {
       
+      if (empty($this->data['status']) && $this->data['code'] == $this->system->settings['default_language_code']) {
+        trigger_error('You cannot disable the default language.', E_USER_ERROR);
+        return;
+      }
+      
       if (!empty($this->data['id'])) {
         $language_query = $this->system->database->query(
           "select * from ". DB_TABLE_LANGUAGES ."
@@ -91,7 +96,7 @@
     public function delete() {
       
       if ($this->data['code'] == 'en') {
-        trigger_error('English is a framework language and must not be deleted, but it can be disabled', E_USER_ERROR);
+        trigger_error('English is the PHP framework language and must not be deleted, but it can be disabled.', E_USER_ERROR);
         return;
       }
       

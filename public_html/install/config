@@ -103,16 +103,17 @@
   ini_set('session.gc_maxlifetime', 180000);
   
 // Errors
-  error_reporting(E_ALL);
+  error_reporting(E_ALL & ~E_STRICT);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'On');
   ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'errors.log');
   ini_set('display_errors', 'Off');
   if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '{CLIENT_IP}'))) {
+    error_reporting(E_ALL);
     ini_set('display_errors', 'On');
   }
   
-// Server Cookie ID
+// Session Platform ID
   define('SESSION_UNIQUE_ID', 'litecart');
   
 // Password Encryption Salt

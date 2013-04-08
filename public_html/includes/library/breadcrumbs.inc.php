@@ -35,15 +35,15 @@
           $separator = ' &raquo; ';
         }
         $this->system->document->snippets['breadcrumbs'] = '<nav id="breadcrumbs">' . PHP_EOL
-                                                         . '  <ul class="navigation-horizontal">' . PHP_EOL
+                                                         . '  <ul class="list-horizontal">' . PHP_EOL
                                                          . '    '. $breadcrumbs . PHP_EOL
                                                          . '  </ul>' . PHP_EOL
                                                          . '</nav>';
       }
     }
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
     //public function shutdown() {
     //}

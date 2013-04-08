@@ -141,19 +141,6 @@
           
           break;
           
-        case 'designer':
-          
-          $this->_data['designer'] = array();
-          
-          $query = $this->system->database->query(
-            "select id, name, image from ". DB_TABLE_DESIGNERS ."
-            where id = '". (int)$this->designer_id ."'
-            limit 1;"
-          );
-          $this->_data['designer'] = $this->system->database->fetch($query);
-          
-          break;
-          
         case 'images':
           
           $this->_data['images'] = array();

@@ -1,4 +1,4 @@
-<ul id="currencies" class="navigation-horizontal">
+<ul id="currencies" class="list-horizontal">
 <?php
   foreach ($system->currency->currencies as $currency) {
     if ($currency['status']) {

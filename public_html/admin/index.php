@@ -9,57 +9,18 @@
     $system->notices->add('warnings', $system->language->translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
   }
   
-// Read all apps
-  $apps_cache_id = $system->cache->cache_id('admin_apps', array('language'));
-  if (!$apps = $system->cache->get($apps_cache_id, 'file')) {
-    $apps = array();
-    
-    foreach (glob('*.app/') as $dir) {
-      $code = rtrim($dir, '.app/');
-      require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
-      $apps[$code] = array_merge(array('code' => $code, 'dir' => $dir), $app_config);
-    }
-    
-    function sort_app_modules($a, $b) {
-      return ($a['name'] < $b['name']) ? -1 : 1;
-    }
-    usort($apps, 'sort_app_modules');
-    
-    $system->cache->set($apps_cache_id, 'file', $apps);
-  }
-  
-// Read all widgets
-  $widgets_cache_id = $system->cache->cache_id('admin_widgets', array('language'));
-  if (!$widgets = $system->cache->get($widgets_cache_id, 'file')) {
-    $widgets = array();
-    
-    foreach (glob('*.widget/') as $dir) {
-      $code = rtrim($dir, '.widget/');
-      require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
-      $widgets[$code] = array_merge(array('code' => $code, 'dir' => $dir), $widget_config);
-    }
-    
-    function sort_widget_modules($a, $b) {
-      //return ($a['name'] < $b['name']) ? -1 : 1;
-      return ($a['priority'] < $b['priority']) ? -1 : 1;
-    }
-    usort($widgets, 'sort_widget_modules');
-    
-    $system->cache->set($widgets_cache_id, 'file', $widgets);
-  }
-  
 // Build apps list menu
-  $sidebar = '<div id="apps-list-menu-wrapper">' . PHP_EOL
-           . '  <ul class="navigation-vertical">';
-           
-  foreach ($apps as $app) {
+  $apps_list = '<div id="apps-wrapper">' . PHP_EOL
+             . '  <ul id="apps" class="list-vertical">';
+  
+  foreach ($system->functions->admin_get_apps() as $app) {
     $params = !empty($app['params']) ? array_merge(array('app' => $app['code'], 'doc' => $app['index']), $app['params']) : array('app' => $app['code'], 'doc' => $app['index']);
-    $sidebar .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> '. $app['name'] .'</a>' . PHP_EOL;
+    $apps_list .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> '. $app['name'] .'</a>' . PHP_EOL;
     
     if (!empty($_GET['app']) && $_GET['app'] == $app['code']) {
     
       if (!empty($app['menu'])) {
-        $sidebar .= '      <ul>' . PHP_EOL;
+        $apps_list .= '      <ul>' . PHP_EOL;
         
         foreach ($app['menu'] as $item) {
           if (isset($_GET['doc']) && $_GET['doc'] == $item['link']) {
@@ -77,29 +38,25 @@
           }
           
           $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['link']), $item['params']) : array('app' => $app['code'], 'doc' => $item['link']);
-          $sidebar .= '        <li'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'"> &bull;&nbsp; '. $item['name'] .'</a></li>' . PHP_EOL;
+          $apps_list .= '        <li'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'">'. $item['name'] .'</a></li>' . PHP_EOL;
         }
         
-        $sidebar .= '      </ul>' . PHP_EOL;
+        $apps_list .= '      </ul>' . PHP_EOL;
       }
     }
     
-    $sidebar .= '    </li>' . PHP_EOL;
+    $apps_list .= '    </li>' . PHP_EOL;
   }
   
-  
-  //$sidebar .= '    <li><a href="'. str_replace('://', '://logout:logout@', $system->document->link(WS_DIR_ADMIN)) .'"><img src="'. WS_DIR_IMAGES .'icons/48x48/exit.png" width="24" height="24" style="vertical-align: middle;" alt="'. $system->language->translate('title_logout', 'Logout') .'" title="'. $system->language->translate('title_logout', 'Logout') .'" /> '. $system->language->translate('title_logout', 'Logout') .'</a></li>' . PHP_EOL
-  $sidebar .= '  </ul>' . PHP_EOL
+  $apps_list .= '  </ul>' . PHP_EOL
             . '</div>';
   
-  $system->document->snippets['column_left'] = '<div id="apps-list-menu">'. $sidebar .'</div>';
+  $system->document->snippets['apps'] = $apps_list;
   
 // App content
   if (!empty($_GET['app'])) {
     
     require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
-    
-    //$system->document->snippets['title'][] = $app_config['name'];
     
     $system->breadcrumbs->add($app_config['name'], $app_config['index']);
     
@@ -120,10 +77,10 @@
   } else {
 ?>
 
-<div id="widgets">
-  <ul>
+<div id="widgets-wrapper">
+  <ul id="widgets">
 <?php
-    foreach ($widgets as $widget) {
+    foreach ($system->functions->admin_get_widgets() as $widget) {
       echo '    <li>' . PHP_EOL;
       include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $widget['dir'] . $widget['file']);
       echo '    </li>' . PHP_EOL;

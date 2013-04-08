@@ -36,7 +36,6 @@
       
       $fields = array(
         'manufacturer_id',
-        'designer_id',
         'supplier_id',
         'delivery_status_id',
         'sold_out_status_id',
@@ -358,12 +357,6 @@ foreach (array_keys($system->language->languages) as $language_code) {
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_manufacturer', 'Manufacturer'); ?></strong><br />
                 <?php echo $system->functions->form_draw_manufacturers_list('manufacturer_id', !empty($_POST['manufacturer_id']) ? $_POST['manufacturer_id'] : ''); ?>
-            </td>
-          </tr>
-          <tr>
-            <td align="left" nowrap="nowrap">
-              <strong><?php echo $system->language->translate('title_designer', 'Designer'); ?></strong><br />
-                <?php echo $system->functions->form_draw_designers_list('designer_id', !empty($_POST['designer_id']) ? $_POST['designer_id'] : ''); ?>
             </td>
           </tr>
           <tr>
@@ -962,5 +955,5 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
       </div>
     </div>
   </div>
-  <p><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"'); ?> <?php echo (isset($product->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"') : false; ?></p>
+  <p><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($product->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></p>
   <?php echo $system->functions->form_draw_form_end(); ?>

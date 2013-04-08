@@ -9,7 +9,7 @@
     <div class="heading"><h3><?php echo $system->language->translate('title_information', 'Information'); ?></h3></div>
     <div class="content">
       <nav>
-        <ul class="navigation-vertical">
+        <ul class="list-vertical">
         <?php
           $pages_query = $system->database->query(
             "select p.id, pi.title from ". DB_TABLE_PAGES ." p

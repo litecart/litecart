@@ -10,27 +10,15 @@
   
   $system->document->snippets['head_tags']['jquery-marquee'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.marquee.js"></script>';
 ?>
-<style>
-  #manufacturer-logotypes {
-    margin-bottom: 20px;
-    max-width: 700px;
-    height: 35px;
-    overflow: hidden;
-    position: relative;
-    text-align: center;
-    white-space: nowrap;
-  }
-</style>
 <div id="manufacturer-logotypes-wrapper">
-    <ul id="manufacturer-logotypes" class="navigation-horizontal">
+  <ul id="manufacturer-logotypes" class="list-horizontal">
 <?php
   while($manufacturer = $system->database->fetch($manufacturers_query)) {
     echo '  <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30, 'FIT') .'" alt="" style="margin: 0px 15px;"></a></li>' . PHP_EOL;
   }
 ?>
-    </ul>
+  </ul>
 </div>
-
 <script>
   $('#manufacturer-logotypes').each(function(){
     if($(this)[0].scrollWidth>$(this).outerWidth()){

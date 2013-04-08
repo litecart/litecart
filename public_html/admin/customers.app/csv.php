@@ -127,7 +127,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_csv_import_export_translations', 'CSV Import/Export Translations'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" border="0" align="absmiddle" style="margin-right: 10px;" /><?php echo $system->language->translate('title_csv_import_export', 'CSV Import/Export'); ?></h1>
 
 <div id="import-wrapper" style="margin-bottom: 20px;">
   <?php echo $system->functions->form_draw_form_begin('import_form', 'post', '', true); ?>

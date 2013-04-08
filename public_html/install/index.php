@@ -104,16 +104,19 @@ a:hover, a:active{
   <ul>
 <?php
   $files = array(
+    'admin/.htaccess',
+    'admin/.htpasswd',
     'cache/',
     'data/',
     'images/',
     'includes/config.inc.php',
+    '.htaccess',
   );
   foreach($files as $file) {
     if (is_writable('../'.$file)) {
-      echo '    <li>'. $file .' <span style="color: #0a0;">[OK]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. $file .' <span style="color: #0a0;">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '    <li>'. $file .' <span style="color: #f00;">[Read-Only, please make writable]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. $file .' <span style="color: #f00;">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
   }
 ?>
@@ -147,6 +150,7 @@ a:hover, a:active{
         <td><strong>Table Prefix</strong><br />
         <input name="db_table_prefix" type="text" value="lc_" style="width: 75px;" /></td>
         <td><strong>Demo Data</strong><br />
+          <input name="clean_up" type="checkbox" value="true" /> Clean Up Database</td>
           <input name="demo_data" type="checkbox" value="true" checked="CHECKED" /> Install demo data</td>
       </tr>
     </table>

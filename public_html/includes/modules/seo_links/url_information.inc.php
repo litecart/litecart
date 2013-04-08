@@ -20,7 +20,7 @@
       
       if (empty($page)) return false;
       
-      $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->seo_links->url_friendly_string($page['title']) .'-i-'. $page['page_id'];
+      $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->functions->general_path_friendly($page['title']) .'-i-'. $page['page_id'];
       
       unset($parsed_link['query']['page_id']);
       

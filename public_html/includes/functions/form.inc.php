@@ -3,7 +3,7 @@
   function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
     global $system;
     
-    $html = '<form'. (($name) ? ' name="'. $name .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" action="'. $action .'"' . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL;
+    $html = '<form'. (($name) ? ' name="'. $name .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'"'. (($action) ? ' action="'. $action .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL;
     if (strtolower($method) == 'post') $html .= form_draw_input('token', $system->form->session_post_token(), 'hidden');
     return $html;
   }
@@ -24,7 +24,7 @@
   }
   
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
-    return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. $name .'" value="'. $value .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. $icon .'" /> ' : false) . $value .'</button>';
+    return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. $name .'" value="'. $value .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $value .'</button>';
   }
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {
@@ -407,25 +407,6 @@
     
     while ($row = $system->database->fetch($query)) {
       $options[] = array($row['name'], $row['id']);
-    }
-    
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
-  }
-  
-  function form_draw_designers_list($name, $insert='', $parameters='') {
-    global $system;
-    
-    $designers_query = $system->database->query(
-      "select id, name from ". DB_TABLE_DESIGNERS ."
-      order by name asc;"
-    );
-    
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
-    
-    while ($designer = $system->database->fetch($designers_query)) {
-      $options[] = array($designer['name'], $designer['id']);
     }
     
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);

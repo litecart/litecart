@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Restricted Area"
-AuthUserFile /path/to/admin/.htpasswd
-Require valid-user

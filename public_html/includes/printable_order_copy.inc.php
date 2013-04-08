@@ -1,8 +1,14 @@
-<div id="header" style="margin-bottom: 10px; position: relative; height: 75px;">
-  <img style="position: absolute; top: 0; left: 0; max-width: 300px; max-height: 75px; font-size: 32px;" src="<?php echo $this->system->document->link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo $this->system->settings->get('store_name'); ?>" />
-  <h1 style="display: inline; position: absolute; right: 0; top: 0; margin: 0;"><?php echo $this->system->language->translate('title_order_copy', 'Order Copy'); ?></h1>
-  <div style="display: inline; position: absolute; right: 0; bottom: 18px;"><?php echo $this->system->language->translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
-  <div style="display: inline; position: absolute; right: 0; bottom: 0;"><?php echo date($this->system->language->selected['raw_date']); ?></div>
+<div id="header" style="margin-bottom: 10px;">
+  <table style="width: 100%;">
+    <tr>
+      <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 75px; font-size: 32px;" src="<?php echo $this->system->document->link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo $this->system->settings->get('store_name'); ?>" /></td>
+      <td style="text-align: right;">
+        <h1 style="margin: 0;"><?php echo $this->system->language->translate('title_order_copy', 'Order Copy'); ?></h1>
+        <div><?php echo $this->system->language->translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
+        <div><?php echo date($this->system->language->selected['raw_date']); ?>
+      </td>
+    </tr>
+  </table>
 </div>
 
 <div id="body">
@@ -141,5 +147,8 @@
       <?php echo $this->system->settings->get('store_tax_id'); ?>
     </td>
     <?php } ?>
+    <td><strong><?php echo $this->system->language->translate('title_email', 'E-mail'); ?>:</strong><br />
+      <?php echo $this->system->settings->get('store_email'); ?>
+    </td>
   </tr>
 </table>

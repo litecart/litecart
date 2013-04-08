@@ -62,7 +62,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td align="left" nowrap="nowrap"><u><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></u><br /><?php echo $system->language->translate('settings_key_description:'.$setting['key'], $setting['description'], ''); ?></td>
     <td align="left" valign="middle"><?php echo $system->functions->form_draw_hidden_field('key', $setting['key']) . $system->functions->form_draw_function($setting['function'], 'value', $setting['value']); ?></td>
-    <td align="right" valign="middle" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'disk'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''. $system->document->link('', array(), true, array('action', 'key')) .'\'"'); ?></td>
+    <td align="right" valign="middle" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
   </tr>
 <?php
 	} else {

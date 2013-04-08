@@ -139,7 +139,7 @@ var config = {
     }
 ?>
 </table>
-<p align="right"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit'); ?></p>
+<p align="right"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?></p>
 <?php echo $system->functions->form_draw_form_end(); ?>
 <script type="text/javascript">
   function delete_translation(id) {

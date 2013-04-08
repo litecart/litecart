@@ -187,7 +187,6 @@
         "update ". DB_TABLE_PRODUCTS ." set
         status = '". (int)$this->data['status'] ."',
         manufacturer_id = '". (int)$this->data['manufacturer_id'] ."',
-        designer_id = '". (int)$this->data['designer_id'] ."',
         supplier_id = '". (int)$this->data['supplier_id'] ."',
         delivery_status_id = '". (int)$this->data['delivery_status_id'] ."',
         sold_out_status_id = '". (int)$this->data['sold_out_status_id'] ."',
@@ -514,7 +513,7 @@
     // 456-Fancy-product-title-N.jpg
       $i=1;
       while (empty($filename) || is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) {
-        $filename = 'products/' . $this->data['id'] .'-'. $this->system->functions->general_url_friendly($this->data['name'][$this->system->settings->get('default_language_code')]) .'-'. $i++ .'.'. $image->type();
+        $filename = 'products/' . $this->data['id'] .'-'. $this->system->functions->general_path_friendly($this->data['name'][$this->system->settings->get('default_language_code')]) .'-'. $i++ .'.'. $image->type();
       }
       
       $priority = count($this->data['images'])+1;

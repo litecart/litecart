@@ -97,8 +97,8 @@
     //public function prepare_output() {
     //}
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
     public function shutdown() {
       $this->system->cache->set($this->_cache_id, 'file', $this->_cache);

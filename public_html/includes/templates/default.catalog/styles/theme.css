@@ -156,6 +156,19 @@ span.required {
   /* see separate file */
 }
 
+#slider-wrapper {
+}
+
+#manufacturer-logotypes {
+  margin-bottom: 20px;
+  max-width: 700px;
+  height: 35px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+}
+
 #column-left-wrapper {
   margin-right: 10px;
 }
@@ -243,7 +256,7 @@ span.required {
 
 #copyright {
   font-size: 0.75em;
-  text-align: left;
+  text-align: center;
 }
 
 #scroll-up{
@@ -256,30 +269,4 @@ span.required {
   display: none;
   text-indent: -9999px;
   background: url('../images/scroll_up.png') no-repeat;
-}
-
-ul.navigation-vertical {
-  margin: 0;
-  padding: 0;
-}
-ul.navigation-vertical li {
-  margin: 0;
-  padding: 2px;
-  list-style: none;
-}
-ul.navigation-vertical ul {
-  margin-left: 18px;
-  padding: 0;
-  border:1px #000;
-}
-
-ul.navigation-horizontal {
-  margin: 0;
-  padding: 0;
-}
-ul.navigation-horizontal li {
-  display: inline-block;
-  margin: 0;
-  padding: 2px;
-  list-style: none;
 }

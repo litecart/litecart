@@ -11,14 +11,12 @@
   if ($system->cache->capture($category_cache_id, 'file')) {
     
     if (!empty($_GET['category_id'])) $_GET['categories'] = array($_GET['category_id']);
-    if (!empty($_GET['designer_id'])) $_GET['designers'] = array($_GET['designer_id']);
     if (!empty($_GET['manufacturer_id'])) $_GET['manufacturers'] = array($_GET['manufacturer_id']);
     if (!empty($_GET['product_group'])) $_GET['product_groups'] = array($_GET['product_group']);
     
     $filter = array();
     if (!empty($_GET['query'])) $filter['query'] = $_GET['query'];
     if (!empty($_GET['categories'])) $filter['categories'] = $_GET['categories'];
-    if (!empty($_GET['designers'])) $filter['designers'] = $_GET['designers'];
     if (!empty($_GET['manufacturers'])) $filter['manufacturers'] = $_GET['manufacturers'];
     if (!empty($_GET['product_groups'])) $filter['product_groups'] = $_GET['product_groups'];
     if (!empty($_GET['price_ranges'])) $filter['price_ranges'] = $_GET['price_ranges'];

@@ -16,11 +16,11 @@
     //}
     
     public function startup() {
-    
+      
       if (empty($this->system->session->data['customer']) || !is_array($this->system->session->data['customer'])) {
         $this->reset();
       }
-    
+      
       if (!empty($_POST['login'])) $this->login($_POST['email'], $_POST['password']);
       if (!empty($_POST['logout'])) $this->logout();
       if (!empty($_POST['lost_password'])) $this->password_reset($_POST['email']);
@@ -35,8 +35,8 @@
     //public function prepare_output() {
     //}
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
     //public function shutdown() {
     //}
@@ -200,6 +200,7 @@
         return;
       }
       
+      $this->system->session->regenerate_id();
       $this->system->session->data['customer'] = $customer;
       
       $key_map = array(
@@ -232,7 +233,6 @@
       header('Location: ' . $this->system->document->link(WS_DIR_HTTP_HOME));
       exit;
     }
-
   }
   
 ?>

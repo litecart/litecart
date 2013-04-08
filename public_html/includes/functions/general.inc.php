@@ -1,6 +1,6 @@
 <?php
 
-  function general_url_friendly($text) {
+  function general_path_friendly($text) {
     global $system;
     
   // Remove HTML tags

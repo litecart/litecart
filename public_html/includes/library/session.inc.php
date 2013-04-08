@@ -9,11 +9,12 @@
     public function __construct(&$system) {
       $this->system = &$system;
       
-      if (!session_id()) {
-        ini_set('session.use_cookies', 'On');
-        ini_set('session.use_trans_sid', 'Off');
+      ini_set('session.use_cookies', '1');
+      ini_set('session.use_only_cookies', '1');
+      ini_set('session.use_trans_sid', '0');
       
-        session_set_cookie_params(0, '/');
+      if (!session_id()) {
+        session_set_cookie_params(0, WS_DIR_HTTP_HOME);
         session_start();
       }
       
@@ -27,8 +28,8 @@
       if (!empty($_SERVER['HTTP_USER_AGENT']) && $this->data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) $is_hijack = true;
       
       if ($is_hijack) {
-        session_regenerate_id(true);
-        error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' on '. $_SERVER['REQUEST_URI'] .': Expecting '. $this->data['last_ip'] .' ['. $this->data['last_agent'] .'] while detected '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .']');
+        $this->regenerate_id();
+        //error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' on '. $_SERVER['REQUEST_URI'] .': Expecting '. $this->data['last_ip'] .' ['. $this->data['last_agent'] .'] while detected '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .']');
         $this->reset();
         header('Location: ' . $_SERVER['REQUEST_URI']);
         exit;
@@ -50,8 +51,8 @@
     //public function prepare_output() {
     //}
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
     //public function shutdown() {
     //}
@@ -60,6 +61,10 @@
     
     public function reset() {
       session_destroy();
+    }
+    
+    public function regenerate_id() {
+      session_regenerate_id(true);
     }
     
   }

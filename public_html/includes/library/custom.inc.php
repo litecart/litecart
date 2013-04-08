@@ -12,8 +12,8 @@
       $this->system = &$system;
     }
     
-    public function load_dependencies() {
-    }
+    //public function load_dependencies() {
+    //}
     
     public function initiate() {
       
@@ -45,23 +45,23 @@
       
     }
     
-    public function startup() {
-    }
+    //public function startup() {
+    //}
     
-    public function before_capture() {
-    }
+    //public function before_capture() {
+    //}
     
-    public function after_capture() {
-    }
+    //public function after_capture() {
+    //}
     
-    public function prepare_output() {
-    }
+    //public function prepare_output() {
+    //}
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
-    public function shutdown() {
-    }
+    //public function shutdown() {
+    //}
   }
   
 ?>

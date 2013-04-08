@@ -8,9 +8,9 @@
     global $system;
     
     $output = '<li class="category hover-light">' . PHP_EOL
-            . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'">' . PHP_EOL
+            . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'" title="'. htmlspecialchars($category['name']) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '    <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" width="340" height="180" alt="'. $category['name'] .'" title="'. $category['name'] .'" />' . PHP_EOL
+            . '    <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" width="340" height="180" alt="'. $category['name'] .'" />' . PHP_EOL
             . '      <div class="footer" style="position: absolute; bottom: 0;">' . PHP_EOL
             . '        <div class="title">'. $category['name'] .'</div>' . PHP_EOL
             . '        <div class="description">'. $category['short_description'] .'</div>' . PHP_EOL
@@ -26,9 +26,9 @@
     global $system;
     
     $output = '<li class="manufacturer hover-light">' . PHP_EOL
-            . '  <a class="link" href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">' . PHP_EOL
+            . '  <a class="link" href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'" title="'. htmlspecialchars($manufacturer['name']) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 215, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="215" height="60" alt="'. $manufacturer['name'] .'" title="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
+            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 215, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="215" height="60" alt="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="title">'. $manufacturer['name'] .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL
@@ -49,9 +49,9 @@
     }
     
     $output = '<li class="product hover-light" style="position: relative">' . PHP_EOL
-            . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'">' . PHP_EOL
+            . '  <a class="link" href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'" title="'. htmlspecialchars($product['name']) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">'. PHP_EOL
-            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING') .'" width="150" height="150" alt="'. htmlspecialchars($product['name']) .'" title="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
+            . '      <img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING') .'" width="150" height="150" alt="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
             . '      ' . $sticker . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
@@ -136,7 +136,7 @@
     if (!strpos($link, '?')) $link = $link . '?';
     
     $html = '<nav class="pagination">'. PHP_EOL
-          . '  <ul class="navigation-horizontal">' . PHP_EOL;
+          . '  <ul class="list-horizontal">' . PHP_EOL;
     
     if ($_GET['page'] > 1) {
       //$html .= '    <li><a class="page button" href="'. $system->document->href_link('', array('page' => 1), true) .'">'. $system->language->translate('title_first', 'First') .'</a></li>' . PHP_EOL;

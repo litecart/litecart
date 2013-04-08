@@ -10,8 +10,8 @@
     //public function load_dependencies() {
     //}
     
-    public function startup() {
-    }
+    //public function startup() {
+    //}
     
     //public function initiate() {
     //}
@@ -25,12 +25,11 @@
     //public function prepare_output() {
     //}
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
-    public function shutdown() {
-
-    }
+    //public function shutdown() {
+    //}
     
     ######################################################################
     

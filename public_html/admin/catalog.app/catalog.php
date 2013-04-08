@@ -180,7 +180,6 @@
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". $system->language->selected['code'] ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (p.manufacturer_id = m.id)
-      left join ". DB_TABLE_DESIGNERS ." d on (p.designer_id = d.id)
       where (
         p.id = '". $system->database->input($_GET['query']) ."'
         or pi.name like '%". $system->database->input($_GET['query']) ."%'
@@ -382,7 +381,7 @@
 </script>
 
 <p>
-  <ul class="navigation-horizontal">
+  <ul class="list-horizontal">
     <li><?php echo $system->language->translate('text_with_selected', 'With selected'); ?>:</li>
     <li><?php echo $system->functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit'); ?> <?php echo $system->functions->form_draw_button('disable', $system->language->translate('title_disable', 'Disable'), 'submit'); ?></li>
     <li><?php echo $system->functions->form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : '', 'style="width: 100px;"'); ?> <?php echo $system->functions->form_draw_button('move', $system->language->translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", $system->language->translate('warning_multiple_references_will_be_lost', 'Warning: Multiple references will be lost.')) .'\')) return false;"'); ?> <?php echo $system->functions->form_draw_button('copy', $system->language->translate('title_copy', 'Copy'), 'submit'); ?></li>

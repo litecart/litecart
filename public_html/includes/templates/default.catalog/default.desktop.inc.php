@@ -30,7 +30,7 @@
       <header id="header" class="rounded-corners-top">
       
         <div id="logotype-wrapper">
-          <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="60" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
+          <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="60" alt="<?php echo $system->settings->get('store_name'); ?>" /></a>
         </div>
 
         <div id="languages-wrapper">
@@ -101,9 +101,7 @@
     <div id="footer-wrapper">
     
       <div id="breadcrumbs-wrapper">
-        <nav id="breadcrumbs">
-          <!--snippet:breadcrumbs-->
-        </nav>
+        <!--snippet:breadcrumbs-->
       </div>
       
       <footer id="footer" class="box-gradient1 shadow rounded-corners">
@@ -154,11 +152,9 @@
       </footer>
       
       <div id="copyright" class="engraved-text">
-        <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo $system->settings->get('store_name'); ?>. All rights reserved. &middot; Designed and developed by <a href="http://www.tim-international.net" target="blank">T. Almroth / TiM-International.net</a> &middot; Powered by <a href="#">LiteCart&trade;</a></p>
+        <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo $system->settings->get('store_name'); ?>. All rights reserved. &middot; Powered by <a href="#">LiteCart&trade;</a></p>
       </div>
     </div>
-    
-    <!--<p><!--snippet:stats--></p>-->
     
     <a href="#" id="scroll-up">Scroll</a>
     <script>

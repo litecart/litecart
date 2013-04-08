@@ -1,4 +1,4 @@
-<ul class="navigation-vertical">
+<ul class="list-vertical">
 <?php  
   $categories_query = $system->database->query(
     "select c.id, c.image, ci.name

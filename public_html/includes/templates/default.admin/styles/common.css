@@ -2,28 +2,28 @@
   opacity: 0.5;
 }
 
-ul.navigation-vertical {
+ul.list-vertical {
   margin: 0;
   padding: 0;
-}
-ul.navigation-vertical li {
-  margin: 0;
-  padding: 2px;
   list-style: none;
 }
-ul.navigation-vertical ul {
+ul.list-vertical li {
+  margin: 0;
+  padding: 2px;
+}
+ul.list-vertical ul {
   margin-left: 18px;
   padding: 0;
-  border:1px #000;
+  border: 1px #000;
 }
 
-ul.navigation-horizontal {
+ul.list-horizontal {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
-ul.navigation-horizontal li {
+ul.list-horizontal li {
   display: inline-block;
   margin: 0;
   padding: 2px;
-  list-style: none;
 }

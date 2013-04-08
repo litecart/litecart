@@ -1,4 +1,4 @@
-<ul class="navigation-vertical">
+<ul class="list-vertical">
 <?php  
   $manufacturers_query = $system->database->query(
     "select m.id, m.image, m.name

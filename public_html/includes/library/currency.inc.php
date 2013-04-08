@@ -49,8 +49,8 @@
     //public function prepare_output() {
     //}
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
     //public function shutdown() {
     //}

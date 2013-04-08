@@ -70,8 +70,8 @@
     //public function prepare_output() {
     //}
     
-    public function before_output() {
-    }
+    //public function before_output() {
+    //}
     
     public function shutdown() {
       if ($this->enabled) {
@@ -225,11 +225,6 @@
       }
       
       return $seo_link;
-    }
-    
-    // Deprecated
-    public function url_friendly_string($text) {
-      return $this->system->functions->general_url_friendly($text);
     }
   }
 ?>

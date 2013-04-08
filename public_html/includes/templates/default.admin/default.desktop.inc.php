@@ -26,7 +26,7 @@
     <div id="content-wrapper">
     <table style="width: 100%;">
       <tr>
-        <td id="column_left">
+        <td id="sidebar">
           <div class="logotype">
             <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 70, 'FIT_ONLY_BIGGER'); ?>" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
           </div>
@@ -43,7 +43,8 @@
           
           <!--snippet:dashboard-->
           
-          <!--snippet:column_left-->
+          <!--snippet:apps-->
+          
           <div class="footer">
             <div class="languages" style="text-align: center; margin-bottom: 10px 0 20px 0;">
 <?php
@@ -70,6 +71,9 @@
             
             <div id="copyright">Copyright &copy; <?php echo date('Y'); ?> <a href="http://www.litecart.net" target="_blank">LiteCart&trade;</a></div>
           </div>
+        </td>
+        <td id="column_left">
+          <!--snippet:column_left-->
         </td>
         <td id="content">
           <!--snippet:notices-->

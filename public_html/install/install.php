@@ -44,9 +44,9 @@
   
   echo ' [OK]' . PHP_EOL;
   
-  ### Database Structure ################################### 
-  
-  echo 'Writing database tables...';
+  ### Database > Connection ################################### 
+
+  echo 'Connecting to database...';
   
   define('DB_SERVER', $_POST['db_server']);
   define('DB_USERNAME', $_POST['db_username']);
@@ -58,6 +58,30 @@
   
   require('database.class.php');
   $database = new database(null);
+  
+  echo ' [OK]' . PHP_EOL;
+  
+  ### Database > Cleaning ###################################
+  
+  if (!empty($_POST['clean_up'])) {
+    echo 'Cleaning database...';
+    
+    $sql = file_get_contents('clean.sql');
+    $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+    
+    $sql = explode('-- --------------------------------------------------------', $sql);
+    
+    foreach ($sql as $query) {
+      $query = preg_replace('/--.*\s/', '', $query);
+      $database->query($query);
+    }
+    
+    echo ' [OK]' . PHP_EOL;
+  }
+  
+  ### Database > Tables > Structure ###################################
+  
+  echo 'Writing database tables...';
   
   $sql = file_get_contents('structure.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
@@ -71,25 +95,23 @@
   
   echo ' [OK]' . PHP_EOL;
   
-  ### Data ###################################
+  ### Database > Tables > Data ###################################
   
-  if (!empty($_POST['demo_data'])) {
-    echo 'Writing database table data...';
-    
-    $sql = file_get_contents('data.sql');
-    $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
-    
-    $sql = explode('-- --------------------------------------------------------', $sql);
-    
-    foreach ($sql as $query) {
-      $query = preg_replace('/--.*\s/', '', $query);
-      $database->query($query);
-    }
-    
-    echo ' [OK]' . PHP_EOL;
+  echo 'Writing database table data...';
+  
+  $sql = file_get_contents('data.sql');
+  $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+  
+  $sql = explode('-- --------------------------------------------------------', $sql);
+  
+  foreach ($sql as $query) {
+    $query = preg_replace('/--.*\s/', '', $query);
+    $database->query($query);
   }
   
-  ### Demo Data ###################################
+  echo ' [OK]' . PHP_EOL;
+  
+  ### Databse > Tables > Demo Data ###################################
   
   if (!empty($_POST['demo_data'])) {
     echo 'Writing demo data...';
@@ -167,11 +189,11 @@
   
   echo ' [OK]' . PHP_EOL;
   
-  ### Admin Folder ###################################
+  ### Admin > Folder ###################################
   
   rename('../admin/', '../'.$_POST['admin_folder']);
   
-  ### .htaccess Protection ###################################
+  ### Admin > .htaccess Protection ###################################
   
   echo 'Securing admin folder...';
     
@@ -184,7 +206,7 @@
   
   echo ' [OK]' . PHP_EOL;
   
-  ### .htpasswd Users ###################################
+  ### Admin > .htpasswd Users ###################################
   
   echo 'Granting admin access for user '. $_POST['username'] .'...';
   

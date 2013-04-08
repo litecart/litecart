@@ -3,7 +3,7 @@
                                                          . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/nivo-slider.css" media="screen" />' . PHP_EOL
                                                          . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/themes/default/default.css" media="screen" />';
 ?>
-<div class="slider-wrapper theme-default" style="margin-bottom: 10px; position: relative;">
+<div id="slider-wrapper" class="theme-default" style="margin-bottom: 10px; position: relative;">
   <div id="slider" class="nivoSlider">
     <img src="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/toystory.jpg" data-thumb="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/toystory.jpg" alt="" />
     <a href="http://dev7studios.com"><img src="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/up.jpg" data-thumb="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/up.jpg" alt="" title="This is an example of a caption" /></a>

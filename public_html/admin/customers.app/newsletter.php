@@ -5,7 +5,7 @@
 
 <h2><?php echo $system->language->translate('title_list_of_subscribers', 'List of Subscribers'); ?></h2>
 
-<ul class="navigation-horizontal">
+<ul class="list-horizontal">
   <li><a href="<?php echo $system->document->href_link('', array('template' => 'raw'), array('app', 'doc')); ?>">Raw</a></li>
   <li><a href="<?php echo $system->document->href_link('', array('template' => 'email'), array('app', 'doc')); ?>">E-mail Formatted</a></li>
   <li><a href="<?php echo $system->document->href_link('', array('template' => 'csv'), array('app', 'doc')); ?>">CSV</a></li>
@@ -43,7 +43,7 @@
   echo $system->functions->form_draw_textarea('subscribers', $output, 'style="width: 100%; height: 400px;"');
 ?>
 
-<ul class="navigation-horizontal">
+<ul class="list-horizontal">
   <li><a href="http://www.mailchimp.com" target="_blank">MailChimp</a></li>
   <li><a href="http://www.getanewsletter.com" target="_blank">Get A Newsletter</a></li>
 </ul>

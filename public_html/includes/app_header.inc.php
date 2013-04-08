@@ -4,36 +4,40 @@
   ob_start();
   
 // Get config
+  if (!file_exists(realpath(dirname(__FILE__)) . '/config.inc.php')) {
+    header('Location: ./install/');
+    exit;
+  }
   require_once(realpath(dirname(__FILE__)) . '/config.inc.php');
   
 // Autoloader
   function __autoload($name) {
     switch($name) {
-      case (substr($name, 0, 4) == 'ctrl'):
+      case (substr($name, 0, 5) == 'ctrl_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $name . '.inc.php';
         break;
-      case (substr($name, 0, 2) == 'ga'):
+      case (substr($name, 0, 3) == 'ga_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'get_address/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 3) == 'job'):
+      case (substr($name, 0, 4) == 'job_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 2) == 'ot'):
+      case (substr($name, 0, 3) == 'ot_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 2) == 'os'):
+      case (substr($name, 0, 3) == 'os_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 2) == 'pm'):
+      case (substr($name, 0, 3) == 'pm_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 3) == 'ref'):
+      case (substr($name, 0, 4) == 'ref_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . $name . '.inc.php';
         break;
-      case (substr($name, 0, 2) == 'sm'):
+      case (substr($name, 0, 3) == 'sm_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 3) == 'url'):
+      case (substr($name, 0, 4) == 'url_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/' . $name . '.inc.php';
         break;
       default:

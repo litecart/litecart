@@ -10,10 +10,6 @@ $app_config = array(
       'link' => 'catalog.php'
     ),
     array(
-      'name' => $system->language->translate('title_designers', 'Designers'),
-      'link' => 'designers.php'
-    ),
-    array(
       'name' => $system->language->translate('title_product_groups', 'Product Groups'),
       'link' => 'product_groups.php'
     ),

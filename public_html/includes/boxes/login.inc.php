@@ -1,5 +1,5 @@
 <?php if (!empty($system->customer->data['id'])) return; ?>
-<div class="box">
+<div class="box" id="box-login">
   <div class="heading"><h3><?php echo $system->language->translate('title_login', 'Login'); ?></h3></div>
   <div class="content">
     <?php echo $system->functions->form_draw_form_begin('login_form', 'post'); ?>

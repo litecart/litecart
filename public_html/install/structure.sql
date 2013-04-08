@@ -61,13 +61,13 @@ CREATE TABLE `lc_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `name` varchar(64) NOT NULL,
-  `domestic_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `domestic_name` varchar(64) CHARACTER SET utf8 NOT NULL,
   `iso_code_2` varchar(2) NOT NULL DEFAULT '',
   `iso_code_3` varchar(3) NOT NULL DEFAULT '',
   `address_format` text NOT NULL,
   `postcode_required` tinyint(1) NOT NULL,
-  `currency_code` varchar(3) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `phone_code` varchar(3) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `currency_code` varchar(3) CHARACTER SET utf8 NOT NULL,
+  `phone_code` varchar(3) CHARACTER SET utf8 NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -142,33 +142,6 @@ CREATE TABLE `lc_delivery_status_info` (
   KEY `delivery_status_id` (`delivery_status_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
--- --------------------------------------------------------
-CREATE TABLE `lc_designers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` tinyint(4) NOT NULL,
-  `name` varchar(64) NOT NULL,
-  `image` varchar(64) NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
--- --------------------------------------------------------
-CREATE TABLE `lc_designers_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `designer_id` int(11) NOT NULL,
-  `language_code` varchar(2) NOT NULL,
-  `short_description` varchar(256) NOT NULL,
-  `description` text NOT NULL,
-  `keywords` varchar(256) NOT NULL,
-  `head_title` varchar(128) NOT NULL,
-  `meta_description` varchar(256) NOT NULL,
-  `meta_keywords` varchar(256) NOT NULL,
-  `link` varchar(256) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `manufacturer_id` (`designer_id`),
-  KEY `language_code` (`language_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 CREATE TABLE `lc_geo_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -423,7 +396,6 @@ CREATE TABLE `lc_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL,
   `manufacturer_id` int(11) NOT NULL,
-  `designer_id` int(11) NOT NULL,
   `supplier_id` int(11) NOT NULL,
   `delivery_status_id` int(11) NOT NULL,
   `sold_out_status_id` int(11) NOT NULL,
@@ -454,7 +426,6 @@ CREATE TABLE `lc_products` (
   KEY `status` (`status`),
   KEY `categories` (`categories`),
   KEY `manufacturer_id` (`manufacturer_id`),
-  KEY `designer_id` (`designer_id`),
   KEY `keywords` (`keywords`),
   KEY `code` (`code`),
   KEY `date_valid_from` (`date_valid_from`),

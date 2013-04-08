@@ -29,7 +29,7 @@
   function output_category_tree($category_id, $level, $category_trail) {
     global $system;
     
-    $output = '<ul class="navigation-vertical">' . PHP_EOL;
+    $output = '<ul class="list-vertical">' . PHP_EOL;
     
     $categories_query = $system->database->query(
       "select c.id, ci.name

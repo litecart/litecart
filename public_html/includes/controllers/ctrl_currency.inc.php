@@ -23,6 +23,16 @@
     
     public function save() {
     
+      if (empty($this->data['status']) && $this->data['code'] == $this->system->settings['store_currency_code']) {
+        trigger_error('You cannot disable the store currency.', E_USER_ERROR);
+        return;
+      }
+    
+      if (empty($this->data['status']) && $this->data['code'] == $this->system->settings['default_currency_code']) {
+        trigger_error('You cannot disable the default currency.', E_USER_ERROR);
+        return;
+      }
+    
       if (!empty($this->data['id'])) {
         $currencies_query = $this->system->database->query(
           "select * from ". DB_TABLE_CURRENCIES ."
@@ -119,7 +129,7 @@
       }
       
       if ($this->data['code'] == $this->system->settings->get('default_currency_code')) {
-        trigger_error('Cannot delete the store default currency', E_USER_ERROR);
+        trigger_error('Cannot delete the default currency', E_USER_ERROR);
         return;
       }
       

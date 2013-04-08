@@ -33,23 +33,23 @@
 ?>
 <div id="sidebar" class="shadow rounded-corners">
   <div class="box" id="box-information">
-    <div class="heading"><h3><?php echo $system->language->translate('title_information', 'Information'); ?></h3></div>
+    <div class="heading"><h3><?php echo $system->language->translate('title_customer_service', 'Customer Service'); ?></h3></div>
     <div class="content">
       <nav>
-        <ul class="navigation-vertical">
-        <?php
-          $pages_query = $system->database->query(
-            "select p.id, pi.title from ". DB_TABLE_PAGES ." p
-            left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
-            where status
-            and dock_support
-            order by p.priority, pi.title;"
-          );
-          while ($page = $system->database->fetch($pages_query)) {
-            echo '<li><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
-          }
-        ?>
-        <li><a href="<?php echo $system->document->href_link('', array()); ?>"><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></a></li>
+        <ul class="list-vertical">
+          <li><a href="<?php echo $system->document->href_link('', array()); ?>"><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></a></li>
+          <?php
+            $pages_query = $system->database->query(
+              "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+              left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
+              where status
+              and dock_support
+              order by p.priority, pi.title;"
+            );
+            while ($page = $system->database->fetch($pages_query)) {
+              echo '<li><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+            }
+          ?>
         </ul>
       </nav>
     </div>
