@@ -14,27 +14,27 @@
     size: A4; /* auto is the initial value */
     margin: 20mm;
     zoom: 100%;
-    padding: 0;
+    padding: 0px;
   }
   
   /*#header {
     position: absolute;  
-    top: 0;  
+    top: 0px;  
   }*/
   
   html, body {
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
   }
   
   body {
     font-size: 10pt;
     font-family: Arial, Helvetica,sans-serif;
     color: #000;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
   }
   
   #window {
@@ -43,12 +43,12 @@
     right: 15mm;
     width: 95mm;
     height: 29mm;
-    padding: 5mm 0 0 5mm;
+    padding: 5mm 0px 0px 5mm;
     margin: -20mm;
   }
   
   h1 {
-    margin-top: 0;
+    margin-top: 0px;
   }
   
   a {
@@ -57,7 +57,7 @@
   
   #footer {
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     margin-top: 20mm;
     font-size: 0.9em;
   }
@@ -73,7 +73,7 @@
   }
   
   body {
-    margin: 0 auto;
+    margin: 0px auto;
     max-width: 640px;
     font-size: 10pt;
     font-family: Arial, Helvetica,sans-serif;
@@ -88,7 +88,7 @@
     color: #0000cc;
   }
   a:hover, a:active{
-    color: #ff0000;
+    color: #ff0000px;
   }
   
   #footer {

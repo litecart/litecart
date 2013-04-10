@@ -30,14 +30,14 @@
       $notices = array();
       
       foreach(array('debugs', 'errors', 'notices', 'warnings', 'success') as $notice_type) {
-        if ($this->system->notices->get($notice_type)) {
-          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', $this->system->notices->dump($notice_type)) . '</div>' . PHP_EOL;
+        if (!empty($this->system->notices->data[$notice_type])) {
+          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', $this->system->notices->data[$notice_type]) . '</div>' . PHP_EOL;
         }
       }
       
       $this->reset();
       
-      if (isset($notices)) {
+      if (!empty($notices)) {
         $this->system->document->snippets['notices'] = '<div id="notices-wrapper">' . PHP_EOL
                                                     . '  <div id="notices">'. PHP_EOL . implode(PHP_EOL, $notices) . '</div>' . PHP_EOL
                                                     . '</div>' . PHP_EOL;
@@ -45,27 +45,13 @@
       }
     }
     
-    //public function before_output() {
-    //}
+    public function before_output() {
+    }
     
     //public function shutdown() {
     //}
     
     ######################################################################
-    
-    public function add($type, $msg, $key=false) {
-      if ($key) $this->data[$type][$key] = $msg;
-      else $this->data[$type][] = $msg;
-    }
-    
-    public function remove($type, $key) {
-      unset($this->data[$type][$key]);
-    }
-    
-    public function get($type) {
-      if (!isset($this->data[$type])) return false;
-      return $this->data[$type];
-    }
     
     public function reset($type=null) {
     
@@ -79,6 +65,20 @@
           }
         }
       }
+    }
+    
+    public function add($type, $msg, $key=false) {
+      if ($key) $this->data[$type][$key] = $msg;
+      else $this->data[$type][] = $msg;
+    }
+    
+    public function remove($type, $key) {
+      unset($this->data[$type][$key]);
+    }
+    
+    public function get($type) {
+      if (!isset($this->data[$type])) return false;
+      return $this->data[$type];
     }
     
     public function dump($type) {

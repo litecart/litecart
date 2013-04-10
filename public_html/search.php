@@ -14,7 +14,7 @@
   $system->functions->draw_fancybox('a.fancybox');
   
   ob_start();
-  echo '<div id="sidebar" class="shadow rounded-corners">' . PHP_EOL;
+  echo '<div class="shadow rounded-corners">' . PHP_EOL;
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');

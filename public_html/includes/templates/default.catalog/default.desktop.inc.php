@@ -5,11 +5,11 @@
 <meta charset="{snippet:charset}" />
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
-<meta name="viewport" content="width=device-width">
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css" media="screen" />
+<meta name="viewport" content="width=480">
+<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css">
 <!--[if IE]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
-<!--[if IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
-<!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
+<!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
+<!--[if lt IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
 <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="//code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
@@ -26,7 +26,6 @@
   <div id="page">
 
     <div id="header-wrapper">
-    
       <header id="header" class="rounded-corners-top">
       
         <div id="logotype-wrapper">
@@ -41,8 +40,8 @@
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'currencies.inc.php'); ?>
         </div>
         
-        <div id="site-menu-wrapper">
-        <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
+        <div id="site-links-wrapper">
+        <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
         </div>
         
         <div id="cart-wrapper">
@@ -50,92 +49,61 @@
         </div>
         
       </header>
-      
-      <div id="navigation" class="box-gradient1 rounded-corners shadow">
-      
-        <div id="top-menu-wrapper">
-          <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'top_menu.inc.php'); ?>
-        </div>
-        
-      </div>
-      
     </div>
     
-    <div id="main">
-      <table style="width: 100%;">
-        <tr>
-          <td>
-          
-            <aside id="column-left-wrapper">
+    <div id="site-menu-wrapper" class="box-gradient1 rounded-corners shadow">
+      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
+    </div>
+    
+    <div id="main-wrapper">
+      <div id="main">
+        <table style="width: 100%;">
+          <tr>
+            <td colspan="3" class="top">
+              <!--snippet:notices-->
+              <!--snippet:top-->
+            </td>
+          </tr>
+          <tr>
+            <td class="left">
               <!--snippet:column_left-->
-            </aside>
-            
-          </td>
-          
-          <td style="width: 100%;">
-            <!--snippet:notices-->
-            
-            <div id="leaderboard-wrapper">
-              <!--snippet:leaderboard-->
-            </div>
-            
-            <div id="content-wrapper">
-              <div id="content" class="">
-                <!--snippet:content-->
+            </td>
+            <td class="content">
+              <div id="content-wrapper">
+                <div id="content" class="">
+                  <!--snippet:content-->
+                </div>
               </div>
-            </div>
-            
-          </td>
-          
-          <td>
-          
-            <aside id="column-right-wrapper" class="shadow rounded-corners-bottom">
+            </td>
+            <td class="right">
               <!--snippet:column_right-->
-            </aside>
-            
-          </td>
-        </tr>
-      </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" class="bottom">
+              <!--snippet:bottom-->
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
     
+    <div id="breadcrumbs-wrapper">
+      <!--snippet:breadcrumbs-->
+    </div>
+
     <div id="footer-wrapper">
-    
-      <div id="breadcrumbs-wrapper">
-        <!--snippet:breadcrumbs-->
-      </div>
-      
       <footer id="footer" class="box-gradient1 shadow rounded-corners">
         <table style="width: 100%;">
           <tr>
             <td>
-              <nav class="categories">
-                <p><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong></p>
-                <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
-              </nav>
+              <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
             </td>
             <td>
-              <nav class="manufacturers">
-                <p><strong><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></strong></p>
-                <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
-              </nav>
+              <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
             </td>
             <td>
-              <nav class="information">
-                <p><strong><?php echo $system->language->translate('title_information', 'Information'); ?></strong></p>
-                <ul>
-                <?php
-                  $pages_query = $system->database->query(
-                    "select p.id, pi.title from ". DB_TABLE_PAGES ." p
-                    left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
-                    where dock_support
-                    order by p.priority, pi.title;"
-                  );
-                  while ($page = $system->database->fetch($pages_query)) {
-                    echo '    <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'information.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
-                  }
-                ?>
-                </ul>
-              </nav>
+              <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_information.inc.php'); ?>
             </td>
             <td>
               <div class="contact">
@@ -167,7 +135,7 @@
       });
       
       $('#scroll-up').click(function(){
-        $("html, body").animate({ scrollTop: 0 }, 600);
+        $("html, body").animate({scrollTop: 0}, 200);
         return false;
       });
     </script>

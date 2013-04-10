@@ -5,17 +5,17 @@
 }
 
 .box .heading {
-  padding: 0;
+  padding: 0px;
   overflow: hidden;
 }
 
 .box .heading h1, .box .heading h2, .box .heading h3 {
-  margin: 0;
+  margin: 0px;
 }
 
 .box .content {
-  padding: 10px 0;
-  margin: 0;
+  padding: 10px 0px;
+  margin: 0px;
 }
 
 /* Custom boxes */

@@ -20,6 +20,8 @@
       $this->data = $this->system->database->fetch($page_query);
       if (empty($this->data)) trigger_error('Could not find pages ('. $page_id .') in database.', E_USER_ERROR);
       
+      $this->data['dock'] = explode(',', $this->data['dock']);
+      
       $page_info_query = $this->system->database->query(
         "select title, content, head_title, meta_description, meta_keywords, language_code from ". DB_TABLE_PAGES_INFO ."
         where page_id = '". (int)$this->data['id'] ."';"
@@ -44,9 +46,8 @@
       
       $this->system->database->query(
         "update ". DB_TABLE_PAGES ."
-        set dock_menu = '". ((!empty($this->data['dock_menu'])) ? 1 : 0) ."',
-          status = '". ((!empty($this->data['status'])) ? 1 : 0) ."',
-          dock_support = '". ((!empty($this->data['dock_support'])) ? 1 : 0) ."',
+        set status = '". ((!empty($this->data['status'])) ? 1 : 0) ."',
+          dock = '". ((!empty($this->data['dock'])) ? implode(',', $this->data['dock']) : '') ."',
           priority = '". (int)$this->data['priority'] ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'

@@ -1,6 +1,9 @@
 <?php
   require_once('includes/app_header.inc.php');
   
+  header('X-Robots-Tag: noindex');
+  $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  
   $system->breadcrumbs->add($system->language->translate('title_create_account', 'Create Account'), $system->document->link());
   
   $system->document->snippets['title'][] = $system->language->translate('title_create_account', 'Create Account');

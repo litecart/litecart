@@ -4,7 +4,7 @@
   
   ob_start();
 ?>
-<div id="sidebar" class="shadow rounded-corners">
+<aside class="shadow rounded-corners">
   <div class="box" id="box-information">
     <div class="heading"><h3><?php echo $system->language->translate('title_information', 'Information'); ?></h3></div>
     <div class="content">
@@ -15,7 +15,7 @@
             "select p.id, pi.title from ". DB_TABLE_PAGES ." p
             left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
             where status
-            and dock_menu
+            and find_in_set('information', dock)
             order by p.priority, pi.title;"
           );
           while ($page = $system->database->fetch($pages_query)) {
@@ -26,7 +26,7 @@
       </nav>
     </div>
   </div>
-</div>
+</aside>
 <?php
   $system->document->snippets['column_left'] = ob_get_clean();
   

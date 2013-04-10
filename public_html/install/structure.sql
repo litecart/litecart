@@ -367,8 +367,7 @@ CREATE TABLE `lc_orders_totals` (
 CREATE TABLE `lc_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL,
-  `dock_menu` tinyint(1) NOT NULL,
-  `dock_support` tinyint(1) NOT NULL,
+  `dock` VARCHAR(64) NOT NULL,
   `priority` int(11) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,

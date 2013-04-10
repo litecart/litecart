@@ -7,26 +7,26 @@
 .glass-effect {
   background: #fff;
   
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-              inset 0 1px rgba(255,255,255,0.3),
-              inset 0 10px rgba(255,255,255,0.2),
-              inset 0 10px 20px rgba(255,255,255,0.25),
-              inset 0 -15px 30px rgba(0,0,0,0.3);
-  -o-box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-                 inset 0 1px rgba(255,255,255,0.3),
-                 inset 0 10px rgba(255,255,255,0.2),
-                 inset 0 10px 20px rgba(255,255,255,0.25),
-                 inset 0 -15px 30px rgba(0,0,0,0.3);
-  -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-                      inset 0 1px rgba(255,255,255,0.3),
-                      inset 0 10px rgba(255,255,255,0.2),
-                      inset 0 10px 20px rgba(255,255,255,0.25),
-                      inset 0 -15px 30px rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5),
-                   inset 0 1px rgba(255,255,255,0.3),
-                   inset 0 10px rgba(255,255,255,0.2),
-                   inset 0 10px 20px rgba(255,255,255,0.25),
-                   inset 0 -15px 30px rgba(0,0,0,0.3);
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.5),
+              inset 0px 1px rgba(255,255,255,0.3),
+              inset 0px 10px rgba(255,255,255,0.2),
+              inset 0px 10px 20px rgba(255,255,255,0.25),
+              inset 0px -15px 30px rgba(0,0,0,0.3);
+  -o-box-shadow: 0px 2px 6px rgba(0,0,0,0.5),
+                 inset 0px 1px rgba(255,255,255,0.3),
+                 inset 0px 10px rgba(255,255,255,0.2),
+                 inset 0px 10px 20px rgba(255,255,255,0.25),
+                 inset 0px -15px 30px rgba(0,0,0,0.3);
+  -webkit-box-shadow: 0px 2px 6px rgba(0,0,0,0.5),
+                      inset 0px 1px rgba(255,255,255,0.3),
+                      inset 0px 10px rgba(255,255,255,0.2),
+                      inset 0px 10px 20px rgba(255,255,255,0.25),
+                      inset 0px -15px 30px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0px 2px 6px rgba(0,0,0,0.5),
+                   inset 0px 1px rgba(255,255,255,0.3),
+                   inset 0px 10px rgba(255,255,255,0.2),
+                   inset 0px 10px 20px rgba(255,255,255,0.25),
+                   inset 0px -15px 30px rgba(0,0,0,0.3);
 }
 
 .box-gradient1 {
@@ -83,27 +83,27 @@
 }
 
 ul.list-vertical {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
 }
 ul.list-vertical li {
-  margin: 0;
+  margin: 0px;
   padding: 2px;
   list-style: none;
 }
 ul.list-vertical ul {
   margin-left: 18px;
-  padding: 0;
+  padding: 0px;
   border:1px #000;
 }
 
 ul.list-horizontal {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
 }
 ul.list-horizontal li {
   display: inline-block;
-  margin: 0;
+  margin: 0px;
   padding: 2px;
   list-style: none;
 }

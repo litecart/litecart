@@ -1,11 +1,11 @@
 ul.listing-wrapper {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   
   overflow: auto;
   
   text-decoration: none;
-  color: #000000;
+  color: #000;
 }
 
 ul.listing-wrapper > .category-image {
@@ -22,7 +22,7 @@ ul.listing-wrapper > .category-image {
 }
 
 ul.listing-wrapper > .category-image {
-  padding: 0;
+  padding: 0px;
 }
 
 ul.listing-wrapper > .category {
@@ -47,7 +47,7 @@ ul.listing-wrapper > .category a.link {
   padding: 5px;
   
   text-decoration: none;
-  color: #333333;
+  color: inherit;
 }
 ul.listing-wrapper > .category .image{
   position: relative;
@@ -56,7 +56,7 @@ ul.listing-wrapper > .category .footer {
   display: block;
 
   width: 100%;
-  padding: 5px 0;
+  padding: 5px 0px;
 
   background: rgba(100, 100, 100, 0.75);
   color: #fff;
@@ -86,14 +86,14 @@ ul.listing-wrapper > .manufacturer a.link {
   padding: 5px;
   
   text-decoration: none;
-  color: #333333;
+  color: inherit;
 }
 
 ul.listing-wrapper > .manufacturer .title {
   display: block;
 
   width: 100%;
-  padding: 5px 0;
+  padding: 5px 0px;
 
   background: rgba(100, 100, 100, 0.75);
   color: #fff;
@@ -115,13 +115,13 @@ ul.listing-wrapper > .product {
 ul.listing-wrapper > .product a.link {
   display: block;
   
-  margin: 0;
+  margin: 0px;
   padding: 10px;
   
   background: #fff;
 
   text-decoration: none;
-  color: #000;
+  color: inherit;
   
   text-align: left;
 }
@@ -133,7 +133,6 @@ ul.listing-wrapper > .product .manufacturer {
   white-space: nowrap;
 }
 ul.listing-wrapper > .product .price {
-  color: #000;
   text-align: right;
   font-size: 1.1em;
   font-weight: bold;

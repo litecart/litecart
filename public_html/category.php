@@ -61,13 +61,13 @@
   $system->functions->draw_fancybox('a.fancybox');
   
   ob_start();
-  echo '<div id="sidebar" class="shadow rounded-corners">' . PHP_EOL;
+  echo '<aside class="shadow rounded-corners">' . PHP_EOL;
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php');
-  echo '</div>' . PHP_EOL;
+  echo '</aside>' . PHP_EOL;
   $system->document->snippets['column_left'] = ob_get_clean();
   
   $category_cache_id = $system->cache->cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));

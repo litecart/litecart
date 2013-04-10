@@ -1,4 +1,6 @@
-<ul class="list-vertical">
+<nav class="categories">
+  <p><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong></p>
+  <ul class="list-vertical">
 <?php  
   $categories_query = $system->database->query(
     "select c.id, c.image, ci.name
@@ -18,4 +20,5 @@
     echo '  <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a></li>' . PHP_EOL;
   }
 ?>
-</ul>
+  </ul>
+</nav>

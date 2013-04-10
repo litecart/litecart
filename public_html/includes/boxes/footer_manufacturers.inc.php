@@ -1,4 +1,6 @@
-<ul class="list-vertical">
+<nav class="manufacturers">
+  <p><strong><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></strong></p>
+  <ul class="list-vertical">
 <?php  
   $manufacturers_query = $system->database->query(
     "select m.id, m.image, m.name
@@ -15,4 +17,5 @@
     echo '  <li><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">'. $manufacturer['name'] .'</a>' . PHP_EOL;
   }
 ?>
-</ul>
+  </ul>
+</nav>

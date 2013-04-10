@@ -7,7 +7,7 @@ $(document).ready(function(){
     $(this).addClass("active");
     $("[id^=tab-]").hide();
     var selected_tab = $(this).find("a").attr("href");
-    $(selected_tab).fadeIn();
+    $(selected_tab).fadeIn('fast');
     return false;
   });
 });

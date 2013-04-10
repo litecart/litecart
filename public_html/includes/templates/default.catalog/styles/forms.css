@@ -1,9 +1,9 @@
 form {
-  margin: 0;
+  margin: 0px;
 }
 
 input[type=email], input[type=float], input[type=number], input[type=text], input[type=password], select, textarea, .input-field {
-  margin: 0;
+  margin: 0px;
   padding: 4px;
   border: 1px solid #d1d1d1;
   border-radius: 3px;
@@ -51,7 +51,7 @@ button, a.button, span.button {
   display: inline-block;
   
   margin: 0px 1px;
-  padding: 4px 6px;
+  padding: 3px 6px;
   
   border: 1px solid #d1d1d1;
   border-radius: 3px;
@@ -62,14 +62,14 @@ button, a.button, span.button {
   background-image: -ms-linear-gradient(top, #f9f9f9, #ececec);
   background-image: -o-linear-gradient(top, #f9f9f9, #ececec);
   
-  -webkit-box-shadow: 0 1px 1px #ccc, inset 0 0 1px #fff;
-  -moz-box-shadow: 0 1px 1px #ccc, inset 0 0 1px #fff;
+  -webkit-box-shadow: 0px 1px 1px #ccc, inset 0px 0px 1px #fff;
+  -moz-box-shadow: 0px 1px 1px #ccc, inset 0px 0px 1px #fff;
   box-shadow: inset 0px 1px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
   
   color: #666;
   text-decoration: none;
-  text-shadow: 0 1px 1px white;
-  font: normal 11px Sans-serif;
+  text-shadow: 0px 1px 1px white;
+  font: normal 12px Sans-serif;
   
   white-space: nowrap;
   vertical-align: middle;
@@ -95,18 +95,18 @@ button.active, button:active, a.button:active, a.button.active, span.button:acti
   background: -moz-linear-gradient(top, #E6E6E6, gainsboro);
   background: -ms-linear-gradient(top, #E6E6E6, gainsboro);
   background: -o-linear-gradient(top, #E6E6E6, gainsboro);
-  -webkit-box-shadow: inset 0 1px 2px #aaa;
-  -moz-box-shadow: inset 0 1px 2px #aaa;
-  box-shadow: inset 0 1px 2px #aaa;
+  -webkit-box-shadow: inset 0px 1px 2px #aaa;
+  -moz-box-shadow: inset 0px 1px 2px #aaa;
+  box-shadow: inset 0px 1px 2px #aaa;
 }
 
 button[disabled=disabled], a.button.disabled, span.button.disabled {
   border: 1px solid #DDD;
   border-radius: 3px;
-  text-shadow: 0 1px 1px white;
-  -webkit-box-shadow: 0 1px 1px #fff;
-  -moz-box-shadow: 0 1px 1px #fff;
-  box-shadow: 0 1px 1px #fff;
+  text-shadow: 0px 1px 1px white;
+  -webkit-box-shadow: 0px 1px 1px #fff;
+  -moz-box-shadow: 0px 1px 1px #fff;
+  box-shadow: 0px 1px 1px #fff;
   background: transparent;
   color: #ccc;
 }

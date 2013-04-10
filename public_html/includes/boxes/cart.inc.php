@@ -24,7 +24,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert('Error');
+        //alert('Error');
       },
       success: function(data) {
         $('#cart .quantity').html(data['quantity']);

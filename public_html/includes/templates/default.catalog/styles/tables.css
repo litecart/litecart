@@ -1,13 +1,13 @@
 table { 
-  border-spacing: 0;
+  border-spacing: 0px;
   border-collapse: collapse;
 }
 th {
-  padding: 0;
+  padding: 0px;
   vertical-align: top;
 }
 td {
-  padding: 0;
+  padding: 0px;
   vertical-align: top;
 }
 

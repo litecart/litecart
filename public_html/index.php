@@ -13,32 +13,15 @@
                                                         . '<meta property="og:image" content="'. $system->document->href_link(WS_DIR_IMAGES . 'logotype.png') .'" />';
 ?>
 
-<?php
-  ob_start();
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'slider.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'logotypes.inc.php');
-  $system->document->snippets['leaderboard'] = ob_get_clean();
-?>
+<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'slider.inc.php'); ?>
 
-<?php
-  ob_start();
-  echo '<div id="sidebar" class="shadow rounded-corners">' . PHP_EOL;
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php');
-  echo '</div>' . PHP_EOL;
-  $system->document->snippets['column_left'] = ob_get_clean();
-?>
+<?php  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'logotypes.inc.php'); ?>
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'new_products.inc.php'); ?>
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'most_popular.inc.php'); ?>
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'campaigns.inc.php'); ?>
-
-<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'categories.inc.php'); ?>
 
 <?php
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

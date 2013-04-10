@@ -1,6 +1,9 @@
 <?php
   require_once('includes/app_header.inc.php');
   
+  header('X-Robots-Tag: noindex');
+  $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  
   if (!empty($system->customer->data['id'])) $system->notices->add('notice', $system->language->translate('text_already_logged_in', 'You are already logged in'));
   
   $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('')) .'" />';
