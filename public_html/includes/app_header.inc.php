@@ -55,6 +55,7 @@
     array_pop($trace);
     
     $traces = '';
+    
     /*
     if (!empty($trace)) {
       $traces = array();

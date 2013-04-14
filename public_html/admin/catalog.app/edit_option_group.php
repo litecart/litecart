@@ -158,7 +158,7 @@
   </table>
   <script>
     var new_value_index = 1;
-    $("#add-value").on("click", function(event) {
+    $('body').on('click', '#add-value', function(event) {
       event.preventDefault();
       while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
@@ -179,7 +179,7 @@
       $(this).closest('tr').before(output);
     });
     
-    $("#move-value-up, #move-value-down").on("click", function(event) {
+    $("body").on("click", "#move-value-up, #move-value-down", function(event) {
       event.preventDefault();
       var row = $(this).parents("tr:first");
       var firstrow = $('table tr:first');
@@ -193,7 +193,7 @@
       }
     });
     
-    $("#remove-value").on("click", function(event) {
+    $("body").on("click", "#remove-value", function(event) {
       event.preventDefault();
       $(this).closest('tr').remove();
     });

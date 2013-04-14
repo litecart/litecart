@@ -129,11 +129,10 @@ span.required {
 }
 
 #site-menu-wrapper {
-  position: absolute;
+  position: relative;
   left: 0px;
   bottom: 0px;
   margin-bottom: 20px;
-  position: relative;
   height: 41px;
 }
 

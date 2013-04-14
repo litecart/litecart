@@ -382,7 +382,7 @@
   </div>
 </div>
 <script>
-  $('form[name=buy_now_form]').on('submit', function(e) {
+  $('form[name=buy_now_form]').submit(function(e) {
     var form = $(this);
     e.preventDefault();
     $("button[name='add_cart_product']").animate_from_to("#cart", {

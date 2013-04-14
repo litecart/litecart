@@ -47,7 +47,7 @@
           $user_matched = true;
           
         }
-        var_dump($password);
+        
         $contents .= "$username:$password" . PHP_EOL;
       }
       

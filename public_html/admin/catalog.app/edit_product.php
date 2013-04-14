@@ -296,7 +296,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 ?>
               </table>
               <script>
-                $("#move-image-up, #move-image-down").on("click", function(event) {
+                $("body").on("click", "#move-image-up, #move-image-down", function(event) {
                   event.preventDefault();
                   var row = $(this).parents("tr:first");
                   var firstrow = $('table tr:first');
@@ -310,7 +310,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
                   }
                 });
                 
-                $("#remove-image").on("click", function(event) {
+                $("body").on("click", "#remove-image", function(event) {
                   event.preventDefault();
                   $(this).closest('tr').remove();
                 });
@@ -323,7 +323,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
               <div><?php echo $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"'); ?></div>
                <a href="#" id="add-new-image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo $system->language->translate('text_add', 'Add'); ?>" /></a>
               <script>
-                $("#add-new-image").on("click", function(event) {
+                $("body").on("click", "#add-new-image", function(event) {
                   event.preventDefault();
                   $(this).before('<div><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"')); ?></div>');
                 });
@@ -572,7 +572,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             currency_convert_prices();
           });
           
-          $("#net-price-tooltip").on('click', function(e) {
+          $("body").on('click', "#net-price-tooltip", function(e) {
             e.preventDefault;
             alert("<?php echo str_replace(array("\r", "\n", "\""), array('', '', "\\\""), $system->language->translate('text_net_price_tooltip', 'The net price field helps you calculate gross price based on the store country tax. But all prices input to database are always excluding tax.')); ?>");
           });
@@ -613,24 +613,24 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
         </table>
         
         <script>
-          $("input[name^='campaigns'][name$='[percentage]']").on("keyup", function() {
+          $("body").on("keyup", "input[name^='campaigns'][name$='[percentage]']", function() {
             var parent = $(this).closest('tr');
             <?php foreach ($system->currency->currencies as $currency) { ?>if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() != 0) $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val($("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100));<?php } ?>
           });
           
-          $("input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']").on("keyup", function() {
+          $("body").on("keyup", "input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']", function() {
             var parent = $(this).closest('tr');
             $(parent).find("input[name$='[percentage]']").val(($("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() * 100);
           });
           $("input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']").trigger("keyup");
           
-          $("#remove-campaign").on("click", function(event) {
+          $("body").on("click", "#remove-campaign", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
           var new_campaign_i = 1;
-          $("#add-campaign").on("click", function(event) {
+          $("body").on("click", "#add-campaign", function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_start_date', 'Start Date'); ?></strong><br />'
@@ -717,12 +717,12 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           </tr>
         </table>
         <script>
-          $("#remove-option").on("click", function(event) {
+          $("body").on("click", "#remove-option", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
-          $("#move-option-up, #move-option-down").on("click", function(event) {
+          $("body").on("click", "#move-option-up, #move-option-down", function(event) {
             event.preventDefault();
             var row = $(this).parents("tr:first");
             var firstrow = $('table tr:first');
@@ -736,7 +736,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             }
           });
           
-          $("select[name^='options'][name$='[group_id]']").on("change", function(){
+          $("body").on("change", "select[name^='options'][name$='[group_id]']", function(){
             var valueField = this.name.replace(/group/, 'value');
             $('body').css('cursor', 'wait');
             $.ajax({
@@ -766,7 +766,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           });
           
           var new_option_i = 1;
-          $("#add-option").on("click", function(event) {
+          $("body").on("click", "#add-option", function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td nowrap="nowrap"><a id="add-option" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
@@ -844,12 +844,12 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           </tr>
         </table>
         <script>
-          $("#remove-option").on("click", function(event) {
+          $("body").on("click", "#remove-option", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
-          $("#move-option-up, #move-option-down").on("click", function(event) {
+          $("body").on("click", "#move-option-up, #move-option-down", function(event) {
             event.preventDefault();
             var row = $(this).parents("tr:first");
             var firstrow = $('table tr:first');
@@ -864,7 +864,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           });
           
           var option_index = 2;
-          $("#add-group-value").on("click", function(event) {
+          $("body").on("click", "#add-group-value", function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
@@ -876,12 +876,12 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
             option_index++;
           });
           
-          $("#remove-group-value").on("click", function(event) {
+          $("body").on("click", "#remove-group-value", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
           
-          $("select[name^='new_option'][name$='[group_id]']").on("change", function(){
+          $("body").on("change", "select[name^='new_option'][name$='[group_id]']", function(){
             var valueField = this.name.replace(/group/, 'value');
             $('body').css('cursor', 'wait');
             $.ajax({
@@ -911,7 +911,7 @@ foreach (array_keys($system->currency->currencies) as $currency_code) {
           });
           
           var new_option_stock_i = 1;
-          $("button[name=add_option]").on("click", function(event) {
+          $("body").on("click", "button[name=add_option]", function(event) {
             event.preventDefault();
             var new_option_code = '';
             var new_option_name = '';

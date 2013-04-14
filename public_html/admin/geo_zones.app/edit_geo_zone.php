@@ -92,7 +92,7 @@
   </table>
   
   <script type="text/javascript">
-    $("#remove-zone").on("click", function(event) {
+    $("body").on("click", "#remove-zone", function(event) {
       event.preventDefault();
       $(this).closest('tr').remove();
     });
@@ -128,7 +128,7 @@
     });
     
     var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
-    $("button[name=add_zone]").on("click", function(event) {
+    $("body").on("click", "button[name=add_zone]", function(event) {
       event.preventDefault();
       if ($("select[name='country[code]']").find("option:selected").val() == "") return;
       new_zone_i++;

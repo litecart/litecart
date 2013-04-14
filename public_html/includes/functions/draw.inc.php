@@ -92,7 +92,7 @@
                                                                      . '    $("a").each(function() {' . PHP_EOL
                                                                      . '      $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
                                                                      . '    }); ' . PHP_EOL
-                                                                     . '    $("a.fancybox").on("hover", function() { ' . PHP_EOL // Fixes ajax content
+                                                                     . '    $("body").on("hover", "a.fancybox", function() { ' . PHP_EOL // Fixes ajax content
                                                                      . '      $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
     
     foreach (array_keys($params) as $key) {
@@ -127,6 +127,7 @@
     
     if ($_GET['page'] > 1) $system->document->snippets['head_tags']['prev'] = '<link rel="prev" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']-1), true)) .'" />';
     if ($_GET['page'] < $pages) $system->document->snippets['head_tags']['next'] = '<link rel="next" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']+1), true)) .'" />';
+    if ($_GET['page'] < $pages) $system->document->snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']+1), true)) .'" />';
     
     $link = $_SERVER['REQUEST_URI'];
     $link = preg_replace('/page=[0-9]/', '', $link);

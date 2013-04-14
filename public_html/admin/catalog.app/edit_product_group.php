@@ -101,7 +101,7 @@
   </table>
 <script>
   var new_value_index = 1;
-  $("#add-group-value").on("click", function(event) {
+  $("body").on("click", "#add-group-value", function(event) {
     event.preventDefault();
     while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
@@ -123,7 +123,7 @@
     $(this).closest('tr').before(output);
   });
   
-  $("#remove-group-value").on("click", function(event) {
+  $("body").on("click", "#remove-group-value", function(event) {
     event.preventDefault();
     $(this).closest('tr').remove();
   });

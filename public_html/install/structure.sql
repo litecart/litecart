@@ -36,7 +36,7 @@ CREATE TABLE `lc_categories` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`),
+  KEY `code` (`code`),
   KEY `parent_id` (`parent_id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -185,7 +185,7 @@ CREATE TABLE `lc_manufacturers` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`),
+  KEY `code` (`code`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -274,6 +274,7 @@ CREATE TABLE `lc_orders` (
   `shipping_zone_code` varchar(8) NOT NULL,
   `shipping_option_id` varchar(32) NOT NULL,
   `shipping_option_name` varchar(64) NOT NULL,
+  `shipping_tracking_id` varchar(128) NOT NULL,
   `payment_option_id` varchar(32) NOT NULL,
   `payment_option_name` varchar(64) NOT NULL,
   `payment_transaction_id` varchar(128) NOT NULL,

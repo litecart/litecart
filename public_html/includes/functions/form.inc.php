@@ -13,9 +13,20 @@
   }
   
   function form_reinsert_value($name) {
-    $value = isset($_GET[$name]) ? $_GET[$name] : '';
-    $value = isset($_POST[$name]) ? $_POST[$name] : $value;
-    return $value;
+    
+    foreach (array($_POST, $_GET) as $superglobal) {
+      if (empty($superglobal)) continue;
+      if (isset($superglobal[$name])) return $superglobal[$name];
+      foreach (explode('&', http_build_query($superglobal)) as $pair) {
+        list($field, $value) = explode('=', $pair);
+        $field = urldecode($field);
+        $value = urldecode($value);
+        if ($field == $name) return $value;
+        if (preg_match('/\[\]$/', $name) && preg_replace('/\[[0-9]+\]$/', '[]', $field) == $name) return $value;
+      }
+    }
+    
+    return '';
   }
   
   function form_draw_image($name, $src, $parameters=false) {
@@ -40,7 +51,7 @@
   }
   
   function form_draw_number_field($currency_code, $name, $value=true, $min='', $max='', $parameters='', $hint='') {
-    return form_draw_input($name, (int)$value, 'number', 'min="'. (($min) ? (int)$min : false) .'" max="'. (($max) ? (int)$max : false) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false), $hint);
+    return form_draw_input($name, $value, 'number', 'min="'. (($min) ? (int)$min : false) .'" max="'. (($max) ? (int)$max : false) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false), $hint);
   }
   
   function form_draw_date_field($name, $value='', $parameters='', $hint='') {
@@ -54,7 +65,7 @@
                                                             . '<link rel="stylesheet" type="text/css" media="screen" href="'. WS_DIR_EXT .'dynDateTime/css/calendar-system.css" />' . PHP_EOL;
                                                                  
     $system->document->snippets['javascript']['date_picker'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                   . '    $("input.date").on("mouseover", function() {' . PHP_EOL
+                                                                   . '    $("body").on("mouseover", "input.date", function() {' . PHP_EOL
                                                                    . '      $(this).dynDateTime({' . PHP_EOL
                                                                    . '        showsTime: false,' . PHP_EOL
                                                                    . '        ifFormat: "'. $strf .'",' . PHP_EOL
@@ -89,7 +100,7 @@
                                                             . '<link rel="stylesheet" type="text/css" media="screen" href="'. WS_DIR_EXT .'dynDateTime/css/calendar-system.css" />' . PHP_EOL;
     
     $system->document->snippets['javascript']['datetime_picker'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                 . '    $("input.datetime").on("mouseover", function() {' . PHP_EOL
+                                                                 . '    $("body").on("mouseover", "input.datetime", function() {' . PHP_EOL
                                                                  . '      $(this).dynDateTime({' . PHP_EOL
                                                                  . '        showsTime: true,' . PHP_EOL
                                                                  . '        ifFormat: "'. $strf .'",' . PHP_EOL
@@ -114,7 +125,8 @@
     return $html;
   }
   
-  function form_draw_time_field($name, $value='', $parameters='', $hint='') {
+  function form_draw_time_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
     return form_draw_input($name, $value, 'time', 'maxlength="6"' . (($parameters) ? ' '.$parameters : false), $hint);
   }
   
@@ -122,7 +134,8 @@
     return form_draw_input($name, '', 'file', $parameters, $hint);
   }
   
-  function form_draw_hidden_field($name, $value='') {
+  function form_draw_hidden_field($name, $value=true) {
+    if ($value === true) $value = form_reinsert_value($name);
     return form_draw_input($name, $value, 'hidden');
   }
   
@@ -144,8 +157,8 @@
     return form_draw_input($name, $value, $type, $parameters, $hint);
   }
   
-  function form_draw_regional_input_field($language_code, $name, $value='', $type='text', $parameters='', $hint='') {
-    return '<div class="regional-input-wrapper"><input type="'. (($type != 'password') ? 'text' : 'password') .'" name="'. $name .'" value="'. htmlspecialchars($value) .'" class="regional-input-field" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' /><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
+  function form_draw_regional_input_field($language_code, $name, $value=true, $type='text', $parameters='', $hint='') {
+    return '<div class="regional-input-wrapper">'. form_draw_input($name, $value, $type, $parameters, $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
   }
   
   function form_draw_select_field($name, $options=array(), $input=true, $size=false, $multiple=false, $parameters='', $hint='') {
@@ -164,7 +177,8 @@
     return $html;
   }
   
-  function form_draw_static_field($name, $value='', $parameters='') {
+  function form_draw_static_field($name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
     $html = '<div class="input-static"'. (($parameters) ? ' '.$parameters : false) .'>'. (($value) ? $value : '&nbsp;') .'</div>';
     return $html;
   }
@@ -172,6 +186,20 @@
   function form_draw_textarea($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
     return '<textarea name="'. $name .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
+  }
+  
+  function form_draw_wysiwyg_field($name, $value=true, $parameters='', $hint='') {
+    global $system;
+    
+    $system->document->snippets['head_tags']['cleditor'] = '<script src="'. WS_DIR_EXT .'cleditor/jquery.cleditor.min.js"></script>';
+    
+    return form_draw_textarea($name, $value, $parameters, $hint) . PHP_EOL
+         . '<script>' . PHP_EOL
+         . '  $("textarea[name=\''. $name .'\']").cleditor({' . PHP_EOL
+         . '    width:"100%",' . PHP_EOL
+         . '    height:"100%"' . PHP_EOL
+         . '  })[0].focus();' . PHP_EOL
+         . '</script>' . PHP_EOL;
   }
   
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='', $hint='') {

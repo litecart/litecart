@@ -136,6 +136,7 @@
         'language_code' => 'language_code',
         'payment_due' => 'payment_due',
         'order_status_id' => 'order_status_id',
+        'shipping_tracking_id' => 'shipping_tracking_id',
         'payment_transaction_id' => 'payment_transaction_id',
       );
       foreach ($key_map as $skey => $tkey){
@@ -334,11 +335,11 @@
         shipping_postcode = '". $this->system->database->input($this->data['customer']['shipping_address']['postcode']) ."',
         shipping_country_code = '". $this->system->database->input($this->data['customer']['shipping_address']['country_code']) ."',
         shipping_zone_code = '". $this->system->database->input($this->data['customer']['shipping_address']['zone_code']) ."',
-        ". ((isset($this->data['shipping_option'])) ? "shipping_option_id = '". $this->system->database->input($this->data['shipping_option']['id']) ."'," : false) ."
-        ". ((isset($this->data['shipping_option'])) ? "shipping_option_name = '". $this->system->database->input($this->data['shipping_option']['name']) ."'," : false) ."
-        ". ((isset($this->data['payment_option'])) ? "payment_option_id = '". $this->system->database->input($this->data['payment_option']['id']) ."'," : false) ."
-        ". ((isset($this->data['payment_option'])) ? "payment_option_name = '". $this->system->database->input($this->data['payment_option']['name']) ."'," : false) ."
-        ". ((isset($this->data['payment_transaction_id'])) ? "payment_transaction_id = '". $this->system->database->input($this->data['payment_transaction_id']) ."'," : false) ."
+        shipping_option_id = '". ((!empty($this->data['shipping_option'])) ? $this->system->database->input($this->data['shipping_option']['id']) : false) ."',
+        shipping_option_name = '". ((!empty($this->data['shipping_option'])) ? $this->system->database->input($this->data['shipping_option']['name']) : false) ."',
+        payment_option_id = '". ((!empty($this->data['payment_option'])) ? $this->system->database->input($this->data['payment_option']['id']) : false) ."',
+        payment_option_name = '". ((!empty($this->data['payment_option'])) ? $this->system->database->input($this->data['payment_option']['name']) : false) ."',
+        payment_transaction_id = '". ((!empty($this->data['payment_transaction_id'])) ? $this->system->database->input($this->data['payment_transaction_id']) : false) ."',
         language_code = '". $this->system->database->input($this->data['language_code']) ."',
         currency_code = '". $this->system->database->input($this->data['currency_code']) ."',
         currency_value = '". $this->system->database->input($this->data['currency_value']) ."',

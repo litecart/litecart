@@ -15,7 +15,7 @@
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'slider.inc.php'); ?>
 
-<?php  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'logotypes.inc.php'); ?>
+<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'logotypes.inc.php'); ?>
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'new_products.inc.php'); ?>
 

@@ -10,9 +10,6 @@
   $system->document->snippets['title'][] = $system->language->translate('title_checkout', 'Checkout');
   //$system->document->snippets['keywords'] = '';
   //$system->document->snippets['description'] = '';
-  
-  $system->document->snippets['head_tags']['jQuery-scrollTo'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'jquery/jquery.scrollTo-min.js"></script>';
-
 ?>
 
 <div id="checkout-cart-wrapper">
@@ -148,11 +145,11 @@
   
   $(document).ready(function() {
     
-    $("form button[type=submit]").on('click', function(e) {
+    $("body").on("click", "form button[type=submit]", function(e) {
       $(this).closest("form").append('<input type="hidden" name="'+ $(this).attr("name") +'" value="'+ $(this).text() +'" />');
     });
     
-    $('form[name=cart_form]').on('submit', function(e) {
+    $("body").on('submit', 'form[name=cart_form]', function(e) {
       e.preventDefault();
       $('body').css('cursor', 'wait');
       $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
@@ -185,7 +182,7 @@
     
     var customer_checksum;
     var stateCustomerChanged = false;
-    $('form[name=customer_form] *').on('change', function(e) {
+    $("body").on('change', 'form[name=customer_form] *', function(e) {
       if (customer_checksum != $(this).closest('form').serialize()) {
         stateCustomerChanged = true;
       }
@@ -193,7 +190,7 @@
     });
     
     var timerSubmitCustomer;
-    $('form[name=customer_form]').on('focusout', function() {
+    $("body").on('focusout', 'form[name=customer_form]', function() {
       timerSubmitCustomer = setTimeout(
         function() {
           if ($('form[name=customer_form]').blur()) {
@@ -206,18 +203,18 @@
         }, 1
       );
     });
-    $('form[name=customer_form]').on('focusin', function() {
+    $("body").on('focusin', 'form[name=customer_form]', function() {
       clearTimeout(timerSubmitCustomer);
     });
     
-    $('form[name="order_form"]').on('submit', function(e) {
+    $("body").on('submit', 'form[name="order_form"]', function(e) {
       if (stateCustomerChanged) {
         e.preventDefault();
         alert("<?php echo $system->language->translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
       }
     });
     
-    $('form[name=customer_form]').on('submit', function(e) {
+    $("body").on('submit', 'form[name=customer_form]', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
       $.ajax({
@@ -245,12 +242,14 @@
         },
         complete: function() {
           $('*').css('cursor', '');
-          $.scrollTo('#checkout-customer-wrapper', 800);
+          $('html, body').animate({
+            scrollTop: $('#checkout-customer-wrapper').offset().top
+          }, 800);
         }
       });
     });
     
-    $('form[name=shipping_form]').on('submit', function(e) {
+    $("body").on('submit', 'form[name=shipping_form]', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
       $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
@@ -271,7 +270,9 @@
           $('#checkout-shipping-wrapper').html(data).fadeTo('slow', 1);
           refreshPayment();
           refreshConfirmation();
-          $.scrollTo('#checkout-shipping-wrapper', 800);
+          $('html, body').animate({
+            scrollTop: $('#checkout-shipping-wrapper').offset().top
+          }, 800);
         },
         complete: function() {
           $('*').css('cursor', '');
@@ -279,7 +280,7 @@
       });
     });
     
-    $('form[name=payment_form]').on('submit', function(e) {
+    $("body").on('submit', 'form[name=payment_form]', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
       $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
@@ -300,7 +301,9 @@
         success: function(data) {
           $('#checkout-payment-wrapper').html(data).fadeTo('slow', 1);
           refreshConfirmation();
-          $.scrollTo('#checkout-payment-wrapper', 800);
+          $('html, body').animate({
+            scrollTop: $('#checkout-payment-wrapper').offset().top
+          }, 800);
         },
         complete: function() {
           $('*').css('cursor', '');
@@ -308,7 +311,7 @@
       });
     });
     
-    $('form[name=comments_form]').on('blur', function(e) {
+    $("body").on('blur', 'form[name=comments_form]', function(e) {
       e.preventDefault();
       $('*').css('cursor', 'wait');
       $('#checkout-comments-wrapper').fadeTo('slow', 0.25);

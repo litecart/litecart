@@ -64,21 +64,9 @@ var config = {
 <div style="float: right;">
   <?php echo $system->functions->form_draw_form_begin('search_form', 'get'); ?>
     <?php if (!empty($_GET)) foreach ($_GET as $key => $value) { if (!in_array($key, array('query', 'system'))) echo $system->functions->form_draw_hidden_field($key, $value); } ?>
-    <?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : $system->language->translate('text_search_phrase_or_keyword', 'Search phrase or keyword')); ?>
+    <?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : '', 'placeholder="'. $system->language->translate('text_search_phrase_or_keyword') .'"'); ?>
     <?php echo $system->functions->form_draw_button('search', $system->language->translate('title_search', 'Search'), 'submit'); ?>
   <?php echo $system->functions->form_draw_form_end(); ?>
-  <script type="text/javascript">
-    $("input[name=query]").on("click", function(event) {
-      if ($(this).val() == "<?php echo $system->language->translate('text_search_phrase_or_keyword'); ?>") {
-        $(this).val("");
-      }
-    });
-    $("input[name=query]").on("blur", function(event) {
-      if ($(this).val() == "") {
-        $(this).val("<?php echo $system->language->translate('text_search_phrase_or_keyword'); ?>");
-      }
-    });
-  </script>
 </div>
 
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_search_translations', 'Search Translations'); ?></h1>

@@ -14,8 +14,10 @@
 
   // Save data to database
   if (isset($_POST['save'])) {
-
+    
     if ($_POST['name'] == '') $system->notices->add('errors', $system->language->translate('error_name_missing', 'You must enter a name.'));
+    
+    if (!empty($_POST['code']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_MANUFACTURERS ." where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". $system->database->input($_POST['code']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
     
     if (!$system->notices->get('errors')) {
     

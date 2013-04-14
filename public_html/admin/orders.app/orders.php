@@ -48,21 +48,8 @@
 ?>
 <div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_order.php'), true); ?>"><?php echo $system->language->translate('title_create_new_order', 'Create New Order'); ?></a></div>
 <div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_order_status_list('order_status_id', isset($_GET['order_status_id']) ? $_GET['order_status_id'] : false, 'onchange="location=(\''. $system->document->link('', array(), true, array('page', 'order_status_id')) .'&order_status_id=\' + this.options[this.selectedIndex].value)"'); ?></div>
-<div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : $system->language->translate('title_search', 'Search'), 'text', 'style="width: 175px;" onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"'); ?></div>
+<div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : '', 'text', 'placeholder="'. $system->language->translate('title_search', 'Search') .'" style="width: 175px;" onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_orders', 'Orders'); ?></h1>
-
-<script type="text/javascript">
-  $("input[name=query]").on("click", function(event) {
-    if ($(this).val() == "<?php echo $system->language->translate('title_search', 'Search'); ?>") {
-      $(this).val("");
-    }
-  });
-  $("input[name=query]").on("blur", function(event) {
-    if ($(this).val() == "") {
-      $(this).val("<?php echo $system->language->translate('title_search', 'Search'); ?>");
-    }
-  });
-</script>
 
 <?php echo $system->functions->form_draw_form_begin('orders_form', 'post'); ?>
 <table width="100%" class="dataTable">
@@ -103,7 +90,7 @@
     <td nowrap="nowrap" align="left"><?php echo $order['id']; ?></td>
     <td nowrap="nowrap" align="left"><?php echo $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. $system->language->translate('title_guest', 'Guest') .')</em>' : ''; ?><?php if ($system->database->num_rows($system->database->query("select id from ". DB_TABLE_ORDERS_COMMENTS ." where order_id = ". (int)$order['id'] ." limit 1;"))) echo ' <img src="'. WS_DIR_IMAGES .'icons/16x16/comments.png" width="16" height="16" />'; ?> </td>
     <td nowrap="nowrap" align="left"><?php echo $system->functions->reference_get_country_name($order['customer_country_code']); ?></td>
-    <td nowrap="nowrap" align="center"><?php echo ($order['order_status_id'] == 0) ? $system->language->translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
+    <td nowrap="nowrap" align="center"><?php echo ($order['order_status_id'] == 0) ? $system->language->translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
     <td nowrap="nowrap" align="right"><?php echo $system->currency->format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
     <td nowrap="nowrap" align="right"><?php echo strftime($system->language->selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td nowrap="nowrap">

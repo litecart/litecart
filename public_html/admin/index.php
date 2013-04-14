@@ -9,6 +9,11 @@
     $system->notices->add('warnings', $system->language->translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
   }
   
+  if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
+    $system->notices->add('warnings', $system->language->translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
+  }
+
+  
 // Build apps list menu
   $apps_list = '<div id="apps-wrapper">' . PHP_EOL
              . '  <ul id="apps" class="list-vertical">';
@@ -18,7 +23,7 @@
     $apps_list .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> '. $app['name'] .'</a>' . PHP_EOL;
     
     if (!empty($_GET['app']) && $_GET['app'] == $app['code']) {
-    
+      
       if (!empty($app['menu'])) {
         $apps_list .= '      <ul>' . PHP_EOL;
         

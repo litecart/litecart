@@ -2,9 +2,12 @@ form {
   margin: 0;
 }
 
-input[type=email], input[type=float], input[type=number], input[type=text], input[type=password], select, textarea, .input-field {
+input[type=email], input[type=float], input[type=number], input[type=text], input[type=password], select, textarea, .input-static {
   margin: 0;
   padding: 4px;
+  
+  width: 175px;
+  
   border: 1px solid #d1d1d1;
   border-radius: 3px;
   background-color: #f9f9f9;
@@ -19,6 +22,10 @@ input[type=email], input[type=float], input[type=number], input[type=text], inpu
   color: #333;
   
   vertical-align: middle;
+}
+
+.input-static {
+  color: #999;
 }
 
 textarea {

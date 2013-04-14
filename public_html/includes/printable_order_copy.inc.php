@@ -23,9 +23,11 @@
     </tr>
     <tr>
       <td><strong><?php echo $this->system->language->translate('title_payment_option', 'Payment Option'); ?>:</strong><br />
-      <?php echo $order['payment_option']['name']; ?></td>
+      <?php echo $order['payment_option']['name'] ? $order['payment_option']['name'] : '-'; ?></td>
       <td align="left"><strong><?php echo $this->system->language->translate('title_shipping_option', 'Shipping Option'); ?>:</strong><br />
-      <?php echo $order['shipping_option']['name']; ?></td>
+      <?php echo $order['shipping_option']['name'] ? $order['shipping_option']['name'] : '-'; ?></td>
+      <td align="left"><strong><?php echo $this->system->language->translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?>:</strong><br />
+      <?php echo $order['shipping_tracking_id'] ? $order['shipping_tracking_id'] : '-'; ?></td>
     </tr>
     <tr>
       <td><strong><?php echo $this->system->language->translate('title_transaction_number', 'Transaction Number'); ?>:</strong><br />
