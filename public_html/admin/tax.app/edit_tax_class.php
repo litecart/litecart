@@ -54,12 +54,12 @@
         <table>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('name', isset($_POST['name']) ? $_POST['name'] : '', 'text', 'style="width: 175px;"'); ?>
+              <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('description', isset($_POST['description']) ? $_POST['description'] : '', 'text', 'style="width: 360px;"'); ?>
+              <?php echo $system->functions->form_draw_input('description', true, 'text', 'style="width: 360px;"'); ?>
             </td>
           </tr>
           <tr>

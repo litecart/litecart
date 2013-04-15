@@ -51,12 +51,12 @@
   <table>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input_field('name', isset($_POST['name']) ? $_POST['name'] : '', 'text', 'style="width: 175px;"'); ?>
+        <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input_field('description', isset($_POST['description']) ? $_POST['description'] : '', 'text', 'style="width: 360px;"'); ?>
+        <?php echo $system->functions->form_draw_input('description', true, 'text', 'style="width: 360px;"'); ?>
       </td>
     </tr>
   </table>
@@ -74,9 +74,9 @@
       foreach (array_keys($_POST['zones']) as $key) {
 ?>
     <tr>
-      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][id]', $_POST['zones'][$key]['id']); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_code]', $_POST['zones'][$key]['country_code']); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_name]', $_POST['zones'][$key]['country_name']); ?><?php echo $_POST['zones'][$key]['country_name']; ?></td>
-      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_code]', $_POST['zones'][$key]['zone_code']); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_name]', $_POST['zones'][$key]['zone_name']); ?><?php echo $_POST['zones'][$key]['zone_name']; ?></td>
+      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
+      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_code]', true); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_name]', true); ?><?php echo $_POST['zones'][$key]['country_name']; ?></td>
+      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_name]', true); ?><?php echo $_POST['zones'][$key]['zone_name']; ?></td>
       <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php

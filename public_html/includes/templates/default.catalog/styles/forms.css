@@ -2,11 +2,12 @@ form {
   margin: 0px;
 }
 
-input[type=email], input[type=float], input[type=number], input[type=text], input[type=password], select, textarea, .static-field {
-  margin: 0px;
+input[type=date], input[type=datetime], input[type=email], input[type=float], input[type=number], input[type=password], input[type=search], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
+  display: inline;
+  margin: 3px 0;
   padding: 4px;
   
-  width: 175px;
+  max-width: 175px;
   
   border: 1px solid #d1d1d1;
   border-radius: 3px;
@@ -20,8 +21,15 @@ input[type=email], input[type=float], input[type=number], input[type=text], inpu
   
   font: normal 12px Sans-serif;
   color: #333;
-  
-  vertical-align: middle;
+}
+
+.input-wrapper {
+  max-width: none;
+}
+
+.input-wrapper input, .input-wrapper textarea {
+  border: none;
+  background: none;
 }
 
 .input-static {

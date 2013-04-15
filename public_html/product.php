@@ -270,7 +270,7 @@
               }
             }
             
-            echo $system->functions->form_draw_checkbox('options['.$group['name'][$system->language->selected['code']].'][]', $group['values'][$value_id]['name'][$system->language->selected['code']], isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
+            echo $system->functions->form_draw_checkbox('options['.$group['name'][$system->language->selected['code']].'][]', $group['values'][$value_id]['name'][$system->language->selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
             $use_br = true;
           }
           break;
@@ -287,7 +287,7 @@
             }
           }
           
-          echo $system->functions->form_draw_input_field('options['.$group['name'][$system->language->selected['code']].']', isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', 'input', !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
+          echo $system->functions->form_draw_input('options['.$group['name'][$system->language->selected['code']].']', true, 'input', !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
           break;
           
         case 'radio':
@@ -304,7 +304,7 @@
               }
             }
             
-            echo $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']', $group['values'][$value_id]['name'][$system->language->selected['code']], isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
+            echo $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']', $group['values'][$value_id]['name'][$system->language->selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
             $use_br = true;
           }
           break;
@@ -324,7 +324,7 @@
 
             $options[] = array($group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text, $group['values'][$value_id]['name'][$system->language->selected['code']]);
           }
-          echo $system->functions->form_draw_select_field('options['.$group['name'][$system->language->selected['code']].']', $options, isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', false, false, !empty($group['required']) ? 'required="required"' : '');
+          echo $system->functions->form_draw_select_field('options['.$group['name'][$system->language->selected['code']].']', $options, true, false, false, !empty($group['required']) ? 'required="required"' : '');
           break;
           
         case 'textarea':
@@ -337,7 +337,7 @@
             }
           }
 
-          echo $system->functions->form_draw_textarea('options['.$group['name'][$system->language->selected['code']].']', isset($_POST['options'][$group['name'][$system->language->selected['code']]]) ? $_POST['options'][$group['name'][$system->language->selected['code']]] : '', !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
+          echo $system->functions->form_draw_textarea('options['.$group['name'][$system->language->selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
           break;
       }
     }
@@ -348,7 +348,7 @@
             </div>
             <div class="quantity">
               <p><strong><?php echo $system->language->translate('title_quantity', 'Antal'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 'text', 'style="width: 20px;"'); ?>
+                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1); ?>
               </p>
             </div>
 <?php

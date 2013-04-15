@@ -158,7 +158,7 @@
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('shipping_option[id]', !empty($order->data['payment_option']['id']) ? $order->data['payment_option']['id'] : '-'); ?></td>
+            <?php echo $system->functions->form_draw_static_field('shipping_option[id]', true); ?></td>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
             <?php echo $system->functions->form_draw_static_field('shipping_option[name]', !empty($order->data['payment_option']['name']) ? $order->data['payment_option']['name'] : '-'); ?></td>
         </tr>
@@ -179,7 +179,7 @@
           <td><?php echo $system->language->translate('title_weight', 'Weight'); ?><br />
             <?php echo $system->weight->format($order->data['weight'], $order->data['weight_class']) ?></td>
           <td><?php echo $system->language->translate('title_tracking_id', 'Tracking ID'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('shipping_tracking_id', isset($_POST['shipping_tracking_id']) ? $_POST['shipping_tracking_id'] : '', 'text'); ?></td>
+            <?php echo $system->functions->form_draw_input('shipping_tracking_id', true, 'text'); ?></td>
           <td></td>
         </tr>
       </table>
@@ -189,43 +189,43 @@
       <table>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_account', 'Account'); ?><br />
-            <?php echo $system->functions->form_draw_customers_list('customer[id]', isset($_POST['customer']['id']) ? $_POST['customer']['id'] : 0); ?></td>
+            <?php echo $system->functions->form_draw_customers_list('customer[id]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[company]', isset($_POST['customer']['company']) ? $_POST['customer']['company'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[company]', true); ?></td>
           <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[tax_id]', isset($_POST['customer']['tax_id']) ? $_POST['customer']['tax_id'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[tax_id]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[firstname]', isset($_POST['customer']['firstname']) ? $_POST['customer']['firstname'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[firstname]', true); ?></td>
           <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[lastname]', isset($_POST['customer']['lastname']) ? $_POST['customer']['lastname'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[lastname]', true); ?></td>
         </tr>
         <tr>
           <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[email]', isset($_POST['customer']['email']) ? $_POST['customer']['email'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_email_field('customer[email]', true); ?></td>
           <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-          <?php echo $system->functions->form_draw_input_field('customer[phone]', isset($_POST['customer']['phone']) ? $_POST['customer']['phone'] : ''); ?></td>
+          <?php echo $system->functions->form_draw_input('customer[phone]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[address1]', isset($_POST['customer']['address1']) ? $_POST['customer']['address1'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[address1]', true); ?></td>
           <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-          <?php echo $system->functions->form_draw_input_field('customer[address2]', isset($_POST['customer']['address2']) ? $_POST['customer']['address2'] : ''); ?></td>
+          <?php echo $system->functions->form_draw_input('customer[address2]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_city', 'City'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[city]', isset($_POST['customer']['city']) ? $_POST['customer']['city'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[city]', true); ?></td>
           <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[postcode]', isset($_POST['customer']['postcode']) ? $_POST['customer']['postcode'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[postcode]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
-            <?php echo $system->functions->form_draw_countries_list('customer[country_code]', isset($_POST['customer']['country_code']) ? $_POST['customer']['country_code'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_countries_list('customer[country_code]', true); ?></td>
           <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
-            <?php echo $system->functions->form_draw_zones_list(isset($_POST['customer']['country_code']) ? $_POST['customer']['country_code'] : '', 'customer[zone_code]', isset($_POST['customer']['zone_code']) ? $_POST['customer']['zone_code'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_zones_list(isset($_POST['customer']['country_code']) ? $_POST['customer']['country_code'] : '', 'customer[zone_code]', true); ?></td>
         </tr>
       </table>
       
@@ -265,32 +265,32 @@
       <table>
           <tr>
             <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-              <?php echo $system->functions->form_draw_input_field('customer[shipping_address][company]', isset($_POST['customer']['shipping_address']['company']) ? $_POST['customer']['shipping_address']['company'] : ''); ?></td>
+              <?php echo $system->functions->form_draw_input('customer[shipping_address][company]', true); ?></td>
             <td nowrap="nowrap"></td>
           </tr>
         <tr>
           <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[shipping_address][firstname]', isset($_POST['customer']['shipping_address']['firstname']) ? $_POST['customer']['shipping_address']['firstname'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[shipping_address][firstname]', true); ?></td>
           <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[shipping_address][lastname]', isset($_POST['customer']['shipping_address']['lastname']) ? $_POST['customer']['shipping_address']['lastname'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[shipping_address][lastname]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[shipping_address][address1]', isset($_POST['customer']['shipping_address']['address1']) ? $_POST['customer']['shipping_address']['address1'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[shipping_address][address1]', true); ?></td>
           <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-          <?php echo $system->functions->form_draw_input_field('customer[shipping_address][address2]', isset($_POST['customer']['shipping_address']['address2']) ? $_POST['customer']['shipping_address']['address2'] : ''); ?></td>
+          <?php echo $system->functions->form_draw_input('customer[shipping_address][address2]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_city', 'City'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[shipping_address][city]', isset($_POST['customer']['shipping_address']['city']) ? $_POST['customer']['shipping_address']['city'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[shipping_address][city]', true); ?></td>
           <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('customer[shipping_address][postcode]', isset($_POST['customer']['shipping_address']['postcode']) ? $_POST['customer']['shipping_address']['postcode'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('customer[shipping_address][postcode]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
-            <?php echo $system->functions->form_draw_countries_list('customer[shipping_address][country_code]', isset($_POST['customer']['shipping_address']['country_code']) ? $_POST['customer']['shipping_address']['country_code'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_countries_list('customer[shipping_address][country_code]', true); ?></td>
           <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
-            <?php echo $system->functions->form_draw_zones_list(isset($_POST['customer[shipping_address][country_code']) ? $_POST['customer']['shipping_address']['country_code'] : '', 'customer[shipping_address][zone_code]', isset($_POST['customer']['shipping_address']['zone_code']) ? $_POST['customer']['shipping_address']['zone_code'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_zones_list(isset($_POST['customer[shipping_address][country_code']) ? $_POST['customer']['shipping_address']['country_code'] : '', 'customer[shipping_address][zone_code]', true); ?></td>
         </tr>
       </table>
 
@@ -347,13 +347,13 @@
 <?php
     foreach (array_keys($_POST['items'][$key]) as $field) {
       if (is_array($_POST['items'][$key][$field])) continue;
-      echo $system->functions->form_draw_hidden_field('items['.$key.']['.$field.']', $_POST['items'][$key][$field]);
+      echo $system->functions->form_draw_hidden_field('items['.$key.']['.$field.']', true);
     }
 ?>
     <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])); ?>" target="_blank"><?php echo $_POST['items'][$key]['name']; ?></a></td>
-    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_input_field('items['. $key .'][quantity]', $_POST['items'][$key]['quantity'], 'text', 'style="width: 25px; text-align: center;"'); ?></td>
-    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('items['. $key .'][price]', $_POST['items'][$key]['price'], 'text', 'style="width: 75px; text-align: right;"'); ?></td>
-    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('items['. $key .'][tax]', $_POST['items'][$key]['tax'], 'text', 'style="width: 75px; text-align: right;"'); ?></td>
+    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_number_field('items['. $key .'][quantity]', true); ?></td>
+    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items['. $key .'][price]', true, 'text', 'style="width: 75px; text-align: right;"'); ?></td>
+    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items['. $key .'][tax]', true, 'text', 'style="width: 75px; text-align: right;"'); ?></td>
     <td nowrap="nowrap" align="right"><?php echo $system->tax->get_class_name($_POST['items'][$key]['tax_class_id']); ?></td>-->
     <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
@@ -386,9 +386,9 @@
     var new_row = '  <tr>'
                 + '    <td nowrap="nowrap" align="center"><a class="add_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
                 + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', 'style="width: 350px; text-align: left;"')); ?></td>'
-                + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_input_field('items[new_item_index][quantity]', '1', 'text', 'style="width: 25px; text-align: center;"'); ?></td>'
-                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('items[new_item_index][price]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
-                //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('items[new_item_index][tax]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
+                + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_number_field('items[new_item_index][quantity]', '1'); ?></td>'
+                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items[new_item_index][price]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
+                //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items[new_item_index][tax]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right">&nbsp;</td>'
                 + '    <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                 + '  </tr>';
@@ -432,15 +432,15 @@
 <?php
   foreach (array_keys($_POST['order_total'][$key]) as $field) {
     if (in_array($field, array('calculate'))) continue;
-    echo $system->functions->form_draw_hidden_field('order_total['. $key .']['. $field .']', $_POST['order_total'][$key][$field]);
+    echo $system->functions->form_draw_hidden_field('order_total['. $key .']['. $field .']', true);
   }
 ?>
-      <?php echo $system->functions->form_draw_input_field('order_total['. $key .'][module_id]', $_POST['order_total'][$key]['module_id'], 'text', 'style="width: 75px;"'); ?>
+      <?php echo $system->functions->form_draw_input('order_total['. $key .'][module_id]', true, 'text', 'style="width: 75px;"'); ?>
     </td>
-    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][title]', $_POST['order_total'][$key]['title'], 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>
-    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][value]', $_POST['order_total'][$key]['value'], 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total['. $key .'][calculate]', 'true', !empty($_POST['order_total'][$key]['calculate']) ? 'true' : '', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>
-    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total['. $key .'][tax]', $_POST['order_total'][$key]['tax'], 'text', 'style="width: 75px; text-align: right;"'); ?></td>-->
-    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_function('tax_classes()', 'order_total['. $key .'][tax_class_id]', $_POST['order_total'][$key]['tax_class_id']); ?></td>
+    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total['. $key .'][title]', true, 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>
+    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total['. $key .'][value]', true, 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, '', $system->language->translate('title_calculate', 'Calculate')); ?></td>
+    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total['. $key .'][tax]', true, 'text', 'style="width: 75px; text-align: right;"'); ?></td>-->
+    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_function('tax_classes()', 'order_total['. $key .'][tax_class_id]', true); ?></td>
     <td nowrap="nowrap"><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php
@@ -457,8 +457,8 @@
     event.preventDefault();
     var output = '  <tr>'
                + '    <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
-               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][module_id]', '', 'text', 'style="width: 75px;"'); ?></td>'
-               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input_field('order_total[new_ot_row_index][title]', '', 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>'
+               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo $system->functions->form_draw_input('order_total[new_ot_row_index][module_id]', '', 'text', 'style="width: 75px;"'); ?></td>'
+               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total[new_ot_row_index][title]', '', 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>'
                //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][tax]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total[new_ot_row_index][calculate]', 'true', 'true', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][value]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_function('tax_classes()', 'order_total[new_ot_row_index][tax_class_id]', '', 'text', 'style="width: 75px; text-align: right;"')); ?></td>'
@@ -488,7 +488,7 @@
   foreach (array_keys($_POST['comments']) as $key) {
 ?>
   <tr>
-    <td nowrap="nowrap" align="left"><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo $system->functions->form_draw_hidden_field('comments['. $key .']['. $field .']', $_POST['comments'][$key][$field]); ?><?php echo strftime($system->language->selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
+    <td nowrap="nowrap" align="left"><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo $system->functions->form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?><?php echo strftime($system->language->selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
     <td align="left"><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
     <td nowrap="nowrap" align="left"><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
     <td nowrap="nowrap"><a class="remove_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
@@ -522,7 +522,7 @@
   });
 </script>
 
-<p><strong><?php echo $system->language->translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo $system->functions->form_draw_order_status_list('order_status_id', isset($_POST['order_status_id']) ? $_POST['order_status_id'] : ''); ?></p>
+<p><strong><?php echo $system->language->translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo $system->functions->form_draw_order_status_list('order_status_id', true); ?></p>
 
 <p align="right"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></p>
 

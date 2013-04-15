@@ -61,7 +61,7 @@
   $use_br = false;
   foreach (array_keys($system->language->languages) as $language_code) {
     if ($use_br) echo '<br />';
-    echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 175px;"');
+    echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, 'style="width: 175px;"');
     $use_br = true;
   }
 ?>
@@ -73,7 +73,7 @@
   $use_br = false;
   foreach (array_keys($system->language->languages) as $language_code) {
     if ($use_br) echo '<br />';
-    echo $system->functions->form_draw_regional_input_field($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'text', 'style="width: 360px;"');
+    echo $system->functions->form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'style="width: 360px;"');
     $use_br = true;
   }
 ?>
@@ -81,19 +81,19 @@
   </tr>
   <tr>
     <td><strong><?php echo $system->language->translate('title_required', 'Required'); ?></strong><br />
-      <?php echo $system->functions->form_draw_checkbox('required', '1', isset($_POST['required']) ? $_POST['required'] : ''); ?> <?php echo $system->language->translate('title_required', 'Required'); ?>
+      <?php echo $system->functions->form_draw_checkbox('required', '1', true); ?> <?php echo $system->language->translate('title_required', 'Required'); ?>
     </td>
   </tr>
   <tr>
     <td><strong><?php echo $system->language->translate('title_sort', 'Sort'); ?></strong><br />
-      <?php echo $system->functions->form_draw_radio_button('sort', 'alphabetical', isset($_POST['sort']) ? $_POST['sort'] : ''); ?> <?php echo $system->language->translate('title_alphabetical', 'Alphabetical'); ?><br />
-      <?php echo $system->functions->form_draw_radio_button('sort', 'priority', isset($_POST['sort']) ? $_POST['sort'] : ''); ?> <?php echo $system->language->translate('title_priority', 'Priority'); ?><br />
-      <?php echo $system->functions->form_draw_radio_button('sort', 'product', isset($_POST['sort']) ? $_POST['sort'] : ''); ?> <?php echo $system->language->translate('text_set_by_product', 'Set by product'); ?>
+      <?php echo $system->functions->form_draw_radio_button('sort', 'alphabetical', true); ?> <?php echo $system->language->translate('title_alphabetical', 'Alphabetical'); ?><br />
+      <?php echo $system->functions->form_draw_radio_button('sort', 'priority', true); ?> <?php echo $system->language->translate('title_priority', 'Priority'); ?><br />
+      <?php echo $system->functions->form_draw_radio_button('sort', 'product', true); ?> <?php echo $system->language->translate('text_set_by_product', 'Set by product'); ?>
     </td>
   </tr>
   <tr>
     <td><strong><?php echo $system->language->translate('title_function', 'Function'); ?></strong><br />
-      <?php echo $system->functions->form_draw_select_field('function', array(array('input'), array('checkbox'), array('radio'), array('select'), array('textarea')), isset($_POST['function']) ? $_POST['function'] : ''); ?>
+      <?php echo $system->functions->form_draw_select_field('function', array(array('input'), array('checkbox'), array('radio'), array('select'), array('textarea')), true); ?>
     </td>
   </tr>
 </table>
@@ -136,13 +136,13 @@
     if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) {
 ?>
     <tr>
-      <td align="left"><?php echo $_POST['values'][$key]['id']; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', $_POST['values'][$key]['id']); ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
+      <td align="left"><?php echo $_POST['values'][$key]['id']; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
       <td align="left">
 <?php
       $use_br = false;
       foreach (array_keys($system->language->languages) as $language_code) {
         if ($use_br) echo '<br />';
-        echo $system->functions->form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', (isset($_POST['values'][$key]['name'][$language_code]) ? $_POST['values'][$key]['name'][$language_code] : ''), 'text', 'style="width: 360px;"');
+        echo $system->functions->form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, 'style="width: 360px;"');
         $use_br = true;
       }
 ?>
@@ -166,7 +166,7 @@
     $use_br = false;
     foreach (array_keys($system->language->languages) as $language_code) {
       if ($use_br) $name_fields .=  '<br />';
-      $name_fields .= $system->functions->form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', 'text', 'style="width: 360px;"');
+      $name_fields .= $system->functions->form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', 'style="width: 360px;"');
       $use_br = true;
     }
 ?>
@@ -215,8 +215,8 @@
     }
 ?>
     <tr>
-      <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''); ?></td>
-      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_range', 'Range'); ?>: <?php echo $system->functions->form_draw_input_field('values['. $key .'][value]', (isset($_POST['values'][$key]['value']) ? $_POST['values'][$key]['value'] : ''), 'text', 'style="width: 50px;"'); ?> (<?php echo $system->language->translate('title_example', 'Example'); ?>: 100-400)
+      <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_range', 'Range'); ?>: <?php echo $system->functions->form_draw_input('values['. $key .'][value]', true, 'text', 'style="width: 50px;"'); ?> (<?php echo $system->language->translate('title_example', 'Example'); ?>: 100-400)
       </td>
     </tr>
   </table>
@@ -236,8 +236,8 @@
     }
 ?>
     <tr>
-      <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''); ?></td>
-      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_input_field('values['. $key .'][value]', isset($_POST['values'][$key]['value']) ? $_POST['values'][$key]['value'] : '', 'text'); ?>
+      <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_input('values['. $key .'][value]', true, 'text'); ?>
       </td>
     </tr>
   </table>
@@ -257,14 +257,6 @@
     }
 ?>
     <tr>
-      <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''); ?></td>
-      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_textarea('values['. $key .'][value]', isset($_POST['values'][$key]['value']) ? $_POST['values'][$key]['value'] : ''); ?>
-      </td>
-    </tr>
-  </table>
-</div>
-<script>
-  $('select[name=function]').trigger('change');
-</script>
-<p><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($option_group->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></p>
+      <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_textarea('values['. $key .'][value]', true $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($option_group->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></p>
 <?php echo $system->functions->form_draw_form_end(); ?>

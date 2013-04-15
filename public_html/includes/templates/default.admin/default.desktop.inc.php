@@ -26,7 +26,7 @@
     <div id="content-wrapper">
     <table style="width: 100%;">
       <tr>
-        <td id="sidebar">
+        <td id="sidebar" style="vertical-align: top;">
           <div class="logotype">
             <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 70, 'FIT_ONLY_BIGGER'); ?>" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
           </div>
@@ -72,14 +72,14 @@
             <div id="copyright">Copyright &copy; <?php echo date('Y'); ?> <a href="http://www.litecart.net" target="_blank">LiteCart&trade;</a></div>
           </div>
         </td>
-        <td id="column_left">
+        <td id="column_left" style="vertical-align: top;">
           <!--snippet:column_left-->
         </td>
-        <td id="content">
+        <td id="content" style="vertical-align: top;">
           <!--snippet:notices-->
           <!--snippet:content-->
         </td>
-        <td id="column_right">
+        <td id="column_right" style="vertical-align: top;">
           <!--snippet:column_right-->
         </td>
       </tr>

@@ -68,22 +68,22 @@
       <table>
         <tr>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('name', isset($_POST['name']) ? $_POST['name'] : '', 'text', 'style="width: 175px;"'); ?></td>
+            <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?></td>
           <td style="padding-left: 0px;"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : '', 'text', 'style="width: 175px;"'); ?></td>
+            <?php echo $system->functions->form_draw_email_field('email', true, 'style="width: 175px;"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_subject', 'Subject'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('subject', isset($_POST['subject']) ? $_POST['subject'] : '', 'text', 'style="width: 360px;"'); ?></td>
+            <?php echo $system->functions->form_draw_input('subject', true, 'text', 'style="width: 360px;"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_message', 'Message'); ?><br />
-            <?php echo $system->functions->form_draw_textarea('message', isset($_POST['message']) ? $_POST['message'] : '', 'style="width: 360px; height: 250px;"'); ?></td>
+            <?php echo $system->functions->form_draw_textarea('message', true, 'style="width: 360px; height: 250px;"'); ?></td>
         </tr>
         <?php if ($system->settings->get('contact_form_captcha_enabled') == 'true') { ?>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_captcha', 'CAPTCHA'); ?><br />
-            <?php echo $system->functions->captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_input_field('captcha', '', 'input', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
+            <?php echo $system->functions->captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_input('captcha', '', 'input', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
           </td>
         </tr>
         <?php } ?>

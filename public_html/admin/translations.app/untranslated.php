@@ -88,8 +88,8 @@
     </td>
   </tr>
   <tr class="<?php echo $rowclass; ?>">
-    <td><?php if (!empty($_GET['language_1'])) echo $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$_GET['language_1'].']', $row['text_'.$_GET['language_1']], 'rows="2" tabindex="'. (1000+$i) .'" style="width: 230px" rel="ckeditor"'); ?></td>
-    <td><?php if (!empty($_GET['language_2'])) echo $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$_GET['language_2'].']', $row['text_'.$_GET['language_2']], 'rows="2" tabindex="'. (2000+$i) .'" style="width: 230px" rel="ckeditor"'); ?></td>
+    <td><?php if (!empty($_GET['language_1'])) echo $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$_GET['language_1'].']', $row['text_'.$_GET['language_1']], 'rows="2" tabindex="'. (1000+$i) .'" style="width: 230px"'); ?></td>
+    <td><?php if (!empty($_GET['language_2'])) echo $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$_GET['language_2'].']', $row['text_'.$_GET['language_2']], 'rows="2" tabindex="'. (2000+$i) .'" style="width: 230px"'); ?></td>
     <td nowrap="nowrap"><a href="javascript:alert('<?php echo str_replace(array('\'', ','), array('', '\\n'), rtrim($row['pages'], ',')); ?>');"><?php echo sprintf($system->language->translate('text_shared_by_pages', 'Shared by %d pages'), count(explode(',', $row['pages']))); ?></a><br />
       <?php echo $system->functions->form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo $system->language->translate('text_html_enabled', 'HTML enabled'); ?>
     </td>

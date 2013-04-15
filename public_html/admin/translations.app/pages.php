@@ -50,25 +50,7 @@
     exit;
   }
 ?>
-<!--
-<script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>ckeditor/adapters/jquery.js"></script>
-<script type="text/javascript">
-var config = {
 
-};
-  $(document).ready(function() {
-    $('textarea[rel=ckeditor]').ckeditor({
-      toolbar: [
-        ['Bold', 'Italic', 'Underline', 'Strike', '-', 'NumberedList', 'BulletedList', 'Table', '-', 'Link', 'Unlink'], ['UIColor'], ['PasteText', 'Source', 'Maximize']
-	    ],
-      entities: false,
-      enterMode: CKEDITOR.ENTER_P,
-      shiftEnterMode: CKEDITOR.ENTER_BR
-    });
-  });
-</script>
--->
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_translations_by_page', 'Translations by Page'); ?></h1>
 <?php
   $pages_query = $system->database->query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
@@ -138,7 +120,7 @@ var config = {
   <tr class="<?php echo $rowclass; ?>">
     <td align="left"><?php echo $row['code']; ?><br />
     <?php echo $system->functions->form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo $system->language->translate('text_html_enabled', 'HTML enabled'); ?></td>
-    <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td>'. $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px" rel="ckeditor"') .'</td>'; ?>
+    <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td>'. $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px"') .'</td>'; ?>
     <td align="right" valign="middle"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''.$system->document->link('', array(), true, array('action', 'id')).'\'"'); ?></td>
   </tr>
 <?php

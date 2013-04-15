@@ -65,37 +65,37 @@
   </tr>
   <tr>
     <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
-      <?php echo $system->functions->form_draw_input_field('code', isset($_POST['code']) ? $_POST['code'] : '', 'text', 'style="width: 50px;"'); ?>
+      <?php echo $system->functions->form_draw_input('code', true, 'text', 'style="width: 50px;"'); ?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-      <?php echo $system->functions->form_draw_input_field('name', isset($_POST['name']) ? $_POST['name'] : '', 'text', 'style="width: 175px;"'); ?>
+      <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_value', 'Value'); ?></strong><br />
-      <?php echo $system->functions->form_draw_input_field('value', isset($_POST['value']) ? $_POST['value'] : '', 'text', 'style="width: 75px;"'); ?>
+      <?php echo $system->functions->form_draw_input('value', true, 'text', 'style="width: 75px;"'); ?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_prefix', 'Prefix'); ?></strong><br />
-      <?php echo $system->functions->form_draw_input_field('prefix', isset($_POST['prefix']) ? $_POST['prefix'] : '', 'text', 'style="width: 75px;"'); ?>
+      <?php echo $system->functions->form_draw_input('prefix', true, 'text', 'style="width: 75px;"'); ?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_suffix', 'Suffix'); ?></strong><br />
-      <?php echo $system->functions->form_draw_input_field('suffix', isset($_POST['suffix']) ? $_POST['suffix'] : '', 'text', 'style="width: 75px;"'); ?>
+      <?php echo $system->functions->form_draw_input('suffix', true, 'text', 'style="width: 75px;"'); ?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_decimals', 'decimals'); ?></strong><br />
-      <?php echo $system->functions->form_draw_input_field('decimals', isset($_POST['decimals']) ? $_POST['decimals'] : '', 'text', 'style="width: 75px;"'); ?>
+      <?php echo $system->functions->form_draw_input('decimals', true, 'text', 'style="width: 75px;"'); ?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
-      <?php echo $system->functions->form_draw_input_field('priority', isset($_POST['priority']) ? $_POST['priority'] : '', 'text', 'style="width: 75px;"'); ?>
+      <?php echo $system->functions->form_draw_input('priority', true, 'text', 'style="width: 75px;"'); ?>
     </td>
   </tr>
   <tr>

@@ -527,7 +527,7 @@
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
         </tr>
         <tr>
-          <td><?php echo $system->functions->form_draw_checkbox('insert_categories', 'true', isset($_POST['insert_categories']) ? $_POST['insert_categories'] : ''); ?> <?php echo $system->language->translate('text_insert_new_categories', 'Insert new categories'); ?></td>
+          <td><?php echo $system->functions->form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_categories', 'Insert new categories'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->functions->form_draw_button('import_categories', $system->language->translate('title_import', 'Import'), 'submit'); ?></td>
@@ -571,7 +571,7 @@
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
         </tr>
         <tr>
-          <td><?php echo $system->functions->form_draw_checkbox('insert_products', 'true', isset($_POST['insert_products']) ? $_POST['insert_products'] : ''); ?> <?php echo $system->language->translate('text_insert_new_products', 'Insert new products'); ?></td>
+          <td><?php echo $system->functions->form_draw_checkbox('insert_products', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_products', 'Insert new products'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->functions->form_draw_button('import_products', $system->language->translate('title_import', 'Import'), 'submit'); ?></td>

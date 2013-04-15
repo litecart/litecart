@@ -3,13 +3,12 @@
   function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
     global $system;
     
-    $html = '<form'. (($name) ? ' name="'. $name .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'"'. (($action) ? ' action="'. $action .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL;
-    if (strtolower($method) == 'post') $html .= form_draw_input('token', $system->form->session_post_token(), 'hidden');
-    return $html;
+    return  '<form'. (($name) ? ' name="'. $name .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'"'. (($action) ? ' action="'. $action .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
+          . ((strtolower($method) == 'post') ? form_draw_input('token', $system->form->session_post_token(), 'hidden') . PHP_EOL : '');
   }
   
   function form_draw_form_end() {
-    return '</form>';
+    return '</form>' . PHP_EOL;
   }
   
   function form_reinsert_value($name) {
@@ -30,8 +29,7 @@
   }
   
   function form_draw_image($name, $src, $parameters=false) {
-    $html = '<input type="hidden" name="'. $name .'" value="true" /><input type="image" src="'. $src .'"'. (($parameters) ? ' '.$parameters : false) .' />';
-    return $html;
+    return '<input type="hidden" name="'. $name .'" value="true" /><input type="image" src="'. $src .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
@@ -46,90 +44,50 @@
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='', $hint='') {
     global $system;
     if ($value === true) $value = form_reinsert_value($name);
-    $html = form_draw_input_field($name, number_format((float)$value, $system->currency->currencies[$currency_code]['decimals'], '.', ''), 'number', 'style="width: 75px; text-align: right;"', $hint);
-    return $html;
+    
+    return '<span class="input-wrapper">'. $system->currency->currencies[$currency_code]['prefix'] . form_draw_input_field($name, $value, $parameters, $hint) . $system->currency->currencies[$currency_code]['suffix'] .'</span>';
   }
   
-  function form_draw_number_field($currency_code, $name, $value=true, $min='', $max='', $parameters='', $hint='') {
-    return form_draw_input($name, $value, 'number', 'min="'. (($min) ? (int)$min : false) .'" max="'. (($max) ? (int)$max : false) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false), $hint);
-  }
-  
-  function form_draw_date_field($name, $value='', $parameters='', $hint='') {
-    global $system;
-    
-    $strf = '%Y-%m-%d';
-    
-    $system->document->snippets['head_tags']['dynDateTime'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'dynDateTime/jquery.dynDateTime.js"></script>' . PHP_EOL
-                                                            . '<script type="text/javascript" src="'. WS_DIR_EXT .'dynDateTime/lang/calendar-en.js"></script>' . PHP_EOL
-                                                            . '<script type="text/javascript" src="'. WS_DIR_EXT .'dynDateTime/lang/calendar-'. $system->language->selected['code'] .'.js"></script>' . PHP_EOL
-                                                            . '<link rel="stylesheet" type="text/css" media="screen" href="'. WS_DIR_EXT .'dynDateTime/css/calendar-system.css" />' . PHP_EOL;
-                                                                 
-    $system->document->snippets['javascript']['date_picker'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                   . '    $("body").on("mouseover", "input.date", function() {' . PHP_EOL
-                                                                   . '      $(this).dynDateTime({' . PHP_EOL
-                                                                   . '        showsTime: false,' . PHP_EOL
-                                                                   . '        ifFormat: "'. $strf .'",' . PHP_EOL
-                                                                   . '        button: ".next()"' . PHP_EOL
-                                                                   . '      });' . PHP_EOL
-                                                                   . '    });' . PHP_EOL
-                                                                   . '  });' . PHP_EOL;
-  
-    if (empty($hint)) $hint = $system->language->selected['raw_date'];
+  function form_draw_date_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
     
     if (substr($value, 0, 10) == '0000-00-00') {
       $value = '';
     } else if (substr($value, 0, 10) == '1970-00-00') {
       $value = '';
     } else {
-      $value = strftime($strf, strtotime($value));
+      $value = date('Y-m-d', strtotime($value));
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    $html = '<div style="display: inline; position: relative;"><input type="date" name="'. $name .'" value="'. htmlspecialchars($value) .'" maxlength="10" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' /><img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" style="position: absolute; top: 0px; left: 5px;" /></div>';
-    return $html;
+    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="date" name="'. $name .'" value="'. $value .'" maxlength="10" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
-  function form_draw_datetime_field($name, $value='', $parameters='', $hint='') {
-    global $system;
-    
-    $strf = '%Y-%m-%d %H:%M';
-  
-    $system->document->snippets['head_tags']['dynDateTime'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'dynDateTime/jquery.dynDateTime.js"></script>' . PHP_EOL
-                                                            . '<script type="text/javascript" src="'. WS_DIR_EXT .'dynDateTime/lang/calendar-en.js"></script>' . PHP_EOL
-                                                            . '<script type="text/javascript" src="'. WS_DIR_EXT .'dynDateTime/lang/calendar-'. $system->language->selected['code'] .'.js"></script>' . PHP_EOL
-                                                            . '<link rel="stylesheet" type="text/css" media="screen" href="'. WS_DIR_EXT .'dynDateTime/css/calendar-system.css" />' . PHP_EOL;
-    
-    $system->document->snippets['javascript']['datetime_picker'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                 . '    $("body").on("mouseover", "input.datetime", function() {' . PHP_EOL
-                                                                 . '      $(this).dynDateTime({' . PHP_EOL
-                                                                 . '        showsTime: true,' . PHP_EOL
-                                                                 . '        ifFormat: "'. $strf .'",' . PHP_EOL
-                                                                 . '        button: ".next()"' . PHP_EOL
-                                                                 . '      });' . PHP_EOL
-                                                                 . '    });' . PHP_EOL
-                                                                 . '  });' . PHP_EOL;
-    
-    if (empty($hint)) $hint = $system->language->selected['raw_datetime'];
+  function form_draw_datetime_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
     
     if (substr($value, 0, 16) == '0000-00-00 00:00') {
       $value = '';
     } else if (substr($value, 0, 16) == '1970-00-00 00:00') {
       $value = '';
     } else {
-      $value = strftime($strf, strtotime($value));
+      $value = date('Y-m-d H:i', strtotime($value));
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    $html = '<div style="display: inline; position: relative;"><input type="datetime" name="'. $name .'" value="'. htmlspecialchars($value) .'" maxlength="16" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' /><img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" style="position: absolute; top: 0px; left: 5px;" /></div>';
-
-    return $html;
+    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="datetime" name="'. $name .'" value="'. $value .'" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
-  function form_draw_time_field($name, $value=true, $parameters='', $hint='') {
+  function form_draw_decimal_field($name, $value=true, $decimals=2, $min=0, $max=0, $parameters='', $hint='') {
+    if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
+    return form_draw_input($name, $value, 'number', 'step="any" min="'. (float)$min .'" max="'. (!empty($max) ? (float)$max : false) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false), $hint);
+  }
+  
+  function form_draw_email_field($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'time', 'maxlength="6"' . (($parameters) ? ' '.$parameters : false), $hint);
+    return form_draw_input($name, $value, 'email', $parameters, $hint);
   }
-  
+
   function form_draw_file_field($name, $parameters='', $hint='') {
     return form_draw_input($name, '', 'file', $parameters, $hint);
   }
@@ -137,6 +95,24 @@
   function form_draw_hidden_field($name, $value=true) {
     if ($value === true) $value = form_reinsert_value($name);
     return form_draw_input($name, $value, 'hidden');
+  }
+  
+  function form_draw_input($name, $value=true, $type='text', $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
+    return '<input type="'. $type .'" name="'. $name .'" value="'. htmlspecialchars($value) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+  }
+  
+  function form_draw_input_field($name, $value=true, $parameters='', $hint='') {
+    return form_draw_input($name, $value, 'text', $parameters, $hint);
+  }
+  
+  function form_draw_number_field($name, $value=true, $min='', $max='', $parameters='', $hint='') {
+    if ($value === true) $value = (int)form_reinsert_value($name);
+    return form_draw_input($name, $value, 'number', 'step="1" min="'. (($min) ? (int)$min : false) .'" max="'. (($max) ? (int)$max : false) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false), $hint);
+  }
+  
+  function form_draw_password_field($name, $value=true, $parameters='', $hint='') {
+    return form_draw_input($name, $value, 'password', $parameters, $hint);
   }
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
@@ -148,17 +124,24 @@
     return form_draw_input_field($name, $value, 'range', 'min="'. $min .'" max="'. $max .'" step="'. $step .'"'. (($parameters) ? ' ' . $parameters : false));
   }
   
-  function form_draw_input($name, $value=true, $type='text', $parameters='', $hint='') {
-    if ($value === true) $value = form_reinsert_value($name);
-    return '<input type="'. $type .'" name="'. $name .'" value="'. htmlspecialchars($value) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+  function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='', $hint='') {
+    //return '<div class="regional-input-wrapper">'. form_draw_input($name, $value, 'text', $parameters, $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: middle;" /> '. form_draw_input($name, $value, 'text', $parameters, $hint) .'</span>';
   }
   
-  function form_draw_input_field($name, $value=true, $type='text', $parameters='', $hint='') {
-    return form_draw_input($name, $value, $type, $parameters, $hint);
+  function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='', $hint='') {
+    //return '<div class="regional-input-wrapper">'. form_draw_textarea($name, $value, 'class="regional-input-field"' . (($parameters) ? ' '.$parameters : false), $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters, $hint) .'</span>';
   }
   
-  function form_draw_regional_input_field($language_code, $name, $value=true, $type='text', $parameters='', $hint='') {
-    return '<div class="regional-input-wrapper">'. form_draw_input($name, $value, $type, $parameters, $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
+  function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='', $hint='') {
+    //return '<div class="regional-input-wrapper">'. form_draw_textarea($name, $value, 'class="regional-input-field"' . (($parameters) ? ' '.$parameters : false), $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters, $hint) .'</span>';
+  }
+  
+  function form_draw_search_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = (int)form_reinsert_value($name);
+    return form_draw_input($name, $value, 'search', $parameters, $hint);
   }
   
   function form_draw_select_field($name, $options=array(), $input=true, $size=false, $multiple=false, $parameters='', $hint='') {
@@ -179,8 +162,7 @@
   
   function form_draw_static_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
-    $html = '<div class="input-static"'. (($parameters) ? ' '.$parameters : false) .'>'. (($value) ? $value : '&nbsp;') .'</div>';
-    return $html;
+    return '<div class="input-static"'. (($parameters) ? ' '.$parameters : false) .'>'. (($value) ? $value : '&nbsp;') .'</div>';
   }
   
   function form_draw_textarea($name, $value=true, $parameters='', $hint='') {
@@ -188,27 +170,40 @@
     return '<textarea name="'. $name .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
   
+  function form_draw_time_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
+    return form_draw_input($name, $value, 'time', 'maxlength="6"' . (($parameters) ? ' '.$parameters : false), $hint);
+  }
+  
+  function form_draw_url_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = (int)form_reinsert_value($name);
+    return form_draw_input($name, $value, 'url', $parameters, $hint);
+  }
+  
   function form_draw_wysiwyg_field($name, $value=true, $parameters='', $hint='') {
     global $system;
     
-    $system->document->snippets['head_tags']['cleditor'] = '<script src="'. WS_DIR_EXT .'cleditor/jquery.cleditor.min.js"></script>';
+    $system->document->snippets['head_tags']['cleditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
+                                                         . '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.headers.js"></script>' . PHP_EOL
+                                                         . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. $system->language->selected['code'] .'.js"></script>' . PHP_EOL
+                                                         . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
     
     return form_draw_textarea($name, $value, $parameters, $hint) . PHP_EOL
          . '<script>' . PHP_EOL
-         . '  $("textarea[name=\''. $name .'\']").cleditor({' . PHP_EOL
-         . '    width:"100%",' . PHP_EOL
-         . '    height:"100%"' . PHP_EOL
-         . '  })[0].focus();' . PHP_EOL
+         . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
+         . '    "width": "auto",' . PHP_EOL
+         . '    "max-height": "auto",' . PHP_EOL
+         . '    "style": "'. WS_DIR_EXT .'sceditor/jquery.sceditor.default.min.css",' . PHP_EOL
+         . '    "locale": "'. $system->language->selected['code'] .'",' . PHP_EOL
+         . '    "emoticons": false,' . PHP_EOL
+         . '    "toolbar": "headers|font,size,bold,italic,underline,strike,subscript,superscript|left,center,right,justify|color,removeformat|bulletlist,orderedlist,table|code,quote|horizontalrule,image,email,link,unlink|youtube,date,time|ltr,rtl|print,maximize,source"' . PHP_EOL
+         . '  });' . PHP_EOL
          . '</script>' . PHP_EOL;
-  }
-  
-  function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='', $hint='') {
-    return '<div class="regional-input-wrapper">'. form_draw_textarea($name, $value, 'class="regional-input-field"' . (($parameters) ? ' '.$parameters : false), $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
   }
   
   ######################################################################
 
-  function form_draw_function($function, $name, $input='') {
+  function form_draw_function($function, $name, $input=true) {
     global $system;
     
     preg_match('/(\w*)(?:\()(.*?)(?:\))/i', $function, $matches);
@@ -226,7 +221,7 @@
     switch ($matches[1]) {
       case 'decimal':
       case 'float':
-        return form_draw_input($name, number_format($input, 2), 'text', 'style="width: 50px"');
+        return form_draw_decimal_field($name, $input, 2, '', '', 'style="width: 30px"');
       case 'int':
         return form_draw_input($name, (int)$input, 'text', 'style="width: 50px"');
       case 'smallinput':
@@ -242,7 +237,7 @@
       case 'bigtext':
         return form_draw_textarea($name, $input, 'rows="10" style="width: 200px"');
       case 'customers':
-        return form_draw_customers_list($name, $input, '');
+        return form_draw_customers_list($name, $input);
       case 'countries':
         return form_draw_countries_list($name, $input, '', 'code');
       case 'countries_id':
@@ -265,7 +260,7 @@
         return form_draw_order_status_list($name, $input);
       case 'radio':
         $output = '';
-        for ($i=0; $i<count($options); $i++) $output .= ' '. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i];
+        for ($i=0; $i<count($options); $i++) $output .= ' <label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label>';
         return $output;
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
@@ -291,7 +286,7 @@
     }
   }
   
-  function form_draw_categories_list($name, $insert, $parameters=false) {
+  function form_draw_categories_list($name, $insert=true, $parameters=false) {
     global $system;
     
     if (!function_exists('form_draw_categories_list_options_iterator')) {
@@ -340,7 +335,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
 
-  function form_draw_countries_list($name, $insert='', $parameters='', $return_type='code') {
+  function form_draw_countries_list($name, $insert=true, $parameters='', $return_type='code') {
     global $system;
     
     $countries_query = $system->database->query(
@@ -372,7 +367,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_currencies_list($name, $insert='', $parameters='', $return_type='code') {
+  function form_draw_currencies_list($name, $insert=true, $parameters='', $return_type='code') {
     global $system;
     
     $currencies_query = $system->database->query(
@@ -401,7 +396,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_customers_list($name, $insert='', $parameters='') {
+  function form_draw_customers_list($name, $insert=true, $parameters='') {
     global $system;
     
     $customers_query = $system->database->query(
@@ -420,7 +415,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_delivery_status_list($name, $insert='', $parameters='') {
+  function form_draw_delivery_status_list($name, $insert=true, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -440,7 +435,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_geo_zones_list($name, $insert='', $parameters='') {
+  function form_draw_geo_zones_list($name, $insert=true, $parameters='') {
     global $system;
     
     $geo_zones_query = $system->database->query(
@@ -463,7 +458,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   } 
   
-  function form_draw_languages_list($name, $insert='', $parameters='', $return_type='code') {
+  function form_draw_languages_list($name, $insert=true, $parameters='', $return_type='code') {
     global $system;
     
     $currencies_query = $system->database->query(
@@ -492,7 +487,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_length_classes_list($name, $insert='', $parameters='') {
+  function form_draw_length_classes_list($name, $insert=true, $parameters='') {
     global $system;
     
     $options = array();
@@ -504,7 +499,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_manufacturers_list($name, $insert='', $parameters='') {
+  function form_draw_manufacturers_list($name, $insert=true, $parameters='') {
     global $system;
     
     $manufacturers_query = $system->database->query(
@@ -523,7 +518,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_option_groups_list($name, $insert='', $parameters='') {
+  function form_draw_option_groups_list($name, $insert=true, $parameters='') {
     global $system;
     
     $option_groups_query = $system->database->query(
@@ -543,7 +538,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_option_values_list($group_id, $name, $insert='', $parameters='') {
+  function form_draw_option_values_list($group_id, $name, $insert=true, $parameters='') {
     global $system;
     
     $option_values_query = $system->database->query(
@@ -566,7 +561,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_order_status_list($name, $insert='', $parameters='') {
+  function form_draw_order_status_list($name, $insert=true, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -586,7 +581,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_products_list($name, $insert, $parameters) {
+  function form_draw_products_list($name, $insert=true, $parameters) {
     global $system;
     
     $options = array(
@@ -601,7 +596,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_product_stock_options_list($product_id, $name, $insert, $parameters) {
+  function form_draw_product_stock_options_list($product_id, $name, $insert=true, $parameters) {
     global $system;
     
     $options = array(
@@ -620,7 +615,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_sold_out_status_list($name, $insert='', $parameters='') {
+  function form_draw_sold_out_status_list($name, $insert=true, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -640,7 +635,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_suppliers_list($name, $insert='', $parameters='') {
+  function form_draw_suppliers_list($name, $insert=true, $parameters='') {
     global $system;
     
     $suppliers_query = $system->database->query(
@@ -659,7 +654,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_templates_list($name, $insert='', $parameters='') {
+  function form_draw_templates_list($name, $insert=true, $parameters='') {
     global $system;
     
     $folders = glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'*');
@@ -675,7 +670,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
 
-  function form_draw_timezones_list($name, $insert='', $parameters='') {
+  function form_draw_timezones_list($name, $insert=true, $parameters='') {
     global $system;
     
     $options = array(
@@ -697,7 +692,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_tax_classes_list($name, $insert='', $parameters='') {
+  function form_draw_tax_classes_list($name, $insert=true, $parameters='') {
     global $system;
     
     if (empty($insert)) $insert = $system->settings->get('default_tax_class_id');
@@ -718,7 +713,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_weight_classes_list($name, $insert='', $parameters='') {
+  function form_draw_weight_classes_list($name, $insert=true, $parameters='') {
     global $system;
     
     if (empty($insert)) $insert = $system->settings->get('store_weight_class');
@@ -732,7 +727,7 @@
     return form_draw_select_field($name, $options, $insert, false, false, $parameters);
   }
   
-  function form_draw_zones_list($country_code, $name, $insert='', $parameters='', $return_type='code') {
+  function form_draw_zones_list($country_code, $name, $insert=true, $parameters='', $return_type='code') {
     global $system;
     
     $zones_query = $system->database->query(

@@ -167,83 +167,83 @@
               <table>
                 <tr>
                   <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
-                    <?php echo $system->functions->form_draw_input_field('tax_id', isset($_POST['tax_id']) ? $_POST['tax_id'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_input('tax_id', true, 'text', 'style="width: 175px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-                    <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_input('company', true, 'text', 'style="width: 175px;"'); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input_field('firstname', isset($_POST['firstname']) ? $_POST['firstname'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_input('firstname', true, 'text', 'style="width: 175px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input_field('lastname', isset($_POST['lastname']) ? $_POST['lastname'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_input('lastname', true, 'text', 'style="width: 175px;"'); ?></td>
                 </tr>
                 <?php if (empty($system->customer->data['id'])) { ?>
                 <tr>
                   <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_email_field('email', true, 'style="width: 175px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-                  <?php echo $system->functions->form_draw_input_field('phone', isset($_POST['phone']) ? $_POST['phone'] : '', 'text', 'style="width: 175px;"'); ?></td>                </tr>
+                  <?php echo $system->functions->form_draw_input('phone', true, 'text', 'style="width: 175px;"'); ?></td>                </tr>
                 <?php if ($system->settings->get('fields_customer_password') == 'true') { ?>
                 <tr>
                   <td><?php echo $system->language->translate('title_password', 'Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_input_field('password', '', 'password', 'style="width: 175px;"'); ?></td>
+                  <?php echo $system->functions->form_draw_input('password', '', 'password', 'style="width: 175px;"'); ?></td>
                   <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_input_field('confirmed_password', '', 'password', 'style="width: 175px;"'); ?></td>
+                  <?php echo $system->functions->form_draw_input('confirmed_password', '', 'password', 'style="width: 175px;"'); ?></td>
                 </tr>
                 <?php } ?>
                 <?php } ?>
                 <tr>
                   <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input_field('address1', isset($_POST['address1']) ? $_POST['address1'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_input('address1', true, 'text', 'style="width: 175px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-                  <?php echo $system->functions->form_draw_input_field('address2', isset($_POST['address2']) ? $_POST['address2'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                  <?php echo $system->functions->form_draw_input('address2', true, 'text', 'style="width: 175px;"'); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input_field('postcode', isset($_POST['postcode']) ? $_POST['postcode'] : '', 'text', 'style="width: 50px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_input('postcode', true, 'text', 'style="width: 50px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input_field('city', isset($_POST['city']) ? $_POST['city'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_input('city', true, 'text', 'style="width: 175px;"'); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_countries_list('country_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', 'style="width: 175px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_countries_list('country_code', true, 'style="width: 175px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
-                    <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', isset($_POST['zone_code']) ? $_POST['zone_code'] : '', 'style="width: 175px;"'); ?></td>
+                    <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, 'style="width: 175px;"'); ?></td>
                 </tr>
               </table>
             </td>
             <td align="left">
-              <h3 style="margin-top: 0px;"><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', (empty($_POST['different_shipping_address'])) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
+              <h3 style="margin-top: 0px;"><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
               <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
                 <table>
                   <tr>
                     <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address[company]', isset($_POST['shipping_address']['company']) ? $_POST['shipping_address']['company'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_input('shipping_address[company]', true, 'text', 'style="width: 175px;"'); ?></td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address[firstname]', isset($_POST['shipping_address']['firstname']) ? $_POST['shipping_address']['firstname'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_input('shipping_address[firstname]', true, 'text', 'style="width: 175px;"'); ?></td>
                     <td><?php echo $system->language->translate('title_lastname', 'LastName'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address[lastname]', isset($_POST['shipping_address']['lastname']) ? $_POST['shipping_address']['lastname'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_input('shipping_address[lastname]', true, 'text', 'style="width: 175px;"'); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address[address1]', isset($_POST['shipping_address']['address1']) ? $_POST['shipping_address']['address1'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_input('shipping_address[address1]', true, 'text', 'style="width: 175px;"'); ?></td>
                     <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address[address2]', isset($_POST['shipping_address']['address2']) ? $_POST['shipping_address']['address2'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_input('shipping_address[address2]', true, 'text', 'style="width: 175px;"'); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address[postcode]', isset($_POST['shipping_address']['postcode']) ? $_POST['shipping_address']['postcode'] : '', 'text', 'style="width: 50px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_input('shipping_address[postcode]', true, 'text', 'style="width: 50px;"'); ?></td>
                     <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input_field('shipping_address[city]', isset($_POST['shipping_address']['city']) ? $_POST['shipping_address']['city'] : '', 'text', 'style="width: 175px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_input('shipping_address[city]', true, 'text', 'style="width: 175px;"'); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_countries_list('shipping_address[country_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : '', 'style="width: 175px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_countries_list('shipping_address[country_code]', true, 'style="width: 175px;"'); ?></td>
                     <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
-                      <?php echo form_draw_zones_list(isset($_POST['shipping_address[country_code]']) ? $_POST['shipping_address']['country_code'] : '', 'shipping_address[zone_code]', isset($_POST['shipping_address']['zone_code']) ? $_POST['shipping_address']['zone_code'] : '', 'style="width: 175px;"'); ?></td>
+                      <?php echo form_draw_zones_list(isset($_POST['shipping_address[country_code]']) ? $_POST['shipping_address']['country_code'] : '', 'shipping_address[zone_code]', true, 'style="width: 175px;"'); ?></td>
                   </tr>
                 </table>
               </div>

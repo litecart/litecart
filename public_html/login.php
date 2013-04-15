@@ -18,11 +18,11 @@
       <table width="100%">
         <tr>
           <td><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : '', 'text', 'style="width: 175px;"'); ?></td>
+            <?php echo $system->functions->form_draw_input('email', true, 'text', 'style="width: 175px;"'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_password', 'Password'); ?><br />
-          <?php echo $system->functions->form_draw_input_field('password', '', 'password', 'style="width: 175px;"'); ?></td>
+          <?php echo $system->functions->form_draw_input('password', '', 'password', 'style="width: 175px;"'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->functions->form_draw_button('login', $system->language->translate('title_login', 'Login')); ?> <?php echo $system->functions->form_draw_button('lost_password', $system->language->translate('title_lost_password', 'Lost Password')); ?> </td>

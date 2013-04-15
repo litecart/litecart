@@ -41,30 +41,11 @@
     exit;
   }
 ?>
-<!--
-<script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?php echo WS_DIR_EXT; ?>ckeditor/adapters/jquery.js"></script>
-<script type="text/javascript">
-var config = {
-
-};
-  $(document).ready(function() {
-    $('textarea[rel=ckeditor]').ckeditor({
-      toolbar: [
-        ['Bold', 'Italic', 'Underline', 'Strike', '-', 'NumberedList', 'BulletedList', 'Table', '-', 'Link', 'Unlink'], ['UIColor'], ['PasteText', 'Source', 'Maximize']
-	    ],
-      entities: false,
-      enterMode: CKEDITOR.ENTER_P,
-      shiftEnterMode: CKEDITOR.ENTER_BR
-    });
-  });
-</script>
--->
 
 <div style="float: right;">
   <?php echo $system->functions->form_draw_form_begin('search_form', 'get'); ?>
     <?php if (!empty($_GET)) foreach ($_GET as $key => $value) { if (!in_array($key, array('query', 'system'))) echo $system->functions->form_draw_hidden_field($key, $value); } ?>
-    <?php echo $system->functions->form_draw_input_field('query', isset($_GET['query']) ? $_GET['query'] : '', 'placeholder="'. $system->language->translate('text_search_phrase_or_keyword') .'"'); ?>
+    <?php echo $system->functions->form_draw_search_field('query', true, 'placeholder="'. $system->language->translate('text_search_phrase_or_keyword') .'"'); ?>
     <?php echo $system->functions->form_draw_button('search', $system->language->translate('title_search', 'Search'), 'submit'); ?>
   <?php echo $system->functions->form_draw_form_end(); ?>
 </div>
@@ -112,7 +93,7 @@ var config = {
       (<a href="javascript:alert('<?php echo str_replace(array('\'', ','), array('', '\\n'), rtrim($row['pages'], ',')); ?>');"><?php echo sprintf($system->language->translate('text_shared_by_pages', 'Shared by %d pages'), count(explode(',', $row['pages']))); ?></a>)<br />
       <?php echo $system->functions->form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo $system->language->translate('text_html_enabled', 'HTML enabled'); ?>
     </td>
-    <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td>'. $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px" rel="ckeditor"') .'</td>'; ?>
+    <?php foreach (array_keys($system->language->languages) as $language_code) echo '<td>'. $system->functions->form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . $system->functions->form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px"') .'</td>'; ?>
     <td><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo $system->language->translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php      

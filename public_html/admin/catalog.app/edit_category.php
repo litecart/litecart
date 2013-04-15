@@ -67,27 +67,6 @@
   }
   
   $system->document->snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
-  
-  $system->document->snippets['head_tags']['ckeditor'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/ckeditor.js"></script>' . PHP_EOL
-                                                       . ' <script type="text/javascript" src="'. WS_DIR_EXT .'ckeditor/adapters/jquery.js"></script>' . PHP_EOL
-                                                       . ' <script>' . PHP_EOL
-                                                       . '   $(document).ready(function() {' . PHP_EOL
-                                                       . '     $("textarea[name^=description]").ckeditor({' . PHP_EOL
-                                                       . '       toolbar: [' . PHP_EOL
-                                                       . '         ["Source", "-", "DocProps", "Preview", "Print", "-", "Templates", "Maximize", "ShowBlocks"],' . PHP_EOL
-                                                       . '         ["NumberedList", "BulletedList", "-", "Outdent", "Indent", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],' . PHP_EOL
-                                                       . '         ["Link", "Unlink", "Anchor"],' . PHP_EOL
-                                                       . '         ["Image", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak"],' . PHP_EOL
-                                                       . '         ["Format", "Font", "FontSize"],' . PHP_EOL
-                                                       . '         ["TextColor", "BGColor"],' . PHP_EOL
-                                                       . '         ["Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "RemoveFormat"],' . PHP_EOL
-                                                       . ' 	    ],' . PHP_EOL
-                                                       . '       entities: false,' . PHP_EOL
-                                                       . '       enterMode: CKEDITOR.ENTER_P,' . PHP_EOL
-                                                       . '       shiftEnterMode: CKEDITOR.ENTER_BR' . PHP_EOL
-                                                       . '     });' . PHP_EOL
-                                                       . '   });' . PHP_EOL
-                                                       . '</script>' . PHP_EOL;
 
 ?>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (empty($category->data['id'])) ? $system->language->translate('title_add_new_category', 'Add New Category') : $system->language->translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][$system->language->selected['code']]; ?></h1>
@@ -115,7 +94,7 @@
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_parent_category', 'Parent Category'); ?></strong><br />
-              <?php echo $system->functions->form_draw_categories_list('parent_id', (isset($_POST['parent_id'])) ? $_POST['parent_id'] : ''); ?>
+              <?php echo $system->functions->form_draw_categories_list('parent_id', true); ?>
             </td>
           </tr>
           <tr>
@@ -125,7 +104,7 @@
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 360px"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, 'style="width: 360px"');
   $use_br = true;
 }
 ?>
@@ -133,12 +112,12 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('keywords', (isset($_POST['keywords']) ? $_POST['keywords'] : ''), 'text', 'style="width: 360px;"'); ?>
+              <?php echo $system->functions->form_draw_input('keywords', true, 'text', 'style="width: 360px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('code', (isset($_POST['code']) ? $_POST['code'] : ''), 'text', 'style="width: 175px;"'); ?>
+              <?php echo $system->functions->form_draw_input('code', true, 'text', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>
@@ -147,7 +126,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('priority', (isset($_POST['priority']) ? $_POST['priority'] : '0'), 'text', 'style="width: 50px;"'); ?>
+              <?php echo $system->functions->form_draw_input('priority', true, 'text', 'style="width: 50px;"'); ?>
             </td>
           </tr>
           <?php if (isset($category->data['id'])) { ?>
@@ -171,7 +150,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', (isset($_POST['h1_title'][$language_code]) ? $_POST['h1_title'][$language_code] : ''), 'text', 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, 'style="width: 360px;"');
   $use_br = true;
 }
 ?>
@@ -183,7 +162,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', (isset($_POST['short_description'][$language_code]) ? $_POST['short_description'][$language_code] : ''), 'text', 'style="width: 360px;"');  $use_br = true;
+  echo $system->functions->form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true, 'style="width: 360px;"');  $use_br = true;
 }
 ?>
             </td>
@@ -194,7 +173,8 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_textarea($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="width: 360px; height: 160px;"');  $use_br = true;
+  echo $system->functions->form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'style="width: 360px; height: 160px;"');  $use_br = true;
+  $use_br = true;
 }
 ?>
             </td>
@@ -205,7 +185,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', (isset($_POST['head_title'][$language_code]) ? $_POST['head_title'][$language_code] : ''), 'text', 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'style="width: 360px;"');
   $use_br = true;
 }
 ?>
@@ -217,7 +197,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', (isset($_POST['meta_description'][$language_code]) ? $_POST['meta_description'][$language_code] : ''), 'text', 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'style="width: 360px;"');
   $use_br = true;
 }
 ?>
@@ -229,7 +209,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', (isset($_POST['meta_keywords'][$language_code]) ? $_POST['meta_keywords'][$language_code] : ''), 'text', 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', true, 'style="width: 360px;"');
   $use_br = true;
 }
 ?>

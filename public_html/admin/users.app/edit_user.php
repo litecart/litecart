@@ -69,19 +69,19 @@
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_username', 'Username'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input_field('username', (isset($_POST['username']) ? $_POST['username'] : ''), 'text', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('username', true, 'text', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_password', 'Password'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input_field('password', (isset($_POST['password']) ? $_POST['password'] : ''), 'password', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('password', true, 'password', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input_field('confirmed_password', (isset($_POST['confirmed_password']) ? $_POST['confirmed_password'] : ''), 'password', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('confirmed_password', true, 'password', 'style="width: 175px;"'); ?>
       </td>
     </tr>
     <tr>

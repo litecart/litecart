@@ -64,31 +64,31 @@
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input_field('name', (isset($_POST['name']) ? $_POST['name'] : ''), 'text', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_description', 'description'); ?></strong><br />
-                <?php echo $system->functions->form_draw_textarea('description', (isset($_POST['description']) ? $_POST['description'] : ''), 'style="width: 360px;"'); ?>
+                <?php echo $system->functions->form_draw_textarea('description', true, 'style="width: 360px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_email', 'email'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input_field('email', (isset($_POST['email']) ? $_POST['email'] : ''), 'text', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_email_field('email', true, 'email', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_phone', 'Phone'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input_field('phone', (isset($_POST['phone']) ? $_POST['phone'] : ''), 'text', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_input('phone', true, 'text', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_link', 'Link'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input_field('link', (isset($_POST['link']) ? $_POST['link'] : ''), 'text', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_input('link', true, 'text', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>

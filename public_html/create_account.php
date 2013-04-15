@@ -108,48 +108,48 @@
       <table>
         <tr>
           <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('tax_id', isset($_POST['tax_id']) ? $_POST['tax_id'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('tax_id', true); ?></td>
           <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('company', isset($_POST['company']) ? $_POST['company'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('company', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_input_field('firstname', isset($_POST['firstname']) ? $_POST['firstname'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('firstname', true); ?></td>
           <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_input_field('lastname', isset($_POST['lastname']) ? $_POST['lastname'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('lastname', true); ?></td>
         </tr>
         <tr>
           <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_input_field('email', isset($_POST['email']) ? $_POST['email'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_email_field('email', true); ?></td>
           <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-            <?php echo $system->functions->form_draw_input_field('phone', isset($_POST['phone']) ? $_POST['phone'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('phone', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_input_field('address1', isset($_POST['address1']) ? $_POST['address1'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('address1', true); ?></td>
           <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-          <?php echo $system->functions->form_draw_input_field('address2', isset($_POST['address2']) ? $_POST['address2'] : ''); ?></td>
+          <?php echo $system->functions->form_draw_input('address2', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_input_field('city', isset($_POST['city']) ? $_POST['city'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('city', true); ?></td>
           <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_input_field('postcode', isset($_POST['postcode']) ? $_POST['postcode'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_input('postcode', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_countries_list('country_code', isset($_POST['country_code']) ? $_POST['country_code'] : ''); ?></td>
+            <?php echo $system->functions->form_draw_countries_list('country_code', true); ?></td>
           <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
-            <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', isset($_POST['zone_code']) ? $_POST['zone_code'] : ''); ?></td>
+            <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
         </tr>
         <tr>
           <td colspan="2">&nbsp;</td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_desired_password', 'Desired Password'); ?> <span class="required">*</span><br />
-          <?php echo $system->functions->form_draw_input_field('password', '', 'password'); ?></td>
+          <?php echo $system->functions->form_draw_input('password', '', 'password'); ?></td>
           <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
-          <?php echo $system->functions->form_draw_input_field('confirmed_password', '', 'password'); ?></td>
+          <?php echo $system->functions->form_draw_input('confirmed_password', '', 'password'); ?></td>
         </tr>
         <tr>
           <td colspan="2">&nbsp;</td>

@@ -63,41 +63,41 @@
         <table>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('name', isset($_POST['name']) ? $_POST['name'] : '', 'text', 'style="width: 175px;"'); ?>
+              <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('description', isset($_POST['description']) ? $_POST['description'] : '', 'text', 'style="width: 360px;"'); ?>
+              <?php echo $system->functions->form_draw_input('description', true, 'text', 'style="width: 360px;"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_tax_class', 'Tax Class'); ?></strong><br />
-              <?php echo $system->functions->form_draw_tax_classes_list('tax_class_id', isset($_POST['tax_class_id']) ? $_POST['tax_class_id'] : ''); ?>
+              <?php echo $system->functions->form_draw_tax_classes_list('tax_class_id', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_geo_zone', 'Geo Zone'); ?></strong><br />
-              <?php echo $system->functions->form_draw_geo_zones_list('geo_zone_id', isset($_POST['geo_zone_id']) ? $_POST['geo_zone_id'] : ''); ?>
+              <?php echo $system->functions->form_draw_geo_zones_list('geo_zone_id', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_rate', 'Rate'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input_field('rate', (isset($_POST['rate']) ? $_POST['rate'] : ''), 'text', 'style="width: 60px;"'); ?> <?php echo $system->functions->form_draw_select_field('type', array(array('percent'), array('fixed')), isset($_POST['type']) ? $_POST['type'] : ''); ?>
+              <?php echo $system->functions->form_draw_input('rate', true, 'text', 'style="width: 60px;"'); ?> <?php echo $system->functions->form_draw_select_field('type', array(array('percent'), array('fixed')), true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_rule', 'Rule'); ?>: <?php echo $system->language->translate('title_customer_type', 'Customer Type'); ?></strong><br />
-              <?php echo $system->functions->form_draw_radio_button('customer_type', 'individuals', (isset($_POST['customer_type']) ? $_POST['customer_type'] : '')); ?> <?php echo $system->language->translate('text_tax_rate_rule_individuals', 'Applies to individuals'); ?><br />
-              <?php echo $system->functions->form_draw_radio_button('customer_type', 'companies', (isset($_POST['customer_type']) ? $_POST['customer_type'] : '')); ?> <?php echo $system->language->translate('text_tax_rate_rule_companies', 'Applies to companies'); ?><br />
-              <?php echo $system->functions->form_draw_radio_button('customer_type', 'both', (isset($_POST['customer_type']) ? $_POST['customer_type'] : '')); ?> <?php echo $system->language->translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?>
+              <?php echo $system->functions->form_draw_radio_button('customer_type', 'individuals', true); ?> <?php echo $system->language->translate('text_tax_rate_rule_individuals', 'Applies to individuals'); ?><br />
+              <?php echo $system->functions->form_draw_radio_button('customer_type', 'companies', true); ?> <?php echo $system->language->translate('text_tax_rate_rule_companies', 'Applies to companies'); ?><br />
+              <?php echo $system->functions->form_draw_radio_button('customer_type', 'both', true); ?> <?php echo $system->language->translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_rule', 'Rule'); ?>: <?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?></strong><br />
-              <?php echo $system->functions->form_draw_radio_button('tax_id_rule', 'with', (isset($_POST['tax_id_rule']) ? $_POST['tax_id_rule'] : '')); ?> <?php echo $system->language->translate('text_tax_rate_rule_customers_with_tax_id', 'Applies to customers with a tax ID'); ?><br />
-              <?php echo $system->functions->form_draw_radio_button('tax_id_rule', 'without', (isset($_POST['tax_id_rule']) ? $_POST['tax_id_rule'] : '')); ?> <?php echo $system->language->translate('text_tax_rate_rule_customers_without_tax_id', 'Applies to customers without a tax ID'); ?><br />
-              <?php echo $system->functions->form_draw_radio_button('tax_id_rule', 'both', (isset($_POST['tax_id_rule']) ? $_POST['tax_id_rule'] : '')); ?> <?php echo $system->language->translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?>
+              <?php echo $system->functions->form_draw_radio_button('tax_id_rule', 'with', true); ?> <?php echo $system->language->translate('text_tax_rate_rule_customers_with_tax_id', 'Applies to customers with a tax ID'); ?><br />
+              <?php echo $system->functions->form_draw_radio_button('tax_id_rule', 'without', true); ?> <?php echo $system->language->translate('text_tax_rate_rule_customers_without_tax_id', 'Applies to customers without a tax ID'); ?><br />
+              <?php echo $system->functions->form_draw_radio_button('tax_id_rule', 'both', true); ?> <?php echo $system->language->translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?>
             </td>
           </tr>
           <tr>

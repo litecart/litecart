@@ -118,7 +118,7 @@
         <tr>
           <td align="left" style="vertical-align: top;">
             <p><strong><?php echo $system->language->translate('title_comments', 'Comments'); ?></strong><br />
-              <?php echo $system->functions->form_draw_textarea('comments', !empty($system->session->data['order_comments']) ? $system->session->data['order_comments'] : '', 'style="width: 400px; height: 50px;"'); ?></p>
+              <?php echo $system->functions->form_draw_textarea('comments', true, 'style="width: 400px; height: 50px;"'); ?></p>
           </td>
           <td align="right" style="vertical-align: bottom;">
             <p align="right"><?php if (!empty($payment->data['selected'])) echo is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon']) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" alt="'. htmlspecialchars($payment->data['selected']['title']) .'" />' : '<strong>'. $payment->data['selected']['title'] .'</strong>'; ?></p>
@@ -129,7 +129,7 @@
     echo '            <div class="warning">'. $errors[0] .'</div>' . PHP_EOL;
   } else {
     if ($system->settings->get('checkout_captcha_enabled') == 'true') {    
-      echo '            <p align="right">'. $system->functions->captcha_generate(100, 40, 4, 'checkout', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_input_field('captcha', '', 'input', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"') .'<p>' . PHP_EOL;
+      echo '            <p align="right">'. $system->functions->captcha_generate(100, 40, 4, 'checkout', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_input('captcha', '', 'input', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"') .'<p>' . PHP_EOL;
     }
   }
 ?>

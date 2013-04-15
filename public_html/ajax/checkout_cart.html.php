@@ -70,7 +70,7 @@
   }
 ?>
             <p><?php echo $system->currency->format($system->tax->calculate($item['price'], $item['tax_class_id'])); ?></p>
-            <p><?php echo $system->language->translate('title_quantity', 'Quantity'); ?>: <?php echo $system->functions->form_draw_input_field('quantity', $item['quantity'], 'text', 'style="width: 20px;"'); ?> <?php echo $system->functions->form_draw_button('update_cart_item', $system->language->translate('text_update', 'Update'), 'submit'); ?></p>
+            <p><?php echo $system->language->translate('title_quantity', 'Quantity'); ?>: <?php echo $system->functions->form_draw_number_field('quantity', $item['quantity']); ?> <?php echo $system->functions->form_draw_button('update_cart_item', $system->language->translate('text_update', 'Update'), 'submit'); ?></p>
             <p><?php echo $system->functions->form_draw_button('remove_cart_item', $system->language->translate('text_remove', 'Remove'), 'submit'); ?></p>
           </div>
         </div>
