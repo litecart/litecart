@@ -1,7 +1,8 @@
 @import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700,500);
 
 html, body {
-  background: #fafafa;
+  background-color: #fff;
+  color: #333;
 }
 
 html {
@@ -28,6 +29,13 @@ body {
 #header {
   position: relative;
   height: 100px;
+}
+
+#logotype-wrapper {
+  display: inline-block;
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 
 #languages-wrapper {
@@ -90,6 +98,7 @@ body {
   left: 0px;
   bottom: 0px;
   margin-bottom: 20px;
+  height: 41px;
 }
 
 #site-links {
@@ -99,24 +108,46 @@ body {
   /* see site_menu.css */
 }
 
+#slider-wrapper {
+  margin-bottom: 20px;
+}
+
+#manufacturer-logotypes {
+  margin-bottom: 20px;
+  max-width: 700px;
+  height: 35px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+}
+
 #main-wrapper {
   margin-bottom: 20px;
 }
-#main tr > .top > *:first-child {
+#main tr > .top *:first-child {
   margin-bottom: 20px;
 }
-#main tr > .left > * {
+#main tr > .left *:first-child {
   margin-right: 20px;
 }
 #main tr > .content {
   width: 100%;
   min-height: 400px;
 }
-#main tr > .right > *:first-child {
+#main tr > .right *:first-child {
   margin-right: 20px;
 }
-#main tr > .bottom > *:first-child {
+#main tr > .bottom *:first-child {
   margin-top: 20px;
+}
+#sidebar {
+  margin-right: 10px;
+  
+	width: 210px;
+  padding: 10px;
+  
+  background-color: rgba(255, 255, 255, 1);
 }
 
 #breadcrumbs-wrapper {
@@ -130,22 +161,8 @@ body {
 #footer {
   padding: 0px 10px;
 }
-#footer table {
-  width: 100%;
-  border-collapse: separate;
-}
 #footer table td {
-  padding: 5px 20px;
-  border-left: 1px rgba(255,255,255,0.25) solid;
-  border-right: 1px rgba(0,0,0,0.05) solid;
-  vertical-align: top;
-  width: 20%;
-}
-#footer table td:first-child{
-  border-left: none;
-}
-#footer table td:last-child {
-  border-right: none;
+  padding: 10px;
 }
 #footer * {
   color: rgb(136, 136, 136);
@@ -173,4 +190,15 @@ body {
   display: none;
   text-indent: -9999px;
   background: url('../images/scroll_up.png') no-repeat;
+}
+
+@media screen and (max-width: 900px) {
+  #main.left, #main.top {
+    display: none;
+  }
+  body {
+    margin: 10px;
+  }
+}
+@media screen and (max-width: 480px) {
 }

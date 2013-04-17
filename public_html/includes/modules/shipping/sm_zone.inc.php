@@ -12,7 +12,7 @@
     
     public function __construct() {
       global $system;
-      $this->system = &$system;
+      $this->system = $system;
       
       $this->name = $this->system->language->translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
@@ -30,9 +30,9 @@
         
         $options[] = array(
           'id' => 'zone_'.$i,
-          'icon' => $this->settings['icon'],
-          'name' => $this->system->language->translate('title_flat_rate', 'Flat Rate'),
-          'description' => $this->system->functions->reference_get_country_name($customer['country_code']),
+          'icon' => '',
+          'name' => $this->system->functions->reference_get_country_name($customer['country_code']),
+          'description' => '',
           'fields' => '',
           'cost' => $this->settings['cost_'.$i],
           'tax_class_id' => $this->settings['tax_class_id'],
@@ -45,9 +45,9 @@
         } else {
           $options[] = array(
             'id' => 'zone_x',
-            'icon' => $this->settings['icon'],
-            'name' => $this->system->language->translate('title_flat_rate', 'Flat Rate'),
-            'description' => $this->system->functions->reference_get_country_name($customer['country_code']),
+            'icon' => '',
+            'name' => $this->system->functions->reference_get_country_name($customer['country_code']),
+            'description' => '',
             'fields' => '',
             'cost' => $this->settings['cost_x'],
             'tax_class_id' => $this->settings['tax_class_id'],
@@ -75,7 +75,7 @@
           'key' => 'status',
           'default_value' => 'Enabled',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Status'),
           'function' => 'radio("Enabled", "Disabled")',
         ),
         array(

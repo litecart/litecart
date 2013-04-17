@@ -76,7 +76,7 @@
   <div class="content">
     <table>
       <tr>
-        <td style="width: 320px">
+        <td style="width: 320px; vertical-align: top;">
           <div class="product-images-wrapper">
 <?php
   if (count($product->images) > 0) {
@@ -108,7 +108,7 @@
           </div>
         </td>
         
-        <td style="padding-left: 10px;">
+        <td style="padding-left: 10px; vertical-align: top;">
           <div class="tabs">
             <div class="index">
               <li><a href="#tab-information"><?php echo $system->language->translate('title_information', 'Information'); ?></a></li>
@@ -189,7 +189,7 @@
 ?>
           </div>
           
-          <div style="margin-bottom: 10px;" class="quantity">
+          <div style="margin-bottom: 10px;" class="stock-status">
 <?php
   if ($product->quantity > 0) {
     echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="stock-available">'. (($system->settings->get('display_stock_count') == 'true') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span>';
@@ -270,7 +270,7 @@
               }
             }
             
-            echo $system->functions->form_draw_checkbox('options['.$group['name'][$system->language->selected['code']].'][]', $group['values'][$value_id]['name'][$system->language->selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
+            echo '<label>' . $system->functions->form_draw_checkbox('options['.$group['name'][$system->language->selected['code']].'][]', $group['values'][$value_id]['name'][$system->language->selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . '</label>' . PHP_EOL;
             $use_br = true;
           }
           break;
@@ -304,7 +304,7 @@
               }
             }
             
-            echo $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']', $group['values'][$value_id]['name'][$system->language->selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . PHP_EOL;
+            echo '<label>' . $system->functions->form_draw_radio_button('options['.$group['name'][$system->language->selected['code']].']', $group['values'][$value_id]['name'][$system->language->selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text . '</label>' . PHP_EOL;
             $use_br = true;
           }
           break;
@@ -348,7 +348,7 @@
             </div>
             <div class="quantity">
               <p><strong><?php echo $system->language->translate('title_quantity', 'Antal'); ?></strong><br />
-                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1); ?>
+                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 0, 0, 'style="width: 40px;"'); ?>
               </p>
             </div>
 <?php

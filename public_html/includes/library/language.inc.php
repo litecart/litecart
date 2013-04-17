@@ -20,21 +20,17 @@
       $this->selected = &$this->system->session->data['language'];
       
     // Get languages from database
-      $languages_query = $this->system->database->query(
-        "select * from ". DB_TABLE_LANGUAGES ."
-        where status
-        order by priority, name;"
-      );
-      
-    // Store list of languages in a variable
-      while ($row = $this->system->database->fetch($languages_query)) {
-        $this->languages[$row['code']] = $row;
-      }
+      $this->load();
       
     // Set language
       if (empty($this->selected['code']) || empty($this->language[$this->selected['code']]['status'])) {
         $this->set($this->identify());
       }
+      
+    // Set mysql charset and reinitiate list of languages
+      $this->system->database->set_character($this->selected['charset']);
+      $this->load();
+      $this->set($this->selected['code']);
       
       if (!empty($_POST['set_language'])) {
         $this->set($_POST['set_language']);
@@ -47,11 +43,6 @@
     //}
     
     public function startup() {
-    
-    // Set system locale
-      if (!setlocale(LC_TIME, explode(',', $this->selected['locale']))) {
-        trigger_error('Warning: Failed setting locale '. $this->selected['locale'] .' for '. $this->selected['code'], E_USER_WARNING);
-      }
       
     // Import cached translations
       $this->_cache_id = $this->system->cache->cache_id('translations', array('language', 'basename'));
@@ -106,12 +97,32 @@
     
     ######################################################################
     
+    public function load() {
+      
+      $this->languages = array();
+      
+      $languages_query = $this->system->database->query(
+        "select * from ". DB_TABLE_LANGUAGES ."
+        where status
+        order by priority, name;"
+      );
+      
+      while ($row = $this->system->database->fetch($languages_query)) {
+        $this->languages[$row['code']] = $row;
+      }
+    }
+    
     public function set($code) {
       
       if (!isset($this->languages[$code])) trigger_error('Cannot set unsupported language ('. $code .')', E_USER_ERROR);
       
       $this->system->session->data['language'] = $this->languages[$code];
       setcookie('language_code', $code, (time()+3600*24)*30, WS_DIR_HTTP_HOME);
+      
+    // Set system locale
+      if (!setlocale(LC_TIME, explode(',', $this->selected['locale']))) {
+        trigger_error('Warning: Failed setting locale '. $this->selected['locale'] .' for '. $this->selected['code'], E_USER_WARNING);
+      }
       
     // Chain select currency
       if ($this->system->settings->get('set_currency_by_language') == 'true') {

@@ -5,8 +5,9 @@
 <meta charset="{snippet:charset}" />
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
-<meta name="viewport" content="width=480">
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css">
+<meta name="viewport" content="width=640">
+<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css" media="screen and (min-device-width: 641px)" />
+<link rel="stylesheet" href="<!--snippet:template_path-->styles/mobile.css" media="screen and (max-device-width: 640px)" />
 <!--[if IE]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
@@ -51,7 +52,7 @@
       </header>
     </div>
     
-    <div id="site-menu-wrapper" class="box-gradient1 rounded-corners shadow">
+    <div id="site-menu-wrapper">
       <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
     </div>
     
@@ -65,17 +66,17 @@
             </td>
           </tr>
           <tr>
-            <td class="left">
+            <td class="left" style="vertical-align: top;">
               <!--snippet:column_left-->
             </td>
-            <td class="content">
+            <td class="content" style="vertical-align: top;">
               <div id="content-wrapper">
                 <div id="content" class="">
                   <!--snippet:content-->
                 </div>
               </div>
             </td>
-            <td class="right">
+            <td class="right" style="vertical-align: top;">
               <!--snippet:column_right-->
             </td>
           </tr>
@@ -94,13 +95,40 @@
 
     <div id="footer-wrapper">
       <footer id="footer" class="box-gradient1 shadow rounded-corners">
-        <table style="width: 100%;">
+        <table>
           <tr>
             <td>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
             </td>
             <td>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
+            </td>
+            <td>
+              <nav class="account">
+                <p><strong><?php echo $system->language->translate('title_account', 'Account'); ?></strong></p>
+                <ul class="list-vertical">
+                  <?php if (empty($system->customer->data['id'])) { ?>
+                  <li><a href="<?php echo $system->document->link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
+                  <li><a href="<?php echo $system->document->link('create_account.php'); ?>"><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></a></li>
+                  <?php } else { ?>
+                  <li><a href="<?php echo $system->document->link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
+                  <li><a href="<?php echo $system->document->link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
+                  <li><a href="javascript:logout();"><?php echo $system->language->translate('title_logout', 'Logout'); ?></a></li>
+                  <script>
+                    function logout() {
+                      var form = $('<?php
+                        echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('logout_form', 'post')
+                                                              . $system->functions->form_draw_hidden_field('logout', 'true')
+                                                              . $system->functions->form_draw_form_end()
+                        );
+                      ?>');
+                      $(document.body).append(form);
+                      form.submit();
+                    }
+                  </script>
+                  <?php } ?>
+                </ul>
+              </nav>
             </td>
             <td>
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_information.inc.php'); ?>
@@ -112,8 +140,6 @@
                 <p><?php echo $system->settings->get('store_phone'); ?></p>
                 <p><?php echo $system->settings->get('store_email'); ?></p>
               </div>
-            </td>
-            <td>
             </td>
           </tr>
         </table>
@@ -135,7 +161,7 @@
       });
       
       $('#scroll-up').click(function(){
-        $("html, body").animate({scrollTop: 0}, 200);
+        $("html, body").animate({scrollTop: 0}, 1000, 'swing');
         return false;
       });
     </script>

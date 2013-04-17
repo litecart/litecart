@@ -1,4 +1,4 @@
-<nav id="site-menu">
+<nav id="site-menu" class="box-gradient1 rounded-corners shadow">
   <ul>
 <?php  
   function site_menu_category_tree($parent_id=0, $depth=0) {
@@ -15,7 +15,7 @@
       order by c.priority asc, ci.name asc;"
     );
     
-    if ($depth > 0 && $system->database->num_rows($categories_query) > 0) $output .= str_repeat('  ', $depth) .'<ul>' . PHP_EOL;
+    if ($depth > 0 && $system->database->num_rows($categories_query) > 0) $output .= str_repeat('  ', $depth) .'<ul class="box-gradient1 rounded-corners shadow">' . PHP_EOL;
     while ($category = $system->database->fetch($categories_query)) {
     
       $subcategories_query = $system->database->query(

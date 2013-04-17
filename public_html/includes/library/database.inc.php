@@ -94,6 +94,43 @@
       return $this->links[$link];
     }
     
+  // Set input/output mysql charset
+    function set_character($charset) {
+    
+      $charset = strtolower($charset);
+      
+      $charset_map = array(
+        'euc-kr' => 'euckr',
+        'iso-8859-1' => 'latin1',
+        'iso-8859-2' => 'latin2',
+        'iso-8859-3' => 'latin7',
+        'iso-8859-4' => 'cp1257',
+        'iso-8859-5' => 'cp1251',
+        'iso-8859-6' => 'cp1256',
+        'iso-8859-7' => 'greek',
+        'iso-8859-8' => 'hebrew',
+        'iso-8859-9' => 'latin5',
+        'iso-8859-13' => 'latin7',
+        'iso-2022-jp' => 'cp932',
+        'iso-2022-jp-2' => 'eucjpms',
+        'iso-2022-kr' => 'euckr',
+        'utf-8' => 'utf8',
+        'utf-16' => 'utf16',
+        'windows-1251' => 'cp1251',
+        'windows-1252' => 'cp1252',
+        'windows-1256' => 'cp1256',
+      );
+      
+      if (empty($charset_map[$charset])) {
+        trigger_error('Unknown MySQL charset for HTML charset '. $charset, E_USER_WARNING);
+        return false;
+      }
+      
+      $this->query("set character set ". $charset_map[$charset]);
+      
+      return true;
+    }
+    
   // Close database connection
     function disconnect($link='') {
       

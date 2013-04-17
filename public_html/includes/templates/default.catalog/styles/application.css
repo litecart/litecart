@@ -1,0 +1,58 @@
+body {
+  font: 14px 'Maven Pro', sans-serif;
+  color: #333;
+}
+
+a img {
+  border: 0px;
+}
+img.zoomable {
+  cursor: url(../cursors/magnify.cur), pointer;
+}
+
+a:link, a:visited {
+  color: rgb(0, 136, 204);
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: rgb(0, 136, 204);
+  text-decoration: underline;
+}
+
+h1{
+  font-size: 1.75em;
+  font-weight: normal;
+}
+h2{
+  font-size: 1.4em;
+  font-weight: normal;
+}
+h3{
+  font-size: 1.15em;
+  font-weight: normal;
+}
+
+span.required {
+  color: #f00px;
+}
+
+#slider-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+#logotypes-wrapper {
+  margin-bottom: 20px;
+}
+#logotypes {
+  height: 35px;
+  text-align: center;
+  font: 0px;
+  overflow: hidden;
+}
+
+aside {
+  width: 200px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 1);
+}

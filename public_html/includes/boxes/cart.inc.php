@@ -1,5 +1,5 @@
 <div id="cart">
-  <strong><?php echo $system->language->translate('title_cart', 'Cart'); ?>:</strong>
+  <strong><?php echo $system->language->translate('title_cart', 'Cart'); ?>:</strong><br />
   <span class="quantity"><?php echo $system->cart->data['total']['items']; ?></span> <?php echo $system->language->translate('text_items', 'item(s)'); ?>
   - <span class="formatted_value">
 <?php

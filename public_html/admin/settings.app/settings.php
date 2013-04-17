@@ -69,7 +69,7 @@
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td align="left" nowrap="nowrap"><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></td>
-    <td align="left"><?php echo nl2br((strlen($setting['value']) > 50) ? substr($setting['value'], 0, 50) : $setting['value']); ?></td>
+    <td align="left"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128).'...' : $setting['value']); ?></td>
     <td align="right" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php

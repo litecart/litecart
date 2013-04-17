@@ -457,7 +457,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_purchase_price', 'Purchase Price'); ?></strong><br />
               <?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'purchase_price', true, 'style="width: 60px; text-align: right;"'); ?>
-              <script>$("input[name='purchase_price']").val(Number($("input[name='purchase_price']").val()).toFixed(<?php echo (int)$system->currency->currencies[$system->settings->get('store_currency_code')]['decimals']; ?>));</script>
+              <script>$("input[name='purchase_price']").val(parseFloat($("input[name='purchase_price']").val()).toFixed(<?php echo (int)$system->currency->currencies[$system->settings->get('store_currency_code')]['decimals']; ?>));</script>
             </td>
           </tr>
         </table>
@@ -481,9 +481,8 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td><strong><?php echo $system->settings->get('store_currency_code'); ?></strong></td>
-            <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', true, 'style="width: 60px; text-align: right;"'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $system->settings->get('store_currency_code') .']', '', 0, '0', '', 'style="width: 60px; text-align: right;"'); ?></td>
-            <td></td>
+            <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', true, 'data-currency-price="" placeholder="" style="width: 60px; text-align: right;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $system->settings->get('store_currency_code') .']', '', 0, '0', '', 'placeholder="" style="width: 60px; text-align: right;"'); ?></td>
           </tr>
 <?php
 foreach ($system->currency->currencies as $currency) {
@@ -491,14 +490,12 @@ foreach ($system->currency->currencies as $currency) {
 ?>
           <tr>
             <td align="left" nowrap="nowrap"><?php echo $currency['code']; ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'style="width: 60px; text-align: right;"'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], '0', '', 'style="width: 60px; text-align: right;"'); ?></td>
-            <td align="left" nowrap="nowrap"></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder="" style="width: 60px; text-align: right;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], '0', '', 'placeholder="" style="width: 60px; text-align: right;"'); ?></td>
           </tr>
 <?php
 }
 ?>
-          </tr>
         </table>
         <script>
           function get_tax_rate() {
@@ -518,62 +515,125 @@ foreach ($system->currency->currencies as $currency) {
             }
           }
           
-          function calculate_net_price() {
+          function get_currency_value(currency_code) {
+            switch (currency_code) {
 <?php
   foreach ($system->currency->currencies as $currency) {
-    echo 'var value = $("input[name=\'prices['. $currency['code'] .']\']").val()*(1+(get_tax_rate()/100));' . PHP_EOL
-       . 'if (value == 0) value = $("input[name=\'calculated_prices['. $currency['code'] .']\']").val()*(1+(get_tax_rate()/100));' . PHP_EOL
-       . 'if (value != 0) {' . PHP_EOL
-       . '  $("input[name=\'net_prices['. $currency['code'] .']\']").val(value.toFixed('. (int)$currency['decimals'] .')); ' . PHP_EOL
-       . '} else {' . PHP_EOL
-       . '  $("input[name=\'net_prices['. $currency['code'] .']\']").val("")' . PHP_EOL
-       . '}' . PHP_EOL;
+    echo '              case "'. $currency['code'] .'":' . PHP_EOL
+       . '                return '. $currency['value'] .';' . PHP_EOL;
   }
 ?>
+            }
           }
-          calculate_net_price();
           
-          function currency_convert_prices() {
+          function get_currency_decimals(currency_code) {
+            switch (currency_code) {
 <?php
   foreach ($system->currency->currencies as $currency) {
-    echo 'var value = $("input[name=\'prices['. $system->settings->get('store_currency_code') .']\']").val() * '. $currency['value'] .';' . PHP_EOL
-       . 'if (value != 0) {' . PHP_EOL
-       . '  $("input[name=\'prices['. $currency['code'] .']\']").attr("placeholder", value.toFixed('. (int)$currency['decimals'] .')); ' . PHP_EOL
-       . '} else {' . PHP_EOL
-       . '  $("input[name=\'prices['. $currency['code'] .']\']").attr("placeholder", "")' . PHP_EOL
-       . '}' . PHP_EOL;
+    echo '              case "'. $currency['code'] .'":' . PHP_EOL
+       . '                return '. $currency['decimals'] .';' . PHP_EOL;
   }
 ?>
+            }
           }
-          currency_convert_prices();
           
-          function calculate_price() {
-<?php
-  foreach ($system->currency->currencies as $currency) {
-    echo 'var value = $("input[name=\'net_prices['. $currency['code'] .']\']").val()/(1+(get_tax_rate()/100));' . PHP_EOL
-       . 'if (value != 0) {' . PHP_EOL
-       . '$("input[name=\'prices['. $currency['code'] .']\']").val(value.toFixed('. (int)$currency['decimals'] .')); ' . PHP_EOL
-       . '} else {' . PHP_EOL
-       . '  $("input[name=\'prices['. $currency['code'] .']\']").val("")' . PHP_EOL
-       . '}' . PHP_EOL;
-  }
-?>
-          }
-          calculate_price();
-          
-          $("select[name='tax_class_id']").bind("change keyup", function() {
-            calculate_net_price();
+          $("select[name='tax_class_id'], input[name^='prices']").bind("change keyup", function() {
+            
+            var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
+            var price = Number($(this).val());
+            var net_price = Number($(this).val()) * (1+(get_tax_rate()/100));
+            
+          // Update net price
+            if (net_price == 0) {
+              $("input[name='net_prices["+ currency_code +"]']").val("");
+            } else {
+              $("input[name='net_prices["+ currency_code +"]']").val(net_price.toFixed(get_currency_decimals(currency_code)));
+            }
+            
+            if (currency_code != '<?php echo $system->settings->get('store_currency_code'); ?>') return;
+            
+          // Update system currency price
+            var currency_price = price * get_currency_value(currency_code);
+            var currency_net_price = net_price * get_currency_value(currency_code);
+            
+            if (currency_price == 0) {
+              $("input[name='prices["+ currency_code +"]']").attr("placeholder", "")
+            } else {
+              $("input[name='prices["+ currency_code +"]']").attr("placeholder", price.toFixed(get_currency_decimals(currency_code)));
+            };
+            
+          // Update currency prices
+            $("input[name^='prices']").each(function(){
+              var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
+              
+              if (currency_code != '<?php echo $system->settings->get('store_currency_code'); ?>') {
+                
+                var currency_price = price * get_currency_value(currency_code);
+                var currency_net_price = net_price * get_currency_value(currency_code);
+                
+                if (currency_price == 0) {
+                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                } else {
+                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
+                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", currency_net_price.toFixed(get_currency_decimals(currency_code)));
+                };
+              
+              }
+            });
           });
           
-          $("input[name^='prices']").bind("change keyup", function() {
-            calculate_net_price();
-            currency_convert_prices();
-          });
-
           $("input[name^='net_prices']").bind("change keyup", function() {
-            calculate_price();
-            currency_convert_prices();
+            
+            var currency_code = $(this).attr('name').replace(/^net_prices\[(.*)\]$/, "$1");
+            var price = Number($(this).val()) / (1+(get_tax_rate()/100));
+            var net_price = Number($(this).val());
+            
+          // Update price
+            if (price == 0) {
+              $("input[name='prices["+ currency_code +"]']").val("");
+            } else {
+              $("input[name='prices["+ currency_code +"]']").val(price.toFixed(get_currency_decimals(currency_code)));
+            }
+            
+            if (currency_code != '<?php echo $system->settings->get('store_currency_code'); ?>') return;
+            
+          // Update system currency price
+            var currency_price = price * get_currency_value(currency_code);
+            var currency_net_price = net_price * get_currency_value(currency_code);
+            
+            if (currency_price == 0) {
+              $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+              $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+            } else {
+              $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
+              $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", currency_net_price.toFixed(get_currency_decimals(currency_code)));
+            };
+            
+          // Update currency prices
+            $("input[name^='prices']").each(function() {
+              var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
+              
+              if (currency_code != '<?php echo $system->settings->get('store_currency_code'); ?>') {
+                
+                var currency_price = price * get_currency_value(currency_code);
+                var currency_net_price = net_price * get_currency_value(currency_code);
+                
+                if (currency_price == 0) {
+                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                } else {
+                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
+                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
+                };
+              
+              }
+            });
           });
+          
+        // Initiate
+          $("input[name^='prices']").trigger("change");
+          $("input[name^='net_prices']").trigger("change");
           
           $("body").on('click', "#net-price-tooltip", function(e) {
             e.preventDefault;
@@ -616,12 +676,12 @@ foreach ($system->currency->currencies as $currency) {
         </table>
         
         <script>
-          $("body").on("keyup", "input[name^='campaigns'][name$='[percentage]']", function() {
+          $("body").on("keyup, change", "input[name^='campaigns'][name$='[percentage]']", function() {
             var parent = $(this).closest('tr');
             <?php foreach ($system->currency->currencies as $currency) { ?>if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() != 0) $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val($("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100));<?php } ?>
           });
           
-          $("body").on("keyup", "input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']", function() {
+          $("body").on("keyup, change", "input[name^='campaigns'][name$='[<?php echo $system->settings->get('store_currency_code'); ?>]']", function() {
             var parent = $(this).closest('tr');
             $(parent).find("input[name$='[percentage]']").val(($("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo $system->settings->get('store_currency_code'); ?>]']").val() * 100);
           });

@@ -1,10 +1,3 @@
-#site-menu {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: inline-block;
-}
-
 #site-menu ul {
 	margin: 0px;
 	padding: 0px;
@@ -12,20 +5,36 @@
   position: relative;
   z-index: 9999;
 }
-#site-menu ul li {
-	float: left;
-	position: relative;
+
+#site-menu > ul {
+  font-size: 0px; /* Remove inline spacing */
+}
+
+/* Edge separator (Optional) */
+#site-menu ul > li > a {
+  border-left: 1px rgba(255,255,255,0.25) solid;
+  border-right: 1px rgba(0,0,0,0.05) solid;
+}
+#site-menu ul > li:first-child {
+  border-left: none;
+}
+#site-menu ul > li:last-child {
+  border-right: none;
+}
+
+/* 1st level*/
+#site-menu > ul > li {
+  display: inline-block;
+  position: relative; 
 	margin: 0px;
 	padding: 0px;
 	list-style: none;
 }
-
-/* main level link */
-#site-menu ul li a {
+#site-menu ul li > a {
 	display: block;
 	margin: 0px;
-  
-	padding: 15px 15px;
+  font-size: 14px; /* Remove inline spacing */
+	padding: 20px 15px;
   
 	text-decoration: none;
   color: rgb(136, 136, 136);
@@ -33,42 +42,28 @@
 }
 #site-menu ul li:hover {
 	background: rgba(255, 255, 255, 0.75);
-  -moz-box-shadow:    inset 0px 0px 2px #ccc;
+  
+  -moz-box-shadow: inset 0px 0px 2px #ccc;
   -webkit-box-shadow: inset 0px 0px 2px #ccc;
-  box-shadow:         inset 0px 0px 2px #ccc;
-}
-
-/* main level link hover */
-#site-menu ul .current a, #site-menu ul li:hover > a {
-	text-decoration: none;
+  box-shadow: inset 0px 0px 2px #ccc;
+  
   color: rgb(136, 136, 136);
+  text-decoration: none;
   text-shadow: 1px 1px 1px rgb(255, 255, 255);
 }
 
-/* sub levels link hover */
-#site-menu ul ul li:hover a, #site-menu ul li:hover li a {
-	background: none;
-	color: #333;
-}
-#site-menu ul ul li a:hover {
-}
+/* 2nd level */
+#site-menu > ul > li > ul {
+  position: absolute;
+  left: 0;
+  top: 100%;
 
-/* dropdown */
-#site-menu ul li:hover > ul {
-	display: block;
-}
-
-/* level 2 list */
-#site-menu ul ul {
-	display: none;
-	position: absolute;
-	top: 42px;
-  left: 0px; /* compensate margin */
-
-	margin: 0px;
-  
 	width: 185px;
+  margin: 0px;
 	padding: 0px;
+	list-style: none;
+  
+	border: solid 1px #d1d1d1;
   
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
   background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
@@ -77,62 +72,22 @@
   background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
   background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
   background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
-  /*
-	-webkit-box-shadow: 0px 1px 1px rgba(0,0,0, .2);
-	-moz-box-shadow: 0px 1px 1px rgba(0,0,0, .2);
-	box-shadow: 0px 1px 1px rgba(0,0,0, .2);*/
   
-	border: solid 1px #d1d1d1;
+  opacity: 0;
+  
+	-moz-box-shadow: 0px 1px 1px rgba(0,0,0, .2);
+	-webkit-box-shadow: 0px 1px 1px rgba(0,0,0, .2);
+	box-shadow: 0px 1px 1px rgba(0,0,0, .2);
+  
+  visibility: hidden;
 }
-#site-menu ul ul li {
-	float: none;
-	margin: 0px;
-	padding: 0px;
+#site-menu > ul > li:hover > ul {
+  visibility: visible;
+  opacity: 0.99;
 }
-
-#site-menu ul ul li a {
-	text-decoration: none;
-  color: rgb(136, 136, 136);
-  text-shadow: 1px 1px 1px rgb(255, 255, 255);
-}
-#site-menu ul ul li a:hover {
-}
-
-/* level 3+ list */
-#site-menu ul ul ul {
-	left: 185px;
-	top: -1px;
-}
-
-/* rounded corners of first and last link */
-#site-menu ul ul li:first-child > a {
-	-webkit-border-top-left-radius: 9px;
-	-moz-border-radius-topleft: 9px;
-
-	-webkit-border-top-right-radius: 9px;
-	-moz-border-radius-topright: 9px;
-}
-#site-menu ul ul li:last-child > a {
-	-webkit-border-bottom-left-radius: 9px;
-	-moz-border-radius-bottomleft: 9px;
-
-	-webkit-border-bottom-right-radius: 9px;
-	-moz-border-radius-bottomright: 9px;
-}
-
-/* clearfix */
-#site-menu ul:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0px;
-	height: 0px;
-}
-html[xmlns] #site-menu ul {
-	display: block;
-}
- 
-* html #site-menu ul {
-	height: 1%;
+#site-menu > ul > li > ul > li:hover {
+	background: rgba(255, 255, 255, 0.75);
+  -moz-box-shadow:    inset 0px 0px 2px #ccc;
+  -webkit-box-shadow: inset 0px 0px 2px #ccc;
+  box-shadow:         inset 0px 0px 2px #ccc;
 }

@@ -75,12 +75,12 @@
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="datetime" name="'. $name .'" value="'. $value .'" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="datetime" name="'. $name .'" value="'. $value .'" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=0, $max=0, $parameters='', $hint='') {
     if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
-    return form_draw_input($name, $value, 'number', 'step="any" min="'. (float)$min .'" max="'. (!empty($max) ? (float)$max : false) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false), $hint);
+    return form_draw_input($name, $value, 'number', 'step="any" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' style="width: 75px; text-align: right;"', $hint);
   }
   
   function form_draw_email_field($name, $value=true, $parameters='', $hint='') {
@@ -108,7 +108,7 @@
   
   function form_draw_number_field($name, $value=true, $min='', $max='', $parameters='', $hint='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
-    return form_draw_input($name, $value, 'number', 'step="1" min="'. (($min) ? (int)$min : false) .'" max="'. (($max) ? (int)$max : false) .'" style="width: 75px; text-align: right;"'. (($parameters) ? ' '.$parameters : false), $hint);
+    return form_draw_input($name, $value, 'number', 'step="1" min="'. (($min) ? (int)$min : false) .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' style="width: 75px; text-align: right;"', $hint);
   }
   
   function form_draw_password_field($name, $value=true, $parameters='', $hint='') {
@@ -125,22 +125,19 @@
   }
   
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='', $hint='') {
-    //return '<div class="regional-input-wrapper">'. form_draw_input($name, $value, 'text', $parameters, $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
     return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: middle;" /> '. form_draw_input($name, $value, 'text', $parameters, $hint) .'</span>';
   }
   
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='', $hint='') {
-    //return '<div class="regional-input-wrapper">'. form_draw_textarea($name, $value, 'class="regional-input-field"' . (($parameters) ? ' '.$parameters : false), $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
     return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters, $hint) .'</span>';
   }
   
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='', $hint='') {
-    //return '<div class="regional-input-wrapper">'. form_draw_textarea($name, $value, 'class="regional-input-field"' . (($parameters) ? ' '.$parameters : false), $hint) .'<img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" style="position: absolute; left: 5px; top: 6px;" width="16" height="11" border="0" /></div>';
     return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters, $hint) .'</span>';
   }
   
   function form_draw_search_field($name, $value=true, $parameters='', $hint='') {
-    if ($value === true) $value = (int)form_reinsert_value($name);
+    if ($value === true) $value = form_reinsert_value($name);
     return form_draw_input($name, $value, 'search', $parameters, $hint);
   }
   
@@ -176,7 +173,7 @@
   }
   
   function form_draw_url_field($name, $value=true, $parameters='', $hint='') {
-    if ($value === true) $value = (int)form_reinsert_value($name);
+    if ($value === true) $value = form_reinsert_value($name);
     return form_draw_input($name, $value, 'url', $parameters, $hint);
   }
   
