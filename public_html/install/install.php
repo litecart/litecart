@@ -12,6 +12,25 @@
     exit;
   }
   
+// Function to get object from a relative path to this script
+  function get_absolute_path($path=null) {
+    if (empty($path)) $path = dirname(__FILE__);
+    $path = str_replace('\\', '/', $path);
+    $parts = array_filter(explode('/', $path), 'strlen');
+    $absolutes = array();
+    foreach ($parts as $part) {
+      if ('.' == $part) continue;
+      if ('..' == $part) {
+        array_pop($absolutes);
+      } else {
+        $absolutes[] = $part;
+      }
+    }
+    return ((PHP_OS != 'WIN ') ? '/' : '') . implode('/', $absolutes);
+  }
+  
+  $installation_path = get_absolute_path(dirname(__FILE__) .'/..') .'/';
+  
   ### Set ###################################
   
   $_POST['admin_folder'] = str_replace('\\', '/', $_POST['admin_folder']);
@@ -42,7 +61,7 @@
   
   file_put_contents('../includes/config.inc.php', $config);
   
-  echo ' [OK]' . PHP_EOL;
+  echo ' [Done]' . PHP_EOL;
   
   ### Database > Connection ################################### 
 
@@ -59,25 +78,23 @@
   require('database.class.php');
   $database = new database(null);
   
-  echo ' [OK]' . PHP_EOL;
+  echo ' [Done]' . PHP_EOL;
   
   ### Database > Cleaning ###################################
   
-  if (!empty($_POST['clean_up'])) {
-    echo 'Cleaning database...';
-    
-    $sql = file_get_contents('clean.sql');
-    $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
-    
-    $sql = explode('-- --------------------------------------------------------', $sql);
-    
-    foreach ($sql as $query) {
-      $query = preg_replace('/--.*\s/', '', $query);
-      $database->query($query);
-    }
-    
-    echo ' [OK]' . PHP_EOL;
+  echo 'Cleaning database...';
+  
+  $sql = file_get_contents('clean.sql');
+  $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+  
+  $sql = explode('-- --------------------------------------------------------', $sql);
+  
+  foreach ($sql as $query) {
+    $query = preg_replace('/--.*\s/', '', $query);
+    $database->query($query);
   }
+  
+  echo ' [Done]' . PHP_EOL;
   
   ### Database > Tables > Structure ###################################
   
@@ -93,7 +110,7 @@
     $database->query($query);
   }
   
-  echo ' [OK]' . PHP_EOL;
+  echo ' [Done]' . PHP_EOL;
   
   ### Database > Tables > Data ###################################
   
@@ -102,6 +119,16 @@
   $sql = file_get_contents('data.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
   
+  $map = array(
+    '{STORE_NAME}' => $_POST['store_name'],
+    '{STORE_EMAIL}' => $_POST['store_email'],
+    '{STORE_TIME_ZONE}' => $_POST['store_time_zone'],
+  );
+  
+  foreach ($map as $search => $replace) {
+    $config = str_replace($search, $replace, $sql);
+  }
+  
   $sql = explode('-- --------------------------------------------------------', $sql);
   
   foreach ($sql as $query) {
@@ -109,7 +136,7 @@
     $database->query($query);
   }
   
-  echo ' [OK]' . PHP_EOL;
+  echo ' [Done]' . PHP_EOL;
   
   ### Databse > Tables > Demo Data ###################################
   
@@ -129,35 +156,8 @@
       }
     }
     
-    echo ' [OK]' . PHP_EOL;
+    echo ' [Done]' . PHP_EOL;
   }
-  
-  ### Settings ###################################
-  
-  echo 'Applying settings...';
-  
-  $database->query(
-    "update ". DB_TABLE_PREFIX."settings
-    set value = '". $database->input($_POST['store_name']) ."'
-    where `key` = 'store_name'
-    limit 1;"
-  );
-  
-  $database->query(
-    "update ". DB_TABLE_PREFIX."settings
-    set value = '". $database->input($_POST['store_email']) ."'
-    where `key` = 'store_email'
-    limit 1;"
-  );
-  
-  $database->query(
-    "update ". DB_TABLE_PREFIX."settings
-    set value = '". $database->input($_POST['store_timezone']) ."'
-    where `key` = 'store_timezone'
-    limit 1;"
-  );
-  
-  echo ' [OK]' . PHP_EOL;
   
   ### .htaccess mod rewrite ###################################
   
@@ -165,29 +165,13 @@
   
   $htaccess = file_get_contents('htaccess');
   
-  function get_absolute_path($path=null) {
-    if (empty($path)) $path = dirname(__FILE__);
-    $path = str_replace('\\', '/', $path);
-    $parts = array_filter(explode('/', $path), 'strlen');
-    $absolutes = array();
-    foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
-      }
-    }
-    return implode('/', $absolutes);
-  }
-  
-  $base_dir = str_replace(rtrim($_POST['installation_path'], '/'), '', get_absolute_path(dirname(__FILE__) .'/..') .'/');
+  $base_dir = str_replace($_SERVER['DOCUMENT_ROOT'], '', $installation_path);
   
   $htaccess = str_replace('{BASE_DIR}', $base_dir, $htaccess);
   
   file_put_contents('../.htaccess', $htaccess) or die();
   
-  echo ' [OK]' . PHP_EOL;
+  echo ' [Done]' . PHP_EOL;
   
   ### Admin > Folder ###################################
   
@@ -199,12 +183,12 @@
     
   $htaccess = 'AuthType Basic' . PHP_EOL
             . 'AuthName "Restricted Area"' . PHP_EOL
-            . 'AuthUserFile ' . $_POST['installation_path'] . $_POST['admin_folder'] . '.htpasswd' . PHP_EOL
+            . 'AuthUserFile ' . $installation_path . $_POST['admin_folder'] . '.htpasswd' . PHP_EOL
             . 'Require valid-user' . PHP_EOL;
   
   file_put_contents('../'. $_POST['admin_folder'] .'.htaccess', $htaccess) or die();
   
-  echo ' [OK]' . PHP_EOL;
+  echo ' [Done]' . PHP_EOL;
   
   ### Admin > .htpasswd Users ###################################
   
@@ -213,10 +197,11 @@
   $htpasswd = $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
   file_put_contents('..' . DIRECTORY_SEPARATOR . $_POST['admin_folder'] . '.htpasswd', $htpasswd) or die();
   
-  echo ' [OK]' . PHP_EOL;
+  echo ' [Done]' . PHP_EOL;
   
   ### ###################################
   
-  echo PHP_EOL . 'Installation complete! Please delete the install/ folder.';
+  echo PHP_EOL . 'Installation complete! Please delete the ~/install/ folder.' . PHP_EOL
+     . PHP_EOL . 'You may now log in to the administration area and start configuring your store.' . PHP_EOL;
   
 ?>

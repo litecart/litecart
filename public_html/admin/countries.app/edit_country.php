@@ -82,12 +82,12 @@
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
         </td>
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_domestic_name', 'Domestic Name'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('domestic_name', true, 'text', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('domestic_name', true, 'text', ''); ?>
         </td>
       </tr>
       <tr>
@@ -150,7 +150,7 @@
       <tr>
         <td align="left">&nbsp;</td>
         <td align="left"><?php echo $system->functions->form_draw_input('zone[code]', '', 'text', 'style="width: 50px;"'); ?></td>
-        <td align="left"><?php echo $system->functions->form_draw_input('zone[name]', '', 'text', 'style="width: 175px;"'); ?></td>
+        <td align="left"><?php echo $system->functions->form_draw_input('zone[name]', '', 'text', ''); ?></td>
         <td align="right"><?php echo $system->functions->form_draw_button('add_zone', $system->language->translate('title_add', 'Add'), 'button'); ?></td>
       </tr>
     </table>

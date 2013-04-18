@@ -4,50 +4,53 @@ LiteCart contains work by the following listed:
 16x16 Icons
 -----------
 
-* (add, remove) Alexandre Moore - LGPL - http://sa-ki.deviantart.com/
-* (up, down) Ben Gillbanks - http://prothemedesign.com/free-webdesign-tools/circular-icons/
-* (box) Everaldo Coelho - LGPL - http://www.everaldo.com/
-* (calendar, collapse, expand, edit) Dat Nguyen - Free for commercial use - http://splashyfish.com/
-* (folder-opened, folder-closed, label) Yusuke Kamiyamane - Creative Commons (Attribution 3.0 Unported)  - http://p.yusukekamiyamane.com/
-* (home) Everaldo Coelho - GPL - http://www.everaldo.com/
+* (add, remove) Alexandre Moore - LGPL - http://sa-ki.deviantart.com
+* (up, down) Ben Gillbanks - Creative Commons (Attribution 2.5 Generic) - http://prothemedesign.com/free-webdesign-tools/circular-icons
+* (box, cancel, home, save) Everaldo Coelho - LGPL - http://www.everaldo.com
+* (collapse, expand) FatCow Web Hosting - Creative Commons (Attribution 3.0 United States) - http://www.fatcow.com
+* (delete) Ed Merritt - Free for commercial use - http://www.edmerritt.com
+* (edit) Dellustrations - Free for commercial use - http://dellustrations.com/work_icons.html 
+* (folder-opened, folder-closed, label) Yusuke Kamiyamane - Creative Commons (Attribution 3.0 Unported) - http://p.yusukekamiyamane.com
 * (loading) Ajaxload - Free for use - htto://www.ajaxload.info
 * (on, off) FatCow Web Hosting - Creative Commons (Attribution 3.0 United States) - http://www.fatcow.com/
-* (preview)  Sergio Sánchez López - GPL - http://www.kde-look.org/usermanager/search.php?username=Sephiroth6779
-* (print) David Vignoni - LGPL - http://www.icon-king.com/
+* (preview) Dat Nguyen - Free for commercial use - http://splashyfish.com
+* (print) David Vignoni - LGPL - http://www.icon-king.com
+* (favicon) Jack Cai - Creative Commons Attribution No Derivatives (by-nd) - http://www.doublejdesign.co.uk
 
 All icons can be found at www.iconfinder.com
 
 48x48 Icons
 -----------
 
-* (home) Alexandre Moore - GPL - http://sa-ki.deviantart.com/
-* (database) Icojam - Free for commercial use - http://www.icojam.com
-* (mail) Gnome Project - GPL - http://art.gnome.org/themes/icon
-* (cart) Jakub Stacho - Creative Commons (Attribution 2.5 Generic) - http://www.jakubstacho.cz/
+* (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
+* (database)  Midtone Design Studio - Freeware - http://www.midtonedesign.com
+* (mail) Icojam - Public Domain - http://www.icojam.com
+* (cart) Woothemes - Freeware - http://www.woothemes.com
 
 Language Icons
 --------------
-* Creative Commons - http://www.openwebgraphics.com
+* Open Web Graphics - Creative Commons Attribution 3.0 Unported - http://www.openwebgraphics.com
 
 Admin Module Icons
 ------------------
-* (catalog) Everaldo Coelho - LGPL - http://www.everaldo.com/
-* (countries) Andy Fitzsimon - GPL - http://www.fitzsimon.com.au
-* (currencies) Dmitry Costenco - Free for commercial use - http://www.aha-soft.com/
+* (catalog) Everaldo Coelho - LGPL - http://www.iconarchive.com/artist/mazenl77.html
+* (countries) MazeNL77 - Freeware - http://www.fitzsimon.com.au
+* (currencies) Dmitry Costenco - Free for commercial use - http://www.aha-soft.com
 * (customers, pages) Everaldo Coelho - LGPL - http://www.everaldo.com/
-* (geo-zones) Bevelandemboss.net - Free for commercial use - http://bevelandemboss.net/
-* (languages) Double-J designs - Free for commercial use - http://www.doublejdesign.co.uk/
-* (modules) David Vignoni - LGPL - http://www.icon-king.com/
-* (orders) Design modo - Creative Commons (Attribution 3.0 Unported) - http://designmodo.com/
+* (geo-zones) Bevelandemboss.net - Free for commercial use - http://bevelandemboss.net
+* (languages) Double-J designs - Free for commercial use - http://www.doublejdesign.co.uk
+* (modules) David Vignoni - LGPL - http://www.icon-king.com
+* (orders)  Elegant Themes - Freeware - http://www.elegantthemes.com
 * (reports) Icojam - Free for commercial use - http://www.icojam.com
-* (settings) Alexandre Moore - GPL - http://sa-ki.deviantart.com/
-* (tax) Pavel InFeRnODeMoN - GPL - http://www.kde-look.org/usermanager/search.php?username=InFeRnODeMoN
-* (translations) Gnome Project - GPL - http://art.gnome.org/themes/icon
-* (users) Everaldo Coelho - LGPL - http://www.everaldo.com/
+* (settings) Jeremy Sallee - Freeware - http://lemex.deviantart.com
+* (tax) DesignContest - CC Attribution 3.0 - http://www.designcontest.com
+* (translations) Robin Weatherall - Freeware - http://www.boomgraphics.se
+* (users) Everaldo Coelho - LGPL - http://www.everaldo.com
 
 Other Graphics
 --------------
 * (no-image/camera) Design modo - Creative Commons Attribution 3.0 Unported - http://designmodo.com/
+* (magnify cursor) Peter Cowburn - Free - http://cowburn.info
 
 Fonts
 -----
@@ -55,17 +58,16 @@ Fonts
 
 JavaScript
 ----------
-* ckEditor - GPL, LGPL and MPL Open Source - http://www.ckeditor.com
 * Fancybox by Fancyapps - MIT and GPL licenses - http://fancybox.net
-* jQuery by jQuery Foundation - MIT License - http://www.jquery.com
-* dynDateTime - A fork of Dynarch.com's (LGPL) DHTML Calendar v1.0 - http://code.google.com/p/dyndatetime
 * jqPlot by Chris Leonello - MIT and GPL version 2 - http://www.jqplot.com
-* Nivo Slider by Dev7studios - MIT License - http://dev7studios.com/nivo-slider/
-* jQuery.ScrollTo by Ariel Flesler - MIT and GPL - http://flesler.blogspot.com
+* jQuery by jQuery Foundation - MIT License - http://www.jquery.com
 * jQuery Animate From To by Emil Stenström - MIT and GPL - http://friendlybit.com
+* Nivo Slider by Dev7studios - MIT License - http://dev7studios.com/nivo-slider/
+* SCEditor by Sam Clarke - MIT license - http://www.sceditor.com/
 
-Inspiration and Influences
+Inspired By
 -----------
-* osCommerce by Harald Ponce de Leon - GNU GPL - http://www.oscommerce.com
-* openCart by Daniel Kerr - GNU GPL - http://www.opencart.com
+The LiteCart idea was born from what was missing in osCommerce Online Merchant and what what was too much in OpenCart.
 
+* osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
+* openCart by Daniel Kerr - http://www.opencart.com

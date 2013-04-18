@@ -35,15 +35,15 @@
 <table>
   <tr>
     <td><?php echo $system->language->translate('title_language', 'Language'); ?><br />
-      <?php echo $system->functions->form_draw_languages_list('language_code', $system->language->selected['code'], 'style="width: 175px;"', 'code'); ?></td>
+      <?php echo $system->functions->form_draw_languages_list('language_code', $system->language->selected['code'], '', 'code'); ?></td>
     <td><?php echo $system->language->translate('title_currency', 'Currency'); ?><br />
-      <?php echo $system->functions->form_draw_currencies_list('currency_code', $system->currency->selected['code'], 'style="width: 175px;"', 'code'); ?></td>
+      <?php echo $system->functions->form_draw_currencies_list('currency_code', $system->currency->selected['code'], '', 'code'); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
-      <?php echo $system->functions->form_draw_countries_list('country_code', $system->customer->data['country_code'], 'style="width: 175px;"', 'code'); ?></td>
+      <?php echo $system->functions->form_draw_countries_list('country_code', $system->customer->data['country_code'], '', 'code'); ?></td>
     <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
-      <?php echo $system->functions->form_draw_zones_list($system->customer->data['country_code'], 'zone_code', $system->customer->data['zone_code'], 'style="width: 175px;"', 'code'); ?></td>
+      <?php echo $system->functions->form_draw_zones_list($system->customer->data['country_code'], 'zone_code', $system->customer->data['zone_code'], '', 'code'); ?></td>
   </tr>
   <tr>
     <td colspan="2" align="right"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save')); ?></td>

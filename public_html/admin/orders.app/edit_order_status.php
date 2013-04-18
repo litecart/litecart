@@ -60,7 +60,7 @@
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, 'style="width: 360px"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, '');
   $use_br = true;
 }
 ?>

@@ -1,9 +1,4 @@
-# Exclude from filter #
-#######################
-!.htaccess
-!public_html/includes/templates/default*
-
-
+#################
 # Project files #
 #################
 public_html/includes/config.inc.php
@@ -27,6 +22,7 @@ public_html/images/products/*
 *.old
 *.ignore
 
+######################
 # OS generated files #
 ######################
 .DS_Store
@@ -39,3 +35,9 @@ ehthumbs.db
 Thumbs.db
 error_log
 .ftpquota
+
+##############################
+# Exclude from igoner-filter #
+##############################
+!.htaccess
+!public_html/includes/templates/default*

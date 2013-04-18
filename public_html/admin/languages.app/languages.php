@@ -26,6 +26,8 @@
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_code', 'Code'); ?></th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
+    <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_default_language', 'Default Language'); ?></th>
+    <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_store_language', 'Store Language'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_priority', 'Priority'); ?></th>
     <th>&nbsp;</th>
   </tr>
@@ -53,6 +55,8 @@
     <td align="left"><?php echo $language['id']; ?></td>
     <td align="center"><?php echo $language['code']; ?></td>
     <td align="left"><?php echo $language['name']; ?></td>
+    <td align="center"><?php echo ($language['code'] == $system->settings->get('default_language_code')) ? 'x' : ''; ?></td>
+    <td align="center"><?php echo ($language['code'] == $system->settings->get('store_language_code')) ? 'x' : ''; ?></td>
     <td align="right"><?php echo $language['priority']; ?></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_language.php', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
@@ -62,7 +66,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="6" align="left"><?php echo $system->language->translate('title_languages', 'Languages'); ?>: <?php echo $system->database->num_rows($languages_query); ?></td>
+    <td colspan="8" align="left"><?php echo $system->language->translate('title_languages', 'Languages'); ?>: <?php echo $system->database->num_rows($languages_query); ?></td>
   </tr>
 </table>
 

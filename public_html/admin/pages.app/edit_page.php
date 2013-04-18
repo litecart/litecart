@@ -68,7 +68,7 @@
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, 'style="width: 360px"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, '');
   $use_br = true;
 }
 ?>
@@ -92,7 +92,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, '');
   $use_br = true;
 }
 ?>

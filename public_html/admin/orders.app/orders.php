@@ -48,7 +48,7 @@
 ?>
 <div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_order.php'), true); ?>"><?php echo $system->language->translate('title_create_new_order', 'Create New Order'); ?></a></div>
 <div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_order_status_list('order_status_id', true, 'onchange="location=(\''. $system->document->link('', array(), true, array('page', 'order_status_id')) .'&order_status_id=\' + this.options[this.selectedIndex].value)"'); ?></div>
-<div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_search_field('query', true, 'placeholder="'. $system->language->translate('title_search', 'Search') .'" style="width: 175px;" onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"'); ?></div>
+<div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_search_field('query', true, 'placeholder="'. $system->language->translate('title_search', 'Search') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_orders', 'Orders'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('orders_form', 'post'); ?>

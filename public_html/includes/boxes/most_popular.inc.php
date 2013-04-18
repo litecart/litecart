@@ -1,6 +1,4 @@
 <?php
-  $system->functions->draw_fancybox('a.fancybox');
-  
   $products_query = $system->functions->catalog_products_query(array('sort' => 'popularity', 'limit' => 8));
   
   if ($system->database->num_rows($products_query) == 0) {
@@ -8,6 +6,8 @@
   }
   
   if ($system->database->num_rows($products_query) == 0) return;
+  
+  $system->functions->draw_fancybox('a.fancybox');
 ?>
 <div class="box" id="box-popular">
   <div class="heading"><h3><?php echo $system->language->translate('title_popular', 'Popular'); ?></h3></div>
@@ -19,6 +19,5 @@
   }
 ?>
     </ul>
-    <div style="margin-top: 10px; text-align: right"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'search.php', array('sort' => 'popularity')); ?>"><?php echo $system->language->translate('title_view_more', 'View more'); ?></a></div>
   </div>
 </div>

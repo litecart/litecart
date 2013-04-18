@@ -135,21 +135,21 @@
               <label><?php echo $system->functions->form_draw_checkbox('status', '1', true); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></label></td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('code', true, 'text'); ?>
-            </td>
-          </tr>
-          <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, 'style="width: 360px"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, '');
   $use_br = true;
 }
 ?>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
+              <?php echo $system->functions->form_draw_input('code', true, 'text'); ?>
             </td>
           </tr>
           <tr>
@@ -376,7 +376,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, '');
   $use_br = true;
 }
 ?>
@@ -442,7 +442,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'style="width: 360px; height: 100px;"');  $use_br = true;
+  echo $system->functions->form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'style="width: 360px; height: 120px;"');  $use_br = true;
 }
 ?>
             </td>

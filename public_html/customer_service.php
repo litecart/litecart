@@ -68,9 +68,9 @@
       <table>
         <tr>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?></td>
+            <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?></td>
           <td style="padding-left: 0px;"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
-            <?php echo $system->functions->form_draw_email_field('email', true, 'style="width: 175px;"'); ?></td>
+            <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_subject', 'Subject'); ?><br />

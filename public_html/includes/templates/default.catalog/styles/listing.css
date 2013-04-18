@@ -134,8 +134,14 @@ ul.listing-wrapper > .product .manufacturer {
 }
 ul.listing-wrapper > .product .price {
   text-align: right;
-  font-size: 1.1em;
+  font-size: 18px;
   font-weight: bold;
+}
+ul.listing-wrapper > .product .regular-price {
+  font-weight: normal;
+}
+ul.listing-wrapper > .product .campaign-price {
+  color: #900;
 }
 
 ul.listing-wrapper > .product .price span.campaign-price {

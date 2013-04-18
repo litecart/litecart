@@ -13,45 +13,98 @@
 
   if (!empty($_POST['save'])) {
     
-    $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
-    $_POST['format_datetime'] = $_POST['format_date'] .' '. $_POST['format_time'];
+    if (empty($_POST['code'])) $system->notices->add('errors', $system->language->translate('error_must_enter_code', 'You must enter a code'));
+    if (empty($_POST['name'])) $system->notices->add('errors', $system->language->translate('error_must_enter_name', 'You must enter a name'));
     
-    $fields = array(
-      'status',
-      'code',
-      'name',
-      'charset',
-      'locale',
-      'raw_date',
-      'raw_time',
-      'raw_datetime',
-      'format_date',
-      'format_time',
-      'format_datetime',
-      'decimal_point',
-      'thousands_sep',
-      'currency_code',
-      'priority',
-    );
-    
-    foreach ($fields as $field) {
-      if (isset($_POST[$field])) $language->data[$field] = $_POST[$field];
+    if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == $system->settings->get('default_language_code')) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
     }
     
-    $language->save();
+    if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == $system->settings->get('store_language_code')) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
+    }
     
-    $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes were successfully saved.'));
-    header('Location: '. $system->document->link('', array('doc' => 'languages.php'), true, array('action', 'language_code')));
-    exit;
+    if (empty($_POST['set_default']) && isset($language->data['code']) && $language->data['code'] == $system->settings->get('default_language_code') && $language->data['code'] != $_POST['code']) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
+    }
+    
+    if (empty($_POST['set_store']) && isset($language->data['code']) && $language->data['code'] == $system->settings->get('store_language_code') && $language->data['code'] != $_POST['code']) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_rename_store_language', 'You must change the store language before renaming it.'));
+    }
+    
+    if (!empty($_POST['set_default']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == $system->settings->get('default_language_code')) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_set_disabled_default_language', 'You cannot set a disabled language as default language.'));
+    }
+    
+    if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == $system->settings->get('store_language_code')) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
+    }
+    
+    if (empty($system->notices->data['errors'])) {
+      
+      $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
+      $_POST['format_datetime'] = $_POST['format_date'] .' '. $_POST['format_time'];
+      
+      $fields = array(
+        'status',
+        'code',
+        'name',
+        'charset',
+        'locale',
+        'raw_date',
+        'raw_time',
+        'raw_datetime',
+        'format_date',
+        'format_time',
+        'format_datetime',
+        'decimal_point',
+        'thousands_sep',
+        'currency_code',
+        'priority',
+      );
+      
+      foreach ($fields as $field) {
+        if (isset($_POST[$field])) $language->data[$field] = $_POST[$field];
+      }
+      
+      $language->save();
+      
+      if (!empty($_POST['set_default'])) {
+        $system->database->query("update ". DB_TABLE_SETTINGS ." set `value` = '". $system->database->input($_POST['code']) ."' where `key` = 'default_language_code' limit 1;");
+      }
+      
+      if (!empty($_POST['set_store'])) {
+        $system->database->query("update ". DB_TABLE_SETTINGS ." set `value` = '". $system->database->input($_POST['code']) ."' where `key` = 'store_language_code' limit 1;");
+      }
+      
+      $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes were successfully saved.'));
+      header('Location: '. $system->document->link('', array('doc' => 'languages.php'), true, array('action', 'language_code')));
+      exit;
+    }
   }
   
   if (!empty($_POST['delete'])) {
     
-    $language->delete();
+    if ($language->data['code'] == 'en') {
+      $system->notices->add('errors', $system->language->translate('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
+    }
+
+    if ($language->data['code'] == $system->settings->get('default_language_code')) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
+    }
     
-    $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes were successfully saved.'));
-    header('Location: '. $system->document->link('', array('doc' => 'languages.php'), true, array('action', 'language_code')));
-    exit;
+    if ($language->data['code'] == $system->settings->get('store_language_code')) {
+      $system->notices->add('errors', $system->language->translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
+    }
+    
+    if (empty($system->notices->data['errors'])) {
+      
+      $language->delete();
+    
+      $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes were successfully saved.'));
+      header('Location: '. $system->document->link('', array('doc' => 'languages.php'), true, array('action', 'language_code')));
+      exit;
+    }
   }
 
 ?>
@@ -66,43 +119,43 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 639-1)</strong><br />
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 639-1)</strong> (<a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank">?</a>)<br />
         <?php echo $system->functions->form_draw_input('code', true, 'text', 'style="width: 25px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
+        <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_charset', 'Charset'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('charset', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_input('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'text', 'style="width: 75px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_system_locale', 'System Locale'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('locale', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_input('locale', true, 'text', 'placeholder="xx_XX.utf8" style="width: 75px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_format', 'Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('format_date', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_input('format_date', true, 'text', 'placeholder="%e %b %Y" style="width: 75px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_time_format', 'Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('format_time', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_input('format_time', true, 'text', 'placeholder="%I:%M %p" style="width: 75px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_date_format', 'Raw Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('raw_date', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_input('raw_date', true, 'text', 'placeholder="m/d/y" style="width: 75px;"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_time_format', 'Raw Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('raw_time', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_input('raw_time', true, 'text', 'placeholder="h:i:s a" style="width: 75px;"'); ?>
       </td>
     </tr>
     <tr>
@@ -123,6 +176,12 @@
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
         <?php echo $system->functions->form_draw_input('priority', true, 'text', 'style="width: 75px;"'); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap">
+        <?php echo $system->functions->form_draw_checkbox('set_default', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == $system->settings->get('default_language_code')) ? '1' : true); ?> <?php echo $system->language->translate('description_set_as_default_language', 'Set as default language'); ?><br />
+        <?php echo $system->functions->form_draw_checkbox('set_store', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == $system->settings->get('store_language_code')) ? '1' : true); ?> <?php echo $system->language->translate('description_set_as_store_language', 'Set as store language'); ?>
       </td>
     </tr>
     <tr>

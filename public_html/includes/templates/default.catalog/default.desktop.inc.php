@@ -107,9 +107,10 @@
               <nav class="account">
                 <p><strong><?php echo $system->language->translate('title_account', 'Account'); ?></strong></p>
                 <ul class="list-vertical">
+                  <li><a href="<?php echo $system->document->link('select_region.php'); ?>"><?php echo $system->language->translate('title_select_region', 'Select Region'); ?></a></li>
                   <?php if (empty($system->customer->data['id'])) { ?>
-                  <li><a href="<?php echo $system->document->link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
                   <li><a href="<?php echo $system->document->link('create_account.php'); ?>"><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></a></li>
+                  <li><a href="<?php echo $system->document->link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
                   <?php } else { ?>
                   <li><a href="<?php echo $system->document->link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
                   <li><a href="<?php echo $system->document->link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
@@ -146,7 +147,7 @@
       </footer>
       
       <div id="copyright" class="engraved-text">
-        <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo $system->settings->get('store_name'); ?>. All rights reserved. &middot; Powered by <a href="#">LiteCart&trade;</a></p>
+        <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo $system->settings->get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart&trade;</a></p>
       </div>
     </div>
     

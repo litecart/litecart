@@ -70,21 +70,25 @@
     switch($errno) {
       case E_WARNING:
       case E_USER_WARNING:
-        $output = "<b>Warning:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces requesting {$_SERVER['REQUEST_URI']}";
+        $output = "<b>Warning:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
         break;
       case E_STRICT:
       case E_NOTICE:
       case E_USER_NOTICE:
-        $output = "<b>Notice:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces {$_SERVER['REQUEST_URI']}";
+        $output = "<b>Notice:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
         break;
       case E_DEPRECATED:
       case E_USER_DEPRECATED:
-        $output = "<b>Deprecated:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces {$_SERVER['REQUEST_URI']}";
+        $output = "<b>Deprecated:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
         break;
       default:
-        $output = "<b>Fatal error:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces {$_SERVER['REQUEST_URI']}";
+        $output = "<b>Fatal error:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
         $fatal = true;
         break;
+    }
+    
+    if (!in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
+      $output .= " $traces {$_SERVER['REQUEST_URI']}";
     }
     
     if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {

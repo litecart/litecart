@@ -29,6 +29,8 @@
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_value', 'Value'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_prefix', 'Prefix'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_suffix', 'Suffix'); ?></th>
+    <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_default_currency', 'Default Currency'); ?></th>
+    <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_store_currency', 'Store Currency'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_priority', 'Priority'); ?></th>
     <th>&nbsp;</th>
   </tr>
@@ -61,6 +63,8 @@
     <td align="right"><?php echo $currency['value']; ?></td>
     <td align="center"><?php echo $currency['prefix']; ?></td>
     <td align="center"><?php echo $currency['suffix']; ?></td>
+    <td align="center"><?php echo ($currency['code'] == $system->settings->get('default_currency_code')) ? 'x' : ''; ?></td>
+    <td align="center"><?php echo ($currency['code'] == $system->settings->get('store_currency_code')) ? 'x' : ''; ?></td>
     <td align="right"><?php echo $currency['priority']; ?></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_currency.php', 'currency_code' => $currency['code']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
@@ -70,7 +74,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="9" align="left"><?php echo $system->language->translate('title_currencies', 'Currencies'); ?>: <?php echo $system->database->num_rows($currencies_query); ?></td>
+    <td colspan="11" align="left"><?php echo $system->language->translate('title_currencies', 'Currencies'); ?>: <?php echo $system->database->num_rows($currencies_query); ?></td>
   </tr>
 </table>
 

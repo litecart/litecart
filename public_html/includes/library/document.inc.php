@@ -29,6 +29,7 @@
       
     // Set regional data
       if ($this->system->settings->get('regional_settings_screen_enabled') == 'true') {
+        
         if (empty($this->system->customer->data['id']) && empty($this->system->session->data['region_data_set']) && empty($_COOKIE['skip_set_region_data'])) {
           
           $this->system->functions->draw_fancybox('', array(
@@ -40,6 +41,7 @@
             'transitionIn' => 'fade',
             'transitionOut' => 'fade',
             'type' => 'ajax',
+            'scrolling' => 'false',
           ));
           
           $this->system->session->data['skip_set_region_data'] = true;

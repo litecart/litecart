@@ -84,25 +84,24 @@
     foreach ($product->images as $image) {
       if ($first_image) {
       
-        if (empty($product->campaigns) == false) {
-          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/campaign_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" class="" />';
-        } else if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
-          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new_96x96.png" width="96" height="96" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="" />';
-        } else {
-          $sticker = '';
+        $sticker = '';
+        if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="sticker" />';
+        } else if (!empty($product->campaign['price'])) {
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 0; left: 0;" class="sticker" />';
         }
         
         echo '<div style="position: relative;">' . PHP_EOL
-           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="productImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a>' . PHP_EOL
+           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="main-image zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a>' . PHP_EOL
            . '  '. $sticker . PHP_EOL
            . '</div>' . PHP_EOL;
         $first_image = false;
       } else {
-        echo '<div style="display: inline;"><a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 133, 'CROP') .'" border="0" style="margin: 5px 5px 0px 0px;" class="productImage-extraImage zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a></div>';
+        echo '<div style="display: inline;"><a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 133, 'CROP') .'" border="0" style="margin: 5px 5px 0px 0px;" class="extra-image zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a></div>';
       }
     }
   } else {
-    echo '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="productImage" alt="" />' . PHP_EOL;
+    echo '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="extra-image" alt="" />' . PHP_EOL;
   }
 ?>
           </div>

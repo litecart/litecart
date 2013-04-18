@@ -374,8 +374,7 @@ CREATE TABLE `lc_pages` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
-  KEY `dock_menu` (`dock_menu`),
-  KEY `dock_support` (`dock_support`)
+  KEY `dock` (`dock`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 CREATE TABLE `lc_pages_info` (

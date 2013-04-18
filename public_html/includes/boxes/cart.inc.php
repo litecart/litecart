@@ -1,7 +1,8 @@
 <div id="cart">
-  <strong><?php echo $system->language->translate('title_cart', 'Cart'); ?>:</strong><br />
-  <span class="quantity"><?php echo $system->cart->data['total']['items']; ?></span> <?php echo $system->language->translate('text_items', 'item(s)'); ?>
-  - <span class="formatted_value">
+<a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>">
+    <strong><?php echo $system->language->translate('title_cart', 'Cart'); ?>:</strong>
+    <span class="quantity"><?php echo $system->cart->data['total']['items']; ?></span> <?php echo $system->language->translate('text_items', 'item(s)'); ?>
+    - <span class="formatted_value">
 <?php
   if ($system->settings->get('display_prices_including_tax')) {
     echo $system->currency->format($system->cart->data['total']['value'] + $system->cart->data['total']['tax']);
@@ -9,8 +10,8 @@
     echo $system->currency->format($system->cart->data['total']['value']);
   }
 ?>
-  </span>
-  <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>" class="button"><?php echo $system->language->translate('title_checkout', 'Checkout'); ?></a>
+    </span>
+  </a>
 </div>
 <script>
   function updateCart() {

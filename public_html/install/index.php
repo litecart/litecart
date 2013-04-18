@@ -15,7 +15,7 @@
         $absolutes[] = $part;
       }
     }
-    return implode('/', $absolutes);
+    return ((PHP_OS != 'WIN ') ? '/' : '') . implode('/', $absolutes);
   }
   
   $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
@@ -79,29 +79,42 @@ a:hover, a:active{
 <div id="body-wrapper">
   <div id="body">
   <img src="../images/logotype.png" height="60" align="right" />
+  
   <h1>Installer</h1>
+  
   <h2>System Requirements</h2>
   <ul>
-    <li>Linux Machine</li>
-    <li>PHP 5.1+
+    <li>Linux Machine <?php echo (PHP_OS == 'Linux') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">['. PHP_OS .']</span>'; ?></li>
+    <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span style="color: #0a0;">['. PHP_VERSION .']</span>' : '<span style="color: #f00;">['. PHP_VERSION .']</span>'; ?>
       <ul>
-        <li>Register globals = off</li>
+        <li>Register globals = Off <?php echo (in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0'))) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[On]</span>'; ?></li>
+        <li>Extensions
+          <ul>
+            <li>curl <?php echo in_array('curl', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>exif <?php echo in_array('exif', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>mbstring <?php echo in_array('mbstring', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>mysql / mysqli <?php echo in_array('mysql', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>gd <?php echo in_array('gd', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li>Apcahe compatible HTTP daemon
       <ul>
         <li>mod_auth (SHA-supported)</li>
         <li>mod_redirect</li>
-        </ul>
+      </ul>
     </li>
-    </ul>
+  </ul>
+  
   <h2>Client Requirements</h2>
   <ul>
-    <li>XHTML</li>
+    <li>HTML 5</li>
     <li>CSS 3 (IE9+)</li>
   </ul>
-<h2>Writables</h2>
-  <ul>
+  
+  <h2>Writables</h2>
+    <ul>
 <?php
   $files = array(
     'admin/.htaccess',
@@ -113,44 +126,52 @@ a:hover, a:active{
     '.htaccess',
   );
   foreach($files as $file) {
-    if (is_writable('../'.$file)) {
-      echo '    <li>~/'. $file .' <span style="color: #0a0;">[OK]</span></li>' . PHP_EOL;
+    if (file_exists($file) && is_writable('../' . $file)) {
+      echo '      <li>~/'. $file .' <span style="color: #0a0;">[OK]</span></li>' . PHP_EOL;
+    } else if (is_writable('../' . pathinfo($file, PATHINFO_DIRNAME))) {
+      echo '      <li>~/'. $file .' <span style="color: #0a0;">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '    <li>~/'. $file .' <span style="color: #f00;">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+      echo '      <li>~/'. $file .' <span style="color: #f00;">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
   }
 ?>
   </ul>
   
   <h2>Installation Parameters</h2>
+  
+<?php
+  if (file_exists('../includes/config.inc.php')) {
+    echo '<p style="color: #f00; font-weight: bold;">Attention: An existing installation has been detected. If you continue the existing installation will be overwritten.</p>';
+  }
+?>
+  
   <form id="form1" name="form1" method="post" action="install.php">
     <h3>File System</h3>
     <table>
       <tr>
         <td><strong>Installation Path</strong><br />
-          <input type="hidden" name="installation_path" value="<?php echo $document_root; ?>" /><?php echo $document_root; ?></td>
+          <?php echo $document_root; ?></td>
       </tr>
     </table>
     <h3>MySQL</h3>
     <table>
       <tr>
         <td><strong>Hostname</strong><br />
-          <input name="db_server" type="text" value="localhost" style="width: 175px;" />
+          <input name="db_server" type="text" value="localhost"  />
         </td>
         <td><strong>Database</strong><br />
-        <input type="text" name="db_database" style="width: 175px;" /></td>
+        <input type="text" name="db_database"  /></td>
       </tr>
       <tr>
         <td><strong>Username</strong><br />
-        <input type="text" name="db_username" style="width: 175px;" /></td>
+        <input type="text" name="db_username"  /></td>
         <td><strong>Password</strong><br />
-        <input type="password" name="db_password" style="width: 175px;" /></td>
+        <input type="password" name="db_password"  /></td>
       </tr>
       <tr>
         <td><strong>Table Prefix</strong><br />
         <input name="db_table_prefix" type="text" value="lc_" style="width: 75px;" /></td>
         <td><strong>Demo Data</strong><br />
-          <input name="clean_up" type="checkbox" value="true" /> Clean Up Database</td>
           <input name="demo_data" type="checkbox" value="true" checked="CHECKED" /> Install demo data</td>
       </tr>
     </table>
@@ -158,13 +179,13 @@ a:hover, a:active{
     <table>
       <tr>
         <td><strong>Store Name</strong><br />
-          <input name="store_name" type="text" value="My Store" style="width: 175px;" /></td>
+          <input name="store_name" type="text" value="My Store"  /></td>
         <td><strong>Store E-mail</strong><br />
-          <input name="store_email" type="text" value="store@email.com" style="width: 175px;" /></td>
+          <input name="store_email" type="text" value="store@email.com"  /></td>
       </tr>
       <tr>
         <td><strong>Time Zone</strong><br />
-          <select name="store_timezone" style="width: 175px;">
+          <select name="store_time_zone" >
 <?php
   $zones = timezone_identifiers_list();
        
@@ -187,24 +208,24 @@ a:hover, a:active{
     <table>
       <tr>
         <td><strong>Folder Name</strong><br />
-          <input name="admin_folder" type="text" value="admin" style="width: 175px;" /></td>
+          <input name="admin_folder" type="text" value="admin"  /></td>
         <td>&nbsp;</td>
       </tr>
       <tr>
         <td><strong>Username</strong><br />
-          <input name="username" type="text" id="username" value="admin" style="width: 175px;" /></td>
+          <input name="username" type="text" id="username" value="admin"  /></td>
         <td><strong>Password</strong><br />
-          <input name="password" type="text" id="password" style="width: 175px;" /></td>
+          <input name="password" type="text" id="password"  /></td>
       </tr>
     </table>
     <h3>Errors
-      <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" style="width: 175px;" />
+      <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>"  />
     </h3>
     <p>Errros will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
     <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.<br />
     </p>
     <p>
-      <input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing installations may be overwritten with new data.')) return false;" />
+      <input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing installations will be overwritten with new data.')) return false;" />
   </p>
   </form>
   </div>

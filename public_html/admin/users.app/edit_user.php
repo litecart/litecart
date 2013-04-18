@@ -69,19 +69,19 @@
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_username', 'Username'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('username', true, 'text', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('username', true, 'text', ''); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_password', 'Password'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('password', true, 'password', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('password', true, 'password', ''); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('confirmed_password', true, 'password', 'style="width: 175px;"'); ?>
+          <?php echo $system->functions->form_draw_input('confirmed_password', true, 'password', ''); ?>
       </td>
     </tr>
     <tr>

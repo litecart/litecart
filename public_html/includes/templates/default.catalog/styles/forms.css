@@ -3,11 +3,11 @@ form {
 }
 
 input[type=date], input[type=datetime], input[type=email], input[type=float], input[type=number], input[type=password], input[type=search], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
-  display: inline;
+  display: inline-block;
   margin: 3px 0;
   padding: 4px;
   
-  max-width: 175px;
+  width: 175px;
   
   border: 1px solid #d1d1d1;
   border-radius: 3px;
@@ -21,13 +21,16 @@ input[type=date], input[type=datetime], input[type=email], input[type=float], in
   
   font: normal 12px Sans-serif;
   color: #333;
+  
+  vertical-align: baseline;
 }
 
 .input-wrapper {
-  max-width: none;
+  max-width: auto;
 }
 
 .input-wrapper input, .input-wrapper textarea {
+  margin: -4px 0px;
   border: none;
   background: none;
 }

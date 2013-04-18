@@ -95,7 +95,7 @@
         <table>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
-            <label><?php echo $system->functions->form_draw_checkbox('status', '1', true); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></label></td>
+              <label><?php echo $system->functions->form_draw_checkbox('status', '1', true); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></label></td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
@@ -104,7 +104,7 @@
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo ((isset($manufacturer->data['image']) && $manufacturer->data['image'] != '') ? $system->language->translate('title_new_image', 'New Image') : $system->language->translate('title_image', 'Image')); ?></strong><br />
-            <?php echo $system->functions->form_draw_file_field('image', 'style="width: 360px"'); ?></td>
+            <?php echo $system->functions->form_draw_file_field('image', ''); ?></td>
           </tr>
           <?php if (isset($manufacturer->data['image']) && $manufacturer->data['image'] != '') { ?>
           <tr>
@@ -115,7 +115,7 @@
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 360px;"'); ?>
+              <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
             </td>
           </tr>
           <tr>
@@ -145,7 +145,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="width: 360px; height: 160px;"');  $use_br = true;
+  echo $system->functions->form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="width: 360px; height: 240px;"');  $use_br = true;
 }
 ?>
             </td>
@@ -156,7 +156,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, '');
   $use_br = true;
 }
 ?>
@@ -168,7 +168,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, '');
   $use_br = true;
 }
 ?>

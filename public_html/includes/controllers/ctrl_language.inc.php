@@ -23,7 +23,7 @@
     
     public function save() {
       
-      if (empty($this->data['status']) && $this->data['code'] == $this->system->settings['default_language_code']) {
+      if (empty($this->data['status']) && $this->data['code'] == $this->system->settings->get('default_language_code')) {
         trigger_error('You cannot disable the default language.', E_USER_ERROR);
         return;
       }

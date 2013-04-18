@@ -64,7 +64,7 @@
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input('name', true, 'text', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
             </td>
           </tr>
           <tr>
@@ -76,19 +76,19 @@
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_email', 'email'); ?></strong><br />
-                <?php echo $system->functions->form_draw_email_field('email', true, 'email', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_email_field('email', true, 'email', ''); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_phone', 'Phone'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input('phone', true, 'text', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_input('phone', true, 'text', ''); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_link', 'Link'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input('link', true, 'text', 'style="width: 175px;"'); ?>
+                <?php echo $system->functions->form_draw_input('link', true, 'text', ''); ?>
             </td>
           </tr>
           <tr>

@@ -40,12 +40,11 @@
   function draw_listing_product($product) {
     global $system;
     
-    if ($product['campaign_price']) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/campaign_48x48.png" width="48" height="48" alt="" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 10px; left: '. ($product['date_created'] > date('Y-m-d', strtotime('-1 month')) ? '30px' : '10px') .';" />';
-    } else if ($product['date_created'] > date('Y-m-d', strtotime('-1 month'))) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new_48x48.png" width="48" height="48" alt="" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" />';
-    } else {
-      $sticker = '';
+    $sticker = '';
+    if ($product['date_created'] > date('Y-m-d', strtotime('-1 month'))) {
+      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0px; left: 0px;" />';
+    } else if ($product['campaign_price']) {
+      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 0px; left: 0px;" />';
     }
     
     $output = '<li class="product hover-light" style="position: relative">' . PHP_EOL
@@ -56,7 +55,7 @@
             . '    </div>' . PHP_EOL
             . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
             . '    <div class="manufacturer">'. $product['manufacturer_name'] .'</div>' . PHP_EOL
-            . '    <div class="price">'. ($product['campaign_price'] ? '<s class="old-price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="special-price">'. $system->currency->format($system->tax->calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
+            . '    <div class="price">'. ($product['campaign_price'] ? '<s class="regular-price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="campaign-price">'. $system->currency->format($system->tax->calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL
             . (($product['image']) ? '  <a href="'. WS_DIR_IMAGES . $product['image'] .'" class="fancybox" data-fancybox-group="product-listing" title="'. htmlspecialchars($product['name']) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/preview.png" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>' . PHP_EOL : '')
           //. '  <div style="text-align: center;" class="buy_now">'.  $system->functions->form_draw_form_begin('buy_now_form') . $system->functions->form_draw_hidden_field('product_id', $product['id']) . $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit') . $system->functions->form_draw_form_end() .'</div>' . PHP_EOL
@@ -88,12 +87,17 @@
                                                            . '<link rel="stylesheet" href="{snippet:template_path}styles/fancybox.css" media="screen" />';
     }
     
-    $system->document->snippets['javascript']['fancybox-'.$selector] = '  $(document).ready(function() {' . PHP_EOL
-                                                                     . '    $("a").each(function() {' . PHP_EOL
-                                                                     . '      $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
-                                                                     . '    }); ' . PHP_EOL
-                                                                     . '    $("body").on("hover", "a.fancybox", function() { ' . PHP_EOL // Fixes ajax content
-                                                                     . '      $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
+    if (empty($selector)) {
+      $system->document->snippets['javascript']['fancybox-'.$selector] = '  $(document).ready(function() {' . PHP_EOL
+                                                                       . '    $.fancybox({' . PHP_EOL;
+    } else {
+      $system->document->snippets['javascript']['fancybox-'.$selector] = '  $(document).ready(function() {' . PHP_EOL
+                                                                       . '    $("a").each(function() {' . PHP_EOL // HTML 5 fix for rel attribute
+                                                                       . '      $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
+                                                                       . '    }); ' . PHP_EOL
+                                                                       . '    $("body").on("hover", "a.fancybox", function() { ' . PHP_EOL // Fixes ajax content
+                                                                       . '      $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
+    }
     
     foreach (array_keys($params) as $key) {
       switch (gettype($params[$key])) {
@@ -111,9 +115,14 @@
     
     $system->document->snippets['javascript']['fancybox-'.$selector] = rtrim($system->document->snippets['javascript']['fancybox-'.$selector], ','.PHP_EOL) . PHP_EOL;
 
-    $system->document->snippets['javascript']['fancybox-'.$selector] .= '      });' . PHP_EOL
-                                                                      . '    });' . PHP_EOL
+    if (empty($selector)) {
+    $system->document->snippets['javascript']['fancybox-'.$selector] .= '    });' . PHP_EOL
                                                                       . '  });';
+    } else {
+      $system->document->snippets['javascript']['fancybox-'.$selector] .= '      });' . PHP_EOL
+                                                                        . '    });' . PHP_EOL
+                                                                        . '  });';
+    }
   }
   
   function draw_pagination($pages) {

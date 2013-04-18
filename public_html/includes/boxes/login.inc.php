@@ -7,11 +7,11 @@
       <table style="width: 100%;">
         <tr>
           <td><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
-            <?php echo $system->functions->form_draw_email_field('email', true, 'style="width: 175px;"'); ?></td>
+            <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_password', 'Password'); ?><br />
-          <?php echo $system->functions->form_draw_input('password', '', 'password', 'style="width: 175px;"'); ?></td>
+          <?php echo $system->functions->form_draw_input('password', '', 'password', ''); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->functions->form_draw_button('login', $system->language->translate('title_login', 'Login')); ?> <?php echo $system->functions->form_draw_button('lost_password', $system->language->translate('title_lost_password', 'Lost Password')); ?> </td>
