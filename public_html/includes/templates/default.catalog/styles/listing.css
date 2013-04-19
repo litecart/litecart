@@ -139,6 +139,7 @@ ul.listing-wrapper > .product .price {
 }
 ul.listing-wrapper > .product .regular-price {
   font-weight: normal;
+  font-size: 12px;
 }
 ul.listing-wrapper > .product .campaign-price {
   color: #900;
@@ -146,4 +147,14 @@ ul.listing-wrapper > .product .campaign-price {
 
 ul.listing-wrapper > .product .price span.campaign-price {
   color: #c00;
+}
+
+#box-latest-products ul.listing-wrapper > .product {
+  width: 185px;
+}
+#box-most-popular ul.listing-wrapper > .product {
+  width: 185px;
+}
+#box-new-products ul.listing-wrapper > .product {
+  width: 185px;
 }

@@ -46,11 +46,11 @@
 </style>
   
 <div style="margin-bottom: 10px;" id="checkout-cart">
-  <div class="viewport" style="width: 680px; overflow: hidden; max-height: 200px; padding: 5px;">
+  <div class="viewport" style="width: 980px; overflow: hidden; max-height: 200px; padding: 5px;">
     <div class="slides">
     <?php foreach ($system->cart->data['items'] as $key => $item) { ?>
       <?php echo $system->functions->form_draw_form_begin('cart_form') . $system->functions->form_draw_hidden_field('key', $key); ?>
-        <div style="float: left; text-align: left; width: 690px;" class="slide">
+        <div style="float: left; text-align: left; width: 990px;" class="slide">
           <div style="float: left;">
             <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" class="shadow" /></a>
           </div>

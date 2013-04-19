@@ -46,7 +46,7 @@
       <?php echo $system->functions->form_draw_zones_list($system->customer->data['country_code'], 'zone_code', $system->customer->data['zone_code'], '', 'code'); ?></td>
   </tr>
   <tr>
-    <td colspan="2" align="right"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save')); ?></td>
+    <td colspan="2"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save')); ?></td>
   </tr>
 </table>
 <?php echo $system->functions->form_draw_form_end(); ?>

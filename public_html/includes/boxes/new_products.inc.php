@@ -1,5 +1,5 @@
 <?php
-  $products_query = $system->functions->catalog_products_query(array('sort' => 'date', 'limit' => 8));
+  $products_query = $system->functions->catalog_products_query(array('sort' => 'date', 'limit' => 10));
   if ($system->database->num_rows($products_query) == 0) return;
 
   $system->functions->draw_fancybox('a.fancybox');

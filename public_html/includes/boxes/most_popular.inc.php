@@ -1,16 +1,16 @@
 <?php
-  $products_query = $system->functions->catalog_products_query(array('sort' => 'popularity', 'limit' => 8));
+  $products_query = $system->functions->catalog_products_query(array('sort' => 'popularity', 'limit' => 10));
   
   if ($system->database->num_rows($products_query) == 0) {
-    $products_query = $system->functions->catalog_products_query(array('sort' => 'popularity', 'limit' => 8));
+    $products_query = $system->functions->catalog_products_query(array('sort' => 'popularity', 'limit' => 10));
   }
   
   if ($system->database->num_rows($products_query) == 0) return;
   
   $system->functions->draw_fancybox('a.fancybox');
 ?>
-<div class="box" id="box-popular">
-  <div class="heading"><h3><?php echo $system->language->translate('title_popular', 'Popular'); ?></h3></div>
+<div class="box" id="box-most-popular">
+  <div class="heading"><h3><?php echo $system->language->translate('title_most_popular', 'Most Popular'); ?></h3></div>
   <div class="content">
     <ul class="listing-wrapper products">
 <?php

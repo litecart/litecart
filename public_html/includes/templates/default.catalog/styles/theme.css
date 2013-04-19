@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700,500);
+@import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,600);
 
 html, body {
   background: #fafafa;
@@ -69,20 +69,22 @@ body {
   display: inline-block;
 }
 #cart {
-  display: inline-block;
+  position: relative;
   white-space: nowrap;
 }
-#cart a.button {
-  margin: -1px 0px 0px 0px;
-  background: -moz-linear-gradient(rgb(55, 170, 234), rgb(17, 126, 210)) repeat scroll 0px 0px rgb(73, 165, 213);
-  background-color: #49A5D5;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#37AAEA', endColorstr='#117ED2');
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#37AAEA), to(#117ED2)) repeat scroll 0px 0px #408EDB;
-  
-  border: 1px solid rgb(76, 136, 188);
-  
-  color: rgb(255,255,255);
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.6);
+#cart > img {
+  vertical-align: middle;
+  margin-right: 5px;
+  width: 24px;
+  height: 24px;
+}
+#cart > a {
+  display: inline-block;
+  text-align: left;
+  color: inherit;
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 #site-menu-wrapper {
