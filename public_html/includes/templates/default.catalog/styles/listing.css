@@ -133,7 +133,7 @@ ul.listing-wrapper > .product .manufacturer {
   overflow: hidden;
   white-space: nowrap;
 }
-ul.listing-wrapper > .product .price {
+ul.listing-wrapper > .product .price-wrapper {
   text-align: right;
   font-size: 18px;
   font-weight: bold;
@@ -143,10 +143,6 @@ ul.listing-wrapper > .product .regular-price {
   font-size: 12px;
 }
 ul.listing-wrapper > .product .campaign-price {
-  color: #900;
-}
-
-ul.listing-wrapper > .product .price .campaign-price {
   color: #c00;
 }
 

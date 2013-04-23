@@ -68,10 +68,10 @@
   $system->document->snippets['column_left'] = ob_get_clean();
 ?>
 
-<div class="box" id="box-product">
+<div class="box" id="box-product" itemscope itemtype="http://www.schema.org/Product">
   <div class="heading">
     <?php echo (!empty($product->sku)) ? '<div class="sku">'. $product->sku .'</div>' : false; ?>
-    <h1><?php echo $product->name[$system->language->selected['code']]; ?></h1>
+    <h1 itemprop="name"><?php echo $product->name[$system->language->selected['code']]; ?></h1>
   </div>
   <div class="content">
     <table>
@@ -92,7 +92,7 @@
         }
         
         echo '<div style="position: relative;">' . PHP_EOL
-           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="main-image zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" /></a>' . PHP_EOL
+           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="main-image zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" itemprop="image" /></a>' . PHP_EOL
            . '  '. $sticker . PHP_EOL
            . '</div>' . PHP_EOL;
         $first_image = false;
@@ -108,6 +108,7 @@
         </td>
         
         <td style="padding-left: 10px; vertical-align: top;">
+          <?php if (!empty($product->description[$system->language->selected['code']]) || !empty($product->attributes[$system->language->selected['code']])) { ?>
           <div class="tabs">
             <div class="index">
               <li><a href="#tab-information"><?php echo $system->language->translate('title_information', 'Information'); ?></a></li>
@@ -115,7 +116,7 @@
             </div>
             
             <div class="content">
-              <div class="tab" id="tab-information">
+              <div class="tab" id="tab-information" itemprop="description">
                 <p><?php echo $product->description[$system->language->selected['code']] ? $product->description[$system->language->selected['code']] : '<em style="opacity: 0.65;">'. $system->language->translate('text_no_product_description', 'There is no description for this product yet.') .'</em>'; ?></p>
               </div>
               
@@ -148,16 +149,17 @@
               <?php } ?>
             </div>
           </div>
-      
+          <?php } ?>
+          
 <?php
     if ($product->manufacturer_id) {
 ?>
-          <div style="margin-bottom: 10px;" class="manufacturer">
+          <div style="margin-bottom: 10px;" class="manufacturer" itemtype="http://www.schema.org/Organisation">
 <?php
       if ($product->manufacturer['image']) {
-        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) .'" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" /></a>';
+        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) .'" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" itemprop="image" /></a>';
       } else {
-        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'">'. $product->manufacturer['name'] .'</a>';
+        echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'" itemprop="name">'. $product->manufacturer['name'] .'</a>';
       }
 ?>
           </div>
@@ -165,7 +167,7 @@
     }
 ?>
       
-          <div style="margin-bottom: 10px; font-size: 22px;" class="price"><?php echo $product->campaign['price'] ? '<s class="old-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong class="special-price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span class="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
+          <div style="margin-bottom: 10px;" class="price-wrapper" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><?php echo $product->campaign['price'] ? '<s class="regular-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong class="campaign-price" itemprop="price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span class="price" itemprop="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
           
           <div style="margin-bottom: 10px;" class="tax">
 <?php
@@ -195,7 +197,7 @@
     if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<br />' . $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']];
   } else {
     if (!empty($product->sold_out_status['name'][$system->language->selected['code']])) {
-      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="'. ($product->sold_out_status['orderable'] ? 'stock-unavailable' : 'stock-partly-available') .'">'. $product->sold_out_status['name'][$system->language->selected['code']] .'</span>';
+      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="'. ($product->sold_out_status['orderable'] ? 'stock-partly-available' : 'stock-unavailable') .'">'. $product->sold_out_status['name'][$system->language->selected['code']] .'</span>';
     } else {
       echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="stock-unavailable">'. $system->language->translate('title_sold_out', 'Sold Out') .'</span>';
     }

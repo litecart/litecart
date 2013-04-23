@@ -83,7 +83,7 @@
         <?php if ($system->settings->get('contact_form_captcha_enabled') == 'true') { ?>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_captcha', 'CAPTCHA'); ?><br />
-            <?php echo $system->functions->captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_input('captcha', '', 'input', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
+            <?php echo $system->functions->captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_input('captcha', '', 'text', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
           </td>
         </tr>
         <?php } ?>

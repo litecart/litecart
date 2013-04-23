@@ -25,7 +25,8 @@ All icons can be found at www.iconfinder.com
 * (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
 * (database)  Midtone Design Studio - Freeware - http://www.midtonedesign.com
 * (mail) Icojam - Public Domain - http://www.icojam.com
-* (cart) Woothemes - Freeware - http://www.woothemes.com
+* (cart) DesignContest.com - CC Attribution 3.0 Unported - http://www.designcontest.com
+* (catalog) Woothemes - Freeware - http://www.woothemes.com
 
 Language Icons
 --------------
@@ -67,7 +68,7 @@ JavaScript
 
 Inspired By
 -----------
-The LiteCart idea was born from what was missing in osCommerce Online Merchant and what what was too much in OpenCart.
+LiteCart was born out of thoughts of what was missing in osCommerce Online Merchant and what what was too much in OpenCart.
 
 * osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
 * openCart by Daniel Kerr - http://www.opencart.com

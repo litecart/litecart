@@ -98,20 +98,24 @@
 
   $order_action = new order_action();
   
-  $select_options = array(
+  $order_action_options = $order_action->options();
+  
+  $options = array(
     array('--'. $system->language->translate('title_select', 'Select') .' --', ''),
   );
   
-  $options = $order_action->options();
-  
-  foreach (array_keys($options) as $module_id) {
-    $select_options[] = array($options[$module_id]['name'], $module_id, 'disabled="disabled" style="font-weight: bold;"');
-    foreach (array_keys($options[$module_id]['options']) as $option_id) {
-      $select_options[] = array($options[$module_id]['options'][$option_id]['title'], $module_id.':'.$option_id, 'style="padding-left: 10px;"');
+  if (!empty($order_action_options)) {
+    foreach (array_keys($order_action_options) as $module_id) {
+      $options[] = array($order_action_options[$module_id]['name'], $module_id, 'disabled="disabled" style="font-weight: bold;"');
+      foreach (array_keys($order_action_options[$module_id]['options']) as $option_id) {
+        $options[] = array($order_action_options[$module_id]['options'][$option_id]['title'], $module_id.':'.$option_id, 'style="padding-left: 10px;"');
+      }
     }
+  } else {
+    $options[] = array($system->language->translate('text_no_order_action_modules', 'There are no order action modules installed or enabled.'), 'null', 'disabled="disabled" style="font-style: italic;"');
   }
   
-  echo $system->functions->form_draw_select_field('order_action', $select_options, true, 'style="width: 100px;"'); ?> <?php echo $system->functions->form_draw_button('perform', $system->language->translate('title_perform', 'Perform'), 'submit');
+  echo $system->functions->form_draw_select_field('order_action', $options, true, 'style="width: 100px;"'); ?> <?php echo $system->functions->form_draw_button('perform', $system->language->translate('title_perform', 'Perform'), 'submit');
 ?>
     </li>
   </ul>

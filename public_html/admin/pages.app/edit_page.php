@@ -80,7 +80,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_textarea($language_code, 'content['. $language_code .']', true, 'style="width: 720px; height: 400px;"');
+  echo $system->functions->form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="width: 720px; height: 400px;"');
   $use_br = true;
 }
 ?>

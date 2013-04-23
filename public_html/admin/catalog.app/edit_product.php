@@ -202,7 +202,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_product_groups', 'Product Groups'); ?></strong><br />
-            <div style="width: 360px; max-height: 240px; " class="input-wrapper">
+            <div style="width: 360px; max-height: 240px; overflow-y: auto;" class="input-wrapper">
               <table>
 <?php
   // Output product groups

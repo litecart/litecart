@@ -27,8 +27,6 @@
     $products_query = $system->functions->catalog_products_query($filter);
     if ($system->database->num_rows($products_query) > 0 && $system->database->num_rows($products_query) > ($_GET['page']-1) * $system->settings->get('data_table_rows_per_page', 20)) {
       
-      echo '<div style="margin-left: -2px;"><h3 class="subdivision">&#8226; '. $system->language->translate('title_page', 'Page') .' '.  $_GET['page'] .' &#8226;</h3></div>' . PHP_EOL;
-    
       if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
       
       $page_items = 0;

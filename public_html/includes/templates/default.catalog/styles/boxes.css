@@ -4,21 +4,45 @@
   margin: 0px 0px 10px 0px;
 }
 
-.box .heading {
+.box > .heading {
   padding: 0px;
   overflow: hidden;
 }
 
-.box .heading h1, .box .heading h2, .box .heading h3 {
+.box > .heading h1, .box > .heading h2, .box > .heading h3 {
   margin: 0px;
 }
 
-.box .content {
+.box > .content {
   padding: 10px 0px;
   margin: 0px;
 }
 
-/* Custom boxes */
+#box-category-tree li.active {
+  background: #f3f3f3;
+}
+
+#box-product .price-wrapper {
+  font-size: 22px;
+}
+#box-product .regular-price {
+  font-size: 16px;
+}
+#box-product .campaign-price {
+  color: #c00;
+}
+#box-product .tax {
+  color: #999;
+}
+#box-product .stock-available {
+  color: #090;
+}
+#box-product .stock-partly-available {
+  color: #f90;
+}
+#box-product .stock-unavailable {
+  color: #c00;
+}
 
 #box-checkout-shipping .option-wrapper, #box-checkout-payment .option-wrapper {
   display: inline-block;

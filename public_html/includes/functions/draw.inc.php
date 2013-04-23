@@ -55,7 +55,7 @@
             . '    </div>' . PHP_EOL
             . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
             . '    <div class="manufacturer">'. $product['manufacturer_name'] .'</div>' . PHP_EOL
-            . '    <div class="price">'. ($product['campaign_price'] ? '<s class="regular-price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="campaign-price">'. $system->currency->format($system->tax->calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
+            . '    <div class="price-wrapper">'. ($product['campaign_price'] ? '<s class="regular-price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="campaign-price">'. $system->currency->format($system->tax->calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. $system->currency->format($system->tax->calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL
             . (($product['image']) ? '  <a href="'. WS_DIR_IMAGES . $product['image'] .'" class="fancybox" data-fancybox-group="product-listing" title="'. htmlspecialchars($product['name']) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/preview.png" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>' . PHP_EOL : '')
           //. '  <div style="text-align: center;" class="buy_now">'.  $system->functions->form_draw_form_begin('buy_now_form') . $system->functions->form_draw_hidden_field('product_id', $product['id']) . $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit') . $system->functions->form_draw_form_end() .'</div>' . PHP_EOL
@@ -136,7 +136,8 @@
     
     if ($_GET['page'] > 1) $system->document->snippets['head_tags']['prev'] = '<link rel="prev" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']-1), true)) .'" />';
     if ($_GET['page'] < $pages) $system->document->snippets['head_tags']['next'] = '<link rel="next" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']+1), true)) .'" />';
-    if ($_GET['page'] < $pages) $system->document->snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']+1), true)) .'" />';
+    if ($_GET['page'] < $pages) $system->document->snippets['head_tags']['prefetch'] = '<link rel="prerender" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']+1), true)) .'" />'; // Mozilla
+    if ($_GET['page'] < $pages) $system->document->snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. htmlspecialchars($system->document->link('', array('page' => $_GET['page']+1), true)) .'" />'; // Webkit
     
     $link = $_SERVER['REQUEST_URI'];
     $link = preg_replace('/page=[0-9]/', '', $link);

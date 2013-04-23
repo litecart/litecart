@@ -25,31 +25,6 @@
     exit;
   }
   
-  /*
-  $system->document->snippets['javascript'][] = '  var nextPage = '. ($_GET['page']+1) .';'. PHP_EOL
-                                              . '  var scrollInProgress = false;' . PHP_EOL
-                                              . '  var endOfContent = false;' . PHP_EOL
-                                              . '  $(window).scroll(function () {' . PHP_EOL
-                                              . '    if ($(window).scrollTop() >= $(document).height() - $(window).height() - 400) {' . PHP_EOL
-                                              . '      if (!scrollInProgress && !endOfContent) {' . PHP_EOL
-                                              . '        scrollInProgress = true;' . PHP_EOL
-                                              . '        var url = "'. $system->document->href_link('ajax/products.html.php', array('category_id' => $category['id'], 'sort' => $_GET['sort'], 'page' => 'nextPage')) .'";' . PHP_EOL
-                                              . '        $.get(url.replace(/nextPage/g, nextPage), function(data) {' . PHP_EOL
-                                              . '          if (data == "") {' . PHP_EOL
-                                              . '            endOfContent = true;' . PHP_EOL
-                                              . '            return;' . PHP_EOL
-                                              . '          }' . PHP_EOL
-                                              . '          if ($(".pagination").length) $(".pagination").remove();' . PHP_EOL
-                                              . '          $(".listing-wrapper").append("<div id=\"page"+ nextPage +"-wrapper\" style=\"display: none;\">" + data + "</div>");' . PHP_EOL
-                                              . '          $("#page"+ nextPage + "-wrapper").fadeIn();'. PHP_EOL
-                                              . '          nextPage++;' . PHP_EOL
-                                              . '          scrollInProgress = false;' . PHP_EOL
-                                              . '        });' . PHP_EOL
-                                              . '      }' . PHP_EOL
-                                              . '    }' . PHP_EOL
-                                              . '  });';
-  */
-  
   foreach ($system->functions->catalog_category_trail($category['id']) as $category_id => $category_name) {
     $system->breadcrumbs->add($category_name, $system->document->link(basename(__FILE__), array('category_id' => $category_id)));
   }
