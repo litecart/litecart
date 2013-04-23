@@ -1,4 +1,4 @@
-<nav class="categories">
+<nav>
   <p><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong></p>
   <ul class="list-vertical">
 <?php  

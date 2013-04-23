@@ -26,16 +26,17 @@
       <?php echo $order['payment_option']['name'] ? $order['payment_option']['name'] : '-'; ?></td>
       <td align="left"><strong><?php echo $this->system->language->translate('title_shipping_option', 'Shipping Option'); ?>:</strong><br />
       <?php echo $order['shipping_option']['name'] ? $order['shipping_option']['name'] : '-'; ?></td>
-      <td align="left"><strong><?php echo $this->system->language->translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?>:</strong><br />
-      <?php echo $order['shipping_tracking_id'] ? $order['shipping_tracking_id'] : '-'; ?></td>
     </tr>
     <tr>
       <td><strong><?php echo $this->system->language->translate('title_transaction_number', 'Transaction Number'); ?>:</strong><br />
-        <?php echo $order['payment_transaction_id'] ? $order['payment_transaction_id'] : '-'; ?>
-      </td>
+        <?php echo $order['payment_transaction_id'] ? $order['payment_transaction_id'] : '-'; ?></td>
+      <td align="left"><strong><?php echo $this->system->language->translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?>:</strong><br />
+        <?php echo $order['shipping_tracking_id'] ? $order['shipping_tracking_id'] : '-'; ?></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
       <td><strong><?php echo $this->system->language->translate('title_weight', 'Weight'); ?>:</strong><br />
-        <?php echo $this->system->weight->format($order['weight'], $order['weight_class']); ?>
-      </td>
+        <?php echo $this->system->weight->format($order['weight'], $order['weight_class']); ?></td>
     </tr>
   </table>
   
@@ -136,20 +137,20 @@
 
 <table id="footer" style="width: 100%;">
   <tr>
-    <td><strong><?php echo $this->system->language->translate('title_address', 'Address'); ?>:</strong><br />
+    <td style="vertical-align: top;"><strong><?php echo $this->system->language->translate('title_address', 'Address'); ?>:</strong><br />
       <?php echo nl2br($this->system->settings->get('store_postal_address')); ?>
     </td>
     <?php if ($this->system->settings->get('store_phone')) { ?>
-    <td><strong><?php echo $this->system->language->translate('title_phone', 'Phone'); ?>:</strong><br />
+    <td style="vertical-align: top;"><strong><?php echo $this->system->language->translate('title_phone', 'Phone'); ?>:</strong><br />
       <?php echo $this->system->settings->get('store_phone'); ?>
     </td>
     <?php } ?>
     <?php if ($this->system->settings->get('store_tax_id')) { ?>
-    <td><strong><?php echo $this->system->language->translate('title_tax_id', 'Tax ID'); ?>:</strong><br />
+    <td style="vertical-align: top;"><strong><?php echo $this->system->language->translate('title_tax_id', 'Tax ID'); ?>:</strong><br />
       <?php echo $this->system->settings->get('store_tax_id'); ?>
     </td>
     <?php } ?>
-    <td><strong><?php echo $this->system->language->translate('title_email', 'E-mail'); ?>:</strong><br />
+    <td style="vertical-align: top;"><strong><?php echo $this->system->language->translate('title_email', 'E-mail'); ?>:</strong><br />
       <?php echo $this->system->settings->get('store_email'); ?>
     </td>
   </tr>

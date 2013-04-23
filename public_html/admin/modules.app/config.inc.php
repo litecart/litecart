@@ -19,6 +19,11 @@ $app_config = array(
       'params' => array('type' => 'payment'),
     ),
     array(
+      'name' => $system->language->translate('title_order_action', 'Order Action'),
+      'link' => 'modules.php',
+      'params' => array('type' => 'order_action'),
+    ),
+    array(
       'name' => $system->language->translate('title_order_total', 'Order Total'),
       'link' => 'modules.php',
       'params' => array('type' => 'order_total'),

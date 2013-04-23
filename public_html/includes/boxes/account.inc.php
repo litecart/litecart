@@ -1,7 +1,7 @@
 <?php if (empty($system->customer->data['id'])) return; ?>
 <div class="box">
   <div class="heading"><h3><?php echo $system->language->translate('title_account', 'Account'); ?></h3></div>
-  <div class="content" style="padding: 10px;">
+  <div class="content">
     <div><?php echo sprintf($system->language->translate('text_logged_in_as_s', 'Logged in as %s'), $system->customer->data['firstname'] .' '. $system->customer->data['lastname']); ?></div>
     <ul>
       <li><a href="<?php echo $system->document->href_link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>

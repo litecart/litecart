@@ -1,4 +1,4 @@
-<nav class="information">
+<nav>
   <p><strong><?php echo $system->language->translate('title_information', 'Information'); ?></strong></p>
   <ul class="list-vertical">
   <?php

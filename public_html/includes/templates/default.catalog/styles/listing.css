@@ -8,23 +8,9 @@ ul.listing-wrapper {
   color: #000;
 }
 
-ul.listing-wrapper > .category-image {
-  display: inline-block;
-  float: left;
-  
-  width: 330px;
-  height: 180px;
-  
-  padding: 0px;
-  margin: 5px;
-  
-  text-align: left;
-}
 
-ul.listing-wrapper > .category-image {
-  padding: 0px;
-}
 
+/* Category */
 ul.listing-wrapper > .category {
   display: inline-block;
   float: left;
@@ -38,33 +24,40 @@ ul.listing-wrapper > .category {
   -webkit-box-shadow: 0px 0px 2px #aaa;
   box-shadow: 0px 0px 2px #aaa;
   
-  text-align: center;
 }
-
 ul.listing-wrapper > .category a.link {
   display: block;
-  
   padding: 5px;
   
   text-decoration: none;
   color: inherit;
 }
-ul.listing-wrapper > .category .image{
+ul.listing-wrapper > .category .image {
   position: relative;
+  overflow: hidden;
 }
 ul.listing-wrapper > .category .footer {
   display: block;
 
   width: 100%;
-  padding: 5px 0px;
+  padding: 5px;
 
   background: rgba(100, 100, 100, 0.75);
   color: #fff;
+  
+  text-align: center;
 }
 ul.listing-wrapper > .category .title {
   font-weight: bold;
 }
 
+@media (max-width: 640px) {
+  ul.listing-wrapper > .category a.link {
+    width: 275px;
+  }
+}
+
+/* Manufacturers */
 ul.listing-wrapper  > .manufacturer {
   display: inline-block;
   float: left;
@@ -83,12 +76,16 @@ ul.listing-wrapper  > .manufacturer {
 ul.listing-wrapper > .manufacturer a.link {
   display: block;
   
+  width: 225px;
   padding: 5px;
   
   text-decoration: none;
   color: inherit;
 }
-
+ul.listing-wrapper > .manufacturer .image img {
+  width: 100%;
+  height: auto;
+}
 ul.listing-wrapper > .manufacturer .title {
   display: block;
 
@@ -98,7 +95,13 @@ ul.listing-wrapper > .manufacturer .title {
   background: rgba(100, 100, 100, 0.75);
   color: #fff;
 }
+@media (max-width: 640px) {
+  ul.listing-wrapper > .manufacturer a.link {
+    width: 175px;
+  }
+}
 
+/* Product */
 ul.listing-wrapper > .product {
   display: inline-block;
   float: left;
@@ -110,8 +113,6 @@ ul.listing-wrapper > .product {
   -webkit-box-shadow: 0px 0px 2px #aaa;
   box-shadow: 0px 0px 2px #aaa;
 }
-
-
 ul.listing-wrapper > .product a.link {
   display: block;
   
@@ -145,8 +146,14 @@ ul.listing-wrapper > .product .campaign-price {
   color: #900;
 }
 
-ul.listing-wrapper > .product .price span.campaign-price {
+ul.listing-wrapper > .product .price .campaign-price {
   color: #c00;
+}
+
+@media (max-width: 640px) {
+  ul.listing-wrapper > .product a.link {
+    width: 166px;
+  }
 }
 
 #box-latest-products ul.listing-wrapper > .product {

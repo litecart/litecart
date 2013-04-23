@@ -6,8 +6,8 @@
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=640">
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css" media="screen and (min-device-width: 641px)" />
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/mobile.css" media="screen and (max-device-width: 640px)" />
+<link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
+<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css" media="all" />
 <!--[if IE]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
@@ -97,14 +97,14 @@
       <footer id="footer" class="box-gradient1 shadow rounded-corners">
         <table>
           <tr>
-            <td>
+            <td class="categories">
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
             </td>
-            <td>
+            <td class="manufacturers">
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
             </td>
-            <td>
-              <nav class="account">
+            <td class="account">
+              <nav>
                 <p><strong><?php echo $system->language->translate('title_account', 'Account'); ?></strong></p>
                 <ul class="list-vertical">
                   <li><a href="<?php echo $system->document->link('select_region.php'); ?>"><?php echo $system->language->translate('title_select_region', 'Select Region'); ?></a></li>
@@ -131,16 +131,14 @@
                 </ul>
               </nav>
             </td>
-            <td>
+            <td class="information">
               <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_information.inc.php'); ?>
             </td>
-            <td>
-              <div class="contact">
-                <p><strong><?php echo $system->language->translate('title_contact', 'Contact'); ?></strong></p>
-                <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p>
-                <p><?php echo $system->settings->get('store_phone'); ?></p>
-                <p><?php echo $system->settings->get('store_email'); ?></p>
-              </div>
+            <td class="contact">
+              <p><strong><?php echo $system->language->translate('title_contact', 'Contact'); ?></strong></p>
+              <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p>
+              <p><?php echo $system->settings->get('store_phone'); ?></p>
+              <p><?php echo $system->settings->get('store_email'); ?></p>
             </td>
           </tr>
         </table>

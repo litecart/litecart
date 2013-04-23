@@ -15,34 +15,14 @@
     'overlayShow'   => true
   ));
   
-  if (isset($_POST['perform'])) {
-  
-    switch ($_POST['action']) {
-    
-      case 'unifaun_brekd':
-      case 'unifaun_p19':
-      
-        if (empty($_POST['orders'])) break;
-        
-        if ($_POST['action'] == 'unifaun_brekd') $srvid = 'BREKD';
-        if ($_POST['action'] == 'unifaun_p19') $srvid = 'P19';
-        
-        foreach ($_POST['orders'] as $order_id) {
-          if ($system->functions->unifaun_ftp_upload($order_id, $srvid)) {
-            $system->notices->add('success', 'Unifaun FTP export succeeded for order '. $order_id);
-          } else {
-            $system->notices->add('errors', 'Unifaun FTP export failed for order '. $order_id);
-          }
-        }
-        
-        if (empty($system->notices->data['errors'])) {
-          header('Location:'. $_SERVER['REQUEST_URI']);
-          exit;
-        }
-        
-        break;
+  if (isset($_POST['perform']) && !empty($_POST['orders'])) {
+    if (!empty($_POST['order_action'])) {
+      list($module_id, $option_id) = explode(':', $_POST['order_action']);
+      $order_action = new order_action();
+      $options = $order_action->options();
+      echo $order_action->modules[$module_id]->$options[$module_id]['options'][$option_id]['function']($_POST['orders']);
+      return;
     }
-    
   }
   
 ?>
@@ -115,12 +95,23 @@
     <li><?php echo $system->language->translate('text_with_selected', 'With selected'); ?>:</li>
     <li>
 <?php
-  $options = array(
+
+  $order_action = new order_action();
+  
+  $select_options = array(
     array('--'. $system->language->translate('title_select', 'Select') .' --', ''),
-    array('Unifaun FTP Export (MyPack)', 'unifaun_p19'),
-    array('Unifaun FTP Export (Rek. brev)', 'unifaun_brekd'),
-);
-  echo $system->functions->form_draw_select_field('action', $options, isset($_POST['action']) ? $_POST['action'] : '', 'style="width: 100px;"'); ?> <?php echo $system->functions->form_draw_button('perform', $system->language->translate('title_perform', 'Perform'), 'submit');
+  );
+  
+  $options = $order_action->options();
+  
+  foreach (array_keys($options) as $module_id) {
+    $select_options[] = array($options[$module_id]['name'], $module_id, 'disabled="disabled" style="font-weight: bold;"');
+    foreach (array_keys($options[$module_id]['options']) as $option_id) {
+      $select_options[] = array($options[$module_id]['options'][$option_id]['title'], $module_id.':'.$option_id, 'style="padding-left: 10px;"');
+    }
+  }
+  
+  echo $system->functions->form_draw_select_field('order_action', $select_options, true, 'style="width: 100px;"'); ?> <?php echo $system->functions->form_draw_button('perform', $system->language->translate('title_perform', 'Perform'), 'submit');
 ?>
     </li>
   </ul>

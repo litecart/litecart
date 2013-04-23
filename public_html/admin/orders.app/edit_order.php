@@ -290,12 +290,12 @@
           <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
             <?php echo $system->functions->form_draw_countries_list('customer[shipping_address][country_code]', true); ?></td>
           <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
-            <?php echo $system->functions->form_draw_zones_list(isset($_POST['customer[shipping_address][country_code']) ? $_POST['customer']['shipping_address']['country_code'] : '', 'customer[shipping_address][zone_code]', true); ?></td>
+            <?php echo $system->functions->form_draw_zones_list(isset($_POST['customer']['shipping_address']['country_code']) ? $_POST['customer']['shipping_address']['country_code'] : '', 'customer[shipping_address][zone_code]', true); ?></td>
         </tr>
       </table>
 
       <script type="text/javascript">
-        $("select[name='customer[shipping_country_code]']").change(function(){
+        $("select[name='customer[shipping_address][country_code]']").change(function(){
           $('body').css('cursor', 'wait');
           $.ajax({
             url: '<?php echo WS_DIR_AJAX .'zones.json.php'; ?>?country_code=' + $(this).val(),
@@ -307,14 +307,14 @@
               alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
             },
             success: function(data) {
-              $('select[name=\'customer[shipping_zone_code]\']').html('');
-              if ($('select[name=\'customer[shipping_zone_code]\']').attr('disabled')) $('select[name=\'customer[shipping_zone_code]\']').removeAttr('disabled');
+              $('select[name=\'customer[shipping_address][zone_code]\']').html('');
+              if ($('select[name=\'customer[shipping_address][zone_code]\']').attr('disabled')) $('select[name=\'customer[shipping_address][zone_code]\']').removeAttr('disabled');
               if (data) {
                 $.each(data, function(i, zone) {
-                  $('select[name=\'customer[shipping_zone_code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+                  $('select[name=\'customer[shipping_address][zone_code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
                 });
               } else {
-                $('select[name=\'customer[shipping_zone_code]]\']').attr('disabled', 'disabled');
+                $('select[name=\'customer[shipping_address][zone_code]]\']').attr('disabled', 'disabled');
               }
             },
             complete: function() {
@@ -508,7 +508,7 @@
     var output = '  <tr>'
                + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('comments[new_comment_index][id]', '') . $system->functions->form_draw_hidden_field('comments[new_comment_index][date_created]', strftime($system->language->selected['format_datetime'])) . strftime($system->language->selected['format_datetime'])); ?></td>'
                + '    <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
-               + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', $system->language->translate('title_hidden', 'Hidden'))); ?></td>'
+               + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', '', $system->language->translate('title_hidden', 'Hidden'))); ?></td>'
                + '    <td nowrap="nowrap"><a class="remove_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '  </tr>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);

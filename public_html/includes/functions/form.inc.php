@@ -12,6 +12,7 @@
   }
   
   function form_reinsert_value($name) {
+    if (empty($name)) return;
     
     foreach (array($_POST, $_GET) as $superglobal) {
       if (empty($superglobal)) continue;

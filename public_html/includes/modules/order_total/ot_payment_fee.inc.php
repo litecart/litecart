@@ -21,6 +21,8 @@
     public function process() {
       global $payment;
       
+      if ($this->settings['status'] != 'Enabled') return;
+      
       if (isset($payment->data['selected']['cost']) && $payment->data['selected']['cost'] == 0) return;
       
       $output = array();
@@ -42,6 +44,13 @@
     
     function settings() {
       return array(
+        array(
+          'key' => 'status',
+          'default_value' => 'Enabled',
+          'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
+          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'function' => 'radio("Enabled", "Disabled")',
+        ),
         array(
           'key' => 'priority',
           'default_value' => '30',

@@ -14,6 +14,12 @@
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/*.inc.php');
       $modules = new jobs;
       break;
+    case 'order_action':
+      $title = $system->language->translate('title_order_action_modules', 'Order Action Modules');
+      $installed_modules = explode(';', $system->settings->get('order_action_modules'));
+      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/*.inc.php');
+      $modules = new order_action;
+      break;
     case 'order_total':
       $title = $system->language->translate('title_order_total_modules', 'Order Total Modules');
       $installed_modules = explode(';', $system->settings->get('order_total_modules'));

@@ -163,6 +163,37 @@
 </div>
 
 <script type="text/javascript">
+  
+  $("form[name='customer_form'] input, form[name='customer_form'] select").change(function() {
+    if ($(this).val() == '') return;
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo $system->document->link(WS_DIR_AJAX .'get_address.json.php'); ?>?trigger='+$(this).attr('name'),
+      type: 'post',
+      data: $(this).closest('form').serialize(),
+      cache: false,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+        alert(errorThrown.message);
+      },
+      success: function(data) {
+        if (data['alert']) {
+          alert(data['alert']);
+          return;
+        }
+        $.each(data, function(key, value) {
+          console.log(key +" "+ value);
+          if ($("input[name='"+key+"']").length && $("input[name='"+key+"']").val() == '') $("input[name='"+key+"']").val(data[key]);
+        });
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+  
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({

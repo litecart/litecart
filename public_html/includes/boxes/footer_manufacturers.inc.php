@@ -1,4 +1,4 @@
-<nav class="manufacturers">
+<nav>
   <p><strong><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></strong></p>
   <ul class="list-vertical">
 <?php  

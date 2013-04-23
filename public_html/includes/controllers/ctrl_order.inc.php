@@ -584,6 +584,10 @@
       $key_i = 1;
       while (isset($this->data['items']['new'.$key_i])) $key_i++;
       
+    // Round decimals
+      $rounded_price = round($this->system->currency->calculate($item['price'], $this->data['currency_code']), $this->system->currency->currencies[$this->data['currency_code']]['decimals']);
+      $item['price'] = $this->system->currency->convert($rounded_price, $this->data['currency_code'], $this->system->settings->get('store_currency_code'));
+      
       $this->data['items']['new'.$key_i] = array(
         'id' => '',
         'product_id' => $item['product_id'],
@@ -609,6 +613,10 @@
       
       $key_i = 1;
       while (isset($this->data['order_total']['new'.$key_i])) $key_i++;
+      
+    // Round decimals
+      $rounded_value = round($this->system->currency->calculate($row['value'], $this->data['currency_code']), $this->system->currency->currencies[$this->data['currency_code']]['decimals']);
+      $row['value'] = $this->system->currency->convert($rounded_value, $this->data['currency_code'], $this->system->settings->get('store_currency_code'));
       
       $this->data['order_total']['new'.$key_i] = array(
         'id' => 0,

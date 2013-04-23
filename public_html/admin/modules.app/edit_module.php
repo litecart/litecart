@@ -8,6 +8,8 @@
       break;
     case 'jobs':
       break;
+    case 'order_action':
+      break;
     case 'order_success':
       break;
     case 'order_total':

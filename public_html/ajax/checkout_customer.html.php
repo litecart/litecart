@@ -38,7 +38,7 @@
       if (empty($_POST['city'])) $system->notices->add('errors', $system->language->translate('error_missing_city', 'You must enter a city.'));
       if (empty($_POST['postcode'])) $system->notices->add('errors', $system->language->translate('error_missing_postcode', 'You must enter a postcode.'));
       if (empty($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_country', 'You must select a country.'));
-      if (empty($_POST['country_code']) && $system->functions->reference_country_num_zones($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_zone', 'You must select a zone.'));
+      if (empty($_POST['zone_code']) && $system->functions->reference_country_num_zones($_POST['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_zone', 'You must select a zone.'));
       
       if (!empty($_POST['different_shipping_address'])) {
         if (empty($_POST['shipping_address']['firstname'])) $system->notices->add('errors', $system->language->translate('error_missing_firstname', 'You must enter a first name.'));
@@ -47,7 +47,7 @@
         if (empty($_POST['shipping_address']['city'])) $system->notices->add('errors', $system->language->translate('error_missing_city', 'You must enter a city.'));
         if (empty($_POST['shipping_address']['postcode'])) $system->notices->add('errors', $system->language->translate('error_missing_postcode', 'You must enter a postcode.'));
         if (empty($_POST['shipping_address']['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_country', 'You must select a country.'));
-        if (empty($_POST['shipping_address']['country_code']) && $system->functions->reference_country_num_zones($_POST['shipping_address']['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_zone', 'You must select a zone.'));
+        if (empty($_POST['shipping_address']['zone_code']) && $system->functions->reference_country_num_zones($_POST['shipping_address']['country_code'])) $system->notices->add('errors', $system->language->translate('error_missing_zone', 'You must select a zone.'));
       }
     }
     
@@ -157,7 +157,7 @@
 ?>
   <div class="box" id="box-checkout-account">
     <div class="heading"><h2><?php echo $system->language->translate('title_customer_information', 'Customer Information'); ?></h2></div>
-    <div class="content" style="padding: 0px;">
+    <div class="content">
       <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
         <table style="width: 100%;">
           <tr>
@@ -208,12 +208,12 @@
                   <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
                     <?php echo $system->functions->form_draw_countries_list('country_code', true, ''); ?></td>
                   <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
-                    <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, ''); ?></td>
+                    <?php echo $system->functions->form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, ''); ?></td>
                 </tr>
               </table>
             </td>
             <td align="left">
-              <h3 style="margin-top: 0px;"><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
+              <h3 style="margin-top: 0px;"><label><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
               <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
                 <table>
                   <tr>
@@ -241,16 +241,16 @@
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_countries_list('shipping_address[country_code]', true, ''); ?></td>
+                      <?php echo $system->functions->form_draw_countries_list('shipping_address[country_code]', isset($_POST['shipping_address[country_code]']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), ''); ?></td>
                     <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
-                      <?php echo form_draw_zones_list(isset($_POST['shipping_address[country_code]']) ? $_POST['shipping_address']['country_code'] : '', 'shipping_address[zone_code]', true, ''); ?></td>
+                      <?php echo $system->functions->form_draw_zones_list(isset($_POST['shipping_address[country_code]']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), 'shipping_address[zone_code]', true, ''); ?></td>
                   </tr>
                 </table>
               </div>
             </td>
           </tr>
           <tr>
-          <td colspan="2" align="center"><?php echo $system->functions->form_draw_button('set_addresses', $system->language->translate('title_save', 'Save')); ?> <?php echo (!empty($system->customer->data['id'])) ? $system->functions->form_draw_button('set_default_addresses', $system->language->translate('title_set_default', 'Set as Default')) : false; ?></td>
+          <td colspan="2" align="center"><?php echo $system->functions->form_draw_button('set_addresses', $system->language->translate('title_apply', 'Apply')); ?> <?php echo (!empty($system->customer->data['id'])) ? $system->functions->form_draw_button('set_default_addresses', $system->language->translate('title_set_default', 'Set as Default')) : false; ?></td>
           </tr>
         </table>
       <?php echo $system->functions->form_draw_form_end(); ?>
@@ -260,6 +260,7 @@
   <script type="text/javascript">
     
     $("#box-checkout-account input, #box-checkout-account select").change(function() {
+      if ($(this).val() == '') return;
       $('body').css('cursor', 'wait');
       $.ajax({
         url: '<?php echo $system->document->link(WS_DIR_AJAX .'get_address.json.php'); ?>?trigger='+$(this).attr('name'),

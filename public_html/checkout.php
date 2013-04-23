@@ -193,14 +193,13 @@
     $("body").on('focusout', 'form[name=customer_form]', function() {
       timerSubmitCustomer = setTimeout(
         function() {
-          if ($('form[name=customer_form]').blur()) {
+          if (!$('form[name=customer_form]').is(':focus')) {
             if (stateCustomerChanged) {
               $('form[name=customer_form]').append('<input type="hidden" name="set_addresses" value="true" />');
               $('form[name=customer_form]').trigger('submit');
-              clearTimeout(timerSubmitCustomer);
             }
           }
-        }, 1
+        }, 50
       );
     });
     $("body").on('focusin', 'form[name=customer_form]', function() {
@@ -216,6 +215,7 @@
     
     $("body").on('submit', 'form[name=customer_form]', function(e) {
       e.preventDefault();
+      clearTimeout(timerSubmitCustomer);
       $('*').css('cursor', 'wait');
       $.ajax({
         url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',

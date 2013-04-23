@@ -75,8 +75,8 @@ body {
 #cart > img {
   vertical-align: middle;
   margin-right: 5px;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
 }
 #cart > a {
   display: inline-block;
@@ -121,6 +121,15 @@ body {
   margin-top: 20px;
 }
 
+@media (max-width: 640px) {
+  #main tr > .left {
+    display: none;
+  }
+  #main tr > .right {
+    display: none;
+  }
+}
+
 #breadcrumbs-wrapper {
   margin-bottom: 20px;
 }
@@ -158,6 +167,15 @@ body {
 }
 #footer h1 {
   font-size: 1.2em;
+}
+
+@media (max-width: 640px) {
+  #footer tr > .categories {
+    display: none;
+  }
+  #footer tr > .manufacturers {
+    display: none;
+  }
 }
 
 #copyright {
