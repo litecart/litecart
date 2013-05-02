@@ -25,6 +25,11 @@ input[type=date], input[type=datetime], input[type=email], input[type=float], in
   vertical-align: baseline;
 }
 
+select {
+  width: auto;
+  max-width: 175px;
+}
+
 form .required {
   color: #f00;
 }
@@ -32,6 +37,10 @@ form .required {
 @media (max-width: 640px) {
   input[type=date], input[type=datetime], input[type=email], input[type=float], input[type=number], input[type=password], input[type=search], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
     width: 125px;
+  }
+  select {
+    width: auto;
+    max-width: 125px;
   }
 }
 

@@ -216,9 +216,12 @@
           'meta_description' => 'meta_description',
           'meta_keywords' => 'meta_keywords',
           'images' => 'images',
+          'purchase_price' => 'purchase_price',
           'price' => 'price',
           'tax_class_id' => 'tax_class_id',
           'quantity' => 'quantity',
+          'weight' => 'weight',
+          'weight_class' => 'weight_class',
           'delivery_status_id' => 'delivery_status_id',
           'sold_out_status_id' => 'sold_out_status_id',
           'language_code' => 'language_code',
@@ -230,6 +233,7 @@
           //'products_model' => 'code',
           //'products_name' => 'name',
           //'products_price' => 'price',
+          //...
         );
         
         $line = 0;
@@ -323,7 +327,7 @@
             }
             
           // Set new product data
-            foreach (array('status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
+            foreach (array('status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'weight', 'weight_class', 'purchase_price', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
               if (isset($data[$field])) $product->data[$field] = $data[$field];
             }
             
@@ -448,9 +452,12 @@
       'meta_description',
       'meta_keywords',
       'images',
+      'purchase_price',
       'price',
       'tax_class_id',
       'quantity',
+      'weight',
+      'weight_class',
       'delivery_status_id',
       'sold_out_status_id',
       'language_code',
@@ -497,9 +504,12 @@
         $product->meta_description[$_POST['language_code']],
         $product->meta_keywords[$_POST['language_code']],
         implode(';', $product->images),
+        $product->purchase_price,
         $product->price,
         $product->tax_class_id,
         $product->quantity,
+        $product->weight,
+        $product->weight_class,
         $product->delivery_status_id,
         $product->sold_out_status_id,
         $_POST['language_code'],

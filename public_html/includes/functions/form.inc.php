@@ -11,18 +11,24 @@
     return '</form>' . PHP_EOL;
   }
   
-  function form_reinsert_value($name) {
+  function form_reinsert_value($name, $default_value=null) {
     if (empty($name)) return;
     
     foreach (array($_POST, $_GET) as $superglobal) {
       if (empty($superglobal)) continue;
+      
       if (isset($superglobal[$name])) return $superglobal[$name];
+      
       foreach (explode('&', http_build_query($superglobal)) as $pair) {
         list($field, $value) = explode('=', $pair);
         $field = urldecode($field);
         $value = urldecode($value);
-        if ($field == $name) return $value;
-        if (preg_match('/\[\]$/', $name) && preg_replace('/\[[0-9]+\]$/', '[]', $field) == $name) return $value;
+        
+        if (preg_match('/\[\]$/', $name) && preg_match('/\[[0-9]+\]$/', $field)) {
+          if ($value == $default_value) return $value;
+        } else if ($field == $name) {
+          return $value;
+        }
       }
     }
     
@@ -38,8 +44,8 @@
   }
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {
-    if ($input === true) $input = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'checkbox', ((isset($input) && $input === $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
+    if ($input === true) $input = form_reinsert_value($name, $value);
+    return form_draw_input($name, $value, 'checkbox', ((!empty($input) && $input == $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
   }
   
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='', $hint='') {
@@ -117,8 +123,8 @@
   }
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
-    if ($input === true) $input = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'radio', ((isset($input) && $input === $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
+    if ($input === true) $input = form_reinsert_value($name, $value);
+    return form_draw_input($name, $value, 'radio', ((!empty($input) && $input == $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
   }
   
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='', $hint='') {
@@ -145,12 +151,16 @@
   function form_draw_select_field($name, $options=array(), $input=true, $size=false, $multiple=false, $parameters='', $hint='') {
     
     if (!is_array($options)) $options = array($options);
-    if ($input === true) $input = form_reinsert_value($name);
     
     $html = '<select name="'. $name .'"'. (($size) ? ' size="' . $size .'"' : false) . (($multiple && $size > 1) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
     foreach ($options as $option) {
-      $html .= '<option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $input) ? ' selected="selected"' : false) : (($option[0] == $input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+      if ($input === true) {
+        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+      } else {
+        $option_input = $input;
+      }
+      $html .= '<option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
     
     $html .= '</select>';
@@ -189,6 +199,7 @@
     return form_draw_textarea($name, $value, $parameters, $hint) . PHP_EOL
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
+         . '    "plugins": "xhtml",' . PHP_EOL
          . '    "width": "auto",' . PHP_EOL
          . '    "max-height": "auto",' . PHP_EOL
          . '    "style": "'. WS_DIR_EXT .'sceditor/jquery.sceditor.default.min.css",' . PHP_EOL

@@ -12,9 +12,10 @@
     // Check post token
       if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || REQUIRE_POST_TOKEN != false)) {
         if (!isset($_POST['token']) || $_POST['token'] != $this->session_post_token()) {
+          error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
           $this->system->session->reset();
+          header('HTTP/1.1 400 Bad Request');
           die('HTTP POST Error');
-          error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['USER_AGENT']) ? $_SERVER['USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
         }
       }
     }

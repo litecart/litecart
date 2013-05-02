@@ -25,6 +25,11 @@ input[type=date], input[type=datetime], input[type=email], input[type=float], in
   vertical-align: baseline;
 }
 
+select {
+  width: auto;
+  max-width: 175px;
+}
+
 .input-wrapper {
   width: auto;
 }

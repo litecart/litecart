@@ -180,7 +180,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
     
     while ($category = $system->database->fetch($categories_query)) {
       $output .= '<tr>' . PHP_EOL
-               . '  <td>'. $system->functions->form_draw_checkbox('categories[]', $category['id'], (isset($_POST['categories']) && in_array($category['id'], $_POST['categories'])) ? $category['id'] : false) .'</td>' . PHP_EOL
+               . '  <td>'. $system->functions->form_draw_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
                . '  <td style="padding-left: '. ($depth*16) .'px;"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" /> '. $category['name'] .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
                
@@ -856,7 +856,7 @@ foreach ($system->currency->currencies as $currency) {
       
       <div id="tab-options-stock">
         <h2><?php echo $system->language->translate('title_options_stock', 'Options Stock'); ?></h2>
-        <table id="table-options">
+        <table id="table-options-stock" style="width: 100%;">
           <tr>
             <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_option', 'Option'); ?></th>
             <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_SKU', 'SKU'); ?></th>
@@ -884,6 +884,7 @@ foreach ($system->currency->currencies as $currency) {
   }
 ?>
         </table>
+        <p>&nbsp;</p>
         <h3><?php echo $system->language->translate('title_new_combination', 'New Combination'); ?></h3>
         <table id="table-option-combo">
           <tr>
@@ -974,7 +975,7 @@ foreach ($system->currency->currencies as $currency) {
           });
           
           var new_option_stock_i = 1;
-          $("body").on("click", "button[name=add_option]", function(event) {
+          $("body").on("click", "button[name='add_option']", function(event) {
             event.preventDefault();
             var new_option_code = '';
             var new_option_name = '';
@@ -1011,7 +1012,7 @@ foreach ($system->currency->currencies as $currency) {
             output = output.replace(/new_option_stock_i/g, 'new_' + new_option_stock_i);
             output = output.replace(/new_option_code/g, new_option_code);
             output = output.replace(/new_option_name/g, new_option_name);
-            $("#table-options tr:last").after(output);
+            $("#table-options-stock").append(output);
             new_option_stock_i++;
           });
         </script>

@@ -23,16 +23,16 @@
       if (empty($this->data['last_ip'])) $this->data['last_ip'] = $_SERVER['REMOTE_ADDR'];
       if (empty($this->data['last_agent'])) $this->data['last_agent'] = !empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
       
-      $is_hijack = false;
-      if ($this->data['last_ip'] != $_SERVER['REMOTE_ADDR']) $is_hijack = true;
-      if (!empty($_SERVER['HTTP_USER_AGENT']) && $this->data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) $is_hijack = true;
-      
-      if ($is_hijack) {
+      if ($this->data['last_ip'] != $_SERVER['REMOTE_ADDR']) {
         $this->regenerate_id();
-        //error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' on '. $_SERVER['REQUEST_URI'] .': Expecting '. $this->data['last_ip'] .' ['. $this->data['last_agent'] .'] while detected '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .']');
-        $this->reset();
-        header('Location: ' . $_SERVER['REQUEST_URI']);
-        exit;
+        
+      // Decreased security due to mobile networks
+        if (!empty($_SERVER['HTTP_USER_AGENT']) && $this->data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) {
+          error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' on '. $_SERVER['REQUEST_URI'] .': Expecting '. $this->data['last_ip'] .' ['. $this->data['last_agent'] .'] while detected '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .']');
+          $this->reset();
+          header('Location: ' . $_SERVER['REQUEST_URI']);
+          exit;
+        }
       }
     }
     

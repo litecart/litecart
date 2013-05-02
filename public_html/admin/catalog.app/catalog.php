@@ -174,7 +174,6 @@
         or pi.short_description like '%". $system->database->input($_GET['query']) ."%'
         or pi.description like '%". $system->database->input($_GET['query']) ."%'
         or m.name like '%". $system->database->input($_GET['query']) ."%'
-        or d.name like '%". $system->database->input($_GET['query']) ."%'
       )
       order by pi.name asc;"
     );
@@ -371,7 +370,7 @@
   <ul class="list-horizontal">
     <li><?php echo $system->language->translate('text_with_selected', 'With selected'); ?>:</li>
     <li><?php echo $system->functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit'); ?> <?php echo $system->functions->form_draw_button('disable', $system->language->translate('title_disable', 'Disable'), 'submit'); ?></li>
-    <li><?php echo $system->functions->form_draw_categories_list('category_id', true, 'style="width: 100px;"'); ?> <?php echo $system->functions->form_draw_button('move', $system->language->translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", $system->language->translate('warning_multiple_references_will_be_lost', 'Warning: Multiple references will be lost.')) .'\')) return false;"'); ?> <?php echo $system->functions->form_draw_button('copy', $system->language->translate('title_copy', 'Copy'), 'submit'); ?></li>
+    <li><?php echo $system->functions->form_draw_categories_list('category_id', true, 'style=""'); ?> <?php echo $system->functions->form_draw_button('move', $system->language->translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", $system->language->translate('warning_multiple_references_will_be_lost', 'Warning: Multiple references will be lost.')) .'\')) return false;"'); ?> <?php echo $system->functions->form_draw_button('copy', $system->language->translate('title_copy', 'Copy'), 'submit'); ?></li>
     <li><?php echo $system->functions->form_draw_button('unmount', $system->language->translate('title_unmount', 'Unmount'), 'submit'); ?></li>
     <li><?php echo $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", $system->language->translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></li>
   </ul>

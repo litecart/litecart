@@ -75,16 +75,16 @@
     
     switch ($filter['sort']) {
       case 'name':
-        $sql_sort = "pi.name asc, p.date_created desc";
+        $sql_sort = "pi.name asc";
         break;
       case 'price':
-        $sql_sort = "final_price asc, pi.name asc";
+        $sql_sort = "final_price asc";
         break;
       case 'date':
-        $sql_sort = "p.date_valid_from desc, p.date_created desc, pi.name asc";
+        $sql_sort = "p.date_created desc";
         break;
       case 'occurrences':
-        $sql_sort = "occurrences desc, rand()";
+        $sql_sort = "occurrences desc";
         break;
       case 'rand':
         $sql_sort = "rand()";

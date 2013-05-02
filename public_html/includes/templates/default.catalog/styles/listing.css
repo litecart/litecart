@@ -126,6 +126,9 @@ ul.listing-wrapper > .product a.link {
   
   text-align: left;
 }
+ul.listing-wrapper > .product .image {
+  text-align: center;
+}
 ul.listing-wrapper > .product .manufacturer {
   color: #999;
   font-size: 0.8em;
