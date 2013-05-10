@@ -242,7 +242,7 @@
   }
 ?>
       
-          <div style="margin-bottom: 10px;" class="buy_now">
+          <div style="margin-bottom: 20px;" class="buy_now">
             <?php echo $system->functions->form_draw_form_begin('buy_now_form'); ?>
             <?php echo $system->functions->form_draw_hidden_field('product_id', $product->id); ?>
             
@@ -368,13 +368,14 @@
           
           <div style="margin-bottom: 10px;" class="social-bookmarks">
             <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style ">
-            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-            <a class="addthis_button_tweet"></a>
-            <a class="addthis_button_pinterest_pinit"></a>
-            <a class="addthis_counter addthis_pill_style"></a>
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <a class="addthis_button_facebook"></a>
+            <a class="addthis_button_google_plusone_share"></a>
+            <a class="addthis_button_twitter"></a>
+            <a class="addthis_button_email"></a>
+            <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
             </div>
-            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
             <!-- AddThis Button END -->
           </div>
         </td>

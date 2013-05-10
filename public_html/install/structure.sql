@@ -399,7 +399,7 @@ CREATE TABLE `lc_products` (
   `delivery_status_id` int(11) NOT NULL,
   `sold_out_status_id` int(11) NOT NULL,
   `categories` varchar(64) NOT NULL,
-  `product_groups` varchar(32) NOT NULL,
+  `product_groups` varchar(128) NOT NULL,
   `keywords` varchar(256) NOT NULL,
   `code` varchar(64) NOT NULL,
   `sku` varchar(64) NOT NULL,

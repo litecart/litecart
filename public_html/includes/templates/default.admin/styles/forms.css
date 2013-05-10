@@ -48,7 +48,7 @@ textarea {
   padding: 5px;
 }
 
-input[disabled=disabled] {
+input[disabled=disabled], select[disabled=disabled] {
   color: #999;
 }
 

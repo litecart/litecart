@@ -41,16 +41,16 @@
 <h2 style="margin-top: 0;"><?php echo $module->name; ?></h2>
 <?php echo isset($module->description) ? '<p>'. $module->description .'</p>': false; ?>
 <?php echo $system->functions->form_draw_form_begin('module_form', 'post'); ?>
-<table width="100%" align="center" class="ListTable">
+<table width="100%" align="center" class="dataTable">
 <?php
   foreach ($module->settings as $setting) {
-    if (!isset($rowclass) || $rowclass == 'ListTable-Row-Even') {
-      $rowclass = 'ListTable-Row-Odd';
+    if (!isset($rowclass) || $rowclass == 'even') {
+      $rowclass = 'odd';
     } else {
-      $rowclass = 'ListTable-Row-Even';
+      $rowclass = 'even';
     }
 ?>
-  <tr class="<?=$rowclass?>-Hover">
+  <tr class="<?=$rowclass?>">
     <td align="left"><strong><?=$setting['title']?></strong><?php echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
     <?php echo $system->functions->form_draw_hidden_field('key', $setting['key']) . $system->functions->form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
   </tr>

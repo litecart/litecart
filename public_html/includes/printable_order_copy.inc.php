@@ -69,7 +69,7 @@
     }
 ?>
       </td>
-      <td align="left"><?php echo $item['sku']; ?>
+      <td align="left"><?php echo $item['sku']; ?></td>
     <?php if ($this->system->settings->get('display_prices_including_tax') == 'true') { ?>
       <td style="text-align: right; width: 75px;"><?php echo $this->system->currency->format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <td style="text-align: right; width: 75px;"><?php echo $this->system->currency->format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>

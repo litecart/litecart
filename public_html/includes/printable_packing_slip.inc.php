@@ -49,7 +49,7 @@
     }
 ?>
       </td>
-      <td align="left"><?php echo $item['sku']; ?>
+      <td align="left"><?php echo $item['sku']; ?></td>
     </tr>
     <?php } ?>
   </table>

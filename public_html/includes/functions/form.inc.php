@@ -17,17 +17,22 @@
     foreach (array($_POST, $_GET) as $superglobal) {
       if (empty($superglobal)) continue;
       
-      if (isset($superglobal[$name])) return $superglobal[$name];
+      //if (isset($superglobal[$name])) return $superglobal[$name];
       
       foreach (explode('&', http_build_query($superglobal)) as $pair) {
-        list($field, $value) = explode('=', $pair);
-        $field = urldecode($field);
+        
+        list($key, $value) = explode('=', $pair);
+        $key = urldecode($key);
         $value = urldecode($value);
         
-        if (preg_match('/\[\]$/', $name) && preg_match('/\[[0-9]+\]$/', $field)) {
-          if ($value == $default_value) return $value;
-        } else if ($field == $name) {
-          return $value;
+        if ($key == $name) return $value;
+        
+        if (preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $key) == preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $name)) {
+          if (preg_match('/\[([0-9]+)?\]$/', $key)) {
+            if ($value == $default_value) {
+              return $value;
+            }
+          }
         }
       }
     }
@@ -148,11 +153,11 @@
     return form_draw_input($name, $value, 'search', $parameters, $hint);
   }
   
-  function form_draw_select_field($name, $options=array(), $input=true, $size=false, $multiple=false, $parameters='', $hint='') {
+  function form_draw_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $hint='') {
     
     if (!is_array($options)) $options = array($options);
     
-    $html = '<select name="'. $name .'"'. (($size) ? ' size="' . $size .'"' : false) . (($multiple && $size > 1) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    $html = '<select name="'. $name .'"'. (($multiple) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
     foreach ($options as $option) {
       if ($input === true) {
@@ -192,20 +197,20 @@
     global $system;
     
     $system->document->snippets['head_tags']['cleditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
-                                                         . '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.headers.js"></script>' . PHP_EOL
+                                                         . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
                                                          . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. $system->language->selected['code'] .'.js"></script>' . PHP_EOL
                                                          . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
     
     return form_draw_textarea($name, $value, $parameters, $hint) . PHP_EOL
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
-         . '    "plugins": "xhtml",' . PHP_EOL
+         . '    "plugins": "xhtml,format",' . PHP_EOL
          . '    "width": "auto",' . PHP_EOL
          . '    "max-height": "auto",' . PHP_EOL
          . '    "style": "'. WS_DIR_EXT .'sceditor/jquery.sceditor.default.min.css",' . PHP_EOL
          . '    "locale": "'. $system->language->selected['code'] .'",' . PHP_EOL
          . '    "emoticons": false,' . PHP_EOL
-         . '    "toolbar": "headers|font,size,bold,italic,underline,strike,subscript,superscript|left,center,right,justify|color,removeformat|bulletlist,orderedlist,table|code,quote|horizontalrule,image,email,link,unlink|youtube,date,time|ltr,rtl|print,maximize,source"' . PHP_EOL
+         . '    "toolbar": "format|font,size,bold,italic,underline,strike,subscript,superscript|left,center,right,justify|color,removeformat|bulletlist,orderedlist,table|code,quote|horizontalrule,image,email,link,unlink|youtube,date,time|ltr,rtl|print,maximize,source"' . PHP_EOL
          . '  });' . PHP_EOL
          . '</script>' . PHP_EOL;
   }
@@ -245,22 +250,18 @@
         return form_draw_textarea($name, $input, 'rows="5" style="width: 200px"');
       case 'bigtext':
         return form_draw_textarea($name, $input, 'rows="10" style="width: 200px"');
+      case 'categories':
+        return form_draw_categories_list($name, $input);
       case 'customers':
         return form_draw_customers_list($name, $input);
       case 'countries':
-        return form_draw_countries_list($name, $input, '', 'code');
-      case 'countries_id':
-        return form_draw_countries_list($name, $input, '', 'id');
+        return form_draw_countries_list($name, $input);
       case 'currencies':
-        return form_draw_currencies_list($name, $input, '', 'code');
-      case 'currencies_id':
-        return form_draw_currencies_list($name, $input, '', 'id');
+        return form_draw_currencies_list($name, $input);
       case 'geo_zones':
         return form_draw_geo_zones_list($name, $input);
       case 'languages':
-        return form_draw_languages_list($name, $input, '', 'code');
-      case 'languages_id':
-        return form_draw_languages_list($name, $input, '', 'id');
+        return form_draw_languages_list($name, $input);
       case 'length_classes':
         return form_draw_length_classes_list($name, $input);
       case 'product':
@@ -273,7 +274,7 @@
         return $output;
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
-        return form_draw_select_field($name, $options, $input, false, false, 'style="width: 200px"');
+        return form_draw_select_field($name, $options, $input, false, 'style="width: 200px"');
       case 'timezones':
         return form_draw_timezones_list($name, $input);
       case 'templates':
@@ -286,16 +287,13 @@
         return form_draw_weight_classes_list($name, $input);
       case 'zones':
         $option = empty($options) ? $options[0] : $system->settings->get('store_country_code');
-        return form_draw_zones_list($option, $name, $input, '', 'code');
-      case 'zones_id':
-        $option = empty($options[0]) ? $options[0] : $system->settings->get('store_country_code');
-        return form_draw_zones_list($option, $name, $input, '', 'id');
+        return form_draw_zones_list($option, $name, $input);
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_ERROR);
     }
   }
   
-  function form_draw_categories_list($name, $insert=true, $parameters=false) {
+  function form_draw_categories_list($name, $insert=true, $multiple=false, $parameters=false) {
     global $system;
     
     if (!function_exists('form_draw_categories_list_options_iterator')) {
@@ -335,16 +333,16 @@
       }
     }
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     $options = array_merge($options, form_draw_categories_list_options_iterator());
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
 
-  function form_draw_countries_list($name, $insert=true, $parameters='', $return_type='code') {
+  function form_draw_countries_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $countries_query = $system->database->query(
@@ -353,30 +351,18 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
+    
     while ($country = $system->database->fetch($countries_query)) {
-      switch($return_type) {
-        case 'id':
-          $options[] = array($country['name'], $country['id']);
-          break;
-        case 'code':
-        case 'iso_code_2':
-          $options[] = array($country['name'], $country['iso_code_2']);
-          break;
-        case 'iso_code_2':
-          $options[] = array($country['name'], $country['iso_code_3']);
-          break;
-        default:
-          trigger_error('Unknown return type for list of countries', E_USER_ERROR);
-      }
+      $options[] = array($country['name'], $country['iso_code_2']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_currencies_list($name, $insert=true, $parameters='', $return_type='code') {
+  function form_draw_currencies_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $currencies_query = $system->database->query(
@@ -385,27 +371,18 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($currency = $system->database->fetch($currencies_query)) {
-      switch($return_type) {
-        case 'id':
-          $options[] = array($currency['name'], $currency['id']);
-          break;
-        case 'code':
-          $options[] = array($currency['name'], $currency['code']);
-          break;
-        default:
-          trigger_error('Unknown return type for list of currencies', E_USER_ERROR);
-      }
+      $options[] = array($currency['name'], $currency['code']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_customers_list($name, $insert=true, $parameters='') {
+  function form_draw_customers_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $customers_query = $system->database->query(
@@ -413,18 +390,18 @@
       order by lastname, firstname;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($customer = $system->database->fetch($customers_query)) {
       $options[] = array($customer['lastname'] .', '. $customer['firstname'] .' ['. $customer['id'] .']', $customer['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_delivery_status_list($name, $insert=true, $parameters='') {
+  function form_draw_delivery_status_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -433,18 +410,18 @@
       order by dsi.name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($row = $system->database->fetch($query)) {
       $options[] = array($row['name'], $row['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_geo_zones_list($name, $insert=true, $parameters='') {
+  function form_draw_geo_zones_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $geo_zones_query = $system->database->query(
@@ -452,9 +429,9 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     if ($system->database->num_rows($geo_zones_query) == 0) {
       return form_draw_hidden_field($name, '0') . form_draw_select_field($name, $options, $insert, false, false, $parameters . ' disabled="disabled"');
@@ -464,10 +441,10 @@
       $options[] = array($geo_zone['name'], $geo_zone['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   } 
   
-  function form_draw_languages_list($name, $insert=true, $parameters='', $return_type='code') {
+  function form_draw_languages_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $currencies_query = $system->database->query(
@@ -476,27 +453,18 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($language = $system->database->fetch($currencies_query)) {
-      switch($return_type) {
-        case 'id':
-          $options[] = array($language['name'], $language['id']);
-          break;
-        case 'code':
-          $options[] = array($language['name'], $language['code']);
-          break;
-        default:
-          trigger_error('Unknown return type for list of languages', E_USER_ERROR);
-      }
+      $options[] = array($language['name'], $language['code']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_length_classes_list($name, $insert=true, $parameters='') {
+  function form_draw_length_classes_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $options = array();
@@ -505,10 +473,10 @@
       $options[] = array($class['unit']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_manufacturers_list($name, $insert=true, $parameters='') {
+  function form_draw_manufacturers_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $manufacturers_query = $system->database->query(
@@ -516,18 +484,18 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($manufacturer = $system->database->fetch($manufacturers_query)) {
       $options[] = array($manufacturer['name'], $manufacturer['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_option_groups_list($name, $insert=true, $parameters='') {
+  function form_draw_option_groups_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $option_groups_query = $system->database->query(
@@ -536,18 +504,18 @@
       order by pcgi.name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($option_group = $system->database->fetch($option_groups_query)) {
       $options[] = array($option_group['name'] .' ['. $option_group['function'] .']', $option_group['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_option_values_list($group_id, $name, $insert=true, $parameters='') {
+  function form_draw_option_values_list($group_id, $name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $option_values_query = $system->database->query(
@@ -557,9 +525,9 @@
       order by pcvi.name asc;"
     );
       
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
 
     while ($option_value = $system->database->fetch($option_values_query)) {
       if (empty($option_value['name'])) $option_value['name'] = $option_value['value'];
@@ -567,10 +535,10 @@
       $options[] = array($option_value['name'], $option_value['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_order_status_list($name, $insert=true, $parameters='') {
+  function form_draw_order_status_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -579,38 +547,38 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($row = $system->database->fetch($query)) {
       $options[] = array($row['name'], $row['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_products_list($name, $insert=true, $parameters) {
+  function form_draw_products_list($name, $insert=true, $multiple=false, $parameters) {
     global $system;
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') .' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     $products_query = $system->functions->catalog_products_query(array('sort' => 'name'));
     while ($product = $system->database->fetch($products_query)) {
       $options[] = array($product['name'] .' ['. $product['quantity'] .'] '. $system->currency->format($product['final_price']), $product['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_product_stock_options_list($product_id, $name, $insert=true, $parameters) {
+  function form_draw_product_stock_options_list($product_id, $name, $insert=true, $multiple=false, $parameters) {
     global $system;
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') .' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     if (!empty($product_id)) {
       $product = new ref_product($product_id);
@@ -621,10 +589,10 @@
       }
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_sold_out_status_list($name, $insert=true, $parameters='') {
+  function form_draw_sold_out_status_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -633,18 +601,18 @@
       order by sosi.name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($row = $system->database->fetch($query)) {
       $options[] = array($row['name'], $row['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_suppliers_list($name, $insert=true, $parameters='') {
+  function form_draw_suppliers_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $suppliers_query = $system->database->query(
@@ -652,39 +620,39 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($supplier = $system->database->fetch($suppliers_query)) {
       $options[] = array($supplier['name'], $supplier['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_templates_list($name, $insert=true, $parameters='') {
+  function form_draw_templates_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $folders = glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'*');
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     foreach($folders as $folder) {
       $options[] = array(basename($folder));
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
 
-  function form_draw_timezones_list($name, $insert=true, $parameters='') {
+  function form_draw_timezones_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     $zones = timezone_identifiers_list();
     
@@ -698,10 +666,10 @@
       }
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_tax_classes_list($name, $insert=true, $parameters='') {
+  function form_draw_tax_classes_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     if (empty($insert)) $insert = $system->settings->get('default_tax_class_id');
@@ -711,18 +679,18 @@
       order by name asc;"
     );
     
-    $options = array(
-      array('-- '. $system->language->translate('title_select', 'Select') . ' --', ''),
-    );
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     while ($tax_class = $system->database->fetch($tax_classes_query)) {
       $options[] = array($tax_class['name'], $tax_class['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_weight_classes_list($name, $insert=true, $parameters='') {
+  function form_draw_weight_classes_list($name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     if (empty($insert)) $insert = $system->settings->get('store_weight_class');
@@ -733,10 +701,10 @@
       $options[] = array($class['unit']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
-  function form_draw_zones_list($country_code, $name, $insert=true, $parameters='', $return_type='code') {
+  function form_draw_zones_list($country_code, $name, $insert=true, $multiple=false, $parameters='') {
     global $system;
     
     $zones_query = $system->database->query(
@@ -752,19 +720,10 @@
     }
     
     while ($zone = $system->database->fetch($zones_query)) {
-      switch($return_type) {
-        case 'id':
-          $options[] = array($zone['name'], $zone['id']);
-          break;
-        case 'code':
-          $options[] = array($zone['name'], $zone['code']);
-          break;
-        default:
-          trigger_error('Unknown return type for list of zones', E_USER_ERROR);
-      }
+      $options[] = array($zone['name'], $zone['code']);
     }
     
-    return form_draw_select_field($name, $options, $insert, false, false, $parameters);
+    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
   
 ?>

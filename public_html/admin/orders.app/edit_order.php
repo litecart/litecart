@@ -129,15 +129,6 @@
   }
   
 ?>
-<style>
-.ListTable-Row-Odd {
-  background-color: #ffffff;
-}
-.ListTable-Row-Even {
-  background-color: #f9f9f9;
-}
-</style>
-
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($order->data['id']) ? $system->language->translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : $system->language->translate('title_create_new_order', 'Create New Order'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('form_order', 'post'); ?>
@@ -385,7 +376,7 @@
     event.preventDefault();
     var new_row = '  <tr>'
                 + '    <td nowrap="nowrap" align="center"><a class="add_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
-                + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', 'style="width: 350px; text-align: left;"')); ?></td>'
+                + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', false, 'style="width: 350px; text-align: left;"')); ?></td>'
                 + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_number_field('items[new_item_index][quantity]', '1'); ?></td>'
                 + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items[new_item_index][price]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items[new_item_index][tax]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'

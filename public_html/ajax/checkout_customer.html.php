@@ -206,9 +206,9 @@
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_countries_list('country_code', true, ''); ?></td>
+                    <?php echo $system->functions->form_draw_countries_list('country_code', true); ?></td>
                   <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, ''); ?></td>
+                    <?php echo $system->functions->form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
                 </tr>
               </table>
             </td>

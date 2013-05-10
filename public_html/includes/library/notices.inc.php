@@ -40,7 +40,8 @@
       if (!empty($notices)) {
         $this->system->document->snippets['notices'] = '<div id="notices-wrapper">' . PHP_EOL
                                                     . '  <div id="notices">'. PHP_EOL . implode(PHP_EOL, $notices) . '</div>' . PHP_EOL
-                                                    . '</div>' . PHP_EOL;
+                                                    . '</div>' . PHP_EOL
+                                                    . '<script>setTimeout(function(){$("#notices-wrapper").slideUp("fast");}, 10000);</script>';
         unset($notices);
       }
     }

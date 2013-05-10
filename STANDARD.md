@@ -4,7 +4,7 @@ File Format
 The filename of the files must be all lowercases characters and contain
 no more than 31 characters to be Apple/Mac compatible. Word separation by underscore.
 
-Non-HTML PHP output scripts should be named like the following:
+Non-HTML PHP output scripts should be named by their output format extension like the following:
 
 	scriptname.xml.php
 	scriptname.rss.php
@@ -16,7 +16,7 @@ Included files should be named:
 
 Character Encoding
 ------------------
-Foreign characters should not be present in source code but instead database translations. If they do, the script must be saved in UTF-8 w/o BOM format which is the recommended output encoding.
+Foreign characters should not be present in the source code. If such do, the script must be compatible with UTF-8 w/o BOM character set.
 
 Indentation
 -----------
@@ -40,7 +40,7 @@ Indentation of comments is subtracted one level:
     // This is a comment
       echo 'Hello World!';
 
-Starting and Ending PHP Logic
+Beginning & Ending PHP Logic
 -----------------------------
 
 When starting PHP logic, the tag should be written as "<?php", not in the
@@ -48,15 +48,12 @@ short form of "<?".
 
 A valid example:
 
-	<?php
-	  echo "Hello World!";
-	?>
-
+	<?php echo "Hello World!"; ?>
 
 Variable Scope
 --------------
 
-Do not ever use registered globals as we use superglobals instead.
+Do not ever use register_globals as we use superglobals instead.
 
 	$_GET['variable']
 	$_POST['variable']
@@ -66,6 +63,8 @@ Do not ever use registered globals as we use superglobals instead.
 
 No Variable Duplication
 -----------------------
+
+Unless there is a certain need to duplicate variables, no variable duplication should be used:
 
 Incorrect:
 
@@ -79,9 +78,7 @@ Correct:
 
 Variable Naming
 ---------------
-Don't make up shortenings. Always use full words unless they are annoyingly long.
-Don't mix languages, english only.
-Don't mix lower and upper cases.
+Don't make up shortenings. Always use full words unless they are annoyingly long. Don't mix languages, use english only for code and comments. Don't mix lower and upper cases.
 
 Incorrect:
 
@@ -103,15 +100,15 @@ Strings or values should be displayed as:
 
 	<?php echo $variable; ?>
 
-The following styles should be avoided:
+The following variants should be avoided:
 
 	<?php print $variable; ?>
 	
 	<?=$variable;?>
 
 
-Singe-Quotes vs Double-Quotes
------------------------------
+Singe-Quotes vs. Double-Quotes
+------------------------------
 
 Single quote characters should be used for displaying strings unless it's inconvenient.
 
@@ -121,7 +118,7 @@ For example:
 
 	echo "Hello $name\r\n";
 
-	query("select * from Table where id = 'value'");
+	query("select * from Table where id = 'string'");
 
 Outputting Line Breaks
 ----------------------
@@ -160,7 +157,7 @@ Database queries should be structured as:
 	$system->database->query(
 	  "select * from ". DB_TABLE_NAME ."
 	  where id = '". (int)$integrer ."'
-	  ". (isset($condition) ? "and condition= '". $system->database->input($condition) ."'" : "") ."
+	  ". (isset($string) ? "and string = '". $system->database->input($string) ."'" : "") ."
 	  limit 1;"
 	);
 
@@ -170,17 +167,17 @@ Unlike displaying strings, double quote characters are wrapped around the sql qu
 Function Output
 ---------------
 
-All custom functions should return strings; not directly via echo().
+General functions shall always return data, not output to browser via echo.
 
 For example:
 
-	function tep_my_function($string) {
+	function my_function($string) {
 	  return $string;
 	}
 
 and not:
 
-	function tep_my_function($string) {
+	function my_function($string) {
 	  echo $string;
 	}
 
@@ -197,21 +194,6 @@ Incorrect:
 Correct:
 
 	if (condition == true) {
-
-Switch-Case statements should be written as:
-
-	switch ($value) {
-	  case 'a':
-	    ....
-	    break;
-	  case 'b':
-	    ....
-	    break;
-	  default:
-	    ....
-	    break;
-	}
-
 
 Form Data Checking
 ------------------
@@ -256,4 +238,4 @@ for-loops should be written as foreach:
 Error level
 -----------
 
-	E_STRICT
+	All code must comply with PHP error level E_STRICT.

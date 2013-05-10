@@ -32,10 +32,6 @@ h3{
   font-weight: normal;
 }
 
-span.required {
-  color: #f00px;
-}
-
 #slider-wrapper {
   position: relative;
   margin-bottom: 20px;

@@ -37,7 +37,7 @@ table.dataTable .header {
   background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
 }
 table.dataTable th {
-  padding: 10px 10px;
+  padding: 10px;
   border-bottom: 1px solid #dfdfdf;
 }
 table.dataTable td {

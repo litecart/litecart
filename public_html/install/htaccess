@@ -30,6 +30,12 @@ ErrorDocument 404 {BASE_DIR}error_document.php?code=404
   RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING} [L]
 </IfModule>
 
+# Denied content
+<FilesMatch "\.(htaccess|htpasswd|inc.php)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
 # Cacheable external content
 <FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
   Header set Cache-Control "max-age=864000, public, must-revalidate"

@@ -1,6 +1,6 @@
 (function ($) {
 	'use strict';
-	
+
 	$.sceditor.locale["sv-SE"] = {
 		"Bold": "Fet",
 		"Italic": "Kursiv",
@@ -52,7 +52,7 @@
 		"View source": "Visa källkod",
 		"Description (optional):": "Beskrivning (valfritt):",
 		dateFormat: "year-month-day"
-	}
-	
+	};
+
 	$.sceditor.locale["sv"] = $.sceditor.locale["sv-SE"];
 })(jQuery);

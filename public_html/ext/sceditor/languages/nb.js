@@ -4,7 +4,7 @@
  */
 (function ($) {
 	'use strict';
-	
+
 	$.sceditor.locale["nb-NO"] = {
 		"Bold": "Fet",
 		"Italic": "Kursiv",
@@ -62,9 +62,9 @@
 		"Enter the YouTube video URL or ID:": "Angi YouTube video link eller ID:",
 		"Insert a Quote": "Sett inn sitat",
 		"Invalid YouTube video": "Ugyldig Youtube video",
-		
-		dateFormat: "year-month-day"
-	}
-	
+
+		dateFormat: "day.month.year"
+	};
+
 	$.sceditor.locale["nb"] = $.sceditor.locale["nb-NO"];
 })(jQuery);

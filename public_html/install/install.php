@@ -181,7 +181,13 @@
   
   echo 'Securing admin folder...';
     
-  $htaccess = 'AuthType Basic' . PHP_EOL
+  $htaccess = '# Denied content' . PHP_EOL
+            . '<FilesMatch "\.(htaccess|htpasswd|inc.php)$">' . PHP_EOL
+            . '  Order Allow,Deny' . PHP_EOL
+            . '  Deny from all' . PHP_EOL
+            . '</FilesMatch>' . PHP_EOL
+            . PHP_EOL
+            . 'AuthType Basic' . PHP_EOL
             . 'AuthName "Restricted Area"' . PHP_EOL
             . 'AuthUserFile ' . $installation_path . $_POST['admin_folder'] . '.htpasswd' . PHP_EOL
             . 'Require valid-user' . PHP_EOL;

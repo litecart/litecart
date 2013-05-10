@@ -210,7 +210,6 @@
         image = '". $this->system->database->input($this->data['image']) ."',
         date_valid_from = ". (empty($this->data['date_valid_from']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
         date_valid_to = ". (empty($this->data['date_valid_to']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
-        ". ((isset($this->data['date_created'])) ? "date_created = '". $this->system->database->input($this->data['date_created']) ."'," : "") ."
         date_updated = '". date('Y-m-d H:i:s') ."'
         where id='". (int)$this->data['id'] ."'
         limit 1;"

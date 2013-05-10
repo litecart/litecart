@@ -257,7 +257,8 @@
     }
     
     function input($string, $allowable_tags=false, $link='default') {
-    
+      global $string;
+      
     // Return safe array
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
@@ -273,6 +274,9 @@
       if (is_bool($allowable_tags) === true && $allowable_tags !== true) {
         $string = strip_tags($string, $allowable_tags);
       }
+      
+    // Safe html
+      $string = $system->functions->format_safe_html($string);
       
     // Establish a link if not previously made
       if (!isset($this->links[$link])) $this->connect();

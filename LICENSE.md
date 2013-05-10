@@ -2,7 +2,7 @@
 
 ## Preamble
 
-  This Agreement, signed on Apr 15, 2013 [hereinafter: Effective Date] governs the relationship between XXXXX, a duly registered company, (hereinafter: Licensee) and TiM International, a duly registered company in Sweden whose principal place of business is Sweden (Hereinafter: Licensor). This Agreement sets the terms, rights, restrictions and obligations on using [LiteCart] (hereinafter: The Software) created and owned by Licensor, as detailed herein
+  This Agreement, signed on [Apr 15, 2013] (hereinafter: Effective Date) governs the relationship between the user of LiteCart (hereinafter: Licensee) and TiM International (hereinafter: Licensor). This Agreement sets the terms, rights, restrictions and obligations on using [LiteCart] (hereinafter: The Software) created and owned by Licensor, as detailed herein
 
 ## License Grant:
 
@@ -10,11 +10,11 @@
 
 ### Limited: Licensee may use Software for the purpose of:
 
-  - Running Software on Licensee’s Website[s] and Server[s];
-  - Allowing 3rd Parties to run Software on Licensee’s Website[s] and Server[s];
-  - Publishing Software’s output to Licensee and 3rd Parties;
-  - Distribute verbatim copies of Software’s output (including compiled binaries);
-  - Modify Software to suit Licensee’s needs and specifications.
+  - Running Software on Licensee's Website[s] and Server[s];
+  - Allowing 3rd Parties to run Software on Licensee's Website[s] and Server[s];
+  - Publishing Software's output to Licensee and 3rd Parties;
+  - Distribute verbatim copies of Software's output (including compiled binaries);
+  - Modify Software to suit Licensee's needs and specifications.
 
 ### Binary Restricted
 
@@ -22,11 +22,11 @@
 
   - Non Assignable & Non-Transferable: Licensee may not assign or transfer his rights and duties under this license.
   - Commercial, Royalty Free: Licensee may use Software for any purpose, including paid-services, without any royalties
-  - Including the Right to Create Derivative Works: Licensee may create derivative works based on Software, including amending Software’s source code, modifying it, integrating it into a larger work or removing portions of Software, as long as no distribution of the derivative works is made
+  - Including the Right to Create Derivative Works: Licensee may create derivative works based on Software, including amending Software's source code, modifying it, integrating it into a larger work or removing portions of Software, as long as no distribution of the derivative works is made
 
 ## Term & Termination
 
-  The Term of this license shall be until terminated. Licensor may terminate this Agreement, including Licensee’s license in the case where Licensee :
+  The Term of this license shall be until terminated. Licensor may terminate this Agreement, including Licensee's license in the case where Licensee :
 
   - became insolvent or otherwise entered into any liquidation process; or
 
@@ -68,7 +68,7 @@
 
 ### Liability
 
-  To the extent permitted under Law, The Software is provided under an AS-IS basis. Licensor shall never, and without any limit, be liable for any damage, cost, expense or any other payment incurred by Licesee as a result of Software’s actions, failure, bugs and/or any other interaction between The Software  and Licesee’s end-equipment, computers, other software or any 3rd party, end-equipment, computer or services.  Moreover, Licensor shall never be liable for any defect in source code written by Licensee when relying on The Software or using The Software’s source code.
+  To the extent permitted under Law, The Software is provided under an AS-IS basis. Licensor shall never, and without any limit, be liable for any damage, cost, expense or any other payment incurred by Licesee as a result of Software's actions, failure, bugs and/or any other interaction between The Software  and Licesee's end-equipment, computers, other software or any 3rd party, end-equipment, computer or services.  Moreover, Licensor shall never be liable for any defect in source code written by Licensee when relying on The Software or using The Software's source code.
 
 ## Warranty:  
 
@@ -78,7 +78,7 @@
 
 ### No-Warranty
 
-  The Software is provided without any warranty; Licensor hereby disclaims any warranty that The Software shall be error free, without defects or code which may cause damage to Licensee’s computers or to Licensee, and that Software shall be functional. Licensee shall be solely liable to any damage, defect or loss incurred as a result of operating software and undertake the risks contained in running The Software on License’s Server[s] and Website[s].
+  The Software is provided without any warranty; Licensor hereby disclaims any warranty that The Software shall be error free, without defects or code which may cause damage to Licensee's computers or to Licensee, and that Software shall be functional. Licensee shall be solely liable to any damage, defect or loss incurred as a result of operating software and undertake the risks contained in running The Software on License's Server[s] and Website[s].
 
 ### Prior Inspection
 
@@ -90,6 +90,6 @@
 
 ## Indemnification
 
-  Licensee hereby warrants to hold Licensor harmless and indemnify Licensor for any lawsuit brought against it in regards to Licensee’s use of The Software in means that violate, breach or otherwise circumvent this license, Licensor's intellectual property rights or Licensor's title in The Software. Licensor shall promptly notify Licensee in case of such legal action and request Licensee’s consent prior to any settlement in relation to such lawsuit or claim.
+  Licensee hereby warrants to hold Licensor harmless and indemnify Licensor for any lawsuit brought against it in regards to Licensee's use of The Software in means that violate, breach or otherwise circumvent this license, Licensor's intellectual property rights or Licensor's title in The Software. Licensor shall promptly notify Licensee in case of such legal action and request Licensee's consent prior to any settlement in relation to such lawsuit or claim.
 
   Governing Law, Jurisdiction: Licensee hereby agrees not to initiate class-action lawsuits against Licensor in relation to this license and to compensate Licensor for any legal fees, cost or attorney fees should any claim brought by Licensee against Licensor be denied, in part or in full.

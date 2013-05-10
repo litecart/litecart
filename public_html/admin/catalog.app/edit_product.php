@@ -428,12 +428,12 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_weight', 'Weight'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('weight', true, 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('weight_class', true, 'style="width: 50px"'); ?>
+              <?php echo $system->functions->form_draw_input('weight', true, 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('weight_class', true, false, 'style="width: 50px"'); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dimensions', 'Dimensions'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('dim_x', true, 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input('dim_y', true, 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input('dim_z', true, 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_length_classes_list('dim_class', true, 'style="width: 50px"'); ?> (<?php echo $system->language->translate('description_width_height_length', 'width x height x length'); ?>)
+              <?php echo $system->functions->form_draw_input('dim_x', true, 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input('dim_y', true, 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input('dim_z', true, 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_length_classes_list('dim_class', true, false, 'style="width: 50px"'); ?> (<?php echo $system->language->translate('description_width_height_length', 'width x height x length'); ?>)
             </td>
           </tr>
           <tr>
