@@ -126,7 +126,7 @@
   );
   
   foreach ($map as $search => $replace) {
-    $config = str_replace($search, $replace, $sql);
+    $sql = str_replace($search, $replace, $sql);
   }
   
   $sql = explode('-- --------------------------------------------------------', $sql);

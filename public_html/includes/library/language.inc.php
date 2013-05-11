@@ -24,7 +24,7 @@
       
     // Set language
       if (empty($this->selected['code']) || empty($this->language[$this->selected['code']]['status'])) {
-        $this->set($this->identify());
+        $this->set();
       }
       
     // Set mysql charset and reinitiate list of languages
@@ -112,7 +112,9 @@
       }
     }
     
-    public function set($code) {
+    public function set($code=null) {
+      
+      if (empty($code)) $code = $this->identify();
       
       if (!isset($this->languages[$code])) trigger_error('Cannot set unsupported language ('. $code .')', E_USER_ERROR);
       
@@ -125,11 +127,9 @@
       }
       
     // Chain select currency
-      if ($this->system->settings->get('set_currency_by_language') == 'true') {
-        if (!empty($this->selected['currency_code'])) {
-          if (!empty($this->system->currency->currencies[$this->selected['currency_code']])) {
-            $this->system->currency->set($this->selected['currency_code']);
-          }
+      if (!empty($this->selected['currency_code'])) {
+        if (!empty($this->system->currency->currencies[$this->selected['currency_code']])) {
+          $this->system->currency->set($this->selected['currency_code']);
         }
       }
     }
@@ -174,7 +174,10 @@
     
     public function translate($code, $default='', $language_code='') {
       
-      if (empty($language_code)) $language_code = $this->selected['code'];
+      if (empty($language_code)) {
+        if (empty($this->selected['code'])) $this->set($this->identify());
+        $language_code = $this->selected['code'];
+      }
       
     // Return from cache
       if (isset($this->_cache['translations'][$language_code][$code])) {

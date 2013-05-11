@@ -26,7 +26,7 @@
       }
       
     // Set currency, if not set
-      if (empty($this->selected) || empty($this->currencies[$this->selected['code']]['status'])) $this->set($this->identify());
+      if (empty($this->selected) || empty($this->currencies[$this->selected['code']]['status'])) $this->set();
     }
     
     //public function initiate() {
@@ -57,7 +57,9 @@
     
     ######################################################################
     
-    public function set($code) {
+    public function set($code=null) {
+      
+      if (empty($code)) $code = $this->identify();
       
       if (!isset($this->currencies[$code])) trigger_error('Cannot set unsupported currency ('. $code .')', E_USER_ERROR);
       

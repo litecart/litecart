@@ -52,7 +52,7 @@
         if ($this->type == 'mysqli') {
         
           if (DB_PERSISTENT_CONNECTIONS == 'true') {
-            $this->links[$link] = mysqli_pconnect($server, $username, $password, $database) or exit;
+            $this->links[$link] = mysqli_connect('p:'.$server, $username, $password, $database) or exit;
           } else {
             $this->links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
           }
@@ -256,8 +256,16 @@
       }
     }
     
+    function info($link='default') {
+      if ($this->type == 'mysqli') {
+        return mysqli_info($this->links[$link]);
+      } else {
+        return mysql_info($this->links[$link]);
+      }
+    }
+    
     function input($string, $allowable_tags=false, $link='default') {
-      global $string;
+      global $system;
       
     // Return safe array
       if (is_array($string)) {
@@ -276,7 +284,9 @@
       }
       
     // Safe html
-      $string = $system->functions->format_safe_html($string);
+      if ($allowable_tags !== false) {
+        $string = $this->system->functions->format_safe_html($string);
+      }
       
     // Establish a link if not previously made
       if (!isset($this->links[$link])) $this->connect();

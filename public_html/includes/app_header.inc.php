@@ -54,44 +54,40 @@
     if (!(error_reporting() & $errno)) return;
     $errfile = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $errfile));
     
-    $trace = array_reverse(debug_backtrace());
-    array_pop($trace);
-    
-    $traces = '';
-    
-    /*
-    if (!empty($trace)) {
-      $traces = array();
-      foreach ($trace as $item) {
-        $item['file'] = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $item['file']));
-        $traces[] = "<b>{$item['file']}</b> on line <b>{$item['line']}</b> in <b>{$item['function']}()</b>";
-      }
-      $traces = 'through ' . implode(' -> ', $traces);
-    }
-    */
-    
     switch($errno) {
       case E_WARNING:
       case E_USER_WARNING:
-        $output = "<b>Warning:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
+        $output = "<b>Warning:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         break;
       case E_STRICT:
       case E_NOTICE:
       case E_USER_NOTICE:
-        $output = "<b>Notice:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
+        $output = "<b>Notice:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         break;
       case E_DEPRECATED:
       case E_USER_DEPRECATED:
-        $output = "<b>Deprecated:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
+        $output = "<b>Deprecated:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         break;
       default:
-        $output = "<b>Fatal error:</b> $errstr in <b>$errfile</b> on line <b>$errline</b> $traces";
+        $output = "<b>Fatal error:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         $fatal = true;
         break;
     }
     
+    /*
+    $backtraces = debug_backtrace();
+    $backtraces = array_slice($backtraces, 2);
+    
+    if (!empty($backtraces)) {
+      foreach ($backtraces as $backtrace) {
+        $backtrace['file'] = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $backtrace['file']));
+        $output .= "<br />" . PHP_EOL . "  <- <b>{$backtrace['file']}</b> on line <b>{$backtrace['line']}</b> in <b>{$backtrace['function']}()</b>";
+      }
+    }
+    */
+    
     if (!in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
-      $output .= " $traces {$_SERVER['REQUEST_URI']}";
+      $output .= " {$_SERVER['REQUEST_URI']}";
     }
     
     if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {
