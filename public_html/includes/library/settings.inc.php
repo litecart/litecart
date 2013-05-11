@@ -53,14 +53,19 @@
           where `key` = '". $this->system->database->input($key) ."'
           limit 1;"
         );
+        
+        if (!$this->system->database->num_rows($configuration_query)) {
+          trigger_error('Unsuported settings key ('. $key .')', E_USER_WARNING);
+        }
+        
         while ($row = $this->system->database->fetch($configuration_query)) {
-          $this->cache[$row['key']] = $row['value'];
+          $this->cache[$key] = $row['value'];
         }
       }
       
       if (!isset($this->cache[$key])) {
         if ($default === null) {
-          trigger_error('Unsuported settings key ('. $key .')', E_USER_WARNING);
+          
           return;
         } else {
           return $default;
