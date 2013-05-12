@@ -63,10 +63,10 @@
   <h2><?php echo $system->language->translate('title_values', 'Values'); ?></h2>
   <table width="100%" class="dataTable">
     <tr class="header">
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
-      <th align="center" style="vertical-align: text-top" nowrap="nowrap"><?php echo empty($product_group->data['id']) ? '' : $system->language->translate('title_products', 'Products'); ?></th>
-      <th align="center" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
+      <th align="left" style="vertical-align: text-top;" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
+      <th align="left" style="vertical-align: text-top; width: 100%;" nowrap="nowrap"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
+      <th align="center" style="vertical-align: text-top;" nowrap="nowrap"><?php echo empty($product_group->data['id']) ? '' : $system->language->translate('title_products', 'Products'); ?></th>
+      <th align="center" style="vertical-align: text-top;" nowrap="nowrap">&nbsp;</th>
     </tr>
 <?php
     if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) {
@@ -117,7 +117,7 @@
                + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
                + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
                + '  <td align="left" nowrap="nowrap">&nbsp;</td>'
-               + '  <td align="left" nowrap="nowrap"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+               + '  <td align="right" nowrap="nowrap"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '</tr>';
     output = output.replace(/new_value_index/g, 'new_' + new_value_index);
     $(this).closest('tr').before(output);

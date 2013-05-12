@@ -196,7 +196,7 @@
   function form_draw_wysiwyg_field($name, $value=true, $parameters='', $hint='') {
     global $system;
     
-    $system->document->snippets['head_tags']['cleditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
+    $system->document->snippets['head_tags']['sceditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
                                                          . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
                                                          . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. $system->language->selected['code'] .'.js"></script>' . PHP_EOL
                                                          . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;

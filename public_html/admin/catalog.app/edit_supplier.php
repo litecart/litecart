@@ -75,7 +75,7 @@
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
-              <strong><?php echo $system->language->translate('title_email', 'email'); ?></strong><br />
+              <strong><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?></strong><br />
                 <?php echo $system->functions->form_draw_email_field('email', true, 'email', ''); ?>
             </td>
           </tr>

@@ -283,11 +283,6 @@
         $string = strip_tags($string, $allowable_tags);
       }
       
-    // Safe html
-      if ($allowable_tags !== false) {
-        $string = $this->system->functions->format_safe_html($string);
-      }
-      
     // Establish a link if not previously made
       if (!isset($this->links[$link])) $this->connect();
       

@@ -1,7 +1,7 @@
 <?php
   
   function http_request($url, $post_fields=false, $headers=false, $asynchronous=false, $follow_redirects=true, $return='body') {
-  
+    
     if (ini_get('allow_url_fopen')) {
       $parts = parse_url($url);
       

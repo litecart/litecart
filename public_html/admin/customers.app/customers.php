@@ -8,7 +8,7 @@
 <?php echo $system->functions->form_draw_form_begin('customers_form', 'post'); ?>
 <table width="100%" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap">&nbsp;</th>
+    <th nowrap="nowrap"><?php echo $system->functions->form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_date_registered', 'Date Registered'); ?></th>

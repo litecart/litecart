@@ -369,7 +369,7 @@
 <p>
   <ul class="list-horizontal">
     <li><?php echo $system->language->translate('text_with_selected', 'With selected'); ?>:</li>
-    <li><?php echo $system->functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit'); ?> <?php echo $system->functions->form_draw_button('disable', $system->language->translate('title_disable', 'Disable'), 'submit'); ?></li>
+    <li><?php echo $system->functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo $system->functions->form_draw_button('disable', $system->language->translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></li>
     <li><?php echo $system->functions->form_draw_categories_list('category_id', true); ?> <?php echo $system->functions->form_draw_button('move', $system->language->translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", $system->language->translate('warning_multiple_references_will_be_lost', 'Warning: Multiple references will be lost.')) .'\')) return false;"'); ?> <?php echo $system->functions->form_draw_button('copy', $system->language->translate('title_copy', 'Copy'), 'submit'); ?></li>
     <li><?php echo $system->functions->form_draw_button('unmount', $system->language->translate('title_unmount', 'Unmount'), 'submit'); ?></li>
     <li><?php echo $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", $system->language->translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></li>

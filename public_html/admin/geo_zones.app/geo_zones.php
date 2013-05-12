@@ -7,7 +7,7 @@
 <?php echo $system->functions->form_draw_form_begin('geo_zones_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
-    <th>&nbsp;</th>
+    <th><?php echo $system->functions->form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_zones', 'Zones'); ?></th>
@@ -50,9 +50,17 @@
   </tr>
 </table>
 <script type="text/javascript">
+  $(".dataTable input[name='checkbox_toggle']").click(function() {
+    $(this).closest("form").find(":checkbox").each(function() {
+      $(this).attr('checked', !$(this).attr('checked'));
+    });
+    $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+  });
+
   $('.dataTable tr').click(function(event) {
     if ($(event.target).is('input:checkbox')) return;
     if ($(event.target).is('a, a *')) return;
+    if ($(event.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 </script>

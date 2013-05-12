@@ -41,16 +41,11 @@
 <h2 style="margin-top: 0;"><?php echo $module->name; ?></h2>
 <?php echo isset($module->description) ? '<p>'. $module->description .'</p>': false; ?>
 <?php echo $system->functions->form_draw_form_begin('module_form', 'post'); ?>
-<table width="100%" align="center" class="dataTable">
+<table width="100%" align="center">
 <?php
   foreach ($module->settings as $setting) {
-    if (!isset($rowclass) || $rowclass == 'even') {
-      $rowclass = 'odd';
-    } else {
-      $rowclass = 'even';
-    }
 ?>
-  <tr class="<?=$rowclass?>">
+  <tr>
     <td align="left"><strong><?=$setting['title']?></strong><?php echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
     <?php echo $system->functions->form_draw_hidden_field('key', $setting['key']) . $system->functions->form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
   </tr>
@@ -58,6 +53,6 @@
   }
 ?>
 </table>
-<?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''. $system->document->link('', array('doc' => 'modules.php'), true, array('module_id')) .'\'"'); ?> <?php echo $system->functions->form_draw_button('uninstall', $system->language->translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+<?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''. $system->document->link('', array('doc' => 'modules.php'), true, array('module_id')) .'\'"', 'cancel'); ?> <?php echo $system->functions->form_draw_button('uninstall', $system->language->translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
 <?php echo $system->functions->form_draw_form_end(); ?>
 <p><a href="<?php echo $system->document->href_link('', array('app' => 'translations', 'doc' => 'search.php', 'query' => $module_id)); ?>"><?php echo $system->language->translate('title_edit_translations', 'Edit Translations'); ?></a></p>

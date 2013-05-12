@@ -51,8 +51,8 @@
 
 <table class="dataTable" width="100%">
   <tr class="header">
-    <th align="left"><?php echo $system->functions->form_draw_languages_list('language_1', isset($_GET['language_1']) ? $_GET['language_1'] : '', 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1=\' + $(this).val() + \'&language_2='. (isset($_GET['language_2']) ? $_GET['language_2'] : '') .'\'"'); ?></th>
-    <th align="left"><?php echo $system->functions->form_draw_languages_list('language_2', isset($_GET['language_2']) ? $_GET['language_2'] : '', 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1='. (isset($_GET['language_1']) ? $_GET['language_1'] : '') .'&language_2=\' + $(this).val()"'); ?></th>
+    <th align="left"><?php echo $system->functions->form_draw_languages_list('language_1', true, false, 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1=\' + $(this).val() + \'&language_2='. (isset($_GET['language_2']) ? $_GET['language_2'] : '') .'\'"'); ?></th>
+    <th align="left"><?php echo $system->functions->form_draw_languages_list('language_2', true, false, 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1='. (isset($_GET['language_1']) ? $_GET['language_1'] : '') .'&language_2=\' + $(this).val()"'); ?></th>
     <th align="left">&nbsp;</th>
     <th>&nbsp;</th>
   </tr>

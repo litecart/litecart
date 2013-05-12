@@ -19,7 +19,6 @@
             
           } else {
             if (count($keys) != count($data)) {
-              var_dump($keys, $data);
               die('Error: Invalid column amount');
             }
             $data = array_combine($keys, $data);
@@ -27,9 +26,9 @@
             foreach ($data as $key => $value) {
               if (strtolower($system->language->selected['charset']) == strtolower($_POST['charset'])) {
                 $data[$key] = $system->database->input($value, true);
-              } else if (strtolower($system->language->selected['charset']) == 'utf-8' && strtolower($_POST['charset']) == 'iso-8859-1') {
+              } else if (strtolower($system->language->selected['charset']) == 'utf-8' && strtolower($_POST['charset']) != 'utf-8') {
                 $data[$key] = utf8_encode($system->database->input($value, true));
-              } else if (strtolower($system->language->selected['charset']) == 'iso-8859-1' && strtolower($_POST['charset']) == 'utf-8') {
+              } else if (strtolower($system->language->selected['charset']) != 'utf-8' && strtolower($_POST['charset']) == 'utf-8') {
                 $data[$key] = utf8_decode($system->database->input($value, true));
               }
             }
@@ -120,9 +119,9 @@
       
       if (strtolower($system->language->selected['charset']) == strtolower($_POST['charset'])) {
         echo implode($_POST['delimiter'], $columns) . $_POST['EOL'];
-      } else if (strtolower($system->language->selected['charset']) == 'utf-8' && strtolower($_POST['charset']) == 'iso-8859-1') {
+      } else if (strtolower($system->language->selected['charset']) == 'utf-8' && strtolower($_POST['charset']) != 'utf-8') {
         echo utf8_decode(implode($_POST['delimiter'], $columns)) . $_POST['EOL'];
-      } else if (strtolower($system->language->selected['charset']) == 'iso-8859-1' && strtolower($_POST['charset']) == 'utf-8') {
+      } else if (strtolower($system->language->selected['charset']) != 'utf-8' && strtolower($_POST['charset']) == 'utf-8') {
         echo utf8_encode(implode($_POST['delimiter'], $columns)) . $_POST['EOL'];
       }
       
@@ -153,7 +152,7 @@ title_catalog;Catalog;Katalog</pre>
         <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
           <?php echo $system->functions->form_draw_select_field('escapechar', array(array("\""), array("\\"))); ?></td>
         <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
-          <?php echo $system->functions->form_draw_select_field('charset', array(array('ISO-8859-1'), array('UTF-8'))); ?></td>
+          <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
       </tr>
     </table>
   </p>
@@ -187,7 +186,7 @@ title_catalog;Catalog;Katalog</pre>
         <td><?php echo $system->language->translate('title_line_ending', 'Line Ending'); ?><br />
           <?php echo $system->functions->form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux'))); ?></td>
         <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
-          <?php echo $system->functions->form_draw_select_field('charset', array(array('ISO-8859-1'), array('UTF-8'))); ?></td>
+          <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
         <td><?php echo $system->language->translate('title_output', 'Output'); ?><br />
           <?php echo $system->functions->form_draw_select_field('output', array(array($system->language->translate('title_file', 'File'), 'file'), array($system->language->translate('title_screen', 'Screen'), 'screen'))); ?></td>
       </tr>

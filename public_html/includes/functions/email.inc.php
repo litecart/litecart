@@ -5,16 +5,15 @@
     
     if (empty($from)) $from = $system->settings->get('store_name') . ' <'. $system->settings->get('store_email') .'>';
     
-    if (!is_array($recipients)) $recipients = array($recipients);
-    
-    $from = str_replace(array("\r", "\n", ":"), "", $from);
+    $from = str_replace(array("\r", "\n"), " ", $from);
+    $subject = str_replace(array("\r", "\n"), " ", $from);
     
   // Generate a boundary string    
     $mime_boundary = '==Multipart_Boundary_x'. md5(time()) .'x';
 
     $headers = 'From: '. $from . "\r\n"
              . 'Reply-To: '. $from . "\r\n"
-             . 'Return-Path: '. $from . PHP_EOL
+             . 'Return-Path: '. $from . "\r\n"
              . 'MIME-Version: 1.0' . "\r\n"
              . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary . '"' . "\r\n"
              . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
@@ -45,10 +44,11 @@
       }
     }
     
+    if (!is_array($recipients)) $recipients = array($recipients);
+
     $success = true;
     foreach ($recipients as $to) {
-      
-      $to = str_replace(array("\r", "\n", ":"), "", $to);
+      $to = filter_var($to, FILTER_SANITIZE_EMAIL);
       
       if (!mail($to, $subject, $message, $headers)) {
         trigger_error("Failed sending e-mail to ". $to, E_USER_WARNING);
@@ -61,7 +61,7 @@
 
   function email_validate_address($address) {
     
-    if( !preg_match( "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $address)) {
+    if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $address)) {
       return false;
     }
     

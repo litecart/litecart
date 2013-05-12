@@ -97,7 +97,7 @@
       <?php echo $system->functions->form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
   </tr>
   <tr>
-    <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
+    <td width="50%"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
       <?php echo $system->functions->form_draw_email_field('email', true); ?></td>
     <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
     <?php echo $system->functions->form_draw_input('phone', true); ?></td>

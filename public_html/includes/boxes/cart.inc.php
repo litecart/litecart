@@ -1,5 +1,5 @@
 <div id="cart">
-  <img src="<?php echo WS_DIR_IMAGES; ?>icons/48x48/cart.png" />
+  <img src="<?php echo WS_DIR_IMAGES; ?>icons/48x48/cart.png" alt="" />
   <a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>" class="rounded-corners">
     <strong><?php echo $system->language->translate('title_cart', 'Cart'); ?>:</strong><br />
     <span class="quantity"><?php echo $system->cart->data['total']['items']; ?></span> <?php echo $system->language->translate('text_items', 'item(s)'); ?>

@@ -106,12 +106,10 @@ img {
   padding: 0;
   margin: 0;
 }
-#widgets li{
+#widgets > li{
   margin-bottom: 20px;
-  /*border: 1px #d1d1d1 solid;*/
-  font-size: 0.9em;
 }
-#widgets li > .widget {
+#widgets > li > .widget {
   margin: 5px;
 }
 

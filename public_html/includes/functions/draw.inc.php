@@ -95,7 +95,7 @@
                                                                        . '    $("a").each(function() {' . PHP_EOL // HTML 5 fix for rel attribute
                                                                        . '      $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
                                                                        . '    }); ' . PHP_EOL
-                                                                       . '    $("body").on("hover", "a.fancybox", function() { ' . PHP_EOL // Fixes ajax content
+                                                                       . '    $("body").on("hover", "'. $selector .'", function() { ' . PHP_EOL // Fixes ajax content
                                                                        . '      $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
     }
     
