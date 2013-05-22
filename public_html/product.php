@@ -288,7 +288,7 @@
             }
           }
           
-          echo $system->functions->form_draw_input('options['.$group['name'][$system->language->selected['code']].']', true, 'input', !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
+          echo $system->functions->form_draw_input_field('options['.$group['name'][$system->language->selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
           break;
           
         case 'radio':
@@ -330,11 +330,12 @@
           
         case 'textarea':
           
+          $value_id = array_shift(array_keys($group['values']));
           $price_adjust_text = '';
-          if ($group['values'][$value_id]['price_adjust']) {
-            $price_adjust_text = $system->currency->format($system->tax->calculate($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
+          if (!empty($group['values'][$value_id]['price_adjust'])) {
+            $price_adjust_text = '';
             if ($group['values'][$value_id]['price_adjust'] > 0) {
-              $price_adjust_text = ' +'.$price_adjust_text;
+              $price_adjust_text = ' <br />+'. $system->currency->format($system->tax->calculate($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
             }
           }
 

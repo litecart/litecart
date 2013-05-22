@@ -116,7 +116,10 @@
       
       if (empty($code)) $code = $this->identify();
       
-      if (!isset($this->languages[$code])) trigger_error('Cannot set unsupported language ('. $code .')', E_USER_ERROR);
+      if (!isset($this->languages[$code])) {
+        trigger_error('Cannot set unsupported language ('. $code .')', E_USER_WARNING);
+        $code = $this->identify();
+      }
       
       $this->system->session->data['language'] = $this->languages[$code];
       setcookie('language_code', $code, (time()+3600*24)*30, WS_DIR_HTTP_HOME);
@@ -169,7 +172,13 @@
       }
       
     // Return default language
-      return $this->system->settings->get('default_language_code');
+      if (isset($this->languages[$this->system->settings->get('default_language_code')])) return $this->system->settings->get('default_language_code');
+      
+    // Return system language
+      if (isset($this->languages[$this->system->settings->get('store_language_code')])) return $this->system->settings->get('store_language_code');
+      
+    // Return first language
+      return array_shift(array_keys($this->languages));
     }
     
     public function translate($code, $default='', $language_code='') {

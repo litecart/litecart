@@ -502,12 +502,7 @@
       
       if (!is_dir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'products/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'products/', 0777);
       
-      if (substr($file, 0, 8) == 'https://' || substr($file, 0, 7) == 'http://') {
-        $image = new ctrl_image();
-        if (!$image->load_from_string($this->system->functions->http_request($file))) return false;
-      } else {
-        if (!$image = new ctrl_image($file)) return false;
-      }
+      if (!$image = new ctrl_image($file)) return false;
       
     // 456-Fancy-product-title-N.jpg
       $i=1;

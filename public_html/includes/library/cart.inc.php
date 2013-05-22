@@ -199,8 +199,9 @@
               
               case 'input':
               case 'textarea':
-                $selected_options[] = $product->options[$key]['id'].'-'.$product->options[$key]['values'][0]['id'];
-                $item['price'] += $product->options[$key]['values'][0]['price_adjust'];
+                $value = array_shift(array_values($product->options[$key]['values']));
+                $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
+                $item['price'] += $value['price_adjust'];
                 break;
               
               case 'radio':

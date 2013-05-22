@@ -45,6 +45,12 @@
       
       $this->_src = empty($file) ? $this->_src : $file;
       
+    // If file is an url
+      if (substr($this->_src, 0, 7) == 'http://' || substr($this->_src, 0, 8) == 'https://') {
+        global $system;
+        return $this->load_from_string($system->functions->http_request($this->_src), pathinfo($this->_src, PATHINFO_EXTENSION));
+      }
+      
     // Make sure source is an existing file
       if (!is_file($this->_src)) {
         trigger_error('Source is not a valid image file ('. $this->_src.')', E_USER_WARNING);

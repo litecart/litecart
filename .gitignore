@@ -37,7 +37,7 @@ error_log
 .ftpquota
 
 ##############################
-# Exclude from igoner-filter #
+# Exclude from ignore-filter #
 ##############################
 !.htaccess
 !public_html/includes/templates/default*

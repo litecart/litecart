@@ -149,9 +149,9 @@
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('shipping_option[id]', true); ?></td>
+            <?php echo $system->functions->form_draw_static_field('payment_option[id]', true); ?></td>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('shipping_option[name]', !empty($order->data['payment_option']['name']) ? $order->data['payment_option']['name'] : '-'); ?></td>
+            <?php echo $system->functions->form_draw_static_field('payment_option[name]', !empty($order->data['payment_option']['name']) ? $order->data['payment_option']['name'] : '-'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_transaction_id', 'Transaction ID'); ?><br />
