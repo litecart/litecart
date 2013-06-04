@@ -19,8 +19,8 @@ CREATE TABLE `lc_cart_items` (
   `product_id` int(11) NOT NULL,
   `option_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -33,8 +33,8 @@ CREATE TABLE `lc_categories` (
   `keywords` varchar(256) NOT NULL,
   `image` varchar(256) NOT NULL,
   `priority` tinyint(4) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `code` (`code`),
   KEY `parent_id` (`parent_id`),
@@ -68,8 +68,8 @@ CREATE TABLE `lc_countries` (
   `postcode_required` tinyint(1) NOT NULL,
   `currency_code` varchar(3) CHARACTER SET utf8 NOT NULL,
   `phone_code` varchar(3) CHARACTER SET utf8 NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `iso_code_2` (`iso_code_2`),
   UNIQUE KEY `iso_code_3` (`iso_code_3`),
@@ -86,8 +86,8 @@ CREATE TABLE `lc_currencies` (
   `prefix` varchar(8) NOT NULL,
   `suffix` varchar(8) NOT NULL,
   `priority` tinyint(4) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -119,16 +119,16 @@ CREATE TABLE `lc_customers` (
   `shipping_country_code` varchar(4) NOT NULL,
   `shipping_zone_code` varchar(8) NOT NULL,
   `newsletter` tinyint(1) NOT NULL DEFAULT '1',
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 CREATE TABLE `lc_delivery_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -147,8 +147,8 @@ CREATE TABLE `lc_geo_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `description` varchar(256) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -161,16 +161,16 @@ CREATE TABLE `lc_languages` (
   `charset` varchar(16) NOT NULL,
   `raw_date` varchar(32) NOT NULL,
   `raw_time` varchar(32) NOT NULL,
-  `raw_timestamp` varchar(32) NOT NULL,
+  `raw_datetime` varchar(32) NOT NULL,
   `format_date` varchar(32) NOT NULL,
   `format_time` varchar(32) NOT NULL,
-  `format_timestamp` varchar(32) NOT NULL,
+  `format_datetime` varchar(32) NOT NULL,
   `decimal_point` varchar(1) NOT NULL,
   `thousands_sep` varchar(1) NOT NULL,
   `currency_code` varchar(3) NOT NULL,
   `priority` tinyint(3) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   UNIQUE KEY `id` (`id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -182,8 +182,8 @@ CREATE TABLE `lc_manufacturers` (
   `name` varchar(64) NOT NULL,
   `keywords` varchar(256) NOT NULL,
   `image` varchar(256) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `code` (`code`),
   KEY `status` (`status`)
@@ -210,8 +210,8 @@ CREATE TABLE `lc_option_groups` (
   `function` varchar(32) NOT NULL,
   `required` tinyint(1) NOT NULL,
   `sort` varchar(32) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -286,8 +286,8 @@ CREATE TABLE `lc_orders` (
   `payment_due` float NOT NULL,
   `tax_total` float NOT NULL,
   `client_ip` varchar(39) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_status_id` (`order_status_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -297,7 +297,7 @@ CREATE TABLE `lc_orders_comments` (
   `order_id` int(11) NOT NULL,
   `hidden` int(11) NOT NULL,
   `text` varchar(512) NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -325,8 +325,8 @@ CREATE TABLE `lc_orders_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `is_sale` tinyint(1) NOT NULL,
   `notify` tinyint(1) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -370,8 +370,8 @@ CREATE TABLE `lc_pages` (
   `status` tinyint(1) NOT NULL,
   `dock` VARCHAR(64) NOT NULL,
   `priority` int(11) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
   KEY `dock` (`dock`)
@@ -419,8 +419,8 @@ CREATE TABLE `lc_products` (
   `purchases` int(11) NOT NULL,
   `date_valid_from` date NOT NULL,
   `date_valid_to` date NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
   KEY `categories` (`categories`),
@@ -437,8 +437,8 @@ CREATE TABLE `lc_products` (
 CREATE TABLE `lc_products_campaigns` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
-  `start_date` timestamp NOT NULL,
-  `end_date` timestamp NOT NULL,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL,
   `SEK` decimal(11,4) NOT NULL,
   `EUR` decimal(11,4) NOT NULL,
   PRIMARY KEY (`id`),
@@ -479,8 +479,8 @@ CREATE TABLE `lc_products_options` (
   `EUR` decimal(11,4) NOT NULL,
   `SEK` decimal(11,4) NOT NULL,
   `priority` int(2) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -498,8 +498,8 @@ CREATE TABLE `lc_products_options_stock` (
   `dim_class` varchar(2) NOT NULL,
   `quantity` int(11) NOT NULL,
   `priority` tinyint(4) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -516,8 +516,8 @@ CREATE TABLE `lc_products_prices` (
 CREATE TABLE `lc_product_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(4) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -535,8 +535,8 @@ CREATE TABLE `lc_product_groups_info` (
 CREATE TABLE `lc_product_groups_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_group_id` int(11) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_group_id` (`product_group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -555,8 +555,8 @@ CREATE TABLE `lc_seo_links_cache` (
   `uri` varchar(256) NOT NULL,
   `seo_uri` varchar(256) NOT NULL,
   `language_code` varchar(2) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   KEY `seo_uri` (`seo_uri`),
   KEY `language_code` (`language_code`),
   KEY `uri` (`uri`)
@@ -572,8 +572,8 @@ CREATE TABLE `lc_settings` (
   `value` varchar(2048) NOT NULL,
   `function` varchar(128) NOT NULL,
   `priority` int(11) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `key` (`key`),
   KEY `setting_group_key` (`setting_group_key`)
@@ -591,8 +591,8 @@ CREATE TABLE `lc_settings_groups` (
 CREATE TABLE `lc_sold_out_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `orderable` tinyint(1) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -614,8 +614,8 @@ CREATE TABLE `lc_suppliers` (
   `email` varchar(128) NOT NULL,
   `phone` varchar(24) NOT NULL,
   `link` varchar(256) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -623,8 +623,8 @@ CREATE TABLE `lc_tax_classes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `description` varchar(64) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -638,8 +638,8 @@ CREATE TABLE `lc_tax_rates` (
   `rate` decimal(10,4) NOT NULL,
   `customer_type` enum('individuals','companies','both') NOT NULL DEFAULT 'both',
   `tax_id_rule` enum('with','without','both') NOT NULL DEFAULT 'both',
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `tax_class_id` (`tax_class_id`),
   KEY `geo_zone_id` (`geo_zone_id`)
@@ -655,9 +655,9 @@ CREATE TABLE `lc_translations` (
   `text_sv` text NOT NULL,
   `html` tinyint(1) NOT NULL,
   `pages` text NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_accessed` timestamp NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_accessed` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -667,8 +667,8 @@ CREATE TABLE `lc_zones` (
   `country_code` varchar(4) NOT NULL,
   `code` varchar(8) NOT NULL,
   `name` varchar(64) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `country_code` (`country_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -678,8 +678,8 @@ CREATE TABLE `lc_zones_to_geo_zones` (
   `geo_zone_id` int(11) NOT NULL,
   `country_code` varchar(2) NOT NULL,
   `zone_code` varchar(8) NOT NULL,
-  `date_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-  `date_created` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `geo_zone_id` (`geo_zone_id`),
   KEY `country_code` (`country_code`),

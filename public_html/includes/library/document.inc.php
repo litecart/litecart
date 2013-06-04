@@ -5,7 +5,6 @@
     private $system;
     private $cache = array();
     public $template = '';
-    public $viewport = 'desktop';
     public $layout = 'default';
     public $snippets = array();
     
@@ -48,19 +47,21 @@
           setcookie('skip_set_region_data', 'true', time() + (60*60*24*10), WS_DIR_HTTP_HOME);
         }
       }
+      
+      if (substr($this->system->link->relpath($this->system->link->get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
+        $this->template = $this->system->settings->get('store_template_admin');
+      } else {
+        $this->template = $this->system->settings->get('store_template_catalog');
+      }
     }
     
     public function after_capture() {
     
-      if (empty($this->template)) $this->template = $this->system->settings->get('store_template_catalog');
-      
     // Set after-snippets
       $this->snippets['language'] = $this->system->language->selected['code'];
       $this->snippets['charset'] = $this->system->language->selected['charset'];
-      $this->snippets['template_path'] = WS_DIR_TEMPLATES . $this->template .'/';
       $this->snippets['home_path'] = WS_DIR_HTTP_HOME;
-      
-      define('WS_DIR_TEMPLATE', $this->snippets['template_path']);
+      $this->snippets['template_path'] = WS_DIR_TEMPLATES . $this->template .'/';
     }
     
     public function prepare_output() {

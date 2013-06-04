@@ -1,4 +1,4 @@
-<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier.php')); ?>"><?php echo $system->language->translate('title_add_new_supplier', 'Add New Supplier'); ?></a></div>
+<div style="float: right;"><?php echo $system->functions->form_draw_link_button($system->document->link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier.php')), $system->language->translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_suppliers', 'Suppliers'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('suppliers_form', 'post'); ?>

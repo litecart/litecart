@@ -23,7 +23,7 @@ All icons can be found at www.iconfinder.com
 -----------
 
 * (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
-* (database)  Midtone Design Studio - Freeware - http://www.midtonedesign.com
+* (database) Midtone Design Studio - Freeware - http://www.midtonedesign.com
 * (mail) Icojam - Public Domain - http://www.icojam.com
 * (cart) DesignContest.com - CC Attribution 3.0 Unported - http://www.designcontest.com
 * (catalog) Woothemes - Freeware - http://www.woothemes.com
@@ -68,7 +68,7 @@ JavaScript
 
 Inspired By
 -----------
-LiteCart was born out of thoughts of what was missing in osCommerce Online Merchant and what what was too much in OpenCart.
+LiteCart was born out of thoughts of what was missing or what could have been different in osCommerce Online Merchant and OpenCart.
 
 * osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
 * openCart by Daniel Kerr - http://www.opencart.com

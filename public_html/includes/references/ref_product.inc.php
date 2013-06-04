@@ -244,6 +244,8 @@
               }
             }
             
+            $product_option['price_adjust'] = 0;
+              
             if ($product_option[$this->_currency_code] > 0) {
               
               switch ($product_option['price_operator']) {
@@ -253,9 +255,10 @@
                 case '*':
                   $product_option['price_adjust'] = (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) - (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) * $configuration[$this->_currency_code];
                   break;
+                default:
+                  trigger_error('Unknown price operator for option', E_USER_WARNING);
+                  break;
               }
-            } else {
-              $product_option['price_adjust'] = 0;
             }
             
             $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['price_adjust'] = $product_option['price_adjust'];

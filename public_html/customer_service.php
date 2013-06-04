@@ -60,11 +60,22 @@
 
   if (empty($_GET['page_id'])) {
 ?>
+
+  <div class="box" id="box-map">
+    <div class="content">
+      <?php if ($system->settings->get('store_visiting_address')) { ?>
+      <div id="map" style="height: 400px;" class="shadow">
+        <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="<?php echo $system->document->href_link('https://www.google.com/maps', array('q' => $system->settings->get('store_postal_address'), 'output' => 'svembed')); ?>"></iframe>
+      </div>
+      <?php } ?>
+    </div>
+  </div>
   
   <div class="box" id="box-customer-service">
     <div class="heading"><h1><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></h1></div>
     <div class="content">
       <?php echo $system->functions->form_draw_form_begin('contact_form', 'post'); ?>
+      
       <table>
         <tr>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />

@@ -3,7 +3,7 @@
   function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
     global $system;
     
-    return  '<form'. (($name) ? ' name="'. $name .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'"'. (($action) ? ' action="'. $action .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
+    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
           . ((strtolower($method) == 'post') ? form_draw_input('token', $system->form->session_post_token(), 'hidden') . PHP_EOL : '');
   }
   
@@ -41,11 +41,15 @@
   }
   
   function form_draw_image($name, $src, $parameters=false) {
-    return '<input type="hidden" name="'. $name .'" value="true" /><input type="image" src="'. $src .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="hidden" name="'. htmlspecialchars($name) .'" value="true" /><input type="image" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
-    return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. $name .'" value="'. $value .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $value .'</button>';
+    return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $value .'</button>';
+  }
+  
+  function form_draw_link_button($url, $title, $parameters='', $icon='') {
+    return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $title .'</a>';
   }
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {
@@ -72,7 +76,7 @@
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="date" name="'. $name .'" value="'. $value .'" maxlength="10" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" maxlength="10" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_datetime_field($name, $value=true, $parameters='', $hint='') {
@@ -87,7 +91,7 @@
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    return '<input type="datetime" name="'. $name .'" value="'. $value .'" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="datetime" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=0, $max=0, $parameters='', $hint='') {
@@ -111,7 +115,7 @@
   
   function form_draw_input($name, $value=true, $type='text', $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return '<input type="'. $type .'" name="'. $name .'" value="'. htmlspecialchars($value) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_input_field($name, $value=true, $parameters='', $hint='') {
@@ -133,7 +137,7 @@
   }
   
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='', $hint='') {
-    return form_draw_input_field($name, $value, 'range', 'min="'. $min .'" max="'. $max .'" step="'. $step .'"'. (($parameters) ? ' ' . $parameters : false));
+    return form_draw_input_field($name, $value, 'range', 'min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' ' . $parameters : false));
   }
   
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='', $hint='') {
@@ -157,7 +161,7 @@
     
     if (!is_array($options)) $options = array($options);
     
-    $html = '<select name="'. $name .'"'. (($multiple) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
     foreach ($options as $option) {
       if ($input === true) {
@@ -180,7 +184,7 @@
   
   function form_draw_textarea($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return '<textarea name="'. $name .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
+    return '<textarea name="'. htmlspecialchars($name) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
   
   function form_draw_time_field($name, $value=true, $parameters='', $hint='') {
@@ -208,7 +212,7 @@
          . '    "width": "auto",' . PHP_EOL
          . '    "max-height": "auto",' . PHP_EOL
          . '    "style": "'. WS_DIR_EXT .'sceditor/jquery.sceditor.default.min.css",' . PHP_EOL
-         . '    "locale": "'. $system->language->selected['code'] .'",' . PHP_EOL
+         . '    "locale": "'. htmlspecialchars($system->language->selected['code']) .'",' . PHP_EOL
          . '    "emoticons": false,' . PHP_EOL
          . '    "toolbar": "format|font,size,bold,italic,underline,strike,subscript,superscript|left,center,right,justify|color,removeformat|bulletlist,orderedlist,table|code,quote|horizontalrule,image,email,link,unlink|youtube,date,time|ltr,rtl|print,maximize,source"' . PHP_EOL
          . '  });' . PHP_EOL

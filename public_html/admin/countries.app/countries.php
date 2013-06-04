@@ -16,7 +16,7 @@
     exit;
   }
 ?>
-<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_country.php'), true); ?>"><?php echo $system->language->translate('title_add_new_country', 'Add New Country'); ?></a></div>
+<div style="float: right;"><?php echo $system->functions->form_draw_link_button($system->document->link('', array('doc' => 'edit_country.php'), true), $system->language->translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_countries', 'Countries'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('countries_form', 'post'); ?>

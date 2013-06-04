@@ -123,4 +123,11 @@
 // Run operations before capture
   $system->run('before_capture');
   
+// If page should be overriden
+  $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . $system->document->template .'/overrides/'. $system->link->relpath($system->link->get_base_link());
+  if (file_exists($override_file)) {
+    require_once($override_file);
+    exit;
+  }
+  
 ?>

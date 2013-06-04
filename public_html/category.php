@@ -96,7 +96,6 @@
 ?>
     <ul class="listing-wrapper products">
 <?php
-    
     $products_query = $system->functions->catalog_products_query(array('category_id' => $category['id'], 'sort' => $_GET['sort']));
     if ($system->database->num_rows($products_query) > 0) {
       if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
@@ -109,8 +108,6 @@
         if (++$page_items == $system->settings->get('items_per_page')) break;
       }
     }
-    
-
 ?>
     </ul>
 <?php

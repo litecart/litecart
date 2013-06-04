@@ -49,9 +49,9 @@
   if ($system->cache->capture($manufacturer_cache_id, 'file')) {
 ?>
 
-  <div class="box" id="box-manufacturer">
-    <div class="heading">
-      <span class="filter" style="float: right;">
+<div class="box" id="box-manufacturer">
+  <div class="heading">
+    <span class="filter" style="float: right;">
 <?php
     $sort_alternatives = array(
       'popularity' => $system->language->translate('title_popularity', 'Popularity'),
@@ -71,22 +71,22 @@
       $separator = true;
     }
 ?>
-      </span>
-      <h1><?php echo (!empty($manufacturer['image'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60, 'FIT') .'" alt="'. $manufacturer['name'] .'" title="'. $manufacturer['name'] .'" />' : $manufacturer['name']; ?></h1>
-    </div>
-    <div class="content">
+    </span>
+    <h1><?php echo (!empty($manufacturer['image'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60, 'FIT') .'" alt="'. $manufacturer['name'] .'" title="'. $manufacturer['name'] .'" />' : $manufacturer['name']; ?></h1>
+  </div>
+  <div class="content">
 <?php
     if ($_GET['page'] == 1) {
 ?>    
-      <?php if ($manufacturer['description']) { ?>
-      <div class="description-wrapper">
-        <?php echo $manufacturer['description'] ? $manufacturer['description'] : ''; ?>
-      </div>
-      <?php } ?>
+    <?php if ($manufacturer['description']) { ?>
+    <div class="description-wrapper">
+      <?php echo $manufacturer['description'] ? $manufacturer['description'] : ''; ?>
+    </div>
+    <?php } ?>
 <?php
     }
 ?>
-      <ul class="listing-wrapper products">
+    <ul class="listing-wrapper products">
 <?php
     $products_query = $system->functions->catalog_products_query(array('manufacturer_id' => $manufacturer['id'], 'sort' => $_GET['sort']));
     if ($system->database->num_rows($products_query) > 0) {
@@ -100,13 +100,15 @@
       }
     }
 ?>
-      </ul>
-    </div>
-
+    </ul>
 <?php
     echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
-  
+?>
+  </div>
+</div>
+<?php
     $system->cache->end_capture($manufacturer_cache_id);
   }
+  
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

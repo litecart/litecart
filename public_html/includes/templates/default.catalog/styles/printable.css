@@ -1,4 +1,6 @@
+@import url(application.css);
 @import url(boxes.css);
+@import url(common.css);
 @import url(content.css);
 @import url(forms.css);
 @import url(notices.css);
@@ -16,11 +18,6 @@
     zoom: 100%;
     padding: 0px;
   }
-  
-  /*#header {
-    position: absolute;  
-    top: 0px;  
-  }*/
   
   html, body {
     width: 100%;
@@ -51,7 +48,7 @@
     margin-top: 0px;
   }
   
-  a {
+  a:link, a:visited, a:hover, a:active {
     color: #000;
   }
   
@@ -82,13 +79,6 @@
   
   #window {
     display: none;
-  }
-  
-  a:link, a:visited{
-    color: #0000cc;
-  }
-  a:hover, a:active{
-    color: #ff0000px;
   }
   
   #footer {

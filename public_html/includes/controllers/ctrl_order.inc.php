@@ -111,7 +111,7 @@
       }
       
       foreach ($order_total->rows as $row) {
-        $this->add_item($row);
+        $this->add_ot_row($row);
       }
     }
     
@@ -253,7 +253,7 @@
       
       if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
       
-    // Send update notice e-mail
+    // If changed order status 
       if (!empty($this->data['id'])) {
         $order_query = $this->system->database->query(
           "select order_status_id from ". DB_TABLE_ORDERS ."
@@ -261,7 +261,8 @@
           limit 1;"
         );
         $order = $this->system->database->fetch($order_query);
-        if ($order['order_status_id'] != $this->data['order_status_id']) {
+        
+        if ((int)$order['order_status_id'] != (int)$this->data['order_status_id']) {
           $order_status_query = $this->system->database->query(
             "select os.*, osi.name from ". DB_TABLE_ORDERS_STATUS ." os
             left join ". DB_TABLE_ORDERS_STATUS_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". $this->system->database->input($this->data['language_code']) ."')
@@ -269,14 +270,23 @@
             limit 1;"
           );
           $order_status = $this->system->database->fetch($order_status_query);
-          if (!empty($order_status['notify'])) {
-            $this->system->functions->email_send(
-              '"'. $this->system->settings->get('store_name') .'" <'. $this->system->settings->get('store_email') .'>',
-              $this->data['customer']['email'],
-              sprintf($this->system->language->translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $order_status['name']),
-              $this->draw_printable_copy(),
-              true
+          
+          if (!empty($order_status)) {
+            $this->data['comments'][] = array(
+              'text' => sprintf($this->system->language->translate('text_order_status_changed_to_s', 'Order status changed to %s'), $order_status['name']),
+              'hidden' => 1,
             );
+            
+          // Send update notice e-mail
+            if (!empty($order_status['notify'])) {
+              $this->system->functions->email_send(
+                '"'. $this->system->settings->get('store_name') .'" <'. $this->system->settings->get('store_email') .'>',
+                $this->data['customer']['email'],
+                sprintf($this->system->language->translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $order_status['name']),
+                $this->draw_printable_copy(),
+                true
+              );
+            }
           }
         }
       }
@@ -632,7 +642,6 @@
     }
     
     private function add_cost($gross, $tax_class_id) {
-      
       
       $this->data['payment_due'] += $gross;
       

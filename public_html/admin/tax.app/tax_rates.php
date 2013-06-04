@@ -1,7 +1,7 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
-<div style="float: right;"><a class="button" href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_rate.php'), true); ?>"><?php echo $system->language->translate('title_add_new_tax_rate', 'Add New Tax Rate'); ?></a></div>
+<div style="float: right;"><?php echo $system->functions->form_draw_link_button($system->document->link('', array('doc' => 'edit_tax_rate.php'), true), $system->language->translate('title_add_new_tax_rate', 'Add New Tax Rate'), '', 'add'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_tax_rates', 'Tax Rates'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('tax_rates_form', 'post'); ?>

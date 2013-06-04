@@ -34,7 +34,7 @@
     ######################################################################
     
     public function get_base_link() {
-      $link = $_SERVER['PHP_SELF'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+      $link = $_SERVER['SCRIPT_NAME'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
       
       return $this->full_link($link);
     }

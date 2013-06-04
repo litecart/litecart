@@ -147,18 +147,18 @@
       }
 ?>
       </td>
-      <td align="right" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' id="remove-value"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+      <td align="right" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
     </tr>
 <?php
     }
 ?>
     <tr>
-      <td colspan="3"><a id="add-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo $system->language->translate('title_add_value', 'Add Value'); ?></a></td>
+      <td colspan="3"><a class="add" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo $system->language->translate('title_add_value', 'Add Value'); ?></a></td>
     </tr>  
   </table>
   <script>
     var new_value_index = 1;
-    $('body').on('click', '#add-value', function(event) {
+    $('#option-values-multiset').on('click', '.add', function(event) {
       event.preventDefault();
       while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
@@ -173,27 +173,24 @@
       var output = '<tr>'
                  + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('values[new_value_index][id]', '') . $system->functions->form_draw_hidden_field('values[new_value_index][value]', '')); ?></td>'
                  + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
-                 + '  <td align="left" nowrap="nowrap"><a id="move-value-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a id="move-value-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a id="remove-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '  <td align="left" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '</tr>';
       output = output.replace(/new_value_index/g, 'new_' + new_value_index);
       $(this).closest('tr').before(output);
     });
     
-    $("body").on("click", "#move-value-up, #move-value-down", function(event) {
+    $("#option-values-multiset").on("click", ".move-up, .move-down", function(event) {
       event.preventDefault();
-      var row = $(this).parents("tr:first");
-      var firstrow = $('table tr:first');
+      var row = $(this).closest("tr");
 
-      if ($(this).is("#move-value-up") && row.prevAll().length > 1) {
-          row.insertBefore(row.prev());
-      } else if ($(this).is("#move-value-down") && row.nextAll().length-1 > 0) {
-          row.insertAfter(row.next());
-      } else {
-        return false;
+      if ($(this).is(".move-up") && $(row).prevAll().length > 1) {
+        $(row).insertBefore($(row).prev());
+      } else if ($(this).is(".move-down") && $(row).nextAll().length > 1) {
+        $(row).insertAfter($(row).next());
       }
     });
     
-    $("body").on("click", "#remove-value", function(event) {
+    $("#option-values-multiset").on("click", ".remove", function(event) {
       event.preventDefault();
       $(this).closest('tr').remove();
     });

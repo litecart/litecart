@@ -121,7 +121,7 @@
   <table id="comments" class="dataTable" style="width: 100%;">
 <?php
     foreach ($order['comments'] as $comment) {
-      if (!empty($order['hidden'])) continue;
+      if (!empty($comment['hidden'])) continue;
 ?>
     <tr>
       <td><strong><?php echo strftime($this->system->language->selected['format_date'], strtotime($comment['date_created'])); ?>:</strong> <?php echo $comment['text']; ?></td>
@@ -146,7 +146,7 @@
     </td>
     <?php } ?>
     <?php if ($this->system->settings->get('store_tax_id')) { ?>
-    <td style="vertical-align: top;"><strong><?php echo $this->system->language->translate('title_tax_id', 'Tax ID'); ?>:</strong><br />
+    <td style="vertical-align: top;"><strong><?php echo $this->system->language->translate('title_vat_registration_id', 'VAT Registration ID'); ?>:</strong><br />
       <?php echo $this->system->settings->get('store_tax_id'); ?>
     </td>
     <?php } ?>

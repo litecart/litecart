@@ -4,11 +4,10 @@
   header('X-Robots-Tag: noindex');
   $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
-  $system->document->layout = 'default';
-  $system->document->viewport = 'printable';
+  $system->document->layout = 'printable';
   
   if (empty($_GET['order_id']) || empty($_GET['checksum'])) {
-    header('HTTP/1.1 401 Unathorized');
+    header('HTTP/1.1 401 Unauthorized');
     exit;
   }
   
@@ -19,7 +18,7 @@
   $order = new ctrl_order('load', $_GET['order_id']);
   
   if ($_GET['checksum'] != $system->functions->general_order_public_checksum($order->data['id'])) {
-    header('HTTP/1.1 401 Unathorized');
+    header('HTTP/1.1 401 Unauthorized');
     exit;
   }
   

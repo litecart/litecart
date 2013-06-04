@@ -4,8 +4,7 @@
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
       header('Content-type: text/html; charset='. $system->language->selected['charset']);
-      $system->document->layout = 'default';
-      $system->document->viewport = 'ajax';
+      $system->document->layout = 'ajax';
     }
     header('X-Robots-Tag: noindex');
     $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';

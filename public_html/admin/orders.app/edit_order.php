@@ -49,8 +49,8 @@
             $_POST['items'][$key] = array(
               'id' => '',
               'product_id' => $product->id,
-              'option_stock_combination' => $_POST['items'][$key]['option_stock_combination'],
-              'options' => $_POST['items'][$key]['options'],
+              'option_stock_combination' => !empty($_POST['items'][$key]['option_stock_combination']) ? $_POST['items'][$key]['option_stock_combination'] : '',
+              'options' => !empty($_POST['items'][$key]['options']) ? $_POST['items'][$key]['options'] : array(),
               'name' => $name[$system->language->selected['code']],
               'code' => $product->code,
               'sku' => $product->sku,
@@ -63,11 +63,13 @@
               'weight' => $product->weight,
               'weight_class' => $product->weight_class,
             );
-          
+            
         // Update item
           } else {
-            $_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] / $order->data['currency_value'];
-            $_POST['items'][$key]['tax'] = $system->tax->get_tax($_POST['items'][$key]['price'] * $order->data['currency_value'], $_POST['items'][$key]['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']) / $order->data['currency_value'];
+            $new_price = $_POST['items'][$key]['price'] / $order->data['currency_value'];
+            $_POST['items'][$key] = $order->data['items'][$key];
+            $_POST['items'][$key]['price'] = $new_price / $order->data['currency_value'];
+            $_POST['items'][$key]['tax'] = $system->tax->get_tax($new_price * $order->data['currency_value'], $_POST['items'][$key]['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']) / $order->data['currency_value'];
           }
         }
         
@@ -421,10 +423,7 @@
     <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
     <td nowrap="nowrap" align="right">
 <?php
-  foreach (array_keys($_POST['order_total'][$key]) as $field) {
-    if (in_array($field, array('calculate'))) continue;
-    echo $system->functions->form_draw_hidden_field('order_total['. $key .']['. $field .']', true);
-  }
+    echo $system->functions->form_draw_hidden_field('order_total['. $key .'][id]', true);
 ?>
       <?php echo $system->functions->form_draw_input('order_total['. $key .'][module_id]', true, 'text', 'style="width: 75px;"'); ?>
     </td>

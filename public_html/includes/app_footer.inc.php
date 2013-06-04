@@ -3,7 +3,7 @@
 // Store the captured output buffer
   $system->document->snippets['content'] = ob_get_clean();
   
-// Initiate library objects
+// Run after capture processes
   foreach ($system->get_loaded_modules() as $module) {
     if (method_exists($system->$module, 'after_capture')) $system->$module->after_capture();
   }
@@ -15,7 +15,7 @@
   
 // Capture template
   ob_start();
-  require(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . $system->document->template .'/'. $system->document->layout .'.'. $system->document->viewport .'.inc.php');
+  require(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . $system->document->template .'/'. $system->document->layout .'.inc.php');
   $output = ob_get_clean();
 
 // Stitch content
@@ -26,7 +26,7 @@
   $output = preg_replace('/{snippet:.*?}/', '', $output);
   $output = preg_replace('/<!--snippet:.*?-->/', '', $output);
   
-// Run after processes for library objects
+// Run before output processes
   foreach ($system->get_loaded_modules() as $module) {
     if (method_exists($system->$module, 'before_output')) $system->$module->before_output();
   }
@@ -35,13 +35,13 @@
   header('Content-Language: '. $system->language->selected['code']);
   echo $output;
   
-// Run after processes for library objects
+// Run after processes
   foreach ($system->get_loaded_modules() as $module) {
     if (method_exists($system->$module, 'shutdown')) $system->$module->shutdown();
   }
   
 // Execute background jobs
-  if (strtotime($system->settings->get('jobs_last_run')) < strtotime('-'. $system->settings->get('jobs_interval') .' minutes')) {
+  if (strtotime($system->settings->get('jobs_last_run')) < strtotime('-'. ($system->settings->get('jobs_interval')+1) .' minutes')) {
     
     //error_log('Jobs executed manually because last run was '. $system->settings->get('jobs_last_run').'. Is the cron job set up?');
     
