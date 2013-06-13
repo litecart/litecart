@@ -90,7 +90,7 @@
     if (isset($result['order_status_id'])) $order->data['order_status_id'] = $result['order_status_id'];
     
   // Set order status id
-    if (isset($result['payment_transaction_id'])) $order->data['payment_transaction_id'] = $result['payment_transaction_id'];
+    if (isset($result['transaction_id'])) $order->data['transaction_id'] = $result['transaction_id'];
   }
   
 // Save order

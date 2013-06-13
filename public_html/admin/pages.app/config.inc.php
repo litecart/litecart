@@ -2,9 +2,12 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_pages', 'Pages'),
-  'index' => 'pages.php',
+  'default' => 'pages',
   'icon' => 'icon.png',
-  'menu' => array(
+  'menu' => array(),
+  'docs' => array(
+    'pages' => 'pages.inc.php',
+    'edit_page' => 'edit_page.inc.php',
   ),
 );
 

@@ -2,9 +2,12 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_countries', 'Countries'),
-  'index' => 'countries.php',
+  'default' => 'countries',
   'icon' => 'icon.png',
-  'menu' => array(
+  'menu' => array(),
+  'docs' => array(
+    'countries' => 'countries.inc.php',
+    'edit_country' => 'edit_country.inc.php',
   ),
 );
 

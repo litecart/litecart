@@ -2,17 +2,25 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_tax', 'Tax'),
-  'index' => 'tax_classes.php',
+  'default' => 'tax_classes',
   'icon' => 'icon.png',
   'menu' => array(
     array(
-      'name' => $system->language->translate('title_tax_classes', 'Tax Classes'),
-      'link' => 'tax_classes.php'
+      'title' => $system->language->translate('title_tax_classes', 'Tax Classes'),
+      'doc' => 'tax_classes',
+      'params' => array(),
     ),
     array(
-      'name' => $system->language->translate('title_tax_rates', 'Tax Rates'),
-      'link' => 'tax_rates.php'
+      'title' => $system->language->translate('title_tax_rates', 'Tax Rates'),
+      'doc' => 'tax_rates',
+      'params' => array(),
     ),
+  ),
+  'docs' => array(
+    'tax_classes' => 'tax_classes.inc.php',
+    'edit_tax_class' => 'edit_tax_class.inc.php',
+    'tax_rates' => 'tax_rates.inc.php',
+    'edit_tax_rate' => 'edit_tax_rate.inc.php',
   ),
 );
 

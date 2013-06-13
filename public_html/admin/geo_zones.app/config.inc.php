@@ -2,9 +2,12 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_geo_zones', 'Geo Zones'),
-  'index' => 'geo_zones.php',
+  'default' => 'geo_zones',
   'icon' => 'icon.png',
-  'menu' => array(
+  'menu' => array(),
+  'docs' => array(
+    'geo_zones' => 'geo_zones.inc.php',
+    'edit_geo_zone' => 'edit_geo_zone.inc.php',
   ),
 );
 

@@ -34,13 +34,13 @@
 #box-product .tax {
   color: #999;
 }
-#box-product .stock-available {
+#box-product .stock-available .value {
   color: #090;
 }
-#box-product .stock-partly-available {
+#box-product .stock-partly-available .value {
   color: #f90;
 }
-#box-product .stock-unavailable {
+#box-product .stock-unavailable .value {
   color: #c00;
 }
 

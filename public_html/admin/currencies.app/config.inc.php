@@ -2,9 +2,12 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_currencies', 'Currencies'),
-  'index' => 'currencies.php',
+  'default' => 'currencies',
   'icon' => 'icon.png',
-  'menu' => array(
+  'menu' => array(),
+  'docs' => array(
+    'currencies' => 'currencies.inc.php',
+    'edit_currency' => 'edit_currency.inc.php',
   ),
 );
 

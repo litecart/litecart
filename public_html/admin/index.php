@@ -12,15 +12,14 @@
   if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
     $system->notices->add('warnings', $system->language->translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
   }
-
   
 // Build apps list menu
   $apps_list = '<div id="apps-wrapper">' . PHP_EOL
              . '  <ul id="apps" class="list-vertical">';
   
   foreach ($system->functions->admin_get_apps() as $app) {
-    $params = !empty($app['params']) ? array_merge(array('app' => $app['code'], 'doc' => $app['index']), $app['params']) : array('app' => $app['code'], 'doc' => $app['index']);
-    $apps_list .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link('', $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> '. $app['name'] .'</a>' . PHP_EOL;
+    $params = array('app' => $app['code'], 'doc' => $app['default']);
+    $apps_list .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> '. $app['name'] .'</a>' . PHP_EOL;
     
     if (!empty($_GET['app']) && $_GET['app'] == $app['code']) {
       
@@ -28,7 +27,8 @@
         $apps_list .= '      <ul>' . PHP_EOL;
         
         foreach ($app['menu'] as $item) {
-          if (isset($_GET['doc']) && $_GET['doc'] == $item['link']) {
+          
+          if (isset($_GET['doc']) && $_GET['doc'] == $item['doc']) {
             $selected = true;
             if (!empty($item['params'])) {
               foreach ($item['params'] as $param => $value) {
@@ -42,8 +42,8 @@
             $selected = false;
           }
           
-          $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['link']), $item['params']) : array('app' => $app['code'], 'doc' => $item['link']);
-          $apps_list .= '        <li'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'">'. $item['name'] .'</a></li>' . PHP_EOL;
+          $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['doc']), $item['params']) : array('app' => $app['code'], 'doc' => $item['doc']);
+          $apps_list .= '        <li'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'">'. $item['title'] .'</a></li>' . PHP_EOL;
         }
         
         $apps_list .= '      </ul>' . PHP_EOL;
@@ -63,7 +63,7 @@
     
     require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
     
-    $system->breadcrumbs->add($app_config['name'], $app_config['index']);
+    $system->breadcrumbs->add($app_config['name'], $app_config['default']);
     
     $system->document->snippets['javascript'][] = '  $(document).ready(function() {' . PHP_EOL
                                                 . '    if ($("h1")) {' . PHP_EOL
@@ -73,9 +73,9 @@
                                                 . '  });';
     
     if (!empty($_GET['doc'])) {
-      include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $_GET['doc']);
+      include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
     } else {
-      include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['index']);
+      include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
     }
     
 // Widgets

@@ -26,6 +26,10 @@
       return $this->_data[$name];
     }
     
+    public function __isset($name) {
+      return $this->__get($name);
+    }
+    
     public function __set($name, $value) {
       $this->system->functions->error_trigger_traced('Setting data is prohibited', E_USER_ERROR);
     }

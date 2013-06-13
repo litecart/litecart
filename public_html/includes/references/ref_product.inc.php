@@ -28,6 +28,10 @@
       return $this->_data[$name];
     }
     
+    public function __isset($name) {
+      return $this->__get($name);
+    }
+    
     public function __set($name, $value) {
       trigger_error('Setting data ('. $name .') is prohibited', E_USER_ERROR);
     }

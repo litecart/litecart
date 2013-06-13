@@ -4,10 +4,10 @@
     public $id = __CLASS__;
     public $name = 'Currency Updater';
     public $description = '';
-    public $author = 'TiM International';
+    public $author = 'LiteCart Dev Team';
     public $version = '1.0';
     public $support_link = 'http://www.google.com/finance/converter';
-    public $website = 'http://www.tim-international.net';
+    public $website = 'http://www.litecart.net';
     public $priority = 0;
     
     public function __construct() {

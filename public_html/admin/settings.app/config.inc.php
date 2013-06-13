@@ -2,12 +2,10 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_settings', 'Settings'),
-  'index' => 'settings.php',
-  'params' => array(
-    'setting_group_key' => 'store_info',
-  ),
-  'icon' => 'icon.png',
+  'default' => 'store_info',
   'menu' => array(),
+  'icon' => 'icon.png',
+  'docs' => array(),
 );
 
   $settings_groups_query = $system->database->query(
@@ -16,10 +14,11 @@ $app_config = array(
   );
   while ($group = $system->database->fetch($settings_groups_query)) {
     $app_config['menu'][] = array(
-      'name' => $system->language->translate('settings_group:'.$group['key'], $group['name']),
-      'link' => 'settings.php',
-      'params' => array('setting_group_key' => $group['key']),
+      'title' => $system->language->translate('title_settings_group:'.$group['key'], $group['name']),
+      'doc' => $group['key'],
+      'params' => array(),
     );
+    $app_config['docs'][$group['key']] = 'settings.inc.php';
   }
 
 ?>

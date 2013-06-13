@@ -5,10 +5,10 @@
     public $id = __CLASS__;
     public $name = 'Payment Fee';
     public $description = '';
-    public $author = 'TiM International';
+    public $author = 'LiteCart Dev Team';
     public $version = '1.0';
     public $support_link = 'http://www.forum.com';
-    public $website = 'http://www.site.com';
+    public $website = 'http://www.litecart.net';
     public $priority = 0;
     
     public function __construct() {

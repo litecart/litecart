@@ -7,17 +7,19 @@
     
     public function __construct() {
     // Autoload library modules
-      foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . '*.inc.php') as $module) {
-        $this->load(str_replace('.inc.php', '', basename($module)));
+      foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_*.inc.php') as $module) {
+        $module = preg_replace('/^lib_(.*)\.inc\.php$/', '$1', basename($module));
+        $this->load($module);
       }
     }
     
   // Load library objects
-    public function load($class_name) {
-      if (isset($this->_loaded_modules[$class_name])) die("Module '$class_name' is already loaded");
+    public function load($module) {
+      $class_name = 'lib_'.$module;
+      if (isset($this->_loaded_modules[$class_name])) die("Module '$module' is already loaded");
       require_once(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . $class_name . '.inc.php');
-      $this->$class_name = new $class_name($this);
-      $this->_loaded_modules[$class_name] = $class_name;
+      $this->$module = new $class_name($this);
+      $this->_loaded_modules[$module] = $module;
     }
     
   // Method to run methods ;)

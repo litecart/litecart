@@ -32,7 +32,7 @@
 #
 
   class ctrl_image {
-    private $_image;
+    public $gdo;
     private $_src;
     private $_type;
     public $whitespace_color = '255,255,255';
@@ -67,29 +67,29 @@
       switch(exif_imagetype($this->_src)) {
         case 1:
           $this->_type = 'gif';
-          $this->_image = ImageCreateFromGIF($this->_src);
+          $this->gdo = ImageCreateFromGIF($this->_src);
           break;
         case 2:
           $this->_type = 'jpg';
-          $this->_image = ImageCreateFromJPEG($this->_src);
+          $this->gdo = ImageCreateFromJPEG($this->_src);
           break;
         case 3:
           $this->_type = 'png';
-          $this->_image = ImageCreateFromPNG($this->_src);
+          $this->gdo = ImageCreateFromPNG($this->_src);
           break;
         case 15:
           $this->_type = 'bmp';
-          $this->_image = ImageCreateFromWBMP($this->_src);
+          $this->gdo = ImageCreateFromWBMP($this->_src);
           break;
         case 16:
           $this->_type = 'xbm';
-          $this->_image = ImageCreateFromXBM($this->_src);
+          $this->gdo = ImageCreateFromXBM($this->_src);
           break;
         default:
           trigger_error('Unknown image type', E_USER_WARNING);
       }
       
-      if (!is_resource($this->_image)) {
+      if (!is_resource($this->gdo)) {
         trigger_error('Could not load image ('. $this->_src .').', E_USER_WARNING);
         return false;
       }
@@ -99,10 +99,10 @@
     
     function load_from_string($string, $type='jpg') {
       
-      $this->_image = ImageCreateFromString($string);
+      $this->gdo = ImageCreateFromString($string);
       $this->_type = 'jpg';
       
-      if (!is_resource($this->_image)) {
+      if (!is_resource($this->gdo)) {
         trigger_error('Could not load image from string.', E_USER_WARNING);
         return false;
       }
@@ -113,12 +113,12 @@
     function resample($width=1024, $height=1024, $method='FIT_ONLY_BIGGER') {
       
     // Load source image if object is missing
-      if (!$this->_image) {
+      if (!$this->gdo) {
         $this->load();
       }
       
     // Halt on no image object
-      if (!$this->_image) {
+      if (!$this->gdo) {
         return false;
       }
       
@@ -175,9 +175,9 @@
           
         // Perform resample
           if (($this->width() / $destination_width) > ($this->height() / $destination_height)) {
-            ImageCopyResampledFixed($oResized, $this->_image, 0, 0, ($this->width() - $destination_width * $this->height() / $destination_height) / 2, 0, $destination_width, $destination_height, $this->height() * $destination_ratio, $this->height());
+            ImageCopyResampledFixed($oResized, $this->gdo, 0, 0, ($this->width() - $destination_width * $this->height() / $destination_height) / 2, 0, $destination_width, $destination_height, $this->height() * $destination_ratio, $this->height());
           } else {
-            ImageCopyResampledFixed($oResized, $this->_image, 0, 0, 0, ($this->height() - $destination_height * $this->width() / $destination_width) / 2, $destination_width, $destination_height, $this->width(), $this->width() / $destination_ratio);
+            ImageCopyResampledFixed($oResized, $this->gdo, 0, 0, 0, ($this->height() - $destination_height * $this->width() / $destination_width) / 2, $destination_width, $destination_height, $this->width(), $this->width() / $destination_ratio);
           }
           
           break;
@@ -197,7 +197,7 @@
           ImageFill($oResized, 0, 0, ImageColorAllocateAlpha($oResized, 255, 255, 255, 127));
           
         // Perform resample
-          ImageCopyResampledFixed($oResized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
+          ImageCopyResampledFixed($oResized, $this->gdo, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
           
           break;
           
@@ -243,7 +243,7 @@
             //ImageColorTransparent($oResized, ImageColorAllocate($oResized, 255, 255, 255));
             
           // Perform resample
-            ImageCopyResampled($oResized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
+            ImageCopyResampled($oResized, $this->gdo, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
             
           } else {
           
@@ -256,7 +256,7 @@
             ImageFill($oResized, 0, 0, ImageColorAllocateAlpha($oResized, 255, 255, 255, 127));
             
           // Perform resample
-            ImageCopyResampledFixed($oResized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
+            ImageCopyResampledFixed($oResized, $this->gdo, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
           }
           
           break;
@@ -270,10 +270,10 @@
       $this->height = $destination_height;
       
     // Destroy old object
-      ImageDestroy($this->_image);
+      ImageDestroy($this->gdo);
       
     // Set resized object as main object
-      $this->_image = $oResized;
+      $this->gdo = $oResized;
       
       return true;
     }
@@ -281,41 +281,41 @@
     function filter($filter) {
     
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
+      if (!is_resource($this->gdo)) $this->load();
       
     // Perform filter effect
       switch($filter) {
         case 'contrast':
-          imagefilter($this->_image, IMG_FILTER_CONTRAST, -2);
+          imagefilter($this->gdo, IMG_FILTER_CONTRAST, -2);
           break;
         case 'gamma':
-          imagegammacorrect($this->_image, 1.0, 1.25);
+          imagegammacorrect($this->gdo, 1.0, 1.25);
         case 'gaussian_blur':
-          imagefilter($this->_image, IMG_FILTER_GAUSSIAN_BLUR);
+          imagefilter($this->gdo, IMG_FILTER_GAUSSIAN_BLUR);
           break;
         case 'pixelate':
-          $imagex = imagesx($this->_image);
-          $imagey = imagesy($this->_image);
+          $imagex = imagesx($this->gdo);
+          $imagey = imagesy($this->gdo);
           $blocksize = 12;
           for ($x = 0; $x < $imagex; $x += $blocksize) {
             for ($y = 0; $y < $imagey; $y += $blocksize) {
-              $rgb = imagecolorat($this->_image, $x, $y);
-              imagefilledrectangle($this->_image, $x, $y, $x + $blocksize - 1, $y + $blocksize - 1, $rgb);
+              $rgb = imagecolorat($this->gdo, $x, $y);
+              imagefilledrectangle($this->gdo, $x, $y, $x + $blocksize - 1, $y + $blocksize - 1, $rgb);
             }
           }
           break;
         case 'sepia':
-          imagefilter($this->_image, IMG_FILTER_GRAYSCALE);
-          imagefilter($this->_image, IMG_FILTER_COLORIZE, 100, 50, 0);
+          imagefilter($this->gdo, IMG_FILTER_GRAYSCALE);
+          imagefilter($this->gdo, IMG_FILTER_COLORIZE, 100, 50, 0);
           break;
         case 'sharpen':
           $matrix = array(array(-1,-1,-1), array(-1,16,-1), array(-1,-1,-1));
           $divisor = array_sum(array_map('array_sum', $matrix));
           $offset = 0;
-          ImageConvolution($this->_image, $matrix, $divisor, $offset);
+          ImageConvolution($this->gdo, $matrix, $divisor, $offset);
           break;
         case 'selective_blur':
-          imagefilter($this->_image, IMG_FILTER_SELECTIVE_BLUR);
+          imagefilter($this->gdo, IMG_FILTER_SELECTIVE_BLUR);
           break;
         default:
           trigger_error('Unknown filter effect for image');
@@ -324,13 +324,13 @@
 	  return true;
     }
     
-    function watermark($watermark, $align_x, $align_y, $padding=5) {
+    function watermark($watermark, $align_x, $align_y, $margin=5) {
     
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
+      if (!is_resource($this->gdo)) $this->load();
       
     // Create image object
-      $oWatermark = new $system->functions->image($watermark);
+      $oWatermark = new ctrl_image($watermark);
       
     // Return false on no image
       if (!$oWatermark->type()) {
@@ -347,41 +347,41 @@
       }
       
     // Initialize alpha channel for PNG transparency
-      ImageAlphaBlending($this->_image, true);
+      ImageAlphaBlending($this->gdo, true);
       
     // Align watermark and set horizontal offset
       switch (strtoupper($align_x)) {
         case "LEFT":
-          $offset_x = $padding;
+          $offset_x = $margin;
           break;
         case "CENTER":
           $offset_x = round(($this->width() - $oWatermark->width()) / 2);
           break;
         case "RIGHT":
         default:
-          $offset_x = $this->width() - $oWatermark->width() - $padding;
+          $offset_x = $this->width() - $oWatermark->width() - $margin;
           break;
       }
       
       // Align watermark and set vertical offset
       switch (strtoupper($align_y)) {
         case "TOP":
-          $offset_y = $padding;
+          $offset_y = $margin;
           break;
         case "MIDDLE":
           $offset_y = round(($this->height() - $oWatermark->height()) / 2);
           break;
         case "BOTTOM":
         default:
-          $offset_y = $this->height() - $oWatermark->height() - $padding;
+          $offset_y = $this->height() - $oWatermark->height() - $margin;
           break;
       }
       
       // Create the watermarked image
-        ImageCopy($this->_image, $oWatermark->oImage, $offset_x, $offset_y, 0, 0, $oWatermark->width(), $oWatermark->height());
+        ImageCopy($this->gdo, $oWatermark->gdo, $offset_x, $offset_y, 0, 0, $oWatermark->width(), $oWatermark->height());
       
       // Free some RAM memory
-        ImageDestroy($oWatermark->oImage);
+        ImageDestroy($oWatermark->gdo);
         
         return true;
     }
@@ -407,7 +407,7 @@
     }
       
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
+      if (!is_resource($this->gdo)) $this->load();
 
     // If not set to force type, get type from target filename.
       if (!$type) {
@@ -423,33 +423,33 @@
     // Write the image to disk
       switch(strtolower($type)) {
         case "gif":
-          $oNonAlpha = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
+          $oNonAlpha = ImageCreateTrueColor(imagesx($this->gdo), imagesy($this->gdo));
           ImageAlphaBlending($oNonAlpha, true);
           ImageFill($oNonAlpha, 0, 0, ImageColorAllocate($oNonAlpha, 255, 255, 255, 0));
-          ImageCopy($oNonAlpha, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
+          ImageCopy($oNonAlpha, $this->gdo, 0, 0, 0, 0, imagesx($this->gdo), imagesy($this->gdo));
           ImageAlphaBlending($oNonAlpha, false);
           imagetruecolortopalette($oNonAlpha, false, 255);
           ImageGIF($oNonAlpha, $destination);
-          ImageDestroy($this->_image);
+          ImageDestroy($this->gdo);
           ImageDestroy($oNonAlpha);
           return true;
         case "jpg":
-          $oNonAlpha = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
+          $oNonAlpha = ImageCreateTrueColor(imagesx($this->gdo), imagesy($this->gdo));
           ImageAlphaBlending($oNonAlpha, true);
           ImageFill($oNonAlpha, 0, 0, ImageColorAllocateAlpha($oNonAlpha, 255, 255, 255, 0));
-          ImageCopy($oNonAlpha, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
+          ImageCopy($oNonAlpha, $this->gdo, 0, 0, 0, 0, imagesx($this->gdo), imagesy($this->gdo));
           ImageAlphaBlending($oNonAlpha, false);
           ImageJPEG($oNonAlpha, $destination, $quality);
-          ImageDestroy($this->_image);
+          ImageDestroy($this->gdo);
           ImageDestroy($oNonAlpha);
           return true;
         case "png":
-          ImageSaveAlpha($this->_image, true);
-          ImagePNG($this->_image, $destination);
-          ImageDestroy($this->_image);
+          ImageSaveAlpha($this->gdo, true);
+          ImagePNG($this->gdo, $destination);
+          ImageDestroy($this->gdo);
           return true;
         default:
-          ImageDestroy($this->_image);
+          ImageDestroy($this->gdo);
           return false;
       }
       
@@ -460,21 +460,21 @@
     function output($type='jpg', $quality=90) {
     
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
+      if (!is_resource($this->gdo)) $this->load();
       
     // Write the image to disk
       switch($type) {
         case "gif":
           header('Content-type: image/gif');
-          ImageGIF($this->_image, false);
+          ImageGIF($this->gdo, false);
           break;
         case "jpg":
           header('Content-type: image/jpeg');
-          ImageJPEG($this->_image, false, $quality);
+          ImageJPEG($this->gdo, false, $quality);
           break;
         case "png":
           header('Content-type: image/png');
-          ImagePNG($this->_image, false);
+          ImagePNG($this->gdo, false);
           break;
         default:
           trigger_error('Uknown output format');
@@ -487,8 +487,8 @@
     function destroy() {
     
     // Load image object if not made previously
-      if (is_resource($this->_image)) {
-        ImageDestroy($this->_image);
+      if (is_resource($this->gdo)) {
+        ImageDestroy($this->gdo);
 	  }
       return true;
     }
@@ -496,23 +496,23 @@
     function width() {
     
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
+      if (!is_resource($this->gdo)) $this->load();
       
-      return ImageSX($this->_image);
+      return ImageSX($this->gdo);
     }
     
     function height() {
     
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
+      if (!is_resource($this->gdo)) $this->load();
       
-      return ImageSY($this->_image);
+      return ImageSY($this->gdo);
     }
     
     function type() {
     
     // Load image object if not made previously
-      if (!is_resource($this->_image)) $this->load();
+      if (!is_resource($this->gdo)) $this->load();
       
       return $this->_type;
     }

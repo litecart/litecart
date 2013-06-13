@@ -2,29 +2,41 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_translations', 'Translations'),
-  'index' => 'search.php',
+  'default' => 'search',
   'icon' => 'icon.png',
   'menu' => array(
     array(
-      'name' => $system->language->translate('title_search_translations', 'Search Translations'),
-      'link' => 'search.php'
+      'title' => $system->language->translate('title_search_translations', 'Search Translations'),
+      'doc' => 'search',
+      'params' => array(),
     ),
     array(
-      'name' => $system->language->translate('title_untranslated', 'Untranslated'),
-      'link' => 'untranslated.php'
+      'title' => $system->language->translate('title_untranslated', 'Untranslated'),
+      'doc' => 'untranslated',
+      'params' => array(),
     ),
     array(
-      'name' => $system->language->translate('title_translations_by_page', 'Translations by page'),
-      'link' => 'pages.php'
+      'title' => $system->language->translate('title_translations_by_page', 'Translations by page'),
+      'doc' => 'pages',
+      'params' => array(),
     ),
     array(
-      'name' => $system->language->translate('title_scan_files', 'Scan Files'),
-      'link' => 'scan.php'
+      'title' => $system->language->translate('title_scan_files', 'Scan Files'),
+      'doc' => 'scan',
+      'params' => array(),
     ),
     array(
-      'name' => $system->language->translate('title_csv_import_export', 'CSV Import/Export'),
-      'link' => 'csv.php'
+      'title' => $system->language->translate('title_csv_import_export', 'CSV Import/Export'),
+      'doc' => 'csv',
+      'params' => array(),
     ),
+  ),
+  'docs' => array(
+    'search' => 'search.inc.php',
+    'untranslated' => 'untranslated.inc.php',
+    'pages' => 'pages.inc.php',
+    'scan' => 'scan.inc.php',
+    'csv' => 'csv.inc.php',
   ),
 );
 

@@ -54,7 +54,7 @@
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
-    return form_draw_input($name, $value, 'checkbox', ((!empty($input) && $input == $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
+    return form_draw_input($name, $value, 'checkbox', ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
   }
   
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='', $hint='') {
@@ -133,7 +133,7 @@
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
-    return form_draw_input($name, $value, 'radio', ((!empty($input) && $input == $value) ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
+    return form_draw_input($name, $value, 'radio', ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
   }
   
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='', $hint='') {

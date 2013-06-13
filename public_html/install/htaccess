@@ -21,8 +21,8 @@ ErrorDocument 404 {BASE_DIR}error_document.php?code=404
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)$ category.php?category_id=$1&%{QUERY_STRING} [L]
-  RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)/?$ category.php?category_id=$1&%{QUERY_STRING} [L]
+  RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)/?$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ information.php?page_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-s-([0-9]+)$ customer_service.php?page_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-p-([0-9]+)$ product.php?product_id=$1&%{QUERY_STRING} [L]
@@ -30,7 +30,7 @@ ErrorDocument 404 {BASE_DIR}error_document.php?code=404
   RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING} [L]
 </IfModule>
 
-# Denied content
+# Deny direct access to included content
 <FilesMatch "\.(htaccess|htpasswd|inc.php)$">
   Order Allow,Deny
   Deny from all

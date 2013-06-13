@@ -2,21 +2,30 @@
 
 $app_config = array(
   'name' => $system->language->translate('title_customers', 'Customers'),
-  'index' => 'customers.php',
+  'default' => 'customers',
   'icon' => 'icon.png',
   'menu' => array(
     array(
-      'name' => $system->language->translate('title_customers', 'Customers'),
-      'link' => 'customers.php'
+      'title' => $system->language->translate('title_customers', 'Customers'),
+      'doc' => 'catalog',
+      'params' => array(),
     ),
     array(
-      'name' => $system->language->translate('title_csv_import_export', 'CSV Import/Export'),
-      'link' => 'csv.php'
+      'title' => $system->language->translate('title_csv_import_export', 'CSV Import/Export'),
+      'doc' => 'csv',
+      'params' => array(),
     ),
     array(
-      'name' => $system->language->translate('title_newsletter', 'Newsletter'),
-      'link' => 'newsletter.php'
+      'title' => $system->language->translate('title_newsletter', 'Newsletter'),
+      'doc' => 'newsletter',
+      'params' => array(),
     ),
+  ),
+  'docs' => array(
+    'customers' => 'customers.inc.php',
+    'edit_customer' => 'edit_customer.inc.php',
+    'csv' => 'csv.inc.php',
+    'newsletter' => 'newsletter.inc.php',
   ),
 );
 

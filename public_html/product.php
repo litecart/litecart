@@ -190,16 +190,16 @@
 ?>
           </div>
           
-          <div style="margin-bottom: 10px;" class="stock-status">
+          <div style="margin-bottom: 10px;">
 <?php
   if ($product->quantity > 0) {
-    echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="stock-available">'. (($system->settings->get('display_stock_count') == 'true') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span>';
-    if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<br />' . $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']];
+    echo '<div class="stock-available">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. (($system->settings->get('display_stock_count') == 'true') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span></div>';
+    if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<div class="stock-delivery">'. $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']] .'</span></div>';
   } else {
     if (!empty($product->sold_out_status['name'][$system->language->selected['code']])) {
-      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="'. ($product->sold_out_status['orderable'] ? 'stock-partly-available' : 'stock-unavailable') .'">'. $product->sold_out_status['name'][$system->language->selected['code']] .'</span>';
+      echo '<div class="'. ($product->sold_out_status['orderable'] ? 'stock-partly-available' : 'stock-unavailable') .'">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. $product->sold_out_status['name'][$system->language->selected['code']] .'</span></div>';
     } else {
-      echo $system->language->translate('title_stock_status', 'Stock Status') .': <span class="stock-unavailable">'. $system->language->translate('title_sold_out', 'Sold Out') .'</span>';
+      echo '<div class="stock-unavailable">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. $system->language->translate('title_sold_out', 'Sold Out') .'</span></div>';
     }
   }
 ?>
