@@ -22,6 +22,9 @@
       case (substr($name, 0, 4) == 'job_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';
         break;
+      case (substr($name, 0, 4) == 'lib_'):
+        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'library/' . $name . '.inc.php';
+        break;
       case (substr($name, 0, 3) == 'oa_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $name . '.inc.php';
         break;

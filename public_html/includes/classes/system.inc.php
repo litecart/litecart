@@ -16,7 +16,7 @@
   // Load library objects
     public function load($module) {
       $class_name = 'lib_'.$module;
-      if (isset($this->_loaded_modules[$class_name])) die("Module '$module' is already loaded");
+      if (isset($this->_loaded_modules[$class_name])) trigger_error("Module '$module' is already loaded", E_USER_WARNING);
       require_once(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . $class_name . '.inc.php');
       $this->$module = new $class_name($this);
       $this->_loaded_modules[$module] = $module;
