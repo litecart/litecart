@@ -16,12 +16,13 @@
     
   // Load library objects
     public function load($module) {
+      $class_name = 'lib_'.$module;
+      
       if (isset($this->_loaded_modules[$class_name])) {
         trigger_error("Module '$module' is already loaded", E_USER_WARNING);
         return;
       }
       
-      $class_name = 'lib_'.$module;
       $this->$module = new $class_name($this);
       
       $this->_loaded_modules[$module] = $module;

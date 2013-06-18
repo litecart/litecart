@@ -3,15 +3,15 @@
 // Start redirecting output to the output buffer
   ob_start();
   
-// Compatibility
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
-  
 // Get config
   if (!file_exists(realpath(dirname(__FILE__)) . '/config.inc.php')) {
     header('Location: ./install/');
     exit;
   }
   require_once(realpath(dirname(__FILE__)) . '/config.inc.php');
+  
+// Compatibility
+  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
   
 // Autoloader
   function __autoload($name) {
@@ -26,7 +26,7 @@
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';
         break;
       case (substr($name, 0, 4) == 'lib_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'library/' . $name . '.inc.php';
+        require_once FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . $name . '.inc.php';
         break;
       case (substr($name, 0, 3) == 'oa_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $name . '.inc.php';
