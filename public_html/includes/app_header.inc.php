@@ -1,7 +1,10 @@
 <?php
-
+  
 // Start redirecting output to the output buffer
   ob_start();
+  
+// Compatibility
+  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
   
 // Get config
   if (!file_exists(realpath(dirname(__FILE__)) . '/config.inc.php')) {
@@ -107,9 +110,6 @@
   }
   
   set_error_handler('error_handler');
-  
-// Get compatibility
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
   
 // Set up the system object 
   $system = new system();
