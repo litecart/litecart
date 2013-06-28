@@ -13,7 +13,6 @@
     <th>&nbsp;</th>
   </tr>
 <?php
-
   $delivery_status_query = $system->database->query(
     "select ds.id, dsi.name from ". DB_TABLE_DELIVERY_STATUS ." ds
     left join ". DB_TABLE_DELIVERY_STATUS_INFO ." dsi on (ds.id = dsi.delivery_status_id and dsi.language_code = '". $system->language->selected['code'] ."')

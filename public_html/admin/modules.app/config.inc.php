@@ -46,8 +46,8 @@
       'edit_order_total' => 'edit_module.inc.php',
       'edit_order_success' => 'edit_module.inc.php',
       'edit_order_action' => 'edit_module.inc.php',
-      'edit_get_address' => 'edit_get_address.inc.php',
-      'edit_job' => 'edit_job.inc.php',
+      'edit_get_address' => 'edit_module.inc.php',
+      'edit_job' => 'edit_module.inc.php',
     ),
   );
 ?>

@@ -7,7 +7,6 @@
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
-    public $support_link = 'http://www.forum.com';
     public $website = 'http://www.litecart.net';
     
     public function __construct() {

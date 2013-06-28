@@ -21,7 +21,7 @@
     $options[] = array($manufacturer['name'], $manufacturer['id']);
   }
   
-  echo $system->functions->form_draw_select_field('manufacturer_id', $options, '', false, false, 'style="width: 100%;" onchange="this.form.submit()"');
+  echo $system->functions->form_draw_select_field('manufacturer_id', $options, '', false, 'style="width: 100%;" onchange="this.form.submit()"');
   echo $system->functions->form_draw_form_end();
 ?>
   </div>

@@ -20,6 +20,8 @@
       
       $this->name = $this->_module->name;
       $this->description = $this->_module->description;
+      $this->author = $this->_module->author;
+      $this->website = $this->_module->website;
       $this->settings = array();
       
     // Get settings from database

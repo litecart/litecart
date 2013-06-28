@@ -144,7 +144,7 @@
     }
   }
 ?>
-<div style="float: right;"><?php echo $system->functions->form_draw_link_button($system->document->href_link('', array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), $system->language->translate('title_add_new_category', 'Add New Category'), '', 'add'); ?> <?php echo $system->functions->form_draw_link_button($system->document->href_link('', array('app' => $_GET['app'], 'doc'=> 'edit_product'), array('category_id')), $system->language->translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></div>
+<div style="float: right;"><?php echo $system->functions->form_draw_link_button($system->document->link('', array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), $system->language->translate('title_add_new_category', 'Add New Category'), '', 'add'); ?> <?php echo $system->functions->form_draw_link_button($system->document->link('', array('app' => $_GET['app'], 'doc'=> 'edit_product'), array('category_id')), $system->language->translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></div>
 <div style="float: right; padding-right: 10px;"><?php echo $system->functions->form_draw_search_field('query', true, 'placeholder="'. $system->language->translate('title_search', 'Search') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. $system->document->link('', array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_catalog', 'Catalog'); ?></h1>
 

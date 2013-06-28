@@ -72,6 +72,8 @@
                                                 . '    }' . PHP_EOL
                                                 . '  });';
     
+    echo '<span style="float: right; margin-left: 10px;"><a href="'. $system->document->href_link('http://wiki.litecart.net/', array('title' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : ''))) .'" target="_blank"><img src="'. WS_DIR_IMAGES .'icons/24x24/help.png" alt="'. $system->language->translate('title_help', 'Help') .'" width="24" height="24" /></a></span>';
+    
     if (!empty($_GET['doc'])) {
       include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
     } else {

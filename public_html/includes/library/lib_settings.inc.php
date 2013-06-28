@@ -47,29 +47,21 @@
     
     public function get($key, $default=null) {
       
-      if (!isset($this->cache[$key])) {
-        $configuration_query = $this->system->database->query(
-          "select * from ". DB_TABLE_SETTINGS ."
-          where `key` = '". $this->system->database->input($key) ."'
-          limit 1;"
-        );
-        
-        if (!$this->system->database->num_rows($configuration_query)) {
-          trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
-        }
-        
-        while ($row = $this->system->database->fetch($configuration_query)) {
-          $this->cache[$key] = $row['value'];
-        }
+      if (isset($this->cache[$key])) return $this->cache[$key];
+      
+      $configuration_query = $this->system->database->query(
+        "select * from ". DB_TABLE_SETTINGS ."
+        where `key` = '". $this->system->database->input($key) ."'
+        limit 1;"
+      );
+      
+      if (!$this->system->database->num_rows($configuration_query)) {
+        if ($default === null) trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
+        return $default;
       }
       
-      if (!isset($this->cache[$key])) {
-        if ($default === null) {
-          
-          return;
-        } else {
-          return $default;
-        }
+      while ($row = $this->system->database->fetch($configuration_query)) {
+        $this->cache[$key] = $row['value'];
       }
       
       return $this->cache[$key];

@@ -1,3 +1,6 @@
+<?php
+  if (count($system->language->languages) < 2) return;
+?>
 <ul id="languages" class="list-horizontal">
 <?php
   foreach ($system->language->languages as $language) {

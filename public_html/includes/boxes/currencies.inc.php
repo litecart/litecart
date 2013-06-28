@@ -1,3 +1,6 @@
+<?php
+  if (count($system->currency->currencies) < 2) return;
+?>
 <ul id="currencies" class="list-horizontal">
 <?php
   foreach ($system->currency->currencies as $currency) {

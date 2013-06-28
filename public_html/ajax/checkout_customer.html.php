@@ -257,7 +257,6 @@
   </div>
   
   <script type="text/javascript">
-    
     $("#box-checkout-account input, #box-checkout-account select").change(function() {
       if ($(this).val() == '') return;
       $('body').css('cursor', 'wait');
@@ -275,7 +274,6 @@
         success: function(data) {
           if (data['alert']) {
             alert(data['alert']);
-            return;
           }
           $.each(data, function(key, value) {
             console.log(key +" "+ value);

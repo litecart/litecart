@@ -3,10 +3,9 @@
   class job_currency_updater {
     public $id = __CLASS__;
     public $name = 'Currency Updater';
-    public $description = '';
+    public $description = 'Currency valuation by Google Finance';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
-    public $support_link = 'http://www.google.com/finance/converter';
     public $website = 'http://www.litecart.net';
     public $priority = 0;
     
