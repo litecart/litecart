@@ -17,16 +17,19 @@ LiteCart contains work by the following listed:
 * (print) David Vignoni - LGPL - http://www.icon-king.com
 * (favicon) Jack Cai - Creative Commons Attribution No Derivatives (by-nd) - http://www.doublejdesign.co.uk
 
-All icons can be found at www.iconfinder.com
-
-48x48 Icons
+24x24 Icons
 -----------
 
-* (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
-* (database) Midtone Design Studio - Freeware - http://www.midtonedesign.com
-* (mail) Icojam - Public Domain - http://www.icojam.com
-* (cart) DesignContest.com - CC Attribution 3.0 Unported - http://www.designcontest.com
 * (catalog) Woothemes - Freeware - http://www.woothemes.com
+* (database) Midtone Design Studio - Freeware - http://www.midtonedesign.com
+* (help) Icojam - Free for commercial use - http://www.icojam.com
+* (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
+* (mail) Icojam - Public Domain - http://www.icojam.com
+
+32x32 Icons
+-----------
+
+* (cart) DesignContest.com - CC Attribution 3.0 Unported - http://www.designcontest.com
 
 Language Icons
 --------------

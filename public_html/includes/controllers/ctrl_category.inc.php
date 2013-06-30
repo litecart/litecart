@@ -104,15 +104,15 @@
         
         $this->system->database->query(
           "update ". DB_TABLE_CATEGORIES_INFO ." set
-          name = '". $this->system->database->input($this->data['name'][$language_code]) ."',
-          short_description = '". $this->system->database->input($this->data['short_description'][$language_code]) ."',
-          description = '". $this->system->database->input($this->data['description'][$language_code], true) ."',
-          head_title = '". $this->system->database->input($this->data['head_title'][$language_code]) ."',
-          h1_title = '". $this->system->database->input($this->data['h1_title'][$language_code]) ."',
-          meta_description = '". $this->system->database->input($this->data['meta_description'][$language_code]) ."',
-          meta_keywords = '". $this->system->database->input($this->data['meta_keywords'][$language_code]) ."'
-          where category_id = '". (int)$this->data['id'] ."'
-          and language_code = '". $this->system->database->input($language_code) ."'
+          name = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($this->data['name'][$language_code]) : '') ."',
+          short_description = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($this->data['short_description'][$language_code]) : '') ."',
+          description = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($this->data['description'][$language_code], true) : '') ."',
+          head_title = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($this->data['head_title'][$language_code]) : '') ."',
+          h1_title = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($this->data['h1_title'][$language_code]) : '') ."',
+          meta_description = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($this->data['meta_description'][$language_code]) : '') ."',
+          meta_keywords = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($this->data['meta_keywords'][$language_code]) : '') ."'
+          where category_id = '". (!empty($this->data['name'][$language_code]) ? (int)$this->data['id'] : '') ."'
+          and language_code = '". (!empty($this->data['name'][$language_code]) ? $this->system->database->input($language_code) : '') ."'
           limit 1;"
         );
       }

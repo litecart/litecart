@@ -1,24 +1,5 @@
 <?php
   
-  $delimiter = ';';
-  ini_set('auto_detect_line_endings', true);
-  
-  function csv_output_row($array) {
-    global $system;
-    
-    $delimiter = ';';
-    
-    foreach ($array as $key => $value) {
-      $array[$key] = html_entity_decode($value, ENT_QUOTES, $system->language->selected['charset']).'"';
-      $array[$key] = '"'.str_replace('"', '\"', $value).'"';
-    }
-    
-    $row = implode($delimiter, $array) . PHP_EOL;
-    if (strtolower($system->language->selected['charset']) == 'utf-8') $row = utf8_decode($row);
-    
-    return $row;
-  }
-  
   if (!empty($_POST['import_categories'])) {
     
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
@@ -27,164 +8,131 @@
       echo "CSV Import\r\n"
          . "----------\r\n";
       
-      if (($handle = fopen($_FILES['file']['tmp_name'], "r")) !== FALSE) {
+      $csv = file_get_contents($_FILES['file']['tmp_name']);
+      
+      $csv = $system->functions->csv_decode($csv);
+      
+      foreach ($csv as $row) {
         
-        $map = array(
-          'parent_code' => 'parent_code',
-          'code' => 'code',
-          'name' => 'name',
-          'short_description' => 'short_description',
-          'description' => 'description',
-          'keywords' => 'keywords',
-          'image' => 'image',
-          'status' => 'status',
-          'priority' => 'priority',
-          'language_code' => 'language_code',
-          'currency_code' => 'currency_code',
-        );
+      // Find category
+        if (!empty($row['code'])) {
+          $category_query = $system->database->query(
+            "select id from ". DB_TABLE_CATEGORIES ."
+            where code = '". $system->database->input($row['code']) ."'
+            limit 1;"
+          );
+        } else {
+          echo "[Skipped] Could not identify category on line $line. Missing code.\r\n";
+          continue;
+        }
         
-        $line = 0;
-        while (($data = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
-          $line++;
-          
-        // Register keys
-          if (empty($keys)) {
-            $keys = array();
-            foreach ($data as $key) {
-            
-              if (!in_array($key, array_keys($map))) echo '[Warning] Unknown field name \''. $key .'\'.';
-              $keys[] = $system->database->input($key);
-            }
+        $category = $system->database->fetch($category_query);
+        
+      // No category, let's create it
+        if (empty($category)) {
+          if (empty($_POST['insert_categories'])) {
+            echo "[Skipped] New category on line $line was not inserted to database.\r\n";
             continue;
-            
-        // Fetch data
+          }
+          $category = new ctrl_category();
+          echo "Inserting new category '{$row['name']}'\r\n";
+          
+      // Get category
+        } else {
+          $category = new ctrl_category($category['id']);
+          echo "Updating existing category '{$row['name']}'\r\n";
+        }
+        
+      // Set new category data
+        foreach (array('status', 'code', 'image', 'parent_id') as $field) {
+          if (isset($row[$field])) $category->data[$field] = $row[$field];
+        }
+        
+      // Set category info data
+        foreach (array('name', 'short_description', 'description', 'keywords') as $field) {
+          if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
+        }
+        
+      // Set parent category
+        if (!empty($row['parent_code'])) {
+          $parent_category_query = $system->database->query(
+            "select id from ". DB_TABLE_CATEGORIES ."
+            where code = '". $system->database->input($row['parent_code']) ."'
+            limit 1;"
+          );
+          $parent_category = $system->database->fetch($parent_category_query);
+          
+          if (!empty($parent_category)) {
+            $category->data['parent_id'] = $parent_category['id'];
           } else {
-            
-            if (count($data) != count($keys)) {
-              echo "[Skipped] The number of columns doesn't match on $line.\r\n";
-              continue;
-            }
-            
-            $data = array_combine($keys, $data);
-            
-            foreach ($data as $key => $value) {
-              if (strtolower($system->language->selected['charset']) == 'utf-8') {
-                $data[$map[$key]] = utf8_encode($value);
-              } else {
-                $data[$map[$key]] = $value;
-              }
-            }
-            
-          // Find category
-            if (!empty($data['code'])) {
-              $category_query = $system->database->query(
-                "select id from ". DB_TABLE_CATEGORIES ."
-                where code = '". $system->database->input($data['code']) ."'
-                limit 1;"
-              );
-            } else {
-              echo "[Skipped] Could not identify category on line $line. Missing code.\r\n";
-              continue;
-            }
-            
-            $category = $system->database->fetch($category_query);
-            
-          // No category, let's create it
-            if (empty($category)) {
-              if (empty($_POST['insert_categories'])) {
-                echo "[Skipped] New category on line $line was not inserted to database.\r\n";
-                continue;
-              }
-              $category = new ctrl_category();
-              echo "Inserting new category '{$data['name']}'\r\n";
-              
-          // Get category
-            } else {
-              $category = new ctrl_category($category['id']);
-              echo "Updating existing category '{$data['name']}'\r\n";
-            }
-            
-          // Set new category data
-            foreach (array('status', 'code', 'image', 'parent_id') as $field) {
-              if (isset($data[$field])) $category->data[$field] = $data[$field];
-            }
-            
-          // Set category info data
-            foreach (array('name', 'short_description', 'description', 'keywords') as $field) {
-              if (isset($data[$field])) $category->data[$field][$data['language_code']] = $data[$field];
-            }
-            
-          // Set parent category
-            if (!empty($data['parent_code'])) {
-              $parent_category_query = $system->database->query(
-                "select id from ". DB_TABLE_CATEGORIES ."
-                where code = '". $system->database->input($data['parent_code']) ."'
-                limit 1;"
-              );
-              $parent_category = $system->database->fetch($parent_category_query);
-              
-              if (!empty($parent_category)) {
-                $category->data['parent_id'] = $parent_category['id'];
-              } else {
-                echo " - Could not link category to parent. Parent not found.\r\n";
-              }
-            }
-            
-            $category->save();
+            echo " - Could not link category to parent. Parent not found.\r\n";
           }
         }
-        fclose($handle);
+        
+        $category->save();
       }
+      
       exit;
     }
   }
   
   if (!empty($_POST['export_categories'])) {
     
-    if (empty($_POST['language_code'])) die('Error: You must select a language code');
+    if (empty($_POST['language_code'])) $system->notices->add('errors', $system->language->translate('error_must_select_a_language', 'You must select a language'));
     
-    header('Content-type: application/csv; charset=iso-8859-1');
-    header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
-    
-    echo csv_output_row(array(
-      'parent_code',
-      'code',
-      'name',
-      'short_description',
-      'description',
-      'keywords',
-      'image',
-      'status',
-      'priority',
-      'language_code',
-    ));
-    
-    $categories_query = $system->database->query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
-    while ($category = $system->database->fetch($categories_query)) {
-      $category = new ref_category($category['id']);
+    if (empty($system->notices->data['errors'])) {
       
-      $parent_category_query = $system->database->query(
-        "select * from ". DB_TABLE_CATEGORIES ."
-        where id = '". (int)$category->parent_id ."'
-        limit 1;"
-      );
-      $parent_category = $system->database->fetch($parent_category_query);
+      ob_clean();
       
-      echo csv_output_row(array(
-        $parent_category['code'],
-        $category->code,
-        $category->name[$_POST['language_code']],
-        $category->short_description[$_POST['language_code']],
-        $category->description[$_POST['language_code']],
-        $category->keywords[$_POST['language_code']],
-        $category->image,
-        $category->status,
-        $category->priority,
-        $_POST['language_code'],
-      ));
+      $csv = array();
+      
+      $categories_query = $system->database->query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
+      while ($category = $system->database->fetch($categories_query)) {
+        $category = new ref_category($category['id']);
+        
+        $parent_category_query = $system->database->query(
+          "select * from ". DB_TABLE_CATEGORIES ."
+          where id = '". (int)$category->parent_id ."'
+          limit 1;"
+        );
+        $parent_category = $system->database->fetch($parent_category_query);
+        
+        $csv[] = array(
+          'parent_code' => $parent_category['code'],
+          'code' => $category->code,
+          'name' => $category->name[$_POST['language_code']],
+          'short_description' => $category->short_description[$_POST['language_code']],
+          'description' => $category->description[$_POST['language_code']],
+          'keywords' => $category->keywords,
+          'image' => $category->image,
+          'status' => $category->status,
+          'priority' => $category->priority,
+          'language_code' => $_POST['language_code'],
+        );
+      }
+      
+      if ($_POST['output'] == 'screen') {
+        header('Content-type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
+      }
+      
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\r", $_POST['charset']);
+          break;
+        case 'Max':
+          echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\n", $_POST['charset']);
+          break;
+        case 'Win':
+        default:
+          echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\r\n", $_POST['charset']);
+          break;
+      }
+      
+      exit;
     }
-
-    exit;
   }
   
   if (!empty($_POST['import_products'])) {
@@ -428,98 +376,89 @@
   
   if (!empty($_POST['export_products'])) {
     
-    if (empty($_POST['language_code'])) die('Error: You must select a language code');
+    if (empty($_POST['language_code'])) $system->notices->add('errors', $system->language->translate('error_must_select_a_language', 'You must select a language'));
     
-    header('Content-type: application/csv; charset=iso-8859-1');
-    header('Content-Disposition: attachment; filename=products-'. $_POST['language_code'] .'.csv');
+    if (empty($system->notices->data['errors'])) {
     
-    echo csv_output_row(array(
-      'id',
-      'category_codes',
-      'manufacturer_name',
-      'status',
-      'code',
-      'sku',
-      //'ean',
-      'upc',
-      'taric',
-      'name',
-      'short_description',
-      'description',
-      'keywords',
-      'attributes',
-      'head_title',
-      'meta_description',
-      'meta_keywords',
-      'images',
-      'purchase_price',
-      'price',
-      'tax_class_id',
-      'quantity',
-      'weight',
-      'weight_class',
-      'delivery_status_id',
-      'sold_out_status_id',
-      'language_code',
-      'currency_code',
-      'date_valid_from',
-      'date_valid_to',
-    ));
-    
-    $products_query = $system->database->query(
-      "select p.id from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". $system->database->input($_POST['language_code']) ."')
-      order by pi.name;"
-    );
-    while ($product = $system->database->fetch($products_query)) {
-      $product = new ref_product($product['id']);
+      $csv = array();
       
-      $category_codes = array();
-      foreach ($product->categories as $category_id) {
-        $category_query = $system->database->query(
-          "select code from ". DB_TABLE_CATEGORIES ."
-          where id = '". (int)$category_id ."'
-          limit 1;"
+      ob_clean();
+      
+      $products_query = $system->database->query(
+        "select p.id from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". $system->database->input($_POST['language_code']) ."')
+        order by pi.name;"
+      );
+      while ($product = $system->database->fetch($products_query)) {
+        $product = new ref_product($product['id']);
+        
+        $category_codes = array();
+        foreach ($product->categories as $category_id) {
+          $category_query = $system->database->query(
+            "select code from ". DB_TABLE_CATEGORIES ."
+            where id = '". (int)$category_id ."'
+            limit 1;"
+          );
+          $category = $system->database->fetch($category_query);
+          $category_codes[] = $category['code'];
+        }
+        
+        $csv[] = array(
+          'id' => $product->id,
+          'category_codes' => implode(',', $category_codes),
+          'manufacturer_name' => $product->manufacturer['name'],
+          'status' => $product->status,
+          'code' => $product->code,
+          'sku' => $product->sku,
+          'upc' => $product->upc,
+          //'ean' => $product->ean,
+          'taric' => $product->taric,
+          'name' => $product->name[$_POST['language_code']],
+          'short_description' => $product->short_description[$_POST['language_code']],
+          'description' => $product->description[$_POST['language_code']],
+          'keywords' => $product->keywords,
+          'attributes' => $product->attributes[$_POST['language_code']],
+          'head_title' => $product->head_title[$_POST['language_code']],
+          'meta_description' => $product->meta_description[$_POST['language_code']],
+          'meta_keywords' => $product->meta_keywords[$_POST['language_code']],
+          'images' => implode(';', $product->images),
+          'purchase_price' => $product->purchase_price,
+          'price' => $product->price,
+          'tax_class_id' => $product->tax_class_id,
+          'quantity' => $product->quantity,
+          'weight' => $product->weight,
+          'weight_class' => $product->weight_class,
+          'delivery_status_id' => $product->delivery_status_id,
+          'sold_out_status_id' => $product->sold_out_status_id,
+          'language_code' => $_POST['language_code'],
+          'currency_code' => $_POST['currency_code'],
+          'date_valid_from' => $product->date_valid_from,
+          'date_valid_to' => $product->date_valid_to,
         );
-        $category = $system->database->fetch($category_query);
-        $category_codes[] = $category['code'];
+      }
+
+      if ($_POST['output'] == 'screen') {
+        header('Content-type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=products-'. $_POST['language_code'] .'.csv');
       }
       
-      echo csv_output_row(array(
-        $product->id,
-        implode(',', $category_codes),
-        $product->manufacturer['name'],
-        $product->status,
-        $product->code,
-        $product->sku,
-        $product->upc,
-        //$product->ean,
-        $product->taric,
-        $product->name[$_POST['language_code']],
-        $product->short_description[$_POST['language_code']],
-        $product->description[$_POST['language_code']],
-        $product->keywords,
-        $product->attributes[$_POST['language_code']],
-        $product->head_title[$_POST['language_code']],
-        $product->meta_description[$_POST['language_code']],
-        $product->meta_keywords[$_POST['language_code']],
-        implode(';', $product->images),
-        $product->purchase_price,
-        $product->price,
-        $product->tax_class_id,
-        $product->quantity,
-        $product->weight,
-        $product->weight_class,
-        $product->delivery_status_id,
-        $product->sold_out_status_id,
-        $_POST['language_code'],
-        $_POST['currency_code'],
-        $product->date_valid_from,
-        $product->date_valid_to,
-      ));
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\r", $_POST['charset']);
+          break;
+        case 'Max':
+          echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\n", $_POST['charset']);
+          break;
+        case 'Win':
+        default:
+          echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\r\n", $_POST['charset']);
+          break;
+      }
+      
+      exit;
     }
-
-    exit;
   }
 
 ?>
@@ -533,14 +472,28 @@
       <h3><?php echo $system->language->translate('title_import_from_csv', 'Import From CSV'); ?></h3>
       <table>
         <tr>
-          <td><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
+          <td colspan="3"><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
         </tr>
         <tr>
-          <td><?php echo $system->functions->form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_categories', 'Insert new categories'); ?></td>
+          <td colspan="3"><label><?php echo $system->functions->form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_categories', 'Insert new categories'); ?></label></td>
         </tr>
         <tr>
-          <td><?php echo $system->functions->form_draw_button('import_categories', $system->language->translate('title_import', 'Import'), 'submit'); ?></td>
+          <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+          <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+          <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3"><?php echo $system->functions->form_draw_button('import_categories', $system->language->translate('title_import', 'Import'), 'submit'); ?></td>
         </tr>
       </table>
       <?php echo $system->functions->form_draw_form_end(); ?>
@@ -548,21 +501,31 @@
     <td width="50%">
       <?php echo $system->functions->form_draw_form_begin('export_categories_form', 'post'); ?>
       <h3><?php echo $system->language->translate('title_export_to_csv', 'Export To CSV'); ?></h3>
-      <table>
-        <tr>
-          <td>
-            <?php echo $system->language->translate('title_language', 'Language'); ?><br />
-            <table style="margin: -5px;">
-              <tr>
-                <td><?php echo $system->functions->form_draw_languages_list('language_code').' '; ?></td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo $system->functions->form_draw_button('export_categories', $system->language->translate('title_export', 'Export'), 'submit'); ?></td>
-        </tr>
-      </table>
+        <table style="margin: -5px;">
+          <tr>
+            <td colspan="3"><?php echo $system->language->translate('title_language', 'Language'); ?><br />
+              <?php echo $system->functions->form_draw_languages_list('language_code').' '; ?></td>
+          </tr>
+          <tr>
+            <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
+              <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+            <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
+              <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+            <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
+              <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+          </tr>
+          <tr>
+            <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
+              <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+            <td><?php echo $system->language->translate('title_line_ending', 'Line Ending'); ?><br />
+              <?php echo $system->functions->form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux'))); ?></td>
+            <td><?php echo $system->language->translate('title_output', 'Output'); ?><br />
+              <?php echo $system->functions->form_draw_select_field('output', array(array($system->language->translate('title_file', 'File'), 'file'), array($system->language->translate('title_screen', 'Screen'), 'screen'))); ?></td>
+          </tr>
+          <tr>
+            <td colspan="3"><?php echo $system->functions->form_draw_button('export_categories', $system->language->translate('title_export', 'Export'), 'submit'); ?></td>
+          </tr>
+        </table>
       <?php echo $system->functions->form_draw_form_end(); ?>
     </td>
   </tr>
@@ -577,14 +540,28 @@
       <h3><?php echo $system->language->translate('title_import_from_csv', 'Import From CSV'); ?></h3>
       <table>
         <tr>
-          <td><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
+          <td colspan="3"><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
         </tr>
         <tr>
-          <td><?php echo $system->functions->form_draw_checkbox('insert_products', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_products', 'Insert new products'); ?></td>
+          <td colspan="3"><label><?php echo $system->functions->form_draw_checkbox('insert_products', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_products', 'Insert new products'); ?></label></td>
         </tr>
         <tr>
-          <td><?php echo $system->functions->form_draw_button('import_products', $system->language->translate('title_import', 'Import'), 'submit'); ?></td>
+          <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+          <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+          <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3"><?php echo $system->functions->form_draw_button('import_products', $system->language->translate('title_import', 'Import'), 'submit'); ?></td>
         </tr>
       </table>
       <?php echo $system->functions->form_draw_form_end(); ?></td>
@@ -598,9 +575,27 @@
           <td><?php echo $system->language->translate('title_currency', 'Currency'); ?><br />
             <?php echo $system->functions->form_draw_currencies_list('currency_code'); ?>
           </td>
+          <td>
+          </td>
         </tr>
         <tr>
-          <td colspan="2"><?php echo $system->functions->form_draw_button('export_products', $system->language->translate('title_export', 'Export'), 'submit'); ?></td>
+          <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+          <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+          <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+          <td><?php echo $system->language->translate('title_line_ending', 'Line Ending'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux'))); ?></td>
+          <td><?php echo $system->language->translate('title_output', 'Output'); ?><br />
+            <?php echo $system->functions->form_draw_select_field('output', array(array($system->language->translate('title_file', 'File'), 'file'), array($system->language->translate('title_screen', 'Screen'), 'screen'))); ?></td>
+        </tr>
+        <tr>
+          <td colspan="3"><?php echo $system->functions->form_draw_button('export_products', $system->language->translate('title_export', 'Export'), 'submit'); ?></td>
         </tr>
       </table>
       <?php echo $system->functions->form_draw_form_end(); ?></td>

@@ -44,7 +44,7 @@
       $system->breadcrumbs->add($category_name, $system->document->link('category.php', array('category_id' => $category_id)));
     }
   } else if (!empty($product->manufacturer)) {
-    $system->document->snippets['title'][] = $product->manufacturer['id'];
+    $system->document->snippets['title'][] = $product->manufacturer['name'];
     $system->breadcrumbs->add($system->language->translate('title_manufacturers', 'Manufacturers'), $system->document->link('manufacturers.php'));
     $system->breadcrumbs->add($system->functions->reference_get_manufacturer_name($product->manufacturer['id']), $system->document->link('manufacturer.php', array('manufacturer_id' => $product->manufacturer['id'])));
   }

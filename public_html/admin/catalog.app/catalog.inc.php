@@ -223,7 +223,7 @@
         $rowclass = 'odd';
         $output .= '<tr class="'. $rowclass .'">' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> <strong><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc'=> $_GET['doc'], 'category_id' => '0')) .'">'. $system->language->translate('title_root', '[Root]') .'</a></strong></td>' . PHP_EOL
+                 . '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> <strong><a href="'. $system->document->href_link('', array('category_id' => '0'), true) .'">'. $system->language->translate('title_root', '[Root]') .'</a></strong></td>' . PHP_EOL
                  . '  <td>&nbsp;</td>' . PHP_EOL
                  . '  <td>&nbsp;</td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
@@ -249,9 +249,9 @@
         $output .= '<tr class="'. $rowclass . (($category['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
                  . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($category['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $system->functions->form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL;
         if (@in_array($category['id'], $category_trail)) {
-          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <strong><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc'=> $_GET['doc'], 'category_id' => $category['id'])) .'">'. $category['name'] .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <strong><a href="'. $system->document->href_link('', array('category_id' => $category['id']), true) .'">'. $category['name'] .'</a></strong></td>' . PHP_EOL;
         } else {
-          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc'=> $_GET['doc'], 'category_id' => $category['id'])) .'">'. $category['name'] .'</a></td>' . PHP_EOL;
+          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('category_id' => $category['id']), true) .'">'. $category['name'] .'</a></td>' . PHP_EOL;
         }
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
                  . '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
