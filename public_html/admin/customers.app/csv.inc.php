@@ -6,7 +6,7 @@
     
       $csv = file_get_contents($_FILES['file']['tmp_name']);
       
-      $csv = $system->functions->csv_decode($csv);
+      $csv = $system->functions->csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
       
       foreach ($csv as $row) {
         
@@ -68,6 +68,8 @@
       );
     }
     
+    ob_clean();
+    
     if ($_POST['output'] == 'screen') {
       header('Content-type: text/plain; charset='. $_POST['charset']);
     } else {
@@ -77,14 +79,14 @@
     
     switch($_POST['eol']) {
       case 'Linux':
-        echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\r", $_POST['charset']);
+        echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
         break;
       case 'Max':
-        echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\n", $_POST['charset']);
+        echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
         break;
       case 'Win':
       default:
-        echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], "\r\n", $_POST['charset']);
+        echo $system->functions->csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
         break;
     }
     

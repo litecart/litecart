@@ -1,6 +1,6 @@
 <?php
   
-  function csv_encode($array, $delimiter=',', $enclosure='"', $escape='\\', $eol="\r\n", $charset='utf-8') {
+  function csv_encode($array, $delimiter=',', $enclosure='"', $escape='\\', $charset='utf-8', $eol="\r\n") {
     global $system;
     
     $fp = fopen('php://temp', 'r+');
@@ -30,7 +30,7 @@
     return preg_replace('/(\r\n|\r|\n)/', $eol, $output);
   }
   
-  function csv_decode($string, $delimiter=',', $enclosure='"', $escape='\\', $eol="\r\n", $charset='utf-8') {
+  function csv_decode($string, $delimiter=',', $enclosure='"', $escape='\\', $charset='utf-8') {
     global $system;
 
     $output = array();
