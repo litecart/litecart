@@ -75,9 +75,9 @@
     public function install() {
       global $system;
       
-      $this->uninstall();
-      
-      $this->_module->install();
+      if (method_exists($this->_module, 'uninstall')) {
+        $this->_module->uninstall();
+      }
       
       $installed_modules = explode(';', $this->system->settings->get($this->type.'_modules'));
       $installed_modules[] = $this->_module->id;
@@ -90,8 +90,8 @@
         limit 1;"
       );
       
-      if (method_exists($this->_module, 'after_install')) {
-        $this->_module->after_install();
+      if (method_exists($this->_module, 'install')) {
+        $this->_module->install();
       }
       
       $this->system->cache->set_breakpoint();
@@ -100,8 +100,8 @@
     public function uninstall() {
       global $system;
       
-      if (method_exists($this->_module, 'before_uninstall')) {
-        $this->_module->before_uninstall();
+      if (method_exists($this->_module, 'uninstall')) {
+        $this->_module->uninstall();
       }
       
       $installed_modules = explode(';', $this->system->settings->get($this->type.'_modules'));
