@@ -45,6 +45,6 @@ ErrorDocument 404 {BASE_DIR}error_document.php?code=404
 # GZip compress external content
 <IfModule mod_deflate.c>
   <FilesMatch "\.(css|js)$">
-     SetOutputFilter DEFLATE
+    SetOutputFilter DEFLATE
   </FilesMatch>
 </IfModule>

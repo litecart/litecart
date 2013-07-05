@@ -17,8 +17,6 @@
     foreach (array($_POST, $_GET) as $superglobal) {
       if (empty($superglobal)) continue;
       
-      //if (isset($superglobal[$name])) return $superglobal[$name];
-      
       foreach (explode('&', http_build_query($superglobal)) as $pair) {
         
         list($key, $value) = explode('=', $pair);
