@@ -9,6 +9,11 @@
     $_GET['language_1'] = $_GET['language_2'];
     unset($_GET['language_2']);
   }
+  if (isset($_GET['language_2']) && $_GET['language_2'] == 'en') {
+     $tmp = $_GET['language_1'];
+     $_GET['language_1'] = $_GET['language_2'];
+     $_GET['language_2'] = $tmp;
+  }
   
   if (!isset($_GET['page'])) $_GET['page'] = 1;
   

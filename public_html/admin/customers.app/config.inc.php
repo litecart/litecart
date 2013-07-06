@@ -7,7 +7,7 @@ $app_config = array(
   'menu' => array(
     array(
       'title' => $system->language->translate('title_customers', 'Customers'),
-      'doc' => 'catalog',
+      'doc' => 'customers',
       'params' => array(),
     ),
     array(

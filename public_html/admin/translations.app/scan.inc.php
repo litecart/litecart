@@ -1,7 +1,15 @@
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?></h1>
+<?php echo $system->functions->form_draw_form_begin('scan_form', 'post'); ?>
+  <p><?php echo $system->language->translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
+  <p><label><?php echo $system->functions->form_draw_checkbox('clean', '1'); ?> <?php echo $system->language->translate('text_delete_translations_not_present', 'Delete translations no longer present in files'); ?></label></p>
+  <p><?php echo $system->functions->form_draw_button('scan', $system->language->translate('title_scan', 'Scan'), 'submit', 'onclick="if(!confirm(\''. str_replace('\'', '\\\'', $system->language->translate('warning_backup_translations', 'Warning: Always backup your translations before continuing.')) .'\')) return false;"'); ?></p>
+<?php echo $system->functions->form_draw_form_end(); ?>
+
 <?php
   if (!empty($_POST['scan'])) {
-  
+    
+    echo '<hr />';
+    
     $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
     
@@ -45,7 +53,6 @@
         $found_translations++;
         if ($system->database->num_rows($system->database->query("select text_en from ". DB_TABLE_TRANSLATIONS ." where code = '". $system->database->input($code) ."' limit 1;")) == 0) {
           $new_translations++;
-          //echo $code ." = ". $translation ."<br />";
           $system->database->query(
             "insert into ". DB_TABLE_TRANSLATIONS ."
             (code, text_en, pages, date_created)
@@ -56,46 +63,45 @@
       }
     }
     
-    $settings_groups_query = $system->database->query(
-      "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
-    );
-    while ($group = $system->database->fetch($settings_groups_query)) {
-      $translation_keys[] = 'settings_group:'.$group['key'];
-      $translation_keys[] = 'settings_group:'.$group['key'];
-    }
     
-    $settings_query = $system->database->query(
-      "select `key` from ". DB_TABLE_SETTINGS ."
-      where setting_group_key != '';"
-    );
-    while ($setting = $system->database->fetch($settings_query)) {
-      $translation_keys[] = 'settings_key_title:'.$setting['key'];
-      $translation_keys[] = 'settings_key_description:'.$setting['key'];
-    }
-    
-    $translations_query = $system->database->query(
-      "select code from ". DB_TABLE_TRANSLATIONS .";"
-    );
-    while ($translation = $system->database->fetch($translations_query)) {
-      if (!in_array($translation['code'], $translation_keys)) {
-        $system->database->query(
-          "delete from ". DB_TABLE_TRANSLATIONS ."
-          where code = '". $system->database->input($translation['code']) ."'
-          limit 1;"
-        );
-        echo $translation['code'] . ' [DELETED]<br/>' . PHP_EOL;
-        $deleted_translations++;
+    if (!empty($_POST['clean'])) {
+      $settings_groups_query = $system->database->query(
+        "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
+      );
+      while ($group = $system->database->fetch($settings_groups_query)) {
+        $translation_keys[] = 'settings_group:title_'.$group['key'];
+        $translation_keys[] = 'settings_group:title_'.$group['key'];
+      }
+      
+      $settings_query = $system->database->query(
+        "select `key` from ". DB_TABLE_SETTINGS ."
+        where setting_group_key != '';"
+      );
+      while ($setting = $system->database->fetch($settings_query)) {
+        $translation_keys[] = 'settings_key:title_'.$setting['key'];
+        $translation_keys[] = 'settings_key:description_'.$setting['key'];
+      }
+      
+      $translations_query = $system->database->query(
+        "select code from ". DB_TABLE_TRANSLATIONS .";"
+      );
+      while ($translation = $system->database->fetch($translations_query)) {
+        if (!in_array($translation['code'], $translation_keys)) {
+          $system->database->query(
+            "delete from ". DB_TABLE_TRANSLATIONS ."
+            where code = '". $system->database->input($translation['code']) ."'
+            limit 1;"
+          );
+          echo $translation['code'] . ' [DELETED]<br/>' . PHP_EOL;
+          $deleted_translations++;
+        }
       }
     }
     
-    echo '<p>'. sprintf($system->language->translate('text_found_d_translations', 'Found %d translations in %d files.'), $found_translations, $found_files) .'</p>';
-    echo '<p>'. sprintf($system->language->translate('text_added_d_new_translations', 'Added %d new translations.'), $new_translations) .'</p>';
+    echo '<p>'. sprintf($system->language->translate('text_found_d_translations', 'Found %d translations in %d files'), $found_translations, $found_files) .'</p>';
+    echo '<p>'. sprintf($system->language->translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations) .'</p>';
     echo '<p>'. sprintf($system->language->translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) .'</p>';
     
-  } else {
-    echo $system->functions->form_draw_form_begin('scan_form', 'post')
-       . '<p>'. $system->language->translate('description_translations_scan', 'This will scan your files for new translations and delete translations no longer present in files.') .'</p>'
-       . $system->functions->form_draw_button('scan', $system->language->translate('title_scan_and_clean', 'Scan and Clean'), 'submit', 'onclick="if(!confirm(\''. str_replace('\'', '\\\'', $system->language->translate('warning_backup_translations', 'Warning: Always backup your translations before continuing.')) .'\')) return false;"')
-       . $system->functions->form_draw_form_end();
-    
   }
+  
+?>

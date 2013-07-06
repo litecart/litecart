@@ -14,7 +14,7 @@ $app_config = array(
   );
   while ($group = $system->database->fetch($settings_groups_query)) {
     $app_config['menu'][] = array(
-      'title' => $system->language->translate('title_settings_group:'.$group['key'], $group['name']),
+      'title' => $system->language->translate('settings_group:title_'.$group['key'], $group['name']),
       'doc' => $group['key'],
       'params' => array(),
     );

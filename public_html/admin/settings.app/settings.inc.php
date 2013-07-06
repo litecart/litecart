@@ -60,7 +60,7 @@
     if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" nowrap="nowrap"><u><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></u><br /><?php echo $system->language->translate('settings_key_description:'.$setting['key'], $setting['description'], ''); ?></td>
+    <td align="left" nowrap="nowrap"><u><?php echo $system->language->translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br /><?php echo $system->language->translate('settings_key:description_'.$setting['key'], $setting['description'], ''); ?></td>
     <td align="left" valign="middle"><?php echo $system->functions->form_draw_hidden_field('key', $setting['key']) . $system->functions->form_draw_function($setting['function'], 'value', $setting['value']); ?></td>
     <td align="right" valign="middle" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
   </tr>
@@ -68,7 +68,7 @@
 	} else {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" nowrap="nowrap"><?php echo $system->language->translate('settings_key_title:'.$setting['key'], $setting['title']); ?></td>
+    <td align="left" nowrap="nowrap"><?php echo $system->language->translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
     <td align="left"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128).'...' : $setting['value']); ?></td>
     <td align="right" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
