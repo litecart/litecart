@@ -64,13 +64,13 @@
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
+                <?php echo $system->functions->form_draw_text_field('name', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_description', 'description'); ?></strong><br />
-                <?php echo $system->functions->form_draw_textarea('description', true, 'style="width: 360px;"'); ?>
+                <?php echo $system->functions->form_draw_textarea('description', true, 'data-size="large"'); ?>
             </td>
           </tr>
           <tr>
@@ -82,13 +82,13 @@
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_phone', 'Phone'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input('phone', true, 'text', ''); ?>
+                <?php echo $system->functions->form_draw_text_field('phone', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
               <strong><?php echo $system->language->translate('title_link', 'Link'); ?></strong><br />
-                <?php echo $system->functions->form_draw_input('link', true, 'text', ''); ?>
+                <?php echo $system->functions->form_draw_text_field('link', true); ?>
             </td>
           </tr>
           <tr>

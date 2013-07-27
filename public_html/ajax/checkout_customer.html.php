@@ -166,42 +166,42 @@
               <table>
                 <tr>
                   <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
-                    <?php echo $system->functions->form_draw_input('tax_id', true, 'text', ''); ?></td>
+                    <?php echo $system->functions->form_draw_text_field('tax_id', true); ?></td>
                   <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-                    <?php echo $system->functions->form_draw_input('company', true, 'text', ''); ?></td>
+                    <?php echo $system->functions->form_draw_text_field('company', true); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input('firstname', true, 'text', ''); ?></td>
+                    <?php echo $system->functions->form_draw_text_field('firstname', true); ?></td>
                   <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input('lastname', true, 'text', ''); ?></td>
+                    <?php echo $system->functions->form_draw_text_field('lastname', true); ?></td>
                 </tr>
                 <?php if (empty($system->customer->data['id'])) { ?>
                 <tr>
                   <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
                     <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
                   <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-                  <?php echo $system->functions->form_draw_input('phone', true, 'text', ''); ?></td>                </tr>
+                  <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>                </tr>
                 <?php if ($system->settings->get('fields_customer_password') == 'true') { ?>
                 <tr>
                   <td><?php echo $system->language->translate('title_password', 'Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_input('password', '', 'password', ''); ?></td>
+                  <?php echo $system->functions->form_draw_password_field('password', ''); ?></td>
                   <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_input('confirmed_password', '', 'password', ''); ?></td>
+                  <?php echo $system->functions->form_draw_password_field('confirmed_password', ''); ?></td>
                 </tr>
                 <?php } ?>
                 <?php } ?>
                 <tr>
                   <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input('address1', true, 'text', ''); ?></td>
+                    <?php echo $system->functions->form_draw_text_field('address1', true); ?></td>
                   <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-                  <?php echo $system->functions->form_draw_input('address2', true, 'text', ''); ?></td>
+                  <?php echo $system->functions->form_draw_text_field('address2', true); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input('postcode', true, 'text', 'style="width: 50px;"'); ?></td>
+                    <?php echo $system->functions->form_draw_text_field('postcode', true, 'style="width: 50px;"'); ?></td>
                   <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_input('city', true, 'text', ''); ?></td>
+                    <?php echo $system->functions->form_draw_text_field('city', true); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
@@ -217,26 +217,26 @@
                 <table>
                   <tr>
                     <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-                      <?php echo $system->functions->form_draw_input('shipping_address[company]', true, 'text', ''); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[company]', true); ?></td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input('shipping_address[firstname]', true, 'text', ''); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[firstname]', true); ?></td>
                     <td><?php echo $system->language->translate('title_lastname', 'LastName'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input('shipping_address[lastname]', true, 'text', ''); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[lastname]', true); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input('shipping_address[address1]', true, 'text', ''); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[address1]', true); ?></td>
                     <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-                      <?php echo $system->functions->form_draw_input('shipping_address[address2]', true, 'text', ''); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[address2]', true); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input('shipping_address[postcode]', true, 'text', 'style="width: 50px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[postcode]', true, 'style="width: 50px;"'); ?></td>
                     <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_input('shipping_address[city]', true, 'text', ''); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[city]', true); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />

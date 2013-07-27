@@ -68,27 +68,27 @@
 <table>
   <tr>
     <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
-      <?php echo $system->functions->form_draw_input('tax_id', true); ?></td>
+      <?php echo $system->functions->form_draw_text_field('tax_id', true); ?></td>
     <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-      <?php echo $system->functions->form_draw_input('company', true); ?></td>
+      <?php echo $system->functions->form_draw_text_field('company', true); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
-      <?php echo $system->functions->form_draw_input('firstname', true); ?></td>
+      <?php echo $system->functions->form_draw_text_field('firstname', true); ?></td>
     <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
-      <?php echo $system->functions->form_draw_input('lastname', true); ?></td>
+      <?php echo $system->functions->form_draw_text_field('lastname', true); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
-      <?php echo $system->functions->form_draw_input('address1', true); ?></td>
+      <?php echo $system->functions->form_draw_text_field('address1', true); ?></td>
     <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-    <?php echo $system->functions->form_draw_input('address2', true); ?></td>
+    <?php echo $system->functions->form_draw_text_field('address2', true); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_city', 'City'); ?><br />
-      <?php echo $system->functions->form_draw_input('city', true); ?></td>
+      <?php echo $system->functions->form_draw_text_field('city', true); ?></td>
     <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?><br />
-      <?php echo $system->functions->form_draw_input('postcode', true); ?></td>
+      <?php echo $system->functions->form_draw_text_field('postcode', true); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
@@ -100,13 +100,13 @@
     <td width="50%"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
       <?php echo $system->functions->form_draw_email_field('email', true); ?></td>
     <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-    <?php echo $system->functions->form_draw_input('phone', true); ?></td>
+    <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_newsletter', 'Newsletter'); ?><br />
       <?php echo $system->functions->form_draw_checkbox('newsletter', '1', true); ?> <?php echo $system->language->translate('title_subscribe', 'Subscribe'); ?></td>
     <td><?php echo !empty($customer->data['id']) ? $system->language->translate('title_new_password', 'New Password') : $system->language->translate('title_password', 'Password'); ?><br />
-      <?php echo $system->functions->form_draw_input('new_password', '', 'password'); ?></td>
+      <?php echo $system->functions->form_draw_text_field('new_password', '', 'password'); ?></td>
   </tr>
 </table>
 

@@ -120,62 +120,62 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 639-1)</strong><br />
-        <?php echo $system->functions->form_draw_input('code', true, 'text', 'style="width: 25px;"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?></a>
+        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?></a>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
+        <?php echo $system->functions->form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_charset', 'Charset'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'text', 'placeholder="UTF-8" style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'placeholder="UTF-8" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_system_locale', 'System Locale'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('locale', true, 'text', 'placeholder="xx_XX.utf8" style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('locale', true, 'placeholder="xx_XX.utf8" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_format', 'Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('format_date', true, 'text', 'placeholder="%e %b %Y" style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('format_date', true, 'placeholder="%e %b %Y" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_time_format', 'Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('format_time', true, 'text', 'placeholder="%I:%M %p" style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('format_time', true, 'placeholder="%I:%M %p" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_date_format', 'Raw Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('raw_date', true, 'text', 'placeholder="m/d/y" style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('raw_date', true, 'placeholder="m/d/y" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_time_format', 'Raw Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_input('raw_time', true, 'text', 'placeholder="h:i:s a" style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('raw_time', true, 'placeholder="h:i:s a" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_decimal_point', 'Decimal Point'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('decimal_point', true, 'text', 'placeholder="." style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('decimal_point', true, 'placeholder="." data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_thousands_sep', 'Thousands Separator'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('thousands_sep', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('thousands_sep', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_force_currency_code', 'Force Currency Code'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('currency_code', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('priority', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_number_field('priority', true); ?>
       </td>
     </tr>
     <tr>

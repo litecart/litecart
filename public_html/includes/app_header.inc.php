@@ -1,5 +1,8 @@
 <?php
   
+  define('PLATFORM_NAME', 'LiteCart');
+  define('PLATFORM_VERSION', '1.0.1');
+  
 // Start redirecting output to the output buffer
   ob_start();
   
@@ -80,7 +83,6 @@
         break;
     }
     
-    /*
     $backtraces = debug_backtrace();
     $backtraces = array_slice($backtraces, 2);
     
@@ -90,16 +92,15 @@
         $output .= "<br />" . PHP_EOL . "  <- <b>{$backtrace['file']}</b> on line <b>{$backtrace['line']}</b> in <b>{$backtrace['function']}()</b>";
       }
     }
-    */
     
-    if (!in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
-      $output .= " {$_SERVER['REQUEST_URI']}";
-    }
-    
-    if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {
-      echo strip_tags($output) . PHP_EOL;
+    if (in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
+      if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {
+        echo strip_tags($output) . PHP_EOL;
+      } else {
+        echo $output . '<br />' . PHP_EOL;
+      }
     } else {
-      echo $output . '<br />' . PHP_EOL;
+      if (!empty($_SERVER['REQUEST_URI'])) $output .= " {$_SERVER['REQUEST_URI']}";
     }
     
     if (ini_get('log_errors')) {

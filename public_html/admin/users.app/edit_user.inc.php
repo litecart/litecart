@@ -69,23 +69,23 @@
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_username', 'Username'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('username', true, 'text', ''); ?>
+          <?php echo $system->functions->form_draw_text_field('username', true); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_password', 'Password'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('password', true, 'password', ''); ?>
+          <?php echo $system->functions->form_draw_password_field('password', ''); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
         <strong><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('confirmed_password', true, 'password', ''); ?>
+          <?php echo $system->functions->form_draw_password_field('confirmed_password', ''); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($manufacturer['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php //echo (!empty($_GET['user'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
     </tr>
   </table>
 <?php echo $system->functions->form_draw_form_end(); ?>

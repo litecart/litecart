@@ -73,7 +73,7 @@
   $use_br = false;
   foreach (array_keys($system->language->languages) as $language_code) {
     if ($use_br) echo '<br />';
-    echo $system->functions->form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'style="width: 360px;"');
+    echo $system->functions->form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'data-size="large"');
     $use_br = true;
   }
 ?>
@@ -214,7 +214,7 @@
 ?>
     <tr>
       <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_range', 'Range'); ?>: <?php echo $system->functions->form_draw_input('values['. $key .'][value]', true, 'text', 'style="width: 50px;"'); ?> (<?php echo $system->language->translate('title_example', 'Example'); ?>: 100-400)</td>
+      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_range', 'Range'); ?>: <?php echo $system->functions->form_draw_text_field('values['. $key .'][value]', true, 'data-size="medium"'); ?> (<?php echo $system->language->translate('title_example', 'Example'); ?>: 100-400)</td>
       <td></td>
     </tr>
   </table>
@@ -236,7 +236,7 @@
 ?>
     <tr>
       <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo $system->functions->form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_input('values['. $key .'][value]', true, 'text'); ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->language->translate('title_default', 'Default'); ?>: <?php echo $system->functions->form_draw_text_field('values['. $key .'][value]', true); ?></td>
       <td></td>
     </tr>
   </table>

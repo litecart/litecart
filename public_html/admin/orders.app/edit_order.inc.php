@@ -172,7 +172,7 @@
           <td><?php echo $system->language->translate('title_weight', 'Weight'); ?><br />
             <?php echo $system->weight->format($order->data['weight'], $order->data['weight_class']) ?></td>
           <td><?php echo $system->language->translate('title_tracking_id', 'Tracking ID'); ?><br />
-            <?php echo $system->functions->form_draw_input('shipping_tracking_id', true, 'text'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('shipping_tracking_id', true); ?></td>
           <td></td>
         </tr>
       </table>
@@ -186,33 +186,33 @@
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[company]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[company]', true); ?></td>
           <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[tax_id]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[tax_id]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[firstname]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[firstname]', true); ?></td>
           <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[lastname]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[lastname]', true); ?></td>
         </tr>
         <tr>
           <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
             <?php echo $system->functions->form_draw_email_field('customer[email]', true); ?></td>
           <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-          <?php echo $system->functions->form_draw_input('customer[phone]', true); ?></td>
+          <?php echo $system->functions->form_draw_text_field('customer[phone]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[address1]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[address1]', true); ?></td>
           <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-          <?php echo $system->functions->form_draw_input('customer[address2]', true); ?></td>
+          <?php echo $system->functions->form_draw_text_field('customer[address2]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_city', 'City'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[city]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[city]', true); ?></td>
           <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[postcode]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[postcode]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
@@ -258,26 +258,26 @@
       <table>
           <tr>
             <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-              <?php echo $system->functions->form_draw_input('customer[shipping_address][company]', true); ?></td>
+              <?php echo $system->functions->form_draw_text_field('customer[shipping_address][company]', true); ?></td>
             <td nowrap="nowrap"></td>
           </tr>
         <tr>
           <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[shipping_address][firstname]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[shipping_address][firstname]', true); ?></td>
           <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[shipping_address][lastname]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[shipping_address][lastname]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[shipping_address][address1]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[shipping_address][address1]', true); ?></td>
           <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-          <?php echo $system->functions->form_draw_input('customer[shipping_address][address2]', true); ?></td>
+          <?php echo $system->functions->form_draw_text_field('customer[shipping_address][address2]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_city', 'City'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[shipping_address][city]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[shipping_address][city]', true); ?></td>
           <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?><br />
-            <?php echo $system->functions->form_draw_input('customer[shipping_address][postcode]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('customer[shipping_address][postcode]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
@@ -345,8 +345,8 @@
 ?>
     <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])); ?>" target="_blank"><?php echo $_POST['items'][$key]['name']; ?></a></td>
     <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_number_field('items['. $key .'][quantity]', true); ?></td>
-    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items['. $key .'][price]', true, 'text', 'style="width: 75px; text-align: right;"'); ?></td>
-    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items['. $key .'][tax]', true, 'text', 'style="width: 75px; text-align: right;"'); ?></td>
+    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_decimal_field('items['. $key .'][price]', true); ?></td>
+    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_decimal_field('items['. $key .'][tax]', true); ?></td>
     <td nowrap="nowrap" align="right"><?php echo $system->tax->get_class_name($_POST['items'][$key]['tax_class_id']); ?></td>-->
     <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
@@ -380,8 +380,8 @@
                 + '    <td nowrap="nowrap" align="center"><a class="add_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
                 + '    <td nowrap="nowrap" align="left"><?php echo $system->functions->form_draw_hidden_field('items[new_item_index][id]', ''); ?><?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), $system->functions->form_draw_products_list('items[new_item_index][product_id]', '', false, 'style="width: 350px; text-align: left;"')); ?></td>'
                 + '    <td nowrap="nowrap" align="center"><?php echo $system->functions->form_draw_number_field('items[new_item_index][quantity]', '1'); ?></td>'
-                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items[new_item_index][price]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
-                //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('items[new_item_index][tax]', 0, 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
+                + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_decimal_field('items[new_item_index][price]', 0); ?></td>'
+                //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_decimal_field('items[new_item_index][tax]', 0); ?></td>'
                 //+ '    <td nowrap="nowrap" align="right">&nbsp;</td>'
                 + '    <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                 + '  </tr>';
@@ -423,11 +423,11 @@
     <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>
     <td nowrap="nowrap" align="right">
       <?php echo $system->functions->form_draw_hidden_field('order_total['. $key .'][id]', true); ?>
-      <?php echo $system->functions->form_draw_input('order_total['. $key .'][module_id]', true, 'text', 'style="width: 75px;"'); ?>
+      <?php echo $system->functions->form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small"'); ?>
     </td>
-    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total['. $key .'][title]', true, 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>
-    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total['. $key .'][value]', true, 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, '', $system->language->translate('title_calculate', 'Calculate')); ?></td>
-    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total['. $key .'][tax]', true, 'text', 'style="width: 75px; text-align: right;"'); ?></td>-->
+    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_text_field('order_total['. $key .'][title]', true, 'style="width: 200px; text-align: right;"'); ?> :</td>
+    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_text_field('order_total['. $key .'][value]', true, 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, '', $system->language->translate('title_calculate', 'Calculate')); ?></td>
+    <!--<td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_text_field('order_total['. $key .'][tax]', true, 'style="width: 75px; text-align: right;"'); ?></td>-->
     <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_function('tax_classes()', 'order_total['. $key .'][tax_class_id]', true); ?></td>
     <td nowrap="nowrap"><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
   </tr>
@@ -445,10 +445,10 @@
     event.preventDefault();
     var output = '  <tr>'
                + '    <td nowrap="nowrap" align="right"><a href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" class="add_ot_row" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
-               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo $system->functions->form_draw_input('order_total[new_ot_row_index][module_id]', '', 'text', 'style="width: 75px;"'); ?></td>'
-               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_input('order_total[new_ot_row_index][title]', '', 'text', 'style="width: 200px; text-align: right;"'); ?> :</td>'
-               //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][tax]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total[new_ot_row_index][calculate]', 'true', 'true', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>'
-               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][value]', $system->currency->format(0, false, true), 'text', 'style="width: 75px; text-align: right;"'); ?></td>'
+               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo $system->functions->form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"'); ?></td>'
+               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="width: 200px; text-align: right;"'); ?> :</td>'
+               //+ '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][tax]', $system->currency->format(0, false, true), 'style="width: 75px; text-align: right;"'); ?><?php echo $system->functions->form_draw_checkbox('order_total[new_ot_row_index][calculate]', 'true', 'true', '', $system->language->translate('title_calculate', 'Calculate')); ?></td>'
+               + '    <td nowrap="nowrap" align="right"><?php echo $system->functions->form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][value]', $system->currency->format(0, false, true), 'style="width: 75px; text-align: right;"'); ?></td>'
                + '    <td nowrap="nowrap" align="right"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_function('tax_classes()', 'order_total[new_ot_row_index][tax_class_id]', '', 'text', 'style="width: 75px; text-align: right;"')); ?></td>'
                + '    <td nowrap="nowrap"><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                + '  </tr>';

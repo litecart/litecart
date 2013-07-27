@@ -51,12 +51,12 @@
   <table>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
+        <?php echo $system->functions->form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('description', true, 'text', 'style="width: 360px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('description', true, 'data-size="large"'); ?>
       </td>
     </tr>
   </table>

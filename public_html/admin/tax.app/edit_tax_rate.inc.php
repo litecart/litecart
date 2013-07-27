@@ -63,12 +63,12 @@
         <table>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
+              <?php echo $system->functions->form_draw_text_field('name', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('description', true, 'text', 'style="width: 360px;"'); ?>
+              <?php echo $system->functions->form_draw_text_field('description', true, 'data-size="large"'); ?>
             </td>
           </tr>
           <tr>
@@ -83,7 +83,7 @@
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_rate', 'Rate'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('rate', true, 'text', 'style="width: 60px;"'); ?> <?php echo $system->functions->form_draw_select_field('type', array(array('percent'), array('fixed')), true); ?>
+              <?php echo $system->functions->form_draw_decimal_field('rate', true); ?> <?php echo $system->functions->form_draw_select_field('type', array(array('percent'), array('fixed')), true); ?>
             </td>
           </tr>
           <tr>

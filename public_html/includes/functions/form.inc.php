@@ -1,10 +1,8 @@
 <?php
   
   function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
-    global $system;
-    
     return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
-          . ((strtolower($method) == 'post') ? form_draw_input('token', $system->form->session_post_token(), 'hidden') . PHP_EOL : '');
+          . ((strtolower($method) == 'post') ? form_draw_hidden_field('token', $GLOBALS['system']->form->session_post_token()) . PHP_EOL : '');
   }
   
   function form_draw_form_end() {
@@ -52,14 +50,16 @@
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
-    return form_draw_input($name, $value, 'checkbox', ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
+    
+    return '<input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false) . (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) .' />';
   }
   
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='', $hint='') {
-    global $system;
     if ($value === true) $value = form_reinsert_value($name);
     
-    return '<span class="input-wrapper">'. $system->currency->currencies[$currency_code]['prefix'] . form_draw_input_field($name, $value, $parameters, $hint) . $system->currency->currencies[$currency_code]['suffix'] .'</span>';
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    
+    return '<span class="input-wrapper">'. $GLOBALS['system']->currency->currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. $GLOBALS['system']->currency->currencies[$currency_code]['suffix'] .'</span>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='', $hint='') {
@@ -74,7 +74,9 @@
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" maxlength="10" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    
+    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_datetime_field($name, $value=true, $parameters='', $hint='') {
@@ -89,57 +91,73 @@
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    return '<input type="datetime" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="datetime" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=0, $max=0, $parameters='', $hint='') {
     if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
-    return form_draw_input($name, $value, 'number', 'step="any" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' style="width: 75px; text-align: right;"', $hint);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    
+    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_email_field($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'email', $parameters, $hint);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_file_field($name, $parameters='', $hint='') {
     return form_draw_input($name, '', 'file', $parameters, $hint);
   }
   
-  function form_draw_hidden_field($name, $value=true) {
+  function form_draw_hidden_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'hidden');
+    
+    return form_draw_input($name, $value, 'hidden', $parameters);
   }
   
   function form_draw_input($name, $value=true, $type='text', $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
     return '<input type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
-  }
-  
-  function form_draw_input_field($name, $value=true, $parameters='', $hint='') {
-    return form_draw_input($name, $value, 'text', $parameters, $hint);
   }
   
   function form_draw_number_field($name, $value=true, $min='', $max='', $parameters='', $hint='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
-    return form_draw_input($name, $value, 'number', 'step="1" min="'. (($min) ? (int)$min : false) .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' style="width: 75px; text-align: right;"', $hint);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    
+    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_password_field($name, $value=true, $parameters='', $hint='') {
-    return form_draw_input($name, $value, 'password', $parameters, $hint);
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
-    return form_draw_input($name, $value, 'radio', ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false), $hint);
+    
+    return '<input type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false) . (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) .' />';
   }
   
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='', $hint='') {
-    return form_draw_input_field($name, $value, 'range', 'min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' ' . $parameters : false));
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='', $hint='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: middle;" /> '. form_draw_input($name, $value, 'text', $parameters, $hint) .'</span>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters, $hint) .'</span>';
   }
   
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='', $hint='') {
@@ -152,12 +170,16 @@
   
   function form_draw_search_field($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'search', $parameters, $hint);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="search" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="search" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $hint='') {
-    
     if (!is_array($options)) $options = array($options);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
@@ -177,33 +199,54 @@
   
   function form_draw_static_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
+    
     return '<div class="input-static"'. (($parameters) ? ' '.$parameters : false) .'>'. (($value) ? $value : '&nbsp;') .'</div>';
   }
   
   function form_draw_textarea($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="large"';
+    
     return '<textarea name="'. htmlspecialchars($name) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
+  }
+  
+  function form_draw_text_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name, $value);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_time_field($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'time', 'maxlength="6"' . (($parameters) ? ' '.$parameters : false), $hint);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+
   }
   
   function form_draw_url_field($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
-    return form_draw_input($name, $value, 'url', $parameters, $hint);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="url" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="url" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_wysiwyg_field($name, $value=true, $parameters='', $hint='') {
     global $system;
+    
+    if ($value === true) $value = form_reinsert_value($name);
     
     $system->document->snippets['head_tags']['sceditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
                                                          . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
                                                          . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. $system->language->selected['code'] .'.js"></script>' . PHP_EOL
                                                          . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
     
-    return form_draw_textarea($name, $value, $parameters, $hint) . PHP_EOL
+    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
          . '    "plugins": "xhtml,format",' . PHP_EOL
@@ -237,21 +280,21 @@
     switch ($matches[1]) {
       case 'decimal':
       case 'float':
-        return form_draw_decimal_field($name, $input, 2, '', '', 'style="width: 30px"');
+        return form_draw_decimal_field($name, $input, 2, '', '');
       case 'int':
-        return form_draw_input($name, (int)$input, 'text', 'style="width: 50px"');
+        return form_draw_number_field($name, (int)$input);
       case 'smallinput':
-        return form_draw_input($name, $input, 'text', 'style="width: 50px"');
+        return form_draw_input($name, $input, 'text', 'data-size="small"');
       case 'input':
-        return form_draw_input($name, $input, 'text', 'style="width: 200px"');
+        return form_draw_input($name, $input, 'text', 'data-size="medium"');
       case 'password':
-        return form_draw_input($name, $input, 'password', 'style="width: 200px"');
+        return form_draw_input($name, $input, 'password', 'data-size="medium"');
       case 'smalltext':
-        return form_draw_textarea($name, $input, 'rows="2" style="width: 200px"');
+        return form_draw_textarea($name, $input, 'rows="2" data-size="medium"');
       case 'mediumtext':
-        return form_draw_textarea($name, $input, 'rows="5" style="width: 200px"');
+        return form_draw_textarea($name, $input, 'rows="5" data-size="large"');
       case 'bigtext':
-        return form_draw_textarea($name, $input, 'rows="10" style="width: 200px"');
+        return form_draw_textarea($name, $input, 'rows="10" data-size="large"');
       case 'categories':
         return form_draw_categories_list($name, $input);
       case 'customers':
@@ -276,7 +319,7 @@
         return $output;
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
-        return form_draw_select_field($name, $options, $input, false, 'style="width: 200px"');
+        return form_draw_select_field($name, $options, $input, false);
       case 'timezones':
         return form_draw_timezones_list($name, $input);
       case 'templates':
@@ -474,6 +517,8 @@
     foreach ($system->length->classes as $class) {
       $options[] = array($class['unit']);
     }
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
     
     return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }
@@ -702,6 +747,8 @@
     foreach ($system->weight->classes as $class) {
       $options[] = array($class['unit']);
     }
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
     
     return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
   }

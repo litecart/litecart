@@ -10,13 +10,16 @@
   
   $col = 0;
   $count = 0;
+  $total = 0;
   foreach ($rss->channel->item as $item) {
-    if (!isset($count) || $count == 5) {
+    if (!isset($count) || $count == 3) {
       $count = 0;
       $col++;
     }
     $columns[$col][] = $item;
     $count++;
+    $total++;
+    if ($total == 12) break;
   }
   
 ?>
@@ -46,7 +49,6 @@
     }
     echo '  </table>' . PHP_EOL
        . '</td>' . PHP_EOL;
-    //if (++$count == 20) break;
   }
 ?>
     </tr>

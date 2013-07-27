@@ -11,7 +11,7 @@
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_password', 'Password'); ?><br />
-          <?php echo $system->functions->form_draw_input('password', '', 'password', ''); ?></td>
+          <?php echo $system->functions->form_draw_password_field('password', ''); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->functions->form_draw_button('login', $system->language->translate('title_login', 'Login')); ?> <?php echo $system->functions->form_draw_button('lost_password', $system->language->translate('title_lost_password', 'Lost Password')); ?> </td>

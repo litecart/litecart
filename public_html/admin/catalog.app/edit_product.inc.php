@@ -149,7 +149,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('code', true, 'text'); ?>
+              <?php echo $system->functions->form_draw_text_field('code', true); ?>
             </td>
           </tr>
           <tr>
@@ -258,7 +258,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
               </table>
             </td>
           </tr>
-          <?php if (isset($product->data['id'])) { ?>
+          <?php if (!empty($product->data['images'])) { ?>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_product_images', 'Product Images'); ?></strong><br />
               <table id="table-images">
@@ -267,7 +267,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 ?>
     <tr>
       <td><?php echo $system->functions->form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 75); ?>" align="left" style="margin: 5px;" /></td>
-      <td><?php echo $system->functions->form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo $system->functions->form_draw_input('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename'], 'text', 'style="width: 360px;"'); ?></td>
+      <td><?php echo $system->functions->form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo $system->functions->form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename'], 'data-size="large"'); ?></td>
       <td><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo $system->language->translate('text_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
@@ -296,12 +296,12 @@ foreach (array_keys($system->language->languages) as $language_code) {
           <?php } ?>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upload_images', 'Upload Images'); ?></strong><br />
-              <div><?php echo $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"'); ?></div>
+              <div><?php echo $system->functions->form_draw_file_field('new_images[]', 'data-size="large"'); ?></div>
                <a href="#" id="add-new-image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo $system->language->translate('text_add', 'Add'); ?>" /></a>
               <script>
                 $("body").on("click", "#add-new-image", function(event) {
                   event.preventDefault();
-                  $(this).before('<div><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_file_field('new_images[]', 'style="width: 360px"')); ?></div>');
+                  $(this).before('<div><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_file_field('new_images[]', 'data-size="large"')); ?></div>');
                 });
               </script>
               </td>
@@ -340,7 +340,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('keywords', true, 'text', 'style="width: 360px;"'); ?>
+              <?php echo $system->functions->form_draw_text_field('keywords', true, 'data-size="large"'); ?>
             </td>
           </tr>
           <tr>
@@ -349,7 +349,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true, 'data-size="large"');
   $use_br = true;
 }
 ?>
@@ -361,7 +361,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'style="width: 360px; height: 240px;"');
+  echo $system->functions->form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 240px;"');
   $use_br = true;
 }
 ?>
@@ -385,7 +385,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"');
   $use_br = true;
 }
 ?>
@@ -397,7 +397,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', true, 'data-size="large"');
   $use_br = true;
 }
 ?>
@@ -410,27 +410,27 @@ foreach (array_keys($system->language->languages) as $language_code) {
         <table>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_sku', 'SKU'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('sku', true, 'text'); ?>
+              <?php echo $system->functions->form_draw_text_field('sku', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upc', 'UPC'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('upc', true, 'text'); ?>
+              <?php echo $system->functions->form_draw_text_field('upc', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_taric', 'TARIC'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('taric', true, 'text'); ?>
+              <?php echo $system->functions->form_draw_text_field('taric', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_weight', 'Weight'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('weight', true, 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('weight_class', true, false, 'style="width: 50px"'); ?>
+              <?php echo $system->functions->form_draw_decimal_field('weight', true); ?> <?php echo $system->functions->form_draw_weight_classes_list('weight_class', true); ?>
             </td>
           </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dimensions', 'Dimensions'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('dim_x', true, 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input('dim_y', true, 'text', 'style="width: 50px"'); ?> x <?php echo $system->functions->form_draw_input('dim_z', true, 'text', 'style="width: 50px"'); ?> <?php echo $system->functions->form_draw_length_classes_list('dim_class', true, false, 'style="width: 50px"'); ?> (<?php echo $system->language->translate('description_width_height_length', 'width x height x length'); ?>)
+              <?php echo $system->functions->form_draw_decimal_field('dim_x', true); ?> x <?php echo $system->functions->form_draw_decimal_field('dim_y', true); ?> x <?php echo $system->functions->form_draw_decimal_field('dim_z', true); ?> <?php echo $system->functions->form_draw_length_classes_list('dim_class', true); ?> (<?php echo $system->language->translate('description_width_height_length', 'width x height x length'); ?>)
             </td>
           </tr>
           <tr>
@@ -439,7 +439,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'style="width: 360px; height: 120px;"');  $use_br = true;
+  echo $system->functions->form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'data-size="large" style="height: 120px;"');  $use_br = true;
 }
 ?>
             </td>
@@ -453,7 +453,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
         <table>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_purchase_price', 'Purchase Price'); ?></strong><br />
-              <?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'purchase_price', true, 'style="width: 60px; text-align: right;"'); ?>
+              <?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'purchase_price', true); ?>
               <script>$("input[name='purchase_price']").val(parseFloat($("input[name='purchase_price']").val()).toFixed(<?php echo (int)$system->currency->currencies[$system->settings->get('store_currency_code')]['decimals']; ?>));</script>
             </td>
           </tr>
@@ -478,8 +478,8 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td><strong><?php echo $system->settings->get('store_currency_code'); ?></strong></td>
-            <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', true, 'data-currency-price="" placeholder="" style="width: 60px; text-align: right;"'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $system->settings->get('store_currency_code') .']', '', 0, '0', '', 'placeholder="" style="width: 60px; text-align: right;"'); ?></td>
+            <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $system->settings->get('store_currency_code') .']', '', 0, '0', '', 'placeholder=""'); ?></td>
           </tr>
 <?php
 foreach ($system->currency->currencies as $currency) {
@@ -487,8 +487,8 @@ foreach ($system->currency->currencies as $currency) {
 ?>
           <tr>
             <td align="left" nowrap="nowrap"><?php echo $currency['code']; ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder="" style="width: 60px; text-align: right;"'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], '0', '', 'placeholder="" style="width: 60px; text-align: right;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder=""'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], '0', '', 'placeholder=""'); ?></td>
           </tr>
 <?php
 }
@@ -643,23 +643,23 @@ foreach ($system->currency->currencies as $currency) {
           <?php if (!empty($_POST['campaigns'])) foreach (array_keys($_POST['campaigns']) as $key) { ?>
           <tr>
             <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_start_date', 'Start Date'); ?></strong><br />
-              <?php echo $system->functions->form_draw_hidden_field('campaigns['.$key.'][id]', true) . $system->functions->form_draw_datetime_field('campaigns['.$key.'][start_date]', true, 'style="width: 110px;"'); ?>
+              <?php echo $system->functions->form_draw_hidden_field('campaigns['.$key.'][id]', true) . $system->functions->form_draw_datetime_field('campaigns['.$key.'][start_date]', true); ?>
             </td>
             <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_end_date', 'End Date'); ?></strong><br />
-              <?php echo $system->functions->form_draw_datetime_field('campaigns['.$key.'][end_date]', true, 'style="width: 110px;"'); ?>
+              <?php echo $system->functions->form_draw_datetime_field('campaigns['.$key.'][end_date]', true); ?>
             </td>
             <td nowrap="nowrap">%<br />
-              <?php echo $system->functions->form_draw_input('campaigns['.$key.'][percentage]', '', 'text', 'style="width: 50px;"'); ?>
+              <?php echo $system->functions->form_draw_decimal_field('campaigns['.$key.'][percentage]', ''); ?>
             </td>
             <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />
-              <?php echo $system->functions->form_draw_input('campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', true, 'text', 'style="width: 50px;"'); ?>
+              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', true, 'date-size="small"'); ?>
             </td>
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {
     if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
             <td nowrap="nowrap"><?php echo $currency_code; ?><br />
-              <?php echo $system->functions->form_draw_input('campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'text', 'style="width: 50px;"'); ?>
+              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'data-size="tiny"'); ?>
             </td>
 <?php
   }
@@ -694,23 +694,23 @@ foreach ($system->currency->currencies as $currency) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_start_date', 'Start Date'); ?></strong><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('campaigns[new_campaign_i][id]', '') . $system->functions->form_draw_datetime_field('campaigns[new_campaign_i][start_date]', '', 'style="width: 110px;"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('campaigns[new_campaign_i][id]', '') . $system->functions->form_draw_datetime_field('campaigns[new_campaign_i][start_date]', '')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->language->translate('title_end_date', 'End Date'); ?></strong><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '', 'style="width: 110px;"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap">%<br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input('campaigns[new_campaign_i][percentage]', '', 'text', 'style="width: 50px;"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input('campaigns[new_campaign_i]['. $system->settings->get('store_currency_code') .']', '', 'text', 'style="width: 50px;"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_text_field('campaigns[new_campaign_i]['. $system->settings->get('store_currency_code') .']', '', 'data-size="tiny"')); ?>'
                        + '  </td>'
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {
     if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
                        + '  <td nowrap="nowrap"><?php echo $currency_code; ?><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input('campaigns[new_campaign_i]['. $currency_code. ']', '', 'text', 'style="width: 50px;"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_text_field('campaigns[new_campaign_i]['. $currency_code. ']', '', 'data-size="tiny"')); ?>'
                        + '  </td>'
 <?php
   }
@@ -867,10 +867,10 @@ foreach ($system->currency->currencies as $currency) {
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][id]', true); ?><?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][combination]', true); ?>
             <?php echo $system->functions->form_draw_hidden_field('options_stock['.$key.'][name]['. $system->language->selected['name'] .']', true); ?>
             <?php echo $_POST['options_stock'][$key]['name'][$system->language->selected['code']]; ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input('options_stock['.$key.'][sku]', true, 'text', 'style="width: 75px;"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_text_field('options_stock['.$key.'][sku]', true, 'data-size="small"'); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_number_field('options_stock['.$key.'][quantity]', true); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input('options_stock['.$key.'][weight]', true, 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_input('options_stock['.$key.'][dim_x]', true, 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input('options_stock['.$key.'][dim_y]', true, 'text', 'style="width: 40px;"'); ?> x <?php echo $system->functions->form_draw_input('options_stock['.$key.'][dim_z]', true, 'text', 'style="width: 40px;"'); ?> <?php echo $system->functions->form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][weight]', true); ?> <?php echo $system->functions->form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][dim_x]', true); ?> x <?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][dim_y]', true); ?> x <?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][dim_z]', true); ?> <?php echo $system->functions->form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?></td>
             <td align="left" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
 <?php
@@ -993,10 +993,10 @@ foreach ($system->currency->currencies as $currency) {
             if (new_option_code == "") return;
             var output = '<tr>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('options_stock[new_option_stock_i][id]', '') . $system->functions->form_draw_hidden_field('options_stock[new_option_stock_i][combination]', 'new_option_code') . $system->functions->form_draw_hidden_field('options_stock[new_option_stock_i][name]['. $system->language->selected['code'] .']', 'new_option_name')); ?>new_option_name</td>'
-                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input('options_stock[new_option_stock_i][sku]', '', 'text', 'style="width: 75px;"')); ?></td>'
+                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_text_field('options_stock[new_option_stock_i][sku]', '', 'data-size="small"')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_number_field('options_stock[new_option_stock_i][quantity]', '0')); ?></td>'
-                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input('options_stock[new_option_stock_i][weight]', '0.00', 'text', 'style="width: 40px;"') .' '. $system->functions->form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
-                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_input('options_stock[new_option_stock_i][dim_x]', '0.00', 'text', 'style="width: 40px;"') .' x '. $system->functions->form_draw_input('options_stock[new_option_stock_i][dim_y]', '0.00', 'text', 'style="width: 40px;"') .' x '. $system->functions->form_draw_input('options_stock[new_option_stock_i][dim_z]', '0.00', 'text', 'style="width: 40px;"') .' '. $system->functions->form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
+                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00') .' '. $system->functions->form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
+                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00') .' x '. $system->functions->form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00') .' x '. $system->functions->form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00') .' '. $system->functions->form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
                        + '  <td nowrap="nowrap" align="left"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                        + '</tr>';
             while ($("input[name='options_stock[new_"+new_option_stock_i+"]']").length) new_option_stock_i++;

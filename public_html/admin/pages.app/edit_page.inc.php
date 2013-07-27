@@ -104,7 +104,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"');
   $use_br = true;
 }
 ?>
@@ -116,7 +116,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', true, 'style="width: 360px;"');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', true, 'data-size="large"');
   $use_br = true;
 }
 ?>
@@ -131,7 +131,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('priority', true, 'text', 'style="width: 50px;"'); ?>
+        <?php echo $system->functions->form_draw_number_field('priority', true); ?>
       </td>
     </tr>
     <tr>

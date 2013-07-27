@@ -109,37 +109,37 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('code', true, 'text', 'style="width: 50px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
+        <?php echo $system->functions->form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_value', 'Value'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('value', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_decimal_field('value', true); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_prefix', 'Prefix'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('prefix', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('prefix', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_suffix', 'Suffix'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('suffix', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_text_field('suffix', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_decimals', 'Decimals'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('decimals', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_number_field('decimals', true); ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
-        <?php echo $system->functions->form_draw_input('priority', true, 'text', 'style="width: 75px;"'); ?>
+        <?php echo $system->functions->form_draw_number_field('priority', true); ?>
       </td>
     </tr>
     <tr>

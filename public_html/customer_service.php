@@ -79,22 +79,22 @@
       <table>
         <tr>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?></td>
+            <?php echo $system->functions->form_draw_text_field('name', true); ?></td>
           <td style="padding-left: 0px;"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
             <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_subject', 'Subject'); ?><br />
-            <?php echo $system->functions->form_draw_input('subject', true, 'text', 'style="width: 360px;"'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('subject', true, 'data-size="large"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_message', 'Message'); ?><br />
-            <?php echo $system->functions->form_draw_textarea('message', true, 'style="width: 360px; height: 250px;"'); ?></td>
+            <?php echo $system->functions->form_draw_textarea('message', true, 'data-size="large" style="height: 250px;"'); ?></td>
         </tr>
         <?php if ($system->settings->get('contact_form_captcha_enabled') == 'true') { ?>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_captcha', 'CAPTCHA'); ?><br />
-            <?php echo $system->functions->captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_input('captcha', '', 'text', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
+            <?php echo $system->functions->captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_text_field('captcha', '', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
           </td>
         </tr>
         <?php } ?>

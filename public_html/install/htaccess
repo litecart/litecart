@@ -17,10 +17,13 @@ ErrorDocument 404 {BASE_DIR}error_document.php?code=404
   #RewriteCond %{HTTP_HOST} !^www\.
   #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
   
+  # No logic for physical files
+  RewriteCond %{REQUEST_FILENAME} -d [OR]
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -l
+  RewriteRule ^ - [L]
+  
   # SEO translation
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-l
   RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)/?$ category.php?category_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)/?$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]
   RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ information.php?page_id=$1&%{QUERY_STRING} [L]

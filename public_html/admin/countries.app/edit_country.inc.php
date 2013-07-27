@@ -72,27 +72,27 @@
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2)</strong><br />
-          <?php echo $system->functions->form_draw_input('iso_code_2', true, 'text', 'style="width: 20px;"'); ?>
+          <?php echo $system->functions->form_draw_text_field('iso_code_2', true, 'data-size="tiny"'); ?>
         </td>
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3)</strong><br />
-          <?php echo $system->functions->form_draw_input('iso_code_3', true, 'text', 'style="width: 25px;"'); ?>
+          <?php echo $system->functions->form_draw_text_field('iso_code_3', true, 'data-size="tiny"'); ?>
         </td>
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('name', true, 'text', ''); ?>
+          <?php echo $system->functions->form_draw_text_field('name', true); ?>
         </td>
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_domestic_name', 'Domestic Name'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('domestic_name', true, 'text', ''); ?>
+          <?php echo $system->functions->form_draw_text_field('domestic_name', true); ?>
         </td>
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong><br />
-          <?php echo $system->functions->form_draw_textarea('address_format', true, 'style="width: 175px; height: 150px;"'); ?>
+          <?php echo $system->functions->form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
           <script type="text/javascript">
             $("#address-format-hint").click(function() {
               alert(
@@ -115,12 +115,12 @@
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_currency_code', 'Currency Code'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('currency_code', true, 'text', 'style="width: 25px;"'); ?>
+          <?php echo $system->functions->form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
         </td>
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_phone_country_code', 'Phone Country Code'); ?></strong><br />
-          <?php echo $system->functions->form_draw_input('phone_code', true, 'text', 'style="width: 20px;"'); ?>
+          <?php echo $system->functions->form_draw_text_field('phone_code', true, 'data-size="tiny"'); ?>
         </td>
       </tr>
     </table>
@@ -149,8 +149,8 @@
   ?>
       <tr>
         <td align="left">&nbsp;</td>
-        <td align="left"><?php echo $system->functions->form_draw_input('zone[code]', '', 'text', 'style="width: 50px;"'); ?></td>
-        <td align="left"><?php echo $system->functions->form_draw_input('zone[name]', '', 'text', ''); ?></td>
+        <td align="left"><?php echo $system->functions->form_draw_text_field('zone[code]', ''); ?></td>
+        <td align="left"><?php echo $system->functions->form_draw_text_field('zone[name]', ''); ?></td>
         <td align="right"><?php echo $system->functions->form_draw_button('add_zone', $system->language->translate('title_add', 'Add'), 'button'); ?></td>
       </tr>
     </table>

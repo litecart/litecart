@@ -288,7 +288,7 @@
             }
           }
           
-          echo $system->functions->form_draw_input_field('options['.$group['name'][$system->language->selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
+          echo $system->functions->form_draw_text_field('options['.$group['name'][$system->language->selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
           break;
           
         case 'radio':
@@ -350,7 +350,7 @@
             </div>
             <div class="quantity">
               <p><strong><?php echo $system->language->translate('title_quantity', 'Antal'); ?></strong><br />
-                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 0, 0, 'style="width: 40px;"'); ?>
+                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1); ?>
               </p>
             </div>
 <?php

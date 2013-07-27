@@ -2,17 +2,15 @@ form {
   margin: 0px;
 }
 
-input[type=date], input[type=datetime], input[type=email], input[type=float], input[type=number], input[type=password], input[type=search], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
+input[type=date], input[type=datetime], input[type=email], input[type=number], input[type=password], input[type=search], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
   display: inline-block;
   margin: 3px 0;
   padding: 4px;
   
-  width: 175px;
-  
   border: 1px solid #d1d1d1;
   border-radius: 3px;
-  background-color: #f9f9f9;
   
+  background-color: #f9f9f9;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
   background-image: -webkit-linear-gradient(top, #ececec, #f9f9f9);
   background-image: -moz-linear-gradient(top, #ececec, #f9f9f9);
@@ -25,23 +23,48 @@ input[type=date], input[type=datetime], input[type=email], input[type=float], in
   vertical-align: baseline;
 }
 
-select {
+input[data-type=currency], input[data-type=decimal], input[data-type=number] {
+  text-align: right;
+}
+
+form *[data-size=auto] {
   width: auto;
   max-width: 175px;
+}
+form *[data-size=tiny] {
+  width: 35px;
+}
+form *[data-size=small] {
+  width: 80px;
+}
+form *[data-size=medium] {
+  width: 175px;
+}
+form *[data-size=large] {
+  width: 360px;
+}
+
+@media (max-width: 640px) {
+  form *[data-size=auto] {
+    width: auto;
+    max-width: 125px;
+  }
+  form *[data-size=tiny] {
+    width: 35px;
+  }
+  form *[data-size=small] {
+    width: 80px;
+  }
+  form *[data-size=medium] {
+    width: 125px;
+  }
+  form *[data-size=large] {
+    width: 260px;
+  }
 }
 
 form .required {
   color: #f00;
-}
-
-@media (max-width: 640px) {
-  input[type=date], input[type=datetime], input[type=email], input[type=float], input[type=number], input[type=password], input[type=search], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
-    width: 125px;
-  }
-  select {
-    width: auto;
-    max-width: 125px;
-  }
 }
 
 .input-wrapper {

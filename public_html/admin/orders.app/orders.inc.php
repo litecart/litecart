@@ -115,7 +115,7 @@
     $options[] = array($system->language->translate('text_no_order_action_modules', 'There are no order action modules installed or enabled.'), 'null', 'disabled="disabled" style="font-style: italic;"');
   }
   
-  echo $system->functions->form_draw_select_field('order_action', $options, true, false, 'style="width: 100px;"'); ?> <?php echo $system->functions->form_draw_button('perform', $system->language->translate('title_perform', 'Perform'), 'submit');
+  echo $system->functions->form_draw_select_field('order_action', $options, true, false, 'data-size="medium"'); ?> <?php echo $system->functions->form_draw_button('perform', $system->language->translate('title_perform', 'Perform'), 'submit');
 ?>
     </li>
   </ul>
