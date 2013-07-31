@@ -45,7 +45,9 @@ Admin Module Icons
 * (languages) Double-J designs - Free for commercial use - http://www.doublejdesign.co.uk
 * (modules) David Vignoni - LGPL - http://www.icon-king.com
 * (orders)  Elegant Themes - Freeware - http://www.elegantthemes.com
+* (pages) Everaldo Coelho  - LGPL - http://www.everaldo.com
 * (reports) Icojam - Free for commercial use - http://www.icojam.com
+* (slides) Wefunction - Freeware - http://www.wefunction.com
 * (settings) Jeremy Sallee - Freeware - http://lemex.deviantart.com
 * (tax) DesignContest - CC Attribution 3.0 - http://www.designcontest.com
 * (translations) Robin Weatherall - Freeware - http://www.boomgraphics.se
