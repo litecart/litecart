@@ -172,7 +172,7 @@ a:hover, a:active{
         <td><strong>Table Prefix</strong><br />
         <input name="db_table_prefix" type="text" value="lc_" style="width: 75px;" /></td>
         <td><strong>Demo Data</strong><br />
-          <input name="demo_data" type="checkbox" value="true" checked="CHECKED" /> Install demo data</td>
+          <label><input name="demo_data" type="checkbox" value="true" <?php echo (file_get_contents('demo.sql') == '') ? 'disabled="disabled"' : ''; ?> /> Install demo data</label></td>
       </tr>
     </table>
     <h3>Store Information</h3>
@@ -226,7 +226,7 @@ a:hover, a:active{
     </p>
     <p>
       <input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing installations will be overwritten with new data.')) return false;" />
-  </p>
+    </p>
   </form>
   </div>
 </div>

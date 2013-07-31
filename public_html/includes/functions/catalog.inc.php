@@ -91,7 +91,7 @@
         break;
       case 'popularity':
       default:
-        $sql_sort = "(p.purchases / p.views) desc, (p.views / ((unix_timestamp() - unix_timestamp(p.date_created)) / 86400000)) desc, p.date_created desc";
+        $sql_sort = "(p.purchases / p.views) desc, (p.views / ((unix_timestamp() - unix_timestamp(p.date_created)) / 86400)) desc, p.date_created desc";
         break;
     }
     

@@ -1,6 +1,9 @@
-Options -Indexes
-
+ErrorDocument 403 {BASE_DIR}error_document.php?code=403
 ErrorDocument 404 {BASE_DIR}error_document.php?code=404
+ErrorDocument 410 {BASE_DIR}error_document.php?code=410
+ErrorDocument 500 "Internal Server Error"
+
+Options -Indexes
 
 # URL-rewriting
 <IfModule mod_rewrite.c>
@@ -33,7 +36,7 @@ ErrorDocument 404 {BASE_DIR}error_document.php?code=404
   RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING} [L]
 </IfModule>
 
-# Deny direct access to included content
+# Deny access to content
 <FilesMatch "\.(htaccess|htpasswd|inc.php)$">
   Order Allow,Deny
   Deny from all

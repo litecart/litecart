@@ -135,11 +135,11 @@
       list($key, $value) = explode(':', $attributes[$i]);
       echo '<tr class="'. $rowclass .'">' . PHP_EOL
          . '  <td nowrap="nowrap">'. trim($key) .':</td>' . PHP_EOL
-         . '  <td width="100%">'. trim($value) .'</td>' . PHP_EOL
+         . '  <td style="max-width: 100%; padding-left: 10px;">'. trim($value) .'</td>' . PHP_EOL
          . '</tr>' . PHP_EOL;
-    } else {
+    } else if (trim($attributes[$i] != '')) {
       echo '<tr class="'. $rowclass .' header">' . PHP_EOL
-         . '  <th colspan="2" class="header"><strong>'. $attributes[$i] .'</strong></th>' . PHP_EOL
+         . '  <th colspan="2" class="header" style="text-align: left; padding-top: 10px;"><strong>'. $attributes[$i] .'</strong></th>' . PHP_EOL
          . '</tr>' . PHP_EOL;
     }
   }
@@ -350,7 +350,7 @@
             </div>
             <div class="quantity">
               <p><strong><?php echo $system->language->translate('title_quantity', 'Antal'); ?></strong><br />
-                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1); ?>
+                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?>
               </p>
             </div>
 <?php

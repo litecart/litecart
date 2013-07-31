@@ -201,10 +201,13 @@
       if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
       
       if ($this->_type == 'mysqli') {
-        return mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));;
+        return mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));
+        mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));
+        while (mysqli_next_result($this->_links[$link])) {;} // flush results - we're not supporting it
       } else {
-        return $this->query($query, $link);
+        $this->query($query, $link); // don't pick up results - we're not supporting it
       }
+      return;
     }
     
     public function fetch($result) {

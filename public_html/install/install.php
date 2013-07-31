@@ -138,7 +138,7 @@
   
   echo ' [Done]' . PHP_EOL;
   
-  ### Databse > Tables > Demo Data ###################################
+  ### Database > Tables > Demo Data ###################################
   
   if (!empty($_POST['demo_data'])) {
     echo 'Writing demo data...';
@@ -157,6 +157,30 @@
     }
     
     echo ' [Done]' . PHP_EOL;
+  }
+  
+  ### Database > Tables > Demo Data ###################################
+  
+  if (!empty($_POST['demo_data'])) {
+  
+    function xcopy($source, $target) {
+      if (is_dir($source)) {
+        $source = rtrim($source, '/') . '/';
+        $target = rtrim($target, '/') . '/';
+        if (!file_exists($target)) mkdir($target);
+        $dir = opendir($source);
+        while(($file = readdir($dir)) !== false) {
+          if ($file == '.' || $file == '..') continue;
+          xcopy($source.$file, $target.$file);
+        }
+      } else if (!file_exists($target)) {
+        copy($source, $target);
+      }
+    }
+    
+    echo 'Copying demo files...';
+    xcopy('demo_data/', $installation_path);
+    echo ' [OK]' . PHP_EOL;
   }
   
   ### .htaccess mod rewrite ###################################
