@@ -39,7 +39,7 @@ INSERT INTO `lc_option_values_info` (`id`, `value_id`, `language_code`, `name`) 
 (3, 3, 'en', 'Large');
 -- --------------------------------------------------------
 INSERT INTO `lc_products` (`id`, `status`, `manufacturer_id`, `supplier_id`, `delivery_status_id`, `sold_out_status_id`, `categories`, `product_groups`, `keywords`, `code`, `sku`, `upc`, `taric`, `quantity`, `weight`, `weight_class`, `dim_x`, `dim_y`, `dim_z`, `dim_class`, `purchase_price`, `tax_class_id`, `image`, `views`, `purchases`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, 1, 0, 1, 2, '1', '', '', 'rd001', 'RD001', '', '', 30, 0.5000, 'kg', 6.0000, 10.0000, 10.0000, 'm', 5.0000, 1, 'products/1-rubber-duck-1.jpg', 1, 0, '0000-00-00', '0000-00-00', NOW(), NOW());
+(1, 1, 1, 0, 1, 2, '1', '', '', 'rd001', 'RD001', '', '', 30, 0.5000, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 5.0000, 1, 'products/1-rubber-duck-1.jpg', 1, 0, '0000-00-00', '0000-00-00', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_products_campaigns` (`id`, `product_id`, `start_date`, `end_date`, `SEK`, `EUR`) VALUES
 (1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0.0000, 9.0000);
