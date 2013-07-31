@@ -22,7 +22,7 @@
       
       if ($this->settings['status'] != 'Enabled') return;
       
-      if (!isset($shipping->data['selected']['cost'])) return;
+      if (empty($shipping->data['selected']['cost'])) return;
       
       $output = array();
       

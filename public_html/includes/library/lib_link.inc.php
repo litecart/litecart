@@ -60,6 +60,7 @@
       }
       
       if (empty($base_link['path'])) $base_link['path'] = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
+      while (strpos($base_link['path'], '//')) $base_link['path'] = str_replace('//', '/', $base_link['path']);
       
       if ($inherit_params === true) {
         $base_link['query'] = $_GET;

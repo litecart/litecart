@@ -22,7 +22,7 @@
       
       if ($this->settings['status'] != 'Enabled') return;
       
-      if (isset($payment->data['selected']['cost']) && $payment->data['selected']['cost'] == 0) return;
+      if (empty($payment->data['selected']['cost'])) return;
       
       $output = array();
       

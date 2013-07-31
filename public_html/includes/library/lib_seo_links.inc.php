@@ -26,7 +26,7 @@
       }
       
       if ($this->enabled) {
-      // Import cached translations
+      // Import cached links
         $this->_cache_id = $this->system->cache->cache_id('links', array('language'));
         $this->_cache = $this->system->cache->get($this->_cache_id, 'file');
       }
@@ -104,12 +104,12 @@
     public function link($link, $language_code) {
       
       $checksum = md5($link . $language_code);
-      //if (!empty($this->cache[$checksum])) return $this->cache[$checksum];
+      if (!empty($this->cache[$checksum])) return $this->cache[$checksum];
       
       $seo_link = $this->get_link($link, $language_code);
       if (!empty($seo_link)) {
         $this->cache[$checksum] = $seo_link;
-        //return $seo_link;
+        return $seo_link;
       }
       
       $seo_link = $this->create_link($link, $language_code);
@@ -126,7 +126,7 @@
       
       if (!$this->enabled) return;
       
-      if (substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) return;
+      if (preg_match('/^'. preg_quote(WS_DIR_ADMIN, '/') .'/', parse_url($link, PHP_URL_PATH))) return;
       
       if (empty($link)) $link = $this->system->link->get_called_link();
       

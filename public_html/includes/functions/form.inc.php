@@ -133,7 +133,7 @@
   function form_draw_number_field($name, $value=true, $min='', $max='', $parameters='', $hint='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="tiny"';
     
     return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -199,6 +199,8 @@
   
   function form_draw_static_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<div class="input-static"'. (($parameters) ? ' '.$parameters : false) .'>'. (($value) ? $value : '&nbsp;') .'</div>';
   }

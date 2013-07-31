@@ -43,7 +43,7 @@
   $config = file_get_contents('config');
   
   $map = array(
-    '{ADMIN_FOLDER}' => $_POST['admin_folder'],
+    '{ADMIN_FOLDER}' => rtrim($_POST['admin_folder'], '/'),
     '{DB_SERVER}' => $_POST['db_server'],
     '{DB_USERNAME}' => $_POST['db_username'],
     '{DB_PASSWORD}' => $_POST['db_password'],

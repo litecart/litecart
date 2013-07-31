@@ -8,8 +8,6 @@ ul.listing-wrapper {
   color: #000;
 }
 
-
-
 /* Category */
 ul.listing-wrapper > .category {
   display: inline-block;
@@ -19,11 +17,6 @@ ul.listing-wrapper > .category {
   margin: 5px;
   
   background: rgb(255, 255, 255);
-  
-  -moz-box-shadow: 0px 0px 2px #aaa;
-  -webkit-box-shadow: 0px 0px 2px #aaa;
-  box-shadow: 0px 0px 2px #aaa;
-  
 }
 ul.listing-wrapper > .category a.link {
   display: block;
@@ -67,10 +60,6 @@ ul.listing-wrapper  > .manufacturer {
   
   background: rgb(255, 255, 255);
   
-  -moz-box-shadow: 0px 0px 2px #aaa;
-  -webkit-box-shadow: 0px 0px 2px #aaa;
-  box-shadow: 0px 0px 2px #aaa;
-  
   text-align: center;
 }
 ul.listing-wrapper > .manufacturer a.link {
@@ -108,10 +97,6 @@ ul.listing-wrapper > .product {
   
   padding: 0px;
   margin: 5px;
-  
-  -moz-box-shadow: 0px 0px 2px #aaa;
-  -webkit-box-shadow: 0px 0px 2px #aaa;
-  box-shadow: 0px 0px 2px #aaa;
 }
 ul.listing-wrapper > .product a.link {
   display: block;
@@ -155,12 +140,12 @@ ul.listing-wrapper > .product .campaign-price {
   }
 }
 
+#box-campaigns ul.listing-wrapper > .product {
+  width: 185px;
+}
 #box-latest-products ul.listing-wrapper > .product {
   width: 185px;
 }
 #box-most-popular ul.listing-wrapper > .product {
-  width: 185px;
-}
-#box-new-products ul.listing-wrapper > .product {
   width: 185px;
 }

@@ -137,7 +137,7 @@
 
 <table style="width: 100%;">
   <tr>
-    <td>
+    <td style="vertical-align: top;">
       <h2><?php echo $system->language->translate('title_order_information', 'Order Information'); ?></h2>
       <table>
         <tr>
@@ -151,22 +151,22 @@
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('payment_option[id]', true); ?></td>
+            <?php echo $system->functions->form_draw_text_field('payment_option[id]', true, 'readonly="readonly"'); ?></td>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('payment_option[name]', !empty($order->data['payment_option']['name']) ? $order->data['payment_option']['name'] : '-'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('payment_option[name]', true, 'readonly="readonly"'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_transaction_id', 'Transaction ID'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('payment_transaction_id', !empty($order->data['payment_transaction_id']) ? $order->data['payment_transaction_id'] : '-'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('payment_transaction_id', true, 'readonly="readonly"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><h3 style="margin-bottom: 0px;"><?php echo $system->language->translate('title_shipping_information', 'Shipping Information'); ?></h2></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('shipping_option[id]', !empty($order->data['shipping_option']['id']) ? $order->data['shipping_option']['id'] : '-'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('shipping_option[id]', true, 'readonly="readonly"'); ?></td>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_static_field('shipping_option[name]', !empty($order->data['shipping_option']['name']) ? $order->data['shipping_option']['name'] : '-'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('shipping_option[name]', true, 'readonly="readonly"'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_weight', 'Weight'); ?><br />
@@ -177,7 +177,7 @@
         </tr>
       </table>
     </td>
-    <td>
+    <td style="vertical-align: top;">
       <h2 style="margin-top: 0px;"><?php echo $system->language->translate('title_customer_info', 'Customer Info'); ?></h2>
       <table>
         <tr>
@@ -253,7 +253,7 @@
       </script>
     </td>
 
-    <td>
+    <td style="vertical-align: top;">
       <h2><?php echo $system->language->translate('title_shipping_address', 'Shipping Address'); ?></h2>
       <table>
           <tr>

@@ -15,7 +15,6 @@
     }
   }
   
-  // Save data
   if (isset($_POST['save'])) {
     
     if (empty($_POST['username'])) $system->notices->add('errors', $system->language->translate('error_must_enter_username', 'You must enter a username'));
@@ -45,13 +44,38 @@
           }
           
           $user_matched = true;
-          
         }
         
         $contents .= "$username:$password" . PHP_EOL;
       }
       
       if (!$user_matched) $contents .= $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
+      
+      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $contents);
+    
+      $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. $system->document->link('', array(), array('app')));
+      exit;
+    }
+  }
+  
+  if (isset($_POST['delete'])) {
+    
+    if (empty($_POST['username'])) $system->notices->add('errors', $system->language->translate('error_must_enter_username', 'You must enter a username'));
+    
+    if (!is_writable(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd')) $system->notices->add('errors', sprintf($system->language->translate('error_file_s_not_writable', 'The file %s is not writable'), FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd'));
+    
+    if (empty($system->notices->data['errors'])) {
+    
+      $contents = '';
+      
+      foreach(file(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd') as $row) {
+        list($username, $password) = explode(':', trim($row));
+        
+        if ($user->data['username'] != $username) {
+          $contents .= "$username:$password" . PHP_EOL;
+        }
+      }
       
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $contents);
     
@@ -74,7 +98,7 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
-        <strong><?php echo $system->language->translate('title_password', 'Password'); ?></strong><br />
+        <strong><?php echo $system->language->translate('title_new_password', 'New Password'); ?></strong><br />
           <?php echo $system->functions->form_draw_password_field('password', ''); ?>
       </td>
     </tr>
@@ -85,7 +109,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php //echo (!empty($_GET['user'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
+      <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($_GET['user'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
     </tr>
   </table>
 <?php echo $system->functions->form_draw_form_end(); ?>

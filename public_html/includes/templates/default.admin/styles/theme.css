@@ -160,9 +160,19 @@ img {
   padding: 5px 10px;
 }
 
+#platform {
+  font-size: 1.2em;
+  text-align: center;
+  margin: 10px 0px;
+  font-weight: 600;
+}
+
 #copyright {
   text-align: center;
-  font-size: 0.8em;
 }
 #copyright a {
+}
+
+#stats {
+  opacity: 0.5;
 }

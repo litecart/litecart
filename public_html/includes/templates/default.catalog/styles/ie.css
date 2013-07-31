@@ -1,0 +1,7 @@
+li.shadow, aside.shadow {
+  border: 1px #ddd solid;
+}
+
+li.hover-light:hover, aside.hover-light:hover {
+  border: 1px #9CD7FF solid;
+}

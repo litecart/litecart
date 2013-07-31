@@ -67,9 +67,14 @@
   }
 </script>
             </div>
-            <div class="stats"><!--snippet:stats--></div>
             
-            <div id="copyright">Copyright &copy; <?php echo date('Y'); ?> <a href="http://www.litecart.net" target="_blank">LiteCart&trade;</a></div>
+            <div id="platform"><?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></div>
+            
+            <div id="copyright">&copy; <?php echo date('2012-Y'); ?> LiteCart&trade;<br />
+              <a href="http://www.litecart.net" target="_blank">www.litecart.net</a>
+            </div>
+            
+            <!--<div id="stats"><!--snippet:stats--></div>-->
           </div>
         </td>
         <td id="column_left" style="vertical-align: top;">
