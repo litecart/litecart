@@ -78,6 +78,8 @@ DROP TABLE IF EXISTS `lc_settings`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_settings_groups`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_slides`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_sold_out_status`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_sold_out_status_info`;

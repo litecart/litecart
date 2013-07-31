@@ -588,6 +588,22 @@ CREATE TABLE `lc_settings_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_slides` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` tinyint(1) NOT NULL,
+  `language_code` varchar(8) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `caption` varchar(256) NOT NULL,
+  `link` varchar(256) NOT NULL,
+  `image` varchar(64) NOT NULL,
+  `priority` int(11) NOT NULL,
+  `date_valid_from` datetime NOT NULL,
+  `date_valid_to` datetime NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+-- --------------------------------------------------------
 CREATE TABLE `lc_sold_out_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `orderable` tinyint(1) NOT NULL,

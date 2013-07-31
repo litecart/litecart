@@ -79,6 +79,10 @@ INSERT INTO `lc_product_groups_values_info` (`id`, `product_group_value_id`, `la
 (2, 2, 'en', 'Female'),
 (3, 3, 'en', 'Unisex');
 -- --------------------------------------------------------
+INSERT INTO `lc_slides` (`id`, `status`, `language_code`, `name`, `caption`, `link`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
+(1, 1, 'en', 'Slide 1', '', '', 'slides/1-nemo.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW()),
+(2, 1, 'en', 'Slide 2', 'A slide with a caption and a link.', 'http://www.litecart.net', 'slides/2-walle.jpg', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+-- --------------------------------------------------------
 INSERT INTO `lc_sold_out_status` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
 (1, 1, NOW(), NOW()),
 (2, 1, NOW(), NOW());

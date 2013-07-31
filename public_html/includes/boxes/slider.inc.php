@@ -2,22 +2,34 @@
   $system->document->snippets['head_tags']['nivo-slider'] = '<script src="'. WS_DIR_EXT .'nivo-slider/jquery.nivo.slider.pack.js"></script>' . PHP_EOL
                                                          . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/nivo-slider.css" media="screen" />' . PHP_EOL
                                                          . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/themes/default/default.css" media="screen" />';
+  
+  $slides_query = $system->database->query(
+    "select * from ". DB_TABLE_SLIDES ."
+    where status
+    and language_code = '". $system->database->input($system->language->selected['code']) ."'
+    and (date_valid_from < '1971' or date_valid_from >= '". date('Y-m-d H:i:s') ."')
+    and (date_valid_to < '1971' or date_valid_to <= '". date('Y-m-d H:i:s') ."')
+    order by priority asc;"
+  );
+  
+  if (!$system->database->num_rows($slides_query)) return;
 ?>
+
 <div id="slider-wrapper" class="theme-default">
   <div id="slider" class="nivoSlider">
-    <img src="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/toystory.jpg" data-thumb="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/toystory.jpg" alt="" />
-    <a href="http://dev7studios.com"><img src="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/up.jpg" data-thumb="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/up.jpg" alt="" title="This is an example of a caption" /></a>
-    <img src="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/walle.jpg" data-thumb="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/walle.jpg" alt="" data-transition="slideInLeft" />
-    <img src="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/nemo.jpg" data-thumb="<?php echo WS_DIR_EXT; ?>nivo-slider/demo/images/nemo.jpg" alt="" title="#htmlcaption" />
-  </div>
-  <div id="htmlcaption" class="nivo-html-caption">
-    <strong>This</strong> is an example of a <em>HTML</em> caption with <a href="#">a link</a>. 
+<?php
+  while ($slide = $system->database->fetch($slides_query)) {
+    if (!empty($slide['link'])) {
+      echo '    <a href="'. htmlspecialchars($slide['link']) .'"><img src="'. WS_DIR_IMAGES . $slide['image'] .'" alt="" title="'. $slide['caption'] .'" /></a>' . PHP_EOL;
+    } else {
+      echo '    <img src="'. WS_DIR_IMAGES . $slide['image'] .'" alt="" title="'. $slide['caption'] .'" />' . PHP_EOL;
+    }
+  }
+?>
   </div>
 </div>
-<script type="text/javascript">
-$(window).load(function() {
-    $('#slider').nivoSlider({
-      controlNav: false
-    });
-});
+<script>
+  $('.nivoSlider').nivoSlider({
+    controlNav: false
+  });
 </script>

@@ -43,7 +43,7 @@ table.dataTable tr.odd {
   background-color: #fcfcfc;
 }
 table.dataTable tr.even {
-  background-color: #f5f5f5;
+  background-color: #f8f8f8;
 }
 table.dataTable tr.odd:hover, table.dataTable tr.even:hover {
   background-color: #ececec;
@@ -51,6 +51,11 @@ table.dataTable tr.odd:hover, table.dataTable tr.even:hover {
 }
 table.dataTable tr.footer {
   background-color: #f4f4f4;
+}
+table.dataTable tr.footer td {
+  padding: 10px 10px;
+  border-top: 1px solid #dfdfdf;
+  color: #666;
 }
 
 form table td {

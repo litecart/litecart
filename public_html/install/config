@@ -86,6 +86,7 @@
   define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'seo_links_cache`');
   define('DB_TABLE_SETTINGS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'settings`');
   define('DB_TABLE_SETTINGS_GROUPS',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'settings_groups`');
+  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');
   define('DB_TABLE_SOLD_OUT_STATUS',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'sold_out_status`');
   define('DB_TABLE_SOLD_OUT_STATUS_INFO',              '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'sold_out_status_info`');
   define('DB_TABLE_SUPPLIERS',                         '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'suppliers`');
