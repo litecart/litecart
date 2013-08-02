@@ -22,6 +22,7 @@ LiteCart contains work by the following listed:
 
 * (catalog) Woothemes - Freeware - http://www.woothemes.com
 * (database) Midtone Design Studio - Freeware - http://www.midtonedesign.com
+* (exit) Abdylas Tynyshov - Creative Commons Attribution-Share Alike 3.0 United States License - http://userinterfaceicons.com
 * (help) Icojam - Free for commercial use - http://www.icojam.com
 * (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
 * (mail) Icojam - Public Domain - http://www.icojam.com
