@@ -51,7 +51,7 @@
         $rowclass = 'even';
       }
 ?>
-  <tr class="<?=$rowclass?>"<?php echo $country['status'] ? false : ' style="color: #999;"'; ?>>
+  <tr class="<?php echo $rowclass; ?>"<?php echo $country['status'] ? false : ' style="color: #999;"'; ?>>
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($country['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
     <td align="left"><?php echo $country['id']; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $country['iso_code_2']; ?></td>

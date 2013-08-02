@@ -18,7 +18,7 @@
   $customers_query = $system->database->query(
     "select * from ". DB_TABLE_CUSTOMERS ."
     ". ((!empty($_GET['query'])) ? "where (email like '%". $system->database->input($_GET['query']) ."%' or firstname like '%". $system->database->input($_GET['query']) ."%' or lastname like '%". $system->database->input($_GET['query']) ."%')" : "") ."
-    order by firstname, lastname desc;"
+    order by firstname, lastname;"
   );
   
   if ($system->database->num_rows($customers_query) > 0) {

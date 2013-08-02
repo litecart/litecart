@@ -48,6 +48,10 @@ form .required {
   color: #f00;
 }
 
+form > table {
+  margin: 0px -5px;
+}
+
 .input-wrapper {
   width: auto;
 }

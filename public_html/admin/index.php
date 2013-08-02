@@ -1,6 +1,8 @@
 <?php
   require_once('../includes/app_header.inc.php');
   
+  $system->user->require_login();
+  
   $system->document->template = $system->settings->get('store_template_admin');
   
   $system->breadcrumbs->add($system->language->translate('title_admin_panel', 'Admin Panel'), WS_DIR_ADMIN);

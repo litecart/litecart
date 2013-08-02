@@ -588,7 +588,7 @@ CREATE TABLE `lc_settings_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_slides` (
+CREATE TABLE `lc_slides` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL,
   `language_code` varchar(8) NOT NULL,
@@ -676,6 +676,24 @@ CREATE TABLE `lc_translations` (
   `date_accessed` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` tinyint(1) NOT NULL,
+  `username` varchar(32) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `last_ip` varchar(15) NOT NULL,
+  `last_host` varchar(64) NOT NULL,
+  `login_attempts` int(11) NOT NULL,
+  `total_logins` int(11) NOT NULL,
+  `date_blocked` datetime NOT NULL,
+  `date_expires` datetime NOT NULL,
+  `date_active` datetime NOT NULL,
+  `date_login` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 CREATE TABLE `lc_zones` (

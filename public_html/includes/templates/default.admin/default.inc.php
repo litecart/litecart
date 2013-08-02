@@ -31,14 +31,11 @@
             <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 70, 'FIT_ONLY_BIGGER'); ?>" title="<?php echo $system->settings->get('store_name'); ?>" /></a>
           </div>
           <div class="header">
-            <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/home.png'; ?>" width="24" height="24" alt="<?php echo $system->language->translate('title_back_to_index', 'Back To Index'); ?>" title="<?php echo $system->language->translate('title_back_to_index', 'Back To Index'); ?>" /></a>
-            <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/catalog.png'; ?>" width="24" height="24" alt="<?php echo $system->language->translate('text_go_to_store_front', 'Go to store front'); ?>" title="<?php echo $system->language->translate('text_go_to_store_front', 'Go to store front'); ?>" /></a>
-            <?php if ($system->settings->get('database_admin_link', '')) { ?>
-              <a href="<?php echo $system->settings->get('database_admin_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/database.png'; ?>" width="24" height="24" alt="<?php echo $system->language->translate('title_database_manager', 'Database Manager'); ?>" title="<?php echo $system->language->translate('title_database_manager', 'Database Manager'); ?>" /></a>
-            <?php } ?>
-            <?php if ($system->settings->get('webmail_link', '')) { ?>
-              <a href="<?php echo $system->settings->get('webmail_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/mail.png'; ?>" width="24" height="24" alt="<?php echo $system->language->translate('title_webmail', 'Webmail'); ?>" title="<?php echo $system->language->translate('title_webmail', 'Webmail'); ?>" /></a>
-            <?php } ?>
+            <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/home.png'; ?>" width="24" height="24" alt="" title="<?php echo $system->language->translate('title_Home', 'Home'); ?>" /></a>
+            <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/catalog.png'; ?>" width="24" height="24" alt="" title="<?php echo $system->language->translate('title_catalog', 'Catalog'); ?>" /></a>
+            <?php if ($system->settings->get('webmail_link', '')) { ?><a href="<?php echo $system->settings->get('webmail_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/mail.png'; ?>" width="24" height="24" alt="" title="<?php echo $system->language->translate('title_webmail', 'Webmail'); ?>" /></a><?php } ?>
+            <?php if ($system->settings->get('database_admin_link', '')) { ?><a href="<?php echo $system->settings->get('database_admin_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/database.png'; ?>" width="24" height="24" alt="" title="<?php echo $system->language->translate('title_database_manager', 'Database Manager'); ?>" /></a><?php } ?>
+            <a href="<?php echo $system->document->href_link(WS_DIR_ADMIN . 'logout.php'); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/exit.png'; ?>" width="24" height="24" alt="" title="<?php echo $system->language->translate('text_logout', 'Logout'); ?>" /></a>
           </div>
           
           <!--snippet:dashboard-->

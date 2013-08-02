@@ -59,6 +59,8 @@
     $config = str_replace($search, $replace, $config);
   }
   
+  define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
+  
   file_put_contents('../includes/config.inc.php', $config);
   
   echo ' [Done]' . PHP_EOL;
@@ -159,7 +161,7 @@
     echo ' [Done]' . PHP_EOL;
   }
   
-  ### Database > Tables > Demo Data ###################################
+  ### Files > Demo Data ###################################
   
   if (!empty($_POST['demo_data'])) {
   
@@ -228,6 +230,16 @@
   file_put_contents('..' . DIRECTORY_SEPARATOR . $_POST['admin_folder'] . '.htpasswd', $htpasswd) or die();
   
   echo ' [Done]' . PHP_EOL;
+  
+  ### Admin > Database > Users ###################################
+  
+  require('../includes/functions/password.inc.php');
+  
+  $database->query(
+    "insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_users`') ."
+    (`id`, `status`, `username`, `password`, `date_updated`, `date_created`)
+    values ('1', '1', '". $database->input($_POST['username']) ."', '". password_hash('1', $_POST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+  );
   
   ### ###################################
   

@@ -92,6 +92,8 @@ DROP TABLE IF EXISTS `lc_tax_rates`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_translations`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_users`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_zones`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_zones_to_geo_zones`;

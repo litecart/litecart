@@ -173,6 +173,11 @@ img {
 #copyright a {
 }
 
+#logout {
+  margin: 10px 0px;
+  text-align: center;
+}
+
 #stats {
   opacity: 0.5;
 }

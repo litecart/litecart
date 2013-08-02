@@ -20,10 +20,6 @@
       if (empty($this->system->session->data['customer']) || !is_array($this->system->session->data['customer'])) {
         $this->reset();
       }
-      
-      if (!empty($_POST['login'])) $this->login($_POST['email'], $_POST['password']);
-      if (!empty($_POST['logout'])) $this->logout();
-      if (!empty($_POST['lost_password'])) $this->password_reset($_POST['email']);
     }
     
     //public function before_capture() {
@@ -179,7 +175,7 @@
       $this->system->session->data['customer'] = $customer;
     }
     
-    public function login($email, $password) {
+    public function login($email, $password, $redirect_url='') {
     
       if (empty($email) || empty($password)) {
         $this->system->notices->add('errors', $this->system->language->translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
@@ -221,10 +217,10 @@
       
       $this->system->cart->load();
       
-      if (empty($_POST['redirect_url'])) $_POST['redirect_url'] = $this->system->document->link(WS_DIR_HTTP_HOME);
+      if (empty($redirect_url)) $redirect_url = $this->system->document->link(WS_DIR_HTTP_HOME);
       
       $this->system->notices->add('success', str_replace(array('%firstname', '%lastname'), array($this->data['firstname'], $this->data['lastname']), $this->system->language->translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
-      header('Location: '. $_POST['redirect_url']);
+      header('Location: '. $redirect_url);
       exit;
     }
     

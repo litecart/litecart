@@ -6,8 +6,10 @@
   
   if (!empty($system->customer->data['id'])) $system->notices->add('notice', $system->language->translate('text_already_logged_in', 'You are already logged in'));
   
-  $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('')) .'" />';
+  if (!empty($_POST['login'])) $system->customer->login($_POST['email'], $_POST['password'], $_POST['redirect_url']);
 
+  if (!empty($_POST['lost_password'])) $system->customer->password_reset($_POST['email']);
+  
 ?>
  
 <div class="box">
