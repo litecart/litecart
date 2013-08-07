@@ -30,7 +30,6 @@
         'title' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
         'value' => $payment->data['selected']['cost'],
         'tax' => $this->system->tax->calculate($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], true),
-        'tax_class_id' => $payment->data['selected']['tax_class_id'],
         'calculate' => true,
       );
       

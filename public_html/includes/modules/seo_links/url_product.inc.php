@@ -22,7 +22,7 @@
       
       $product = new ref_product($parsed_link['query']['product_id'], $language_code);
       
-      if (!$product->id) die($product->id);
+      if (!$product->id) return $parsed_link;
       
       $parsed_link['path'] = '';
       if (!empty($parsed_link['query']['category_id']) && !empty($product->categories)) {

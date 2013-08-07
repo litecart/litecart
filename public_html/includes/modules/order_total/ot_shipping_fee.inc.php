@@ -30,7 +30,6 @@
         'title' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
         'value' => $shipping->data['selected']['cost'],
         'tax' => $this->system->tax->calculate($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], true),
-        'tax_class_id' => $shipping->data['selected']['tax_class_id'],
         'calculate' => true,
       );
       

@@ -1,10 +1,3 @@
-@import url(boxes.css);
-@import url(content.css);
-@import url(forms.css);
-@import url(notices.css);
-@import url(tables.css);
-@import url(tabs.css);
-
 * {
   line-height: 125%;
 }

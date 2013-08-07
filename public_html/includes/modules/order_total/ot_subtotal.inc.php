@@ -33,7 +33,6 @@
         'title' => $this->system->language->translate('title_subtotal', 'Subtotal'),
         'value' => $value,
         'tax' => $tax,
-        'tax_class_id' => 0,
         'calculate' => false,
       );
       

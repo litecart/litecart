@@ -190,6 +190,8 @@
   function catalog_stock_adjust($product_id, $option_stock_combination, $quantity) {
     global $system;
     
+    if (empty($product_id)) return;
+    
     if (!empty($option_stock_combination)) {
       $products_options_stock_query = $system->database->query(
         "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."

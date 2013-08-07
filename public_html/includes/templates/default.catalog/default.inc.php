@@ -7,22 +7,19 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
 <link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
+<link rel="stylesheet" href="<!--snippet:template_path-->styles/theme.css" media="all" />
 <link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css" media="all" />
-<!--[if IE]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
+<!--[if IE]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
 <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<!--snippet:head_tags-->
+<!--snippet:javascript-->
 <script type="text/javascript">
-  if (typeof jQuery == 'undefined') document.write(unescape("%3Cscript src='<?php echo WS_DIR_EXT; ?>jquery/jquery-1.9.1.min.js' type='text/javascript'%3E%3C/script%3E"));
-  if (typeof jQuery.migrateTrace == 'undefined') document.write(unescape("%3Cscript src='<?php echo WS_DIR_EXT; ?>jquery/jquery-migrate-1.1.1.min.js' type='text/javascript'%3E%3C/script%3E"));
   if (/iphone|ipod|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(navigator.userAgent.toLowerCase())) {
     $("meta[name='viewport']").attr("content", "width=640");
   }
 </script>
-<!--snippet:head_tags-->
-<!--snippet:javascript-->
 </head>
 <body>
 
@@ -172,6 +169,5 @@
 </div>
 
 <!--snippet:foot_tags-->
-
 </body>
 </html>

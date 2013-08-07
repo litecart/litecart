@@ -24,8 +24,7 @@
               'title' => $row['title'],
               'value' => $row['value'],
               'tax' => $row['tax'],
-              'tax_class_id' => $row['tax_class_id'],
-              'calculate' => $row['tax_class_id'],
+              'calculate' => !empty($row['calculate']) ? 1 : 0,
             ));
           }
         }

@@ -36,7 +36,7 @@
     <tr>
       <td>&nbsp;</td>
       <td><strong><?php echo $this->system->language->translate('title_weight', 'Weight'); ?>:</strong><br />
-        <?php echo !empty($order['weight']) ? $this->system->weight->format($order['weight'], $order['weight_class']) : '-'; ?></td>
+        <?php echo !empty($order['weight_total']) ? $this->system->weight->format($order['weight_total'], $order['weight_class']) : '-'; ?></td>
     </tr>
   </table>
   
@@ -98,13 +98,11 @@
     <?php } ?>
     <?php } ?>
     
-    <?php if ($order['tax']['total']) { ?>
-    <?php foreach ($order['tax']['rates'] as $tax_rate) { ?>
+    <?php if (!empty($order['tax_total'])) { ?>
     <tr>
-      <td style="white-space: nowrap; text-align: right;"><?php echo ($this->system->settings->get('display_prices_including_tax') == 'true') ? $this->system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?> (<?php echo $tax_rate['name']; ?>):</td>
-      <td style="text-align: right; width: 75px;"><?php echo $this->system->currency->format($tax_rate['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+      <td style="white-space: nowrap; text-align: right;"><?php echo ($this->system->settings->get('display_prices_including_tax') == 'true') ? $this->system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+      <td style="text-align: right; width: 75px;"><?php echo $this->system->currency->format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
     </tr>
-    <?php } ?>
     <?php } ?>
     
     <tr>

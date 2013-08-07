@@ -69,7 +69,6 @@
   define('DB_TABLE_ORDERS_TOTALS',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'orders_totals`');
   define('DB_TABLE_ORDERS_STATUS',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'orders_status`');
   define('DB_TABLE_ORDERS_STATUS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'orders_status_info`');
-  define('DB_TABLE_ORDERS_TAX',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'orders_tax`');
   define('DB_TABLE_PAGES',                             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'pages`');
   define('DB_TABLE_PAGES_INFO',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'pages_info`');
   define('DB_TABLE_PRODUCT_GROUPS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups`');

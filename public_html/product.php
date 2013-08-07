@@ -171,22 +171,19 @@
           
           <div style="margin-bottom: 10px;" class="tax">
 <?php
-    if ($system->settings->get('display_prices_including_tax') == 'true') {
-      echo $system->language->translate('title_including_tax', 'Including Tax') .':<br/>' . PHP_EOL;
-    } else {
-      echo $system->language->translate('title_excluding_tax', 'Excluding Tax') .':<br/>' . PHP_EOL;
-    }
-    
     if ($tax_rates = $system->tax->get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id)) {
+      if ($system->settings->get('display_prices_including_tax') == 'true') {
+        echo $system->language->translate('title_including_tax', 'Including Tax') .':<br/>' . PHP_EOL;
+      } else {
+        echo $system->language->translate('title_excluding_tax', 'Excluding Tax') .':<br/>' . PHP_EOL;
+      }
       $use_br = false;
       foreach ($tax_rates as $tax_rate) {
         echo $system->currency->format($tax_rate['tax']) .' ('. $tax_rate['name'] .')<br/>' . PHP_EOL;
       }
-      
     } else {
-      echo $system->language->translate('text_duty_free_or_no_country_zone_set', 'Duty free or no country/zone set.');
+      echo $system->language->translate('title_excluding_tax', 'Excluding Tax');
     }
-    
 ?>
           </div>
           

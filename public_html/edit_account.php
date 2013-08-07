@@ -189,7 +189,7 @@
                   <tr>
                     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
                       <?php echo $system->functions->form_draw_text_field('shipping_address[firstname]', true); ?></td>
-                    <td><?php echo $system->language->translate('title_lastname', 'LastName'); ?><br />
+                    <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?><br />
                       <?php echo $system->functions->form_draw_text_field('shipping_address[lastname]', true); ?></td>
                   </tr>
                   <tr>

@@ -69,6 +69,14 @@
           values ('". $this->system->database->input(date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = $this->system->database->insert_id();
+        
+        if (!empty($this->data['email'])) {
+          $this->system->database->query(
+            "update ". DB_TABLE_ORDERS ."
+            set customer_id = '". (int)$this->data['id'] ."'
+            where email = '". $this->system->database->input($this->data['email']) ."';"
+          );
+        }
       }
       
       $this->system->database->query(

@@ -279,7 +279,7 @@ CREATE TABLE `lc_orders` (
   `payment_option_name` varchar(64) NOT NULL,
   `payment_transaction_id` varchar(128) NOT NULL,
   `language_code` varchar(2) NOT NULL,
-  `weight` decimal(11,4) NOT NULL,
+  `weight_total` decimal(11,4) NOT NULL,
   `weight_class` varchar(2) NOT NULL,
   `currency_code` varchar(3) NOT NULL,
   `currency_value` float NOT NULL,
@@ -309,14 +309,12 @@ CREATE TABLE `lc_orders_items` (
   `option_stock_combination` varchar(32) NOT NULL,
   `options` varchar(512) NOT NULL,
   `name` varchar(128) NOT NULL,
-  `code` varchar(64) NOT NULL,
   `sku` varchar(64) NOT NULL,
-  `upc` varchar(12) NOT NULL,
-  `taric` varchar(16) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(11,4) NOT NULL,
   `tax` decimal(11,4) NOT NULL,
-  `tax_class_id` int(11) NOT NULL,
+  `weight` decimal(11,4) NOT NULL,
+  `weight_class` varchar(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -341,16 +339,6 @@ CREATE TABLE `lc_orders_status_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE `lc_orders_tax` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
-  `tax_rate_id` int(11) NOT NULL,
-  `name` varchar(32) NOT NULL,
-  `tax` decimal(11,4) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
--- --------------------------------------------------------
 CREATE TABLE `lc_orders_totals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
@@ -358,7 +346,6 @@ CREATE TABLE `lc_orders_totals` (
   `title` varchar(128) NOT NULL,
   `value` float NOT NULL,
   `tax` float NOT NULL,
-  `tax_class_id` int(11) NOT NULL,
   `calculate` tinyint(1) NOT NULL,
   `priority` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
@@ -490,7 +477,7 @@ CREATE TABLE `lc_products_options_stock` (
   `product_id` int(11) NOT NULL,
   `combination` varchar(64) NOT NULL,
   `sku` varchar(64) NOT NULL,
-  `weight` int(11) NOT NULL,
+  `weight` decimal(11,4) NOT NULL,
   `weight_class` varchar(2) NOT NULL,
   `dim_x` decimal(11,4) NOT NULL,
   `dim_y` decimal(11,4) NOT NULL,

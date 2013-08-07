@@ -2,12 +2,11 @@
 <html lang="{snippet:language}">
 <head>
 <title>{snippet:title}</title>
-<meta http-equiv="Content-Type" content="text/html; charset={snippet:charset}" />
+<meta charset="{snippet:charset}" />
 <link href="<!--snippet:template_path-->styles/printable.css" rel="stylesheet" type="text/css" media="print, screen" />
+<link href="<!--snippet:template_path-->styles/loader.css" rel="stylesheet" type="text/css" media="print, screen" />
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
-</head>
-<body>
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <script type="text/javascript">
   window.onload = function() {
@@ -15,6 +14,11 @@
   }
 </script>
 <?php } ?>
+</head>
+<body>
+
 <!--snippet:content-->
+
+<!--snippet:foot_tags-->
 </body>
 </html>

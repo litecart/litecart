@@ -21,6 +21,8 @@ $app_config = array(
     'edit_order' => 'edit_order.inc.php',
     'order_statuses' => 'order_statuses.inc.php',
     'edit_order_status' => 'edit_order_status.inc.php',
+    'add_product' => 'add_product.inc.php',
+    'add_custom_item' => 'add_custom_item.inc.php',
   ),
 );
 

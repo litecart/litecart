@@ -26,6 +26,19 @@
     // Set before-snippets
       $this->snippets['title'] = array($this->system->settings->get('store_name'));
       
+      $this->snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>' . PHP_EOL
+                                             . '<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>' . PHP_EOL
+                                             . '<script>' . PHP_EOL
+                                             . '  if (typeof jQuery == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.9.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '  if (typeof jQuery.migrateTrace == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.1.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '</script>';
+      
+      $this->snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
+                                                  . '    $("body").on("keyup", "input[data-type=\'number\'], input[data-type=\'decimal\'], input[data-type=\'currency\']", function(){' . PHP_EOL
+                                                  . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
+                                                  . '    });' . PHP_EOL
+                                                  . '  });';
+      
     // Set regional data
       if ($this->system->settings->get('regional_settings_screen_enabled') == 'true') {
         
@@ -72,10 +85,8 @@
       
     // Prepare javascript
       if (isset($this->snippets['javascript'])) {
-        $this->snippets['javascript'] = '<script type="text/javascript">' . PHP_EOL
-                                      . '<!--' . PHP_EOL
+        $this->snippets['javascript'] = '<script>' . PHP_EOL
                                       . implode(PHP_EOL . PHP_EOL, $this->snippets['javascript']) . PHP_EOL
-                                      . '//-->' . PHP_EOL
                                       . '</script>' . PHP_EOL;
       }
       

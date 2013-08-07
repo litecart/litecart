@@ -32,9 +32,8 @@
         'status',
         'username',
         'password',
-        'firstname',
-        'lastname',
-        'email',
+        'date_blocked',
+        'date_expires',
       );
       
       foreach ($fields as $field) {
@@ -77,18 +76,6 @@
           <?php echo $system->functions->form_draw_text_field('username', true, 'required="required"'); ?>
       </td>
       <td>
-        <?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
-          <?php echo $system->functions->form_draw_email_field('email', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td align="left">
-        <?php echo $system->language->translate('title_first_name', 'First Name'); ?><br />
-          <?php echo $system->functions->form_draw_text_field('firstname', true); ?>
-      </td>
-      <td>
-        <?php echo $system->language->translate('title_last_name', 'Last Name'); ?><br />
-          <?php echo $system->functions->form_draw_text_field('lastname', true); ?>
       </td>
     </tr>
     <tr>
@@ -103,14 +90,34 @@
     </tr>
     <tr>
       <td>
+        <?php echo $system->language->translate('title_blocked_until', 'Blocked Until'); ?><br />
+          <?php echo $system->functions->form_draw_datetime_field('date_blocked', true); ?>
+      </td>
+      <td>
+        <?php echo $system->language->translate('title_expires', 'Expires'); ?><br />
+          <?php echo $system->functions->form_draw_datetime_field('date_expires', true); ?>
+      </td>
+    </tr>
+    <?php if (!empty($user->data['id'])) { ?>
+    <tr>
+      <td>
         <?php echo $system->language->translate('title_last_ip', 'Last IP'); ?><br />
           <?php echo $system->functions->form_draw_static_field('last_ip', true); ?>
       </td>
       <td>
         <?php echo $system->language->translate('title_last_host', 'Last Host'); ?><br />
-          <?php echo $system->functions->form_draw_static_field('last', true); ?>
+          <?php echo $system->functions->form_draw_static_field('last_host', true); ?>
       </td>
     </tr>
+    <tr>
+      <td>
+        <?php echo $system->language->translate('title_last_login', 'Last Login'); ?><br />
+          <?php echo $system->functions->form_draw_static_field('date_login', true); ?>
+      </td>
+      <td>
+      </td>
+    </tr>
+    <?php } ?>
     <tr>
       <td colspan="2"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($user->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
     </tr>

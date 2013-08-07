@@ -70,7 +70,7 @@
     
     public function require_login() {
       if (!$this->check_login()) {
-        $this->system->notices->add('warnings', $this->system->language->translate('warning_must_login_page', 'You must be logged in to view the page.'));
+        //$this->system->notices->add('warnings', $this->system->language->translate('warning_must_login_page', 'You must be logged in to view the page.'));
         header('Location: ' . $this->system->document->link(WS_DIR_ADMIN . 'login.php', array('redirect_url' => $_SERVER['REQUEST_URI'])));
         exit;
       }

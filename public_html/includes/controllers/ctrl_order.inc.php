@@ -71,10 +71,9 @@
         'payment_option' => array(),
         'payment_transaction_id' => '',
         'order_total' => array(),
-        'tax' => array(
-          'rates' => array(),
-          'total' => 0,
-        ),
+        'tax_total' => 0,
+        'weight_total' => 0,
+        'weight_class' => $this->system->settings->get('store_weight_class'),
         'payment_due' => 0,
         'order_status_id' => 0,
         'comments' => array(),
@@ -130,7 +129,7 @@
       
       $key_map = array(
         'id' => 'id',
-        'weight' => 'weight',
+        'weight_total' => 'weight_total',
         'weight_class' => 'weight_class',
         'currency_code' => 'currency_code',
         'currency_value' => 'currency_value',
@@ -214,15 +213,6 @@
         $this->data['order_total'][$row['id']] = $row;
       }
       
-      $order_tax_query = $this->system->database->query(
-        "select * from ". DB_TABLE_ORDERS_TAX ."
-        where order_id = '". (int)$order_id ."';"
-      );
-      while ($row = $this->system->database->fetch($order_tax_query)) {
-        $this->data['tax']['rates'][$row['id']] = $row;
-        $this->data['tax']['total'] += $row['tax'];
-      }
-      
       $order_comments_query = $this->system->database->query(
         "select * from ". DB_TABLE_ORDERS_COMMENTS ."
         where order_id = '". (int)$order_id ."'
@@ -242,12 +232,14 @@
       if (empty($this->data['id'])) {
         if (!empty($this->data['items'])) {
           foreach (array_keys($this->data['items']) as $key) {
-            $this->system->database->query(
-              "update ". DB_TABLE_PRODUCTS ."
-              set purchases = purchases + ". (int)$this->data['items'][$key]['quantity'] ."
-              where id = ". (int)$this->data['items'][$key]['product_id'] ."
-              limit 1;"
-            );
+            if (!empty($this->data['items'][$key]['product_id'])) {
+              $this->system->database->query(
+                "update ". DB_TABLE_PRODUCTS ."
+                set purchases = purchases + ". (int)$this->data['items'][$key]['quantity'] ."
+                where id = ". (int)$this->data['items'][$key]['product_id'] ."
+                limit 1;"
+              );
+            }
           }
         }
       }
@@ -302,12 +294,6 @@
         $customer = $this->system->database->fetch($customers_query);
         if (!empty($customer['id'])) {
           $this->data['customer']['id'] = $customer['id'];
-        } else {
-          $customer = new ctrl_customer();
-          $customer->data = $this->data['customer'];
-          $customer->set_password($this->system->functions->password_generate());
-          $customer->save();
-          $this->data['customer']['id'] = $customer->data['id'];
         }
       }
       
@@ -348,16 +334,17 @@
         shipping_zone_code = '". $this->system->database->input($this->data['customer']['shipping_address']['zone_code']) ."',
         shipping_option_id = '". ((!empty($this->data['shipping_option'])) ? $this->system->database->input($this->data['shipping_option']['id']) : false) ."',
         shipping_option_name = '". ((!empty($this->data['shipping_option'])) ? $this->system->database->input($this->data['shipping_option']['name']) : false) ."',
+        shipping_tracking_id = '". ((!empty($this->data['shipping_tracking_id'])) ? $this->system->database->input($this->data['shipping_tracking_id']) : false) ."',
         payment_option_id = '". ((!empty($this->data['payment_option'])) ? $this->system->database->input($this->data['payment_option']['id']) : false) ."',
         payment_option_name = '". ((!empty($this->data['payment_option'])) ? $this->system->database->input($this->data['payment_option']['name']) : false) ."',
         payment_transaction_id = '". ((!empty($this->data['payment_transaction_id'])) ? $this->system->database->input($this->data['payment_transaction_id']) : false) ."',
         language_code = '". $this->system->database->input($this->data['language_code']) ."',
         currency_code = '". $this->system->database->input($this->data['currency_code']) ."',
-        currency_value = '". $this->system->database->input($this->data['currency_value']) ."',
-        weight = '". $this->system->database->input($this->data['weight']) ."',
+        currency_value = '". (float)$this->data['currency_value'] ."',
+        weight_total = '". (float)$this->data['weight_total'] ."',
         weight_class = '". $this->system->database->input($this->data['weight_class']) ."',
-        payment_due = '". $this->system->database->input($this->data['payment_due']) ."',
-        tax_total = '". $this->system->database->input($this->data['tax']['total']) ."',
+        payment_due = '". (float)$this->data['payment_due'] ."',
+        tax_total = '". (float)$this->data['tax_total'] ."',
         client_ip = '". $_SERVER['REMOTE_ADDR'] ."',
         date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
@@ -413,18 +400,16 @@
           }
           $this->system->database->query(
             "update ". DB_TABLE_ORDERS_ITEMS ." 
-            set product_id = '". $this->system->database->input($this->data['items'][$key]['product_id']) ."',
+            set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
             option_stock_combination = '". $this->system->database->input($this->data['items'][$key]['option_stock_combination']) ."',
             options = '". $this->system->database->input(serialize($this->data['items'][$key]['options'])) ."',
             name = '". $this->system->database->input($this->data['items'][$key]['name']) ."',
-            code = '". $this->system->database->input($this->data['items'][$key]['code']) ."',
             sku = '". $this->system->database->input($this->data['items'][$key]['sku']) ."',
-            upc = '". $this->system->database->input($this->data['items'][$key]['upc']) ."',
-            taric = '". $this->system->database->input($this->data['items'][$key]['taric']) ."',
-            price = '". $this->system->database->input($this->data['items'][$key]['price']) ."',
-            tax_class_id = '". $this->system->database->input($this->data['items'][$key]['tax_class_id']) ."',
-            tax = '". $this->system->database->input($this->data['items'][$key]['tax']) ."',
-            quantity = '". $this->system->database->input($this->data['items'][$key]['quantity']) ."'
+            quantity = '". (float)$this->data['items'][$key]['quantity'] ."',
+            price = '". (float)$this->data['items'][$key]['price'] ."',
+            tax = '". (float)$this->data['items'][$key]['tax'] ."',
+            weight = '". (float)$this->data['items'][$key]['weight'] ."',
+            weight_class = '". $this->system->database->input($this->data['items'][$key]['weight_class']) ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['items'][$key]['id'] ."'
             limit 1;"
@@ -463,9 +448,8 @@
             "update ". DB_TABLE_ORDERS_TOTALS ." 
             set title = '". $this->system->database->input($this->data['order_total'][$key]['title']) ."',
             module_id = '". $this->system->database->input($this->data['order_total'][$key]['module_id']) ."',
-            value = '". $this->system->database->input($this->data['order_total'][$key]['value']) ."',
-            tax = '". $this->system->database->input($this->data['order_total'][$key]['tax']) ."',
-            tax_class_id = '". $this->system->database->input($this->data['order_total'][$key]['tax_class_id']) ."',
+            value = '". (float)$this->data['order_total'][$key]['value'] ."',
+            tax = '". (float)$this->data['order_total'][$key]['tax'] ."',
             calculate = '". (empty($this->data['order_total'][$key]['calculate']) ? 0 : 1) ."',
             priority = '". $this->system->database->input(++$i) ."'
             where order_id = '". (int)$this->data['id'] ."'
@@ -474,45 +458,6 @@
           );
         }
       }
-      
-    // Build array of tax ids
-      $tax_ids = array();
-      if (!empty($this->data['tax']['rates'])) {
-        foreach (array_keys($this->data['tax']['rates']) as $key) {
-          if (!empty($this->data['tax']['rates'][$key]['id'])) $tax_ids[] = $this->data['tax']['rates'][$key]['id'];
-        }
-      }
-      
-    // Delete tax rows
-      $this->system->database->query(
-        "delete from ". DB_TABLE_ORDERS_TAX ."
-        where order_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", $tax_ids) ."');"
-      );
-      
-    // Insert/update tax rows
-      if (!empty($this->data['tax']['rates'])) {
-        foreach (array_keys($this->data['tax']['rates']) as $key) {
-          if (empty($this->data['tax']['rates'][$key]['id'])) {
-            $this->system->database->query(
-              "insert into ". DB_TABLE_ORDERS_TAX ."
-              (order_id)
-              values ('". (int)$this->data['id'] ."');"
-            );
-            $this->data['tax']['rates'][$key]['id'] = $this->system->database->insert_id();
-          }
-          $this->system->database->query(
-            "update ". DB_TABLE_ORDERS_TAX ." 
-            set tax_rate_id = '". $this->system->database->input($this->data['tax']['rates'][$key]['tax_rate_id']) ."',
-            name = '". $this->system->database->input($this->data['tax']['rates'][$key]['name']) ."',
-            tax = '". $this->system->database->input($this->data['tax']['rates'][$key]['tax']) ."'
-            where order_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['tax']['rates'][$key]['id'] ."'
-            limit 1;"
-          );
-        }
-      }
-      
       
     // Build array of comments ids
       $comments_ids = array();
@@ -574,18 +519,17 @@
     
     public function calculate_total() {
       $this->data['payment_due'] = 0;
-      $this->data['tax'] = array(
-        'rates' => array(),
-        'total' => 0,
-      );
+      $this->data['tax_total'] = 0;
+      $this->data['weight_total'] = 0;
       
       foreach ($this->data['items'] as $item) {
-        $this->add_cost($item['price'] * $item['quantity'], $item['tax_class_id']);
+        $this->add_cost($item['price'], $item['tax'], $item['quantity']);
+        $this->data['weight_total'] += $this->system->weight->convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
       
       foreach ($this->data['order_total'] as $order_total) {
         if (!empty($order_total['calculate'])) {
-          $this->add_cost($order_total['value'], $order_total['tax_class_id']);
+          $this->add_cost($order_total['value'], $order_total['tax']);
         }
       }
     }
@@ -605,19 +549,15 @@
         'options' => $item['options'],
         'option_stock_combination' => $item['option_stock_combination'],
         'name' => $item['name'][$this->system->language->selected['code']],
-        'code' => $item['code'],
         'sku' => $item['sku'],
-        'upc' => $item['upc'],
-        'taric' => $item['taric'],
         'price' => $item['price'],
-        'tax' => $this->system->tax->get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']),
-        'tax_class_id' => $item['tax_class_id'],
+        'tax' => !empty($item['tax_class_id']) ? $this->system->tax->get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $item['tax'],
         'quantity' => $item['quantity'],
       );
       
-      $this->data['weight'] += $item['quantity'] * $this->system->weight->convert($item['weight'], $item['weight_class'], $this->system->settings->get('store_weight_class'));
+      $this->data['weight_total'] += $item['quantity'] * $this->system->weight->convert($item['weight'], $item['weight_class'], $this->system->settings->get('store_weight_class'));
       
-      $this->add_cost($item['price'] * $item['quantity'], $item['tax_class_id']);
+      $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax']);
     }
     
     public function add_ot_row($row) {
@@ -635,33 +575,16 @@
         'title' =>  $row['title'],
         'value' => $row['value'],
         'tax' => !empty($row['tax_class_id']) ? $this->system->tax->get_tax($row['value'], $row['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $row['tax'],
-        'tax_class_id' => (int)$row['tax_class_id'],
-        'calculate' => $row['calculate'],
+        'calculate' => !empty($row['calculate']) ? 1 : 0,
       );
       
-      if (!empty($row['calculate'])) $this->add_cost($row['value'], $row['tax_class_id']);
+      if (!empty($row['calculate'])) $this->add_cost($row['value'], $row['tax']);
     }
     
-    private function add_cost($gross, $tax_class_id) {
-      
-      $this->data['payment_due'] += $gross;
-      
-      $tax_rates = $this->system->tax->get_tax_by_rate($gross, $tax_class_id, $this->data['customer']['country_code'], $this->data['customer']['zone_code']);      
-      if (empty($tax_rates)) return;
-      
-      foreach($tax_rates as $tax_rate) {
-        $this->data['payment_due'] += $tax_rate['tax'];
-        if (!isset($this->data['tax']['rates'][$tax_rate['id']])) {
-          $this->data['tax']['rates'][$tax_rate['id']] = array(
-            'tax_rate_id' => $tax_rate['id'],
-            'name' => $tax_rate['name'],
-            'tax' => $tax_rate['tax'],
-          );
-        } else {
-          $this->data['tax']['rates'][$tax_rate['id']]['tax'] += $tax_rate['tax'];
-        }
-        $this->data['tax']['total'] += $tax_rate['tax'];
-      }
+    private function add_cost($gross, $tax, $quantity=1) {
+      $this->data['payment_due'] += $gross * $quantity;
+      $this->data['payment_due'] += $tax * $quantity;
+      $this->data['tax_total'] += $tax * $quantity;
     }
     
     public function checkout_forbidden() {

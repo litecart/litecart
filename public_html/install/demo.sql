@@ -52,13 +52,13 @@ INSERT INTO `lc_products_info` (`id`, `product_id`, `language_code`, `name`, `sh
 -- --------------------------------------------------------
 INSERT INTO `lc_products_options` (`id`, `product_id`, `group_id`, `value_id`, `price_operator`, `EUR`, `SEK`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 1, 1, 1, '+', 0.0000, 0.0000, 1, NOW(), NOW()),
-(2, 1, 1, 2, '+', 12.5000, 0.0000, 2, NOW(), NOW()),
-(3, 1, 1, 3, '+', 15.0000, 0.0000, 3, NOW(), NOW());
+(2, 1, 1, 2, '+', 2.5000, 0.0000, 2, NOW(), NOW()),
+(3, 1, 1, 3, '+', 5.0000, 0.0000, 3, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_products_options_stock` (`id`, `product_id`, `combination`, `sku`, `weight`, `weight_class`, `dim_x`, `dim_y`, `dim_z`, `dim_class`, `quantity`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 1, '1-1', 'RD001-S', 1, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10, 0, NOW(), NOW()),
-(2, 1, '1-2', 'RD001-M', 1, 'kg', 8.0000, 12.5000, 12.5000, 'cm', 10, 1, NOW(), NOW()),
-(3, 1, '1-3', 'RD001-L', 1, 'kg', 10.0000, 15.0000, 15.0000, 'cm', 10, 2, NOW(), NOW());
+(1, 1, '1-1', 'RD001-S', 1.0, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10, 0, NOW(), NOW()),
+(2, 1, '1-2', 'RD001-M', 1.1, 'kg', 8.0000, 12.5000, 12.5000, 'cm', 10, 1, NOW(), NOW()),
+(3, 1, '1-3', 'RD001-L', 1.2, 'kg', 10.0000, 15.0000, 15.0000, 'cm', 10, 2, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_products_prices` (`id`, `product_id`, `EUR`) VALUES
 (1, 1, 10.0000);
@@ -80,8 +80,8 @@ INSERT INTO `lc_product_groups_values_info` (`id`, `product_group_value_id`, `la
 (3, 3, 'en', 'Unisex');
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `language_code`, `name`, `caption`, `link`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, 'en', 'Slide 1', '', '', 'slides/1-nemo.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW()),
-(2, 1, 'en', 'Slide 2', 'A slide with a caption and a link.', 'http://www.litecart.net', 'slides/2-walle.jpg', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+(1, 1, 'en', 'Nemo', '', '', 'slides/1-nemo.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW()),
+(2, 1, 'en', 'Wall-E', 'A slide with a caption and a link.', 'http://www.litecart.net', 'slides/2-walle.jpg', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_sold_out_status` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
 (1, 1, NOW(), NOW()),
@@ -96,3 +96,6 @@ INSERT INTO `lc_tax_classes` (`id`, `name`, `description`, `date_updated`, `date
 -- --------------------------------------------------------
 INSERT INTO `lc_tax_rates` (`id`, `tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `customer_type`, `tax_id_rule`, `date_updated`, `date_created`) VALUES
 (1, 1, 1, 'percent', 'UK VAT 20%', '', 20.0000, 'both', 'both', NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_zones_to_geo_zones` (`id`, `geo_zone_id`, `country_code`, `zone_code`, `date_updated`, `date_created`) VALUES
+(1, 1, 'GB', '', NOW(), NOW());

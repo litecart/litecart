@@ -19,9 +19,16 @@
         'status' => '',
         'username' => '',
         'password' => '',
-        'firstname' => '',
-        'lastname' => '',
-        'email' => '',
+        'last_ip' => '',
+        'last_host' => '',
+        'total_logins' => '',
+        'login_attempts' => '',
+        'date_blocked' => '',
+        'date_expires' => '',
+        'date_active' => '',
+        'date_login' => '',
+        'date_updated' => '',
+        'date_created' => '',
       );
     }
     
@@ -86,9 +93,8 @@
         set
           status = '". (empty($this->data['status']) ? 0 : 1) ."',
           username = '". $this->system->database->input($this->data['username']) ."',
-          firstname = '". $this->system->database->input($this->data['firstname']) ."',
-          lastname = '". $this->system->database->input($this->data['lastname']) ."',
-          email = '". $this->system->database->input($this->data['email']) ."',
+          date_blocked = '". $this->system->database->input($this->data['date_blocked']) ."',
+          date_expires = '". $this->system->database->input($this->data['date_expires']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"

@@ -93,17 +93,13 @@
         <td align="right" colspan="6">&nbsp;</td>
       </tr>
 <?php
-  if ($order->data['tax']['total']) {
-    foreach ($order->data['tax']['rates'] as $rate) {
-      if ($system->settings->get('display_prices_including_tax') == 'true') {
+  if ($order->data['tax_total']) {
 ?>
       <tr>
-        <td colspan="5" align="right" style="color: #999999;"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?> (<?php echo $rate['name']; ?>):</td>
-        <td align="right" width="100" nowrap="nowrap" style="color: #999999;"><?php echo $system->currency->format($rate['tax'], false); ?></td>
+        <td colspan="5" align="right" style="color: #999999;"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+        <td align="right" width="100" nowrap="nowrap" style="color: #999999;"><?php echo $system->currency->format($order->data['tax_total'], false); ?></td>
       </tr>
 <?php
-      }
-    }
   }
 ?>
       <tr class="footer">

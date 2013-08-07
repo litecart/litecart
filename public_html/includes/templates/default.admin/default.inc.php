@@ -2,20 +2,16 @@
 <html lang="{snippet:language}">
 <head>
 <title>{snippet:title}</title>
-<meta http-equiv="Content-Type" content="text/html; charset={snippet:charset}" />
+<meta charset="{snippet:charset}" />
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="robots" content="noindex, nofollow" />
+<link href="<!--snippet:template_path-->styles/theme.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="<!--snippet:template_path-->styles/loader.css" rel="stylesheet" type="text/css" media="screen" />
-<!--[if IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
-<!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
+<!--[if IE]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
+<!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
+<!--[if lt IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
 <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
-<script type="text/javascript">
-  if (typeof jQuery == 'undefined') document.write(unescape("%3Cscript src='<?php echo WS_DIR_EXT; ?>jquery/jquery-1.9.1.min.js' type='text/javascript'%3E%3C/script%3E"));
-  if (typeof jQuery.migrateTrace == 'undefined') document.write(unescape("%3Cscript src='<?php echo WS_DIR_EXT; ?>jquery/jquery-migrate-1.1.1.min.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
 </head>
@@ -90,5 +86,6 @@
   </div>
 </div>
 
+<!--snippet:foot_tags-->
 </body>
 </html>

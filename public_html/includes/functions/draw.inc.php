@@ -1,5 +1,5 @@
 <?php
-
+  
   function draw_img($image, $width, $height, $title, $params) {
     return '<img src="'. $image .'" width="'. $width .'" height="'. $height .'" border="0"'. ($params ? ' '.$params : '') .'/>';
   }
@@ -100,16 +100,20 @@
     }
     
     foreach (array_keys($params) as $key) {
-      switch (gettype($params[$key])) {
-        case 'boolean':
-          $system->document->snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. ($params[$key] ? 'true' : 'false') .',' . PHP_EOL;
-          break;
-        case 'integer':
-          $system->document->snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
-          break;
-        case 'string':
-          $system->document->snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : "'. $params[$key] .'",' . PHP_EOL;
-          break;
+      if (strpos($params[$key], '(') !== false) {
+        $system->document->snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
+      } else {
+        switch (gettype($params[$key])) {
+          case 'boolean':
+            $system->document->snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. ($params[$key] ? 'true' : 'false') .',' . PHP_EOL;
+            break;
+          case 'integer':
+            $system->document->snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
+            break;
+          case 'string':
+            $system->document->snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : "'. $params[$key] .'",' . PHP_EOL;
+            break;
+        }
       }
     }
     

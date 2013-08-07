@@ -120,7 +120,7 @@
     });
   }
 
-  function refreshConfirmation() {
+  function refreshSummary() {
     var comments = $('textarea[name=comments]').val();
     $.ajax({
       url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_summary.html.php'); ?>',
@@ -172,7 +172,7 @@
           refreshCustomer();
           refreshShipping();
           refreshPayment();
-          refreshConfirmation();
+          refreshSummary();
         },
         complete: function() {
           $('body').css('cursor', '');
@@ -238,7 +238,7 @@
           refreshCart();
           refreshShipping();
           refreshPayment();
-          refreshConfirmation();
+          refreshSummary();
         },
         complete: function() {
           $('*').css('cursor', '');
@@ -269,7 +269,7 @@
         success: function(data) {
           $('#checkout-shipping-wrapper').html(data).fadeTo('slow', 1);
           refreshPayment();
-          refreshConfirmation();
+          refreshSummary();
           $('html, body').animate({
             scrollTop: $('#checkout-shipping-wrapper').offset().top
           }, 800);
@@ -300,7 +300,7 @@
         },
         success: function(data) {
           $('#checkout-payment-wrapper').html(data).fadeTo('slow', 1);
-          refreshConfirmation();
+          refreshSummary();
           $('html, body').animate({
             scrollTop: $('#checkout-payment-wrapper').offset().top
           }, 800);
