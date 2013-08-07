@@ -159,7 +159,7 @@
           $this->system->notices->add('errors', sprintf($this->system->language->translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), 15));
         }
         
-        //sleep(10);
+        sleep(10);
         return;
       }
       

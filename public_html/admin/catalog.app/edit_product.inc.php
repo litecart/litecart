@@ -14,7 +14,6 @@
     }
   }
   
-  // Save data to database
   if (isset($_POST['save'])) {
     
     if ($_POST['name'][$system->language->selected['code']] == '') $system->notices->add('errors', $system->language->translate('error_must_enter_name', 'You must enter a name'));
@@ -76,7 +75,6 @@
         if (isset($_POST[$field])) $product->data[$field] = $_POST[$field];
       }
       
-    // Save new image
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
           $product->add_image($_FILES['new_images']['tmp_name'][$key]);
@@ -91,7 +89,6 @@
     }
   }
 
-  // Delete from database
   if (isset($_POST['delete']) && $product) {
     $product->delete();
     $system->notices->add('success', $system->language->translate('success_post_deleted', 'Post deleted'));
@@ -752,7 +749,7 @@ foreach ($system->currency->currencies as $currency) {
             <td align="left" nowrap="nowrap"><a class="add" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo $system->language->translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo $system->functions->form_draw_hidden_field('options['.$key.'][id]', true); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_option_groups_list('options['.$key.'][group_id]', true); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_option_values_list($_POST['options'][$key]['group_id'], 'options['.$key.'][value_id]', true); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_select_field('options['.$key.'][price_operator]', array('+','*'), $_POST['options'][$key]['price_operator']); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_select_field('options['.$key.'][price_operator]', array('+','*'), $_POST['options'][$key]['price_operator'], false, 'data-size="auto"'); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'options['.$key.']['.$system->settings->get('store_currency_code').']', true); ?></td>
 <?php
       foreach (array_keys($system->currency->currencies) as $currency_code) {
@@ -762,7 +759,7 @@ foreach ($system->currency->currencies as $currency) {
 <?php
       }
 ?>
-            <td align="left" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+            <td align="right" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
 <?php
     }
@@ -871,7 +868,7 @@ foreach ($system->currency->currencies as $currency) {
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_number_field('options_stock['.$key.'][quantity]', true); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][weight]', true); ?> <?php echo $system->functions->form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][dim_x]', true); ?> x <?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][dim_y]', true); ?> x <?php echo $system->functions->form_draw_decimal_field('options_stock['.$key.'][dim_z]', true); ?> <?php echo $system->functions->form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?></td>
-            <td align="left" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+            <td align="right" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" title="<?php echo $system->language->translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
 <?php
     }
