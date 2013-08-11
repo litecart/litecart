@@ -42,7 +42,7 @@
 ?>
     <tr class="<?php echo $rowclass; ?>"<?php echo ($order['order_status_id'] == 0) ? ' style="color: #999;"' : false; ?>>
       <td nowrap="nowrap" align="left"><?php echo $order['id']; ?></td>
-      <td nowrap="nowrap" align="left"><?php echo $order['customer_firstname'] .' '. $order['customer_lastname']; ?></td>
+      <td nowrap="nowrap" align="left"><a href="<?php echo $system->document->href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
       <td nowrap="nowrap" align="center"><?php echo ($order['order_status_id'] == 0) ? $system->language->translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
       <td nowrap="nowrap" align="right"><?php echo $system->currency->format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <td nowrap="nowrap" align="right"><?php echo strftime($system->language->selected['format_datetime'], strtotime($order['date_created'])); ?></td>

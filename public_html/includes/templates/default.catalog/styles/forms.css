@@ -29,16 +29,16 @@ input[data-type=currency], input[data-type=decimal], input[data-type=number] {
 
 form *[data-size=auto] {
   width: auto;
-  max-width: 175px;
+  max-width: 170px;
 }
 form *[data-size=tiny] {
-  width: 35px;
+  width: 40px;
 }
 form *[data-size=small] {
   width: 80px;
 }
 form *[data-size=medium] {
-  width: 175px;
+  width: 170px;
 }
 form *[data-size=large] {
   width: 360px;
@@ -47,16 +47,16 @@ form *[data-size=large] {
 @media (max-width: 640px) {
   form *[data-size=auto] {
     width: auto;
-    max-width: 125px;
+    max-width: 130px;
   }
   form *[data-size=tiny] {
-    width: 35px;
+    width: 40px;
   }
   form *[data-size=small] {
     width: 80px;
   }
   form *[data-size=medium] {
-    width: 125px;
+    width: 120px;
   }
   form *[data-size=large] {
     width: 260px;
@@ -175,4 +175,14 @@ button img, a.button img, span.button img {
   width: 12px;
   height: 12px;
   vertical-align: middle;
+}
+
+form > table:not(.dataTable) {
+  margin: 0px;
+}
+form table:not(.dataTable) td {
+  padding: 5px 0px;
+}
+form table:not(.dataTable) td + td {
+  padding-left: 10px;
 }

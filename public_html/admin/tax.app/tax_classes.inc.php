@@ -37,7 +37,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo $system->functions->form_draw_checkbox('tax_classes['. $tax_class['id'] .']', $tax_class['id']); ?></td>
     <td align="left"><?php echo $tax_class['id']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $tax_class['name']; ?></td>
+    <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>"><?php echo $tax_class['name']; ?></a></td>
     <td align="left" style="color: #999;"><?php echo $tax_class['description']; ?></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>

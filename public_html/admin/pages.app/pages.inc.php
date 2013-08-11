@@ -37,7 +37,7 @@
   <tr class="<?php echo $rowclass . ($page['status'] ? false : ' semi-transparent'); ?>">
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($page['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('delivery_statuses['. $page['id'] .']', $page['id']); ?></td>
     <td align="left"><?php echo $page['id']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $page['title']; ?></td>
+    <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>"><?php echo $page['title']; ?></a></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php

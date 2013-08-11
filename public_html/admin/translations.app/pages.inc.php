@@ -78,7 +78,7 @@
     $options[] = array(str_replace("'", '', $page));
   }
   
-  echo $system->functions->form_draw_select_field('script', $options, isset($_GET['script']) ? $_GET['script'] : false, false, false, 'onchange="location=(\''. $system->document->link('', array(), true) .'&script=\' + this.options[this.selectedIndex].value)"');
+  echo $system->functions->form_draw_select_field('script', $options, isset($_GET['script']) ? $_GET['script'] : false, false, 'onchange="location=(\''. $system->document->link('', array(), true) .'&script=\' + this.options[this.selectedIndex].value)"');
 ?>
 <?php
   if (!empty($_GET['script'])) {

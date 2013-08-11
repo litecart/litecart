@@ -54,7 +54,7 @@
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($language['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('languages['. $language['id'] .']', $language['id']); ?></td>
     <td align="left"><?php echo $language['id']; ?></td>
     <td align="center"><?php echo $language['code']; ?></td>
-    <td align="left"><?php echo $language['name']; ?></td>
+    <td align="left"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
     <td align="center"><?php echo ($language['code'] == $system->settings->get('default_language_code')) ? 'x' : ''; ?></td>
     <td align="center"><?php echo ($language['code'] == $system->settings->get('store_language_code')) ? 'x' : ''; ?></td>
     <td align="right"><?php echo $language['priority']; ?></td>

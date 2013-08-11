@@ -39,7 +39,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo $system->functions->form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
     <td align="left"><?php echo $order_status['id']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $order_status['name']; ?></td>
+    <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>"><?php echo $order_status['name']; ?></a></td>
     <td align="center" nowrap="nowrap"><?php echo empty($order_status['is_sale']) ? '' : 'x'; ?></td>
     <td align="center" nowrap="nowrap"><?php echo empty($order_status['notify']) ? '' : 'x'; ?></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>

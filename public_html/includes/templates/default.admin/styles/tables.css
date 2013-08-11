@@ -2,24 +2,21 @@ table {
   border-spacing: 0;
   border-collapse: collapse;
 }
-
 th {
   padding: 0;
 }
-
 td {
   padding: 0;
 }
 
 table.dataTable {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border: 1px solid #dfdfdf;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   -khtml-border-radius: 5px;
   border-radius: 5px;
 }
-
 table.dataTable .header {
   text-shadow: 0px 1px 1px #fff;
   font-weight: bold;
@@ -58,10 +55,19 @@ table.dataTable tr.footer td {
   color: #666;
 }
 
-form table td {
-  padding: 5px;
+table.dataTable .border-top {
+  border-top: 1px solid #dfdfdf;
+}
+table.dataTable .border-left {
+  border-left: 1px solid #dfdfdf;
+}
+table.dataTable .border-right {
+  border-right: 1px solid #dfdfdf;
+}
+table.dataTable .border-bottom {
+  border-bottom: 1px solid #dfdfdf;
 }
 
-div.input-field table td {
-  padding: 2px 5px;
+table.dataTable table:not(.dataTable) {
+  margin: -5px 0px !important;
 }

@@ -29,16 +29,16 @@ input[data-type=currency], input[data-type=decimal], input[data-type=number] {
 
 form *[data-size=auto] {
   width: auto;
-  max-width: 175px;
+  max-width: 170px;
 }
 form *[data-size=tiny] {
-  width: 35px;
+  width: 40px;
 }
 form *[data-size=small] {
   width: 80px;
 }
 form *[data-size=medium] {
-  width: 175px;
+  width: 170px;
 }
 form *[data-size=large] {
   width: 360px;
@@ -46,10 +46,6 @@ form *[data-size=large] {
 
 form .required {
   color: #f00;
-}
-
-form > table {
-  margin: 0px -5px;
 }
 
 .input-wrapper {
@@ -95,8 +91,8 @@ option {
 button, a.button, span.button {
   display: inline-block;
   
-  margin: 0px 1px;
-  padding: 3px 6px;
+  margin: 3px 1px;
+  padding: 4px 6px;
   
   border: 1px solid #d1d1d1;
   border-radius: 3px;
@@ -160,4 +156,18 @@ button img, a.button img, span.button img {
   width: 12px;
   height: 12px;
   vertical-align: middle;
+}
+
+form > table:not(.dataTable) {
+  margin: 0px;
+}
+form table:not(.dataTable) td {
+  padding: 5px 0px;
+}
+form table:not(.dataTable) td + td {
+  padding-left: 10px;
+}
+
+div.input-field table td {
+  padding: 2px 5px;
 }

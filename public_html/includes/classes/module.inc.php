@@ -57,20 +57,21 @@
           $module->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
         
-        $module->priority = isset($module->settings[$setting['key']]) ? $module->settings[$setting['key']] : 0;
+        $module->status = isset($module->settings['status']) && in_array(strtolower($module->settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? 1 : 0;
+        $module->priority = isset($module->settings[$setting['key']]) ? (int)$module->settings[$setting['key']] : 0;
         
         $this->modules[$module->id] = $module;
-        
-        $this->sort();
       }
+      
+      if (!empty($this->modules)) $this->sort();
     }
     
     private function sort() {
       if (!function_exists('custom_sort_modules')) {
         function custom_sort_modules($a, $b) {
-          if ($a->priority == $b->priority) {
+          if ((int)$a->priority == (int)$b->priority) {
             return ($a->name < $b->name) ? 1 : -1;
-          } else if ($a->priority > $b->priority) {
+          } else if ((int)$a->priority > (int)$b->priority) {
             return 1;
           } else {
             return -1;

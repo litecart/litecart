@@ -91,7 +91,7 @@
         </td>
       </tr>
       <tr>
-        <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong><br />
+        <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong> <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference')?></a><br />
           <?php echo $system->functions->form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
           <script type="text/javascript">
             $("#address-format-hint").click(function() {

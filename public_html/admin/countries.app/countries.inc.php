@@ -24,8 +24,7 @@
   <tr class="header">
     <th><?php echo $system->functions->form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
-    <th nowrap="nowrap" align="left">ISO-2</th>
-    <th nowrap="nowrap" align="left">ISO-3</th>
+    <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_code', 'Code'); ?></th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_zones', 'Zones'); ?></th>
     <th>&nbsp;</th>
@@ -55,8 +54,7 @@
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($country['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
     <td align="left"><?php echo $country['id']; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $country['iso_code_2']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $country['iso_code_3']; ?></td>
-    <td align="left"><?php echo $country['name']; ?></td>
+    <td align="left"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><?php echo $country['name']; ?></a></td>
     <td align="left"><?php echo $system->database->num_rows($system->database->query("select id from ". DB_TABLE_ZONES ." where country_code = '". $system->database->input($country['iso_code_2']) ."'")); ?></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
@@ -66,7 +64,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="7" align="left"><?php echo $system->language->translate('title_countries', 'Countries'); ?>: <?php echo $system->database->num_rows($countries_query); ?></td>
+    <td colspan="6" align="left"><?php echo $system->language->translate('title_countries', 'Countries'); ?>: <?php echo $system->database->num_rows($countries_query); ?></td>
   </tr>
 </table>
 

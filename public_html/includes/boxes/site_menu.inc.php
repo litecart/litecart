@@ -1,5 +1,6 @@
-<nav id="site-menu" class="box-gradient1 rounded-corners shadow">
+<nav id="site-menu" class="rounded-corners shadow">
   <ul>
+    <li style="float: left;"><a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME); ?>"><img src="{snippet:template_path}images/home.png" width="16" height="16" /></a></li>
 <?php  
   function site_menu_category_tree($parent_id=0, $depth=0) {
     global $system;
@@ -15,7 +16,7 @@
       order by c.priority asc, ci.name asc;"
     );
     
-    if ($depth > 0 && $system->database->num_rows($categories_query) > 0) $output .= str_repeat('  ', $depth) .'<ul class="box-gradient1 rounded-corners shadow">' . PHP_EOL;
+    if ($depth > 0 && $system->database->num_rows($categories_query) > 0) $output .= str_repeat('  ', $depth) .'<ul>' . PHP_EOL;
     while ($category = $system->database->fetch($categories_query)) {
     
       $subcategories_query = $system->database->query(
@@ -46,5 +47,19 @@
   
   echo site_menu_category_tree();
 ?>
+&nbsp;
+<?php
+  $pages_query = $system->database->query(
+    "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+    left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
+    where status
+    and find_in_set('menu', dock)
+    order by p.priority desc, pi.title desc;"
+  );
+  while ($page = $system->database->fetch($pages_query)) {
+    echo '    <li style="float: right;"><a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'information.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+  }
+?>
+    <li style="float: right;"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'customer_service.php'); ?>"><?php echo $system->language->translate('title_customer_service', 'Customer Service'); ?></a></li>
   </ul>
 </nav>

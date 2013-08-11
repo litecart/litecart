@@ -55,7 +55,7 @@
   <tr class="<?php echo $rowclass . ($slide['status'] ? false : ' semi-transparent'); ?>">
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($slide['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
     <td align="left"><?php echo $slide['id']; ?></td>
-    <td align="left"><?php echo $slide['name']; ?></td>
+    <td align="left"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
     <td align="left"><?php echo $slide['language_code']; ?></td>
     <td align="center" nowrap="nowrap"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? strftime($system->language->selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
     <td align="center" nowrap="nowrap"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? strftime($system->language->selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
@@ -88,7 +88,7 @@
   });
 </script>
 
-<p><?php echo $system->functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit'); ?> <?php echo $system->functions->form_draw_button('disable', $system->language->translate('title_disable', 'Disable'), 'submit'); ?></p>
+<p><?php echo $system->functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo $system->functions->form_draw_button('disable', $system->language->translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></p>
 
 <?php
   echo $system->functions->form_draw_form_end();

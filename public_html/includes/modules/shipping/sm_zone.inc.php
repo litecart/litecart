@@ -18,7 +18,7 @@
     
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
       
-      if ($this->settings['status'] != 'Enabled') return;
+      if (empty($this->settings['status'])) return;
       
       $options = array();
       
@@ -72,10 +72,10 @@
       return array(
         array(
           'key' => 'status',
-          'default_value' => 'Enabled',
+          'default_value' => '1',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Status'),
-          'function' => 'radio("Enabled", "Disabled")',
+          'description' => $this->system->language->translate(__CLASS__.':description_status', ''),
+          'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'icon',
@@ -96,7 +96,7 @@
           'default_value' => '0.00',
           'title' => $this->system->language->translate(__CLASS__.':title_zone', 'Zone') .' 1: '. $this->system->language->translate(__CLASS__.':title_cost', 'Cost'),
           'description' => $this->system->language->translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
-          'function' => 'decimal()',
+          'function' => 'currency()',
         ),
         array(
           'key' => 'geo_zone_id_2',
@@ -110,7 +110,7 @@
           'default_value' => '0.00',
           'title' => $this->system->language->translate(__CLASS__.':title_zone', 'Zone') .' 2: '. $this->system->language->translate(__CLASS__.':title_cost', 'Cost'),
           'description' => $this->system->language->translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
-          'function' => 'decimal()',
+          'function' => 'currency()',
         ),
         array(
           'key' => 'geo_zone_id_3',
@@ -124,14 +124,14 @@
           'default_value' => '0.00',
           'title' => $this->system->language->translate(__CLASS__.':title_zone', 'Zone') .' 3: '. $this->system->language->translate(__CLASS__.':title_cost', 'Cost'),
           'description' => $this->system->language->translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
-          'function' => 'decimal()',
+          'function' => 'currency()',
         ),
         array(
           'key' => 'cost_x',
           'default_value' => '0.00',
           'title' => $this->system->language->translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. $this->system->language->translate(__CLASS__.':title_cost', 'Cost'),
           'description' => $this->system->language->translate(__CLASS__.':description_title_cost_x', 'The shipping cost excluding tax for any zones not matched above.'),
-          'function' => 'decimal()',
+          'function' => 'currency()',
         ),
         array(
           'key' => 'tax_class_id',

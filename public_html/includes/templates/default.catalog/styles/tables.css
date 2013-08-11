@@ -9,15 +9,8 @@ td {
   padding: 0px;
 }
 
-form table {
-  margin: -5px;
-}
-form table td {
-  padding: 5px;
-}
-
 table.dataTable {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border: 1px solid #dfdfdf;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -55,4 +48,26 @@ table.dataTable tr.odd:hover, table.dataTable tr.even:hover {
 }
 table.dataTable tr.footer {
   background-color: #f4f4f4;
+}
+table.dataTable tr.footer td {
+  padding: 10px 10px;
+  border-top: 1px solid #dfdfdf;
+  color: #666;
+}
+
+table.dataTable .border-top {
+  border-top: 1px solid #dfdfdf;
+}
+table.dataTable .border-left {
+  border-left: 1px solid #dfdfdf;
+}
+table.dataTable .border-right {
+  border-right: 1px solid #dfdfdf;
+}
+table.dataTable .border-bottom {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+table.dataTable table:not(.dataTable) {
+  margin: -5px 0px !important;
 }

@@ -240,7 +240,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
           <tr>
             <td align="left" nowrap="nowrap">
-              <table style="margin: -5px;">
+              <table>
                 <tr>
                   <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_quantity', 'Quantity'); ?></strong><br />
                     <?php echo $system->functions->form_draw_number_field('quantity', true); ?>
@@ -293,12 +293,18 @@ foreach (array_keys($system->language->languages) as $language_code) {
           <?php } ?>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_upload_images', 'Upload Images'); ?></strong><br />
-              <div><?php echo $system->functions->form_draw_file_field('new_images[]', 'data-size="large"'); ?></div>
-               <a href="#" id="add-new-image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo $system->language->translate('text_add', 'Add'); ?>" /></a>
+              <table>
+                <tr>
+                  <td><?php echo $system->functions->form_draw_file_field('new_images[]', 'data-size="large"'); ?></td>
+                </tr>
+                <tr>
+                  <td><a href="#" id="add-new-image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo $system->language->translate('text_add', 'Add'); ?>" /></a></td>
+                </tr>
+              </table>
               <script>
                 $("body").on("click", "#add-new-image", function(event) {
                   event.preventDefault();
-                  $(this).before('<div><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_file_field('new_images[]', 'data-size="large"')); ?></div>');
+                  $(this).closest("table").find("tr:last-child").before('<tr><td><?php echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_file_field('new_images[]', 'data-size="large"')); ?></td></tr>');
                 });
               </script>
               </td>
@@ -370,7 +376,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
 $use_br = false;
 foreach (array_keys($system->language->languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, '');
+  echo $system->functions->form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large" data-test="test"');
   $use_br = true;
 }
 ?>
@@ -467,14 +473,14 @@ foreach (array_keys($system->language->languages) as $language_code) {
           </tr>
         </table>
         
-        <table style="margin: 0 -5px;">
+        <table>
           <tr>
             <th align="center" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_currency', 'Currency'); ?></th>
             <th align="center" style="vertical-align: text-top" nowrap="nowrap"><?php echo $system->language->translate('title_price', 'Price'); ?></th>
             <td align="center" nowrap="nowrap"><?php echo $system->language->translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</td>
           </tr>
           <tr>
-            <td><strong><?php echo $system->settings->get('store_currency_code'); ?></strong></td>
+            <td style="width: 75px;"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong></td>
             <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $system->settings->get('store_currency_code') .']', '', 0, '0', '', 'placeholder=""'); ?></td>
           </tr>
@@ -501,7 +507,7 @@ foreach ($system->currency->currencies as $currency) {
   );
   while ($tax_class = $system->database->fetch($tax_classes_query)) {
     echo '              case "'. $tax_class['id'] . '":'. PHP_EOL
-       . '                return '. $system->tax->get_tax(100, $tax_class['id']) .';' . PHP_EOL;
+       . '                return '. $system->tax->get_tax(100, $tax_class['id'], $system->settings->get('store_country_code'), $system->settings->get('store_zone_code')) .';' . PHP_EOL;
   }
 ?>
               default:

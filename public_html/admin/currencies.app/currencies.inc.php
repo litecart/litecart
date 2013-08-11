@@ -59,7 +59,7 @@
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($currency['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('currencies['. $currency['id'] .']', $currency['id']); ?></td>
     <td align="left"><?php echo $currency['id']; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $currency['code']; ?></td>
-    <td align="left"><?php echo $currency['name']; ?></td>
+    <td align="left"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>
     <td align="right"><?php echo $currency['value']; ?></td>
     <td align="center"><?php echo $currency['prefix']; ?></td>
     <td align="center"><?php echo $currency['suffix']; ?></td>

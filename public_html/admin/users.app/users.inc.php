@@ -48,7 +48,7 @@
 ?>
   <tr class="<?php echo $rowclass; ?>"<?php echo empty($user['status']) ? ' style="color: #999;"' : ''; ?>>
     <td align="left" nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($user['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $user['username']; ?></td>
+    <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
     <td align="right" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php

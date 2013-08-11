@@ -9,7 +9,7 @@
     return '</form>' . PHP_EOL;
   }
   
-  function form_reinsert_value($name, $default_value=null) {
+  function form_reinsert_value($name, $array_value=null) {
     if (empty($name)) return;
     
     foreach (array($_POST, $_GET) as $superglobal) {
@@ -25,7 +25,7 @@
         
         if (preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $key) == preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $name)) {
           if (preg_match('/\[([0-9]+)?\]$/', $key)) {
-            if ($value == $default_value) {
+            if ($value == $array_value) {
               return $value;
             }
           }
@@ -36,16 +36,8 @@
     return '';
   }
   
-  function form_draw_image($name, $src, $parameters=false) {
-    return '<input type="hidden" name="'. htmlspecialchars($name) .'" value="true" /><input type="image" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
-  }
-  
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
     return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $value .'</button>';
-  }
-  
-  function form_draw_link_button($url, $title, $parameters='', $icon='') {
-    return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $title .'</a>';
   }
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {
@@ -58,6 +50,8 @@
     if ($value === true) $value = form_reinsert_value($name);
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    
+    if (empty($currency_code)) $currency_code = $GLOBALS['system']->settings->get('store_currency_code');
     
     return '<span class="input-wrapper">'. $GLOBALS['system']->currency->currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. $GLOBALS['system']->currency->currencies[$currency_code]['suffix'] .'</span>';
   }
@@ -74,7 +68,7 @@
       if (substr($value, 0, 10) == '1970-01-01') $value = '';
     }
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -101,7 +95,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
     
-    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_email_field($name, $value=true, $parameters='', $hint='') {
@@ -113,13 +107,19 @@
   }
 
   function form_draw_file_field($name, $parameters='', $hint='') {
-    return form_draw_input($name, '', 'file', $parameters, $hint);
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="large"';
+    
+    return '<input type="file" name="'. htmlspecialchars($name) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_hidden_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
     return form_draw_input($name, $value, 'hidden', $parameters);
+  }
+  
+  function form_draw_image($name, $src, $parameters=false) {
+    return '<input type="hidden" name="'. htmlspecialchars($name) .'" value="true" /><input type="image" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_input($name, $value=true, $type='text', $parameters='', $hint='') {
@@ -130,12 +130,16 @@
     return '<input type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
+  function form_draw_link_button($url, $title, $parameters='', $icon='') {
+    return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $title .'</a>';
+  }
+  
   function form_draw_number_field($name, $value=true, $min='', $max='', $parameters='', $hint='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="tiny"';
     
-    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_password_field($name, $value=true, $parameters='', $hint='') {
@@ -227,7 +231,37 @@
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
-
+  }
+  
+  function form_draw_toggle($name, $input=true, $type='e/d') {
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    $input = in_array(strtolower($input), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? '1' : '0';
+    
+    switch ($type) {
+      case 'a/i':
+        $true_text = $GLOBALS['system']->language->translate('title_active', 'Active');
+        $false_text = $GLOBALS['system']->language->translate('title_inactive', 'Inactive');
+        break;
+      case 'e/d':
+        $true_text = $GLOBALS['system']->language->translate('title_enabled', 'Enabled');
+        $false_text = $GLOBALS['system']->language->translate('title_disabled', 'Disabled');
+        break;
+      case 'y/n':
+        $true_text = $GLOBALS['system']->language->translate('title_yes', 'Yes');
+        $false_text = $GLOBALS['system']->language->translate('title_no', 'No');
+        break;
+      case 't/f':
+        $true_text = $GLOBALS['system']->language->translate('title_true', 'Tre');
+        $false_text = $GLOBALS['system']->language->translate('title_false', 'False');
+        break;
+      case 'o/o':
+        $true_text = $GLOBALS['system']->language->translate('title_on', 'On');
+        $false_text = $GLOBALS['system']->language->translate('title_off', 'Off');
+        break;
+    }
+    
+    return '<label><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label> <label><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>';
   }
   
   function form_draw_url_field($name, $value=true, $parameters='', $hint='') {
@@ -284,7 +318,9 @@
       case 'float':
         return form_draw_decimal_field($name, $input, 2, '', '');
       case 'int':
-        return form_draw_number_field($name, (int)$input);
+        return form_draw_number_field($name, $input);
+      case 'currency':
+        return form_draw_currency_field(!empty($options[0]) ? $options[0] : null, $name, $input);
       case 'smallinput':
         return form_draw_input($name, $input, 'text', 'data-size="small"');
       case 'input':
@@ -327,20 +363,20 @@
       case 'templates':
         return form_draw_templates_list($name, $input);
       case 'toggle':
-        return form_draw_radio_button($name, 'true', $input) . ' true '. form_draw_radio_button('value', 'false', $input) . ' false';
+        return form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
       case 'tax_classes':
         return form_draw_tax_classes_list($name, $input);
       case 'weight_classes':
         return form_draw_weight_classes_list($name, $input);
       case 'zones':
-        $option = empty($options) ? $options[0] : $system->settings->get('store_country_code');
+        $option = !empty($options) ? $options[0] : $system->settings->get('store_country_code');
         return form_draw_zones_list($option, $name, $input);
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_ERROR);
     }
   }
   
-  function form_draw_categories_list($name, $insert=true, $multiple=false, $parameters=false) {
+  function form_draw_categories_list($name, $input=true, $multiple=false, $parameters=false) {
     global $system;
     
     if (!function_exists('form_draw_categories_list_options_iterator')) {
@@ -386,10 +422,10 @@
     
     $options = array_merge($options, form_draw_categories_list_options_iterator());
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
-  function form_draw_countries_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_countries_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $countries_query = $system->database->query(
@@ -406,10 +442,10 @@
       $options[] = array($country['name'], $country['iso_code_2']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_currencies_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $currencies_query = $system->database->query(
@@ -426,10 +462,10 @@
       $options[] = array($currency['name'], $currency['code']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_customers_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_customers_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $customers_query = $system->database->query(
@@ -445,10 +481,10 @@
       $options[] = array($customer['lastname'] .', '. $customer['firstname'] .' ['. $customer['id'] .']', $customer['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_delivery_status_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_delivery_status_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -465,10 +501,10 @@
       $options[] = array($row['name'], $row['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_geo_zones_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_geo_zones_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $geo_zones_query = $system->database->query(
@@ -481,17 +517,17 @@
     if (empty($multiple)) $options[] = array('-- '. $system->language->translate('title_select', 'Select') . ' --', '');
     
     if ($system->database->num_rows($geo_zones_query) == 0) {
-      return form_draw_hidden_field($name, '0') . form_draw_select_field($name, $options, $insert, false, false, $parameters . ' disabled="disabled"');
+      return form_draw_hidden_field($name, '0') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
     
     while ($geo_zone = $system->database->fetch($geo_zones_query)) {
       $options[] = array($geo_zone['name'], $geo_zone['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   } 
   
-  function form_draw_languages_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $currencies_query = $system->database->query(
@@ -508,11 +544,15 @@
       $options[] = array($language['name'], $language['code']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_length_classes_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_length_classes_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
+    
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    if ($input == '') $input = $system->settings->get('store_length_class');
     
     $options = array();
     
@@ -522,10 +562,10 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_manufacturers_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_manufacturers_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $manufacturers_query = $system->database->query(
@@ -541,10 +581,10 @@
       $options[] = array($manufacturer['name'], $manufacturer['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_option_groups_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_option_groups_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $option_groups_query = $system->database->query(
@@ -561,10 +601,10 @@
       $options[] = array($option_group['name'] .' ['. $option_group['function'] .']', $option_group['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_option_values_list($group_id, $name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_option_values_list($group_id, $name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $option_values_query = $system->database->query(
@@ -584,10 +624,10 @@
       $options[] = array($option_value['name'], $option_value['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_order_status_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_order_status_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -604,10 +644,10 @@
       $options[] = array($row['name'], $row['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_products_list($name, $insert=true, $multiple=false, $parameters) {
+  function form_draw_products_list($name, $input=true, $multiple=false, $parameters) {
     global $system;
     
     $options = array();
@@ -619,10 +659,10 @@
       $options[] = array($product['name'] .' ['. $product['quantity'] .'] '. $system->currency->format($product['final_price']), $product['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_product_stock_options_list($product_id, $name, $insert=true, $multiple=false, $parameters) {
+  function form_draw_product_stock_options_list($product_id, $name, $input=true, $multiple=false, $parameters) {
     global $system;
     
     $options = array();
@@ -638,10 +678,10 @@
       }
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_sold_out_status_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_sold_out_status_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $query = $system->database->query(
@@ -658,10 +698,10 @@
       $options[] = array($row['name'], $row['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_suppliers_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_suppliers_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $suppliers_query = $system->database->query(
@@ -677,10 +717,10 @@
       $options[] = array($supplier['name'], $supplier['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_templates_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_templates_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $folders = glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'*');
@@ -693,10 +733,10 @@
       $options[] = array(basename($folder));
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
-  function form_draw_timezones_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_timezones_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $options = array();
@@ -715,13 +755,15 @@
       }
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_tax_classes_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
-    if (empty($insert)) $insert = $system->settings->get('default_tax_class_id');
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    if ($input == '') $input = $system->settings->get('default_tax_class_id');
     
     $tax_classes_query = $system->database->query(
       "select * from ". DB_TABLE_TAX_CLASSES ."
@@ -736,13 +778,15 @@
       $options[] = array($tax_class['name'], $tax_class['id']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_weight_classes_list($name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
-    if (empty($insert)) $insert = $system->settings->get('store_weight_class');
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    if ($input == '') $input = $system->settings->get('store_weight_class');
     
     $options = array();
     
@@ -752,10 +796,10 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_zones_list($country_code, $name, $insert=true, $multiple=false, $parameters='') {
+  function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='') {
     global $system;
     
     $zones_query = $system->database->query(
@@ -767,14 +811,14 @@
     $options = array();
     
     if ($system->database->num_rows($zones_query) == 0) {
-      return form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $insert, false, false, $parameters . ' disabled="disabled"');
+      return form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
     
     while ($zone = $system->database->fetch($zones_query)) {
       $options[] = array($zone['name'], $zone['code']);
     }
     
-    return form_draw_select_field($name, $options, $insert, $multiple, $parameters);
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
 ?>

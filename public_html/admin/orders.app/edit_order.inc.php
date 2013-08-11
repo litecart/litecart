@@ -95,24 +95,27 @@
   }
   
 ?>
+
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($order->data['id']) ? $system->language->translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : $system->language->translate('title_create_new_order', 'Create New Order'); ?></h1>
 
 <?php echo $system->functions->form_draw_form_begin('form_order', 'post'); ?>
 
-<table style="width: 100%;">
+<h2><?php echo $system->language->translate('title_order_information', 'Order Information'); ?></h2>
+
+<table class="dataTable">
+  <tr>
+    <td><?php echo $system->language->translate('title_order_total', 'Order Total'); ?><br />
+      <?php echo $system->currency->format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?> (<?php echo $system->currency->format($order->data['payment_due'], false, false, $system->settings->get('store_currency_code'), 1); ?>)</td>
+    <td><?php echo $system->language->translate('title_currency_value', 'Currency Value'); ?><br />
+      <?php echo $order->data['currency_value']; ?></td>
+  </tr>
+</table>
+
+<table class="dataTable">
   <tr>
     <td style="vertical-align: top;">
-      <h2><?php echo $system->language->translate('title_order_information', 'Order Information'); ?></h2>
+      <h3><?php echo $system->language->translate('title_payment_information', 'Payment Information'); ?></h3>
       <table>
-        <tr>
-          <td><?php echo $system->language->translate('title_order_total', 'Order Total'); ?><br />
-            <?php echo $system->currency->format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?> (<?php echo $system->currency->format($order->data['payment_due'], false, false, $system->settings->get('store_currency_code'), 1); ?>)</td>
-          <td><?php echo $system->language->translate('title_currency_value', 'Currency Value'); ?><br />
-            <?php echo $order->data['currency_value']; ?></td>
-        </tr>
-        <tr>
-          <td colspan="2"><h3 style="margin-bottom: 0px;"><?php echo $system->language->translate('title_payment_information', 'Payment Information'); ?></h2></td>
-        </tr>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
             <?php echo $system->functions->form_draw_text_field('payment_option[id]', true, 'readonly="readonly"'); ?></td>
@@ -122,10 +125,13 @@
         <tr>
           <td><?php echo $system->language->translate('title_transaction_id', 'Transaction ID'); ?><br />
             <?php echo $system->functions->form_draw_text_field('payment_transaction_id', true, 'readonly="readonly"'); ?></td>
+          <td></td>
         </tr>
-        <tr>
-          <td colspan="2"><h3 style="margin-bottom: 0px;"><?php echo $system->language->translate('title_shipping_information', 'Shipping Information'); ?></h2></td>
-        </tr>
+      </table>
+    </td>
+    <td class="border-left" style="vertical-align: top;">
+      <h3><?php echo $system->language->translate('title_shipping_information', 'Shipping Information'); ?></h3>
+      <table>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
             <?php echo $system->functions->form_draw_text_field('shipping_option[id]', true, 'readonly="readonly"'); ?></td>
@@ -137,12 +143,18 @@
             <?php echo $system->weight->format($order->data['weight_total'], $order->data['weight_class']) ?></td>
           <td><?php echo $system->language->translate('title_tracking_id', 'Tracking ID'); ?><br />
             <?php echo $system->functions->form_draw_text_field('shipping_tracking_id', true); ?></td>
-          <td></td>
         </tr>
       </table>
     </td>
+  </tr>
+</table>
+
+<table class="dataTable">
+  <tr class="header">
+    <th colspan="2"><?php echo $system->language->translate('title_customer_information', 'Customer Information'); ?></th>
+  </tr>
+  <tr>
     <td style="vertical-align: top;">
-      <h2 style="margin-top: 0px;"><?php echo $system->language->translate('title_customer_info', 'Customer Info'); ?></h2>
       <table>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_account', 'Account'); ?><br />
@@ -161,12 +173,6 @@
             <?php echo $system->functions->form_draw_text_field('customer[lastname]', true); ?></td>
         </tr>
         <tr>
-          <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
-            <?php echo $system->functions->form_draw_email_field('customer[email]', true); ?></td>
-          <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-          <?php echo $system->functions->form_draw_text_field('customer[phone]', true); ?></td>
-        </tr>
-        <tr>
           <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?><br />
             <?php echo $system->functions->form_draw_text_field('customer[address1]', true); ?></td>
           <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
@@ -183,6 +189,12 @@
             <?php echo $system->functions->form_draw_countries_list('customer[country_code]', true); ?></td>
           <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
             <?php echo $system->functions->form_draw_zones_list(isset($_POST['customer']['country_code']) ? $_POST['customer']['country_code'] : '', 'customer[zone_code]', true); ?></td>
+        </tr>
+        <tr>
+          <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?><br />
+            <?php echo $system->functions->form_draw_email_field('customer[email]', true); ?></td>
+          <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
+          <?php echo $system->functions->form_draw_text_field('customer[phone]', true); ?></td>
         </tr>
       </table>
       
@@ -217,14 +229,14 @@
       </script>
     </td>
 
-    <td style="vertical-align: top;">
-      <h2><?php echo $system->language->translate('title_shipping_address', 'Shipping Address'); ?></h2>
+    <td class="border-left" style="vertical-align: top;">
+      <h3><?php echo $system->language->translate('title_shipping_address', 'Shipping Address'); ?></h3>
       <table>
-          <tr>
-            <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-              <?php echo $system->functions->form_draw_text_field('customer[shipping_address][company]', true); ?></td>
-            <td nowrap="nowrap"></td>
-          </tr>
+        <tr>
+          <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
+            <?php echo $system->functions->form_draw_text_field('customer[shipping_address][company]', true); ?></td>
+          <td nowrap="nowrap"></td>
+        </tr>
         <tr>
           <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?><br />
             <?php echo $system->functions->form_draw_text_field('customer[shipping_address][firstname]', true); ?></td>

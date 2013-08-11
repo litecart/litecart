@@ -61,7 +61,7 @@
     <th><?php echo $system->functions->form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_version', 'Version'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_author', 'Author'); ?></th>
+    <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_developed_by', 'Developed By'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
     <th nowrap="nowrap" align="center"><?php echo $system->language->translate('title_priority', 'Priority'); ?></th>
     <th align="left">&nbsp;</th>
@@ -77,13 +77,13 @@
         $rowclass = 'even';
       }
 ?>
-  <tr class="<?php echo $rowclass . (isset($module->settings['status']) && $module->settings['status'] == 'Enabled' ? false : ' semi-transparent'); ?>">
-    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (isset($module->settings['status']) && $module->settings['status'] == 'Enabled' ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
-    <td align="left"><?php echo $module->name; ?></td>
+  <tr class="<?php echo $rowclass . (!empty($module->status) ? false : ' semi-transparent'); ?>">
+    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($module->status) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
+    <td align="left"><a href="<?php echo $system->document->href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
     <td align="right" nowrap="nowrap"><?php echo $module->version; ?></td>
-    <td align="center" nowrap="nowrap"><?php echo (!empty($module->website)) ? '<a href="'. $system->document->link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
+    <td align="left" nowrap="nowrap"><?php echo (!empty($module->website)) ? '<a href="'. $system->document->link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $module->id; ?></td>
-    <td align="center" nowrap="nowrap"><?php echo $module->settings['priority']; ?></td>
+    <td align="center" nowrap="nowrap"><?php echo $module->priority; ?></td>
     <td align="right" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
@@ -107,7 +107,7 @@
     <td></td>
     <td align="left"><?php echo $module->name; ?></td>
     <td align="right" nowrap="nowrap"><?php echo $module->version; ?></td>
-    <td align="center" nowrap="nowrap"><?php echo (!empty($module->website)) ? '<a href="'. $system->document->link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
+    <td align="left" nowrap="nowrap"><?php echo (!empty($module->website)) ? '<a href="'. $system->document->link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $module->id; ?></td>
     <td align="center" nowrap="nowrap">-</td>
     <td align="right" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo $system->language->translate('title_install', 'Install'); ?>" title="<?php echo $system->language->translate('title_install', 'Install'); ?>" /> <?php echo $system->language->translate('title_install', 'Install'); ?></a></td>

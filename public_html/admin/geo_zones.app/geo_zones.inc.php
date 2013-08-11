@@ -36,7 +36,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo $system->functions->form_draw_checkbox('geo_zones['. $geo_zone['id'] .']', $geo_zone['id']); ?></td>
     <td align="left"><?php echo $geo_zone['id']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $geo_zone['name']; ?></td>
+    <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>"><?php echo $geo_zone['name']; ?></a></td>
     <td align="left"><?php echo $system->database->num_rows($system->database->query("select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ." where geo_zone_id = '". (int)$geo_zone['id'] ."'")); ?></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>

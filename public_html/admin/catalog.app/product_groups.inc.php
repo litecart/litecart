@@ -6,8 +6,8 @@
   <tr class="header">
     <th><?php echo $system->functions->form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th align="center" nowrap="nowrap"><?php echo $system->language->translate('title_id', 'ID'); ?></th>
-    <th align="left" nowrap="nowrap"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
-    <th align="left" nowrap="nowrap" width="100%"><?php echo $system->language->translate('title_values', 'Values'); ?></th>
+    <th align="left" nowrap="nowrap" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
+    <th align="left" nowrap="nowrap"><?php echo $system->language->translate('title_values', 'Values'); ?></th>
     <th align="left" nowrap="nowrap">&nbsp;</th>
   </tr>
 <?php
@@ -26,8 +26,8 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo $system->functions->form_draw_checkbox('product_groups['. $product_group['id'] .']', $product_group['id']); ?></td>
     <td align="center" nowrap="nowrap"><?php echo $product_group['id']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $product_group['name']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." where product_group_id = '". (int)$product_group['id'] ."';")); ?></td>
+    <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_product_group', 'product_group_id' =>$product_group['id']), array('app')); ?>"><?php echo $product_group['name']; ?></a></td>
+    <td align="center" nowrap="nowrap"><?php echo $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." where product_group_id = '". (int)$product_group['id'] ."';")); ?></td>
     <td><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_product_group', 'product_group_id' => $product_group['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
   </tr>
 <?php

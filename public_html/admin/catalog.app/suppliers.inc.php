@@ -21,11 +21,13 @@
         } else {
           $rowclass = 'even';
         }
-        echo '<tr class="'. $rowclass .'">' . PHP_EOL
-           . '  <td>'. $system->functions->form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']) .'</td>' . PHP_EOL
-           . '  <td>'. $supplier['name'] .'</td>' . PHP_EOL
-           . '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier', 'supplier_id' => $supplier['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
-           . '</tr>' . PHP_EOL;
+?>
+  <tr class="<?php echo $rowclass; ?>">
+    <td><?php echo $system->functions->form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']); ?></td>
+    <td><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_supplier', 'supplier_id' => $supplier['id']), array('app')); ?>"><?php echo $supplier['name']; ?></a></td>
+    <td><a href="<?php echo $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier', 'supplier_id' => $supplier['id'])); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>
+  </tr>
+<?php
       }
     }
 ?>

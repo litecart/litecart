@@ -93,13 +93,14 @@ body {
   bottom: 0px;
   margin-bottom: 20px;
 }
+#site-menu {
+  /* see site_menu.css */
+}
 
 #site-links {
 }
 
-#site-menu {
-  /* see site_menu.css */
-}
+
 
 #main-wrapper {
   margin-bottom: 20px;
@@ -133,6 +134,10 @@ body {
 #breadcrumbs-wrapper {
   margin-bottom: 20px;
 }
+#breadcrumbs {
+  padding: 10px;
+  border-bottom: 1px #ccc solid;
+}
 #breadcrumbs, #breadcrumbs a {
   color: rgb(136, 136, 136);
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
@@ -140,6 +145,7 @@ body {
 
 #footer {
   padding: 0px 10px;
+  border: 1px #ccc solid;
 }
 #footer table {
   width: 100%;

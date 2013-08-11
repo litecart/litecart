@@ -17,7 +17,7 @@
 
     if (!$system->notices->get('errors')) {
       
-      if (!isset($_POST['newsletter'])) $_POST['newsletter'] = 0;
+      if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
       
       $fields = array(
         'email',
@@ -104,7 +104,7 @@
   </tr>
   <tr>
     <td><?php echo $system->language->translate('title_newsletter', 'Newsletter'); ?><br />
-      <?php echo $system->functions->form_draw_checkbox('newsletter', '1', true); ?> <?php echo $system->language->translate('title_subscribe', 'Subscribe'); ?></td>
+      <label><?php echo $system->functions->form_draw_checkbox('newsletter', '1', true); ?> <?php echo $system->language->translate('title_subscribe', 'Subscribe'); ?></label></td>
     <td><?php echo !empty($customer->data['id']) ? $system->language->translate('title_new_password', 'New Password') : $system->language->translate('title_password', 'Password'); ?><br />
       <?php echo $system->functions->form_draw_text_field('new_password', '', 'password'); ?></td>
   </tr>

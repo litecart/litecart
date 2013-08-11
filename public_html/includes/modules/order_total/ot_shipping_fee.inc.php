@@ -20,7 +20,7 @@
     public function process() {
       global $shipping, $order;
       
-      if ($this->settings['status'] != 'Enabled') return;
+      if (empty($this->settings['status'])) return;
       
       if (empty($shipping->data['selected']['cost'])) return;
       
@@ -64,17 +64,10 @@
       return array(
         array(
           'key' => 'status',
-          'default_value' => 'Enabled',
+          'default_value' => '1',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
           'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
-          'function' => 'radio("Enabled", "Disabled")',
-        ),
-        array(
-          'key' => 'priority',
-          'default_value' => '20',
-          'title' => $this->system->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $this->system->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
-          'function' => 'int()',
+          'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'free_shipping_amount',
@@ -82,6 +75,13 @@
           'title' => $this->system->language->translate(__CLASS__.':title_free_shipping_amount', 'Free Shipping Amount'),
           'description' => $this->system->language->translate(__CLASS__.':description_free_shipping_amount', 'Enable free shipping for orders that meet the given cart total amount or above (excluding tax). 0 = disabled'),
           'function' => 'decimal()',
+        ),
+        array(
+          'key' => 'priority',
+          'default_value' => '20',
+          'title' => $this->system->language->translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => $this->system->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'function' => 'int()',
         ),
       );
     }

@@ -80,7 +80,7 @@
         <tr>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
             <?php echo $system->functions->form_draw_text_field('name', true); ?></td>
-          <td style="padding-left: 0px;"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
+          <td><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
             <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
         </tr>
         <tr>

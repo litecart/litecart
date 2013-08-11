@@ -27,7 +27,7 @@
   <div id="page">
 
     <div id="header-wrapper">
-      <header id="header" class="rounded-corners-top">
+      <header id="header">
       
         <div id="logotype-wrapper">
           <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="60" alt="<?php echo $system->settings->get('store_name'); ?>" /></a>
@@ -89,12 +89,14 @@
       </div>
     </div>
     
-    <div id="breadcrumbs-wrapper">
-      <!--snippet:breadcrumbs-->
-    </div>
 
     <div id="footer-wrapper">
-      <footer id="footer" class="box-gradient1 shadow rounded-corners">
+      <footer id="footer" class="rounded-corners">
+      
+      <div id="breadcrumbs-wrapper">
+        <!--snippet:breadcrumbs-->
+      </div>
+
         <table>
           <tr>
             <td class="categories">

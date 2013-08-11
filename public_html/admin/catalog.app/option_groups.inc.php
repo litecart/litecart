@@ -26,7 +26,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo $system->functions->form_draw_checkbox('configuration_groups['. $option_group['id'] .']', $option_group['id']); ?></td>
     <td align="center" nowrap="nowrap"><?php echo $option_group['id']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $option_group['name']; ?></td>
+    <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), array('app')); ?>"><?php echo $option_group['name']; ?></a></td>
     <td align="left" nowrap="nowrap"><?php echo $option_group['function']; ?></td>
     <td><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
   </tr>

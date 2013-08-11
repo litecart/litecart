@@ -417,15 +417,15 @@
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
-            <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+            <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
           <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
-            <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+            <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"')), true, false, 'data-size="auto"'); ?></td>
           <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
-            <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+            <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\')), true, false, 'data-size="auto"'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
-            <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+            <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1')), true, false, 'data-size="auto"'); ?></td>
           <td></td>
           <td></td>
         </tr>
@@ -441,23 +441,23 @@
         <table style="margin: -5px;">
           <tr>
             <td colspan="3"><?php echo $system->language->translate('title_language', 'Language'); ?><br />
-              <?php echo $system->functions->form_draw_languages_list('language_code').' '; ?></td>
+              <?php echo $system->functions->form_draw_languages_list('language_code', true, false, 'data-size="auto"').' '; ?></td>
           </tr>
           <tr>
             <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\')), true, false, 'data-size="auto"'); ?></td>
           </tr>
           <tr>
             <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_line_ending', 'Line Ending'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_output', 'Output'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('output', array(array($system->language->translate('title_file', 'File'), 'file'), array($system->language->translate('title_screen', 'Screen'), 'screen'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('output', array(array($system->language->translate('title_file', 'File'), 'file'), array($system->language->translate('title_screen', 'Screen'), 'screen')), true, false, 'data-size="auto"'); ?></td>
           </tr>
           <tr>
             <td colspan="3"><?php echo $system->functions->form_draw_button('export_categories', $system->language->translate('title_export', 'Export'), 'submit'); ?></td>
@@ -486,15 +486,15 @@
           </tr>
           <tr>
             <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\')), true, false, 'data-size="auto"'); ?></td>
           </tr>
           <tr>
             <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1')), true, false, 'data-size="auto"'); ?></td>
             <td></td>
             <td></td>
           </tr>
@@ -510,29 +510,29 @@
         <table>
           <tr>
             <td><?php echo $system->language->translate('title_language', 'Language'); ?><br />
-              <?php echo $system->functions->form_draw_languages_list('language_code'); ?>
+              <?php echo $system->functions->form_draw_languages_list('language_code', true, false, 'data-size="auto"'); ?>
             </td>
             <td><?php echo $system->language->translate('title_currency', 'Currency'); ?><br />
-              <?php echo $system->functions->form_draw_currencies_list('currency_code'); ?>
+              <?php echo $system->functions->form_draw_currencies_list('currency_code', true, false, 'data-size="auto"'); ?>
             </td>
             <td>
             </td>
           </tr>
           <tr>
             <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('escapechar', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"'), array('\\', '\\')), true, false, 'data-size="auto"'); ?></td>
           </tr>
           <tr>
             <td><?php echo $system->language->translate('title_charset', 'Charset'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_line_ending', 'Line Ending'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true, false, 'data-size="auto"'); ?></td>
             <td><?php echo $system->language->translate('title_output', 'Output'); ?><br />
-              <?php echo $system->functions->form_draw_select_field('output', array(array($system->language->translate('title_file', 'File'), 'file'), array($system->language->translate('title_screen', 'Screen'), 'screen'))); ?></td>
+              <?php echo $system->functions->form_draw_select_field('output', array(array($system->language->translate('title_file', 'File'), 'file'), array($system->language->translate('title_screen', 'Screen'), 'screen')), true, false, 'data-size="auto"'); ?></td>
           </tr>
           <tr>
             <td colspan="3"><?php echo $system->functions->form_draw_button('export_products', $system->language->translate('title_export', 'Export'), 'submit'); ?></td>

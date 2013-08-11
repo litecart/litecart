@@ -18,7 +18,7 @@
     
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
     
-      if ($this->settings['status'] != 'Enabled') return;
+      if (empty($this->settings['status'])) return;
       
       if (!empty($this->settings['geo_zone_id'])) {
         if ($this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $customer['country_code'], $customer['zone_code']) != true) return;
@@ -69,10 +69,10 @@
       return array(
         array(
           'key' => 'status',
-          'default_value' => 'Enabled',
+          'default_value' => '1',
           'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
           'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
-          'function' => 'radio("Enabled", "Disabled")',
+          'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'icon',
