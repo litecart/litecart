@@ -1,5 +1,5 @@
 <nav>
-  <p><strong><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></strong></p>
+  <h4><?php echo $system->language->translate('title_manufacturers', 'Manufacturers'); ?></h4>
   <ul class="list-vertical">
 <?php  
   $manufacturers_query = $system->database->query(

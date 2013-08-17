@@ -2,10 +2,8 @@
 
   class lib_compression {
     
-    private $system;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     //public function load_dependencies() {
@@ -29,7 +27,7 @@
     public function before_output() {
       
     // Initialize GZIP compression to reduce bandwidth.
-      if (!headers_sent() && $this->system->settings->get('gzip_enabled') == 'true') {
+      if (!headers_sent() && $GLOBALS['system']->settings->get('gzip_enabled') == 'true') {
         ob_start("ob_gzhandler");
       }
     }

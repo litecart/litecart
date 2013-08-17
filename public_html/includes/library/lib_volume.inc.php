@@ -1,12 +1,10 @@
 <?php
 
   class lib_volume {
-    private $system;
     public $class = '';
     public $classes = array();
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     public function load_dependencies() {
@@ -96,7 +94,7 @@
     //}
     
     public function startup() {
-      $this->class = &$this->system->customer->data['volume_class'];
+      $this->class = &$GLOBALS['system']->customer->data['volume_class'];
     }
     
     //public function before_capture() {
@@ -138,7 +136,7 @@
       $num_decimals = $this->classes[$class]['decimals'];
       if (round($value) == $value) $num_decimals = 0;
       
-      return number_format($value, $this->classes[$class]['decimals'], $this->system->language->selected['decimal_point'], $this->system->language->selected['thousands_sep']) .' '. $this->classes[$class]['unit'];
+      return number_format($value, $this->classes[$class]['decimals'], $GLOBALS['system']->language->selected['decimal_point'], $GLOBALS['system']->language->selected['thousands_sep']) .' '. $this->classes[$class]['unit'];
     }
   }
   

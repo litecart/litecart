@@ -2,14 +2,12 @@
   
   class lib_custom {
   
-    private $system;
     
     public $selected = array();
     public $languages = array();
     private $cache = array();
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     //public function load_dependencies() {
@@ -38,8 +36,8 @@
           $code = '';
           break;
       }
-      if (in_array($code, array_keys($this->system->language->languages))) {
-        $this->system->language->set($language_code);
+      if (in_array($code, array_keys($GLOBALS['system']->language->languages))) {
+        $GLOBALS['system']->language->set($language_code);
       }
     */
       

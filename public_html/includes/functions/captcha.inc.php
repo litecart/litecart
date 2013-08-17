@@ -1,16 +1,14 @@
 <?php
   
   function captcha_get($id) {
-    global $system;
     
-    if (!isset($system->session->data['captcha'][$id]['expires']) || $system->session->data['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) return false;
-    if (!isset($system->session->data['captcha'][$id]['value']) || $system->session->data['captcha'][$id]['value'] == '') return false;
+    if (!isset($GLOBALS['system']->session->data['captcha'][$id]['expires']) || $GLOBALS['system']->session->data['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) return false;
+    if (!isset($GLOBALS['system']->session->data['captcha'][$id]['value']) || $GLOBALS['system']->session->data['captcha'][$id]['value'] == '') return false;
 
-    return $system->session->data['captcha'][$id]['value'];
+    return $GLOBALS['system']->session->data['captcha'][$id]['value'];
   }
   
   function captcha_generate($width, $height, $length=6, $id='default', $set='numbers', $parameters='') {
-    global $system;
     
     $code = '';
     $font = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'captcha.ttf';
@@ -64,14 +62,14 @@
     imagedestroy($image);
     
   // Remove expired captchas
-    if (isset($system->session->data['captcha']) && is_array($system->session->data['captcha'])) {
-      foreach($system->session->data['captcha'] as $key => $captcha) {
-        if ($captcha['expires'] < date('Y-m-d H:i:s')) unset($system->session->data['captcha'][$key]);
+    if (isset($GLOBALS['system']->session->data['captcha']) && is_array($GLOBALS['system']->session->data['captcha'])) {
+      foreach($GLOBALS['system']->session->data['captcha'] as $key => $captcha) {
+        if ($captcha['expires'] < date('Y-m-d H:i:s')) unset($GLOBALS['system']->session->data['captcha'][$key]);
       }
     }
     
   // Set captcha value to session
-    $system->session->data['captcha'][$id] = array(
+    $GLOBALS['system']->session->data['captcha'][$id] = array(
       'value' => $code,
       'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes'))
     );

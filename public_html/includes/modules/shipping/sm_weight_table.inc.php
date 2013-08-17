@@ -1,7 +1,6 @@
 <?php
 
   class sm_weight_table {
-    private $system;
     public $id = __CLASS__;
     public $name = 'Weight Based Shipping';
     public $description = '';
@@ -10,10 +9,8 @@
     public $website = 'http://www.litecart.net';
     
     public function __construct() {
-      global $system;
-      $this->system = &$system;
       
-      $this->name = $this->system->language->translate(__CLASS__.':title_weight_based_shipping', 'Weight Based Shipping');
+      $this->name = $GLOBALS['system']->language->translate(__CLASS__.':title_weight_based_shipping', 'Weight Based Shipping');
     }
     
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -22,13 +19,13 @@
       
     // If destination is not in geo zone
       if (!empty($this->settings['geo_zone_id'])) {
-        if (!$this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) return;
+        if (!$GLOBALS['system']->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) return;
       }
       
     // Calculate cart total
       $weight = 0;
       foreach ($items as $item) {
-        $weight += $this->system->weight->convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
+        $weight += $GLOBALS['system']->weight->convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
       }
       
       $cost = $this->calculate_cost($weight);
@@ -39,8 +36,8 @@
           array(
             'id' => '1',
             'icon' => $this->settings['icon'],
-            'name' => $this->system->language->translate(__CLASS__.':title_option_name_1', 'Cost by Weight'),
-            'description' => $this->system->language->number_format($weight) .' '. $this->settings['weight_class'],
+            'name' => $GLOBALS['system']->language->translate(__CLASS__.':title_option_name_1', 'Cost by Weight'),
+            'description' => $GLOBALS['system']->language->number_format($weight) .' '. $this->settings['weight_class'],
             'fields' => '',
             'cost' => $cost,
             'tax_class_id' => $this->settings['tax_class_id'],
@@ -77,50 +74,50 @@
         array(
           'key' => 'status',
           'default_value' => '1',
-          'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'icon',
           'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_icon', 'Icon'),
-          'description' => $this->system->language->translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_icon', 'Icon'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
           'function' => 'input()',
         ),
         array(
           'key' => 'rate_table',
           'default_value' => '5:8.95;10:15.95',
-          'title' => $this->system->language->translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
-          'description' => $this->system->language->translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (I.e. 5:8.95;10:15.95;..)'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (I.e. 5:8.95;10:15.95;..)'),
           'function' => 'mediumtext()',
         ),
         array(
           'key' => 'weight_class',
           'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_weight_class', 'Weight Class'),
-          'description' => $this->system->language->translate(__CLASS__.':description_weight_class', 'The weight class for the rate table.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_weight_class', 'Weight Class'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_weight_class', 'The weight class for the rate table.'),
           'function' => 'weight_classes()',
         ),
         array(
           'key' => 'tax_class_id',
           'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_tax_class', 'Tax Class'),
-          'description' => $this->system->language->translate('modules:description_tax_class', 'The tax class for the shipping cost.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_tax_class', 'Tax Class'),
+          'description' => $GLOBALS['system']->language->translate('modules:description_tax_class', 'The tax class for the shipping cost.'),
           'function' => 'tax_classes()',
         ),
         array(
           'key' => 'geo_zone_id',
           'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_geo_zone_limitation', 'Geo Zone Limitation'),
-          'description' => $this->system->language->translate(__CLASS__.':description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_geo_zone_limitation', 'Geo Zone Limitation'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
           'function' => 'geo_zones()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '0',
-          'title' => $this->system->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $this->system->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );

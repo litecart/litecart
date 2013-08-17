@@ -1,7 +1,7 @@
 <?php
 
 $app_config = array(
-  'name' => $system->language->translate('title_countries', 'Countries'),
+  'name' => $GLOBALS['system']->language->translate('title_countries', 'Countries'),
   'default' => 'countries',
   'icon' => 'icon.png',
   'menu' => array(),

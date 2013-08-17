@@ -1,10 +1,8 @@
 <?php
   
   class lib_functions {
-    private $system;
   
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     public function __call($function, $arguments) {

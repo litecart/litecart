@@ -11,7 +11,7 @@
   }
   
   if (substr($product->date_valid_from, 0, 10) != '0000-00-00 00:00:00' && $product->date_valid_from > date('Y-m-d H:i:s')) {
-    $system->notices->add('errors', sprintf($system->language->translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime($this->system->language->selected['format_date'], strtotime($product->date_valid_from))));
+    $system->notices->add('errors', sprintf($system->language->translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime($GLOBALS['system']->language->selected['format_date'], strtotime($product->date_valid_from))));
   }
   
   if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && $product->date_valid_to < date('Y-m-d H:i:s')) {

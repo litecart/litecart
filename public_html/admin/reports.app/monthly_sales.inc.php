@@ -9,7 +9,7 @@
 <?php
   $order_statuses = array();
   $orders_status_query = $system->database->query(
-    "select id from ". DB_TABLE_ORDERS_STATUS ." where is_sale;"
+    "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
   );
   while ($order_status = $system->database->fetch($orders_status_query)) {
     $order_statuses[] = (int)$order_status['id'];

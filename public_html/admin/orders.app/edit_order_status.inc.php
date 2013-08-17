@@ -24,6 +24,7 @@
       $fields = array(
         'is_sale',
         'notify',
+        'priority',
         'name',
         'description',
       );
@@ -82,6 +83,11 @@ foreach (array_keys($system->language->languages) as $language_code) {
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo $system->language->translate('text_notify_customer', 'Notify customer');?></td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_priority', 'Priority'); ?></strong><br />
+        <?php echo $system->functions->form_draw_number_field('priority', true); ?>
+      </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order_status->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>

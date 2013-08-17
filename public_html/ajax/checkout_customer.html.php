@@ -268,16 +268,15 @@
         async: true,
         dataType: 'json',
         error: function(jqXHR, textStatus, errorThrown) {
-          //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-          alert(errorThrown.message);
+          if (console) console.warn(errorThrown.message);
         },
         success: function(data) {
           if (data['alert']) {
             alert(data['alert']);
           }
           $.each(data, function(key, value) {
-            console.log(key +" "+ value);
-            if ($("input[name='"+key+"']").length && $("input[name='"+key+"']").val() == '') $("input[name='"+key+"']").val(data[key]);
+            if (console) console.log(key +": "+ value);
+            if ($("#box-checkout-account *[name='"+key+"']").length && $("#box-checkout-account *[name='"+key+"']").val() == '') $("#box-checkout-account *[name='"+key+"']").val(data[key]);
           });
         },
         complete: function() {

@@ -1,17 +1,17 @@
 <?php
 
 $app_config = array(
-  'name' => $system->language->translate('title_tax', 'Tax'),
+  'name' => $GLOBALS['system']->language->translate('title_tax', 'Tax'),
   'default' => 'tax_classes',
   'icon' => 'icon.png',
   'menu' => array(
     array(
-      'title' => $system->language->translate('title_tax_classes', 'Tax Classes'),
+      'title' => $GLOBALS['system']->language->translate('title_tax_classes', 'Tax Classes'),
       'doc' => 'tax_classes',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_tax_rates', 'Tax Rates'),
+      'title' => $GLOBALS['system']->language->translate('title_tax_rates', 'Tax Rates'),
       'doc' => 'tax_rates',
       'params' => array(),
     ),

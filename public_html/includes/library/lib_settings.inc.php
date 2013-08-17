@@ -2,19 +2,17 @@
   
   class lib_settings {
     private $cache;
-    private $system;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     public function load_dependencies() {
       
-      $configuration_query = $this->system->database->query(
+      $configuration_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_SETTINGS ."
         where `type` = 'global';"
       );
-      while ($row = $this->system->database->fetch($configuration_query)) {
+      while ($row = $GLOBALS['system']->database->fetch($configuration_query)) {
         $this->cache[$row['key']] = $row['value'];
       }
       
@@ -49,18 +47,18 @@
       
       if (isset($this->cache[$key])) return $this->cache[$key];
       
-      $configuration_query = $this->system->database->query(
+      $configuration_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_SETTINGS ."
-        where `key` = '". $this->system->database->input($key) ."'
+        where `key` = '". $GLOBALS['system']->database->input($key) ."'
         limit 1;"
       );
       
-      if (!$this->system->database->num_rows($configuration_query)) {
+      if (!$GLOBALS['system']->database->num_rows($configuration_query)) {
         if ($default === null) trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
         return $default;
       }
       
-      while ($row = $this->system->database->fetch($configuration_query)) {
+      while ($row = $GLOBALS['system']->database->fetch($configuration_query)) {
         $this->cache[$key] = $row['value'];
       }
       

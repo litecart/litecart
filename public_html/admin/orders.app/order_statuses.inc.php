@@ -12,14 +12,15 @@
     <th nowrap="nowrap" align="left" width="100%"><?php echo $system->language->translate('title_name', 'Name'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_sales', 'Sales'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_notify', 'Notify'); ?></th>
+    <th nowrap="nowrap" align="left"><?php echo $system->language->translate('title_priority', 'Priority'); ?></th>
     <th>&nbsp;</th>
   </tr>
 <?php
 
   $orders_status_query = $system->database->query(
-    "select os.id, os.is_sale, os.notify, osi.name from ". DB_TABLE_ORDERS_STATUS ." os
-    left join ". DB_TABLE_ORDERS_STATUS_INFO ." osi on (os.id = osi.order_status_id and language_code = '". $system->language->selected['code'] ."')
-    order by osi.name asc;"
+    "select os.id, os.is_sale, os.notify, osi.name, os.priority from ". DB_TABLE_ORDER_STATUSES ." os
+    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and language_code = '". $system->language->selected['code'] ."')
+    order by os.priority, osi.name asc;"
   );
 
   if ($system->database->num_rows($orders_status_query) > 0) {
@@ -42,6 +43,7 @@
     <td align="left" nowrap="nowrap"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>"><?php echo $order_status['name']; ?></a></td>
     <td align="center" nowrap="nowrap"><?php echo empty($order_status['is_sale']) ? '' : 'x'; ?></td>
     <td align="center" nowrap="nowrap"><?php echo empty($order_status['notify']) ? '' : 'x'; ?></td>
+    <td align="center"><?php echo $order_status['priority']; ?></td>
     <td align="right"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" title="<?php echo $system->language->translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
@@ -50,7 +52,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="6" align="left"><?php echo $system->language->translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $system->database->num_rows($orders_status_query); ?></td>
+    <td colspan="7" align="left"><?php echo $system->language->translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $system->database->num_rows($orders_status_query); ?></td>
   </tr>
 </table>
 

@@ -1,10 +1,8 @@
 <?php
 
   class lib_link {
-    private $system;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     //public function load_dependencies() {
@@ -85,8 +83,8 @@
       
       $link = $this->unparse_link($base_link);
       
-      if (!empty($this->system->seo_links->enabled)) {
-        $seo_link = $this->system->seo_links->link($link, $language_code);
+      if (!empty($GLOBALS['system']->seo_links->enabled)) {
+        $seo_link = $GLOBALS['system']->seo_links->link($link, $language_code);
       }
       
       $link = !empty($seo_link) ? $seo_link : $link;

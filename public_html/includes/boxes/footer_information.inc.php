@@ -1,5 +1,5 @@
 <nav>
-  <p><strong><?php echo $system->language->translate('title_information', 'Information'); ?></strong></p>
+  <h4><?php echo $system->language->translate('title_information', 'Information'); ?></h4>
   <ul class="list-vertical">
   <?php
     $pages_query = $system->database->query(

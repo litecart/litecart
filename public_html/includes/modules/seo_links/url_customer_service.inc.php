@@ -2,29 +2,28 @@
   
   class url_customer_service {
     
-  	function __construct($system) {
-      $this->system = &$system;
+  	function __construct() {
     }
     
     function process($parsed_link, $language_code) {
       
       if (!empty($parsed_link['query']['page_id'])) {
-        $page_query = $this->system->database->query(
+        $page_query = $GLOBALS['system']->database->query(
           "select page_id, title from ". DB_TABLE_PAGES_INFO ."
           where page_id = '". (int)$parsed_link['query']['page_id'] ."'
-          and language_code = '". $this->system->database->input($language_code) ."'
+          and language_code = '". $GLOBALS['system']->database->input($language_code) ."'
           limit 1;"
         );
-        $page = $this->system->database->fetch($page_query);
+        $page = $GLOBALS['system']->database->fetch($page_query);
         
         if (!empty($page)) {
-          $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->functions->general_path_friendly($page['title']) .'-s-'. $page['page_id'];
+          $parsed_link['path'] = WS_DIR_HTTP_HOME . $GLOBALS['system']->functions->general_path_friendly($page['title']) .'-s-'. $page['page_id'];
         }
         
       } else {
       
-        $title = $this->system->language->translate('title_customer_service', 'Customer Service', $language_code);
-        $parsed_link['path'] = WS_DIR_HTTP_HOME . $this->system->functions->general_path_friendly($title) .'-s-0';
+        $title = $GLOBALS['system']->language->translate('title_customer_service', 'Customer Service', $language_code);
+        $parsed_link['path'] = WS_DIR_HTTP_HOME . $GLOBALS['system']->functions->general_path_friendly($title) .'-s-0';
       }
       
       if (isset($parsed_link['query']['page_id'])) unset($parsed_link['query']['page_id']);

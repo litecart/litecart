@@ -2,12 +2,10 @@
 
   class lib_database {
     
-    private $system;
     private $_links = array();
     private $_type = 'mysql';
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
       
       if (function_exists('mysqli_connect')) $this->_type = 'mysqli';
     }
@@ -34,7 +32,7 @@
       
     // Close a non-persistent database connection
       if (DB_PERSISTENT_CONNECTIONS != 'true') {
-        $this->system->database->disconnect();
+        $GLOBALS['system']->database->disconnect();
       }
     }
     
@@ -79,7 +77,7 @@
           error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.');
         }
         
-        $this->system->stats->set('database_execution_time', $this->system->stats->get('database_execution_time') + $execution_time_duration);
+        $GLOBALS['system']->stats->set('database_execution_time', $GLOBALS['system']->stats->get('database_execution_time') + $execution_time_duration);
       }
       
       $this->query("set character set ". DB_DATABASE_CHARSET);
@@ -188,8 +186,8 @@
         error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query));
       }
       
-      $this->system->stats->set('database_queries', $this->system->stats->get('database_queries') + 1);
-      $this->system->stats->set('database_execution_time', $this->system->stats->get('database_execution_time') + $execution_time_duration);
+      $GLOBALS['system']->stats->set('database_queries', $GLOBALS['system']->stats->get('database_queries') + 1);
+      $GLOBALS['system']->stats->set('database_execution_time', $GLOBALS['system']->stats->get('database_execution_time') + $execution_time_duration);
       
     // Return query resource
       return $result;
@@ -228,7 +226,7 @@
     // Calculate duration time for debug
       $execution_time_duration = $execution_time_stop - $execution_time_start;
       
-      $this->system->stats->set('database_execution_time', $this->system->stats->get('database_execution_time') + $execution_time_duration);
+      $GLOBALS['system']->stats->set('database_execution_time', $GLOBALS['system']->stats->get('database_execution_time') + $execution_time_duration);
       
       return $array;
     }
@@ -282,7 +280,6 @@
     }
     
     public function input($string, $allowable_tags=false, $link='default') {
-      global $system;
       
     // Return safe array
       if (is_array($string)) {

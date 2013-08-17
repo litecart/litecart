@@ -1,11 +1,11 @@
 <?php
   switch ($_GET['doc']) {
-    case 'get_address':
-      $title = $system->language->translate('title_get_address_modules', 'Get Address Modules');
-      $installed_modules = explode(';', $system->settings->get('get_address_modules'));
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'get_address/*.inc.php');
-      $modules = new get_address;
-      $edit_doc = 'edit_get_address';
+    case 'customer':
+      $title = $system->language->translate('title_customer_modules', 'Customer Modules');
+      $installed_modules = explode(';', $system->settings->get('customer_modules'));
+      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/*.inc.php');
+      $modules = new customer;
+      $edit_doc = 'edit_customer';
       break;
     case 'jobs':
       $title = $system->language->translate('title_job_modules', 'Job Modules');

@@ -32,7 +32,7 @@ CREATE TABLE `lc_categories` (
   `code` varchar(64) NOT NULL,
   `keywords` varchar(256) NOT NULL,
   `image` varchar(256) NOT NULL,
-  `priority` tinyint(4) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -85,7 +85,7 @@ CREATE TABLE `lc_currencies` (
   `decimals` tinyint(1) NOT NULL,
   `prefix` varchar(8) NOT NULL,
   `suffix` varchar(8) NOT NULL,
-  `priority` tinyint(4) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -125,14 +125,14 @@ CREATE TABLE `lc_customers` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE `lc_delivery_status` (
+CREATE TABLE `lc_delivery_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE `lc_delivery_status_info` (
+CREATE TABLE `lc_delivery_statuses_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `delivery_status_id` int(11) NOT NULL,
   `language_code` varchar(2) NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE `lc_languages` (
   `decimal_point` varchar(1) NOT NULL,
   `thousands_sep` varchar(1) NOT NULL,
   `currency_code` varchar(3) NOT NULL,
-  `priority` tinyint(3) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   UNIQUE KEY `id` (`id`),
@@ -230,7 +230,7 @@ CREATE TABLE `lc_option_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
   `value` varchar(128) NOT NULL,
-  `priority` int(11) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -319,16 +319,17 @@ CREATE TABLE `lc_orders_items` (
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE `lc_orders_status` (
+CREATE TABLE `lc_order_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `is_sale` tinyint(1) NOT NULL,
   `notify` tinyint(1) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE `lc_orders_status_info` (
+CREATE TABLE `lc_order_statuses_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_status_id` int(11) NOT NULL,
   `language_code` varchar(2) NOT NULL,
@@ -347,7 +348,7 @@ CREATE TABLE `lc_orders_totals` (
   `value` float NOT NULL,
   `tax` float NOT NULL,
   `calculate` tinyint(1) NOT NULL,
-  `priority` tinyint(4) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -356,7 +357,7 @@ CREATE TABLE `lc_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL,
   `dock` VARCHAR(64) NOT NULL,
-  `priority` int(11) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -465,7 +466,7 @@ CREATE TABLE `lc_products_options` (
   `price_operator` varchar(1) NOT NULL,
   `EUR` decimal(11,4) NOT NULL,
   `SEK` decimal(11,4) NOT NULL,
-  `priority` int(2) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -484,7 +485,7 @@ CREATE TABLE `lc_products_options_stock` (
   `dim_z` decimal(11,4) NOT NULL,
   `dim_class` varchar(2) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `priority` tinyint(4) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -558,7 +559,7 @@ CREATE TABLE `lc_settings` (
   `key` varchar(64) NOT NULL,
   `value` varchar(2048) NOT NULL,
   `function` varchar(128) NOT NULL,
-  `priority` int(11) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -571,7 +572,7 @@ CREATE TABLE `lc_settings_groups` (
   `key` varchar(64) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(256) NOT NULL,
-  `priority` int(11) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
@@ -583,7 +584,7 @@ CREATE TABLE `lc_slides` (
   `caption` varchar(256) NOT NULL,
   `link` varchar(256) NOT NULL,
   `image` varchar(64) NOT NULL,
-  `priority` int(11) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
   `date_valid_from` datetime NOT NULL,
   `date_valid_to` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
@@ -591,7 +592,7 @@ CREATE TABLE `lc_slides` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE `lc_sold_out_status` (
+CREATE TABLE `lc_sold_out_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `orderable` tinyint(1) NOT NULL,
   `date_updated` datetime NOT NULL,
@@ -599,7 +600,7 @@ CREATE TABLE `lc_sold_out_status` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
-CREATE TABLE `lc_sold_out_status_info` (
+CREATE TABLE `lc_sold_out_statuses_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sold_out_status_id` int(11) NOT NULL,
   `language_code` varchar(2) NOT NULL,

@@ -1,7 +1,6 @@
 <?php
 
   class pm_cod {
-    private $system;
     public $id = __CLASS__;
     public $name = 'Cash on Delivery';
     public $description = '';
@@ -12,8 +11,6 @@
     public $priority = 0;
     
     public function __construct() {
-      global $system;
-      $this->system = &$system;
     }
     
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -21,22 +18,22 @@
       if (empty($this->settings['status'])) return;
       
       if (!empty($this->settings['geo_zone_id'])) {
-        if ($this->system->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $customer['country_code'], $customer['zone_code']) != true) return;
+        if ($GLOBALS['system']->functions->reference_in_geo_zone($this->settings['geo_zone_id'], $customer['country_code'], $customer['zone_code']) != true) return;
       }
       
       $method = array(
-        'title' => $this->system->language->translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
+        'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
         'description' => '',
         'options' => array(
           array(
             'id' => 'cod',
             'icon' => $this->settings['icon'],
-            'name' => $this->system->functions->reference_get_country_name($this->system->customer->data['shipping_address']['country_code']),
+            'name' => $GLOBALS['system']->functions->reference_get_country_name($GLOBALS['system']->customer->data['shipping_address']['country_code']),
             'description' => '',
             'fields' => '',
             'cost' => $this->settings['fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
-            'confirm' => $this->system->language->translate(__CLASS__.':title_confirm_order', 'Confirm Order'),
+            'confirm' => $GLOBALS['system']->language->translate(__CLASS__.':title_confirm_order', 'Confirm Order'),
           ),
         )
       );
@@ -70,50 +67,50 @@
         array(
           'key' => 'status',
           'default_value' => '1',
-          'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'icon',
           'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_icon', 'Icon'),
-          'description' => $this->system->language->translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_icon', 'Icon'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
           'function' => 'input()',
         ),
         array(
           'key' => 'fee',
           'default_value' => '0',
-          'title' => $this->system->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee'),
-          'description' => $this->system->language->translate(__CLASS__.':description_payment_fee', 'Adds a payment fee to the order.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_payment_fee', 'Adds a payment fee to the order.'),
           'function' => 'decimal()',
         ),
         array(
           'key' => 'tax_class_id',
           'default_value' => '',
-          'title' => $this->system->language->translate(__CLASS__.':title_tax_class', 'Tax Class'),
-          'description' => $this->system->language->translate(__CLASS__.':description_tax_class', 'The tax class for the fee.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_tax_class', 'Tax Class'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_tax_class', 'The tax class for the fee.'),
           'function' => 'tax_classes()',
         ),
         array(
           'key' => 'order_status_id',
           'default_value' => '0',
-          'title' => $this->system->language->translate('title_order_status', 'Order Status'),
-          'description' => $this->system->language->translate('modules:description_order_status', 'Give orders made with this payment method the following order status.'),
+          'title' => $GLOBALS['system']->language->translate('title_order_status', 'Order Status'),
+          'description' => $GLOBALS['system']->language->translate('modules:description_order_status', 'Give orders made with this payment method the following order status.'),
           'function' => 'order_status()',
         ),
         array(
           'key' => 'geo_zone_id',
           'default_value' => '',
-          'title' => $this->system->language->translate('title_geo_zone_limitation', 'Geo Zone Limitation'),
-          'description' => $this->system->language->translate('modules:description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
+          'title' => $GLOBALS['system']->language->translate('title_geo_zone_limitation', 'Geo Zone Limitation'),
+          'description' => $GLOBALS['system']->language->translate('modules:description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
           'function' => 'geo_zones()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '0',
-          'title' => $this->system->language->translate('title_priority', 'Priority'),
-          'description' => $this->system->language->translate('modules:description_priority', 'Process this module in the given priority order.'),
+          'title' => $GLOBALS['system']->language->translate('title_priority', 'Priority'),
+          'description' => $GLOBALS['system']->language->translate('modules:description_priority', 'Process this module in the given priority order.'),
           'function' => 'int()',
         ),
       );

@@ -1,7 +1,6 @@
 <?php
 
   class ot_payment_fee {
-    private $system;
     public $id = __CLASS__;
     public $name = 'Payment Fee';
     public $description = '';
@@ -11,10 +10,8 @@
     public $priority = 0;
     
     public function __construct() {
-      global $system;
-      $this->system = &$system;
       
-      $this->name = $this->system->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee');
+      $this->name = $GLOBALS['system']->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee');
     }
     
     public function process() {
@@ -29,7 +26,7 @@
       $output[] = array(
         'title' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
         'value' => $payment->data['selected']['cost'],
-        'tax' => $this->system->tax->calculate($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], true),
+        'tax' => $GLOBALS['system']->tax->calculate($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], true),
         'calculate' => true,
       );
       
@@ -45,15 +42,15 @@
         array(
           'key' => 'status',
           'default_value' => '1',
-          'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'priority',
           'default_value' => '30',
-          'title' => $this->system->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $this->system->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );

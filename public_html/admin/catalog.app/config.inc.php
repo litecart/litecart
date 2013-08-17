@@ -1,47 +1,47 @@
 <?php
 
 $app_config = array(
-  'name' => $system->language->translate('title_catalog', 'Catalog'),
+  'name' => $GLOBALS['system']->language->translate('title_catalog', 'Catalog'),
   'default' => 'catalog',
   'icon' => 'icon.png',
   'menu' => array(
     array(
-      'title' => $system->language->translate('title_catalog', 'Catalog'),
+      'title' => $GLOBALS['system']->language->translate('title_catalog', 'Catalog'),
       'doc' => 'catalog',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_product_groups', 'Product Groups'),
+      'title' => $GLOBALS['system']->language->translate('title_product_groups', 'Product Groups'),
       'doc' => 'product_groups',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_option_groups', 'Option Groups'),
+      'title' => $GLOBALS['system']->language->translate('title_option_groups', 'Option Groups'),
       'doc' => 'option_groups',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_manufacturers', 'Manufacturers'),
+      'title' => $GLOBALS['system']->language->translate('title_manufacturers', 'Manufacturers'),
       'doc' => 'manufacturers',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_suppliers', 'Suppliers'),
+      'title' => $GLOBALS['system']->language->translate('title_suppliers', 'Suppliers'),
       'doc' => 'suppliers',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_delivery_statuses', 'Delivery Statuses'),
+      'title' => $GLOBALS['system']->language->translate('title_delivery_statuses', 'Delivery Statuses'),
       'doc' => 'delivery_statuses',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_sold_out_statuses', 'Sold Out Statuses'),
+      'title' => $GLOBALS['system']->language->translate('title_sold_out_statuses', 'Sold Out Statuses'),
       'doc' => 'sold_out_statuses',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_csv_import_export', 'CSV Import/Export'),
+      'title' => $GLOBALS['system']->language->translate('title_csv_import_export', 'CSV Import/Export'),
       'doc' => 'csv',
       'params' => array(),
     ),

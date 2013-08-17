@@ -4,7 +4,6 @@
     public $data;
     
     public function __construct($type='session') {
-      global $system;
       
       parent::set_type('order_action');
      

@@ -301,7 +301,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', 'Installed Payment Modules', '', 'payment_modules', '', '', 0, NOW(), NOW()),
 ('', 'local', 'Installed Order Action Modules', '', 'order_action_modules', '', '', 0, NOW(), NOW()),
 ('', 'local', 'Installed Order Total Modules', '', 'order_total_modules', 'ot_subtotal;ot_payment_fee;ot_shipping_fee', '', 0, NOW(), NOW()),
-('', 'local', 'Installed Get Address Modules', '', 'get_address_modules', '', '', 0, NOW(), NOW()),
+('', 'local', 'Installed Customer Modules', '', 'customer_modules', '', '', 0, NOW(), NOW()),
 ('', 'local', 'Installed Order Success Modules', '', 'order_success_modules', '', '', 0, NOW(), NOW()),
 ('', 'local', '', '', 'order_total_module_ot_payment_fee', 'a:1:{s:10:"sort_order";s:2:"10";}', '', 0, NOW(), NOW()),
 ('', 'local', '', '', 'order_total_module_ot_shipping_fee', 'a:1:{s:10:"sort_order";s:2:"10";}', '', 0, NOW(), NOW()),
@@ -311,16 +311,16 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 INSERT INTO `lc_currencies` (`status`, `code`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'EUR', 'Euro', 1, 2, '', ' €', 0, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_orders_status` (`id`, `is_sale`, `date_updated`, `date_created`) VALUES
-(1, 1, NOW(), NOW()),
-(2, 1, NOW(), NOW()),
-(3, 1, NOW(), NOW()),
-(4, 0, NOW(), NOW()),
-(5, 0, NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 0, 1, NOW(), NOW()),
+(2, 1, 2, NOW(), NOW()),
+(3, 1, 3, NOW(), NOW()),
+(4, 1, 4, NOW(), NOW()),
+(5, 0, 5, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_orders_status_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Pending', ''),
-(2, 2, 'en', 'Processing', ''),
-(3, 3, 'en', 'Completed', ''),
-(4, 4, 'en', 'Awaiting payment', ''),
+INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', 'Awaiting payment', ''),
+(2, 2, 'en', 'Pending', ''),
+(3, 3, 'en', 'Processing', ''),
+(4, 4, 'en', 'Completed', ''),
 (5, 5, 'en', 'Cancelled', '');

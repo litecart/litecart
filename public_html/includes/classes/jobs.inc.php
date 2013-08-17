@@ -7,7 +7,6 @@
     public $destination = array();
 
     public function __construct($type='session') {
-      global $system;
       
       parent::set_type('jobs');
      

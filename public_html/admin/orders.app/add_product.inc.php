@@ -20,12 +20,12 @@
     $sku = $product->sku;
     
     if ($_POST['quantity'] <= 0) {
-      if (!$silent) $this->system->notices->add('errors', 'Cannot add product to cart. Invalid product_id');
+      if (!$silent) $GLOBALS['system']->notices->add('errors', 'Cannot add product to cart. Invalid product_id');
       return;
     }
     
     if (($product->quantity - $_POST['quantity']) < 0 && empty($product->sold_out_status['orderable'])) {
-      if (!$silent) $this->system->notices->add('errors', $this->system->language->translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+      if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
       return;
     }
     

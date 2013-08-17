@@ -1,32 +1,32 @@
 <?php
 
 $app_config = array(
-  'name' => $system->language->translate('title_translations', 'Translations'),
+  'name' => $GLOBALS['system']->language->translate('title_translations', 'Translations'),
   'default' => 'search',
   'icon' => 'icon.png',
   'menu' => array(
     array(
-      'title' => $system->language->translate('title_search_translations', 'Search Translations'),
+      'title' => $GLOBALS['system']->language->translate('title_search_translations', 'Search Translations'),
       'doc' => 'search',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_untranslated', 'Untranslated'),
+      'title' => $GLOBALS['system']->language->translate('title_untranslated', 'Untranslated'),
       'doc' => 'untranslated',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_translations_by_page', 'Translations by page'),
+      'title' => $GLOBALS['system']->language->translate('title_translations_by_page', 'Translations by page'),
       'doc' => 'pages',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_scan_files', 'Scan Files'),
+      'title' => $GLOBALS['system']->language->translate('title_scan_files', 'Scan Files'),
       'doc' => 'scan',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_csv_import_export', 'CSV Import/Export'),
+      'title' => $GLOBALS['system']->language->translate('title_csv_import_export', 'CSV Import/Export'),
       'doc' => 'csv',
       'params' => array(),
     ),

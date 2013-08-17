@@ -2,8 +2,7 @@
   
   class url_search {
 
-  	function __construct($system) {
-      $this->system = &$system;
+  	function __construct() {
     }
     
     function process($parsed_link, $language_code) {

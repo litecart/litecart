@@ -1,11 +1,9 @@
 <?php
   
   class lib_tax {
-    private $system;
     private $cache = array();
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     //public function load_dependencies() {
@@ -36,7 +34,7 @@
     
     public function calculate($value, $tax_class_id, $calculate=null, $country_code=null, $zone_code=null) {
       
-      if ($calculate === null) $calculate = ($this->system->settings->get('display_prices_including_tax') == 'true') ? true : false;
+      if ($calculate === null) $calculate = ($GLOBALS['system']->settings->get('display_prices_including_tax') == 'true') ? true : false;
       
       if ($calculate) {
         return $value + $this->get_tax($value, $tax_class_id, $country_code, $zone_code);
@@ -103,28 +101,28 @@
       $tax_rates = array();
       
       if ($country_code === null) {
-        $country_code = (!empty($this->system->customer->data['country_code'])) ? $this->system->customer->data['country_code'] : $this->system->settings->get('default_country_code');
+        $country_code = (!empty($GLOBALS['system']->customer->data['country_code'])) ? $GLOBALS['system']->customer->data['country_code'] : $GLOBALS['system']->settings->get('default_country_code');
       } else if ($zone_code === null) {
-        $zone_code = (!empty($this->system->customer->data['zone_code'])) ? $this->system->customer->data['zone_code'] : $this->system->settings->get('default_zone_code');
+        $zone_code = (!empty($GLOBALS['system']->customer->data['zone_code'])) ? $GLOBALS['system']->customer->data['zone_code'] : $GLOBALS['system']->settings->get('default_zone_code');
       }
       
       if (isset($this->cache['rates'][$tax_class_id][$country_code.':'.$zone_code])) return $this->cache['rates'][$tax_class_id][$country_code.':'.$zone_code];
       
-      $tax_rates_query = $this->system->database->query(
+      $tax_rates_query = $GLOBALS['system']->database->query(
         "select tr.id, tr.name, tr.type, tr.rate, tr.customer_type, tr.tax_id_rule
         from ". DB_TABLE_TAX_RATES ." tr
         left join ". DB_TABLE_GEO_ZONES . " gz on (gz.id = tr.geo_zone_id)
         left join ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz on (z2gz.geo_zone_id = tr.geo_zone_id)
         where tr.tax_class_id = '" . (int)$tax_class_id . "'
-        and z2gz.country_code = '" . $this->system->database->input($country_code) . "'
-        and (z2gz.zone_code = '' or z2gz.zone_code = '". $this->system->database->input($zone_code) ."');"
+        and z2gz.country_code = '" . $GLOBALS['system']->database->input($country_code) . "'
+        and (z2gz.zone_code = '' or z2gz.zone_code = '". $GLOBALS['system']->database->input($zone_code) ."');"
       );
       
-      while ($row=$this->system->database->fetch($tax_rates_query)) {
-        if ($row['customer_type'] == 'individuals' && !empty($this->system->customer->data['company'])) continue;
-        if ($row['customer_type'] == 'companies' && empty($this->system->customer->data['company'])) continue;
-        if ($row['tax_id_rule'] == 'without' && !empty($this->system->customer->data['tax_id'])) continue;
-        if ($row['tax_id_rule'] == 'with' && empty($this->system->customer->data['tax_id'])) continue;
+      while ($row=$GLOBALS['system']->database->fetch($tax_rates_query)) {
+        if ($row['customer_type'] == 'individuals' && !empty($GLOBALS['system']->customer->data['company'])) continue;
+        if ($row['customer_type'] == 'companies' && empty($GLOBALS['system']->customer->data['company'])) continue;
+        if ($row['tax_id_rule'] == 'without' && !empty($GLOBALS['system']->customer->data['tax_id'])) continue;
+        if ($row['tax_id_rule'] == 'with' && empty($GLOBALS['system']->customer->data['tax_id'])) continue;
         $tax_rates[$row['id']] = $row;
       }
       
@@ -135,12 +133,12 @@
     
     public function get_class_name($tax_class_id) {
       
-      $tax_class_query = $this->system->database->query(
+      $tax_class_query = $GLOBALS['system']->database->query(
         "select name from ". DB_TABLE_TAX_CLASSES ."
         where id = '" . (int)$tax_class_id . "'
         limit 1;"
       );
-      $tax_class = $this->system->database->fetch($tax_class_query);
+      $tax_class = $GLOBALS['system']->database->fetch($tax_class_query);
       
       if (isset($tax_class['name'])) return $tax_class['name'];
       
@@ -149,12 +147,12 @@
     
     public function get_rate_name($tax_rate_id) {
       
-      $tax_rates_query = $this->system->database->query(
+      $tax_rates_query = $GLOBALS['system']->database->query(
         "select name from ". DB_TABLE_TAX_RATES ."
         where id = '" . (int)$tax_rate_id . "'
         limit 1;"
       );
-      $tax_rate = $this->system->database->fetch($tax_rates_query);
+      $tax_rate = $GLOBALS['system']->database->fetch($tax_rates_query);
       
       if (isset($tax_rate['name'])) return $tax_rate['name'];
       

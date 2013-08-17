@@ -1,22 +1,22 @@
 <?php
 
 $app_config = array(
-  'name' => $system->language->translate('title_customers', 'Customers'),
+  'name' => $GLOBALS['system']->language->translate('title_customers', 'Customers'),
   'default' => 'customers',
   'icon' => 'icon.png',
   'menu' => array(
     array(
-      'title' => $system->language->translate('title_customers', 'Customers'),
+      'title' => $GLOBALS['system']->language->translate('title_customers', 'Customers'),
       'doc' => 'customers',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_csv_import_export', 'CSV Import/Export'),
+      'title' => $GLOBALS['system']->language->translate('title_csv_import_export', 'CSV Import/Export'),
       'doc' => 'csv',
       'params' => array(),
     ),
     array(
-      'title' => $system->language->translate('title_newsletter', 'Newsletter'),
+      'title' => $GLOBALS['system']->language->translate('title_newsletter', 'Newsletter'),
       'doc' => 'newsletter',
       'params' => array(),
     ),

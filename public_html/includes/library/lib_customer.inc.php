@@ -1,15 +1,13 @@
 <?php
   
   class lib_customer {
-    private $system;
     public $data;
     
     public function __construct(&$system) {
-      $this->system = &$system;
     }
     
     public function load_dependencies() {
-      $this->data = &$this->system->session->data['customer'];
+      $this->data = &$GLOBALS['system']->session->data['customer'];
     }
     
     //public function initiate() {
@@ -17,7 +15,7 @@
     
     public function startup() {
       
-      if (empty($this->system->session->data['customer']) || !is_array($this->system->session->data['customer'])) {
+      if (empty($GLOBALS['system']->session->data['customer']) || !is_array($GLOBALS['system']->session->data['customer'])) {
         $this->reset();
       }
     }
@@ -42,15 +40,15 @@
     public function identify() {
       
     // Build list of supported countries
-      $countries_query = $this->system->database->query(
+      $countries_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_COUNTRIES ."
-        where iso_code_2 = '". $this->system->database->input($this->system->settings->get('default_country_code')) ."'
+        where iso_code_2 = '". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('default_country_code')) ."'
         limit 1;"
       );
-      $country = $this->system->database->fetch($countries_query);
+      $country = $GLOBALS['system']->database->fetch($countries_query);
       
       $countries = array();
-      while ($country = $this->system->database->fetch($countries_query)) {
+      while ($country = $GLOBALS['system']->database->fetch($countries_query)) {
         if ($country['status']) {
           $countries[] = $country['iso_code_2'];
         }
@@ -74,11 +72,11 @@
       }
       
     // Return default country
-      return $this->system->settings->get('default_country_code');
+      return $GLOBALS['system']->settings->get('default_country_code');
     }
     
     public function reset() {
-      $this->system->session->data['customer'] = array(
+      $GLOBALS['system']->session->data['customer'] = array(
         'id' => '',
         'email' => '',
         'tax_id' => '',
@@ -91,8 +89,8 @@
         'address2' => '',
         'city' => '',
         'postcode' => '',
-        'country_code' => $this->system->settings->get('default_country_code'),
-        'zone_code' => $this->system->settings->get('default_zone_code'),
+        'country_code' => $GLOBALS['system']->settings->get('default_country_code'),
+        'zone_code' => $GLOBALS['system']->settings->get('default_zone_code'),
         'different_shipping_address' => false,
         'shipping_address' => array(
           'company' => '',
@@ -102,16 +100,16 @@
           'address2' => '',
           'city' => '',
           'postcode' => '',
-          'country_code' => $this->system->settings->get('default_country_code'),
-          'zone_code' => $this->system->settings->get('default_zone_code'),
+          'country_code' => $GLOBALS['system']->settings->get('default_country_code'),
+          'zone_code' => $GLOBALS['system']->settings->get('default_zone_code'),
         ),
       );
     }
     
     public function require_login() {
       if (!$this->check_login()) {
-        $this->system->notices->add('warnings', $this->system->language->translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . $this->system->document->link(WS_DIR_HTTP_HOME));
+        $GLOBALS['system']->notices->add('warnings', $GLOBALS['system']->language->translate('warning_must_login_page', 'You must be logged in to view the page.'));
+        header('Location: ' . $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME));
         exit;
       }
     }
@@ -123,81 +121,81 @@
     public function password_reset($email) {
       
       if (empty($email)) {
-        $this->system->notices->add('errors', $this->system->language->translate('error_missing_email', 'To reset your password you must provide an e-mail address.'));
+        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_missing_email', 'To reset your password you must provide an e-mail address.'));
         return;
       }
 
-      $customer_query = $this->system->database->query(
+      $customer_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where email = '". $this->system->database->input($email) ."'
+        where email = '". $GLOBALS['system']->database->input($email) ."'
         limit 1;"
       );
-      $customer = $this->system->database->fetch($customer_query);
+      $customer = $GLOBALS['system']->database->fetch($customer_query);
       
       if (empty($customer)) {
         sleep(10);
-        $this->system->notices->add('errors', $this->system->language->translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
+        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
         return;
       }
       
-      $new_password = $this->system->functions->password_generate(6);
+      $new_password = $GLOBALS['system']->functions->password_generate(6);
       
-      $customer_query = $this->system->database->query(
+      $customer_query = $GLOBALS['system']->database->query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set password = '". $this->system->functions->password_hash($email, $new_password) ."'
-        where email = '". $this->system->database->input($email) ."'
+        set password = '". $GLOBALS['system']->functions->password_hash($email, $new_password) ."'
+        where email = '". $GLOBALS['system']->database->input($email) ."'
         limit 1;"
       );
       
-      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, $this->system->document->link(WS_DIR_HTTP_HOME)), $this->system->language->translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
+      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME)), $GLOBALS['system']->language->translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
       
-      $this->system->functions->email_send(
-        $this->system->settings->get('store_email'),
+      $GLOBALS['system']->functions->email_send(
+        $GLOBALS['system']->settings->get('store_email'),
         $email,
-        $this->system->language->translate('email_subject_new_password', 'New Password'),
+        $GLOBALS['system']->language->translate('email_subject_new_password', 'New Password'),
         $message
       );
       
-      $this->system->notices->add('success', $this->system->language->translate('success_password_reset', 'A new password has been sent to your e-mail address.'));
+      $GLOBALS['system']->notices->add('success', $GLOBALS['system']->language->translate('success_password_reset', 'A new password has been sent to your e-mail address.'));
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
     }
     
     public function load($customer_id) {
       
-      $customer_query = $this->system->database->query(
+      $customer_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where id = '". (int)$customer_id ."'
         limit 1;"
       );
-      $customer = $this->system->database->fetch($customer_query);
+      $customer = $GLOBALS['system']->database->fetch($customer_query);
       
-      $this->system->session->data['customer'] = $customer;
+      $GLOBALS['system']->session->data['customer'] = $customer;
     }
     
     public function login($email, $password, $redirect_url='') {
     
       if (empty($email) || empty($password)) {
-        $this->system->notices->add('errors', $this->system->language->translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
+        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
         return;
       }
       
-      $customer_query = $this->system->database->query(
+      $customer_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where email = '". $this->system->database->input($email) ."'
-        and password = '". $this->system->functions->password_hash($email, $password) ."'
+        where email = '". $GLOBALS['system']->database->input($email) ."'
+        and password = '". $GLOBALS['system']->functions->password_hash($email, $password) ."'
         limit 1;"
       );
-      $customer = $this->system->database->fetch($customer_query);
+      $customer = $GLOBALS['system']->database->fetch($customer_query);
       
       if (empty($customer)) {
         sleep(10);
-        $this->system->notices->add('errors', $this->system->language->translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
+        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
         return;
       }
       
-      $this->system->session->regenerate_id();
-      $this->system->session->data['customer'] = $customer;
+      $GLOBALS['system']->session->regenerate_id();
+      $GLOBALS['system']->session->data['customer'] = $customer;
       
       $key_map = array(
         'shipping_company' => 'company',
@@ -215,18 +213,18 @@
         unset($this->data[$skey]);
       }
       
-      $this->system->cart->load();
+      $GLOBALS['system']->cart->load();
       
-      if (empty($redirect_url)) $redirect_url = $this->system->document->link(WS_DIR_HTTP_HOME);
+      if (empty($redirect_url)) $redirect_url = $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME);
       
-      $this->system->notices->add('success', str_replace(array('%firstname', '%lastname'), array($this->data['firstname'], $this->data['lastname']), $this->system->language->translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
+      $GLOBALS['system']->notices->add('success', str_replace(array('%firstname', '%lastname'), array($this->data['firstname'], $this->data['lastname']), $GLOBALS['system']->language->translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
       header('Location: '. $redirect_url);
       exit;
     }
     
     public function logout() {
-      $this->system->session->reset();
-      header('Location: ' . $this->system->document->link(WS_DIR_HTTP_HOME));
+      $GLOBALS['system']->session->reset();
+      header('Location: ' . $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME));
       exit;
     }
   }

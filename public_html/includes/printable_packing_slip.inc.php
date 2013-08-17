@@ -1,11 +1,11 @@
 <div id="header" style="margin-bottom: 10px;">
   <table style="width: 100%;">
     <tr>
-      <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 75px; font-size: 32px;" src="<?php echo $this->system->document->link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo $this->system->settings->get('store_name'); ?>" /></td>
+      <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 75px; font-size: 32px;" src="<?php echo $GLOBALS['system']->document->link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo $GLOBALS['system']->settings->get('store_name'); ?>" /></td>
       <td style="text-align: right;">
-        <h1 style="margin: 0;"><?php echo $this->system->language->translate('title_packing_slip', 'Packing Slip'); ?></h1>
-        <div><?php echo $this->system->language->translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
-        <div><?php echo date($this->system->language->selected['raw_date']); ?>
+        <h1 style="margin: 0;"><?php echo $GLOBALS['system']->language->translate('title_packing_slip', 'Packing Slip'); ?></h1>
+        <div><?php echo $GLOBALS['system']->language->translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
+        <div><?php echo date($GLOBALS['system']->language->selected['raw_date']); ?>
       </td>
     </tr>
   </table>
@@ -14,20 +14,20 @@
 <div id="body">
   <table id="addresses" class="dataTable" style="width: 100%;">
     <tr>
-      <td style="width: 55%;"><strong><?php echo $this->system->language->translate('title_payment_address', 'Payment Address'); ?>:</strong></td>
-      <td style="width: 45%;"><strong><?php echo $this->system->language->translate('title_shipping_address', 'Shipping Address'); ?>:</strong></td>
+      <td style="width: 55%;"><strong><?php echo $GLOBALS['system']->language->translate('title_payment_address', 'Payment Address'); ?>:</strong></td>
+      <td style="width: 45%;"><strong><?php echo $GLOBALS['system']->language->translate('title_shipping_address', 'Shipping Address'); ?>:</strong></td>
     </tr>
     <tr>
-      <td><?php echo nl2br($this->system->functions->format_address($order['customer'])); ?></td>
-      <td><?php echo nl2br($this->system->functions->format_address($order['customer']['shipping_address'])); ?></td>
+      <td><?php echo nl2br($GLOBALS['system']->functions->format_address($order['customer'])); ?></td>
+      <td><?php echo nl2br($GLOBALS['system']->functions->format_address($order['customer']['shipping_address'])); ?></td>
     </tr>
   </table>
   
   <table id="items" class="dataTable" style="width: 100%; clear: both;">
     <tr class="header">
-      <th style="text-align: center; width: 30px;"><?php echo $this->system->language->translate('title_qty', 'Qty'); ?></th>
-      <th style="text-align: left;"><?php echo $this->system->language->translate('title_item', 'Item'); ?></th>
-      <th style="text-align: left;"><?php echo $this->system->language->translate('title_sku', 'SKU'); ?></th>
+      <th style="text-align: center; width: 30px;"><?php echo $GLOBALS['system']->language->translate('title_qty', 'Qty'); ?></th>
+      <th style="text-align: left;"><?php echo $GLOBALS['system']->language->translate('title_item', 'Item'); ?></th>
+      <th style="text-align: left;"><?php echo $GLOBALS['system']->language->translate('title_sku', 'SKU'); ?></th>
     </tr>
 <?php
   $rowclass = '';

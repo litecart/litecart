@@ -6,8 +6,7 @@
     private $_cache_id = '';
     public $enabled;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     //public function load_dependencies() {
@@ -19,7 +18,7 @@
     public function startup() {
     
       $this->enabled = false;
-      if ($this->system->settings->get('seo_links_enabled') == 'true') {
+      if ($GLOBALS['system']->settings->get('seo_links_enabled') == 'true') {
         if (isset($_SERVER['HTTP_MOD_REWRITE'])) {
           $this->enabled = true;
         }
@@ -27,8 +26,8 @@
       
       if ($this->enabled) {
       // Import cached links
-        $this->_cache_id = $this->system->cache->cache_id('links', array('language'));
-        $this->_cache = $this->system->cache->get($this->_cache_id, 'file');
+        $this->_cache_id = $GLOBALS['system']->cache->cache_id('links', array('language'));
+        $this->_cache = $GLOBALS['system']->cache->get($this->_cache_id, 'file');
       }
     }
     
@@ -37,8 +36,8 @@
       if (!$this->enabled) return;
     
     // Set urls
-      $base_link = $this->system->link->get_base_link();
-      $called_link = $this->system->link->get_called_link();
+      $base_link = $GLOBALS['system']->link->get_base_link();
+      $called_link = $GLOBALS['system']->link->get_called_link();
       $seo_link = $this->create_link($base_link);
       
     // If current url is not seo url
@@ -50,8 +49,8 @@
         
         if (defined('SEO_REDIRECT') && SEO_REDIRECT == false) $redirect = false;
         
-        if (isset($this->system->notices->data) && is_array($this->system->notices->data)) {
-          foreach ($this->system->notices->data as $notices) {
+        if (isset($GLOBALS['system']->notices->data) && is_array($GLOBALS['system']->notices->data)) {
+          foreach ($GLOBALS['system']->notices->data as $notices) {
             if (!empty($notices)) $redirect = false;
           }
         }
@@ -75,7 +74,7 @@
     
     public function shutdown() {
       if ($this->enabled) {
-        $this->system->cache->set($this->_cache_id, 'file', $this->_cache);
+        $GLOBALS['system']->cache->set($this->_cache_id, 'file', $this->_cache);
       }
     }
     
@@ -96,7 +95,7 @@
       if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/url_' . $class .'.inc.php')) return false;
       
       $class_name = 'url_'.$class;
-      $this->classes[$class] = new $class_name($this->system);
+      $this->classes[$class] = new $class_name();
       
       return true;
     }
@@ -128,30 +127,30 @@
       
       if (preg_match('/^'. preg_quote(WS_DIR_ADMIN, '/') .'/', parse_url($link, PHP_URL_PATH))) return;
       
-      if (empty($link)) $link = $this->system->link->get_called_link();
+      if (empty($link)) $link = $GLOBALS['system']->link->get_called_link();
       
-      if (empty($language_code)) $language_code = $this->system->language->selected['code'];
+      if (empty($language_code)) $language_code = $GLOBALS['system']->language->selected['code'];
       
-      $seo_cache_query = $this->system->database->query(
+      $seo_cache_query = $GLOBALS['system']->database->query(
         "select seo_uri from ". DB_TABLE_SEO_LINKS_CACHE ."
-        where uri = '". $this->system->database->input($this->system->link->relpath($link)) ."'
-        and language_code = '". $this->system->database->input($language_code) ."'
+        where uri = '". $GLOBALS['system']->database->input($GLOBALS['system']->link->relpath($link)) ."'
+        and language_code = '". $GLOBALS['system']->database->input($language_code) ."'
         limit 1;"
       );
-      $seo_cache = $this->system->database->fetch($seo_cache_query);
+      $seo_cache = $GLOBALS['system']->database->fetch($seo_cache_query);
       
-      return !empty($seo_cache['seo_uri']) ? $this->system->link->full_link(WS_DIR_HTTP_HOME . $seo_cache['seo_uri']) : '';
+      return !empty($seo_cache['seo_uri']) ? $GLOBALS['system']->link->full_link(WS_DIR_HTTP_HOME . $seo_cache['seo_uri']) : '';
     }
     
     public function create_link($link, $language_code='') {
       
       if (!$this->enabled) return;
       
-      if (empty($language_code)) $language_code = $this->system->language->selected['code'];
+      if (empty($language_code)) $language_code = $GLOBALS['system']->language->selected['code'];
       
-      if (!in_array($language_code, array_keys($this->system->language->languages))) trigger_error('Invalid language code ('. $language_code .')', E_USER_ERROR);
+      if (!in_array($language_code, array_keys($GLOBALS['system']->language->languages))) trigger_error('Invalid language code ('. $language_code .')', E_USER_ERROR);
       
-      $parsed_link = $this->system->link->parse_link($link);
+      $parsed_link = $GLOBALS['system']->link->parse_link($link);
       
       if ($parsed_link['host'] != $_SERVER['HTTP_HOST']) return $link;
       
@@ -159,12 +158,12 @@
       if (substr($parsed_link['path'], 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) return $link;
       
     // Full webpath, if relative
-      $parsed_link['path'] = $this->system->link->fullpath($parsed_link['path']);
+      $parsed_link['path'] = $GLOBALS['system']->link->fullpath($parsed_link['path']);
       
       if (substr($parsed_link['path'], -9) == 'index.php') $parsed_link['path'] = substr($parsed_link['path'], 0, -9);
       
     // Set home path
-      if ($this->system->settings->get('seo_links_language_prefix') == 'true') {
+      if ($GLOBALS['system']->settings->get('seo_links_language_prefix') == 'true') {
         $http_home_dir = WS_DIR_HTTP_HOME . $language_code .'/';
       } else {
         $http_home_dir = WS_DIR_HTTP_HOME;
@@ -182,13 +181,13 @@
     // No class, bake default link
       if (!$this->_load_class($class)) {
         $seo_link = $parsed_link;
-        $seo_link['path'] = $http_home_dir . $this->system->link->relpath($parsed_link['path']);
-        return $this->system->link->unparse_link($seo_link);
+        $seo_link['path'] = $http_home_dir . $GLOBALS['system']->link->relpath($parsed_link['path']);
+        return $GLOBALS['system']->link->unparse_link($seo_link);
       }
       
     // Bake base link
       $base_link = $parsed_link;
-      $base_link = $this->system->link->unparse_link($parsed_link);
+      $base_link = $GLOBALS['system']->link->unparse_link($parsed_link);
       
     // Bake SEO link (for database)
       $seo_link = $this->classes[$class]->process($parsed_link, $language_code);
@@ -196,29 +195,29 @@
       if (substr($seo_link['path'], 0, strlen(WS_DIR_HTTP_HOME))) {
         $seo_link['path'] = $http_home_dir . substr($seo_link['path'], strlen(WS_DIR_HTTP_HOME));
       }
-      $seo_link = $this->system->link->unparse_link($seo_link);
+      $seo_link = $GLOBALS['system']->link->unparse_link($seo_link);
       
     // If cache is outdated
       if ($seo_link != $this->get_link($link)) {
-        $seo_cache_query = $this->system->database->query(
+        $seo_cache_query = $GLOBALS['system']->database->query(
           "select seo_uri from ". DB_TABLE_SEO_LINKS_CACHE ."
-          where uri = '". $this->system->database->input($this->system->link->relpath($base_link)) ."'
-          and language_code = '". $this->system->database->input($this->system->language->selected['code']) ."'
+          where uri = '". $GLOBALS['system']->database->input($GLOBALS['system']->link->relpath($base_link)) ."'
+          and language_code = '". $GLOBALS['system']->database->input($GLOBALS['system']->language->selected['code']) ."'
           limit 1;"
         );
-        if ($this->system->database->num_rows($seo_cache_query) == 0) {
-          $this->system->database->query(
+        if ($GLOBALS['system']->database->num_rows($seo_cache_query) == 0) {
+          $GLOBALS['system']->database->query(
             "insert into ". DB_TABLE_SEO_LINKS_CACHE ."
             (uri, seo_uri, language_code, date_created, date_updated)
-            values ('". $this->system->database->input($this->system->link->relpath($base_link)) ."', '". $this->system->database->input($this->system->link->relpath($seo_link)) ."', '". $this->system->language->selected['code'] ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+            values ('". $GLOBALS['system']->database->input($GLOBALS['system']->link->relpath($base_link)) ."', '". $GLOBALS['system']->database->input($GLOBALS['system']->link->relpath($seo_link)) ."', '". $GLOBALS['system']->language->selected['code'] ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
           );
         } else {
-          $this->system->database->query(
+          $GLOBALS['system']->database->query(
             "update ". DB_TABLE_SEO_LINKS_CACHE ."
-            set seo_uri = '". $this->system->database->input($this->system->link->relpath($seo_link)) ."',
+            set seo_uri = '". $GLOBALS['system']->database->input($GLOBALS['system']->link->relpath($seo_link)) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
-            where uri = '". $this->system->database->input($this->system->link->relpath($base_link)) ."'
-            and language_code = '". $this->system->database->input($this->system->language->selected['code']) ."'
+            where uri = '". $GLOBALS['system']->database->input($GLOBALS['system']->link->relpath($base_link)) ."'
+            and language_code = '". $GLOBALS['system']->database->input($GLOBALS['system']->language->selected['code']) ."'
             limit 1;"
           );
         }

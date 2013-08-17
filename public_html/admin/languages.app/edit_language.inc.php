@@ -140,32 +140,81 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_date_format', 'Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_text_field('format_date', true, 'placeholder="%e %b %Y" data-size="small"'); ?>
+<?php
+  $options = array(
+    array(strftime('%e %b %Y'), '%e %b %Y'),
+    array(strftime('%b %e %Y'), '%b %e %Y'),
+  );
+  echo $system->functions->form_draw_select_field('format_date', $options, true, false, 'data-size="auto"');
+?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_time_format', 'Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_text_field('format_time', true, 'placeholder="%I:%M %p" data-size="small"'); ?>
+<?php
+  $options = array(
+    array('12-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array(strftime('%I:%M %p'), '%I:%M %P'),
+    array('24-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array(strftime('%H:%M'), '%H:%M'),
+  );
+  echo $system->functions->form_draw_select_field('format_time', $options, true, false, 'data-size="auto"');
+?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_date_format', 'Raw Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_text_field('raw_date', true, 'placeholder="m/d/y" data-size="small"'); ?>
+<?php
+  $options = array(
+    array('Big-endian (YMD)', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array(date('Y-m-d'), 'Y-m-d'),
+    array(date('Y.m.d'), 'Y.m.d'),
+    array(date('Y/m/d'), 'Y/m/d'),
+    array('Little-endian (DMY)', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array(date('d-m-Y'), 'd-m-Y'),
+    array(date('d.m.Y'), 'd.m.Y'),
+    array(date('d/m/Y'), 'd/m/Y'),
+    array('Middle-endian (MDY)', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array(date('m/d/y'), 'm/d/y'),
+  );
+  echo $system->functions->form_draw_select_field('raw_date', $options, true, false, 'data-size="auto"');
+?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_time_format', 'Raw Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
-        <?php echo $system->functions->form_draw_text_field('raw_time', true, 'placeholder="h:i:s a" data-size="small"'); ?>
+<?php
+  $options = array(
+    array('12-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array(date('h:i A'), 'h:i A'),
+    array('22-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array(date('H:i'), 'H:i'),
+  );
+  echo $system->functions->form_draw_select_field('raw_time', $options, true, false, 'data-size="auto"');
+?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_decimal_point', 'Decimal Point'); ?></strong><br />
-        <?php echo $system->functions->form_draw_text_field('decimal_point', true, 'placeholder="." data-size="tiny"'); ?>
+<?php
+  $options = array(
+    array($system->language->translate('title_dot[char]', 'Dot'), '.'),
+    array($system->language->translate('title_comma[char]', 'Comma'), ','),
+  );
+  echo $system->functions->form_draw_select_field('decimal_point', $options, true, false, 'data-size="auto"');
+?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_thousands_sep', 'Thousands Separator'); ?></strong><br />
-        <?php echo $system->functions->form_draw_text_field('thousands_sep', true, 'data-size="tiny"'); ?>
+<?php
+  $options = array(
+    array($system->language->translate('title_dot[char]', 'Dot'), '.'),
+    array($system->language->translate('title_comma[char]', 'Comma'), ','),
+    array($system->language->translate('title_space[char]', 'Space'), ' '),
+  );
+  echo $system->functions->form_draw_select_field('thousands_sep', $options, true, false, 'data-size="auto"');
+?>
       </td>
     </tr>
     <tr>

@@ -4,8 +4,8 @@
   $module_id = basename($_GET['module_id']);
   
   switch ($_GET['doc']) {
-    case 'edit_get_address':
-      $type = 'get_address';
+    case 'edit_customer':
+      $type = 'customer';
       break;
     case 'edit_job':
       $type = 'jobs';

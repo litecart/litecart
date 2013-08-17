@@ -216,7 +216,7 @@
     $rowclass = 'odd';
     
     function admin_catalog_category_tree($category_id=0, $depth=1) {
-      global $system, $category_trail, $rowclass, $num_category_rows;
+      global $category_trail, $rowclass, $num_category_rows;
       
       $output = '';
       
@@ -224,22 +224,22 @@
         $rowclass = 'odd';
         $output .= '<tr class="'. $rowclass .'">' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> <strong><a href="'. $system->document->href_link('', array('category_id' => '0'), true) .'">'. $system->language->translate('title_root', '[Root]') .'</a></strong></td>' . PHP_EOL
+                 . '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> <strong><a href="'. $GLOBALS['system']->document->href_link('', array('category_id' => '0'), true) .'">'. $GLOBALS['system']->language->translate('title_root', '[Root]') .'</a></strong></td>' . PHP_EOL
                  . '  <td>&nbsp;</td>' . PHP_EOL
                  . '  <td>&nbsp;</td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
       
     // Output subcategories
-      $categories_query = $system->database->query(
+      $categories_query = $GLOBALS['system']->database->query(
         "select c.id, c.status, ci.name
         from ". DB_TABLE_CATEGORIES ." c, ". DB_TABLE_CATEGORIES_INFO ." ci
         where c.parent_id = '". (int)$category_id ."'
-        and (ci.category_id = c.id and ci.language_code = '". $system->language->selected['code'] ."')
+        and (ci.category_id = c.id and ci.language_code = '". $GLOBALS['system']->language->selected['code'] ."')
         order by c.priority asc, ci.name asc;"
       );
       
-      while ($category = $system->database->fetch($categories_query)) {
+      while ($category = $GLOBALS['system']->database->fetch($categories_query)) {
         $num_category_rows++;
         
         if (!isset($rowclass) || $rowclass == 'even') {
@@ -248,20 +248,20 @@
           $rowclass = 'even';
         }
         $output .= '<tr class="'. $rowclass . (($category['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($category['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $system->functions->form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL;
+                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($category['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $GLOBALS['system']->functions->form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL;
         if (@in_array($category['id'], $category_trail)) {
-          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <strong><a href="'. $system->document->href_link('', array('category_id' => $category['id']), true) .'">'. $category['name'] .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <strong><a href="'. $GLOBALS['system']->document->href_link('', array('category_id' => $category['id']), true) .'">'. $category['name'] .'</a></strong></td>' . PHP_EOL;
         } else {
-          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('category_id' => $category['id']), true) .'">'. $category['name'] .'</a></td>' . PHP_EOL;
+          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $GLOBALS['system']->document->href_link('', array('category_id' => $category['id']), true) .'">'. $category['name'] .'</a></td>' . PHP_EOL;
         }
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
-                 . '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
+                 . '  <td><a href="'. $GLOBALS['system']->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
         
         if (in_array($category['id'], $category_trail)) {
         
-          if ($system->database->num_rows($system->database->query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = '". (int)$category['id'] ."' limit 1;")) > 0
-           || $system->database->num_rows($system->database->query("select id from ". DB_TABLE_PRODUCTS ." where find_in_set ('". (int)$category['id'] ."', categories) limit 1;")) > 0) {
+          if ($GLOBALS['system']->database->num_rows($GLOBALS['system']->database->query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = '". (int)$category['id'] ."' limit 1;")) > 0
+           || $GLOBALS['system']->database->num_rows($GLOBALS['system']->database->query("select id from ". DB_TABLE_PRODUCTS ." where find_in_set ('". (int)$category['id'] ."', categories) limit 1;")) > 0) {
             $output .= admin_catalog_category_tree($category['id'], $depth+1);
             
             // Output products
@@ -278,7 +278,7 @@
             }
             $output .= '<tr class="'. $rowclass .'">' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td><em style="margin-left: '. (($depth+1)*16) .'px;">'. $system->language->translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
+                     . '  <td><em style="margin-left: '. (($depth+1)*16) .'px;">'. $GLOBALS['system']->language->translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '</tr>' . PHP_EOL;
@@ -286,7 +286,7 @@
         }
       }
       
-      $system->database->free($categories_query);
+      $GLOBALS['system']->database->free($categories_query);
       
       // Output products
       if (empty($category_id)) {
@@ -297,24 +297,24 @@
     }
     
     function admin_catalog_category_products($category_id=0, $depth=1) {
-      global $system, $rowclass, $num_product_rows;
+      global $rowclass, $num_product_rows;
       
       $output = '';
       
-      $products_query = $system->database->query(
+      $products_query = $GLOBALS['system']->database->query(
         "select p.id, p.status, p.image, pi.name from ". DB_TABLE_PRODUCTS ." p, ". DB_TABLE_PRODUCTS_INFO ." pi
         where (find_in_set('". (int)$category_id ."', p.categories)
         ". (($category_id == 0) ? "or p.categories = ''" : false) .")
-        and (pi.product_id = p.id and pi.language_code = '". $system->language->selected['code'] ."')
+        and (pi.product_id = p.id and pi.language_code = '". $GLOBALS['system']->language->selected['code'] ."')
         order by pi.name asc;"
       );
       
       $display_images = true;
-      if ($system->database->num_rows($products_query) > 100) {
+      if ($GLOBALS['system']->database->num_rows($products_query) > 100) {
         $display_images = false;
       }
       
-      while ($product=$system->database->fetch($products_query)) {
+      while ($product=$GLOBALS['system']->database->fetch($products_query)) {
         $num_product_rows++;
         
         if (!isset($rowclass) || $rowclass == 'even') {
@@ -324,19 +324,19 @@
         }
         
         $output .= '<tr class="'. $rowclass . (($product['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $system->functions->form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL;
+                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. $GLOBALS['system']->functions->form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL;
         
         if ($display_images) {
-          $output .= '  <td align="left"><img src="'. (!empty($product['image']) ? $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></td>' . PHP_EOL;
+          $output .= '  <td align="left"><img src="'. (!empty($product['image']) ? $GLOBALS['system']->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. $GLOBALS['system']->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td align="left"><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+          $output .= '  <td align="left"><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. $GLOBALS['system']->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
         
         $output .= '  <td align="right" nowrap="nowrap"></td>' . PHP_EOL
-                 . '  <td><a href="'. $system->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
+                 . '  <td><a href="'. $GLOBALS['system']->document->href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
-      $system->database->free($products_query);
+      $GLOBALS['system']->database->free($products_query);
         
       return $output;
     }
@@ -344,7 +344,7 @@
     echo admin_catalog_category_tree();
 ?>
   <tr class="footer">
-    <td colspan="4" align="left"><?php echo $system->language->translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo $system->language->translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+    <td colspan="4" align="left"><?php echo $GLOBALS['system']->language->translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo $GLOBALS['system']->language->translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
   </tr>
 <?php
   }

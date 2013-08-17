@@ -30,6 +30,16 @@ body {
   height: 100px;
 }
 
+#site-links-wrapper {
+  display: inline-block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+#site-links a {
+  color: inherit;
+}
+
 #languages-wrapper {
   display: inline-block;
   position: absolute;
@@ -50,16 +60,6 @@ body {
   right: 0px;
   bottom: 0px;
   margin: 10px;
-}
-
-#site-links-wrapper {
-  display: inline-block;
-  position: absolute;
-  right: left;
-  bottom: 0px;
-}
-#site-links a {
-  color: inherit;
 }
 
 #cart-wrapper {
@@ -132,7 +132,7 @@ body {
 }
 
 #breadcrumbs-wrapper {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 #breadcrumbs {
   padding: 10px;
@@ -171,8 +171,9 @@ body {
 #footer strong {
   color: rgb(102, 102, 102);
 }
-#footer h1 {
-  font-size: 1.2em;
+#footer h4 {
+  margin-top: 0px;
+  margin-bottom: 0.25em;
 }
 
 @media (max-width: 640px) {

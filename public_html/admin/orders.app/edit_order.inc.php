@@ -502,10 +502,6 @@
   });
 </script>
 
-<table>
-</table>
-
-
 <h2><?php echo $system->language->translate('title_comments', 'Comments'); ?></h2>
 <table class="dataTable" style="width: 100%;">
   <tr class="header">

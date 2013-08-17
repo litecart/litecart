@@ -1,7 +1,7 @@
 <?php
   
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '1.0.1');
+  define('PLATFORM_VERSION', '1.0.2');
   
 // Start redirecting output to the output buffer
   ob_start();
@@ -22,8 +22,8 @@
       case (substr($name, 0, 5) == 'ctrl_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $name . '.inc.php';
         break;
-      case (substr($name, 0, 3) == 'ga_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'get_address/' . $name . '.inc.php';
+      case (substr($name, 0, 3) == 'cm_'):
+        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $name . '.inc.php';
         break;
       case (substr($name, 0, 4) == 'job_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';

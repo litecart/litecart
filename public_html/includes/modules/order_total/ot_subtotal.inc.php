@@ -1,7 +1,6 @@
 <?php
 
   class ot_subtotal {
-    private $system;
     public $id = __CLASS__;
     public $name = 'Subtotal';
     public $description = '';
@@ -11,10 +10,8 @@
     public $priority = 0;
     
     public function __construct() {
-      global $system;
-      $this->system = &$system;
       
-      $this->name = $this->system->language->translate(__CLASS__.':title_subtotal', 'Subtotal');
+      $this->name = $GLOBALS['system']->language->translate(__CLASS__.':title_subtotal', 'Subtotal');
     }
     
     public function process() {
@@ -30,7 +27,7 @@
       }
       
       $output[] = array(
-        'title' => $this->system->language->translate('title_subtotal', 'Subtotal'),
+        'title' => $GLOBALS['system']->language->translate('title_subtotal', 'Subtotal'),
         'value' => $value,
         'tax' => $tax,
         'calculate' => false,
@@ -48,15 +45,15 @@
         array(
           'key' => 'status',
           'default_value' => 'Enabled',
-          'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'radio("Enabled")',
         ),
         array(
           'key' => 'priority',
           'default_value' => '1',
-          'title' => $this->system->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $this->system->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );

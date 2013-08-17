@@ -1,7 +1,7 @@
 <?php
 
 $app_config = array(
-  'name' => $system->language->translate('title_currencies', 'Currencies'),
+  'name' => $GLOBALS['system']->language->translate('title_currencies', 'Currencies'),
   'default' => 'currencies',
   'icon' => 'icon.png',
   'menu' => array(),

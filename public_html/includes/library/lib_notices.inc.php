@@ -3,14 +3,12 @@
   class lib_notices {
     public $data = array();
     
-    private $system;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     public function load_dependencies() {
-      $this->data = &$this->system->session->data['notices'];
+      $this->data = &$GLOBALS['system']->session->data['notices'];
     }
     
     //public function initiate() {
@@ -30,15 +28,15 @@
       $notices = array();
       
       foreach(array('debugs', 'errors', 'notices', 'warnings', 'success') as $notice_type) {
-        if (!empty($this->system->notices->data[$notice_type])) {
-          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', $this->system->notices->data[$notice_type]) . '</div>' . PHP_EOL;
+        if (!empty($GLOBALS['system']->notices->data[$notice_type])) {
+          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', $GLOBALS['system']->notices->data[$notice_type]) . '</div>' . PHP_EOL;
         }
       }
       
       $this->reset();
       
       if (!empty($notices)) {
-        $this->system->document->snippets['notices'] = '<div id="notices-wrapper">' . PHP_EOL
+        $GLOBALS['system']->document->snippets['notices'] = '<div id="notices-wrapper">' . PHP_EOL
                                                     . '  <div id="notices">'. PHP_EOL . implode(PHP_EOL, $notices) . '</div>' . PHP_EOL
                                                     . '</div>' . PHP_EOL
                                                     . '<script>setTimeout(function(){$("#notices-wrapper").slideUp("fast");}, 10000);</script>';

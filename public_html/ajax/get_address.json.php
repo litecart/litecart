@@ -4,15 +4,16 @@
   
   if (empty($_GET['trigger'])) die('{}');
   
-  $get_address = new get_address();
+  $customer = new customer();
   
-  $result = $get_address->query(array_merge($_GET, $_POST));
+  $result = $customer->get_address(array_merge($_POST, $_GET));
   
   if (empty($result)) die('{}');
   
   if (!empty($result['error'])) die('{}');
   
-  echo '{"firstname":"'. (isset($result['firstname']) ? $result['firstname'] : '') .'",'
+  echo '{"company":"'. (isset($result['company']) ? $result['company'] : '') .'",'
+     . '"firstname":"'. (isset($result['firstname']) ? $result['firstname'] : '') .'",'
      . '"lastname":"'. (isset($result['lastname']) ? $result['lastname'] : '') .'",'
      . '"address1":"'. (isset($result['address1']) ? $result['address1'] : '') .'",'
      . '"address2":"'. (isset($result['address2']) ? $result['address2'] : '') .'",'
@@ -23,5 +24,6 @@
      . '"zone_code":"'. (isset($result['zone_code']) ? $result['zone_code'] : '') .'",'
      . '"phone":"'. (isset($result['phone']) ? $result['phone'] : '') .'",'
      . '"mobile":"'. (isset($result['mobile']) ? $result['mobile'] : '') .'",'
-     . '"email":"'. (isset($result['email']) ? $result['email'] : '') .'"}';
+     . '"email":"'. (isset($result['email']) ? $result['email'] : '') .'",'
+     . '"alert":"'. (isset($result['alert']) ? $result['alert'] : '') .'"}';
 ?>

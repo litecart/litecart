@@ -1,7 +1,6 @@
 <?php
   
   function csv_encode($array, $delimiter=',', $enclosure='"', $escape='\\', $charset='utf-8', $eol="\r\n") {
-    global $system;
     
     $fp = fopen('php://temp', 'r+');
     
@@ -21,9 +20,9 @@
     while(!feof($fp)) $output .= fgets($fp);
     fclose($fp);
     
-    if (strtolower($system->language->selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
+    if (strtolower($GLOBALS['system']->language->selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
       $output = utf8_decode($output);
-    } else if (strtolower($system->language->selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
+    } else if (strtolower($GLOBALS['system']->language->selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
       $output = utf8_encode($output);
     }
     
@@ -31,15 +30,14 @@
   }
   
   function csv_decode($string, $delimiter=',', $enclosure='"', $escape='\\', $charset='utf-8') {
-    global $system;
 
     $output = array();
     
     $ini_eol = ini_get('auto_detect_line_endings');
     
-    if (strtolower($system->language->selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
+    if (strtolower($GLOBALS['system']->language->selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
       $string = utf8_encode($string);
-    } else if (strtolower($system->language->selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
+    } else if (strtolower($GLOBALS['system']->language->selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
       $string = utf8_decode($string);
     }
     

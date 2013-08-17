@@ -155,38 +155,37 @@ foreach (array_keys($system->language->languages) as $language_code) {
               <table>
 <?php
   function custom_catalog_tree($category_id=0, $depth=1) {
-    global $system;
     
     $output = '';
     
     if ($category_id == 0) {
       $output .= '<tr>' . PHP_EOL
-               . '  <td>'. $system->functions->form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false) .'</td>' . PHP_EOL
-               . '  <td width="100%"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> '. $system->language->translate('title_root', '[Root]') .'</td>' . PHP_EOL
+               . '  <td>'. $GLOBALS['system']->functions->form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false) .'</td>' . PHP_EOL
+               . '  <td width="100%"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> '. $GLOBALS['system']->language->translate('title_root', '[Root]') .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
     }
     
   // Output categories
-    $categories_query = $system->database->query(
+    $categories_query = $GLOBALS['system']->database->query(
       "select c.id, ci.name
       from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". $system->language->selected['code'] ."')
+      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". $GLOBALS['system']->language->selected['code'] ."')
       where c.parent_id = '". (int)$category_id ."'
       order by c.priority asc, ci.name asc;"
     );
     
-    while ($category = $system->database->fetch($categories_query)) {
+    while ($category = $GLOBALS['system']->database->fetch($categories_query)) {
       $output .= '<tr>' . PHP_EOL
-               . '  <td>'. $system->functions->form_draw_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
+               . '  <td>'. $GLOBALS['system']->functions->form_draw_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
                . '  <td style="padding-left: '. ($depth*16) .'px;"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" /> '. $category['name'] .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
                
-      if ($system->database->num_rows($system->database->query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
+      if ($GLOBALS['system']->database->num_rows($GLOBALS['system']->database->query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
         $output .= custom_catalog_tree($category['id'], $depth+1);
       }
     }
     
-    $system->database->free($categories_query);
+    $GLOBALS['system']->database->free($categories_query);
     
     return $output;
   }

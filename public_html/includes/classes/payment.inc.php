@@ -5,17 +5,14 @@
     public $data;
 
     public function __construct() {
-      global $system;
-      
-      $this->system = &$system;
       
       parent::set_type('payment');
       
     // Link data to session object
-      if (!isset($this->system->session->data['payment']) || !is_array($this->system->session->data['payment'])) {
-        $this->system->session->data['payment'] = array();
+      if (!isset($GLOBALS['system']->session->data['payment']) || !is_array($GLOBALS['system']->session->data['payment'])) {
+        $GLOBALS['system']->session->data['payment'] = array();
       }
-      $this->data = &$this->system->session->data['payment'];
+      $this->data = &$GLOBALS['system']->session->data['payment'];
       
       if (empty($this->data['selected'])) {
         $this->data['selected'] = array();
@@ -38,13 +35,13 @@
     public function options($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
       global $shipping;
       
-      if ($items === null) $items = $this->system->cart->data['items'];
-      if ($subtotal === null) $subtotal = $this->system->cart->data['total']['value'];
-      if ($tax === null) $tax = $this->system->cart->data['total']['tax'];
-      if ($currency_code === null) $currency_code = $this->system->currency->selected['code'];
-      if ($customer === null) $customer = $this->system->customer->data;
+      if ($items === null) $items = $GLOBALS['system']->cart->data['items'];
+      if ($subtotal === null) $subtotal = $GLOBALS['system']->cart->data['total']['value'];
+      if ($tax === null) $tax = $GLOBALS['system']->cart->data['total']['tax'];
+      if ($currency_code === null) $currency_code = $GLOBALS['system']->currency->selected['code'];
+      if ($customer === null) $customer = $GLOBALS['system']->customer->data;
       
-      $cart_checksum = sha1(serialize($this->system->cart->data) . @serialize($shipping->data['selected']));
+      $cart_checksum = sha1(serialize($GLOBALS['system']->cart->data) . @serialize($shipping->data['selected']));
       
       //if (isset($this->data['order_checksum']) && $this->data['order_checksum'] == $cart_checksum) {
       //  return $this->data['options'];
@@ -78,7 +75,7 @@
       
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
         $this->data['selected'] = array();
-        $this->system->notices->add('errors', $this->system->language->translate('error_invalid_payment_option', 'Cannot set an invalid payment option.'));
+        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_invalid_payment_option', 'Cannot set an invalid payment option.'));
         return;
       }
       
@@ -86,7 +83,7 @@
       
       if (method_exists($this->modules[$module_id], 'select')) {
         if ($error = $this->modules[$module_id]->select($option_id)) {
-          $this->system->notices->add('errors', $error);
+          $GLOBALS['system']->notices->add('errors', $error);
         }
       }
       

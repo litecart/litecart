@@ -1,13 +1,11 @@
 <?php
   
   class lib_cache {
-    private $system;
     private $recorders = array();
     private $data;
     public $enabled = true;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     //public function load_dependencies() {
@@ -18,36 +16,36 @@
     
     public function startup() {
       
-      $this->enabled = $this->system->settings->get('cache_enabled') == 'true' ? true : false;
+      $this->enabled = $GLOBALS['system']->settings->get('cache_enabled') == 'true' ? true : false;
       
-      if (!isset($this->system->session->data['cache'])) $this->system->session->data['cache'] = array();
-      $this->data = &$this->system->session->data['cache'];
+      if (!isset($GLOBALS['system']->session->data['cache'])) $GLOBALS['system']->session->data['cache'] = array();
+      $this->data = &$GLOBALS['system']->session->data['cache'];
       
-      if ($this->system->settings->get('cache_clear_thumbnails') == 'true') {
+      if ($GLOBALS['system']->settings->get('cache_clear_thumbnails') == 'true') {
         $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '*');
         if (!empty($files)) foreach($files as $file) {
           if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
         }
-        $this->system->database->query(
+        $GLOBALS['system']->database->query(
           "update ". DB_TABLE_SETTINGS ."
           set value = 'false'
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
         );
-        $this->system->notices->add('success', 'Image thumbnails cache cleared');
+        $GLOBALS['system']->notices->add('success', 'Image thumbnails cache cleared');
       }
       
-      if ($this->system->settings->get('cache_clear_seo_links') == 'true') {
-        $this->system->database->query(
+      if ($GLOBALS['system']->settings->get('cache_clear_seo_links') == 'true') {
+        $GLOBALS['system']->database->query(
           "delete from ". DB_TABLE_SEO_LINKS_CACHE .";"
         );
-        $this->system->database->query(
+        $GLOBALS['system']->database->query(
           "update ". DB_TABLE_SETTINGS ."
           set value = 'false'
           where `key` = 'cache_clear_seo_links'
           limit 1;"
         );
-        $this->system->notices->add('success', 'SEO links cache cleared');
+        $GLOBALS['system']->notices->add('success', 'SEO links cache cleared');
       }
     }
     
@@ -64,7 +62,7 @@
     ######################################################################
     
     public function set_breakpoint() {
-      $this->system->database->query(
+      $GLOBALS['system']->database->query(
         "update ". DB_TABLE_SETTINGS ."
         set value = '". date('Y-m-d H:i:s') ."'
         where `key` = 'cache_system_breakpoint'
@@ -80,10 +78,10 @@
       foreach ($dependants as $dependant) {
         switch ($dependant) {
           case 'currency':
-            $dependants_string .= $this->system->currency->selected['code'];
+            $dependants_string .= $GLOBALS['system']->currency->selected['code'];
             break;
           case 'customer':
-            $dependants_string .= serialize($this->system->customer->data);
+            $dependants_string .= serialize($GLOBALS['system']->customer->data);
             break;
           case 'host':
             $dependants_string .= $_SERVER['HTTP_HOST'];
@@ -101,10 +99,10 @@
             $dependants_string .= $_SERVER['REQUEST_URI'];
             break;
           case 'language':
-            $dependants_string .= $this->system->language->selected['code'];
+            $dependants_string .= $GLOBALS['system']->language->selected['code'];
             break;
           case 'prices':
-            $dependants_string .= $this->system->settings->get('display_prices_including_tax');
+            $dependants_string .= $GLOBALS['system']->settings->get('display_prices_including_tax');
             break;
           default:
             if (is_array($dependant)) {
@@ -174,14 +172,14 @@
         case 'file':
           $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$cache_id;
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
-            if (filemtime($cache_file) < strtotime($this->system->settings->get('cache_system_breakpoint'))) return null;
+            if (filemtime($cache_file) < strtotime($GLOBALS['system']->settings->get('cache_system_breakpoint'))) return null;
             return unserialize(file_get_contents($cache_file));
           }
           return null;
         
         case 'session':
           if (isset($this->data[$cache_id]['mtime']) && $this->data[$cache_id]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            if ($this->data[$cache_id]['mtime'] < strtotime($this->system->settings->get('cache_system_breakpoint'))) return null;
+            if ($this->data[$cache_id]['mtime'] < strtotime($GLOBALS['system']->settings->get('cache_system_breakpoint'))) return null;
             return $this->data[$cache_id]['data'];
           }
           return null;

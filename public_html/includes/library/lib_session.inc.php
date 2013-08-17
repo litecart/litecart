@@ -4,10 +4,8 @@
   
     public $data;
     
-    private $system;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
       
       ini_set('session.use_cookies', '1');
       ini_set('session.use_only_cookies', '1');

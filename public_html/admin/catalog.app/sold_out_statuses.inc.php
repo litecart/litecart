@@ -16,8 +16,8 @@
 <?php
 
   $sold_out_status_query = $system->database->query(
-    "select sos.id, sos.orderable, sosi.name from ". DB_TABLE_SOLD_OUT_STATUS ." sos
-    left join ". DB_TABLE_SOLD_OUT_STATUS_INFO ." sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". $system->language->selected['code'] ."')
+    "select sos.id, sos.orderable, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
+    left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". $system->language->selected['code'] ."')
     order by sosi.name asc;"
   );
 

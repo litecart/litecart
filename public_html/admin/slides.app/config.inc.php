@@ -1,7 +1,7 @@
 <?php
 
 $app_config = array(
-  'name' => $system->language->translate('title_slides', 'Slides'),
+  'name' => $GLOBALS['system']->language->translate('title_slides', 'Slides'),
   'default' => 'slides',
   'icon' => 'icon.png',
   'menu' => array(

@@ -2,10 +2,8 @@
 
   class lib_length {
     public $classes = array();
-    private $system;
     
-    public function __construct(&$system) {
-      $this->system = &$system;
+    public function __construct() {
     }
     
     public function load_dependencies() {
@@ -88,7 +86,7 @@
       $num_decimals = $this->classes[$class]['decimals'];
       if (round($value) == $value) $num_decimals = 0;
       
-      return number_format($value, 2, $this->system->language->selected['decimal_point'], $this->system->language->selected['thousands_sep']) .' '. $this->classes[$unit]['unit'];
+      return number_format($value, 2, $GLOBALS['system']->language->selected['decimal_point'], $GLOBALS['system']->language->selected['thousands_sep']) .' '. $this->classes[$unit]['unit'];
     }
   }
   

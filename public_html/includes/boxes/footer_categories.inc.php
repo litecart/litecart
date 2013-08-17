@@ -1,5 +1,5 @@
 <nav>
-  <p><strong><?php echo $system->language->translate('title_categories', 'Categories'); ?></strong></p>
+  <h4><?php echo $system->language->translate('title_categories', 'Categories'); ?></h4>
   <ul class="list-vertical">
 <?php  
   $categories_query = $system->database->query(

@@ -41,7 +41,7 @@
 <?php
   $orders_query = $system->database->query(
     "select o.id, o.uid, o.payment_due, o.currency_code, o.currency_value, o.date_created, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
-    left join ". DB_TABLE_ORDERS_STATUS_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". $system->language->selected['code'] ."')
+    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". $system->language->selected['code'] ."')
     where o.order_status_id
     and o.customer_id = ". (int)$system->customer->data['id'] ."
     order by o.date_created desc;"
