@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,600);
 
 html, body {
-  background: #fafafa;
+  background: #eee;
 }
 
 html {
@@ -11,15 +11,16 @@ html {
 
 body {
   margin: 0px;
-  padding: 10px;
+  padding: 0px;
+}
+
+#page-wrapper {
+  background: #fafafa;
+  margin-bottom: 20px;
 }
 
 #page {
-  min-width: 590px;
-  max-width: 980px;
-  
-  padding: 10px;
-  margin: auto;
+  padding: 20px;
 }
 
 #header-wrapper {
@@ -113,7 +114,7 @@ body {
 }
 #main tr > .content {
   width: 100%;
-  min-height: 400px;
+  min-height: 600px;
 }
 #main tr > .right > *:first-child {
   margin-right: 20px;
@@ -145,7 +146,9 @@ body {
 
 #footer {
   padding: 0px 10px;
-  border: 1px #ccc solid;
+  border-bottom: 1px #ccc solid;
+  /*background: #fafafa;*/
+  margin-bottom: 20px;
 }
 #footer table {
   width: 100%;
@@ -186,8 +189,9 @@ body {
 }
 
 #copyright {
-  font-size: 0.75em;
+  font-size: 0.9em;
   text-align: center;
+  opacity: 0.5;
 }
 
 #scroll-up{

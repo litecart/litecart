@@ -456,7 +456,6 @@ foreach (array_keys($system->language->languages) as $language_code) {
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_purchase_price', 'Purchase Price'); ?></strong><br />
               <?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'purchase_price', true); ?>
-              <script>$("input[name='purchase_price']").val(parseFloat($("input[name='purchase_price']").val()).toFixed(<?php echo (int)$system->currency->currencies[$system->settings->get('store_currency_code')]['decimals']; ?>));</script>
             </td>
           </tr>
         </table>

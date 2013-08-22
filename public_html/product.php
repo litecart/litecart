@@ -70,8 +70,8 @@
 
 <div class="box" id="box-product" itemscope itemtype="http://www.schema.org/Product">
   <div class="heading">
-    <?php echo (!empty($product->sku)) ? '<div class="sku">'. $product->sku .'</div>' : false; ?>
     <h1 itemprop="name"><?php echo $product->name[$system->language->selected['code']]; ?></h1>
+    <?php echo (!empty($product->sku)) ? '<div class="sku">'. $product->sku .'</div>' : false; ?>
   </div>
   <div class="content">
     <table>
@@ -107,7 +107,7 @@
           </div>
         </td>
         
-        <td style="padding-left: 10px; vertical-align: top;">
+        <td style="padding-left: 10px; vertical-align: top; width: 100%;">
           <?php if (!empty($product->description[$system->language->selected['code']]) || !empty($product->attributes[$system->language->selected['code']])) { ?>
           <div class="tabs">
             <div class="index">

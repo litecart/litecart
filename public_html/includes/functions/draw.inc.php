@@ -51,7 +51,7 @@
             . '      ' . $sticker . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
-            . '    <div class="manufacturer">'. $product['manufacturer_name'] .'</div>' . PHP_EOL
+            . '    <div class="manufacturer">'. (($product['manufacturer_name']) ? $product['manufacturer_name'] : '&nbsp;') .'</div>' . PHP_EOL
             . '    <div class="price-wrapper">'. ($product['campaign_price'] ? '<s class="regular-price">'. $GLOBALS['system']->currency->format($GLOBALS['system']->tax->calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="campaign-price">'. $GLOBALS['system']->currency->format($GLOBALS['system']->tax->calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. $GLOBALS['system']->currency->format($GLOBALS['system']->tax->calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL
             . (($product['image']) ? '  <a href="'. WS_DIR_IMAGES . $product['image'] .'" class="fancybox" data-fancybox-group="product-listing" title="'. htmlspecialchars($product['name']) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/preview.png" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>' . PHP_EOL : '')

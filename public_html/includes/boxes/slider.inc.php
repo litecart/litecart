@@ -16,7 +16,7 @@
 ?>
 
 <div id="slider-wrapper" class="theme-default">
-  <div id="slider" class="nivoSlider">
+  <div id="slider" class="nivoSlider shadow">
 <?php
   while ($slide = $system->database->fetch($slides_query)) {
     if (!empty($slide['link'])) {

@@ -4,12 +4,11 @@
   
     public $data;
     
-    
     public function __construct() {
       
-      ini_set('session.use_cookies', '1');
-      ini_set('session.use_only_cookies', '1');
-      ini_set('session.use_trans_sid', '0');
+      @ini_set('session.use_cookies', '1');
+      @ini_set('session.use_only_cookies', '1');
+      @ini_set('session.use_trans_sid', '0');
       
       if (!session_id()) {
         session_set_cookie_params(0, WS_DIR_HTTP_HOME);

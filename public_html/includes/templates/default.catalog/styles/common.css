@@ -1,3 +1,9 @@
+.site-content {
+  min-width: 590px;
+  max-width: 980px;
+  margin: auto;
+}
+
 .hover-light:hover {
   -moz-box-shadow: 0px 0px 3px #069 !important;
   -webkit-box-shadow: 0px 0px 3px #069 !important;
