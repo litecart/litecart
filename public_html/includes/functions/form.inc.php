@@ -285,7 +285,7 @@
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
          . '    "plugins": "xhtml,format",' . PHP_EOL
-         . '    "width": "auto",' . PHP_EOL
+         . '    "width": "800px",' . PHP_EOL
          . '    "max-height": "auto",' . PHP_EOL
          . '    "style": "'. WS_DIR_EXT .'sceditor/jquery.sceditor.default.min.css",' . PHP_EOL
          . '    "locale": "'. htmlspecialchars($GLOBALS['system']->language->selected['code']) .'",' . PHP_EOL

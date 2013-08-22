@@ -153,9 +153,9 @@
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_time_format', 'Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
 <?php
   $options = array(
-    array('12-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
     array(strftime('%I:%M %p'), '%I:%M %P'),
-    array('24-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array('24-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
     array(strftime('%H:%M'), '%H:%M'),
   );
   echo $system->functions->form_draw_select_field('format_time', $options, true, false, 'data-size="auto"');
@@ -166,15 +166,15 @@
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_date_format', 'Raw Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
 <?php
   $options = array(
-    array('Big-endian (YMD)', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array('Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
     array(date('Y-m-d'), 'Y-m-d'),
     array(date('Y.m.d'), 'Y.m.d'),
     array(date('Y/m/d'), 'Y/m/d'),
-    array('Little-endian (DMY)', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array('Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
     array(date('d-m-Y'), 'd-m-Y'),
     array(date('d.m.Y'), 'd.m.Y'),
     array(date('d/m/Y'), 'd/m/Y'),
-    array('Middle-endian (MDY)', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array('Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
     array(date('m/d/y'), 'm/d/y'),
   );
   echo $system->functions->form_draw_select_field('raw_date', $options, true, false, 'data-size="auto"');
@@ -185,9 +185,9 @@
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_raw_time_format', 'Raw Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
 <?php
   $options = array(
-    array('12-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
     array(date('h:i A'), 'h:i A'),
-    array('22-hour format', '', 'style="font-weight: bold;" disabled="disabled"'),
+    array('24-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
     array(date('H:i'), 'H:i'),
   );
   echo $system->functions->form_draw_select_field('raw_time', $options, true, false, 'data-size="auto"');
@@ -209,8 +209,8 @@
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_thousands_sep', 'Thousands Separator'); ?></strong><br />
 <?php
   $options = array(
-    array($system->language->translate('title_dot[char]', 'Dot'), '.'),
     array($system->language->translate('title_comma[char]', 'Comma'), ','),
+    array($system->language->translate('title_dot[char]', 'Dot'), '.'),
     array($system->language->translate('title_space[char]', 'Space'), ' '),
   );
   echo $system->functions->form_draw_select_field('thousands_sep', $options, true, false, 'data-size="auto"');

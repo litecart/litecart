@@ -7,10 +7,10 @@ INSERT INTO `lc_categories_info` (`id`, `category_id`, `language_code`, `name`, 
 INSERT INTO `lc_customers` (`id`, `email`, `password`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `mobile`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `newsletter`, `date_updated`, `date_created`) VALUES
 (1, 'user@email.com', '000000000000000000000000000000000000000000000000', '0000000000', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'XX1 X1', 'London', 'GB', '', '1-555-123-4567', '', 0, '', '', '', '', '', '', '', '', '', 0, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_delivery_status` (`id`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
 (1, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_delivery_status_info` (`id`, `delivery_status_id`, `language_code`, `name`, `description`) VALUES
+INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', '3-5 days', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_geo_zones` (`id`, `name`, `description`, `date_updated`, `date_created`) VALUES
@@ -83,11 +83,11 @@ INSERT INTO `lc_slides` (`id`, `status`, `language_code`, `name`, `caption`, `li
 (1, 1, 'en', 'Nemo', '', '', 'slides/1-nemo.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW()),
 (2, 1, 'en', 'Wall-E', 'A slide with a caption and a link.', 'http://www.litecart.net', 'slides/2-walle.jpg', 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_sold_out_status` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
 (1, 1, NOW(), NOW()),
 (2, 1, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_sold_out_status_info` (`id`, `sold_out_status_id`, `language_code`, `name`, `description`) VALUES
+INSERT INTO `lc_sold_out_statuses_info` (`id`, `sold_out_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Sold out', ''),
 (2, 2, 'en', 'Temporary sold out', '');
 -- --------------------------------------------------------

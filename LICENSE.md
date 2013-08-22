@@ -2,18 +2,20 @@
 
 ## Preamble
 
-  This Agreement governs the relationship between the merchant (hereinafter: Licensee) and the author (hereinafter: Licensor) regarding the e-commerce platform LiteCart. This Agreement sets the terms, rights, restrictions and obligations on using LiteCart (hereinafter: The Software) created and owned by Licensor, as detailed herein.
+  This Agreement governs the relationship between the merchant (hereinafter: Licensee) and the author (hereinafter: Licensor) regarding the e-commerce software platform LiteCart. This Agreement sets the terms, rights, restrictions and obligations on using LiteCart (hereinafter: The Software) created and owned by Licensor, as detailed herein.
 
 ## License Grant
 
-  Licensor hereby grants Licensee a Sublicensable, Non-assignable & non-transferable, Commercial, Royalty free, Including the rights to create but not distribute derivative works, Non-exclusive license, all with accordance with the terms set forth and other legal restrictions set forth in 3rd party software used while running Software.
+  Licensor hereby grants Licensee a sublicensable, non-assignable & non-transferable, commercial, royalty free, including the rights to create but not distribute derivative works, non-exclusive license, all with accordance with the terms set forth and other legal restrictions set forth in 3rd party software used while running Software.
 
 ### Limited: Licensee may use Software for the purpose of:
 
-  - Running Software on Licensee's Website[s] and Server[s];
-  - Allowing 3rd Parties to run Software on Licensee's Website[s] and Server[s];
+  - Running Software on Licensee's website(s) and server(s);
+  - Allowing 3rd Parties to run Software on Licensee's website(s) and server(s);
   - Publishing Software's output to Licensee and 3rd Parties;
   - Modify Software to suit Licensee's needs and specifications.
+
+Any use of the software to sell drugs, medicals, weapons, unethical, or law infringing products is strictly forbidden.
 
 ## Distribution
 
@@ -22,6 +24,7 @@
 ## Term & Termination
 
   The Term of this license shall be until terminated. Licensor may terminate this Agreement, including Licensee's license in the case where Licensee:
+  
   - became insolvent or otherwise entered into any liquidation process; or
   - exported The Software to any jurisdiction where licensor may not enforce his rights under this agreements in; or
   - Licenee was in breach of any of this license's terms and conditions and such breach was not cured, immediately upon notification; or

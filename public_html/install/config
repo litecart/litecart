@@ -104,7 +104,7 @@
   ini_set('session.gc_maxlifetime', 180000);
   
 // Errors
-  error_reporting(E_ALL & ~E_STRICT);
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '>=') ? E_ALL & ~E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'On');
   ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'errors.log');
