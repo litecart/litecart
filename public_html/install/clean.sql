@@ -12,9 +12,9 @@ DROP TABLE IF EXISTS `lc_currencies`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_customers`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_delivery_status`;
+DROP TABLE IF EXISTS `lc_delivery_statuses`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_delivery_status_info`;
+DROP TABLE IF EXISTS `lc_delivery_statuses_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_geo_zones`;
 -- --------------------------------------------------------
@@ -38,9 +38,9 @@ DROP TABLE IF EXISTS `lc_orders_comments`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_orders_items`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_orders_status`;
+DROP TABLE IF EXISTS `lc_order_statuses`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_orders_status_info`;
+DROP TABLE IF EXISTS `lc_order_statuses_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_orders_tax`;
 -- --------------------------------------------------------
@@ -80,9 +80,9 @@ DROP TABLE IF EXISTS `lc_settings_groups`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_slides`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_sold_out_status`;
+DROP TABLE IF EXISTS `lc_sold_out_statuses`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_sold_out_status_info`;
+DROP TABLE IF EXISTS `lc_sold_out_statuses_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_suppliers`;
 -- --------------------------------------------------------

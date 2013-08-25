@@ -105,6 +105,7 @@ body {
 
 #main-wrapper {
   margin-bottom: 20px;
+  min-height: 400px;
 }
 #main tr > .top > *:first-child {
   margin-bottom: 20px;
@@ -114,7 +115,6 @@ body {
 }
 #main tr > .content {
   width: 100%;
-  min-height: 600px;
 }
 #main tr > .right > *:first-child {
   margin-right: 20px;

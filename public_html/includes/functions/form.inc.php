@@ -53,7 +53,7 @@
     
     if (empty($currency_code)) $currency_code = $GLOBALS['system']->settings->get('store_currency_code');
     
-    return '<span class="input-wrapper">'. $GLOBALS['system']->currency->currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. $GLOBALS['system']->currency->currencies[$currency_code]['suffix'] .'</span>';
+    return '<span class="input-wrapper">'. $GLOBALS['system']->currency->currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, $GLOBALS['system']->currency->currencies[$currency_code]['decimals']) : '') .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. $GLOBALS['system']->currency->currencies[$currency_code]['suffix'] .'</span>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='', $hint='') {
@@ -281,12 +281,12 @@
                                                          . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. $GLOBALS['system']->language->selected['code'] .'.js"></script>' . PHP_EOL
                                                          . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
     
-    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
+    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" data-size="auto" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
          . '    "plugins": "xhtml,format",' . PHP_EOL
-         . '    "width": "800px",' . PHP_EOL
-         . '    "max-height": "auto",' . PHP_EOL
+         . '    "width": 1024,' . PHP_EOL
+         . '    "resizeEnabled": true,' . PHP_EOL
          . '    "style": "'. WS_DIR_EXT .'sceditor/jquery.sceditor.default.min.css",' . PHP_EOL
          . '    "locale": "'. htmlspecialchars($GLOBALS['system']->language->selected['code']) .'",' . PHP_EOL
          . '    "emoticons": false,' . PHP_EOL

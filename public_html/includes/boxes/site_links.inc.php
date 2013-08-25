@@ -1,6 +1,5 @@
 <nav id="site-links">
   <ul class="list-horizontal">
-    <li><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><?php echo $system->language->translate('title_home', 'Home'); ?></a></li>
 <?php
   $pages_query = $system->database->query(
     "select p.id, pi.title from ". DB_TABLE_PAGES ." p
