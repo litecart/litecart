@@ -99,8 +99,9 @@ a:hover, a:active{
         </li>
       </ul>
     </li>
-    <li>Apcahe compatible HTTP daemon
+    <li>Apacahe 2 compatible HTTP daemon
       <ul>
+        <li>Allow, Deny</li>
         <li>mod_auth (SHA-supported)</li>
         <li>mod_redirect</li>
       </ul>
