@@ -46,7 +46,7 @@
       
       foreach ($this->modules as $module) {
         if (method_exists($module, 'after_save')) {
-          $module->after_save($object));
+          $module->after_save($object);
         }
       }
     }

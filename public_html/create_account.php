@@ -131,10 +131,10 @@
           <?php echo $system->functions->form_draw_text_field('address2', true); ?></td>
         </tr>
         <tr>
-          <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_text_field('city', true); ?></td>
           <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
             <?php echo $system->functions->form_draw_text_field('postcode', true); ?></td>
+          <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
+            <?php echo $system->functions->form_draw_text_field('city', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
@@ -174,15 +174,14 @@
       async: true,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
-        //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-        alert(errorThrown.message);
+        if (console) console.log(errorThrown.message)
       },
       success: function(data) {
         if (data['alert']) {
           alert(data['alert']);
         }
         $.each(data, function(key, value) {
-          console.log(key +" "+ value);
+          console.log(key +": "+ value);
           if ($("input[name='"+key+"']").length && $("input[name='"+key+"']").val() == '') $("input[name='"+key+"']").val(data[key]);
         });
       },
