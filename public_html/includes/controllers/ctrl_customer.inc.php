@@ -59,12 +59,12 @@
     }
     
     public function save() {
-    
+      
       if (empty($this->data['id'])) {
         $GLOBALS['system']->database->query(
           "insert into ". DB_TABLE_CUSTOMERS ."
-          (date_created)
-          values ('". $GLOBALS['system']->database->input(date('Y-m-d H:i:s')) ."');"
+          (email, date_created)
+          values (email = '". $GLOBALS['system']->database->input($this->data['email']) ."', '". $GLOBALS['system']->database->input(date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = $GLOBALS['system']->database->insert_id();
         
@@ -72,7 +72,7 @@
           $GLOBALS['system']->database->query(
             "update ". DB_TABLE_ORDERS ."
             set customer_id = '". (int)$this->data['id'] ."'
-            where email = '". $GLOBALS['system']->database->input($this->data['email']) ."';"
+            where customer_email = '". $GLOBALS['system']->database->input($this->data['email']) ."';"
           );
         }
       }
@@ -138,7 +138,7 @@
     }
     
     public function delete() {
-    
+      
       $GLOBALS['system']->database->query(
         "delete from ". DB_TABLE_CUSTOMERS ."
         where id = '". (int)$this->data['id'] ."'

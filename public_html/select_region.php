@@ -59,7 +59,7 @@
       async: true,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+        if (console) console.warn(errorThrown.message);
       },
       success: function(data) {
         $("select[name='zone_code']").html('');

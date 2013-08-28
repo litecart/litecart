@@ -19,7 +19,7 @@
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'campaigns.inc.php'); ?>
 
-<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'new_products.inc.php'); ?>
+<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'latest_products.inc.php'); ?>
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'most_popular.inc.php'); ?>
 

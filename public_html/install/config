@@ -19,7 +19,6 @@
   define('WS_DIR_EXT',         WS_DIR_HTTP_HOME . 'ext' . DIRECTORY_SEPARATOR);
   define('WS_DIR_IMAGES',      WS_DIR_HTTP_HOME . 'images' . DIRECTORY_SEPARATOR);
   define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes' . DIRECTORY_SEPARATOR);
-  define('WS_DIR_JOBS',        WS_DIR_HTTP_HOME . 'jobs' . DIRECTORY_SEPARATOR);
   
   define('WS_DIR_BOXES',       WS_DIR_INCLUDES  . 'boxes' . DIRECTORY_SEPARATOR);
   define('WS_DIR_CLASSES',     WS_DIR_INCLUDES  . 'classes' . DIRECTORY_SEPARATOR);
@@ -28,10 +27,8 @@
   define('WS_DIR_JAVASCRIPTS', WS_DIR_INCLUDES  . 'javascripts' . DIRECTORY_SEPARATOR);
   define('WS_DIR_LIBRARY',     WS_DIR_INCLUDES  . 'library' . DIRECTORY_SEPARATOR);
   define('WS_DIR_MODULES',     WS_DIR_INCLUDES  . 'modules' . DIRECTORY_SEPARATOR);
-  define('WS_DIR_PROCESSORS',  WS_DIR_INCLUDES  . 'processors' . DIRECTORY_SEPARATOR);
   define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references' . DIRECTORY_SEPARATOR);
   define('WS_DIR_TEMPLATES',   WS_DIR_INCLUDES  . 'templates' . DIRECTORY_SEPARATOR);
-  define('WS_DIR_WIDGETS',     WS_DIR_INCLUDES  . 'widgets' . DIRECTORY_SEPARATOR);
   
 ######################################################################
 ## Database ##########################################################
