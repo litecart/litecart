@@ -5,7 +5,7 @@
   $system->functions->draw_fancybox('a.fancybox');
 ?>
 <div class="box" id="box-latest-products">
-  <div class="heading"><h3><?php echo $system->language->translate('title_new_products', 'New Products'); ?></h3></div>
+  <div class="heading"><h3><?php echo $system->language->translate('title_latest_products', 'Latest Products'); ?></h3></div>
   <div class="content">
     <ul class="listing-wrapper products">
 <?php

@@ -98,6 +98,12 @@
               <label><?php echo $system->functions->form_draw_checkbox('status', '1', true); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></label></td>
           </tr>
           <tr>
+            <td align="left" nowrap="nowrap">
+              <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
+              <?php echo $system->functions->form_draw_text_field('name', true); ?>
+            </td>
+          </tr>
+          <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
               <?php echo $system->functions->form_draw_text_field('code', true); ?>
             </td>
@@ -112,12 +118,6 @@
             <?php echo $system->functions->form_draw_checkbox('remove_image', '1', true); ?> <?php echo $system->language->translate('text_remove_image', 'Remove image'); ?></td>
           </tr>
           <?php } ?>
-          <tr>
-            <td align="left" nowrap="nowrap">
-              <strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-              <?php echo $system->functions->form_draw_text_field('name', true); ?>
-            </td>
-          </tr>
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_keywords', 'Keywords'); ?></strong><br />
               <?php echo $system->functions->form_draw_text_field('keywords', true, 'data-size="large"'); ?>
