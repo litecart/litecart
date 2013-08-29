@@ -172,7 +172,7 @@
           <div style="margin-bottom: 10px;" class="tax">
 <?php
     if ($tax_rates = $system->tax->get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id)) {
-      if ($system->settings->get('display_prices_including_tax') == 'true') {
+      if ($system->settings->get('display_prices_including_tax')) {
         echo $system->language->translate('title_including_tax', 'Including Tax') .':<br/>' . PHP_EOL;
       } else {
         echo $system->language->translate('title_excluding_tax', 'Excluding Tax') .':<br/>' . PHP_EOL;
@@ -190,7 +190,7 @@
           <div style="margin-bottom: 10px;">
 <?php
   if ($product->quantity > 0) {
-    echo '<div class="stock-available">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. (($system->settings->get('display_stock_count') == 'true') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span></div>';
+    echo '<div class="stock-available">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. ($system->settings->get('display_stock_count') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span></div>';
     if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<div class="stock-delivery">'. $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']] .'</span></div>';
   } else {
     if (!empty($product->sold_out_status['name'][$system->language->selected['code']])) {
@@ -203,7 +203,7 @@
           </div>
       
 <?php
-    if ($system->settings->get('display_cheapest_shipping') == 'true') {
+    if ($system->settings->get('display_cheapest_shipping')) {
 ?>
           <div style="margin-bottom: 10px;" class="cheapest-shipping">
 <?php

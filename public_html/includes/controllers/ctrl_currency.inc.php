@@ -4,7 +4,6 @@
     public $data = array();
     
     public function __construct($currency_code=null) {
-      
       if ($currency_code !== null) $this->load($currency_code);
     }
     
@@ -20,12 +19,12 @@
     
     public function save() {
     
-      if (empty($this->data['status']) && $this->data['code'] == $GLOBALS['system']->settings['store_currency_code']) {
+      if (empty($this->data['status']) && $this->data['code'] == $GLOBALS['system']->settings->get('store_currency_code')) {
         trigger_error('You cannot disable the store currency.', E_USER_ERROR);
         return;
       }
     
-      if (empty($this->data['status']) && $this->data['code'] == $GLOBALS['system']->settings['default_currency_code']) {
+      if (empty($this->data['status']) && $this->data['code'] == $GLOBALS['system']->settings->get('default_currency_code')) {
         trigger_error('You cannot disable the default currency.', E_USER_ERROR);
         return;
       }

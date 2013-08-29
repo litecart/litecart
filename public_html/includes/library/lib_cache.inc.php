@@ -16,32 +16,32 @@
     
     public function startup() {
       
-      $this->enabled = $GLOBALS['system']->settings->get('cache_enabled') == 'true' ? true : false;
+      $this->enabled = $GLOBALS['system']->settings->get('cache_enabled') ? true : false;
       
       if (!isset($GLOBALS['system']->session->data['cache'])) $GLOBALS['system']->session->data['cache'] = array();
       $this->data = &$GLOBALS['system']->session->data['cache'];
       
-      if ($GLOBALS['system']->settings->get('cache_clear_thumbnails') == 'true') {
+      if ($GLOBALS['system']->settings->get('cache_clear_thumbnails')) {
         $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '*');
         if (!empty($files)) foreach($files as $file) {
           if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
         }
         $GLOBALS['system']->database->query(
           "update ". DB_TABLE_SETTINGS ."
-          set value = 'false'
+          set value = ''
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
         );
         $GLOBALS['system']->notices->add('success', 'Image thumbnails cache cleared');
       }
       
-      if ($GLOBALS['system']->settings->get('cache_clear_seo_links') == 'true') {
+      if ($GLOBALS['system']->settings->get('cache_clear_seo_links')) {
         $GLOBALS['system']->database->query(
           "delete from ". DB_TABLE_SEO_LINKS_CACHE .";"
         );
         $GLOBALS['system']->database->query(
           "update ". DB_TABLE_SETTINGS ."
-          set value = 'false'
+          set value = ''
           where `key` = 'cache_clear_seo_links'
           limit 1;"
         );

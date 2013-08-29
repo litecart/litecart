@@ -38,7 +38,7 @@
                                                   . '  });';
       
     // Set regional data
-      if ($GLOBALS['system']->settings->get('regional_settings_screen_enabled') == 'true') {
+      if ($GLOBALS['system']->settings->get('regional_settings_screen_enabled')) {
         
         if (empty($GLOBALS['system']->customer->data['id']) && empty($GLOBALS['system']->session->data['region_data_set']) && empty($_COOKIE['skip_set_region_data'])) {
           

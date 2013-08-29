@@ -251,13 +251,14 @@
         $true_text = $GLOBALS['system']->language->translate('title_yes', 'Yes');
         $false_text = $GLOBALS['system']->language->translate('title_no', 'No');
         break;
-      case 't/f':
-        $true_text = $GLOBALS['system']->language->translate('title_true', 'Tre');
-        $false_text = $GLOBALS['system']->language->translate('title_false', 'False');
-        break;
       case 'o/o':
         $true_text = $GLOBALS['system']->language->translate('title_on', 'On');
         $false_text = $GLOBALS['system']->language->translate('title_off', 'Off');
+        break;
+      case 't/f':
+      default:
+        $true_text = $GLOBALS['system']->language->translate('title_true', 'True');
+        $false_text = $GLOBALS['system']->language->translate('title_false', 'False');
         break;
     }
     

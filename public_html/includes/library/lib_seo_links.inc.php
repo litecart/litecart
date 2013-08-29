@@ -18,7 +18,7 @@
     public function startup() {
     
       $this->enabled = false;
-      if ($GLOBALS['system']->settings->get('seo_links_enabled') == 'true') {
+      if ($GLOBALS['system']->settings->get('seo_links_enabled')) {
         if (isset($_SERVER['HTTP_MOD_REWRITE'])) {
           $this->enabled = true;
         }
@@ -163,7 +163,7 @@
       if (substr($parsed_link['path'], -9) == 'index.php') $parsed_link['path'] = substr($parsed_link['path'], 0, -9);
       
     // Set home path
-      if ($GLOBALS['system']->settings->get('seo_links_language_prefix') == 'true') {
+      if ($GLOBALS['system']->settings->get('seo_links_language_prefix')) {
         $http_home_dir = WS_DIR_HTTP_HOME . $language_code .'/';
       } else {
         $http_home_dir = WS_DIR_HTTP_HOME;

@@ -5,7 +5,7 @@
   
   header('X-Robots-Tag: noindex');
   
-  if (isset($_POST['confirm_order']) && $system->settings->get('checkout_captcha_enabled') == 'true') {
+  if (isset($_POST['confirm_order']) && $system->settings->get('checkout_captcha_enabled')) {
     $captcha = $system->functions->captcha_get('checkout');
     if (!isset($_POST['captcha']) || empty($captcha) || $captcha != $_POST['captcha']) {
       $system->notices->add('errors', $system->language->translate('error_invalid_captcha', 'Invalid CAPTCHA given'));

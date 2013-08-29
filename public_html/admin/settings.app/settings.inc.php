@@ -66,6 +66,11 @@
   </tr>
 <?php
 	} else {
+    if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+      $setting['value'] = $system->language->translate('title_true', 'True');
+    } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
+      $setting['value'] = $system->language->translate('title_false', 'False');
+    }
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td align="left" nowrap="nowrap"><?php echo $system->language->translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>

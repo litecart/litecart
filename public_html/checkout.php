@@ -32,7 +32,7 @@
   <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_summary.html.php'); ?>
 </div>
 
-<?php if ($system->settings->get('checkout_ajax_enabled') == 'true') { ?>
+<?php if ($system->settings->get('checkout_ajax_enabled')) { ?>
 <script type="text/javascript">
 
   function refreshCart() {

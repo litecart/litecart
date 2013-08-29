@@ -17,7 +17,7 @@
     if (empty($_POST['name'])) $system->notices->add('errors', $system->language->translate('error_must_enter_name', 'You must enter a name'));
     if (empty($_POST['value'])) $system->notices->add('errors', $system->language->translate('error_must_enter_value', 'You must enter a value'));
     
-    if (empty($_POST['status']) && isset($currency->data['code']) && $language->data['code'] == $system->settings->get('default_currency_code')) {
+    if (empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == $system->settings->get('default_currency_code')) {
       $system->notices->add('errors', $system->language->translate('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
     }
     

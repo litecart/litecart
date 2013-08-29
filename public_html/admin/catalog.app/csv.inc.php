@@ -413,7 +413,7 @@
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
         </tr>
         <tr>
-          <td colspan="3"><label><?php echo $system->functions->form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_categories', 'Insert new categories'); ?></label></td>
+          <td colspan="3"><label><?php echo $system->functions->form_draw_checkbox('insert_categories', '1', true); ?> <?php echo $system->language->translate('text_insert_new_categories', 'Insert new categories'); ?></label></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
@@ -482,7 +482,7 @@
               <?php echo $system->functions->form_draw_file_field('file'); ?></td>
           </tr>
           <tr>
-            <td colspan="3"><label><?php echo $system->functions->form_draw_checkbox('insert_products', 'true', true); ?> <?php echo $system->language->translate('text_insert_new_products', 'Insert new products'); ?></label></td>
+            <td colspan="3"><label><?php echo $system->functions->form_draw_checkbox('insert_products', '1', true); ?> <?php echo $system->language->translate('text_insert_new_products', 'Insert new products'); ?></label></td>
           </tr>
           <tr>
             <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />

@@ -9,7 +9,7 @@
 
   if (!empty($_POST['send'])) {
   
-    if ($system->settings->get('contact_form_captcha_enabled') == 'true') {
+    if ($system->settings->get('contact_form_captcha_enabled')) {
       $captcha = $system->functions->captcha_get('contact_us');
       if (empty($captcha) || $captcha != $_POST['captcha']) $system->notices->add('errors', $system->language->translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
     }
@@ -91,7 +91,7 @@
           <td colspan="2"><?php echo $system->language->translate('title_message', 'Message'); ?><br />
             <?php echo $system->functions->form_draw_textarea('message', true, 'data-size="large" style="height: 250px;"'); ?></td>
         </tr>
-        <?php if ($system->settings->get('contact_form_captcha_enabled') == 'true') { ?>
+        <?php if ($system->settings->get('contact_form_captcha_enabled')) { ?>
         <tr>
           <td colspan="2"><?php echo $system->language->translate('title_captcha', 'CAPTCHA'); ?><br />
             <?php echo $system->functions->captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_text_field('captcha', '', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>

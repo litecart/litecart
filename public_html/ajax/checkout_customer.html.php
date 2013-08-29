@@ -17,13 +17,13 @@
   
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     
-    if (empty($system->customer->data['id']) && $system->settings->get('register_guests') == 'true') {
+    if (empty($system->customer->data['id']) && $system->settings->get('register_guests')) {
       
       if (!empty($_POST['email']) && $system->database->num_rows($system->database->query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". $system->database->input($_POST['email']) ."' limit 1;"))) $system->notices->add('errors', $system->language->translate('error_email_already_registered', 'The e-mail address already exists in our customer database. Please login or select a different e-mail address.'));
       
       if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('error_email_missing', 'You must enter your e-mail address.'));
       
-      if ($system->settings->get('fields_customer_password') == 'true') {
+      if ($system->settings->get('fields_customer_password')) {
         if (empty($system->customer->data['desired_password'])) {
           if (empty($_POST['password'])) $system->notices->add('errors', $system->language->translate('error_missing_password', 'You must enter a password.'));
           if (empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('error_missing_confirmed_password', 'You must confirm your password.'));
@@ -104,7 +104,7 @@
       $system->customer->data['shipping_address']['zone_name'] = $system->functions->reference_get_zone_name($system->customer->data['shipping_address']['country_code'], $system->customer->data['shipping_address']['zone_code']);
       
       if (empty($system->customer->data['id'])) {
-        if ($system->settings->get('register_guests') == 'true') {
+        if ($system->settings->get('register_guests')) {
           
           $customer = new ctrl_customer();
           $customer->data = $system->customer->data;
@@ -182,7 +182,7 @@
                     <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
                   <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
                   <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>                </tr>
-                <?php if ($system->settings->get('fields_customer_password') == 'true') { ?>
+                <?php if ($system->settings->get('fields_customer_password')) { ?>
                 <tr>
                   <td><?php echo $system->language->translate('title_password', 'Password'); ?> <span class="required">*</span><br />
                   <?php echo $system->functions->form_draw_password_field('password', ''); ?></td>

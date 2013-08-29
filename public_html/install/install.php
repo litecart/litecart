@@ -182,7 +182,7 @@
     
     echo 'Copying demo files...';
     xcopy('demo_data/', $installation_path);
-    echo ' [OK]' . PHP_EOL;
+    echo ' [Done]' . PHP_EOL;
   }
   
   ### .htaccess mod rewrite ###################################

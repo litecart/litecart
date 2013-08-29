@@ -27,7 +27,7 @@
     public function before_output() {
       
     // Initialize GZIP compression to reduce bandwidth.
-      if (!headers_sent() && $GLOBALS['system']->settings->get('gzip_enabled') == 'true') {
+      if (!headers_sent() && $GLOBALS['system']->settings->get('gzip_enabled')) {
         ob_start("ob_gzhandler");
       }
     }

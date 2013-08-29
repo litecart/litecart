@@ -39,7 +39,7 @@
         <th style="vertical-align: text-top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_product', 'Product'); ?></th>
         <th style="vertical-align: text-top" align="left" nowrap="nowrap"><?php echo $system->language->translate('title_sku', 'SKU'); ?></th>
         <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo $system->language->translate('title_unit_cost', 'Unit Cost'); ?></th>
-        <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_incl_tax', 'Incl. Tax') : $system->language->translate('title_excl_tax', 'Excl. Tax'); ?></th>
+        <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo ($system->settings->get('display_prices_including_tax')) ? $system->language->translate('title_incl_tax', 'Incl. Tax') : $system->language->translate('title_excl_tax', 'Excl. Tax'); ?></th>
         <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo $system->language->translate('title_total', 'Total'); ?></th>
       </tr>
 <?php
@@ -50,7 +50,7 @@
         <td align="left" nowrap="nowrap"><?php echo $item['name']; ?></td>
         <td align="left" nowrap="nowrap"><?php echo $item['sku']; ?></td>
 <?php
-    if ($system->settings->get('display_prices_including_tax') == 'true') {
+    if ($system->settings->get('display_prices_including_tax')) {
 ?>
         <td align="right" nowrap="nowrap"><?php echo $system->currency->format($item['price'] + $item['tax'], false); ?></td>
         <td align="right" nowrap="nowrap"><?php echo $system->currency->format($item['tax'], false); ?></td>
@@ -78,7 +78,7 @@
         <td colspan="5" align="right"><strong><?php echo $row['title']; ?>:</strong></td>
         <td align="right" width="100" nowrap="nowrap">
 <?php
-    if ($system->settings->get('display_prices_including_tax') == 'true') {
+    if ($system->settings->get('display_prices_including_tax')) {
       echo $system->currency->format($row['value'] + $row['tax'], false);
     } else {
       echo $system->currency->format($row['value'], false);
@@ -96,7 +96,7 @@
   if ($order->data['tax_total']) {
 ?>
       <tr>
-        <td colspan="5" align="right" style="color: #999999;"><?php echo ($system->settings->get('display_prices_including_tax') == 'true') ? $system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+        <td colspan="5" align="right" style="color: #999999;"><?php echo ($system->settings->get('display_prices_including_tax')) ? $system->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
         <td align="right" width="100" nowrap="nowrap" style="color: #999999;"><?php echo $system->currency->format($order->data['tax_total'], false); ?></td>
       </tr>
 <?php
@@ -123,7 +123,7 @@
   if (!empty($errors)) {
     echo '            <div class="warning">'. $errors[0] .'</div>' . PHP_EOL;
   } else {
-    if ($system->settings->get('checkout_captcha_enabled') == 'true') {    
+    if ($system->settings->get('checkout_captcha_enabled')) {    
       echo '            <p align="right">'. $system->functions->captcha_generate(100, 40, 4, 'checkout', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_text_field('captcha', '', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"') .'<p>' . PHP_EOL;
     }
   }

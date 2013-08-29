@@ -70,7 +70,7 @@
 ?>
       </td>
       <td align="left"><?php echo $item['sku']; ?></td>
-    <?php if ($GLOBALS['system']->settings->get('display_prices_including_tax') == 'true') { ?>
+    <?php if ($GLOBALS['system']->settings->get('display_prices_including_tax')) { ?>
       <td style="text-align: right; width: 75px;"><?php echo $GLOBALS['system']->currency->format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <td style="text-align: right; width: 75px;"><?php echo $GLOBALS['system']->currency->format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <td style="text-align: right; width: 75px;"><?php echo $GLOBALS['system']->currency->format($item['quantity'] * ($item['price'] + $item['tax']), false, false, $order['currency_code'], $order['currency_value']); ?></td>
@@ -85,7 +85,7 @@
   
   <table id="order-total" class="dataTable" style="width: 100%; border: none;">
     <?php foreach ($order['order_total'] as $ot_row) { ?>
-    <?php if ($GLOBALS['system']->settings->get('display_prices_including_tax') == 'true') { ?>
+    <?php if ($GLOBALS['system']->settings->get('display_prices_including_tax')) { ?>
     <tr>
       <td style="white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?>:</td>
       <td style="text-align: right; width: 75px;"><?php echo $GLOBALS['system']->currency->format($ot_row['value'] + $ot_row['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
@@ -100,7 +100,7 @@
     
     <?php if (!empty($order['tax_total'])) { ?>
     <tr>
-      <td style="white-space: nowrap; text-align: right;"><?php echo ($GLOBALS['system']->settings->get('display_prices_including_tax') == 'true') ? $GLOBALS['system']->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+      <td style="white-space: nowrap; text-align: right;"><?php echo ($GLOBALS['system']->settings->get('display_prices_including_tax')) ? $GLOBALS['system']->language->translate('title_including_tax', 'Including Tax') : $system->language->translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
       <td style="text-align: right; width: 75px;"><?php echo $GLOBALS['system']->currency->format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
     </tr>
     <?php } ?>
