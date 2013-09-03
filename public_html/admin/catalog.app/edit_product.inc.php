@@ -653,7 +653,7 @@ foreach ($system->currency->currencies as $currency) {
               <?php echo $system->functions->form_draw_decimal_field('campaigns['.$key.'][percentage]', ''); ?>
             </td>
             <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />
-              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', true, 'date-size="small"'); ?>
+              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', true, 'data-size="tiny"'); ?>
             </td>
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {

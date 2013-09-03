@@ -60,7 +60,8 @@
     if (!empty($option['fields'])) {
       echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_update', 'Update'), 'submit');
     } else {
-      echo '<span class="button active">'. $system->language->translate('title_select', 'Select') .'</span>';
+      //echo '<span class="button active">'. $system->language->translate('title_select', 'Select') .'</span>';
+      echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_update', 'Update'), 'submit', 'class="active"');
     }
   } else {
     echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_select', 'Select'), 'submit');

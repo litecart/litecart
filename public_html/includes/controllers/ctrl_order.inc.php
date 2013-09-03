@@ -540,6 +540,12 @@
       $rounded_price = round($GLOBALS['system']->currency->calculate($item['price'], $this->data['currency_code']), $GLOBALS['system']->currency->currencies[$this->data['currency_code']]['decimals']);
       $item['price'] = $GLOBALS['system']->currency->convert($rounded_price, $this->data['currency_code'], $GLOBALS['system']->settings->get('store_currency_code'));
       
+      if (!empty($item['tax_class_id'])) {
+        $item['tax'] = $GLOBALS['system']->tax->get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
+      } else {
+        $item['tax'] = isset($item['tax']) ? $item['tax'] : 0;
+      }
+      
       $this->data['items']['new'.$key_i] = array(
         'id' => '',
         'product_id' => $item['product_id'],
@@ -548,7 +554,7 @@
         'name' => $item['name'][$GLOBALS['system']->language->selected['code']],
         'sku' => $item['sku'],
         'price' => $item['price'],
-        'tax' => !empty($item['tax_class_id']) ? $GLOBALS['system']->tax->get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $item['tax'],
+        'tax' => $item['tax'],
         'quantity' => $item['quantity'],
         'weight' => $item['weight'],
         'weight_class' => $item['weight_class'],
