@@ -119,12 +119,6 @@
             <?php echo $system->functions->form_draw_text_field('lastname', true); ?></td>
         </tr>
         <tr>
-          <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
-            <?php echo $system->functions->form_draw_email_field('email', true); ?></td>
-          <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-            <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>
-        </tr>
-        <tr>
           <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
             <?php echo $system->functions->form_draw_text_field('address1', true); ?></td>
           <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
@@ -143,7 +137,10 @@
             <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
         </tr>
         <tr>
-          <td colspan="2">&nbsp;</td>
+          <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
+            <?php echo $system->functions->form_draw_email_field('email', true); ?></td>
+          <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
+            <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_desired_password', 'Desired Password'); ?> <span class="required">*</span><br />

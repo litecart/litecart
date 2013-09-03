@@ -56,6 +56,7 @@
     ######################################################################
     
     public function reset() {
+      session_unset();
       session_destroy();
     }
     

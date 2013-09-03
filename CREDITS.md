@@ -10,12 +10,14 @@ LiteCart contains work by the following listed:
 * (collapse, expand) FatCow Web Hosting - Creative Commons (Attribution 3.0 United States) - http://www.fatcow.com
 * (delete) Ed Merritt - Free for commercial use - http://www.edmerritt.com
 * (edit) Dellustrations - Free for commercial use - http://dellustrations.com/work_icons.html 
+* (favicon) Jack Cai - Creative Commons Attribution No Derivatives (by-nd) - http://www.doublejdesign.co.uk
 * (folder-opened, folder-closed, label) Yusuke Kamiyamane - Creative Commons (Attribution 3.0 Unported) - http://p.yusukekamiyamane.com
+* (home) Danilo Demarco - Free for commercial use - http://www.danilodemarco.com/
 * (loading) Ajaxload - Free for use - htto://www.ajaxload.info
 * (on, off) FatCow Web Hosting - Creative Commons (Attribution 3.0 United States) - http://www.fatcow.com/
 * (preview) Dat Nguyen - Free for commercial use - http://splashyfish.com
 * (print) David Vignoni - LGPL - http://www.icon-king.com
-* (favicon) Jack Cai - Creative Commons Attribution No Derivatives (by-nd) - http://www.doublejdesign.co.uk
+* (search) Timothy Miller - Attribution-ShareAlike 3.0 Unported - https://www.iconfinder.com
 
 24x24 Icons
 -----------

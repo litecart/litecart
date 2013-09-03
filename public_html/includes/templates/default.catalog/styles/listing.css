@@ -1,11 +1,9 @@
 ul.listing-wrapper {
   margin: 0px;
   padding: 0px;
-  
+  margin-bottom: 20px;
   overflow: auto;
-  
   text-decoration: none;
-  color: #000;
 }
 
 /* Category */
@@ -41,7 +39,7 @@ ul.listing-wrapper > .category .footer {
   text-align: center;
 }
 ul.listing-wrapper > .category .title {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 @media (max-width: 640px) {
@@ -101,6 +99,8 @@ ul.listing-wrapper > .product {
 ul.listing-wrapper > .product a.link {
   display: block;
   
+  width: 150px; /* img width */
+  
   margin: 0px;
   padding: 10px;
   
@@ -113,11 +113,21 @@ ul.listing-wrapper > .product a.link {
 }
 ul.listing-wrapper > .product .image {
   text-align: center;
+  margin-bottom: 10px;
+}
+ul.listing-wrapper > .product .sticker {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+}
+ul.listing-wrapper > .product .name {
+  white-space: nowrap;
+  overflow: hidden;
+  color: #333;
 }
 ul.listing-wrapper > .product .manufacturer {
   color: #999;
-  font-size: 0.8em;
-  width: 145px; /* img width */
+  font-size: 0.9em;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -125,27 +135,33 @@ ul.listing-wrapper > .product .price-wrapper {
   text-align: right;
   font-size: 18px;
   font-weight: bold;
+  margin-top: 10px;
+}
+ul.listing-wrapper > .product .price {
+  color: #333;
 }
 ul.listing-wrapper > .product .regular-price {
   font-weight: normal;
-  font-size: 12px;
+  font-size: 0.8em;
+  color: #777;
 }
 ul.listing-wrapper > .product .campaign-price {
   color: #c00;
+}
+
+/* 5 columns override */
+#box-campaigns ul.listing-wrapper > .product a.link {
+  width: 166px;
+}
+#box-latest-products ul.listing-wrapper > .product a.link {
+  width: 166px;
+}
+#box-most-popular ul.listing-wrapper > .product a.link {
+  width: 166px;
 }
 
 @media (max-width: 640px) {
   ul.listing-wrapper > .product a.link {
     width: 166px;
   }
-}
-
-#box-campaigns ul.listing-wrapper > .product {
-  width: 185px;
-}
-#box-latest-products ul.listing-wrapper > .product {
-  width: 185px;
-}
-#box-most-popular ul.listing-wrapper > .product {
-  width: 185px;
 }

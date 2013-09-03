@@ -1,6 +1,6 @@
-<nav id="site-menu" class="rounded-corners shadow">
+<nav id="site-menu" class="nine-eighty">
   <ul>
-    <li style="float: left;"><a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME); ?>"><img src="{snippet:template_path}images/home.png" width="16" height="16" /></a></li>
+    <li class="rounded-corners-left"><a href="<?php echo $system->document->link(WS_DIR_HTTP_HOME); ?>"><img src="{snippet:template_path}images/home.png" width="12" height="12" alt="<?php echo htmlspecialchars($system->language->translate('title_home', 'Home')); ?>" /></a></li>
 <?php  
   function site_menu_category_tree($parent_id=0, $depth=0) {
     
@@ -26,9 +26,9 @@
         limit 1;"
       );
       if ($parent_id == 0) {
-        $output .= str_repeat('  ', $depth) .'  <li><a href="'. $GLOBALS['system']->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a>' . PHP_EOL;
+        $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. $GLOBALS['system']->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a>' . PHP_EOL;
       } else {
-        $output .= str_repeat('  ', $depth) .'  <li><a href="'. $GLOBALS['system']->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'"><img src="'. $GLOBALS['system']->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP') .'" width="24" height="24" style="vertical-align: middle; margin-right: 10px;" alt="" />'. $category['name'] .'</a>' . PHP_EOL;
+        $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. $GLOBALS['system']->document->href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'"><img src="'. $GLOBALS['system']->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP') .'" width="24" height="24" style="vertical-align: middle; margin-right: 10px;" alt="" />'. $category['name'] .'</a>' . PHP_EOL;
       }
       
       if ($GLOBALS['system']->database->num_rows($subcategories_query) > 0) {
@@ -46,6 +46,5 @@
   
   echo site_menu_category_tree();
 ?>
-    &nbsp;
   </ul>
 </nav>

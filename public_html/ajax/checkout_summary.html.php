@@ -122,10 +122,6 @@
   
   if (!empty($errors)) {
     echo '            <div class="warning">'. $errors[0] .'</div>' . PHP_EOL;
-  } else {
-    if ($system->settings->get('checkout_captcha_enabled')) {    
-      echo '            <p align="right">'. $system->functions->captcha_generate(100, 40, 4, 'checkout', 'numbers', 'align="absbottom"') .' '. $system->functions->form_draw_text_field('captcha', '', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"') .'<p>' . PHP_EOL;
-    }
   }
 ?>
 

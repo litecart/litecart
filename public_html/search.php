@@ -15,11 +15,8 @@
   
   ob_start();
   echo '<aside class="shadow rounded-corners">' . PHP_EOL;
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php');
   echo '</aside>' . PHP_EOL;
   $system->document->snippets['column_left'] = ob_get_clean();
   

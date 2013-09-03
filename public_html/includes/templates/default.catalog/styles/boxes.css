@@ -6,10 +6,22 @@
 
 .box > .heading {
   padding: 0px;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
-.box > .heading h1, .box > .heading h2, .box > .heading h3 {
+.box > .heading h1 {
+  margin: 0px;
+}
+
+.box > .heading h2 {
+  font: 23px 'Open Sans', sans-serif;
+  font-weight: normal;
+  margin: 0px;
+}
+
+.box > .heading h3 {
+  font: 20px 'Open Sans', sans-serif;
+  font-weight: normal;
   margin: 0px;
 }
 
@@ -18,95 +30,34 @@
   margin: 0px;
 }
 
+#box-campaigns h3, #box-latest-products h3, #box-most-popular h3, #box-similar-products h3 {
+  font: 2em 'Open Sans', sans-serif;
+  font-weight: normal;
+  border-bottom: 2px solid #e5e5e5;
+  margin-bottom: 10px;
+  padding: 5px 0px;
+}
+
+#box-campaigns h3:before, #box-latest-products h3:before, #box-most-popular h3:before, #box-similar-products h3:before {
+  content: "\25bc";
+  padding-right: 10px;
+  opacity: 0.7;
+  font-size: 16px;
+}
+
+#box-category-tree li a, #box-information li a {
+  color: #888;
+}
+#box-category-tree a:hover, #box-information a:hover {
+  color: rgb(0, 136, 204);
+}
+#box-category-tree li.active a {
+  color: rgb(0, 136, 204);
+}
 #box-category-tree li.active {
   background: #f3f3f3;
 }
 
-#box-product .price-wrapper {
-  font-size: 22px;
-}
-#box-product .regular-price {
-  font-size: 16px;
-}
-#box-product .campaign-price {
-  color: #c00;
-}
-#box-product .tax {
-  color: #999;
-}
-#box-product .stock-available .value {
-  color: #090;
-}
-#box-product .stock-partly-available .value {
-  color: #f90;
-}
-#box-product .stock-unavailable .value {
-  color: #c00;
-}
-
-#box-checkout-shipping .option-wrapper, #box-checkout-payment .option-wrapper {
-  display: inline-block;
-  float: left;
-  
-  margin: 10px;
-  
-  width: 162px;
-  padding: 10px;
-  
-  background: rgba(255,255,255,1);
-  
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
-  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
-  
-  -moz-box-shadow: 0px 0px 2px #aaa;
-  -webkit-box-shadow: 0px 0px 2px #aaa;
-  box-shadow: 0px 0px 2px #aaa;
-}
-#box-checkout-shipping .option-wrapper .icon, #box-checkout-payment .option-wrapper .icon {
-  width: 160px;
-  height: 60px;
-  border: 1px #ccc solid;
-  text-align: center;
-  background-color: #fff;
-}
-#box-checkout-shipping .option-wrapper .name, #box-checkout-payment .option-wrapper .name {
-  margin-bottom: 10px;
-}
-#box-checkout-shipping .option-wrapper .title, #box-checkout-payment .option-wrapper .title {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-#box-checkout-shipping .option-wrapper .description, #box-checkout-payment .option-wrapper .description {
-  position: relative;
-  height: 100px;
-  overflow-y: auto;
-}
-#box-checkout-shipping .option-wrapper .description, #box-checkout-payment .option-wrapper .description {
-}
-#box-checkout-shipping .option-wrapper .price, #box-checkout-payment .option-wrapper .price {
-}
-#box-checkout-shipping .option-wrapper .select, #box-checkout-payment .option-wrapper .select {
-}
-#box-checkout-shipping .option-wrapper .footer, #box-checkout-payment .option-wrapper .footer {
-  height: 30px;
-}
-
-#box-checkout-shipping .option-wrapper.selected, #box-checkout-payment .option-wrapper.selected {
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafdff', endColorstr='#e0e7ed');
-  background-image: linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
-  background-image: -o-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
-  background-image: -moz-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
-  background-image: -webkit-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
-  background-image: -ms-linear-gradient(bottom, #e0e7ed 9%, #fafdff 55%);
-  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #e0e7ed), color-stop(0.55, #fafdff));
-  
-  -moz-box-shadow: 0px 0px 2px #069;
-  -webkit-box-shadow: 0px 0px 2px #069;
-  box-shadow: 0px 0px 2px #069;
+#box-information li.active a {
+  color: rgb(0, 136, 204);
 }

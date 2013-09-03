@@ -37,7 +37,7 @@
     <div class="content">
       <nav>
         <ul class="list-vertical">
-          <li><a href="<?php echo $system->document->href_link('', array()); ?>"><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></a></li>
+          <li<?php echo (empty($_GET['page_id'])) ? ' class="active"' : ''; ?>><a href="<?php echo $system->document->href_link('', array()); ?>"><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></a></li>
           <?php
             $pages_query = $system->database->query(
               "select p.id, pi.title from ". DB_TABLE_PAGES ." p
@@ -47,7 +47,7 @@
               order by p.priority, pi.title;"
             );
             while ($page = $system->database->fetch($pages_query)) {
-              echo '<li><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+              echo '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
             }
           ?>
         </ul>
@@ -61,15 +61,15 @@
   if (empty($_GET['page_id'])) {
 ?>
 
+  <?php if ($system->settings->get('store_visiting_address')) { ?>
   <div class="box" id="box-map">
     <div class="content">
-      <?php if ($system->settings->get('store_visiting_address')) { ?>
       <div id="map" style="height: 400px;" class="shadow">
         <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="<?php echo $system->document->href_link('https://www.google.com/maps', array('q' => $system->settings->get('store_postal_address'), 'output' => 'svembed')); ?>"></iframe>
       </div>
-      <?php } ?>
     </div>
   </div>
+  <?php } ?>
   
   <div class="box" id="box-customer-service">
     <div class="heading"><h1><?php echo $system->language->translate('title_contact_us', 'Contact Us'); ?></h1></div>

@@ -176,21 +176,6 @@
                   <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?> <span class="required">*</span><br />
                     <?php echo $system->functions->form_draw_text_field('lastname', true); ?></td>
                 </tr>
-                <?php if (empty($system->customer->data['id'])) { ?>
-                <tr>
-                  <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
-                    <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
-                  <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
-                  <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>                </tr>
-                <?php if ($system->settings->get('fields_customer_password')) { ?>
-                <tr>
-                  <td><?php echo $system->language->translate('title_password', 'Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_password_field('password', ''); ?></td>
-                  <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_password_field('confirmed_password', ''); ?></td>
-                </tr>
-                <?php } ?>
-                <?php } ?>
                 <tr>
                   <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
                     <?php echo $system->functions->form_draw_text_field('address1', true); ?></td>
@@ -209,10 +194,25 @@
                   <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
                     <?php echo $system->functions->form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
                 </tr>
+                <?php if (empty($system->customer->data['id'])) { ?>
+                <tr>
+                  <td width="50%"><?php echo $system->language->translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
+                    <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
+                  <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
+                  <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>                </tr>
+                <?php if ($system->settings->get('fields_customer_password') == 'true') { ?>
+                <tr>
+                  <td><?php echo $system->language->translate('title_password', 'Password'); ?> <span class="required">*</span><br />
+                  <?php echo $system->functions->form_draw_password_field('password', ''); ?></td>
+                  <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
+                  <?php echo $system->functions->form_draw_password_field('confirmed_password', ''); ?></td>
+                </tr>
+                <?php } ?>
+                <?php } ?>
               </table>
             </td>
-            <td align="left">
-              <h3 style="margin-top: 0px;"><label><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
+            <td align="left" style="vertical-align: top;">
+              <h3 style="margin-top: 20px;"><label><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
               <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
                 <table>
                   <tr>
@@ -249,7 +249,7 @@
             </td>
           </tr>
           <tr>
-          <td colspan="2" align="center"><?php echo $system->functions->form_draw_button('set_addresses', $system->language->translate('title_apply', 'Apply')); ?> <?php echo (!empty($system->customer->data['id'])) ? $system->functions->form_draw_button('set_default_addresses', $system->language->translate('title_set_default', 'Set as Default')) : false; ?></td>
+          <td colspan="2" align="center"><?php echo $system->functions->form_draw_button('set_addresses', $system->language->translate('title_save_customer_information', 'Save Customer Information'), 'submit', 'disabled="disabled"'); ?></td>
           </tr>
         </table>
       <?php echo $system->functions->form_draw_form_end(); ?>
@@ -259,7 +259,6 @@
   <script type="text/javascript">
     $("#box-checkout-account input, #box-checkout-account select").change(function() {
       if ($(this).val() == '') return;
-      $('body').css('cursor', 'wait');
       $.ajax({
         url: '<?php echo $system->document->link(WS_DIR_AJAX .'get_address.json.php'); ?>?trigger='+$(this).attr('name'),
         type: 'post',
@@ -279,9 +278,6 @@
             if ($("#box-checkout-account *[name='"+key+"']").length && $("#box-checkout-account *[name='"+key+"']").val() == '') $("#box-checkout-account *[name='"+key+"']").val(data[key]);
           });
         },
-        complete: function() {
-          $('body').css('cursor', 'auto');
-        }
       });
     });
     

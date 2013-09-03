@@ -1,6 +1,6 @@
 body {
-  font: 14px 'Maven Pro', sans-serif;
-  color: #333;
+  font: 12px 'Roboto', sans-serif;
+  color: #777;
 }
 
 a img {
@@ -20,21 +20,30 @@ a:hover, a:active {
 }
 
 h1{
-  font-size: 1.75em;
+  font: 26px 'Open Sans', sans-serif;
   font-weight: normal;
+  color: #333;
 }
 h2{
-  font-size: 1.4em;
+  font: 20px 'Open Sans', sans-serif;
   font-weight: normal;
+  color: #333;
 }
-h3{
-  font-size: 1.15em;
+h3 {
+  font: 16px 'Open Sans', sans-serif;
   font-weight: normal;
+  color: #333;
+}
+h4, h5, h6{
+  font: 14px 'Open Sans', sans-serif;
+  font-weight: normal;
+  color: #333;
 }
 
 #slider-wrapper {
   position: relative;
   margin-bottom: 20px;
+  padding: 10px;
 }
 
 #logotypes-wrapper {

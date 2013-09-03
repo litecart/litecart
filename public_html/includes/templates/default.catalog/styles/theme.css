@@ -1,10 +1,7 @@
-@import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,600);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700);
 
 html, body {
-  background: #eee;
-}
-
-html {
   margin: 0px;
   padding: 0px;
 }
@@ -12,60 +9,92 @@ html {
 body {
   margin: 0px;
   padding: 0px;
+  background: #f0f0f0;
 }
 
 #page-wrapper {
-  background: #fafafa;
-  margin-bottom: 20px;
+  margin: 0px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #e5e5e5;
 }
-
 #page {
-  padding: 20px;
 }
 
 #header-wrapper {
-  margin-bottom: 10px;
 }
 #header {
   position: relative;
-  height: 100px;
+  height: 75px;
+}
+
+#logotype-wrapper {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0px;
 }
 
 #site-links-wrapper {
   display: inline-block;
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  top: 0px;
+  right: 0px;
 }
 #site-links a {
-  color: inherit;
+  color: #777;
+}
+#site-links a:hover {
+  color: rgb(0, 136, 204);
+  text-decoration: none;
 }
 
 #languages-wrapper {
   display: inline-block;
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 280px;
+  top: 25px;
 }
 
 #currencies-wrapper {
   display: inline-block;
   position: absolute;
-  right: 0px;
-  top: 30px;
+  right: 190px;
+  top: 25px;
+}
+#currencies a {
+  color: #777;
+  border: 1px solid #d1d1d1;
+  padding: 2px 4px;
+  background-color: #fff;
+}
+#currencies a:hover {
+  color: rgb(0, 136, 204);
+  border: 1px solid rgb(0, 136, 204);
+  text-decoration: none;
 }
 
 #search-wrapper {
   display: inline-block;
   position: absolute;
-  right: 0px;
-  bottom: 0px;
-  margin: 10px;
+  left: 0px;
+  top: 10px;
+  margin: 0px auto;
+  width: 100%;
+  text-align: center;
+}
+#search img {
+  opacity: 0.6;
+}
+@media (max-width: 920px) {
+  #search-wrapper {
+    display: none;
+  }
 }
 
 #cart-wrapper {
   position: absolute;
-  bottom: 0px;
+  bottom: 10px;
   right: 0px;
   display: inline-block;
 }
@@ -73,13 +102,14 @@ body {
   position: relative;
   white-space: nowrap;
 }
-#cart > img {
-  vertical-align: middle;
+#cart > a.image {
+  float: left;
+  vertical-align: bottom;
   margin-right: 5px;
   width: 32px;
   height: 32px;
 }
-#cart > a {
+#cart > a.content {
   display: inline-block;
   text-align: left;
   color: inherit;
@@ -99,9 +129,19 @@ body {
 }
 
 #site-links {
+  font-size: 11px;
 }
-
-
+#site-links li {
+  border-left: 1px solid #ccc;
+  padding: 0px 5px;
+}
+#site-links li:first-child {
+  border: none;
+  padding-left: 0px;
+}
+#site-links li:last-child {
+  padding-right: 0px;
+}
 
 #main-wrapper {
   margin-bottom: 20px;
@@ -133,31 +173,46 @@ body {
 }
 
 #breadcrumbs-wrapper {
-  margin-bottom: 10px;
+  float: left;
+  width: 50%;
+  overflow: hidden;
 }
 #breadcrumbs {
-  padding: 10px;
-  border-bottom: 1px #ccc solid;
-}
-#breadcrumbs, #breadcrumbs a {
-  color: rgb(136, 136, 136);
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+  padding: 0px 20px;
+  display: inline-block;
+  float: left;
 }
 
+#social-bookmarks-wrapper {
+  float: right;
+  width: 50%;
+  position: relative;
+}
+#social-bookmarks {
+  position: absolute;
+  display: inline;
+  right: 0px;
+  margin-right: 20px;
+}
+#social-bookmarks {
+
+}
+
+#footer-wrapper {
+  margin: 20px 0px;
+}
 #footer {
-  padding: 0px 10px;
-  border-bottom: 1px #ccc solid;
-  /*background: #fafafa;*/
-  margin-bottom: 20px;
+  line-height: 1.7;
 }
 #footer table {
   width: 100%;
+  border-top: 1px solid #e5e5e5;
   border-collapse: separate;
+  margin: 5px 0px;
+  padding-top: 15px;
 }
 #footer table td {
   padding: 5px 20px;
-  border-left: 1px rgba(255,255,255,0.25) solid;
-  border-right: 1px rgba(0,0,0,0.05) solid;
   vertical-align: top;
   width: 20%;
 }
@@ -168,15 +223,27 @@ body {
   border-right: none;
 }
 #footer * {
-  color: rgb(136, 136, 136);
+  color: #777;
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+}
+#footer a:hover {
+  color: rgb(0, 136, 204);
 }
 #footer strong {
   color: rgb(102, 102, 102);
 }
 #footer h4 {
-  margin-top: 0px;
-  margin-bottom: 0.25em;
+  font: 1.5em 'Open Sans', sans-serif;
+  font-weight: normal;
+  color: #333;
+  margin: 0px 0px 0.75em 0px;
+}
+#footer ul.list-vertical li {
+  padding: 0px;
+}
+
+#footer .contact p {
+  margin: 0;
 }
 
 @media (max-width: 640px) {
@@ -188,10 +255,11 @@ body {
   }
 }
 
-#copyright {
+#copyright p {
+  padding: 0px 20px;
   font-size: 0.9em;
+  color: #777;
   text-align: center;
-  opacity: 0.5;
 }
 
 #scroll-up{

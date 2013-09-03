@@ -10,17 +10,18 @@ input[type=date], input[type=datetime], input[type=email], input[type=number], i
   border: 1px solid #d1d1d1;
   border-radius: 3px;
   
-  background-color: #f9f9f9;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
-  background-image: -webkit-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -moz-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -ms-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -o-linear-gradient(top, #ececec, #f9f9f9);
+  background-color: #fcfcfc;
+
   
-  font: normal 12px Sans-serif;
-  color: #333;
+  font: normal 12px Roboto, Sans-serif;
+  color: #000;
   
   vertical-align: baseline;
+  
+}
+
+.input-wrapper *:focus {
+ outline: 0;
 }
 
 input[data-type=currency], input[data-type=decimal], input[data-type=number] {
@@ -129,7 +130,7 @@ button, a.button, span.button {
   color: #666;
   text-decoration: none;
   text-shadow: 0px 1px 1px white;
-  font: normal 12px Sans-serif;
+  font: 400 12px Roboto, Sans-serif;
   
   white-space: nowrap;
   vertical-align: middle;
@@ -141,7 +142,7 @@ button[type=submit] {
   font-weight: bold;
 }
 button[type=button], a.button, span.button {
-  font-weight: normal;
+  font-weight: 400;
 }
 
 button:hover, button:focus, a.button:hover, a.button:focus, span.button:hover, span.button, span.button:focus  {

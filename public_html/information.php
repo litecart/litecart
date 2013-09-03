@@ -19,7 +19,7 @@
             order by p.priority, pi.title;"
           );
           while ($page = $system->database->fetch($pages_query)) {
-            echo '<li><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+            echo '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
           }
         ?>
         </ul>

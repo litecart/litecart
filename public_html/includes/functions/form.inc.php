@@ -798,7 +798,7 @@
     $options = array();
     
     if ($GLOBALS['system']->database->num_rows($zones_query) == 0) {
-      return form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
+      return form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $input, $multiple, $parameters . ' disabled="disabled"');
     }
     
     while ($zone = $GLOBALS['system']->database->fetch($zones_query)) {

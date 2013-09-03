@@ -15,8 +15,8 @@
   if (!$system->database->num_rows($slides_query)) return;
 ?>
 
-<div id="slider-wrapper" class="theme-default">
-  <div id="slider" class="nivoSlider shadow">
+<div id="slider-wrapper" class="theme-default shadow">
+  <div id="slider" class="nivoSlider">
 <?php
   while ($slide = $system->database->fetch($slides_query)) {
     if (!empty($slide['link'])) {

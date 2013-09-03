@@ -38,10 +38,10 @@
   function draw_listing_product($product) {
     
     $sticker = '';
-    if ($product['date_created'] > date('Y-m-d', strtotime('-1 month'))) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. $GLOBALS['system']->language->translate('title_new', 'New') .'" style="position: absolute; top: 0px; left: 0px;" />';
-    } else if ($product['campaign_price']) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. $GLOBALS['system']->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 0px; left: 0px;" />';
+    if ($product['campaign_price']) {
+      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. $GLOBALS['system']->language->translate('title_on_sale', 'On Sale') .'" class="sticker" />';
+    } else if ($product['date_created'] > date('Y-m-d', strtotime('-1 month'))) {
+      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. $GLOBALS['system']->language->translate('title_new', 'New') .'" class="sticker" />';
     }
     
     $output = '<li class="product shadow hover-light" style="position: relative">' . PHP_EOL

@@ -7,15 +7,15 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
 <link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
+<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css.php" media="all" />
 <link rel="stylesheet" href="<!--snippet:template_path-->styles/theme.css" media="all" />
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css" media="all" />
-<!--[if IE]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
-<!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
-<!--[if lt IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
+<!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" /><![endif]-->
+<!--[if IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie9.css" /><![endif]-->
+<!--[if lt IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie8.css" /><![endif]-->
 <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
-<script type="text/javascript">
+<script>
   if (/iphone|ipod|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(navigator.userAgent.toLowerCase())) {
     $("meta[name='viewport']").attr("content", "width=640");
   }
@@ -23,20 +23,24 @@
 </head>
 <body>
 
-<div id="page-wrapper" class="shadow">
+<div id="page-wrapper">
   <div id="page">
     
-    <div id="header-wrapper" class="site-content">
-      <header id="header">
+    <div id="header-wrapper">
+      <header id="header" class="nine-eighty">
       
+        <div id="search-wrapper">
+        <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php'); ?>
+        </div>
+
         <div id="logotype-wrapper">
-          <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="60" alt="<?php echo $system->settings->get('store_name'); ?>" /></a>
+          <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo $system->settings->get('store_name'); ?>" /></a>
         </div>
         
         <div id="site-links-wrapper">
         <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
         </div>
-
+        
         <div id="languages-wrapper">
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'languages.inc.php'); ?>
         </div>
@@ -52,11 +56,11 @@
       </header>
     </div>
     
-    <div id="site-menu-wrapper" class="site-content">
+    <div id="site-menu-wrapper">
       <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
     </div>
     
-    <div id="main-wrapper" class="site-content">
+    <div id="main-wrapper" class="nine-eighty">
       <div id="main">
         <table style="width: 100%;">
           <tr>
@@ -92,13 +96,30 @@
 </div>
 
 <div id="footer-wrapper">
-  <footer id="footer" class="site-content rounded-corners">
-  
-  <div id="breadcrumbs-wrapper">
-    <!--snippet:breadcrumbs-->
-  </div>
+  <footer id="footer" class="nine-eighty">
+    
+    <div style="overflow: hidden;">
+      <div id="breadcrumbs-wrapper">
+        <!--snippet:breadcrumbs-->
+      </div>
+      
+      <div id="social-bookmarks-wrapper">
+        <!-- AddThis Button BEGIN -->
+        <!--
+        <div id="social-bookmarks" class="addthis_toolbox addthis_default_style addthis_24x24_style" style="display: inline;">
+        <a class="addthis_button_facebook"></a>
+        <a class="addthis_button_google_plusone_share"></a>
+        <a class="addthis_button_twitter"></a>
+        <a class="addthis_button_email"></a>
+        <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
+        </div>
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
+        -->
+        <!-- AddThis Button END -->
+      </div>
+    </div>
 
-    <table style="margin-bottom: 10px;">
+    <table>
       <tr>
         <td class="categories">
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
@@ -139,15 +160,15 @@
         </td>
         <td class="contact">
           <h4><?php echo $system->language->translate('title_contact', 'Contact'); ?></h4>
-          <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p>
-          <p><?php echo $system->settings->get('store_phone'); ?></p>
-          <p><?php echo $system->settings->get('store_email'); ?></p>
+          <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p><br />
+          <p><?php echo $system->settings->get('store_phone'); ?><br />
+          <?php echo $system->settings->get('store_email'); ?></p>
         </td>
       </tr>
     </table>
   </footer>
   
-  <div id="copyright" class="engraved-text">
+  <div id="copyright" class="nine-eighty engraved-text">
     <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo $system->settings->get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
   </div>
 </div>
@@ -167,7 +188,7 @@
     return false;
   });
 </script>
-    
+  
 <!--snippet:foot_tags-->
 </body>
 </html>

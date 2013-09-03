@@ -59,20 +59,18 @@
 <?php
   ob_start();
   echo '<aside class="shadow rounded-corners">' . PHP_EOL;
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'account.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'login.inc.php');
   echo '</aside>' . PHP_EOL;
   $system->document->snippets['column_left'] = ob_get_clean();
 ?>
 
 <div class="box" id="box-product" itemscope itemtype="http://www.schema.org/Product">
-  <div class="heading">
+  <div class="heading" style="overflow: hidden;">
     <h1 itemprop="name"><?php echo $product->name[$system->language->selected['code']]; ?></h1>
     <?php echo (!empty($product->sku)) ? '<div class="sku">'. $product->sku .'</div>' : false; ?>
   </div>
+  
   <div class="content">
     <table>
       <tr>
@@ -85,14 +83,14 @@
       if ($first_image) {
       
         $sticker = '';
-        if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
-          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" border="0" title="'. $system->language->translate('title_new', 'New') .'" style="position: absolute; top: 0; left: 0;" class="sticker" />';
-        } else if (!empty($product->campaign['price'])) {
-          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" style="position: absolute; top: 0; left: 0;" class="sticker" />';
+        if (!empty($product->campaign['price'])) {
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" border="0" title="'. $system->language->translate('title_on_sale', 'On Sale') .'" class="sticker" />';
+        } else if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" border="0" title="'. $system->language->translate('title_new', 'New') .'" class="sticker" />';
         }
         
         echo '<div style="position: relative;">' . PHP_EOL
-           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="main-image zoomable shadow" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" itemprop="image" /></a>' . PHP_EOL
+           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="main-image zoomable shadow rounded-corners" title="'. htmlspecialchars($product->name[$system->language->selected['code']]) .'" itemprop="image" /></a>' . PHP_EOL
            . '  '. $sticker . PHP_EOL
            . '</div>' . PHP_EOL;
         $first_image = false;
@@ -107,54 +105,12 @@
           </div>
         </td>
         
-        <td style="padding-left: 10px; vertical-align: top; width: 100%;">
-          <?php if (!empty($product->description[$system->language->selected['code']]) || !empty($product->attributes[$system->language->selected['code']])) { ?>
-          <div class="tabs">
-            <div class="index">
-              <li><a href="#tab-information"><?php echo $system->language->translate('title_information', 'Information'); ?></a></li>
-              <?php if (!empty($product->attributes[$system->language->selected['code']])) { ?><li><a href="#tab-details"><?php echo $system->language->translate('title_details', 'Details'); ?></a></li><?php } ?>
-            </div>
-            
-            <div class="content">
-              <div class="tab" id="tab-information" itemprop="description">
-                <p><?php echo $product->description[$system->language->selected['code']] ? $product->description[$system->language->selected['code']] : '<em style="opacity: 0.65;">'. $system->language->translate('text_no_product_description', 'There is no description for this product yet.') .'</em>'; ?></p>
-              </div>
-              
-              <?php if (!empty($product->attributes[$system->language->selected['code']])) { ?>
-              <div class="tab" id="tab-details">
-                <table cellspacing="0" cellpadding="5" border="0">
-<?php
-  $attributes = explode(PHP_EOL, $product->attributes[$system->language->selected['code']]);
-  for ($i=0; $i<count($attributes); $i++) {
-    if (!isset($rowclass) || $rowclass == 'even') {
-      $rowclass = 'odd';
-    } else {
-      $rowclass = 'even';
-    }
-    if (strpos($attributes[$i], ':') !== false) {
-      list($key, $value) = explode(':', $attributes[$i]);
-      echo '<tr class="'. $rowclass .'">' . PHP_EOL
-         . '  <td nowrap="nowrap">'. trim($key) .':</td>' . PHP_EOL
-         . '  <td style="max-width: 100%; padding-left: 10px;">'. trim($value) .'</td>' . PHP_EOL
-         . '</tr>' . PHP_EOL;
-    } else if (trim($attributes[$i] != '')) {
-      echo '<tr class="'. $rowclass .' header">' . PHP_EOL
-         . '  <th colspan="2" class="header" style="text-align: left; padding-top: 10px;"><strong>'. $attributes[$i] .'</strong></th>' . PHP_EOL
-         . '</tr>' . PHP_EOL;
-    }
-  }
-?>
-                </table>
-              </div>
-              <?php } ?>
-            </div>
-          </div>
-          <?php } ?>
-          
+        <td style="padding-left: 20px; vertical-align: top; width: 100%;">
+        
 <?php
     if ($product->manufacturer_id) {
 ?>
-          <div style="margin-bottom: 10px;" class="manufacturer" itemtype="http://www.schema.org/Organisation">
+          <div style="font-size: 1.5em; margin-bottom: 10px;" class="manufacturer" itemtype="http://www.schema.org/Organisation">
 <?php
       if ($product->manufacturer['image']) {
         echo '<a href="'. $system->document->href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) .'" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" itemprop="image" /></a>';
@@ -166,13 +122,13 @@
 <?php
     }
 ?>
-      
+
           <div style="margin-bottom: 10px;" class="price-wrapper" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><?php echo $product->campaign['price'] ? '<s class="regular-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong class="campaign-price" itemprop="price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span class="price" itemprop="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
           
           <div style="margin-bottom: 10px;" class="tax">
 <?php
     if ($tax_rates = $system->tax->get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id)) {
-      if ($system->settings->get('display_prices_including_tax')) {
+      if ($system->settings->get('display_prices_including_tax') == 'true') {
         echo $system->language->translate('title_including_tax', 'Including Tax') .':<br/>' . PHP_EOL;
       } else {
         echo $system->language->translate('title_excluding_tax', 'Excluding Tax') .':<br/>' . PHP_EOL;
@@ -190,7 +146,7 @@
           <div style="margin-bottom: 10px;">
 <?php
   if ($product->quantity > 0) {
-    echo '<div class="stock-available">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. ($system->settings->get('display_stock_count') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span></div>';
+    echo '<div class="stock-available">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. (($system->settings->get('display_stock_count') == 'true') ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span></div>';
     if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<div class="stock-delivery">'. $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']] .'</span></div>';
   } else {
     if (!empty($product->sold_out_status['name'][$system->language->selected['code']])) {
@@ -203,7 +159,7 @@
           </div>
       
 <?php
-    if ($system->settings->get('display_cheapest_shipping')) {
+    if ($system->settings->get('display_cheapest_shipping') == 'true') {
 ?>
           <div style="margin-bottom: 10px;" class="cheapest-shipping">
 <?php
@@ -243,13 +199,14 @@
             <?php echo $system->functions->form_draw_form_begin('buy_now_form'); ?>
             <?php echo $system->functions->form_draw_hidden_field('product_id', $product->id); ?>
             
-            <div class="options">
+            <table>
 <?php
   if (count($product->options) > 0) {
     
     foreach ($product->options as $group) {
     
-      echo '  <p><strong>'. $group['name'][$system->language->selected['code']] .'</strong>'. (empty($group['required']) == false ? ' <span class="required">*</span>' : '') .'<br />'
+      echo '  <tr>' . PHP_EOL
+         . '    <td class="options"><strong>'. $group['name'][$system->language->selected['code']] .'</strong>'. (empty($group['required']) == false ? ' <span class="required">*</span>' : '') .'<br />'
          . (!empty($group['description'][$system->language->selected['code']]) ? $group['description'][$system->language->selected['code']] . '<br />' . PHP_EOL : '');
       
       switch ($group['function']) {
@@ -341,15 +298,13 @@
       }
     }
     
-    echo '</p>' . PHP_EOL;
+    echo '  </td>' . PHP_EOL
+       . '</tr>' . PHP_EOL;
   }
 ?>
-            </div>
-            <div class="quantity">
-              <p><strong><?php echo $system->language->translate('title_quantity', 'Antal'); ?></strong><br />
-                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?>
-              </p>
-            </div>
+              <tr>
+                <td class="quantity"><strong><?php echo $system->language->translate('title_quantity', 'Antal'); ?></strong><br />
+                <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?> &nbsp; 
 <?php
   if ($product->quantity > 0) {
     echo $system->functions->form_draw_button('add_cart_product', $system->language->translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
@@ -361,12 +316,15 @@
     }
   }
 ?>
+              </td>
+            </table>
+
             <?php echo $system->functions->form_draw_form_end(); ?>
           </div>
           
           <div style="margin-bottom: 10px;" class="social-bookmarks">
             <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
             <a class="addthis_button_facebook"></a>
             <a class="addthis_button_google_plusone_share"></a>
             <a class="addthis_button_twitter"></a>
@@ -379,16 +337,61 @@
         </td>
       </tr>
     </table>
+    
+    <?php if (!empty($product->description[$system->language->selected['code']]) || !empty($product->attributes[$system->language->selected['code']])) { ?>
+    <div class="tabs" style="margin-top: 20px;">
+      <div class="index">
+        <li><a href="#tab-information"><?php echo $system->language->translate('title_information', 'Information'); ?></a></li>
+        <?php if (!empty($product->attributes[$system->language->selected['code']])) { ?><li><a href="#tab-details"><?php echo $system->language->translate('title_details', 'Details'); ?></a></li><?php } ?>
+      </div>
+      
+      <div class="content">
+        <div class="tab" id="tab-information" itemprop="description">
+          <p><?php echo $product->description[$system->language->selected['code']] ? $product->description[$system->language->selected['code']] : '<em style="opacity: 0.65;">'. $system->language->translate('text_no_product_description', 'There is no description for this product yet.') .'</em>'; ?></p>
+        </div>
+        
+        <?php if (!empty($product->attributes[$system->language->selected['code']])) { ?>
+        <div class="tab" id="tab-details">
+          <table cellspacing="0" cellpadding="5" border="0">
+<?php
+  $attributes = explode(PHP_EOL, $product->attributes[$system->language->selected['code']]);
+  for ($i=0; $i<count($attributes); $i++) {
+    if (!isset($rowclass) || $rowclass == 'even') {
+      $rowclass = 'odd';
+    } else {
+      $rowclass = 'even';
+    }
+    if (strpos($attributes[$i], ':') !== false) {
+      list($key, $value) = explode(':', $attributes[$i]);
+      echo '<tr class="'. $rowclass .'">' . PHP_EOL
+         . '  <td nowrap="nowrap">'. trim($key) .':</td>' . PHP_EOL
+         . '  <td style="max-width: 100%; padding-left: 10px;">'. trim($value) .'</td>' . PHP_EOL
+         . '</tr>' . PHP_EOL;
+    } else if (trim($attributes[$i] != '')) {
+      echo '<tr class="'. $rowclass .' header">' . PHP_EOL
+         . '  <th colspan="2" class="header" style="text-align: left; padding-top: 10px;"><strong>'. $attributes[$i] .'</strong></th>' . PHP_EOL
+         . '</tr>' . PHP_EOL;
+    }
+  }
+?>
+          </table>
+        </div>
+        <?php } ?>
+      </div>
+    </div>
+    <?php } ?>
+    
   </div>
 </div>
+
 <script>
   $('form[name=buy_now_form]').submit(function(e) {
     var form = $(this);
     e.preventDefault();
     $("button[name='add_cart_product']").animate_from_to("#cart", {
       initial_css: {
-        "border": "1px rgba(0,0,200,1) solid",
-        "background-color": "rgba(0,0,200,0.5)",
+        "border": "1px rgba(0,136,204,1) solid",
+        "background-color": "rgba(0,136,204,0.5)",
       },
       callback: function() {
         $('*').css('cursor', 'wait');

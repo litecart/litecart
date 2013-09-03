@@ -222,10 +222,18 @@
       exit;
     }
     
-    public function logout() {
-      $GLOBALS['system']->session->reset();
-      header('Location: ' . $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME));
-      exit;
+    public function logout($redirect_url='') {
+      $this->reset();
+      $GLOBALS['system']->cart->reset();
+      
+      $GLOBALS['system']->session->regenerate_id();
+      
+      $GLOBALS['system']->notices->add('success', $GLOBALS['system']->language->translate('description_logged_out', 'You are now logged out.'));
+      
+      if ($redirect_url) {
+        header('Location: ' . $redirect_url);
+        exit;
+      }
     }
   }
   

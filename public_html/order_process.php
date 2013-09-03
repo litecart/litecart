@@ -5,15 +5,6 @@
   
   header('X-Robots-Tag: noindex');
   
-  if (isset($_POST['confirm_order']) && $system->settings->get('checkout_captcha_enabled')) {
-    $captcha = $system->functions->captcha_get('checkout');
-    if (!isset($_POST['captcha']) || empty($captcha) || $captcha != $_POST['captcha']) {
-      $system->notices->add('errors', $system->language->translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
-      header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'));
-      exit;
-    }
-  }
-  
   $shipping = new shipping();
   
   $payment = new payment();

@@ -16,7 +16,6 @@
 
 
   <div id="box-login">
-    <div><h1 class="heading"><?php echo $system->settings->get('store_name'); ?></h1></div>
     <div class="content">
       <?php echo $system->functions->form_draw_form_begin('login_form', 'post'); ?>
       <?php echo $system->functions->form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : $system->document->link(WS_DIR_HTTP_HOME)); ?>

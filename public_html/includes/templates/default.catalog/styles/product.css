@@ -1,0 +1,33 @@
+#box-product .sticker {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#box-product .price-wrapper {
+  font-size: 22px;
+}
+
+#box-product .regular-price {
+  font-size: 16px;
+}
+
+#box-product .campaign-price {
+  color: #c00;
+}
+
+#box-product .tax {
+  color: #999;
+}
+
+#box-product .stock-available .value {
+  color: #090;
+}
+
+#box-product .stock-partly-available .value {
+  color: #f90;
+}
+
+#box-product .stock-unavailable .value {
+  color: #c00;
+}

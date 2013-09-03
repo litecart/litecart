@@ -31,7 +31,7 @@
         'id' => '',
         'uid' => uniqid(),
         'items' => array(),
-        'weight' => 0,
+        'weight_total' => 0,
         'weight_class' => $GLOBALS['system']->settings->get('store_weight_class'),
         'currency_code' => $GLOBALS['system']->currency->selected['code'],
         'currency_value' => $GLOBALS['system']->currency->selected['value'],
@@ -550,6 +550,8 @@
         'price' => $item['price'],
         'tax' => !empty($item['tax_class_id']) ? $GLOBALS['system']->tax->get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $item['tax'],
         'quantity' => $item['quantity'],
+        'weight' => $item['weight'],
+        'weight_class' => $item['weight_class'],
       );
       
       $this->data['weight_total'] += $item['quantity'] * $GLOBALS['system']->weight->convert($item['weight'], $item['weight_class'], $GLOBALS['system']->settings->get('store_weight_class'));
