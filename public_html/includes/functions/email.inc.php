@@ -5,7 +5,7 @@
     if (empty($from)) $from = $GLOBALS['system']->settings->get('store_name') . ' <'. $GLOBALS['system']->settings->get('store_email') .'>';
     
     $from = str_replace(array("\r", "\n"), " ", $from);
-    $subject = str_replace(array("\r", "\n"), " ", $from);
+    $subject = str_replace(array("\r", "\n"), " ", $subject);
     
   // Generate a boundary string    
     $mime_boundary = '==Multipart_Boundary_x'. md5(time()) .'x';

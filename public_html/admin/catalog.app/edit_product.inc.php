@@ -650,17 +650,17 @@ foreach ($system->currency->currencies as $currency) {
               <?php echo $system->functions->form_draw_datetime_field('campaigns['.$key.'][end_date]', true); ?>
             </td>
             <td nowrap="nowrap">%<br />
-              <?php echo $system->functions->form_draw_decimal_field('campaigns['.$key.'][percentage]', ''); ?>
+              <?php echo $system->functions->form_draw_decimal_field('campaigns['.$key.'][percentage]', '', null, null, null, 'data-size="tiny"'); ?>
             </td>
             <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />
-              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', true, 'data-size="tiny"'); ?>
+              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', true, 'data-size="small"'); ?>
             </td>
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {
     if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
             <td nowrap="nowrap"><?php echo $currency_code; ?><br />
-              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'data-size="tiny"'); ?>
+              <?php echo $system->functions->form_draw_text_field('campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'data-size="small"'); ?>
             </td>
 <?php
   }
@@ -701,17 +701,17 @@ foreach ($system->currency->currencies as $currency) {
                        + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap">%<br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', null, null, null, 'data-size="tiny"')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_text_field('campaigns[new_campaign_i]['. $system->settings->get('store_currency_code') .']', '', 'data-size="tiny"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_text_field('campaigns[new_campaign_i]['. $system->settings->get('store_currency_code') .']', '', 'data-size="small"')); ?>'
                        + '  </td>'
 <?php
   foreach (array_keys($system->currency->currencies) as $currency_code) {
     if ($currency_code == $system->settings->get('store_currency_code')) continue;
 ?>
                        + '  <td nowrap="nowrap"><?php echo $currency_code; ?><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_text_field('campaigns[new_campaign_i]['. $currency_code. ']', '', 'data-size="tiny"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_text_field('campaigns[new_campaign_i]['. $currency_code. ']', '', 'data-size="small"')); ?>'
                        + '  </td>'
 <?php
   }
