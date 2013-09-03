@@ -171,6 +171,22 @@
       $customer = $GLOBALS['system']->database->fetch($customer_query);
       
       $GLOBALS['system']->session->data['customer'] = $customer;
+      
+      $key_map = array(
+        'shipping_company' => 'company',
+        'shipping_firstname' => 'firstname',
+        'shipping_lastname' => 'lastname',
+        'shipping_address1' => 'address1',
+        'shipping_address2' => 'address2',
+        'shipping_postcode' => 'postcode',
+        'shipping_city' => 'city',
+        'shipping_country_code' => 'country_code',
+        'shipping_zone_code' => 'zone_code',
+      );
+      foreach ($key_map as $skey => $tkey){
+        $this->data['shipping_address'][$tkey] = $this->data[$skey];
+        unset($this->data[$skey]);
+      }
     }
     
     public function login($email, $password, $redirect_url='') {
@@ -194,24 +210,9 @@
         return;
       }
       
-      $GLOBALS['system']->session->regenerate_id();
-      $GLOBALS['system']->session->data['customer'] = $customer;
+      $this->load($customer['id']);
       
-      $key_map = array(
-        'shipping_company' => 'company',
-        'shipping_firstname' => 'firstname',
-        'shipping_lastname' => 'lastname',
-        'shipping_address1' => 'address1',
-        'shipping_address2' => 'address2',
-        'shipping_postcode' => 'postcode',
-        'shipping_city' => 'city',
-        'shipping_country_code' => 'country_code',
-        'shipping_zone_code' => 'zone_code',
-      );
-      foreach ($key_map as $skey => $tkey){
-        $this->data['shipping_address'][$tkey] = $this->data[$skey];
-        unset($this->data[$skey]);
-      }
+      $GLOBALS['system']->session->regenerate_id();
       
       $GLOBALS['system']->cart->load();
       
