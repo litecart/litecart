@@ -49,7 +49,7 @@
       // Connect
         if ($this->_type == 'mysqli') {
         
-          if (!in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
             $this->_links[$link] = mysqli_connect('p:'.$server, $username, $password, $database) or exit;
           } else {
             $this->_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
@@ -57,7 +57,7 @@
           
         } else {
         
-          if (!in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
             $this->_links[$link] = mysql_pconnect($server, $username, $password, 65536) or exit;
           } else {
             $this->_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;

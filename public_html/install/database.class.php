@@ -1,57 +1,96 @@
 <?php
 
   class database {
-    private $links = array();
-    private $type = 'mysql';
     
-  	public function __construct() {
-      if (function_exists('mysqli_connect')) $this->type = 'mysqli';
+    private $_links = array();
+    private $_type = 'mysql';
+    
+    public function __construct() {
+      if (function_exists('mysqli_connect')) $this->_type = 'mysqli';
     }
     
-    function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE) {
-    
+    public function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE) {
+      
     // Create link
-      if (!isset($this->links[$link]) || (!is_resource($this->links[$link]) && !is_object($this->links[$link]))) {
+      if (!isset($this->_links[$link]) || (!is_resource($this->_links[$link]) && !is_object($this->_links[$link]))) {
       
       // Connect
-        if ($this->type == 'mysqli') {
+        if ($this->_type == 'mysqli') {
         
-          if (!in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            $this->links[$link] = mysqli_pconnect($server, $username, $password, $database) or $this->error(false, mysqli_errno(), mysqli_error());
+          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+            $this->_links[$link] = mysqli_connect('p:'.$server, $username, $password, $database) or exit;
           } else {
-            $this->links[$link] = mysqli_connect($server, $username, $password, $database) or $this->error(false, mysqli_errno(), mysqli_error());
+            $this->_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
           }
           
         } else {
         
-          if (!in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            $this->links[$link] = mysql_pconnect($server, $username, $password) or $this->error(false, mysql_errno(), mysql_error());
+          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+            $this->_links[$link] = mysql_pconnect($server, $username, $password, 65536) or exit;
           } else {
-            $this->links[$link] = mysql_connect($server, $username, $password) or $this->error(false, mysql_errno(), mysql_error());
+            $this->_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;
           }
           
-          mysql_select_db($database) or $this->error(false, mysql_errno(), mysql_error());
+          mysql_select_db($database) or $this->_error(false, mysql_errno(), mysql_error());
         }
-        
-        $this->query("set character set ". DB_DATABASE_CHARSET);
       }
       
+      $this->query("set character set ". DB_DATABASE_CHARSET);
+      $this->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'");
+      
     // Make sure link was established
-      if (!is_resource($this->links[$link]) && !is_object($this->links[$link])) {
+      if (!is_resource($this->_links[$link]) && !is_object($this->_links[$link])) {
         trigger_error('Error: Invalid database link', E_USER_ERROR);
       }
       
     // Return connection link
-      return $this->links[$link];
+      return $this->_links[$link];
+    }
+    
+  // Set input/output mysql charset
+    public function set_character($charset) {
+    
+      $charset = strtolower($charset);
+      
+      $charset_map = array(
+        'euc-kr' => 'euckr',
+        'iso-8859-1' => 'latin1',
+        'iso-8859-2' => 'latin2',
+        'iso-8859-3' => 'latin7',
+        'iso-8859-4' => 'cp1257',
+        'iso-8859-5' => 'cp1251',
+        'iso-8859-6' => 'cp1256',
+        'iso-8859-7' => 'greek',
+        'iso-8859-8' => 'hebrew',
+        'iso-8859-9' => 'latin5',
+        'iso-8859-13' => 'latin7',
+        'iso-2022-jp' => 'cp932',
+        'iso-2022-jp-2' => 'eucjpms',
+        'iso-2022-kr' => 'euckr',
+        'utf-8' => 'utf8',
+        'utf-16' => 'utf16',
+        'windows-1251' => 'cp1251',
+        'windows-1252' => 'cp1252',
+        'windows-1256' => 'cp1256',
+      );
+      
+      if (empty($charset_map[$charset])) {
+        trigger_error('Unknown MySQL charset for HTML charset '. $charset, E_USER_WARNING);
+        return false;
+      }
+      
+      $this->query("set character set ". $charset_map[$charset]);
+      
+      return true;
     }
     
   // Close database connection
-    function disconnect($link='') {
+    public function disconnect($link='') {
       
       if ($link != '') {
-        $links = array($this->links[$link]);
+        $links = array($this->_links[$link]);
       } else {
-        $links = $this->links;
+        $links = $this->_links;
       }
       
       $errors = false;
@@ -59,7 +98,7 @@
         if (!is_resource($link)) {
           $errors = true;
         } else {
-          if ($this->type == 'mysqli') {
+          if ($this->_type == 'mysqli') {
             mysqli_close($link);
           } else {
             mysql_close($link);
@@ -70,30 +109,47 @@
       return $errors ? true : false;
     }
     
-    function query($query, $link='default') {
+    public function query($query, $link='default') {
       
     // Establish a link if not previously made
-      if (!isset($this->links[$link]) || is_resource($this->links[$link])) $this->connect($link);
+      if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
       
     // For debug
       if (!isset($this->history)) $this->history = array();
       $this->history[] = $query;
       
+      //if (strtolower(substr($query, 0, 6)) == 'select') $query = '/*qc=on*/' . $query; // mysqlnd query cache plugin
+      
     // Perform mysql query
-      if ($this->type == 'mysqli') {
-        $result = mysqli_query($this->links[$link], $query) or $this->error($query, mysqli_errno($this->links[$link]), mysqli_error($this->links[$link]));
+      if ($this->_type == 'mysqli') {
+        $result = mysqli_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));
       } else {
-        $result = mysql_query($query, $this->links[$link]) or $this->error($query, mysql_errno(), mysql_error());
+        $result = mysql_query($query, $this->_links[$link]) or exit;
       }
       
     // Return query resource
       return $result;
     }
     
-    function fetch($result) {
+    public function multi_query($query, $link='default') {
+    
+    // Establish a link if not previously made
+      if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
+      
+      if ($this->_type == 'mysqli') {
+        return mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));
+        mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));
+        while (mysqli_next_result($this->_links[$link])) {;} // flush results - we're not supporting it
+      } else {
+        $this->query($query, $link); // don't pick up results - we're not supporting it
+      }
+      return;
+    }
+    
+    public function fetch($result) {
     
     // Perform mysql query
-      if ($this->type == 'mysqli') {
+      if ($this->_type == 'mysqli') {
         $array = mysqli_fetch_assoc($result);
       } else {
         $array = mysql_fetch_assoc($result);
@@ -102,47 +158,63 @@
       return $array;
     }
     
-    function seek($result, $offset) {
-      if ($this->type == 'mysqli') {
+    public function seek($result, $offset) {
+      if ($this->_type == 'mysqli') {
         return mysqli_data_seek($result, $offset);
       } else {
         return mysql_data_seek($result, $offset);
       }
     }
     
-    function num_rows($result) {
-      if ($this->type == 'mysqli') {
+    public function num_rows($result) {
+      if ($this->_type == 'mysqli') {
         return mysqli_num_rows($result);
       } else {
         return mysql_num_rows($result);
       }
     }
 
-    function free($result) {
-      if ($this->type == 'mysqli') {
+    public function free($result) {
+      if ($this->_type == 'mysqli') {
         return mysqli_free_result($result);
       } else {
         return mysql_free_result($result);
       }
     }
     
-    function insert_id($link='default') {
-      if ($this->type == 'mysqli') {
-        return mysqli_insert_id($this->links[$link]);
+    public function insert_id($link='default') {
+      if ($this->_type == 'mysqli') {
+        return mysqli_insert_id($this->_links[$link]);
       } else {
-        return mysql_insert_id($this->links[$link]);
+        return mysql_insert_id($this->_links[$link]);
       }
     }
     
-    function affected_rows($link='default') {
-      if ($this->type == 'mysqli') {
-        return mysqli_affected_rows($this->links[$link]);
+    public function affected_rows($link='default') {
+      if ($this->_type == 'mysqli') {
+        return mysqli_affected_rows($this->_links[$link]);
       } else {
-        return mysql_affected_rows($this->links[$link]);
+        return mysql_affected_rows($this->_links[$link]);
       }
     }
     
-    function input($string, $allowable_tags=false, $link='default') {
+    public function info($link='default') {
+      if ($this->_type == 'mysqli') {
+        return mysqli_info($this->_links[$link]);
+      } else {
+        return mysql_info($this->_links[$link]);
+      }
+    }
+    
+    public function input($string, $allowable_tags=false, $link='default') {
+      
+    // Return safe array
+      if (is_array($string)) {
+        foreach (array_keys($string) as $key) {
+          $string[$key] = $this->input($string[$key]);
+        }
+        return $string;
+      }
       
     // Unescape input
       $string = stripslashes($string);
@@ -153,24 +225,18 @@
       }
       
     // Establish a link if not previously made
-      if (!isset($this->links[$link])) $this->connect();
+      if (!isset($this->_links[$link])) $this->connect();
       
     // Return safe input string
-      if ($this->type == 'mysqli') {
-        return mysqli_real_escape_string($this->links[$link], $string);
+      if ($this->_type == 'mysqli') {
+        return mysqli_real_escape_string($this->_links[$link], $string);
       } else {
-        return mysql_real_escape_string($string, $this->links[$link]);
+        return mysql_real_escape_string($string, $this->_links[$link]);
       }
     }
     
-    function error($query, $errno, $error) {
-    
-    // Log
+    private function _error($query, $errno, $error) {
       trigger_error($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
-    
-    // Halt script and output error
-      //die('MySQL error code '. $errno .' at '. date('Y-m-d H:i:s') .'. Please consult the webmaster.');
-      die($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query));
     }
   }
   
