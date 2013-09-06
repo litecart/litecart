@@ -15,7 +15,7 @@
     }
     
     public function process() {
-      global $payment;
+      global $payment, $order;
       
       if (empty($this->settings['status'])) return;
       
@@ -26,7 +26,7 @@
       $output[] = array(
         'title' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
         'value' => $payment->data['selected']['cost'],
-        'tax' => $GLOBALS['system']->tax->calculate($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], true),
+        'tax' => $GLOBALS['system']->tax->get_tax($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
         'calculate' => true,
       );
       

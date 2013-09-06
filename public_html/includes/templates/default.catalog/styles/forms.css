@@ -112,7 +112,7 @@ button, a.button, span.button {
   display: inline-block;
   
   margin: 0px 1px;
-  padding: 3px 6px;
+  padding: 3px 10px;
   
   border: 1px solid #d1d1d1;
   border-radius: 3px;
@@ -139,7 +139,7 @@ button, a.button, span.button {
 }
 
 button[type=submit] {
-  font-weight: bold;
+  font-weight: normal;
 }
 button[type=button], a.button, span.button {
   font-weight: 400;

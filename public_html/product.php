@@ -279,7 +279,7 @@
 
             $options[] = array($group['values'][$value_id]['name'][$system->language->selected['code']] . $price_adjust_text, $group['values'][$value_id]['name'][$system->language->selected['code']]);
           }
-          echo $system->functions->form_draw_select_field('options['.$group['name'][$system->language->selected['code']].']', $options, true, false, false, !empty($group['required']) ? 'required="required"' : '');
+          echo $system->functions->form_draw_select_field('options['.$group['name'][$system->language->selected['code']].']', $options, true, false, !empty($group['required']) ? 'required="required"' : '');
           break;
           
         case 'textarea':

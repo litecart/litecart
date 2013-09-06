@@ -10,15 +10,15 @@
     return;
   }
 ?>
-<div style="margin-bottom: 10px;" id="box-checkout-cart">
-  <div class="viewport" style="width: 560px; overflow: hidden; max-height: 200px; padding: 5px;">
+<div id="box-checkout-cart">
+  <div class="viewport">
     <div class="slides">
     <?php foreach ($system->cart->data['items'] as $key => $item) { ?>
       <?php echo $system->functions->form_draw_form_begin('cart_form') . $system->functions->form_draw_hidden_field('key', $key); ?>
-        <div style="float: left; text-align: left; width: 580px;" class="slide">
+        <div class="slide">
           <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" class="image-wrapper shadow"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" /></a>
-          <div style="float: left; margin-left: 20px;">
-            <p style="margin-top: 0;"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" style="color: inherit;"><strong><?php echo $item['name'][$system->language->selected['code']]; ?></strong></a>
+          <div>
+            <p style="margin-top: 0px;"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" style="color: inherit;"><strong><?php echo $item['name'][$system->language->selected['code']]; ?></strong></a>
             <?php echo $item['sku'] ? '<br /><span style="color: #999; font-size: 10px;">[' .$system->language->translate('title_sku', 'SKU') .': '. $item['sku'] .']</span>' : ''; ?></p>
 <?php
   if (!empty($item['options'])) {

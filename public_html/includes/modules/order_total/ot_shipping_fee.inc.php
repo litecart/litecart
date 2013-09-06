@@ -26,7 +26,7 @@
       $output[] = array(
         'title' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
         'value' => $shipping->data['selected']['cost'],
-        'tax' => $GLOBALS['system']->tax->calculate($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], true),
+        'tax' => $GLOBALS['system']->tax->get_tax($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
         'calculate' => true,
       );
       

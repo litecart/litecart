@@ -132,7 +132,6 @@
 ?>
   
   <div class="box" id="box-customer-service">
-    <div class="heading"><h1><?php echo $page['title']; ?></h1></div>
     <div class="content">
       <?php echo $page['content']; ?>
     </div>

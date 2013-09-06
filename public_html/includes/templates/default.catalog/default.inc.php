@@ -7,8 +7,8 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
 <link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/loader.css.php" media="all" />
-<link rel="stylesheet" href="<!--snippet:template_path-->styles/theme.css?<?php echo date('ymd'); ?>" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}styles/loader.css.php" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}styles/theme.css?<?php echo date('ymd'); ?>" media="all" />
 <!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css?<?php echo date('ymd'); ?>" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie9.css?<?php echo date('ymd'); ?>" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie8.css?<?php echo date('ymd'); ?>" /><![endif]-->

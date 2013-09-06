@@ -24,6 +24,8 @@
     list($module_id, $option_id) = explode(':', $payment->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id])) {
       $payment->data['selected'] = array();
+    } else {
+      $payment->select($module_id, $option_id); // Refresh
     }
   }
   
@@ -48,20 +50,19 @@
 ?>
     <div class="option-wrapper<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
       <?php echo $system->functions->form_draw_form_begin('payment_form', 'post') . $system->functions->form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
-        <div class="icon"><?php echo is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon']) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') .'" width="160" height="60" />' : '&nbsp;'; ?></div>
+        <div class="icon"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING'); ?>" width="160" height="60" /></div>
         <div class="title"><?php echo $module['title']; ?></div>
         <div class="name"><?php echo $option['name']; ?></div>
         <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
-        <div class="footer" style="position: relative;">
-          <div class="price" style="position: absolute; left: 0; bottom: 0;"><?php echo $system->currency->format($system->tax->calculate($option['cost'], $option['tax_class_id'])); ?></div>
-          <div class="select" style="position: absolute; right: 0; bottom: 0;">
+        <div class="footer">
+          <div class="price"><?php echo $system->currency->format($system->tax->calculate($option['cost'], $option['tax_class_id'])); ?></div>
+          <div class="select">
 <?php
   if ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) {
     if (!empty($option['fields'])) {
       echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_update', 'Update'), 'submit');
     } else {
-      //echo '<span class="button active">'. $system->language->translate('title_select', 'Select') .'</span>';
-      echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_update', 'Update'), 'submit', 'class="active"');
+    echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_selected', 'Selected'), 'submit', 'class="active"');
     }
   } else {
     echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_select', 'Select'), 'submit');

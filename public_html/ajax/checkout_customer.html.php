@@ -160,12 +160,12 @@
       <?php echo $system->functions->form_draw_form_begin('customer_form', 'post'); ?>
         <table style="width: 100%;">
           <tr>
-            <td width="50%" align="left">
+            <td width="50%" align="left" style="vertical-align: top;">
               
               <!--<?php if (empty($system->customer->data['id'])) { ?><h3 style="margin: 0;"><?php echo $system->language->translate('title_new_customer', 'New Customer'); ?></h3><?php } ?>-->
               <table>
                 <tr>
-                  <td nowrap="nowrap"><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
+                  <td nowrap="nowrap""><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
                     <?php echo $system->functions->form_draw_text_field('tax_id', true); ?></td>
                   <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
                     <?php echo $system->functions->form_draw_text_field('company', true); ?></td>
@@ -212,7 +212,7 @@
               </table>
             </td>
             <td align="left" style="vertical-align: top;">
-              <h3 style="margin-top: 20px;"><label><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
+              <h3 style="margin-top: 20px;"><?php echo $system->functions->form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo $system->language->translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
               <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
                 <table>
                   <tr>

@@ -29,6 +29,7 @@
   
   $order->data['order_total'] = array();
   $order_total->process();
+  
 ?>
 <div class="box" id="box-checkout-summary">
   <div class="heading"><h2><?php echo $system->language->translate('title_order_summary', 'Order Summary'); ?></h2></div>

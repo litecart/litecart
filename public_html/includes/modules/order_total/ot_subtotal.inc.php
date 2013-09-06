@@ -21,9 +21,11 @@
       $value = 0;
       $tax = 0;
       
-      foreach ($order->data['items'] as $item) {
-        $value += $item['price'] * $item['quantity'];
-        $tax += $item['tax'] * $item['quantity'];
+      if (!empty($order->data['items'])) {
+        foreach ($order->data['items'] as $item) {
+          $value += $item['price'] * $item['quantity'];
+          $tax += $item['tax'] * $item['quantity'];
+        }
       }
       
       $output[] = array(
