@@ -77,7 +77,7 @@
 ?>    
     <?php if ($manufacturer['description']) { ?>
     <div class="description-wrapper">
-      <?php echo $manufacturer['description'] ? $manufacturer['description'] : ''; ?>
+      <?php echo $manufacturer['description'] ? '<p class="manufacturer-description">'. $manufacturer['description'] .'</p>' : ''; ?>
     </div>
     <?php } ?>
 <?php
