@@ -106,6 +106,7 @@ a:hover, a:active{
         <li>mod_redirect</li>
       </ul>
     </li>
+    <li>MySQL 5.5+</li>
   </ul>
   
   <h2>Client Requirements</h2>
