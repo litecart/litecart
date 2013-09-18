@@ -4,20 +4,16 @@
   $system->document->snippets['content'] = ob_get_clean();
   
 // Run after capture processes
-  foreach ($system->get_loaded_modules() as $module) {
-    if (method_exists($system->$module, 'after_capture')) $system->$module->after_capture();
-  }
+  $system->run('after_capture');
   
 // Prepare output
-  foreach ($system->get_loaded_modules() as $module) {
-    if (method_exists($system->$module, 'prepare_output')) $system->$module->prepare_output();
-  }
+  $system->run('prepare_output');
   
 // Capture template
   ob_start();
   require(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . $system->document->template .'/'. $system->document->layout .'.inc.php');
   $output = ob_get_clean();
-
+  
 // Stitch content
   foreach ($system->document->snippets as $key => $content) {
     if (is_array($content)) $content = implode(PHP_EOL, $content);
@@ -27,18 +23,14 @@
   $output = preg_replace('/<!--snippet:.*?-->/', '', $output);
   
 // Run before output processes
-  foreach ($system->get_loaded_modules() as $module) {
-    if (method_exists($system->$module, 'before_output')) $system->$module->before_output();
-  }
+  $system->run('before_output');
   
 // Output page
   header('Content-Language: '. $system->language->selected['code']);
   echo $output;
   
 // Run after processes
-  foreach ($system->get_loaded_modules() as $module) {
-    if (method_exists($system->$module, 'shutdown')) $system->$module->shutdown();
-  }
+  $system->run('shutdown');
   
 // Execute background jobs
   if (strtotime($system->settings->get('jobs_last_run')) < strtotime('-'. ($system->settings->get('jobs_interval')+1) .' minutes')) {
