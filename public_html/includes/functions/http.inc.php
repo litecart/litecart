@@ -20,15 +20,16 @@
         return;
       }
       
-      $post_string = $post_fields ? http_build_query($post_fields) : '';
+      $post_string = is_array($post_fields) ? http_build_query($post_fields) : $post_fields;
       
-      $out = ($post_string ? "POST " : "GET ") . $parts['path'] . ((isset($parts['query'])) ? "?" . $parts['query'] : false) ." HTTP/1.1\r\n"
+      $out = ($post_string ? "POST " : "GET ") . $parts['path'] . ((isset($parts['query'])) ? "?" . $parts['query'] : '') ." HTTP/1.1\r\n"
            . "Host: ". $parts['host'] ."\r\n"
-           . ($post_string ? "Content-Type: application/x-www-form-urlencoded\r\n" : false)
+           . (!empty($post_string) ? "Content-Type: application/x-www-form-urlencoded\r\n" : '')
+           . (!empty($headers) ? implode("\r\n", $headers) . "\r\n" : '')
            . "Content-Length: ". strlen($post_string) ."\r\n"
            . "Connection: Close\r\n"
            . "\r\n" . $post_string;
-           
+      
       fwrite($fp, $out);
       
       $found_body = false;
@@ -84,16 +85,17 @@
           break;
       }
       
-    } else {
+    } else if (function_exists('curl_init')) {
     
       $ch = curl_init();
       
       curl_setopt($ch, CURLOPT_URL, $url);
       curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
       curl_setopt($ch, CURLOPT_POST, $post_fields ? true : false);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields ? http_build_query($post_fields) : false);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, $asyncrounous ? false : true);
-      curl_setopt($ch, CURLOPT_TIMEOUT, $asyncrounous ? 1 : 15);
+      curl_setopt($ch, CURLOPT_TIMEOUT, $asyncrounous ? 1 : 30);
       
       switch ($return) {
         case 'both':
@@ -114,6 +116,9 @@
       curl_close($ch);
       
       return $result;
+      
+    } else {
+      trigger_error('No HTTP components available', E_USER_ERROR);
     }
   }
   
