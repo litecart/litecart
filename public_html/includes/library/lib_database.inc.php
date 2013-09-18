@@ -159,10 +159,6 @@
     // Establish a link if not previously made
       if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
       
-    // For debug
-      if (!isset($this->history)) $this->history = array();
-      $this->history[] = $query;
-      
     // Set start timestamp for debug
       $execution_time_start = microtime(true);
       
