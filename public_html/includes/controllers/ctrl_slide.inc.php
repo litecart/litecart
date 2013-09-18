@@ -73,7 +73,7 @@
       
       $image = new ctrl_image($file);
       
-      $filename = 'slides/' . $GLOBALS['system']->functions->general_url_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type();
+      $filename = 'slides/' . $GLOBALS['system']->functions->general_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type();
       
       if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/', 0777);
       $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
