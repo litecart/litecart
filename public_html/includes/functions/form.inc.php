@@ -53,7 +53,7 @@
     
     if (empty($currency_code)) $currency_code = $GLOBALS['system']->settings->get('store_currency_code');
     
-    return '<span class="input-wrapper">'. $GLOBALS['system']->currency->currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, $GLOBALS['system']->currency->currencies[$currency_code]['decimals']) : '') .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. $GLOBALS['system']->currency->currencies[$currency_code]['suffix'] .'</span>';
+    return '<span class="input-wrapper">'. $GLOBALS['system']->currency->currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, $GLOBALS['system']->currency->currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. $GLOBALS['system']->currency->currencies[$currency_code]['suffix'] .'</span>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='', $hint='') {
