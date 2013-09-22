@@ -296,10 +296,11 @@
           echo $system->functions->form_draw_textarea('options['.$group['name'][$system->language->selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
           break;
       }
+      
+      echo '  </td>' . PHP_EOL
+         . '</tr>' . PHP_EOL;
     }
     
-    echo '  </td>' . PHP_EOL
-       . '</tr>' . PHP_EOL;
   }
 ?>
               <tr>
