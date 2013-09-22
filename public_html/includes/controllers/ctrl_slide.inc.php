@@ -44,7 +44,7 @@
           status = '". (int)$this->data['status'] ."',
           language_code = '". $GLOBALS['system']->database->input($this->data['language_code']) ."',
           name = '". $GLOBALS['system']->database->input($this->data['name']) ."',
-          caption = '". $GLOBALS['system']->database->input($this->data['caption']) ."',
+          caption = '". $GLOBALS['system']->database->input($this->data['caption'], true) ."',
           link = '". $GLOBALS['system']->database->input($this->data['link']) ."',
           ". (!empty($this->data['image']) ? "image = '" . $GLOBALS['system']->database->input($this->data['image']) . "'," : '') ."
           priority = '". (int)$this->data['priority'] ."',
@@ -76,6 +76,8 @@
       $filename = 'slides/' . $GLOBALS['system']->functions->general_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type();
       
       if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/', 0777);
+      if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+      
       $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
       
       $this->data['image'] = $filename;
@@ -89,6 +91,8 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
+      
+      if (!empty($this->data['image']) && file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
       
       $this->data['id'] = null;
       

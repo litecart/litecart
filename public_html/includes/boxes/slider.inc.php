@@ -22,7 +22,7 @@
     if (!empty($slide['link'])) {
       echo '    <a href="'. htmlspecialchars($slide['link']) .'"><img src="'. WS_DIR_IMAGES . $slide['image'] .'" alt="" title="'. $slide['caption'] .'" /></a>' . PHP_EOL;
     } else {
-      echo '    <img src="'. WS_DIR_IMAGES . $slide['image'] .'" alt="" title="'. $slide['caption'] .'" />' . PHP_EOL;
+      echo '    <img src="'. WS_DIR_IMAGES . $slide['image'] .'" alt="" title="'. htmlspecialchars($slide['caption']) .'" />' . PHP_EOL;
     }
   }
 ?>
