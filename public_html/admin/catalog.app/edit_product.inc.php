@@ -208,23 +208,23 @@ foreach (array_keys($system->language->languages) as $language_code) {
       order by pgi.name asc;"
     );
     if ($system->database->num_rows($product_groups_query)) {
-    while ($product_group = $system->database->fetch($product_groups_query)) {
-      echo '<tr>' . PHP_EOL
-         . '  <td colspan="2"><strong>'. $product_group['name'] .'</strong></td>' . PHP_EOL
-         . '</tr>' . PHP_EOL;
-      $product_groups_values_query = $system->database->query(
-        "select pgv.id, pgvi.name from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." pgv
-        left join ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ." pgvi on (pgvi.product_group_value_id = pgv.id and pgvi.language_code = '". $system->language->selected['code'] ."')
-        where pgv.product_group_id = '". (int)$product_group['id'] ."'
-        order by pgvi.name asc;"
-      );
-      while ($product_group_value = $system->database->fetch($product_groups_values_query)) {
-      echo '<tr>' . PHP_EOL
-         . '  <td>'. $system->functions->form_draw_checkbox('product_groups[]', $product_group['id'].'-'.$product_group_value['id'], true) .'</td>' . PHP_EOL
-         . '  <td>'. $product_group_value['name'] .'</td>' . PHP_EOL
-         . '</tr>' . PHP_EOL;
+      while ($product_group = $system->database->fetch($product_groups_query)) {
+        echo '<tr>' . PHP_EOL
+           . '  <td colspan="2"><strong>'. $product_group['name'] .'</strong></td>' . PHP_EOL
+           . '</tr>' . PHP_EOL;
+        $product_groups_values_query = $system->database->query(
+          "select pgv.id, pgvi.name from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." pgv
+          left join ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ." pgvi on (pgvi.product_group_value_id = pgv.id and pgvi.language_code = '". $system->language->selected['code'] ."')
+          where pgv.product_group_id = '". (int)$product_group['id'] ."'
+          order by pgvi.name asc;"
+        );
+        while ($product_group_value = $system->database->fetch($product_groups_values_query)) {
+        echo '<tr>' . PHP_EOL
+           . '  <td>'. $system->functions->form_draw_checkbox('product_groups[]', $product_group['id'].'-'.$product_group_value['id'], true) .'</td>' . PHP_EOL
+           . '  <td>'. $product_group_value['name'] .'</td>' . PHP_EOL
+           . '</tr>' . PHP_EOL;
+        }
       }
-    }
     } else {
 ?>
                   <tr>
