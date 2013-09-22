@@ -165,7 +165,7 @@
               <!--<?php if (empty($system->customer->data['id'])) { ?><h3 style="margin: 0;"><?php echo $system->language->translate('title_new_customer', 'New Customer'); ?></h3><?php } ?>-->
               <table>
                 <tr>
-                  <td nowrap="nowrap""><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
+                  <td><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
                     <?php echo $system->functions->form_draw_text_field('tax_id', true); ?></td>
                   <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
                     <?php echo $system->functions->form_draw_text_field('company', true); ?></td>
