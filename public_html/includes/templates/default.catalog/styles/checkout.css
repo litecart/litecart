@@ -9,38 +9,45 @@
   max-height: 200px;
   padding: 5px;
 }
-#box-checkout-cart .slide {
+#box-checkout-cart .items {
+  list-style: none;
+  padding: 0px;
+}
+#box-checkout-cart .item {
 	float: left;
   text-align: left;
   width: 580px;
 }
-#box-checkout-cart .slide a.image-wrapper {
+#box-checkout-cart .item a.image-wrapper {
   float: left;
   padding: 10px;
   margin-right: 20px;
   background-color: #fff;
 }
   
-#box-checkout-cart .items {
+#box-checkout-cart .shortcuts {
+  list-style: none;
   padding: 10px;
 }
-#box-checkout-cart .items a {
-	display: inline-block;
+#box-checkout-cart .shortcut {
+	display: inline;
+}
+#box-checkout-cart .shortcut a {
   width: 64px;
   height: 48px;
   text-align: center;
 }
-#box-checkout-cart .items a img {
+#box-checkout-cart .shortcut a img {
   margin-top: 5px;
 }
 
-#box-checkout-cart .items a.inact {
+#box-checkout-cart .shortcut a.inact {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-#box-checkout-cart .items a.act, .items a.act:hover{
+#box-checkout-cart .shortcut a.act, .shortcut a.act:hover{
   background-color: #eee;
   -moz-box-shadow: inset 0 0 5px #888;
   -webkit-box-shadow: inset 0 0 5px#888;
