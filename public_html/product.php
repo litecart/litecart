@@ -107,9 +107,7 @@
         
         <td style="padding-left: 20px; vertical-align: top; width: 100%;">
         
-<?php
-    if ($product->manufacturer_id) {
-?>
+          <?php if ($product->manufacturer_id) { ?>
           <div style="font-size: 1.5em; margin-bottom: 10px;" class="manufacturer" itemtype="http://www.schema.org/Organisation">
 <?php
       if ($product->manufacturer['image']) {
@@ -119,9 +117,7 @@
       }
 ?>
           </div>
-<?php
-    }
-?>
+          <?php } ?>
 
           <div style="margin-bottom: 10px;" class="price-wrapper" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><?php echo $product->campaign['price'] ? '<s class="regular-price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)) .'</s> <strong class="campaign-price" itemprop="price">'. $system->currency->format($system->tax->calculate($product->campaign['price'], $product->tax_class_id)) .'</strong>' : '<span class="price" itemprop="price">'. $system->currency->format($system->tax->calculate($product->price, $product->tax_class_id)); ?></div>
           

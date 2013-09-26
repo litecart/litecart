@@ -71,7 +71,7 @@
       return $this->data['options'];
     }
     
-    public function select($module_id, $option_id) {
+    public function select($module_id, $option_id, $userdata=null) {
       
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
         $this->data['selected'] = array();
@@ -79,13 +79,16 @@
         return;
       }
       
-      $this->data['userdata'][$module_id] = $_POST;
+      if (!empty($userdata)) {
+        $this->data['userdata'][$module_id] = $userdata;
+      }
       
       if (method_exists($this->modules[$module_id], 'select')) {
         if ($error = $this->modules[$module_id]->select($option_id)) {
           $GLOBALS['system']->notices->add('errors', $error);
         }
       }
+
       
       $this->data['selected'] = array(
         'id' => $module_id.':'.$option_id,

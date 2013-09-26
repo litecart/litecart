@@ -13,7 +13,7 @@
   
   if (!empty($_POST['set_payment'])) {
     list($module_id, $option_id) = explode(':', $_POST['selected_payment']);
-    $payment->select($module_id, $option_id);
+    $payment->select($module_id, $option_id, $_POST);
     header('Location: '. (($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME'] == __FILE__) ? $_SERVER['REQUEST_URI'] : $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php')));
     exit;
   }

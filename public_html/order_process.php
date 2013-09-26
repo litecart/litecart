@@ -77,11 +77,11 @@
       exit;
     }
     
-  // Set transaction id
+  // Set order status id
     if (isset($result['order_status_id'])) $order->data['order_status_id'] = $result['order_status_id'];
     
-  // Set order status id
-    if (isset($result['transaction_id'])) $order->data['transaction_id'] = $result['transaction_id'];
+  // Set transaction id
+    if (isset($result['transaction_id'])) $order->data['payment_transaction_id'] = $result['transaction_id'];
   }
   
 // Save order

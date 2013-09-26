@@ -67,6 +67,14 @@
     
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
     
+    if (empty($filter['categories'])) $filter['categories'] = array();
+    if (empty($filter['manufacturers'])) $filter['manufacturers'] = array();
+    if (empty($filter['product_groups'])) $filter['product_groups'] = array();
+    
+    if (!empty($filter['category_id'])) $filter['categories'][] = $filter['category_id'];
+    if (!empty($filter['manufacturer_id'])) $filter['manufacturers'][] = $filter['manufacturer_id'];
+    if (!empty($filter['product_group_id'])) $filter['product_groups'][] = $filter['product_group_id'];
+    
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
     
     switch ($filter['sort']) {
@@ -97,20 +105,17 @@
     
     $sql_select_occurrences = "";
     $sql_andor = "and";
-
     
+  // Define match points
     if ($filter['sort'] == 'occurrences') {
       $sql_select_occurrences = "(0
         ". (isset($filter['product_name']) ? "+ if(pi.name = '". $GLOBALS['system']->database->input($filter['product_name']) ."', 1, 0)" : false) ."
         ". (isset($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
-        ". (isset($filter['category_id']) ? "+ if(find_in_set('". (int)$filter['category_id'] ."', p.categories), 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', p.categories), 1, 0) + if(find_in_set('", $filter['categories']) ."', p.categories), 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", $filter['keywords']) ."', p.keywords), 1, 0)" : false) ."
-        ". (isset($filter['manufacturer_id']) ? "+ if(p.manufacturer_id = '". (int)$filter['manufacturer_id'] ."', 1, 0)" : false) ."
         ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
-        ". (isset($filter['product_group_id']) ? "+ if(find_in_set('". (int)$filter['product_group_id'] ."', p.product_groups), 1, 0)" : false) ."
-        ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", $GLOBALS['system']->database->input($filter['products'])) ."'), 1, 0)" : false) ."
         ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", $filter['product_groups']) ."', p.product_groups), 1, 0)" : false) ."
+        ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", $GLOBALS['system']->database->input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences";
       $sql_andor = "or";
     }
@@ -162,15 +167,12 @@
       and (p.id
         ". (isset($filter['product_name']) ? "$sql_andor pi.name = '". $GLOBALS['system']->database->input($filter['product_name']) ."'" : false) ."
         ". (isset($filter['sql_where']) ? "$sql_andor (". $filter['sql_where'] .")" : false) ."
-        ". (isset($filter['category_id']) ? "$sql_andor find_in_set('". (int)$filter['category_id'] ."', p.categories)" : false) ."
         ". (!empty($filter['categories']) ? "$sql_andor (find_in_set('". implode("', p.categories) or find_in_set('", $filter['categories']) ."', p.categories))" : false) ."
+        ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."')" : false) ."
+        ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
         ". (!empty($filter['campaign']) ? "$sql_andor campaign_price" : false) ."
         ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", $filter['keywords']) ."', p.keywords))" : false) ."
-        ". (isset($filter['manufacturer_id']) ? "$sql_andor p.manufacturer_id = '". (int)$filter['manufacturer_id'] ."'" : false) ."
-        ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."')" : false) ."
-        ". (isset($filter['product_group_id']) ? "$sql_andor find_in_set('". (int)$filter['product_group_id'] ."', p.product_groups)" : false) ."
         ". (isset($filter['products']) ? "$sql_andor p.id in ('". implode("', '", $filter['products']) ."')" : false) ."
-        ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
         ". (!empty($sql_where_prices) ? $sql_where_prices : false) ."
         ". (!empty($filter['purchased']) ? "$sql_andor purchases" : false) ."
       )

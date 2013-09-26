@@ -19,8 +19,8 @@
   
   $products_query = $system->functions->catalog_products_query(array(
     'product_name' => $product->name[$system->language->selected['code']],
-    'category_id' => isset($_GET['category_id']) ? $_GET['category_id'] : array_shift(array_keys($product->categories)),
-    'manufacturer_id' => $product->manufacturer_id,
+    'categories' => isset($_GET['category_id']) ? array($_GET['category_id']) : array_keys($product->categories),
+    'manufacturers' => array($product->manufacturer_id),
     'product_groups' => $product_groups,
     'exclude_products' => $product->id,
     'keywords' => $keywords,
