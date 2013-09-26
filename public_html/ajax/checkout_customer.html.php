@@ -106,46 +106,49 @@
       if (empty($system->customer->data['id'])) {
         if ($system->settings->get('register_guests')) {
           
-          $customer = new ctrl_customer();
-          $customer->data = $system->customer->data;
-          $customer->save();
-          
-          if (empty($_POST['password'])) $_POST['password'] = $system->functions->password_generate(6);
-          $customer->set_password($_POST['password']);
-          
-          $email_message = $system->language->translate('email_subject_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your e-mail address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
-          
-          $translations = array(
-            '%store_name' => $system->settings->get('store_name'),
-            '%store_link' => $system->document->link(WS_DIR_HTTP_HOME),
-            '%customer_firstname' => $_POST['firstname'],
-            '%customer_lastname' => $_POST['lastname'],
-            '%customer_email' => $_POST['email'],
-            '%customer_password' => $_POST['password']
+          $customer_query = $system->database->query(
+            "select id from ". DB_TABLE_CUSTOMERS ."
+            where email = '". $system->database->input($system->customer->data['email']) ."'
+            limit 1;"
           );
+          $customer = $system->database->fetch($customer_query);
           
-          foreach ($translations as $needle => $replace) {
-            $email_message = str_replace($needle, $replace, $email_message);
+          if (empty($customer)) {
+            $customer = new ctrl_customer();
+            $customer->data = $system->customer->data;
+            $customer->save();
+            
+            if (empty($_POST['password'])) $_POST['password'] = $system->functions->password_generate(6);
+            $customer->set_password($_POST['password']);
+            
+            $email_message = $system->language->translate('email_subject_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your e-mail address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
+            
+            $translations = array(
+              '%store_name' => $system->settings->get('store_name'),
+              '%store_link' => $system->document->link(WS_DIR_HTTP_HOME),
+              '%customer_firstname' => $_POST['firstname'],
+              '%customer_lastname' => $_POST['lastname'],
+              '%customer_email' => $_POST['email'],
+              '%customer_password' => $_POST['password']
+            );
+            
+            foreach ($translations as $needle => $replace) {
+              $email_message = str_replace($needle, $replace, $email_message);
+            }
+            
+            $system->functions->email_send(
+              $system->settings->get('store_email'),
+              $_POST['email'],
+              $system->language->translate('email_subject_customer_account_created', 'Customer Account Created'),
+              $email_message
+            );
+            
+            $system->notices->add('success', $system->language->translate('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
+            
+          // Login user
+            $system->customer->load($customer->data['id']);
           }
-          
-          $system->functions->email_send(
-            $system->settings->get('store_email'),
-            $_POST['email'],
-            $system->language->translate('email_subject_customer_account_created', 'Customer Account Created'),
-            $email_message
-          );
-          
-          $system->notices->add('success', $system->language->translate('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
-          
-        // Login user
-          $system->customer->load($customer->data['id']);
-        }
-        
-      } else if (!empty($_POST['set_default_addresses'])) {
-        
-          $customer = new ctrl_customer();
-          $customer->data = $system->customer->data;
-          $customer->save();
+        } 
       }
       
       header('Location: '. $system->document->link());
@@ -161,8 +164,6 @@
         <table style="width: 100%;">
           <tr>
             <td width="50%" align="left" style="vertical-align: top;">
-              
-              <!--<?php if (empty($system->customer->data['id'])) { ?><h3 style="margin: 0;"><?php echo $system->language->translate('title_new_customer', 'New Customer'); ?></h3><?php } ?>-->
               <table>
                 <tr>
                   <td><?php echo $system->language->translate('title_tax_id', 'Tax ID'); ?><br />
