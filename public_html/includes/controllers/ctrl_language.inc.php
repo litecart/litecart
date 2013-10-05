@@ -40,6 +40,26 @@
               "alter table ". DB_TABLE_TRANSLATIONS ."
               change `text_". $GLOBALS['system']->database->input($language['code']) ."` `text_". $GLOBALS['system']->database->input($this->data['code']) ."` text not null;"
             );
+            $info_tables = array(
+              DB_TABLE_CATEGORIES_INFO,
+              DB_TABLE_DELIVERY_STATUSES_INFO,
+              DB_TABLE_MANUFACTURERS_INFO,
+              DB_TABLE_OPTION_GROUPS_INFO,
+              DB_TABLE_OPTION_VALUES_INFO,
+              DB_TABLE_ORDER_STATUSES_INFO,
+              DB_TABLE_PAGES_INFO,
+              DB_TABLE_PRODUCTS_INFO,
+              DB_TABLE_PRODUCT_GROUPS_INFO,
+              DB_TABLE_PRODUCT_GROUPS_VALUES_INFO,
+              DB_TABLE_SOLD_OUT_STATUSES_INFO,
+            );
+            foreach ($info_tables as $table) {
+              $GLOBALS['system']->database->query(
+                "update ". $table ."
+                set language_code = '". $this->data['code'] ."'
+                where language_code = '". $language['code'] ."';"
+              );
+            }
           }
         }
       }
