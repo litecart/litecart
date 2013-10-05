@@ -26,7 +26,7 @@
         $absolutes[] = $part;
       }
     }
-    return ((PHP_OS != 'WIN ') ? '/' : '') . implode('/', $absolutes);
+    return ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? '' : '/') . implode('/', $absolutes);
   }
   
   $installation_path = get_absolute_path(dirname(__FILE__) .'/..') .'/';
@@ -240,6 +240,24 @@
     (`id`, `status`, `username`, `password`, `date_updated`, `date_created`)
     values ('1', '1', '". $database->input($_POST['username']) ."', '". password_hash('1', $_POST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
+  
+  ## Windows OS Adjustments ###################################
+  
+  if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+    $database->query(
+      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
+      set locale = 'english',
+      charset = 'ISO-8859-1'
+      where code = 'en'
+      limit 1;"
+    );
+    $database->query(
+      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_currencies`') ."
+      set suffix = ' EUR'
+      where code = 'EUR'
+      limit 1;"
+    );
+  }
   
   ### ###################################
   

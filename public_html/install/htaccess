@@ -43,10 +43,12 @@ Options -Indexes
 </FilesMatch>
 
 # Cacheable external content
-<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
-  Header set Cache-Control "max-age=864000, public, must-revalidate"
-  Header unset Last-Modified
-</FilesMatch>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
+    Header set Cache-Control "max-age=864000, public, must-revalidate"
+    Header unset Last-Modified
+  </FilesMatch>
+</IfModule>
 
 # GZip compress external content
 <IfModule mod_deflate.c>

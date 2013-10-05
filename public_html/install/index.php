@@ -15,7 +15,7 @@
         $absolutes[] = $part;
       }
     }
-    return ((PHP_OS != 'WIN ') ? '/' : '') . implode('/', $absolutes);
+    return ((substr(PHP_OS, 0, 3) == 'WIN') ? '' : '/') . implode('/', $absolutes);
   }
   
   $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
@@ -90,11 +90,11 @@ a:hover, a:active{
         <li>Register globals = Off <?php echo (in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0'))) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[On]</span>'; ?></li>
         <li>Extensions
           <ul>
-            <li>curl <?php echo in_array('curl', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>exif <?php echo in_array('exif', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>mbstring <?php echo in_array('mbstring', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>mysql / mysqli <?php echo in_array('mysql', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>gd <?php echo in_array('gd', get_loaded_extensions()) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>curl <?php echo extension_loaded('curl') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>exif <?php echo extension_loaded('exif') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>mbstring <?php echo extension_loaded('mbstring') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>mysql / mysqli <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>gd <?php echo extension_loaded('gd') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
           </ul>
         </li>
       </ul>
