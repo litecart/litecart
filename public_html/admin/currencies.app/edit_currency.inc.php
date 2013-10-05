@@ -108,8 +108,8 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?></strong><br />
-        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny"'); ?>
+      <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 4217)</strong><br />
+        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>

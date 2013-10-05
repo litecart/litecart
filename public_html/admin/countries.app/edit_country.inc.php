@@ -72,12 +72,12 @@
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2)</strong><br />
-          <?php echo $system->functions->form_draw_text_field('iso_code_2', true, 'data-size="tiny"'); ?>
+          <?php echo $system->functions->form_draw_text_field('iso_code_2', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?>
         </td>
       </tr>
       <tr>
         <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3)</strong><br />
-          <?php echo $system->functions->form_draw_text_field('iso_code_3', true, 'data-size="tiny"'); ?>
+          <?php echo $system->functions->form_draw_text_field('iso_code_3', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?>
         </td>
       </tr>
       <tr>
