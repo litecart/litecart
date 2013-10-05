@@ -33,7 +33,7 @@
         'sensor' => 'false',
       );
       
-      $response = $this->system->functions->http_request('http://maps.googleapis.com/maps/api/geocode/xml?'. http_build_query($params));
+      $response = $this->system->functions->http_fetch('http://maps.googleapis.com/maps/api/geocode/xml?'. http_build_query($params));
       
       if (empty($response)) return;
       $response = simplexml_load_string($response);

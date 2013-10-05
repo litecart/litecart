@@ -39,7 +39,7 @@
         
         if ($currency_code == $GLOBALS['system']->settings->get('store_currency_code')) continue;
         
-        $rawdata = $GLOBALS['system']->functions->http_request('http://www.google.com/ig/calculator?hl=en&q=1'. $GLOBALS['system']->settings->get('store_currency_code') .'=?'. $currency_code);
+        $rawdata = $GLOBALS['system']->functions->http_fetch('http://www.google.com/ig/calculator?hl=en&q=1'. $GLOBALS['system']->settings->get('store_currency_code') .'=?'. $currency_code);
         
         if (empty($rawdata)) trigger_error('Could not update currency value for '. $currency_code, E_USER_WARNING);
         

@@ -1,6 +1,6 @@
 <?php
   
-  $rss = $system->functions->http_request('http://www.litecart.net/feeds/addons');
+  $rss = $system->functions->http_fetch('http://www.litecart.net/feeds/addons');
   
   $rss = simplexml_load_string($rss);
   
