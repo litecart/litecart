@@ -116,7 +116,7 @@
         return;
       }
       
-      if (date('Y-m-d', strtotime($user['date_expires'])) > '1970' && date('Y-m-d H:i:s') > $user['date_expires']) {
+      if (date('Y', strtotime($user['date_expires'])) > '1970' && date('Y-m-d H:i:s') > $user['date_expires']) {
         $GLOBALS['system']->notices->add('errors', sprintf($GLOBALS['system']->language->translate('error_account_expired', 'The account expired %s'), strftime($GLOBALS['system']->language->selected['format_datetime'], strtotime($user['date_expires']))));
         return;
       }
