@@ -47,7 +47,7 @@
       
     // If file is an url
       if (substr($this->_src, 0, 7) == 'http://' || substr($this->_src, 0, 8) == 'https://') {
-        return $this->load_from_string($system->functions->http_request($this->_src), pathinfo($this->_src, PATHINFO_EXTENSION));
+        return $this->load_from_string($GLOBALS['system']->functions->http_fetch($this->_src), pathinfo($this->_src, PATHINFO_EXTENSION));
       }
       
     // Make sure source is an existing file
