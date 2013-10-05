@@ -337,7 +337,7 @@
           
           $sql_currency_options = "";
           foreach (array_keys($GLOBALS['system']->currency->currencies) as $currency_code) {
-            $sql_currency_options .= $currency_code ." = '". (float)$this->data['options'][$key][$currency_code] ."', ";
+            $sql_currency_options .= $currency_code ." = '". (isset($this->data['options'][$key][$currency_code]) ? (float)$this->data['options'][$key][$currency_code] : 0) ."', ";
           }
           
           $GLOBALS['system']->database->query(
