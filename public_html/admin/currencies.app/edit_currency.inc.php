@@ -76,10 +76,6 @@
   
   if (!empty($_POST['delete'])) {
   
-    if ($currency->data['code'] == 'en') {
-      $system->notices->add('errors', $system->language->translate('error_cannot_delete_framework_currency', 'You cannot delete the PHP framework currency. But you can disable it.'));
-    }
-
     if ($currency->data['code'] == $system->settings->get('default_currency_code')) {
       $system->notices->add('errors', $system->language->translate('error_cannot_delete_default_currency', 'You must change the default currency before it can be deleted.'));
     }
