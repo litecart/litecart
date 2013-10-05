@@ -32,7 +32,7 @@
     }
   }
   
-  function password_hash($login, $password) {
+  function password_checksum($login, $password) {
     if (!defined('PASSWORD_SALT')) trigger_error('There is no password salt defined.', E_USER_ERROR);
     if (strlen($password) < 2) {
       return hash('sha256', $login . $password . PASSWORD_SALT);
