@@ -40,7 +40,7 @@
   define('DB_PASSWORD', '{DB_PASSWORD}');
   define('DB_DATABASE', '{DB_DATABASE}');
   define('DB_TABLE_PREFIX', '{DB_TABLE_PREFIX}');
-  define('DB_DATABASE_CHARSET', 'utf8'); // utf8 or latin1
+  define('DB_DATABASE_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1
   define('DB_PERSISTENT_CONNECTIONS', 'false');
   
 // Database tables
