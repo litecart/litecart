@@ -53,7 +53,7 @@
         'shipping_country_code' => 'country_code',
         'shipping_zone_code' => 'zone_code',
       );
-      foreach ($key_map as $skey => $tkey){
+      foreach ($key_map as $skey => $tkey) {
         $this->data['shipping_address'][$tkey] = $customer[$skey];
       }
     }

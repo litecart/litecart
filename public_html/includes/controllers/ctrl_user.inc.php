@@ -102,7 +102,7 @@
       
       $this->save();
       
-      $password_hash = $GLOBALS['system']->functions->password_hash($this->data['id'], $password, PASSWORD_SALT);
+      $password_hash = $GLOBALS['system']->functions->password_checksum($this->data['id'], $password, PASSWORD_SALT);
       
       $GLOBALS['system']->database->query(
         "update ". DB_TABLE_USERS ."
