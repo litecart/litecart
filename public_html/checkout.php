@@ -165,7 +165,7 @@
       },
       success: function(data) {
         $('#checkout-cart-wrapper').html(data).fadeTo('slow', 1);
-        if (jQuery.isFunction(updateCart)) updateCart();
+        if (jQuery.isFunction(window.updateCart)) updateCart();
         refreshCustomer();
         refreshShipping();
         refreshPayment();
@@ -233,7 +233,7 @@
         $("#box-checkout-account button[name='set_addresses']").attr('disabled', 'disabled');
         stateCustomerChanged = false;
         $('#checkout-customer-wrapper').html(data);
-        if (jQuery.isFunction(updateCart)) updateCart();
+        if (jQuery.isFunction(window.updateCart)) updateCart();
         refreshCart();
         refreshShipping();
         refreshPayment();
