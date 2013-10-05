@@ -254,7 +254,7 @@
                   $product_option['price_adjust'] = $product_option[$this->_currency_code];
                   break;
                 case '*':
-                  $product_option['price_adjust'] = (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) - (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) * $configuration[$this->_currency_code];
+                  $product_option['price_adjust'] = (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) - (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) * $product_option[$this->_currency_code];
                   break;
                 default:
                   trigger_error('Unknown price operator for option', E_USER_WARNING);
