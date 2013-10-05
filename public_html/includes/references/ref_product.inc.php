@@ -209,7 +209,7 @@
             // Fix missing translations
               foreach (array('name', 'description') as $key) {
                 foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-                  if (!isset($this->_data['options'][$product_option['group_id']][$key][$language_code])) $this->_data['options'][$product_option['group_id']][$key][$language_code] = $this->_data['options'][$product_option['group_id']][$key][$GLOBALS['system']->settings->get('default_language_code')];
+                  $this->_data['options'][$product_option['group_id']][$key][$language_code] = isset($this->_data['options'][$product_option['group_id']][$key][$GLOBALS['system']->settings->get('default_language_code')]) ? $this->_data['options'][$product_option['group_id']][$key][$GLOBALS['system']->settings->get('default_language_code')] : '';
                 }
               }
             }

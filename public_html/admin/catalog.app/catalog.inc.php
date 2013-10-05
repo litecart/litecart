@@ -119,7 +119,7 @@
         $system->notices->add('success', sprintf($system->language->translate('success_unmounted_d_products', 'Unmounted %d products'), count($_POST['products'])));
       }
       
-      if (in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
+      if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
       
       header('Location: '. $system->document->link('', array(), true));
       exit;
