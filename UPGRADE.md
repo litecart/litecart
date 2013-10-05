@@ -9,8 +9,6 @@ In this early stage there are no upgrade tools available for upgrading from an o
 ## LiteCart 1.0.1. to 1.0.1.1 ##
   No changes
   
-## LiteCart 1.0.1.1 to 1.0.2 ##
-  
-	INSERT INTO `lc_settings` (`id`, `setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
-	VALUES (NULL, '', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', '', NOW(), NOW());
+## LiteCart 1.0.1. to 1.0.1.2 ##
+  No changes
   
