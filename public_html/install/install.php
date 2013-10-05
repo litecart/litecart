@@ -238,7 +238,7 @@
   $database->query(
     "insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_users`') ."
     (`id`, `status`, `username`, `password`, `date_updated`, `date_created`)
-    values ('1', '1', '". $database->input($_POST['username']) ."', '". password_hash('1', $_POST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+    values ('1', '1', '". $database->input($_POST['username']) ."', '". password_checksum('1', $_POST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
   
   ## Windows OS Adjustments ###################################

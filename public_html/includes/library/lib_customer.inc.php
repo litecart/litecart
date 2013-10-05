@@ -142,7 +142,7 @@
       
       $customer_query = $GLOBALS['system']->database->query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set password = '". $GLOBALS['system']->functions->password_hash($email, $new_password) ."'
+        set password = '". $GLOBALS['system']->functions->password_checksum($email, $new_password) ."'
         where email = '". $GLOBALS['system']->database->input($email) ."'
         limit 1;"
       );
@@ -199,7 +199,7 @@
       $customer_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where email = '". $GLOBALS['system']->database->input($email) ."'
-        and password = '". $GLOBALS['system']->functions->password_hash($email, $password) ."'
+        and password = '". $GLOBALS['system']->functions->password_checksum($email, $password) ."'
         limit 1;"
       );
       $customer = $GLOBALS['system']->database->fetch($customer_query);

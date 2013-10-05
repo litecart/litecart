@@ -25,6 +25,13 @@
     return $password;
   }
   
+  if (!function_exists('password_hash')) {
+    function password_hash($login, $password) {
+      trigger_error('password_hash() is deprecated due to name collision in PHP 5.5. Use password_checksum() instead.', E_USER_DEPRECATED);
+      return password_checksum($login, $password);
+    }
+  }
+  
   function password_hash($login, $password) {
     if (!defined('PASSWORD_SALT')) trigger_error('There is no password salt defined.', E_USER_ERROR);
     if (strlen($password) < 2) {

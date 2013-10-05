@@ -123,7 +123,7 @@
         $this->save();
       }
       
-      $password_hash = $GLOBALS['system']->functions->password_hash($this->data['email'], $password, PASSWORD_SALT);
+      $password_hash = $GLOBALS['system']->functions->password_checksum($this->data['email'], $password, PASSWORD_SALT);
       
       $GLOBALS['system']->database->query(
         "update ". DB_TABLE_CUSTOMERS ."
