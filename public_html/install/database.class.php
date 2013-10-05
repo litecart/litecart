@@ -69,9 +69,11 @@
         'iso-2022-kr' => 'euckr',
         'utf-8' => 'utf8',
         'utf-16' => 'utf16',
+        'windows-1250' => 'cp1250',
         'windows-1251' => 'cp1251',
-        'windows-1252' => 'cp1252',
+        'windows-1252' => 'latin1',
         'windows-1256' => 'cp1256',
+        'windows-1257' => 'cp1257',
       );
       
       if (empty($charset_map[$charset])) {
