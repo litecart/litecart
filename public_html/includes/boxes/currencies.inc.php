@@ -5,7 +5,7 @@
 <?php
   foreach ($system->currency->currencies as $currency) {
     if ($currency['status']) {
-      echo '<li><a href="javascript:set_currency(\''. $currency['code'] .'\');">'. ($currency['prefix']) . trim($currency['suffix']) .'</a></li>' . PHP_EOL;
+      echo '<li><a href="javascript:set_currency(\''. $currency['code'] .'\');">'. $currency['code'] .'</a></li>' . PHP_EOL;
     }
   }
 ?>
