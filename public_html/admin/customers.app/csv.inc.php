@@ -12,7 +12,7 @@
         
         $customers_query = $system->database->query(
           "select id from ". DB_TABLE_CUSTOMERS ."
-          where email = '". $row['email'] ."'
+          where email = '". $system->database->input($row['email']) ."'
           limit 1;"
         );
         $customer = $system->database->fetch($customers_query);

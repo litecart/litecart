@@ -6,37 +6,73 @@
     
       $csv = file_get_contents($_FILES['file']['tmp_name']);
       
+      if (empty($_POST['delimiter'])) {
+        preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
+        if (strpos($matches[1], ',') !== false) {
+          $_POST['delimiter'] = ',';
+        } elseif (strpos($matches[1], ';') !== false) {
+          $_POST['delimiter'] = ';';
+        } elseif (strpos($matches[1], "\t") !== false) {
+          $_POST['delimiter'] = "\t";
+        } elseif (strpos($matches[1], '|') !== false) {
+          $_POST['delimiter'] = '|';
+        } else {
+          trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
+        }
+      }
+      
       $csv = $system->functions->csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
       
+      $num_inserted_translations = 0;
+      $num_updated_translations = 0;
+      
       foreach ($csv as $row) {
+      
         $translation_query = $system->database->query(
-          "select code from ". DB_TABLE_TRANSLATIONS ."
+          "select * from ". DB_TABLE_TRANSLATIONS ."
           where code = '". $row['code'] ."'
           limit 1;"
         );
         $translation = $system->database->fetch($translation_query);
         
         if (empty($translation)) {
-          $system->database->query(
-            "insert into ". DB_TABLE_TRANSLATIONS ."
-            (code)
-            values ('". $system->database->input($row['code']) ."');"
-          );
-        }
         
-        foreach (array_slice(array_keys($row), 1) as $language_code) {
-          if (empty($row['text_'.$language_code]) || empty($_POST['overwrite'])) {
+          if (empty($_POST['insert'])) {
             $system->database->query(
-              "update ". DB_TABLE_TRANSLATIONS ."
-              set text_". $language_code ." = '". $row[$language_code] ."'
-              where code = '". $row['code'] ."'
-              limit 1;"
+              "insert into ". DB_TABLE_TRANSLATIONS ."
+              (code)
+              values ('". $system->database->input($row['code']) ."');"
             );
+            foreach (array_slice(array_keys($row), 1) as $language_code) {
+              if (empty($translation['text_'.$language_code]) || !empty($_POST['overwrite'])) {
+                $system->database->query(
+                  "update ". DB_TABLE_TRANSLATIONS ."
+                  set text_". $language_code ." = '". $system->database->input($row[$language_code], true) ."'
+                  where code = '". $row['code'] ."'
+                  limit 1;"
+                );
+                $num_inserted_translations++;
+              }
+            }
+          }
+          
+        } else {
+          
+          foreach (array_slice(array_keys($row), 1) as $language_code) {
+            if (!empty($_POST['overwrite']) || (empty($translation['text_'.$language_code]) && !empty($row[$language_code]))) {
+              $system->database->query(
+                "update ". DB_TABLE_TRANSLATIONS ."
+                set text_". $language_code ." = '". $system->database->input($row[$language_code], true) ."'
+                where code = '". $row['code'] ."'
+                limit 1;"
+              );
+              $num_updated_translations++;
+            }
           }
         }
       }
       
-      $system->notices->add('success', $system->language->translate('success_translations_imported', 'Translations successfully imported'));
+      $system->notices->add('success', sprintf($system->language->translate('success_d_translations_imported', 'Inserted %d new translations, updated %d translations'), $num_inserted_translations, $num_updated_translations));
       
       header('Location: '. $system->document->link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
@@ -105,14 +141,14 @@
     <td style="width: 50%; vertical-align: top;">
       <?php echo $system->functions->form_draw_form_begin('import_form', 'post', '', true); ?>
       <h3><?php echo $system->language->translate('title_import_from_csv', 'Import From CSV'); ?></h3>
-      <table border="0" cellpadding="5" cellspacing="0" style="margin: -5px;">
+      <table border="0" cellpadding="5" cellspacing="0">
         <tr>
           <td colspan="3"><?php echo $system->language->translate('title_csv_file', 'CSV File'); ?></br>
             <?php echo $system->functions->form_draw_file_field('file'); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
-            <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
+            <?php echo $system->functions->form_draw_select_field('delimiter', array(array($system->language->translate('title_auto', 'Auto') .' ('. $system->language->translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
           <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
             <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"')), true, false, 'data-size="auto"'); ?></td>
           <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
@@ -125,7 +161,10 @@
           <td></td>
         </tr>
         <tr>
-          <td colspan="3"><label><?php echo $system->functions->form_draw_checkbox('overwrite', '1'); ?> <?php echo $system->language->translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></td>
+          <td colspan="3">
+            <label><?php echo $system->functions->form_draw_checkbox('insert', '1', isset($_POST['insert']) ? $_POST['insert'] : '1'); ?> <?php echo $system->language->translate('text_insert_new_entries', 'Insert new entries'); ?></label><br />
+            <label><?php echo $system->functions->form_draw_checkbox('overwrite', '1', isset($_POST['insert']) ? $_POST['insert'] : ''); ?> <?php echo $system->language->translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label>
+          </td>
         </tr>
         <tr>
           <td colspan="3"><?php echo $system->functions->form_draw_button('import', $system->language->translate('title_import', 'Import'), 'submit'); ?></td>
@@ -137,7 +176,7 @@
       <?php echo $system->functions->form_draw_form_begin('export_form', 'post'); ?>
       <h3><?php echo $system->language->translate('title_export_to_csv', 'Export To CSV'); ?></h3>
       <?php echo $system->language->translate('title_languages', 'Languages'); ?><br />
-      <table border="0" cellpadding="5" cellspacing="0" style="margin: -5px;">
+      <table border="0" cellpadding="5" cellspacing="0">
         <tr>
           <td colspan="3"><?php echo $system->functions->form_draw_languages_list('language_codes[]', true, true).' '; ?></td>
         </tr>
