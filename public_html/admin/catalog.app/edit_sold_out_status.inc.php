@@ -18,6 +18,8 @@
     
     if (!$system->notices->get('errors')) {
     
+      if (empty($_POST['orderable'])) $_POST['orderable'] = 0;
+    
       $fields = array(
         'name',
         'description',
