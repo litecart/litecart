@@ -6,6 +6,21 @@
     
       $csv = file_get_contents($_FILES['file']['tmp_name']);
       
+      if (empty($_POST['delimiter'])) {
+        preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
+        if (strpos($matches[1], ',') !== false) {
+          $_POST['delimiter'] = ',';
+        } elseif (strpos($matches[1], ';') !== false) {
+          $_POST['delimiter'] = ';';
+        } elseif (strpos($matches[1], "\t") !== false) {
+          $_POST['delimiter'] = "\t";
+        } elseif (strpos($matches[1], '|') !== false) {
+          $_POST['delimiter'] = '|';
+        } else {
+          trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
+        }
+      }
+      
       $csv = $system->functions->csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
       
       foreach ($csv as $row) {
@@ -108,7 +123,7 @@
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_delimiter', 'Delimiter'); ?><br />
-            <?php echo $system->functions->form_draw_select_field('delimiter', array(array(', ('. $system->language->translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
+            <?php echo $system->functions->form_draw_select_field('delimiter', array(array($system->language->translate('title_auto', 'Auto') .' ('. $system->language->translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true, false, 'data-size="auto"'); ?></td>
           <td><?php echo $system->language->translate('title_enclosure', 'Enclosure'); ?><br />
             <?php echo $system->functions->form_draw_select_field('enclosure', array(array('" ('. $system->language->translate('text_default', 'default') .')', '"')), true, false, 'data-size="auto"'); ?></td>
           <td><?php echo $system->language->translate('title_escape_character', 'Escape Character'); ?><br />
