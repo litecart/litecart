@@ -20,6 +20,19 @@
   
   $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
   
+  function return_bytes($val) {
+    $val = trim($val);
+    switch(strtolower($val[strlen($val)-1])) {
+      case 'g':
+        $val *= 1024;
+      case 'm':
+        $val *= 1024;
+      case 'k':
+        $val *= 1024;
+    }
+    return $val;
+  }
+  
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -73,6 +86,11 @@ a:hover, a:active{
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
 }
+
+span.ok {
+  color: #0c0;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -84,17 +102,23 @@ a:hover, a:active{
   
   <h2>System Requirements</h2>
   <ul>
-    <li>Linux Machine <?php echo (PHP_OS == 'Linux') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">['. PHP_OS .']</span>'; ?></li>
-    <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span style="color: #0a0;">['. PHP_VERSION .']</span>' : '<span style="color: #f00;">['. PHP_VERSION .']</span>'; ?>
+    <li>Linux Machine <?php echo (PHP_OS == 'Linux') ? '<span class="ok">[OK]</span>' : '<span class="error">['. PHP_OS .']</span>'; ?></li>
+    <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span style="">['. PHP_VERSION .']</span>'; ?>
       <ul>
-        <li>Register globals = Off <?php echo (in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0'))) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[On]</span>'; ?></li>
+        <li>Settings
+          <ul>
+            <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+            <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+            <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+          </ul>
+        </li>
         <li>Extensions
           <ul>
-            <li>curl <?php echo extension_loaded('curl') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>exif <?php echo extension_loaded('exif') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>mbstring <?php echo extension_loaded('mbstring') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>mysql / mysqli <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
-            <li>gd <?php echo extension_loaded('gd') ? '<span style="color: #0a0;">[OK]</span>' : '<span style="color: #f00;">[Missing]</span>'; ?></li>
+            <li>curl <?php echo extension_loaded('curl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>exif <?php echo extension_loaded('exif') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mysql / mysqli <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>gd <?php echo extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
           </ul>
         </li>
       </ul>
@@ -129,11 +153,11 @@ a:hover, a:active{
   );
   foreach($files as $file) {
     if (file_exists($file) && is_writable('../' . $file)) {
-      echo '      <li>~/'. $file .' <span style="color: #0a0;">[OK]</span></li>' . PHP_EOL;
+      echo '      <li>~/'. $file .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($file, PATHINFO_DIRNAME))) {
-      echo '      <li>~/'. $file .' <span style="color: #0a0;">[OK]</span></li>' . PHP_EOL;
+      echo '      <li>~/'. $file .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '      <li>~/'. $file .' <span style="color: #f00;">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+      echo '      <li>~/'. $file .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
   }
 ?>
