@@ -105,7 +105,7 @@
       
       if (substr($parts['path'], 0, strlen(WS_DIR_HTTP_HOME)) == WS_DIR_HTTP_HOME) $parts['path'] = substr($parts['path'], strlen(WS_DIR_HTTP_HOME));
       
-      return $parts['path'] . (!empty($parts['query']) ? '?'. http_build_query($parts['query']) : '');
+      return $parts['path'] . (!empty($parts['query']) ? '?'. http_build_query($parts['query'], '', '&') : '');
     }
     
     public function fullpath($path) {
@@ -213,7 +213,7 @@
             . (!empty($parts['host']) ? $parts['host'] : '')
             . (!empty($parts['port']) ? ':' . $parts['port'] : '')
             . $parts['path']
-            . (!empty($parts['query']) ? '?' . http_build_query($parts['query']) : '')
+            . (!empty($parts['query']) ? '?' . http_build_query($parts['query'], '', '&') : '')
             . (!empty($parts['fragment']) ? '#' . $parts['fragment'] : '');
             
       return $link;
