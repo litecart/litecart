@@ -247,7 +247,7 @@
 </script>
 
 <?php
-  if ($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME'] == __FILE__) {
+  if (FS_DIR_HTTP_ROOT . $_SERVER['SCRIPT_NAME'] == __FILE__) {
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
   }
 ?>

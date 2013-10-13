@@ -7,7 +7,7 @@
 ######################################################################
   
 // File System
-  define('FS_DIR_HTTP_ROOT', str_replace("\\", '/', realpath($_SERVER['DOCUMENT_ROOT'])));
+  define('FS_DIR_HTTP_ROOT', rtrim(str_replace("\\", '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
   
 // Web System
   define('WS_DIR_HTTP_HOME', str_replace(FS_DIR_HTTP_ROOT, '', str_replace("\\", '/', realpath(dirname(__FILE__) . '/' . '..') . '/')));

@@ -96,7 +96,7 @@
     
     if (!$image->write($target . $filename, $target_extension, 90)) return;
     
-    return str_replace(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '', str_replace('\\', '/', realpath($target . $filename)));
+    return str_replace(FS_DIR_HTTP_ROOT, '', str_replace('\\', '/', realpath($target . $filename)));
   }
   
 ?>
