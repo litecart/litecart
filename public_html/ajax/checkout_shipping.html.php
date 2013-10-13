@@ -18,7 +18,7 @@
     } else {
       $shipping->select($module_id, $option_id);
     }
-    header('Location: '. (($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME'] == __FILE__) ? $_SERVER['REQUEST_URI'] : $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php')));
+    header('Location: '. ((FS_DIR_HTTP_ROOT . $_SERVER['SCRIPT_NAME'] == __FILE__) ? $_SERVER['REQUEST_URI'] : $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php')));
     exit;
   }
   
