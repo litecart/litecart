@@ -1,5 +1,5 @@
 <?php
-  if (FS_DIR_HTTP_ROOT . $_SERVER['SCRIPT_NAME'] == __FILE__) {
+  if (rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $_SERVER['SCRIPT_NAME'] == __FILE__) {
     require_once('../includes/app_header.inc.php');
     header('Content-type: text/html; charset='. $system->language->selected['charset']);
     $system->document->layout = 'ajax';
@@ -55,50 +55,47 @@
 
 <?php if (count($system->cart->data['items']) > 1) { ?>
 <script type="text/javascript">
-  var totWidth=0;
+  var current = 1;
+  var totalWidth = 0;
   var positions = new Array();
   
+// Traverse through all the slides and store their accumulative widths in totalWidth
   $('#box-checkout-cart .viewport .items .item').each(function(i) {
-    /* Traverse through all the slides and store their accumulative widths in totWidth */
-    positions[i]= totWidth;
-    totWidth += $(this).width();
+    positions[i] = totalWidth;
+    totalWidth += $(this).width();
   });
   
-  $('#box-checkout-cart .viewport .items').width(totWidth);
+  $('#box-checkout-cart .viewport .items').width(totalWidth);
   
-  /* Change the container's width to the exact width of all the slides combined */
-  $('#box-checkout-cart .shortcuts li a').click(function(e,keepScroll) {
+// On a thumbnail click - Change the container's width to the exact width of all the slides combined
+  $('#box-checkout-cart .shortcut a').click(function(e,keepScroll) {
     e.preventDefault();
     
-    /* On a thumbnail click */
-    $('#box-checkout-cart .shortcuts li + a').removeClass('act').addClass('inact');
+
+    $('#box-checkout-cart .shortcut a').removeClass('act').addClass('inact');
     $(this).addClass('act');
     
-    var pos = $(this).prevAll('#box-checkout-cart .shortcuts').index(this);
-    $('#box-checkout-cart .viewport .items').stop().animate({marginLeft:-positions[pos]+'px'},450);
+    var index = $('#box-checkout-cart .shortcut a').index(this);
+    $('#box-checkout-cart .viewport .items').stop().animate({marginLeft:-positions[index]+'px'}, 400); // slide
+    //$('#box-checkout-cart .viewport .items').stop().fadeOut('fast').animate({marginLeft: -positions[index]+'px'}, 0).fadeIn('fast'); // fade
     
     if (!keepScroll) clearInterval(itvl);
   });
   
-  /* On page load, mark the first thumbnail as active */
+// On page load, mark the first thumbnail as active
   $('#box-checkout-cart .shortcut a:first').addClass('act').siblings().addClass('inact');
   
-  /* Clear timer */
+// Initiate the auto-advance timer
+  var itvl = setInterval(function(){
+    if (current == -1) return false;
+    $('#box-checkout-cart .shortcut a').eq(current%$('#box-checkout-cart .shortcut a').length).trigger('click',[true]);
+    current++;
+  }, 3000);
+  
+// Clear timer
   $('#box-checkout-cart').click(function(e,keepScroll) {
     if (!keepScroll) clearInterval(itvl);
   });
-  
-  var current=1;
-  function autoAdvance() {
-    if(current==-1) return false;
-    $('#box-checkout-cart .shortcut a').eq(current%$('#box-checkout-cart .shortcut a').length).trigger('click',[true]);
-    current++;
-  }
-  
-  // The number of seconds that the slider will auto-advance in:
-  var cartStepInterval = 3;
-  if (itvl) clearInterval(itvl);
-  var itvl = setInterval(function(){autoAdvance()}, cartStepInterval * 1000);
 </script>
 <?php } ?>
 
