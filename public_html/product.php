@@ -124,7 +124,7 @@
           <div style="margin-bottom: 10px;" class="tax">
 <?php
     if ($tax_rates = $system->tax->get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id)) {
-      if ($system->settings->get('display_prices_including_tax') == 'true') {
+      if ($system->settings->get('display_prices_including_tax')) {
         echo $system->language->translate('title_including_tax', 'Including Tax') .':<br/>' . PHP_EOL;
       } else {
         echo $system->language->translate('title_excluding_tax', 'Excluding Tax') .':<br/>' . PHP_EOL;
