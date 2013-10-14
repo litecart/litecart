@@ -6,6 +6,7 @@
     public $template = '';
     public $layout = 'default';
     public $snippets = array();
+    public $settings = array();
     
     public function __construct(&$system) {
     }
@@ -24,11 +25,11 @@
     // Set before-snippets
       $this->snippets['title'] = array($GLOBALS['system']->settings->get('store_name'));
       
-      $this->snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>' . PHP_EOL
+      $this->snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>' . PHP_EOL
                                              . '<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>' . PHP_EOL
                                              . '<script>' . PHP_EOL
-                                             . '  if (typeof jQuery == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.9.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
-                                             . '  if (typeof jQuery.migrateTrace == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.1.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '  if (typeof jQuery == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.10.2.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '  if (typeof jQuery.migrateTrace == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
       
       $this->snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
@@ -96,6 +97,9 @@
         if (is_array($this->snippets[$snippet])) $this->snippets[$snippet] = implode(PHP_EOL, $this->snippets[$snippet]);
       }
     }
+    
+    //public function before_output() {
+    //}
     
     //public function shutdown() {
     //}
