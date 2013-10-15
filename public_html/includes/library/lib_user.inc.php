@@ -129,7 +129,7 @@
       $user_query = $GLOBALS['system']->database->query(
         "select * from ". DB_TABLE_USERS ."
         where username = '". $GLOBALS['system']->database->input($username) ."'
-        and password = '". $GLOBALS['system']->functions->password_hash($user['id'], $password) ."'
+        and password = '". $GLOBALS['system']->functions->password_checksum($user['id'], $password) ."'
         limit 1;"
       );
       
