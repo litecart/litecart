@@ -86,9 +86,12 @@ a:hover, a:active{
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
 }
-
 span.ok {
   color: #0c0;
+  font-weight: bold;
+}
+span.error {
+  color: #f00;
   font-weight: bold;
 }
 </style>
@@ -103,7 +106,7 @@ span.ok {
   <h2>System Requirements</h2>
   <ul>
     <li>Linux Machine <?php echo (PHP_OS == 'Linux') ? '<span class="ok">[OK]</span>' : '<span class="error">['. PHP_OS .']</span>'; ?></li>
-    <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span style="">['. PHP_VERSION .']</span>'; ?>
+    <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
       <ul>
         <li>Settings
           <ul>

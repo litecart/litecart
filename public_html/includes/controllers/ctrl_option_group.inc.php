@@ -79,7 +79,7 @@
       $GLOBALS['system']->database->query(
         "update ". DB_TABLE_OPTION_GROUPS ."
         set function = '". $GLOBALS['system']->database->input($this->data['function']) ."',
-        required = '". (int)$this->data['required'] ."',
+        required = '". @(int)$this->data['required'] ."',
         sort = '". $GLOBALS['system']->database->input($this->data['sort']) ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -107,7 +107,7 @@
         
         $GLOBALS['system']->database->query(
           "update ". DB_TABLE_OPTION_GROUPS_INFO ."
-          set name = '". $GLOBALS['system']->database->input($this->data['name'][$language_code]) ."',
+          set name = '". @$GLOBALS['system']->database->input($this->data['name'][$language_code]) ."',
             description = '". @$GLOBALS['system']->database->input($this->data['description'][$language_code]) ."'
           where id = '". (int)$option_group_info['id'] ."'
           and group_id = '". (int)$this->data['id'] ."'
@@ -187,7 +187,7 @@
           
           $GLOBALS['system']->database->query(
             "update ". DB_TABLE_OPTION_VALUES_INFO ."
-            set name = '". $GLOBALS['system']->database->input($option_value['name'][$language_code]) ."'
+            set name = '". @$GLOBALS['system']->database->input($option_value['name'][$language_code]) ."'
             where id = '". (int)$option_value_info['id'] ."'
             and value_id = '". (int)$option_value['id'] ."'
             and language_code = '". $GLOBALS['system']->database->input($language_code) ."'
