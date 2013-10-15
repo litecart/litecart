@@ -2,3 +2,4 @@ Sitemap: feeds/sitemap.xml.php
 
 User-agent: *
 Allow: /
+Disallow: /*/cache/*
