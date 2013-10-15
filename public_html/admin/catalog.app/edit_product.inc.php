@@ -275,9 +275,9 @@ foreach (array_keys($system->language->languages) as $language_code) {
                   event.preventDefault();
                   var row = $(this).closest("tr");
                   
-                  if ($(this).is("#move-image-up") && $(row).prevAll().length > 0) {
+                  if ($(this).is(".move-up") && $(row).prevAll().length > 0) {
                     $(row).insertBefore(row.prev());
-                  } else if ($(this).is("#move-image-down") && $(row).nextAll().length > 0) {
+                  } else if ($(this).is(".move-down") && $(row).nextAll().length > 0) {
                     $(row).insertAfter($(row).next());
                   }
                 });
