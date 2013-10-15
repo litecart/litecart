@@ -75,8 +75,8 @@
 ?>
     <tr>
       <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_code]', true); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][country_name]', true); ?><?php echo $_POST['zones'][$key]['country_name']; ?></td>
-      <td align="left"><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?><?php echo $system->functions->form_draw_hidden_field('zones['. $key .'][zone_name]', true); ?><?php echo $_POST['zones'][$key]['zone_name']; ?></td>
+      <td align="left"><?php echo $system->functions->form_draw_countries_list('zones['. $key .'][country_code]', true); ?></td>
+      <td align="left"><?php echo $system->functions->form_draw_zones_list($_POST['zones'][$key]['country_code'], 'zones['. $key .'][zone_code]', true, false, '', 'all'); ?></td>
       <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
@@ -84,20 +84,22 @@
     }
 ?>
     <tr>
-      <td align="left">&nbsp;</td>
-      <td align="left"><?php echo $system->functions->form_draw_countries_list('country[code]', ''); ?></td>
-      <td align="left"><?php echo $system->functions->form_draw_zones_list('', 'zone[code]', ''); ?></td>
-      <td align="right"><?php echo $system->functions->form_draw_button('add_zone', $system->language->translate('title_add', 'Add'), 'button'); ?></td>
+      <td align="left" colspan="4"><a href="#" id="add_zone"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/add.png'; ?>" width="16" height="16" /></a></td>
     </tr>
   </table>
   
   <script type="text/javascript">
+    $("select[name$='[zone_code]'][disabled]").each(function() {
+      $(this).html('<option value="">-- '+ '<?php echo $system->language->translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
+    });
+  
     $("body").on("click", "#remove-zone", function(event) {
       event.preventDefault();
       $(this).closest('tr').remove();
     });
     
-    $("select[name='country[code]']").change(function(){
+    $("body").on("change", "select[name$='[country_code]']", function() {
+      var zone_field = $(this).closest('tr').find("select[name$='[zone_code]']");
       $('body').css('cursor', 'wait');
       $.ajax({
         url: '<?php echo WS_DIR_AJAX .'zones.json.php'; ?>?country_code=' + $(this).val(),
@@ -109,16 +111,16 @@
           alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
         },
         success: function(data) {
-          $('select[name=\'zone[code]\']').html('');
-          if ($('select[name=\'zone[code]\']').attr('disabled')) $('select[name=\'zone[code]\']').removeAttr('disabled');
+          $(zone_field).html('');
           if (data) {
-            $('select[name=\'zone[code]\']').append('<option value="">-- '+ '<?php echo $system->language->translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
+            $(zone_field).append('<option value="">-- '+ '<?php echo $system->language->translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
             $.each(data, function(i, zone) {
-              $('select[name=\'zone[code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+              $(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
             });
+            $(zone_field).removeAttr('disabled');
           } else {
-            $('select[name=\'zone[code]\']').append('<option value="">-- '+ '<?php echo $system->language->translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
-            $('select[name=\'zone[code]\']').attr('disabled', 'disabled');
+            $(zone_field).append('<option value="">-- '+ '<?php echo $system->language->translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
+            $(zone_field).attr('disabled', 'disabled');
           }
         },
         complete: function() {
@@ -128,21 +130,17 @@
     });
     
     var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
-    $("body").on("click", "button[name=add_zone]", function(event) {
+    $("body").on("click", "#add_zone", function(event) {
       event.preventDefault();
       if ($("select[name='country[code]']").find("option:selected").val() == "") return;
       new_zone_i++;
       var output = '    <tr>'
-                 + '      <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-                 + '      <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('zones[new_zone_i][country_code]', 'new_country_code') . $system->functions->form_draw_hidden_field('zones[new_zone_i][country_name]', 'new_country_name')); ?>new_country_name</td>'
-                 + '      <td align="left"><?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_hidden_field('zones[new_zone_i][zone_code]', 'new_zone_code') . $system->functions->form_draw_hidden_field('zones[new_zone_i][zone_name]', 'new_zone_name')); ?>new_zone_name</td>'
+                 + '      <td align="left"><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), $system->functions->form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
+                 + '      <td align="left"><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), $system->functions->form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
+                 + '      <td align="left"><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), $system->functions->form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
                  + '      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo $system->language->translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
-      output = output.replace(/new_country_code/g, $("select[name='country[code]']").find("option:selected").val());
-      output = output.replace(/new_country_name/g, $("select[name='country[code]']").find("option:selected").text());
-      output = output.replace(/new_zone_code/g, $("select[name='zone[code]']").find("option:selected").val());
-      output = output.replace(/new_zone_name/g, $("select[name='zone[code]']").find("option:selected").text());
       $("#table-zones tr:last").before(output);
     });
   </script>

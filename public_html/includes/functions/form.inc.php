@@ -781,7 +781,7 @@
     return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='', $preamble='none') {
 
     if ($country_code == '') $country_code = $GLOBALS['system']->settings->get('default_country_code');
   
@@ -796,6 +796,17 @@
     );
     
     $options = array();
+    
+    switch($preamble) {
+      case 'all':
+        $options[] = array('-- '. $GLOBALS['system']->language->translate('title_all_zones', 'All Zones') . ' --', '');
+        break;
+      case 'select':
+        $options[] = array('-- '. $GLOBALS['system']->language->translate('title_select', 'Select') . ' --', '');
+        break;
+      case 'none':
+        break;
+    }
     
     if ($GLOBALS['system']->database->num_rows($zones_query) == 0) {
       return form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $input, $multiple, $parameters . ' disabled="disabled"');
