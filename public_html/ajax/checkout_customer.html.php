@@ -7,13 +7,13 @@
   
   if ($system->cart->data['total']['items'] == 0) return;
   
-  if (!$_POST) {
+  if (empty($_POST['set_addresses'])) {
     foreach ($system->customer->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
   
-  if (!empty($_POST['set_addresses']) || !empty($_POST['set_default_addresses'])) {
+  if (!empty($_POST['set_addresses'])) {
   
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     
