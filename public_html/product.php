@@ -155,7 +155,7 @@
           </div>
       
 <?php
-    if ($system->settings->get('display_cheapest_shipping') == 'true') {
+    if ($system->settings->get('display_cheapest_shipping')) {
 ?>
           <div style="margin-bottom: 10px;" class="cheapest-shipping">
 <?php
