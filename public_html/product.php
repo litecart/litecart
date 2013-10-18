@@ -389,6 +389,7 @@
       initial_css: {
         "border": "1px rgba(0,136,204,1) solid",
         "background-color": "rgba(0,136,204,0.5)",
+        "z-index": "999999",
       },
       callback: function() {
         $('*').css('cursor', 'wait');

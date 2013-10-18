@@ -19,7 +19,7 @@
   $system->document->snippets['column_left'] = ob_get_clean();
   
   $manufacturers_query = $system->database->query(
-    "select m.id, m.status, m.name, m.keywords, m.image, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.link
+    "select m.id, m.status, m.name, m.keywords, m.image, mi.short_description, mi.description, mi.head_title, mi.meta_description, mi.meta_keywords, mi.h1_title, mi.link
     from ". DB_TABLE_MANUFACTURERS ." m
     left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (mi.manufacturer_id = m.id and mi.language_code = '". $system->language->selected['code'] ."')
     where status
@@ -69,7 +69,7 @@
     }
 ?>
     </span>
-    <h1><?php echo (!empty($manufacturer['image'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60, 'FIT') .'" alt="'. $manufacturer['name'] .'" title="'. $manufacturer['name'] .'" />' : $manufacturer['name']; ?></h1>
+    <h1><?php echo (!empty($manufacturer['image'])) ? '<img src="'. $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60, 'FIT') .'" alt="'. (!empty($manufacturer['h1_title']) ? $manufacturer['h1_title'] : $manufacturer['name']) .'" title="'. (!empty($manufacturer['h1_title']) ? $manufacturer['h1_title'] : $manufacturer['name']) .'" />' : (!empty($manufacturer['h1_title']) ? $manufacturer['h1_title'] : $manufacturer['name']); ?></h1>
   </div>
   <div class="content">
 <?php
@@ -87,19 +87,19 @@
 <?php
     $products_query = $system->functions->catalog_products_query(array('manufacturer_id' => $manufacturer['id'], 'sort' => $_GET['sort']));
     if ($system->database->num_rows($products_query) > 0) {
-      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('data_table_rows_per_page', 20) * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page', 20) * ($_GET['page']-1)));
       
       $page_items = 0;
       while ($listing_item = $system->database->fetch($products_query)) {
         echo $system->functions->draw_listing_product($listing_item);
         
-        if (++$page_items == $system->settings->get('data_table_rows_per_page', 20)) break;
+        if (++$page_items == $system->settings->get('items_per_page', 20)) break;
       }
     }
 ?>
     </ul>
 <?php
-    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('data_table_rows_per_page', 20)));
+    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page', 20)));
 ?>
   </div>
 </div>
