@@ -1,19 +1,19 @@
 <?php
   
-  class lib_custom {
+  class custom {
   
     
-    public $selected = array();
-    public $languages = array();
-    private $cache = array();
+    public static $selected = array();
+    public static $languages = array();
+    private static $_cache = array();
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    //public function load_dependencies() {
+    //public static function load_dependencies() {
     //}
     
-    public function initiate() {
+    public static function initiate() {
       
     /*
     // Force language to domain (if regional domains)
@@ -36,29 +36,29 @@
           $code = '';
           break;
       }
-      if (in_array($code, array_keys($GLOBALS['system']->language->languages))) {
-        $GLOBALS['system']->language->set($language_code);
+      if (in_array($code, array_keys(language::$languages))) {
+        language::set($language_code);
       }
     */
       
     }
     
-    //public function startup() {
+    //public static function startup() {
     //}
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
   }
   

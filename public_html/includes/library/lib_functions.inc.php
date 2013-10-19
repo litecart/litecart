@@ -1,11 +1,11 @@
 <?php
   
-  class lib_functions {
+  class functions {
   
-    public function __construct() {
+    public static function construct() {
     }
     
-    public function __call($function, $arguments) {
+    public static function __callstatic($function, $arguments) {
       
       if (!function_exists($function)) {
         $function_file = FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . substr($function, 0, strpos($function, '_')).'.inc.php';

@@ -1,22 +1,22 @@
 <?php
   require_once('../includes/app_header.inc.php');
-  header('Content-type: application/json; charset='. $system->language->selected['charset']);
+  header('Content-type: application/json; charset='. language::$selected['charset']);
   
   $params = array(
-    'quantity' => $system->cart->data['total']['items'],
-    'value' => $system->settings->get('display_prices_including_tax') ? $system->cart->data['total']['value'] + $system->cart->data['total']['tax'] : $system->cart->data['total']['value'],
-    'formatted_value' => $system->settings->get('display_prices_including_tax') ? $system->currency->format($system->cart->data['total']['value'] + $system->cart->data['total']['tax']) : $system->currency->format($system->cart->data['total']['value']),
+    'quantity' => cart::$data['total']['items'],
+    'value' => settings::get('display_prices_including_tax') ? cart::$data['total']['value'] + cart::$data['total']['tax'] : cart::$data['total']['value'],
+    'formatted_value' => settings::get('display_prices_including_tax') ? currency::format(cart::$data['total']['value'] + cart::$data['total']['tax']) : currency::format(cart::$data['total']['value']),
   );
   
-  if (!empty($system->notices->data['warnings'])) {
-    $params['alert'] = array_shift(array_values($system->notices->data['warnings']));
+  if (!empty(notices::$data['warnings'])) {
+    $params['alert'] = array_shift(array_values(notices::$data['warnings']));
   }
   
-  if (!empty($system->notices->data['errors'])) {
-    $params['alert'] = array_shift(array_values($system->notices->data['errors']));
+  if (!empty(notices::$data['errors'])) {
+    $params['alert'] = array_shift(array_values(notices::$data['errors']));
   }
   
-  $system->notices->reset();
+  notices::reset();
   
   echo '{';
   foreach ($params as $key => $value) {

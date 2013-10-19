@@ -5,8 +5,8 @@
     
     public function __construct($action='new', $order_id='') {
       
-      if (!isset($GLOBALS['system']->session->data['order'])) $GLOBALS['system']->session->data['order'] = array();
-      $this->data = &$GLOBALS['system']->session->data['order'];
+      if (!isset(session::$data['order'])) session::$data['order'] = array();
+      $this->data = &session::$data['order'];
       
       switch ($action) {
         case 'load':
@@ -32,10 +32,10 @@
         'uid' => uniqid(),
         'items' => array(),
         'weight_total' => 0,
-        'weight_class' => $GLOBALS['system']->settings->get('store_weight_class'),
-        'currency_code' => $GLOBALS['system']->currency->selected['code'],
-        'currency_value' => $GLOBALS['system']->currency->selected['value'],
-        'language_code' => $GLOBALS['system']->language->selected['code'],
+        'weight_class' => settings::get('store_weight_class'),
+        'currency_code' => currency::$selected['code'],
+        'currency_value' => currency::$selected['value'],
+        'language_code' => language::$selected['code'],
         'customer' => array(
           'id' => '',
           'email' => '',
@@ -70,7 +70,7 @@
         'order_total' => array(),
         'tax_total' => 0,
         'weight_total' => 0,
-        'weight_class' => $GLOBALS['system']->settings->get('store_weight_class'),
+        'weight_class' => settings::get('store_weight_class'),
         'payment_due' => 0,
         'order_status_id' => 0,
         'comments' => array(),
@@ -82,12 +82,12 @@
       
       $this->reset();
       
-      $this->data['weight_class'] = $GLOBALS['system']->settings->get('store_weight_class');
-      $this->data['currency_code'] = $GLOBALS['system']->currency->selected['code'];
-      $this->data['currency_value'] = $GLOBALS['system']->currency->currencies[$GLOBALS['system']->currency->selected['code']]['value'];
-      $this->data['language_code'] = $GLOBALS['system']->language->selected['code'];
+      $this->data['weight_class'] = settings::get('store_weight_class');
+      $this->data['currency_code'] = currency::$selected['code'];
+      $this->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
+      $this->data['language_code'] = language::$selected['code'];
       
-      $this->data['customer'] = $GLOBALS['system']->customer->data;
+      $this->data['customer'] = customer::$data;
       
       if (!empty($shipping->data['selected'])) {
         $this->data['shipping_option'] = array(
@@ -103,7 +103,7 @@
         );
       }
       
-      foreach ($GLOBALS['system']->cart->data['items'] as $item) {
+      foreach (cart::$data['items'] as $item) {
         $this->add_item($item);
       }
       
@@ -116,12 +116,12 @@
       
       $this->reset();
       
-      $order_query = $GLOBALS['system']->database->query(
+      $order_query = database::query(
         "select * from ". DB_TABLE_ORDERS ."
         where id = '". (int)$order_id ."'
         limit 1;"
       );
-      $order = $GLOBALS['system']->database->fetch($order_query);
+      $order = database::fetch($order_query);
       if (empty($order)) trigger_error('Could not find order in database ('. $order_id .')', E_USER_ERROR);
       
       $key_map = array(
@@ -191,31 +191,31 @@
         $this->data['payment_option'][$tkey] = $order[$skey];
       }
       
-      $order_items_query = $GLOBALS['system']->database->query(
+      $order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = '". (int)$order_id ."'
         order by id;"
       );
-      while ($item = $GLOBALS['system']->database->fetch($order_items_query)) {
+      while ($item = database::fetch($order_items_query)) {
         $item['options'] = unserialize($item['options']);
         $this->data['items'][$item['id']] = $item;
       }
       
-      $order_totals_query = $GLOBALS['system']->database->query(
+      $order_totals_query = database::query(
         "select * from ". DB_TABLE_ORDERS_TOTALS ."
         where order_id = '". (int)$order_id ."'
         order by priority;"
       );
-      while ($row = $GLOBALS['system']->database->fetch($order_totals_query)) {
+      while ($row = database::fetch($order_totals_query)) {
         $this->data['order_total'][$row['id']] = $row;
       }
       
-      $order_comments_query = $GLOBALS['system']->database->query(
+      $order_comments_query = database::query(
         "select * from ". DB_TABLE_ORDERS_COMMENTS ."
         where order_id = '". (int)$order_id ."'
         order by id;"
       );
-      while ($row = $GLOBALS['system']->database->fetch($order_comments_query)) {
+      while ($row = database::fetch($order_comments_query)) {
         $this->data['comments'][$row['id']] = $row;
       }
     }
@@ -230,7 +230,7 @@
         if (!empty($this->data['items'])) {
           foreach (array_keys($this->data['items']) as $key) {
             if (!empty($this->data['items'][$key]['product_id'])) {
-              $GLOBALS['system']->database->query(
+              database::query(
                 "update ". DB_TABLE_PRODUCTS ."
                 set purchases = purchases + ". (int)$this->data['items'][$key]['quantity'] ."
                 where id = ". (int)$this->data['items'][$key]['product_id'] ."
@@ -245,34 +245,34 @@
       
     // If changed order status 
       if (!empty($this->data['id'])) {
-        $order_query = $GLOBALS['system']->database->query(
+        $order_query = database::query(
           "select order_status_id from ". DB_TABLE_ORDERS ."
           where id = ". (int)$this->data['id'] ."
           limit 1;"
         );
-        $order = $GLOBALS['system']->database->fetch($order_query);
+        $order = database::fetch($order_query);
         
         if ((int)$order['order_status_id'] != (int)$this->data['order_status_id']) {
-          $order_status_query = $GLOBALS['system']->database->query(
+          $order_status_query = database::query(
             "select os.*, osi.name from ". DB_TABLE_ORDER_STATUSES ." os
-            left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". $GLOBALS['system']->database->input($this->data['language_code']) ."')
+            left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
             where os.id = ". (int)$this->data['order_status_id'] ."
             limit 1;"
           );
-          $order_status = $GLOBALS['system']->database->fetch($order_status_query);
+          $order_status = database::fetch($order_status_query);
           
           if (!empty($order_status)) {
             $this->data['comments'][] = array(
-              'text' => sprintf($GLOBALS['system']->language->translate('text_order_status_changed_to_s', 'Order status changed to %s'), $order_status['name']),
+              'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $order_status['name']),
               'hidden' => 1,
             );
             
           // Send update notice e-mail
             if (!empty($order_status['notify'])) {
-              $GLOBALS['system']->functions->email_send(
-                '"'. $GLOBALS['system']->settings->get('store_name') .'" <'. $GLOBALS['system']->settings->get('store_email') .'>',
+              functions::email_send(
+                '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
                 $this->data['customer']['email'],
-                sprintf($GLOBALS['system']->language->translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $order_status['name']),
+                sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $order_status['name']),
                 $this->draw_printable_copy(),
                 true
               );
@@ -283,12 +283,12 @@
       
     // Link guests to customer profile
       if (empty($this->data['customer']['id'])) {
-        $customers_query = $GLOBALS['system']->database->query(
+        $customers_query = database::query(
           "select id from ". DB_TABLE_CUSTOMERS ."
-          where email = '". $GLOBALS['system']->database->input($this->data['customer']['email']) ."'
+          where email = '". database::input($this->data['customer']['email']) ."'
           limit 1;"
         );
-        $customer = $GLOBALS['system']->database->fetch($customers_query);
+        $customer = database::fetch($customers_query);
         if (!empty($customer['id'])) {
           $this->data['customer']['id'] = $customer['id'];
         }
@@ -296,50 +296,50 @@
       
     // Insert/update order
       if (empty($this->data['id'])) {
-        $GLOBALS['system']->database->query(
+        database::query(
           "insert into ". DB_TABLE_ORDERS ."
           (uid, date_created)
-          values ('". $GLOBALS['system']->database->input($this->data['uid']) ."', '". $GLOBALS['system']->database->input(date('Y-m-d H:i:s')) ."');"
+          values ('". database::input($this->data['uid']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
         );
-        $this->data['id'] = $GLOBALS['system']->database->insert_id();
+        $this->data['id'] = database::insert_id();
       }
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_ORDERS ." set
         order_status_id = '". (int)$this->data['order_status_id'] ."',
         customer_id = '". (int)$this->data['customer']['id'] ."',
-        customer_email = '". $GLOBALS['system']->database->input($this->data['customer']['email']) ."',
-        customer_phone = '". $GLOBALS['system']->database->input($this->data['customer']['phone']) ."',
-        customer_tax_id = '". $GLOBALS['system']->database->input($this->data['customer']['tax_id']) ."',
-        customer_company = '". $GLOBALS['system']->database->input($this->data['customer']['company']) ."',
-        customer_firstname = '". $GLOBALS['system']->database->input($this->data['customer']['firstname']) ."',
-        customer_lastname = '". $GLOBALS['system']->database->input($this->data['customer']['lastname']) ."',
-        customer_address1 = '". $GLOBALS['system']->database->input($this->data['customer']['address1']) ."',
-        customer_address2 = '". $GLOBALS['system']->database->input($this->data['customer']['address2']) ."',
-        customer_city = '". $GLOBALS['system']->database->input($this->data['customer']['city']) ."',
-        customer_postcode = '". $GLOBALS['system']->database->input($this->data['customer']['postcode']) ."',
-        customer_country_code = '". $GLOBALS['system']->database->input($this->data['customer']['country_code']) ."',
-        customer_zone_code = '". $GLOBALS['system']->database->input($this->data['customer']['zone_code']) ."',
-        shipping_company = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['company']) ."',
-        shipping_firstname = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['firstname']) ."',
-        shipping_lastname = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['lastname']) ."',
-        shipping_address1 = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['address1']) ."',
-        shipping_address2 = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['address2']) ."',
-        shipping_city = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['city']) ."',
-        shipping_postcode = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['postcode']) ."',
-        shipping_country_code = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['country_code']) ."',
-        shipping_zone_code = '". $GLOBALS['system']->database->input($this->data['customer']['shipping_address']['zone_code']) ."',
-        shipping_option_id = '". ((!empty($this->data['shipping_option'])) ? $GLOBALS['system']->database->input($this->data['shipping_option']['id']) : false) ."',
-        shipping_option_name = '". ((!empty($this->data['shipping_option'])) ? $GLOBALS['system']->database->input($this->data['shipping_option']['name']) : false) ."',
-        shipping_tracking_id = '". ((!empty($this->data['shipping_tracking_id'])) ? $GLOBALS['system']->database->input($this->data['shipping_tracking_id']) : false) ."',
-        payment_option_id = '". ((!empty($this->data['payment_option'])) ? $GLOBALS['system']->database->input($this->data['payment_option']['id']) : false) ."',
-        payment_option_name = '". ((!empty($this->data['payment_option'])) ? $GLOBALS['system']->database->input($this->data['payment_option']['name']) : false) ."',
-        payment_transaction_id = '". ((!empty($this->data['payment_transaction_id'])) ? $GLOBALS['system']->database->input($this->data['payment_transaction_id']) : false) ."',
-        language_code = '". $GLOBALS['system']->database->input($this->data['language_code']) ."',
-        currency_code = '". $GLOBALS['system']->database->input($this->data['currency_code']) ."',
+        customer_email = '". database::input($this->data['customer']['email']) ."',
+        customer_phone = '". database::input($this->data['customer']['phone']) ."',
+        customer_tax_id = '". database::input($this->data['customer']['tax_id']) ."',
+        customer_company = '". database::input($this->data['customer']['company']) ."',
+        customer_firstname = '". database::input($this->data['customer']['firstname']) ."',
+        customer_lastname = '". database::input($this->data['customer']['lastname']) ."',
+        customer_address1 = '". database::input($this->data['customer']['address1']) ."',
+        customer_address2 = '". database::input($this->data['customer']['address2']) ."',
+        customer_city = '". database::input($this->data['customer']['city']) ."',
+        customer_postcode = '". database::input($this->data['customer']['postcode']) ."',
+        customer_country_code = '". database::input($this->data['customer']['country_code']) ."',
+        customer_zone_code = '". database::input($this->data['customer']['zone_code']) ."',
+        shipping_company = '". database::input($this->data['customer']['shipping_address']['company']) ."',
+        shipping_firstname = '". database::input($this->data['customer']['shipping_address']['firstname']) ."',
+        shipping_lastname = '". database::input($this->data['customer']['shipping_address']['lastname']) ."',
+        shipping_address1 = '". database::input($this->data['customer']['shipping_address']['address1']) ."',
+        shipping_address2 = '". database::input($this->data['customer']['shipping_address']['address2']) ."',
+        shipping_city = '". database::input($this->data['customer']['shipping_address']['city']) ."',
+        shipping_postcode = '". database::input($this->data['customer']['shipping_address']['postcode']) ."',
+        shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
+        shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
+        shipping_option_id = '". ((!empty($this->data['shipping_option'])) ? database::input($this->data['shipping_option']['id']) : false) ."',
+        shipping_option_name = '". ((!empty($this->data['shipping_option'])) ? database::input($this->data['shipping_option']['name']) : false) ."',
+        shipping_tracking_id = '". ((!empty($this->data['shipping_tracking_id'])) ? database::input($this->data['shipping_tracking_id']) : false) ."',
+        payment_option_id = '". ((!empty($this->data['payment_option'])) ? database::input($this->data['payment_option']['id']) : false) ."',
+        payment_option_name = '". ((!empty($this->data['payment_option'])) ? database::input($this->data['payment_option']['name']) : false) ."',
+        payment_transaction_id = '". ((!empty($this->data['payment_transaction_id'])) ? database::input($this->data['payment_transaction_id']) : false) ."',
+        language_code = '". database::input($this->data['language_code']) ."',
+        currency_code = '". database::input($this->data['currency_code']) ."',
         currency_value = '". (float)$this->data['currency_value'] ."',
         weight_total = '". (float)$this->data['weight_total'] ."',
-        weight_class = '". $GLOBALS['system']->database->input($this->data['weight_class']) ."',
+        weight_class = '". database::input($this->data['weight_class']) ."',
         payment_due = '". (float)$this->data['payment_due'] ."',
         tax_total = '". (float)$this->data['tax_total'] ."',
         client_ip = '". $_SERVER['REMOTE_ADDR'] ."',
@@ -357,13 +357,13 @@
       }
       
     // Delete order items
-      $order_items_query = $GLOBALS['system']->database->query(
+      $order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = '". (int)$this->data['id'] ."'
         and id not in ('". @implode("', '", $item_ids) ."');"
       );
-      while($order_item = $GLOBALS['system']->database->fetch($order_items_query)) {
-        $GLOBALS['system']->database->query(
+      while($order_item = database::fetch($order_items_query)) {
+        database::query(
           "delete from ". DB_TABLE_ORDERS_ITEMS ."
           where order_id = '". (int)$this->data['id'] ."'
           and id = '". (int)$order_item['id'] ."'
@@ -371,42 +371,42 @@
         );
         
       // Restock
-        $GLOBALS['system']->functions->catalog_stock_adjust($order_item['product_id'], $order_item['option_stock_combination'], $order_item['quantity']);
+        functions::catalog_stock_adjust($order_item['product_id'], $order_item['option_stock_combination'], $order_item['quantity']);
       }
       
     // Insert/update order items
       if (!empty($this->data['items'])) {
         foreach (array_keys($this->data['items']) as $key) {
           if (empty($this->data['items'][$key]['id'])) {
-            $GLOBALS['system']->database->query(
+            database::query(
               "insert into ". DB_TABLE_ORDERS_ITEMS ."
               (order_id)
               values ('". (int)$this->data['id'] ."');"
             );
-            $this->data['items'][$key]['id'] = $GLOBALS['system']->database->insert_id();
-            $GLOBALS['system']->functions->catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
+            $this->data['items'][$key]['id'] = database::insert_id();
+            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
           } else {
           // Update stock qty
-            $orders_items_query = $GLOBALS['system']->database->query(
+            $orders_items_query = database::query(
               "select quantity from ". DB_TABLE_ORDERS_ITEMS ."
               where id = '". (int)$this->data['items'][$key]['id'] ."'
               and order_id = '". (int)$this->data['id'] ."';"
             );
-            $order_item = $GLOBALS['system']->database->fetch($orders_items_query);
-            $GLOBALS['system']->functions->catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -($this->data['items'][$key]['quantity'] - $order_item['quantity']));
+            $order_item = database::fetch($orders_items_query);
+            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -($this->data['items'][$key]['quantity'] - $order_item['quantity']));
           }
-          $GLOBALS['system']->database->query(
+          database::query(
             "update ". DB_TABLE_ORDERS_ITEMS ." 
             set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
-            option_stock_combination = '". $GLOBALS['system']->database->input($this->data['items'][$key]['option_stock_combination']) ."',
-            options = '". $GLOBALS['system']->database->input(serialize($this->data['items'][$key]['options'])) ."',
-            name = '". $GLOBALS['system']->database->input($this->data['items'][$key]['name']) ."',
-            sku = '". $GLOBALS['system']->database->input($this->data['items'][$key]['sku']) ."',
+            option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
+            options = '". database::input(serialize($this->data['items'][$key]['options'])) ."',
+            name = '". database::input($this->data['items'][$key]['name']) ."',
+            sku = '". database::input($this->data['items'][$key]['sku']) ."',
             quantity = '". (float)$this->data['items'][$key]['quantity'] ."',
             price = '". (float)$this->data['items'][$key]['price'] ."',
             tax = '". (float)$this->data['items'][$key]['tax'] ."',
             weight = '". (float)$this->data['items'][$key]['weight'] ."',
-            weight_class = '". $GLOBALS['system']->database->input($this->data['items'][$key]['weight_class']) ."'
+            weight_class = '". database::input($this->data['items'][$key]['weight_class']) ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['items'][$key]['id'] ."'
             limit 1;"
@@ -423,7 +423,7 @@
       }
       
     // Delete order total items
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_ORDERS_TOTALS ."
         where order_id = '". (int)$this->data['id'] ."'
         and id not in ('". @implode("', '", $order_total_ids) ."');;"
@@ -434,21 +434,21 @@
         $i = 0;
         foreach (array_keys($this->data['order_total']) as $key) {
           if (empty($this->data['order_total'][$key]['id'])) {
-            $GLOBALS['system']->database->query(
+            database::query(
               "insert into ". DB_TABLE_ORDERS_TOTALS ."
               (order_id)
               values ('". (int)$this->data['id'] ."');"
             );
-            $this->data['order_total'][$key]['id'] = $GLOBALS['system']->database->insert_id();
+            $this->data['order_total'][$key]['id'] = database::insert_id();
           }
-          $GLOBALS['system']->database->query(
+          database::query(
             "update ". DB_TABLE_ORDERS_TOTALS ." 
-            set title = '". $GLOBALS['system']->database->input($this->data['order_total'][$key]['title']) ."',
-            module_id = '". $GLOBALS['system']->database->input($this->data['order_total'][$key]['module_id']) ."',
+            set title = '". database::input($this->data['order_total'][$key]['title']) ."',
+            module_id = '". database::input($this->data['order_total'][$key]['module_id']) ."',
             value = '". (float)$this->data['order_total'][$key]['value'] ."',
             tax = '". (float)$this->data['order_total'][$key]['tax'] ."',
             calculate = '". (empty($this->data['order_total'][$key]['calculate']) ? 0 : 1) ."',
-            priority = '". $GLOBALS['system']->database->input(++$i) ."'
+            priority = '". database::input(++$i) ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['order_total'][$key]['id'] ."'
             limit 1;"
@@ -465,7 +465,7 @@
       }
       
     // Delete comments
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_ORDERS_COMMENTS ."
         where order_id = '". (int)$this->data['id'] ."'
         and id not in ('". @implode("', '", $comments_ids) ."');"
@@ -475,17 +475,17 @@
       if (!empty($this->data['comments'])) {
         foreach (array_keys($this->data['comments']) as $key) {
           if (empty($this->data['comments'][$key]['id'])) {
-            $GLOBALS['system']->database->query(
+            database::query(
               "insert into ". DB_TABLE_ORDERS_COMMENTS ."
               (order_id, date_created)
               values ('". (int)$this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
             );
-            $this->data['comments'][$key]['id'] = $GLOBALS['system']->database->insert_id();
+            $this->data['comments'][$key]['id'] = database::insert_id();
             $this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
           }
-          $GLOBALS['system']->database->query(
+          database::query(
             "update ". DB_TABLE_ORDERS_COMMENTS ." 
-            set text = '". $GLOBALS['system']->database->input($this->data['comments'][$key]['text']) ."',
+            set text = '". database::input($this->data['comments'][$key]['text']) ."',
             hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['comments'][$key]['id'] ."'
@@ -494,7 +494,7 @@
         }
       }
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
     
     public function delete() {
@@ -507,7 +507,7 @@
       $this->save();
       
     // ..then delete
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_ORDERS ."
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -521,7 +521,7 @@
       
       foreach ($this->data['items'] as $item) {
         $this->add_cost($item['price'], $item['tax'], $item['quantity']);
-        $this->data['weight_total'] += $GLOBALS['system']->weight->convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
       
       foreach ($this->data['order_total'] as $order_total) {
@@ -537,11 +537,11 @@
       while (isset($this->data['items']['new'.$key_i])) $key_i++;
       
     // Round decimals
-      $rounded_price = round($GLOBALS['system']->currency->calculate($item['price'], $this->data['currency_code']), $GLOBALS['system']->currency->currencies[$this->data['currency_code']]['decimals']);
-      $item['price'] = $GLOBALS['system']->currency->convert($rounded_price, $this->data['currency_code'], $GLOBALS['system']->settings->get('store_currency_code'));
+      $rounded_price = round(currency::calculate($item['price'], $this->data['currency_code']), currency::$currencies[$this->data['currency_code']]['decimals']);
+      $item['price'] = currency::convert($rounded_price, $this->data['currency_code'], settings::get('store_currency_code'));
       
       if (!empty($item['tax_class_id'])) {
-        $item['tax'] = $GLOBALS['system']->tax->get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
+        $item['tax'] = tax::get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
       } else {
         $item['tax'] = isset($item['tax']) ? $item['tax'] : 0;
       }
@@ -551,7 +551,7 @@
         'product_id' => $item['product_id'],
         'options' => $item['options'],
         'option_stock_combination' => $item['option_stock_combination'],
-        'name' => $item['name'][$GLOBALS['system']->language->selected['code']],
+        'name' => $item['name'][language::$selected['code']],
         'sku' => $item['sku'],
         'price' => $item['price'],
         'tax' => $item['tax'],
@@ -560,7 +560,7 @@
         'weight_class' => $item['weight_class'],
       );
       
-      $this->data['weight_total'] += $item['quantity'] * $GLOBALS['system']->weight->convert($item['weight'], $item['weight_class'], $GLOBALS['system']->settings->get('store_weight_class'));
+      $this->data['weight_total'] += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
       
       $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax']);
     }
@@ -571,15 +571,15 @@
       while (isset($this->data['order_total']['new'.$key_i])) $key_i++;
       
     // Round decimals
-      $rounded_value = round($GLOBALS['system']->currency->calculate($row['value'], $this->data['currency_code']), $GLOBALS['system']->currency->currencies[$this->data['currency_code']]['decimals']);
-      $row['value'] = $GLOBALS['system']->currency->convert($rounded_value, $this->data['currency_code'], $GLOBALS['system']->settings->get('store_currency_code'));
+      $rounded_value = round(currency::calculate($row['value'], $this->data['currency_code']), currency::$currencies[$this->data['currency_code']]['decimals']);
+      $row['value'] = currency::convert($rounded_value, $this->data['currency_code'], settings::get('store_currency_code'));
       
       $this->data['order_total']['new'.$key_i] = array(
         'id' => 0,
         'module_id' => $row['id'],
         'title' =>  $row['title'],
         'value' => $row['value'],
-        'tax' => !empty($row['tax_class_id']) ? $GLOBALS['system']->tax->get_tax($row['value'], $row['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $row['tax'],
+        'tax' => !empty($row['tax_class_id']) ? tax::get_tax($row['value'], $row['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $row['tax'],
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       );
       
@@ -603,11 +603,11 @@
         'country_code',
       );
       
-      if ($GLOBALS['system']->functions->reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'postcode';
-      if ($GLOBALS['system']->functions->reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
+      if (functions::reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'postcode';
+      if (functions::reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
       
       foreach ($required_fields as $field) {
-        if (empty($this->data['customer'][$field])) return $GLOBALS['system']->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' ('.$field.')'*/;
+        if (empty($this->data['customer'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' ('.$field.')'*/;
       }
       
       if ($this->data['customer']['different_shipping_address']) {
@@ -619,15 +619,15 @@
           'country_code',
         );
       
-        if ($GLOBALS['system']->functions->reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'shipping_address[postcode]';
-        if ($GLOBALS['system']->functions->reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'shipping_address[zone_code]';
+        if (functions::reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'shipping_address[postcode]';
+        if (functions::reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'shipping_address[zone_code]';
         
         foreach ($required_fields as $field) {
-          if (empty($this->data['customer']['shipping_address'][$field])) return $GLOBALS['system']->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' (shipping_address['.$field.'])'*/;
+          if (empty($this->data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' (shipping_address['.$field.'])'*/;
         }
       }
       
-      if ($this->data['payment_due'] > 0 && empty($order->data['payment_option_id'])) $errors[] = $GLOBALS['system']->language->translate('text_please_select_a_payment_option', 'Please select a payment option.');
+      if ($this->data['payment_due'] > 0 && empty($order->data['payment_option_id'])) $errors[] = language::translate('text_please_select_a_payment_option', 'Please select a payment option.');
       
       return false;
     }
@@ -636,10 +636,10 @@
     
       if (empty($email)) return;
     
-      $GLOBALS['system']->functions->email_send(
-        '"'. $GLOBALS['system']->settings->get('store_name') .'" <'. $GLOBALS['system']->settings->get('store_email') .'>',
+      functions::email_send(
+        '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
         $email,
-        $GLOBALS['system']->language->translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
+        language::translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
         $this->draw_printable_copy(),
         true
       );

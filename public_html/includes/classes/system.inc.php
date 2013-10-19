@@ -1,42 +1,76 @@
 <?php
 
+// Set up compatibility for old $system object;
+  class old_system {
+    private $_module;
+    
+    public function __construct($module) {
+      $this->_module = $module;
+    }
+    
+    public function __get($variable) {
+      $class = ($this->_module);
+      return $class::$$variable;
+    }
+    
+    public function __call($method, $arguments) {
+      return forward_static_call(array($this->_module, $method), $arguments);
+    }
+  }
+  
 // Set up the system object 
   class system {
+    private static $_loaded_modules = array();
+    private static $_modules;
     
-    private $_loaded_modules;
+  // Compatibility with $system->module;
+    public function __get($module) {
     
-    public function __construct() {
+      if (empty(self::$_modules[$module])) {
+        self::$_modules[$module] = new old_system($module);
+      }
+      
+      //trigger_error("\$system->$module is deprecated, use $module:: instead", E_USER_DEPRECATED);
+      
+      return self::$_modules[$module];
+    }
     
-    // Autoload library modules
-      foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_*.inc.php') as $module) {
-        $module = preg_replace('/^lib_(.*)\.inc\.php$/', '$1', basename($module));
-        $this->load($module);
+  // Autoload library modules
+    public static function init() {
+      
+      foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_*.inc.php') as $file) {
+        $module = preg_replace('/^lib_(.*)\.inc\.php$/', '$1', basename($file));
+        self::load($module);
       }
     }
     
   // Load library objects
-    public function load($module) {
-      $class_name = 'lib_'.$module;
+    public static function load($module) {
       
-      if (isset($this->_loaded_modules[$class_name])) {
+      if (in_array($module, self::$_loaded_modules)) {
         trigger_error("Module '$module' is already loaded", E_USER_WARNING);
         return;
       }
       
-      $this->$module = new $class_name($this);
+      include(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_'. $module .'.inc.php');
       
-      $this->_loaded_modules[$module] = $module;
+      if (method_exists($module, 'construct')) {
+        forward_static_call(array($module, 'construct'));
+      }
+      
+      self::$_loaded_modules[] = $module;
     }
     
-  // Method to run methods ;)
-    public function run($method_name) {
-      foreach ($this->_loaded_modules as $module) {
-        if (method_exists($this->$module, $method_name)) $this->$module->$method_name();
+    public static function run($method_name) {
+      foreach (self::$_loaded_modules as $library_module) {
+        if (method_exists($library_module, $method_name)) {
+          forward_static_call(array($library_module, $method_name));
+        }
       }
     }
     
-    public function get_loaded_modules() {
-      return $this->_loaded_modules;
+    public static function get_loaded_modules() {
+      return self::$_loaded_modules;
     }
   }
   

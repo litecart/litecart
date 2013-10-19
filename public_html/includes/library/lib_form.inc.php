@@ -1,30 +1,30 @@
 <?php
   
-  class lib_form {
+  class form {
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    public function load_dependencies() {
+    public static function load_dependencies() {
       
     // Check post token
       if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || REQUIRE_POST_TOKEN != false)) {
-        if (!isset($_POST['token']) || $_POST['token'] != $this->session_post_token()) {
+        if (!isset($_POST['token']) || $_POST['token'] != self::session_post_token()) {
           error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
-          $GLOBALS['system']->session->reset();
+          session::reset();
           header('HTTP/1.1 400 Bad Request');
           die('HTTP POST Error: The form submit token was issued for another session identity.');
         }
       }
     }
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    public function startup() {
+    public static function startup() {
       
     // Is there incoming ajax data that needs decoding?
-      if (!empty($_POST) && strtolower($GLOBALS['system']->language->selected['charset']) != 'utf-8') {
+      if (!empty($_POST) && strtolower(language::$selected['charset']) != 'utf-8') {
         $flag_unicoded = false;
         
         if (strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset=utf-8') !== false) $flag_unicoded = true;
@@ -44,24 +44,24 @@
       }
     }
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function session_post_token() {
+    public static function session_post_token() {
       return sha1(SESSION_UNIQUE_ID .':'. session_id());
     }
   }

@@ -15,7 +15,7 @@
       
       if (empty($this->modules)) return false;
       
-      $this->_cache = &$GLOBALS['system']->session->data['get_address_cache'];
+      $this->_cache = &session::$data['get_address_cache'];
       
       foreach ($this->modules as $module) {
         $checksum = sha1(serialize($fields));

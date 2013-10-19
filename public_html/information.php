@@ -6,20 +6,20 @@
 ?>
 <aside class="shadow rounded-corners">
   <div class="box" id="box-information">
-    <div class="heading"><h3><?php echo $system->language->translate('title_information', 'Information'); ?></h3></div>
+    <div class="heading"><h3><?php echo language::translate('title_information', 'Information'); ?></h3></div>
     <div class="content">
       <nav>
         <ul class="list-vertical">
         <?php
-          $pages_query = $system->database->query(
+          $pages_query = database::query(
             "select p.id, pi.title from ". DB_TABLE_PAGES ." p
-            left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
+            left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
             where status
             and find_in_set('information', dock)
             order by p.priority, pi.title;"
           );
-          while ($page = $system->database->fetch($pages_query)) {
-            echo '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. $system->document->href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+          while ($page = database::fetch($pages_query)) {
+            echo '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. document::href_link('', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
           }
         ?>
         </ul>
@@ -28,28 +28,28 @@
   </div>
 </aside>
 <?php
-  $system->document->snippets['column_left'] = ob_get_clean();
+  document::$snippets['column_left'] = ob_get_clean();
   
-  $pages_query = $system->database->query(
+  $pages_query = database::query(
     "select p.id, p.status, pi.title, pi.content, pi.head_title, pi.meta_keywords, pi.meta_description from ". DB_TABLE_PAGES ." p
-    left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". $system->language->selected['code'] ."')
+    left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
     where p.id = '". (int)$_GET['page_id'] ."'
     limit 1;"
   );
-  $page = $system->database->fetch($pages_query);
+  $page = database::fetch($pages_query);
   
   if (empty($page['status'])) {
-    $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
+    notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
     header('HTTP/1.1 404 Not Found');
-    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME));
+    header('Location: '. document::link(WS_DIR_HTTP_HOME));
     exit;
   }
   
-  $system->document->snippets['title'][] = !empty($page['head_title']) ? $page['head_title'] : $page['title'];
-  $system->document->snippets['keywords'] = !empty($page['meta_keywords']) ? $page['meta_keywords'] : '';
-  $system->document->snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
+  document::$snippets['title'][] = !empty($page['head_title']) ? $page['head_title'] : $page['title'];
+  document::$snippets['keywords'] = !empty($page['meta_keywords']) ? $page['meta_keywords'] : '';
+  document::$snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
   
-  $system->breadcrumbs->add($page['title'], $system->document->link('', array(), true));
+  breadcrumbs::add($page['title'], document::link('', array(), true));
 ?>
 <?php echo $page['content']; ?>
 

@@ -1,58 +1,58 @@
 <?php
 
-  class lib_link {
+  class link {
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    //public function load_dependencies() {
+    //public static function load_dependencies() {
     //}
     
-    //public function startup() {
+    //public static function startup() {
     //}
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function get_base_link() {
+    public static function get_base_link() {
       $link = $_SERVER['SCRIPT_NAME'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
       
-      return $this->full_link($link);
+      return self::full_link($link);
     }
     
-    public function get_called_link() {
-      return $this->full_link($_SERVER['REQUEST_URI']);
+    public static function get_called_link() {
+      return self::full_link($_SERVER['REQUEST_URI']);
     }
     
-    public function create_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+    public static function create_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
       
       if ($document === null) {
-        $document = parse_url($this->get_base_link(), PHP_URL_PATH);
+        $document = parse_url(self::get_base_link(), PHP_URL_PATH);
         $inherit_params = true;
       } else if ($document == '') {
-        $document = parse_url($this->get_base_link(), PHP_URL_PATH);
+        $document = parse_url(self::get_base_link(), PHP_URL_PATH);
       } else if (substr($document, 0, 4) == 'http' || strpos($document, '?') !== false) {
-        $base_link = $this->parse_link($document);
+        $base_link = self::parse_link($document);
       } else {
         $base_link = array(
-          'path' => $this->fullpath($document),
+          'path' => self::fullpath($document),
           'query' => array(),
         );
       }
@@ -81,10 +81,10 @@
         $base_link['query'][$key] = $value;
       }
       
-      $link = $this->unparse_link($base_link);
+      $link = self::unparse_link($base_link);
       
-      if (!empty($GLOBALS['system']->seo_links->enabled)) {
-        $seo_link = $GLOBALS['system']->seo_links->link($link, $language_code);
+      if (!empty(seo_links::$enabled)) {
+        $seo_link = seo_links::$link($link, $language_code);
       }
       
       $link = !empty($seo_link) ? $seo_link : $link;
@@ -92,23 +92,23 @@
       return $link;
     }
     
-    public function full_link($link) {
+    public static function full_link($link) {
       
-      $parts = $this->parse_link($link);
-      $link = $this->unparse_link($parts);
+      $parts = self::parse_link($link);
+      $link = self::unparse_link($parts);
       
       return $link;
     }
     
-    public function relpath($link) {
-      $parts = $this->parse_link($link);
+    public static function relpath($link) {
+      $parts = self::parse_link($link);
       
       if (substr($parts['path'], 0, strlen(WS_DIR_HTTP_HOME)) == WS_DIR_HTTP_HOME) $parts['path'] = substr($parts['path'], strlen(WS_DIR_HTTP_HOME));
       
       return $parts['path'] . (!empty($parts['query']) ? '?'. http_build_query($parts['query'], '', '&') : '');
     }
     
-    public function fullpath($path) {
+    public static function fullpath($path) {
       
       if (substr($path, 0, 1) == '/') return $path;
       
@@ -140,7 +140,7 @@
       return $path;
     }
     
-    public function parse_link($link='') {
+    public static function parse_link($link='') {
       
       $parts = parse_url($link);
       

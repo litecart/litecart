@@ -10,7 +10,7 @@
     
     public function __construct() {
     
-      $this->name = $GLOBALS['system']->language->translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
+      $this->name = language::translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
     
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -22,12 +22,12 @@
       for ($i=1; $i <= 3; $i++) {
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
         
-        if (!$GLOBALS['system']->functions->reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
+        if (!functions::reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
         
         $options[] = array(
           'id' => 'zone_'.$i,
           'icon' => '',
-          'name' => $GLOBALS['system']->functions->reference_get_country_name($customer['country_code']),
+          'name' => functions::reference_get_country_name($customer['country_code']),
           'description' => '',
           'fields' => '',
           'cost' => $this->settings['cost_'.$i],
@@ -42,7 +42,7 @@
           $options[] = array(
             'id' => 'zone_x',
             'icon' => '',
-            'name' => $GLOBALS['system']->functions->reference_get_country_name($customer['country_code']),
+            'name' => functions::reference_get_country_name($customer['country_code']),
             'description' => '',
             'fields' => '',
             'cost' => $this->settings['cost_x'],
@@ -70,78 +70,78 @@
         array(
           'key' => 'status',
           'default_value' => '1',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', ''),
+          'title' => language::translate(__CLASS__.':title_status', 'Status'),
+          'description' => language::translate(__CLASS__.':description_status', ''),
           'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'icon',
           'default_value' => '',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_icon', 'Icon'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
+          'title' => language::translate(__CLASS__.':title_icon', 'Icon'),
+          'description' => language::translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
           'function' => 'input()',
         ),
         array(
           'key' => 'geo_zone_id_1',
           'default_value' => '',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_zone', 'Zone') .' 1: '. $GLOBALS['system']->language->translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
+          'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 1: '. language::translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
           'function' => 'geo_zones()',
         ),
         array(
           'key' => 'cost_1',
           'default_value' => '0.00',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_zone', 'Zone') .' 1: '. $GLOBALS['system']->language->translate(__CLASS__.':title_cost', 'Cost'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
+          'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 1: '. language::translate(__CLASS__.':title_cost', 'Cost'),
+          'description' => language::translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
           'function' => 'currency()',
         ),
         array(
           'key' => 'geo_zone_id_2',
           'default_value' => '',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_zone', 'Zone') .' 2: '. $GLOBALS['system']->language->translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
+          'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 2: '. language::translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
           'function' => 'geo_zones()',
         ),
         array(
           'key' => 'cost_2',
           'default_value' => '0.00',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_zone', 'Zone') .' 2: '. $GLOBALS['system']->language->translate(__CLASS__.':title_cost', 'Cost'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
+          'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 2: '. language::translate(__CLASS__.':title_cost', 'Cost'),
+          'description' => language::translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
           'function' => 'currency()',
         ),
         array(
           'key' => 'geo_zone_id_3',
           'default_value' => '',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_zone', 'Zone') .' 3: '. $GLOBALS['system']->language->translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
+          'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 3: '. language::translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
           'function' => 'geo_zones()',
         ),
         array(
           'key' => 'cost_3',
           'default_value' => '0.00',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_zone', 'Zone') .' 3: '. $GLOBALS['system']->language->translate(__CLASS__.':title_cost', 'Cost'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
+          'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 3: '. language::translate(__CLASS__.':title_cost', 'Cost'),
+          'description' => language::translate(__CLASS__.':description_title_cost', 'The shipping cost excluding tax for the zone option.'),
           'function' => 'currency()',
         ),
         array(
           'key' => 'cost_x',
           'default_value' => '0.00',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. $GLOBALS['system']->language->translate(__CLASS__.':title_cost', 'Cost'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_title_cost_x', 'The shipping cost excluding tax for any zones not matched above.'),
+          'title' => language::translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. language::translate(__CLASS__.':title_cost', 'Cost'),
+          'description' => language::translate(__CLASS__.':description_title_cost_x', 'The shipping cost excluding tax for any zones not matched above.'),
           'function' => 'currency()',
         ),
         array(
           'key' => 'tax_class_id',
           'default_value' => '',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_tax_class', 'Tax Class'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_tax_class', 'The tax class for the shipping cost.'),
+          'title' => language::translate(__CLASS__.':title_tax_class', 'Tax Class'),
+          'description' => language::translate(__CLASS__.':description_tax_class', 'The tax class for the shipping cost.'),
           'function' => 'tax_classes()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '0',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );

@@ -11,7 +11,7 @@
     
     public function __construct() {
       
-      $this->name = $GLOBALS['system']->language->translate(__CLASS__.':title_shipping_fee', 'Shipping Fee');
+      $this->name = language::translate(__CLASS__.':title_shipping_fee', 'Shipping Fee');
     }
     
     public function process() {
@@ -26,7 +26,7 @@
       $output[] = array(
         'title' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
         'value' => $shipping->data['selected']['cost'],
-        'tax' => $GLOBALS['system']->tax->get_tax($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
+        'tax' => tax::get_tax($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
         'calculate' => true,
       );
       
@@ -41,9 +41,9 @@
       // If below minimum amount
         if ($subtotal >= $this->settings['free_shipping_amount']) {
           $output[] = array(
-            'title' => $GLOBALS['system']->language->translate('title_free_shipping', 'Free Shipping'),
+            'title' => language::translate('title_free_shipping', 'Free Shipping'),
             'value' => -$shipping->data['selected']['cost'],
-            'tax' => -$GLOBALS['system']->tax->calculate($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], true),
+            'tax' => -tax::calculate($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], true),
             'tax_class_id' => $shipping->data['selected']['tax_class_id'],
             'calculate' => true,
           );
@@ -62,22 +62,22 @@
         array(
           'key' => 'status',
           'default_value' => '1',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => language::translate(__CLASS__.':title_status', 'Status'),
+          'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'free_shipping_amount',
           'default_value' => '0',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_free_shipping_amount', 'Free Shipping Amount'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_free_shipping_amount', 'Enable free shipping for orders that meet the given cart total amount or above (excluding tax). 0 = disabled'),
+          'title' => language::translate(__CLASS__.':title_free_shipping_amount', 'Free Shipping Amount'),
+          'description' => language::translate(__CLASS__.':description_free_shipping_amount', 'Enable free shipping for orders that meet the given cart total amount or above (excluding tax). 0 = disabled'),
           'function' => 'decimal()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '20',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );

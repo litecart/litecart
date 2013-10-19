@@ -1,75 +1,75 @@
 <?php
   
-  class lib_currency {
-    public $currencies;
-    public $selected;
+  class currency {
+    public static $currencies;
+    public static $selected;
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    public function load_dependencies() {
+    public static function load_dependencies() {
       
     // Bind selected to session
-      if (!isset($GLOBALS['system']->session->data['currency']) || !is_array($GLOBALS['system']->session->data['currency'])) $GLOBALS['system']->session->data['currency'] = array();
-      $this->selected = &$GLOBALS['system']->session->data['currency'];
+      if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) session::$data['currency'] = array();
+      self::$selected = &session::$data['currency'];
       
     // Get currencies from database
-      $currencies_query = $GLOBALS['system']->database->query(
+      $currencies_query = database::query(
         "select * from ". DB_TABLE_CURRENCIES ."
         where status
         order by priority;"
       );
-      while ($row = $GLOBALS['system']->database->fetch($currencies_query)) {
-        $this->currencies[$row['code']] = $row;
+      while ($row = database::fetch($currencies_query)) {
+        self::$currencies[$row['code']] = $row;
       }
       
     // Set currency, if not set
-      if (empty($this->selected) || empty($this->currencies[$this->selected['code']]['status'])) $this->set();
+      if (empty(self::$selected) || empty(self::$currencies[self::$selected['code']]['status'])) self::set();
     }
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    public function startup() {
+    public static function startup() {
       if (!empty($_POST['set_currency'])) {
-        $this->set($_POST['set_currency']);
+        self::set($_POST['set_currency']);
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;
       }
     }
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function set($code=null) {
+    public static function set($code=null) {
       
-      if (empty($code)) $code = $this->identify();
+      if (empty($code)) $code = self::identify();
       
-      if (!isset($this->currencies[$code])) trigger_error('Cannot set unsupported currency ('. $code .')', E_USER_ERROR);
+      if (!isset(self::$currencies[$code])) trigger_error('Cannot set unsupported currency ('. $code .')', E_USER_ERROR);
       
-      $GLOBALS['system']->session->data['currency'] = $this->currencies[$code];
+      session::$data['currency'] = self::$currencies[$code];
       setcookie('currency_code', $code, time()+(60*60*24*30), WS_DIR_HTTP_HOME);
     }
     
-    public function identify() {
+    public static function identify() {
     
     // Build list of supported currencies
       $currencies = array();
-      foreach ($this->currencies as $currency) {
+      foreach (self::$currencies as $currency) {
         if ($currency['status']) {
           $currencies[] = $currency['code'];
         }
@@ -78,34 +78,34 @@
     // Return currency from cookie
       if (isset($_COOKIE['currency_code']) && in_array($_COOKIE['currency_code'], $currencies)) return $_COOKIE['currency_code'];
       
-      return $GLOBALS['system']->settings->get('default_currency_code');
+      return settings::get('default_currency_code');
     }
     
-    public function calculate($value, $to, $from=null) {
+    public static function calculate($value, $to, $from=null) {
       
-      if (empty($from)) $from = $GLOBALS['system']->settings->get('store_currency_code');
+      if (empty($from)) $from = settings::get('store_currency_code');
       
-      if (!isset($this->currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_ERROR);
-      if (!isset($this->currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_ERROR);
+      if (!isset(self::$currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_ERROR);
+      if (!isset(self::$currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_ERROR);
       
-      return $value / $this->currencies[$from]['value'] * $this->currencies[$to]['value'];
+      return $value / self::$currencies[$from]['value'] * self::$currencies[$to]['value'];
     }
     
-    public function convert($value, $from=null, $to) {
-      return $this->calculate($value, $to, $from);
+    public static function convert($value, $from=null, $to) {
+      return self::calculate($value, $to, $from);
     }
     
-    public function format($value, $auto_decimals=true, $raw=false, $code='', $currency_value=null) {
+    public static function format($value, $auto_decimals=true, $raw=false, $code='', $currency_value=null) {
       
-      if (empty($code)) $code = $this->selected['code'];
-      if ($currency_value === null) $currency_value = $GLOBALS['system']->currency->currencies[$code]['value'];
+      if (empty($code)) $code = self::$selected['code'];
+      if ($currency_value === null) $currency_value = currency::$currencies[$code]['value'];
       
-      if (!isset($this->currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_ERROR);
+      if (!isset(self::$currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_ERROR);
       
       $value = $value * $currency_value;
       
       if ($auto_decimals == false || $value - floor($value) > 0) {
-        $decimals = (int)$this->currencies[$code]['decimals'];
+        $decimals = (int)self::$currencies[$code]['decimals'];
       } else {
         $decimals = 0;
       }
@@ -113,7 +113,7 @@
       if ($raw) {
         return number_format($value, $decimals, '.', '');
       } else {
-        return $this->currencies[$code]['prefix'] . number_format($value, $decimals, $GLOBALS['system']->language->selected['decimal_point'], $GLOBALS['system']->language->selected['thousands_sep']) . $this->currencies[$code]['suffix'];
+        return self::$currencies[$code]['prefix'] . number_format($value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$code]['suffix'];
       }
     }
   }

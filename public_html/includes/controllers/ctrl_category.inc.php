@@ -16,21 +16,21 @@
       
       $this->data = array();
       
-      $categories_query = $GLOBALS['system']->database->query(
+      $categories_query = database::query(
         "show fields from ". DB_TABLE_CATEGORIES .";"
       );
-      while ($field = $GLOBALS['system']->database->fetch($categories_query)) {
+      while ($field = database::fetch($categories_query)) {
         $this->data[$field['Field']] = '';
       }
       
-      $categories_info_query = $GLOBALS['system']->database->query(
+      $categories_info_query = database::query(
         "show fields from ". DB_TABLE_CATEGORIES_INFO .";"
       );
       
-      while ($field = $GLOBALS['system']->database->fetch($categories_info_query)) {
+      while ($field = database::fetch($categories_info_query)) {
         if (in_array($field['Field'], array('id', 'category_id', 'language_code'))) continue;
         $this->data[$field['Field']] = array();
-        foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
+        foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = '';
         }
       }
@@ -40,18 +40,18 @@
       
       $this->reset();
       
-      $categories_query = $GLOBALS['system']->database->query(
+      $categories_query = database::query(
         "select * from ". DB_TABLE_CATEGORIES ."
         where id='". (int)$category_id ."'
         limit 1;"
       );
-      $this->data = $GLOBALS['system']->database->fetch($categories_query);
+      $this->data = database::fetch($categories_query);
       
-      $categories_info_query = $GLOBALS['system']->database->query(
+      $categories_info_query = database::query(
         "select name, short_description, description, head_title, h1_title, meta_description, meta_keywords, language_code from ". DB_TABLE_CATEGORIES_INFO ."
         where category_id = '". (int)$category_id ."';"
       );
-      while ($category_info = $GLOBALS['system']->database->fetch($categories_info_query)) {
+      while ($category_info = database::fetch($categories_info_query)) {
         foreach ($category_info as $key => $value) {
           $this->data[$key][$category_info['language_code']] = $value;
         }
@@ -61,86 +61,86 @@
     public function save() {
     
       if (empty($this->data['id'])) {
-        $GLOBALS['system']->database->query(
+        database::query(
           "insert into ". DB_TABLE_CATEGORIES ."
           (date_created)
-          values ('". $GLOBALS['system']->database->input(date('Y-m-d H:i:s')) ."');"
+          values ('". database::input(date('Y-m-d H:i:s')) ."');"
         );
-        $this->data['id'] = $GLOBALS['system']->database->insert_id();
+        $this->data['id'] = database::insert_id();
       }
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_CATEGORIES ."
         set parent_id = '". (int)$this->data['parent_id'] ."',
           status = '". (int)$this->data['status'] ."',
-          code = '". $GLOBALS['system']->database->input($this->data['code']) ."',
-          keywords = '". $GLOBALS['system']->database->input($this->data['keywords']) ."',
+          code = '". database::input($this->data['code']) ."',
+          keywords = '". database::input($this->data['keywords']) ."',
           priority = '". (int)$this->data['priority'] ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
       
-      foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
+      foreach (array_keys(language::$languages) as $language_code) {
         
-        $categories_info_query = $GLOBALS['system']->database->query(
+        $categories_info_query = database::query(
           "select * from ". DB_TABLE_CATEGORIES_INFO ."
           where category_id = '". (int)$this->data['id'] ."'
-          and language_code = '". $GLOBALS['system']->database->input($language_code) ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $category_info = $GLOBALS['system']->database->fetch($categories_info_query);
+        $category_info = database::fetch($categories_info_query);
         
         if (empty($category_info)) {
-          $GLOBALS['system']->database->query(
+          database::query(
             "insert into ". DB_TABLE_CATEGORIES_INFO ."
             (category_id, language_code)
             values ('". (int)$this->data['id'] ."', '". $language_code ."');"
           );
         }
         
-        $GLOBALS['system']->database->query(
+        database::query(
           "update ". DB_TABLE_CATEGORIES_INFO ." set
-          name = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($this->data['name'][$language_code]) : '') ."',
-          short_description = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($this->data['short_description'][$language_code]) : '') ."',
-          description = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($this->data['description'][$language_code], true) : '') ."',
-          head_title = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($this->data['head_title'][$language_code]) : '') ."',
-          h1_title = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($this->data['h1_title'][$language_code]) : '') ."',
-          meta_description = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($this->data['meta_description'][$language_code]) : '') ."',
-          meta_keywords = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($this->data['meta_keywords'][$language_code]) : '') ."'
+          name = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['name'][$language_code]) : '') ."',
+          short_description = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['short_description'][$language_code]) : '') ."',
+          description = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['description'][$language_code], true) : '') ."',
+          head_title = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['head_title'][$language_code]) : '') ."',
+          h1_title = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['h1_title'][$language_code]) : '') ."',
+          meta_description = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['meta_description'][$language_code]) : '') ."',
+          meta_keywords = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['meta_keywords'][$language_code]) : '') ."'
           where category_id = '". (!empty($this->data['name'][$language_code]) ? (int)$this->data['id'] : '') ."'
-          and language_code = '". (!empty($this->data['name'][$language_code]) ? $GLOBALS['system']->database->input($language_code) : '') ."'
+          and language_code = '". (!empty($this->data['name'][$language_code]) ? database::input($language_code) : '') ."'
           limit 1;"
         );
       }
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
     
     public function delete() {
     
       if (empty($this->data['id'])) return;
       
-      $products_query = $GLOBALS['system']->database->query(
+      $products_query = database::query(
         "select id from ". DB_TABLE_PRODUCTS ."
         where find_in_set('". (int)$this->data['id'] ."', categories)
         limit 1;"
       );
       
-      if ($GLOBALS['system']->database->num_rows($products_query) > 0) {
-        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_delete_category_not_empty_products', 'The category could not be deleted because there are products linked to it.'));
+      if (database::num_rows($products_query) > 0) {
+        notices::add('errors', language::translate('error_delete_category_not_empty_products', 'The category could not be deleted because there are products linked to it.'));
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;
       }
       
-      $subcategories_query = $GLOBALS['system']->database->query(
+      $subcategories_query = database::query(
         "select id from ". DB_TABLE_CATEGORIES ."
         where parent_id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
       
-      if ($GLOBALS['system']->database->num_rows($subcategories_query) > 0) {
-        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_delete_category_not_empty_subcategories', 'The category could not be deleted because there are subcategories linked to it.'));
+      if (database::num_rows($subcategories_query) > 0) {
+        notices::add('errors', language::translate('error_delete_category_not_empty_subcategories', 'The category could not be deleted because there are subcategories linked to it.'));
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;
       }
@@ -149,13 +149,13 @@
         unlink(FS_DIR_HTTP_ROOT . WS_DIR_DATA_IMAGES . 'categories/' . $this->data['image']);
       }
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_CATEGORIES ."
         where id = '". $this->data['id'] ."'
         limit 1;"
       );
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_CATEGORIES_INFO ."
         where category_id = '". $this->data['id'] ."'
         limit 1;"
@@ -163,7 +163,7 @@
       
       $this->data['id'] = null;
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
     
     public function save_image($file) {
@@ -179,19 +179,19 @@
       $image = new ctrl_image($file);
       
     // 456-12345_Fancy-title.jpg
-      $filename = 'categories/' . $this->data['id'] .'-'. $GLOBALS['system']->functions->general_path_friendly($this->data['name'][$GLOBALS['system']->settings->get('default_language_code')]) .'.'. $image->type();
+      $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('default_language_code')]) .'.'. $image->type();
       
       if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
       
-      $GLOBALS['system']->functions->image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+      functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
       
       $image->resample(1024, 1024, 'FIT_ONLY_BIGGER');
       
       $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, '', 90);
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_CATEGORIES ."
-        set image = '". $GLOBALS['system']->database->input($filename) ."'
+        set image = '". database::input($filename) ."'
         where id = '". (int)$this->data['id'] ."';"
       );
       

@@ -12,14 +12,14 @@
       
       switch($type) {
         case 'session': // Used for checkout
-          if (!isset($GLOBALS['system']->session->data['shipping']) || !is_array($GLOBALS['system']->session->data['shipping'])) $GLOBALS['system']->session->data['shipping'] = array();
-          $this->data = &$GLOBALS['system']->session->data['shipping'];
+          if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) session::$data['shipping'] = array();
+          $this->data = &session::$data['shipping'];
           
-          foreach ($GLOBALS['system']->cart->data['items'] as $key => $item) {
+          foreach (cart::$data['items'] as $key => $item) {
             $this->items[$key] = $item;
           }
           
-          $this->destination = $GLOBALS['system']->customer->data;
+          $this->destination = customer::$data;
           
           break;
         case 'local':
@@ -34,11 +34,11 @@
     
     public function options($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
        
-      if ($items === null) $items = $GLOBALS['system']->cart->data['items'];
-      if ($subtotal === null) $subtotal = $GLOBALS['system']->cart->data['total']['value'];
-      if ($tax === null) $tax = $GLOBALS['system']->cart->data['total']['tax'];
-      if ($currency_code === null) $currency_code = $GLOBALS['system']->currency->selected['code'];
-      if ($customer === null) $customer = $GLOBALS['system']->customer->data;
+      if ($items === null) $items = cart::$data['items'];
+      if ($subtotal === null) $subtotal = cart::$data['total']['value'];
+      if ($tax === null) $tax = cart::$data['total']['tax'];
+      if ($currency_code === null) $currency_code = currency::$selected['code'];
+      if ($customer === null) $customer = customer::$data;
       
       $checksum = sha1(serialize(array_merge($this->items, $this->destination)));
       
@@ -75,7 +75,7 @@
       
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
         $this->data['selected'] = array();
-        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
+        notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
         return;
       }
       

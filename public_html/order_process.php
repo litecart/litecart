@@ -21,8 +21,8 @@
     //list($payment_module_id, $payment_option_id) = explode(':', $payment->data['selected']['id']);
     
     if ($payment_error = $payment->run('pre_check')) {
-      $system->notices->add('errors', $payment_error);
-      header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'));
+      notices::add('errors', $payment_error);
+      header('Location: '. document::link(WS_DIR_HTTP_HOME . 'checkout.php'));
       exit;
     }
     
@@ -35,16 +35,16 @@
       if ($gateway = $payment->transfer()) {
       
         if (!empty($gateway['error'])) {
-          $system->notices->add('errors', $gateway['error']);
-          header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'));
+          notices::add('errors', $gateway['error']);
+          header('Location: '. document::link(WS_DIR_HTTP_HOME . 'checkout.php'));
           exit;
         }
         
         if (strtolower($gateway['method']) == 'post') {
-          echo '<p><img src="'. WS_DIR_IMAGES .'icons/16x16/loading.gif" width="16" height="16" /> '. $system->language->translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
+          echo '<p><img src="'. WS_DIR_IMAGES .'icons/16x16/loading.gif" width="16" height="16" /> '. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
              . '<form name="gateway_form" method="post" action="'. $gateway['action'].'">' . PHP_EOL;
           if (is_array($gateway['fields'])) {
-            foreach ($gateway['fields'] as $key => $value) echo '  ' . $system->functions->form_draw_hidden_field($key, $value) . PHP_EOL;
+            foreach ($gateway['fields'] as $key => $value) echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;
           } else {
             echo $gateway['fields'];
           }
@@ -61,7 +61,7 @@
           exit;
           
         } else {
-          header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : $system->document->link()));
+          header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::link()));
           exit;
         }
       }
@@ -72,8 +72,8 @@
     
   // If payment error
     if (!empty($result['error'])) {
-      $system->notices->add('errors', $result['error']);
-      header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php'));
+      notices::add('errors', $result['error']);
+      header('Location: '. document::link(WS_DIR_HTTP_HOME . 'checkout.php'));
       exit;
     }
     
@@ -88,11 +88,11 @@
   $order->save();
   
 // Reset cart
-  $system->cart->reset();
+  cart::reset();
   
 // Send e-mails
   $order->email_order_copy($order->data['customer']['email']);
-  foreach (explode(';', $system->settings->get('email_order_copy')) as $email) {
+  foreach (explode(';', settings::get('email_order_copy')) as $email) {
     $order->email_order_copy($email);
   }
   
@@ -100,6 +100,6 @@
   $shipping->run('after_process');
   $payment->run('after_process');
   
-  header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'order_success.php'));
+  header('Location: '. document::link(WS_DIR_HTTP_HOME . 'order_success.php'));
   exit;
 ?>

@@ -1,6 +1,6 @@
 <?php
   
-  $rss = $system->functions->http_fetch('http://www.litecart.net/feeds/addons');
+  $rss = functions::http_fetch('http://www.litecart.net/feeds/addons');
   
   $rss = simplexml_load_string($rss);
   
@@ -26,7 +26,7 @@
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
     <tr class="header">
-      <th colspan="4" align="left"><?php echo $system->language->translate('title_latest_addons', 'Latest Add-ons'); ?></th>
+      <th colspan="4" align="left"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></th>
     </tr>
     <tr>
 <?php

@@ -1,6 +1,6 @@
 <?php
   require_once('../includes/app_header.inc.php');
-  header('Content-type: text/plain; charset='. $system->language->selected['charset']);
+  header('Content-type: text/plain; charset='. language::$selected['charset']);
   
   if (empty($_GET['trigger'])) die('{}');
   

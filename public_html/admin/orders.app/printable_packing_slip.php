@@ -1,9 +1,9 @@
 <?php
   require_once('../../includes/config.inc.php');
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
-  $system->user->require_login();
+  user::require_login();
   
-  $system->document->layout = 'printable';
+  document::$layout = 'printable';
   
   if (empty($_GET['order_id'])) die('Missing order ID');
   
