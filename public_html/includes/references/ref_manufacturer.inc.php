@@ -28,7 +28,7 @@
     }
     
     public function __set($name, $value) {
-      $GLOBALS['system']->functions->error_trigger_traced('Setting data is prohibited', E_USER_ERROR);
+      trigger_error('Setting data is prohibited', E_USER_ERROR);
     }
     
     private function load($type='') {
