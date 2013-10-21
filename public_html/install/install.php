@@ -15,6 +15,7 @@
 // Function to get object from a relative path to this script
   function get_absolute_path($path=null) {
     if (empty($path)) $path = dirname(__FILE__);
+    $path = realpath($path);
     $path = str_replace('\\', '/', $path);
     $parts = array_filter(explode('/', $path), 'strlen');
     $absolutes = array();
@@ -191,7 +192,7 @@
   
   $htaccess = file_get_contents('htaccess');
   
-  $base_dir = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), '', $installation_path);
+  $base_dir = str_replace(get_absolute_path($_SERVER['DOCUMENT_ROOT']), '', $installation_path);
   
   $htaccess = str_replace('{BASE_DIR}', $base_dir, $htaccess);
   

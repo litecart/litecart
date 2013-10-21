@@ -105,10 +105,8 @@ span.error {
   
   <h2>System Requirements</h2>
   <ul>
-    <li>Linux Machine <?php echo (PHP_OS == 'Linux') ? '<span class="ok">[OK]</span>' : '<span class="error">['. PHP_OS .']</span>'; ?></li>
     <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
       <ul>
-        <li>$_SERVER['DOCUMENT_ROOT'] = <?php echo $_SERVER['DOCUMENT_ROOT']; ?> <?php echo (realpath(rtrim($_SERVER['DOCUMENT_ROOT'], '/')) == rtrim($_SERVER['DOCUMENT_ROOT'], '/')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Conflict] Should be '. realpath(rtrim($_SERVER['DOCUMENT_ROOT'], '/')) .'</span>'; ?></li>
         <li>Settings
           <ul>
             <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
