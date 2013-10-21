@@ -187,7 +187,7 @@
       return $parts;
     }
     
-    function unparse_link($parts=array()) {
+    public static function unparse_link($parts=array()) {
       
       if (empty($parts['host'])) {
         $parts['scheme'] = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';

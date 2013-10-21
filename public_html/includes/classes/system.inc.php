@@ -49,7 +49,7 @@
     }
     
   // Load library objects
-    public static function load($module) {
+    public static function load($file) {
       
       $module = preg_replace('/^lib_(.*)\.inc\.php$/', '$1', basename($file));
       
