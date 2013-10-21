@@ -228,7 +228,7 @@
   echo 'Granting admin access for user '. $_POST['username'] .'...';
   
   $htpasswd = $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
-  file_put_contents('..' . DIRECTORY_SEPARATOR . $_POST['admin_folder'] . '.htpasswd', $htpasswd) or die();
+  file_put_contents('../'. $_POST['admin_folder'] . '.htpasswd', $htpasswd) or die();
   
   echo ' [Done]' . PHP_EOL;
   
