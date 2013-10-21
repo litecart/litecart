@@ -238,7 +238,11 @@
       self::$_cache['translations'][$language_code][$code] = $translation;
       
       $backtrace = current(debug_backtrace());
-      $page = database::input(substr($backtrace['file'], strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME)));
+      if (!empty($backtrace['file'])) {
+        $page = database::input(substr($backtrace['file'], strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME)));
+      } else {
+        $page = substr(__FILE__, strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
+      }
       
       if (empty($row)) {
         database::query(

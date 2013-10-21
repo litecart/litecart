@@ -8,13 +8,18 @@
       $this->_module = $module;
     }
     
-    public function __get($variable) {
+    public function &__get($variable) {
       $class = ($this->_module);
       return $class::$$variable;
     }
     
+    public function __set($variable, $value) {
+      $class = ($this->_module);
+      $class::$$variable = &$value;
+    }
+    
     public function __call($method, $arguments) {
-      return forward_static_call(array($this->_module, $method), $arguments);
+      return forward_static_call_array(array($this->_module, $method), $arguments);
     }
   }
   
@@ -39,20 +44,21 @@
     public static function init() {
       
       foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_*.inc.php') as $file) {
-        $module = preg_replace('/^lib_(.*)\.inc\.php$/', '$1', basename($file));
-        self::load($module);
+        self::load($file);
       }
     }
     
   // Load library objects
     public static function load($module) {
       
+      $module = preg_replace('/^lib_(.*)\.inc\.php$/', '$1', basename($file));
+      
       if (in_array($module, self::$_loaded_modules)) {
         trigger_error("Module '$module' is already loaded", E_USER_WARNING);
         return;
       }
       
-      include(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_'. $module .'.inc.php');
+      require_once($file);
       
       if (method_exists($module, 'construct')) {
         forward_static_call(array($module, 'construct'));

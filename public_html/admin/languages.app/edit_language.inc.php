@@ -198,8 +198,8 @@
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></strong><br />
 <?php
   $options = array(
-    array(language::translate('title_dot[char]', 'Dot'), '.'),
-    array(language::translate('title_comma[char]', 'Comma'), ','),
+    array(language::translate('char_dot[char]', 'Dot'), '.'),
+    array(language::translate('char_comma[char]', 'Comma'), ','),
   );
   echo functions::form_draw_select_field('decimal_point', $options, true, false, 'data-size="auto"');
 ?>
@@ -209,9 +209,9 @@
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></strong><br />
 <?php
   $options = array(
-    array(language::translate('title_comma[char]', 'Comma'), ','),
-    array(language::translate('title_dot[char]', 'Dot'), '.'),
-    array(language::translate('title_space[char]', 'Space'), ' '),
+    array(language::translate('char_comma', 'Comma'), ','),
+    array(language::translate('char_dot', 'Dot'), '.'),
+    array(language::translate('char_space', 'Space'), ' '),
   );
   echo functions::form_draw_select_field('thousands_sep', $options, true, false, 'data-size="auto"');
 ?>

@@ -191,17 +191,24 @@
       return $result;
     }
     
-    public static function multi_query($query, $link='default') {
+    public function multi_query($query, $link='default') {
     
     // Establish a link if not previously made
-      if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
+      if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
       
-      if (self::$_type == 'mysqli') {
-        return mysqli_multi_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]));
-        mysqli_multi_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]));
-        while (mysqli_next_result(self::$_links[$link])) {;} // flush results - we're not supporting it
+      if ($this->_type == 'mysqli') {
+        if (mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]))) {
+          do {
+            if ($result = mysqli_use_result($link)) {
+              while ($row = mysqli_fetch_row($result)) {
+              }
+              mysqli_free_result($result);
+            }
+          }
+          while (mysqli_next_result($link));
+        }
       } else {
-        self::query($query, $link); // don't pick up results - we're not supporting it
+        $this->query($query, $link); // don't pick up results - we're not supporting it
       }
       return;
     }

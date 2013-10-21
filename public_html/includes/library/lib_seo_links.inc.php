@@ -24,10 +24,28 @@
         }
       }
       
-      if (self::$enabled) {
-      // Import cached links
-        self::$_cache_id = cache::cache_id('links', array('language'));
-        self::$_cache = cache::get(self::$_cache_id, 'file');
+      if (settings::get('cache_clear_seo_links')) {
+        
+        database::query(
+          "delete from ". DB_TABLE_SEO_LINKS_CACHE .";"
+        );
+        
+        database::query(
+          "update ". DB_TABLE_SETTINGS ."
+          set value = ''
+          where `key` = 'cache_clear_seo_links'
+          limit 1;"
+        );
+        
+        notices::add('success', 'SEO links cache cleared');
+        
+      } else {
+      
+        if (self::$enabled) {
+        // Import cached links
+          self::$_cache_id = cache::cache_id('links', array('language'));
+          self::$_cache = cache::get(self::$_cache_id, 'file');
+        }
       }
     }
     

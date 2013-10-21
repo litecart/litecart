@@ -34,19 +34,6 @@
         );
         notices::add('success', 'Image thumbnails cache cleared');
       }
-      
-      if (settings::get('cache_clear_seo_links')) {
-        database::query(
-          "delete from ". DB_TABLE_SEO_LINKS_CACHE .";"
-        );
-        database::query(
-          "update ". DB_TABLE_SETTINGS ."
-          set value = ''
-          where `key` = 'cache_clear_seo_links'
-          limit 1;"
-        );
-        notices::add('success', 'SEO links cache cleared');
-      }
     }
     
     public static function before_capture() {}

@@ -66,10 +66,10 @@
   </tr>
 <?php
 	} else {
-    if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+    if (substr($setting['function'], 0, 6) == 'toggle' && in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
       $setting['value'] = language::translate('title_true', 'True');
     } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
-      $setting['value'] = language::translate('title_false', 'False');
+      $setting['value'] = '';
     }
 ?>
   <tr class="<?php echo $rowclass; ?>">
