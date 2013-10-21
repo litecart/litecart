@@ -160,7 +160,7 @@
           <div style="margin-bottom: 10px;" class="cheapest-shipping">
 <?php
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'shipping.inc.php');
-    $shipping = new shipping('local');
+    $shipping = new mod_shipping('local');
     $shipping->items[$product->id] = array(
       'quantity' => 1,
       'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,

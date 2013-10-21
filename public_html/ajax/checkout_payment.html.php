@@ -7,7 +7,7 @@
   
   if (cart::$data['total']['items'] == 0) return;
   
-  $payment = new payment();
+  $payment = new mod_payment();
   
   if (empty(customer::$data['country_code'])) return;
   

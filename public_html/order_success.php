@@ -37,7 +37,7 @@
 <?php
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'order_success.inc.php');
-  $order_success = new order_success();
+  $order_success = new mod_order_success();
   
   echo $order_success->process();
 

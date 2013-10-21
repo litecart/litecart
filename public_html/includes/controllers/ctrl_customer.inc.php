@@ -109,7 +109,7 @@
         limit 1;"
       );
       
-      $customer_modules = new customer();
+      $customer_modules = new mod_customer();
       $customer_modules->after_save($this);
       
       cache::set_breakpoint();

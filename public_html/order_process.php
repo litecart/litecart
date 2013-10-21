@@ -5,9 +5,9 @@
   
   header('X-Robots-Tag: noindex');
   
-  $shipping = new shipping();
+  $shipping = new mod_shipping();
   
-  $payment = new payment();
+  $payment = new mod_payment();
   
   $order = new ctrl_order('resume');
   

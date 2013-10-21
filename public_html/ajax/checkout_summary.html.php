@@ -9,11 +9,11 @@
   
   if (empty(cart::$data['items'])) return;
   
-  if (!isset($shipping)) $shipping = new shipping();
+  if (!isset($shipping)) $shipping = new mod_shipping();
   
-  if (!isset($payment)) $payment = new payment();
+  if (!isset($payment)) $payment = new mod_payment();
   
-  $order_total = new order_total();
+  $order_total = new mod_order_total();
   
   $order = new ctrl_order('resume');
   

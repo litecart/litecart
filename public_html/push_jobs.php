@@ -16,7 +16,7 @@
     limit 1;"
   );
   
-  $jobs = new jobs();
+  $jobs = new mod_jobs();
   
   if (!empty($_GET['module_id'])) {
     echo $jobs->process($_GET['module_id']);

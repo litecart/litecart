@@ -18,7 +18,7 @@
   if (isset($_POST['perform']) && !empty($_POST['orders'])) {
     if (!empty($_POST['order_action'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
-      $order_action = new order_action();
+      $order_action = new mod_order_action();
       $options = $order_action->options();
       echo $order_action->modules[$module_id]->$options[$module_id]['options'][$option_id]['function']($_POST['orders']);
       return;
@@ -95,7 +95,7 @@
     <li>
 <?php
 
-  $order_action = new order_action();
+  $order_action = new mod_order_action();
   
   $order_action_options = $order_action->options();
   

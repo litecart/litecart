@@ -4,7 +4,7 @@
   
   if (empty($_GET['trigger'])) die('{}');
   
-  $customer = new customer();
+  $customer = new mod_customer();
   
   $result = $customer->get_address(array_merge($_POST, $_GET));
   
