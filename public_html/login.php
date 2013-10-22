@@ -38,7 +38,7 @@
 </div>
 
 <?php
-  if (FS_DIR_HTTP_ROOT . $_SERVER['SCRIPT_NAME'] == __FILE__) {
+  if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
   }
 ?>
