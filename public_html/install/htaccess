@@ -15,7 +15,7 @@ ErrorDocument 500 "Internal Server Error"
   <IfModule mod_env.c>
     SetEnv HTTP_MOD_REWRITE On
   </IfModule>
-
+  
   # Web path to catalog root
   RewriteBase {BASE_DIR}
   
@@ -23,7 +23,7 @@ ErrorDocument 500 "Internal Server Error"
   #RewriteCond %{HTTP_HOST} !^www\.
   #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
   
-  # No logic for physical files
+  # No rewrite logic for physical files
   RewriteCond %{REQUEST_FILENAME} -d [OR]
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -l
