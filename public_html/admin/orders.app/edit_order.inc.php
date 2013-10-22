@@ -318,23 +318,14 @@
       <?php echo $system->functions->form_draw_hidden_field('items['.$key.'][option_stock_combination]', true); ?>
       <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?></div>
 <?php
-    if (!empty($_POST['items']['options'])) {
+    if (!empty($_POST['items'][$key]['options'])) {
       echo '      <br />' . PHP_EOL
          . '      <table>' . PHP_EOL;
       foreach (array_keys($_POST['items'][$key]['options']) as $field) {
-        echo '        <tr>' . PHP_EOL;
-        if (is_array($_POST['items'][$key][$field])) {
-          echo '          <td style="padding-left: 10px;">'. $field .'</td>' . PHP_EOL
-             . '          <td>';
-          foreach (array_keys($_POST['items'][$key][$field]) as $k) {
-            echo $system->functions->form_draw_text_field('items['.$key.']['.$field.']['.$k.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '');
-          }
-          echo '          </td>' . PHP_EOL;
-        } else {
-          echo '          <td style="padding-left: 10px;">'. $field .'</td>' . PHP_EOL
-             . '          <td> '. $system->functions->form_draw_text_field('items['.$key.']['.$field.']', true) .'</td>' . PHP_EOL;
-        }
-        echo '        </tr>' . PHP_EOL;
+        echo '        <tr>' . PHP_EOL
+           . '          <td style="padding-left: 10px;">'. $field .'</td>' . PHP_EOL
+           . '          <td> '. $system->functions->form_draw_text_field('items['.$key.'][options]['.$field.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '') .'</td>' . PHP_EOL
+           . '        </tr>' . PHP_EOL;
       }
       echo '      </table>' . PHP_EOL;
     }
@@ -497,7 +488,7 @@
     $("#order-total").text("<?php echo $system->currency->currencies[$order->data['currency_code']]['prefix']; ?>" + order_total + "<?php echo $system->currency->currencies[$order->data['currency_code']]['suffix']; ?>");
   }
   
-  $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], #remove_item", function() {
+  $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], a.remove_item, a.remove_ot_row", function() {
     calculate_total();
   });
 </script>
