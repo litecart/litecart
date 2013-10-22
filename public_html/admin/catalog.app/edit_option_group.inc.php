@@ -30,6 +30,7 @@
       );
       
       foreach ($fields as $field) {
+        var_dump($_POST[$field]);
         if (isset($_POST[$field])) $option_group->data[$field] = $_POST[$field];
       }
       
@@ -100,7 +101,7 @@
 <script>
   $("select[name='function']").change(function() {
     $("div[id^='option-values']").hide();
-    $("div[id^='option-values'] input").attr("disabled", "disabled");
+    $("div[id^='option-values'] input, div[id^='option-values'] textarea").attr("disabled", "disabled");
     switch ($(this).find("option:selected").val()) {
       case "select":
       case "checkbox":
@@ -118,7 +119,7 @@
         break;
       case "textarea":
         $("#option-values-textarea").show();
-        $("#option-values-textarea input").removeAttr("disabled");
+        $("#option-values-textarea textarea").removeAttr("disabled");
         break;
     }
   });
@@ -207,7 +208,8 @@
     </tr>
 <?php
     if (!empty($_POST['values'])) {
-      $key = array_shift(array_keys($_POST['values']));
+      $keys = array_keys($_POST['values']);
+      $key = array_shift($keys);
     } else {
       $key = 0;
     }
@@ -229,7 +231,8 @@
     </tr>
 <?php
     if (!empty($_POST['values'])) {
-      $key = array_shift(array_keys($_POST['values']));
+      $keys = array_keys($_POST['values']);
+      $key = array_shift($keys);
     } else {
       $key = 0;
     }
@@ -250,8 +253,10 @@
       <th></th>
     </tr>
 <?php
+    //var_dump(array_keys($_POST['values']));
     if (!empty($_POST['values'])) {
-      $key = array_shift(array_keys($_POST['values']));
+      $keys = array_keys($_POST['values']);
+      $key = array_shift($keys);
     } else {
       $key = 0;
     }
