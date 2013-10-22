@@ -214,10 +214,13 @@
             . '  Deny from all' . PHP_EOL
             . '</FilesMatch>' . PHP_EOL
             . PHP_EOL
-            . 'AuthType Basic' . PHP_EOL
-            . 'AuthName "Restricted Area"' . PHP_EOL
-            . 'AuthUserFile ' . $installation_path . $_POST['admin_folder'] . '.htpasswd' . PHP_EOL
-            . 'Require valid-user' . PHP_EOL;
+            . '# Basic authentication' . PHP_EOL
+            . '<IfModule mod_auth_basic.c>' . PHP_EOL
+            . '  AuthType Basic' . PHP_EOL
+            . '  AuthName "Restricted Area"' . PHP_EOL
+            . '  AuthUserFile ' . $installation_path . $_POST['admin_folder'] . '.htpasswd' . PHP_EOL
+            . '  Require valid-user' . PHP_EOL
+            . '</IfModule>' . PHP_EOL;
   
   file_put_contents('../'. $_POST['admin_folder'] .'.htaccess', $htaccess) or die();
   
