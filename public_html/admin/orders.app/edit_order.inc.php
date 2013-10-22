@@ -325,7 +325,7 @@
       foreach (array_keys($_POST['items'][$key]['options']) as $field) {
         echo '        <tr>' . PHP_EOL
            . '          <td style="padding-left: 10px;">'. $field .'</td>' . PHP_EOL
-           . '          <td> '. $system->functions->form_draw_text_field('items['.$key.']['.$field.']', true) .'</td>' . PHP_EOL
+           . '          <td> '. $functions::form_draw_text_field('items['.$key.']['.$field.']', true) .'</td>' . PHP_EOL
            . '        </tr>' . PHP_EOL;
       }
       echo '      </table>' . PHP_EOL;
