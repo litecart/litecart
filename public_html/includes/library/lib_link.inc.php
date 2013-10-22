@@ -84,7 +84,7 @@
       $link = self::unparse_link($base_link);
       
       if (!empty(seo_links::$enabled)) {
-        $seo_link = seo_links::$link($link, $language_code);
+        $seo_link = seo_links::link($link, $language_code);
       }
       
       $link = !empty($seo_link) ? $seo_link : $link;

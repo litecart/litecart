@@ -4,6 +4,7 @@
     
     private static $_cache = array();
     private static $_cache_id = '';
+    private static $_classes = array();
     public static $enabled;
     
     public static function construct() {
@@ -100,20 +101,20 @@
     
     private static function _load_class($class) {
       
-      if (isset(self::$classes[$class])) {
-        if (is_object(self::$classes[$class])) {
+      if (isset(self::$_classes[$class])) {
+        if (is_object(self::$_classes[$class])) {
           return true;
         } else {
           return false;
         }
       }
       
-      self::$classes[$class] = null;
+      self::$_classes[$class] = null;
 
       if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/url_' . $class .'.inc.php')) return false;
       
       $class_name = 'url_'.$class;
-      self::$classes[$class] = new $class_name();
+      self::$_classes[$class] = new $class_name();
       
       return true;
     }
@@ -121,18 +122,18 @@
     public static function link($link, $language_code) {
       
       $checksum = md5($link . $language_code);
-      if (!empty(self::$cache[$checksum])) return self::$cache[$checksum];
+      if (!empty(self::$_cache[$checksum])) return self::$_cache[$checksum];
       
       $seo_link = self::get_link($link, $language_code);
       if (!empty($seo_link)) {
-        self::$cache[$checksum] = $seo_link;
+        self::$_cache[$checksum] = $seo_link;
         return $seo_link;
       }
       
       $seo_link = self::create_link($link, $language_code);
       
       if (!empty($seo_link)) {
-        self::$cache[$checksum] = $seo_link;
+        self::$_cache[$checksum] = $seo_link;
         return $seo_link;
       }
       
@@ -208,7 +209,7 @@
       $base_link = link::unparse_link($parsed_link);
       
     // Bake SEO link (for database)
-      $seo_link = self::$classes[$class]->process($parsed_link, $language_code);
+      $seo_link = self::$_classes[$class]->process($parsed_link, $language_code);
       if (empty($seo_link)) return $link;
       if (substr($seo_link['path'], 0, strlen(WS_DIR_HTTP_HOME))) {
         $seo_link['path'] = $http_home_dir . substr($seo_link['path'], strlen(WS_DIR_HTTP_HOME));

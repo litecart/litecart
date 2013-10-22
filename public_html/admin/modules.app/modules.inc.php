@@ -4,49 +4,49 @@
       $title = language::translate('title_customer_modules', 'Customer Modules');
       $installed_modules = explode(';', settings::get('customer_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/*.inc.php');
-      $modules = new customer;
+      $modules = new mod_customer();
       $edit_doc = 'edit_customer';
       break;
     case 'jobs':
       $title = language::translate('title_job_modules', 'Job Modules');
       $installed_modules = explode(';', settings::get('jobs_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/*.inc.php');
-      $modules = new jobs;
+      $modules = new mod_jobs();
       $edit_doc = 'edit_job';
       break;
     case 'order_action':
       $title = language::translate('title_order_action_modules', 'Order Action Modules');
       $installed_modules = explode(';', settings::get('order_action_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/*.inc.php');
-      $modules = new order_action;
+      $modules = new mod_order_action();
       $edit_doc = 'edit_order_action';
       break;
     case 'order_total':
       $title = language::translate('title_order_total_modules', 'Order Total Modules');
       $installed_modules = explode(';', settings::get('order_total_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/*.inc.php');
-      $modules = new order_total;
+      $modules = new mod_order_total();
       $edit_doc = 'edit_order_total';
       break;
     case 'payment':
       $title = language::translate('title_payment_modules', 'Payment Modules');
       $installed_modules = explode(';', settings::get('payment_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/*.inc.php');
-      $modules = new payment;
+      $modules = new mod_payment();
       $edit_doc = 'edit_payment';
       break;
     case 'order_success':
       $title = language::translate('title_order_success_modules', 'Order Success Modules');
       $installed_modules = explode(';', settings::get('order_success_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/*.inc.php');
-      $modules = new order_success;
+      $modules = new mod_order_success();
       $edit_doc = 'edit_order_success';
       break;
     case 'shipping':
       $title = language::translate('title_shipping_modules', 'Shipping Modules');
       $installed_modules = explode(';', settings::get('shipping_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/*.inc.php');
-      $modules = new shipping;
+      $modules = new mod_shipping();
       $edit_doc = 'edit_shipping';
       break;
     default:

@@ -207,7 +207,8 @@
     </tr>
 <?php
     if (!empty($_POST['values'])) {
-      $key = array_shift(array_keys($_POST['values']));
+      $keys = array_keys($_POST['values']);
+      $key = array_shift($keys);
     } else {
       $key = 0;
     }
@@ -229,7 +230,8 @@
     </tr>
 <?php
     if (!empty($_POST['values'])) {
-      $key = array_shift(array_keys($_POST['values']));
+      $keys = array_keys($_POST['values']);
+      $key = array_shift($keys);
     } else {
       $key = 0;
     }
@@ -251,7 +253,8 @@
     </tr>
 <?php
     if (!empty($_POST['values'])) {
-      $key = array_shift(array_keys($_POST['values']));
+      $keys = array_keys($_POST['values']);
+      $key = array_shift($keys);
     } else {
       $key = 0;
     }
