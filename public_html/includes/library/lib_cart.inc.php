@@ -197,7 +197,8 @@
               
               case 'input':
               case 'textarea':
-                $value = array_shift(array_values($product->options[$key]['values']));
+                $values = array_values($product->options[$key]['values']);
+                $value = array_shift($values);
                 $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                 $item['price'] += $value['price_adjust'];
                 break;

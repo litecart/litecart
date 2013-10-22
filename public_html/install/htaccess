@@ -1,17 +1,20 @@
+# Define some error documents
 ErrorDocument 403 {BASE_DIR}error_document.php?code=403
 ErrorDocument 404 {BASE_DIR}error_document.php?code=404
 ErrorDocument 410 {BASE_DIR}error_document.php?code=410
 ErrorDocument 500 "Internal Server Error"
 
-Options -Indexes
+# Deny showing indexes for directory content - Uncomment if supported by you web host
+# Options -Indexes
 
 # URL-rewriting
 <IfModule mod_rewrite.c>
-  Options +FollowSymLinks
   RewriteEngine on
   
   # Tell PHP that the mod_rewrite module is enabled
-  SetEnv HTTP_MOD_REWRITE On
+  <IfModule mod_env.c>
+    SetEnv HTTP_MOD_REWRITE On
+  </IfModule>
   
   # Web path to catalog root
   RewriteBase {BASE_DIR}
@@ -20,7 +23,7 @@ Options -Indexes
   #RewriteCond %{HTTP_HOST} !^www\.
   #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
   
-  # No logic for physical files
+  # No rewrite logic for physical files
   RewriteCond %{REQUEST_FILENAME} -d [OR]
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -l

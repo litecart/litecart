@@ -170,7 +170,7 @@
         ". (!empty($filter['categories']) ? "$sql_andor (find_in_set('". implode("', p.categories) or find_in_set('", $filter['categories']) ."', p.categories))" : false) ."
         ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : false) ."
         ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
-        ". (!empty($filter['campaign']) ? "$sql_andor campaign_price" : false) ."
+        ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : false) ."
         ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", $filter['keywords']) ."', p.keywords))" : false) ."
         ". (isset($filter['products']) ? "$sql_andor p.id in ('". implode("', '", $filter['products']) ."')" : false) ."
         ". (!empty($sql_where_prices) ? $sql_where_prices : false) ."

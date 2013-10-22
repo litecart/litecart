@@ -228,7 +228,8 @@
           
         case 'input':
         
-          $value_id = array_shift(array_keys($group['values']));
+          $value_ids = array_keys($group['values']);
+          $value_id = array_shift($value_ids);
         
           $price_adjust_text = '';
           if ($group['values'][$value_id]['price_adjust']) {
@@ -238,7 +239,7 @@
             }
           }
           
-          echo functions::form_draw_text_field('options['.$group['name'][language::$selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
+          echo functions::form_draw_text_field('options['.$group['name'][language::$selected['code']].']', isset($_POST['options'][$group['name'][language::$selected['code']]]) ? true : $group['values'][$value_id]['value'], !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
           break;
           
         case 'radio':
@@ -280,7 +281,9 @@
           
         case 'textarea':
           
-          $value_id = array_shift(array_keys($group['values']));
+          $value_ids = array_keys($group['values']);
+          $value_id = array_shift($value_ids);
+          
           $price_adjust_text = '';
           if (!empty($group['values'][$value_id]['price_adjust'])) {
             $price_adjust_text = '';
@@ -289,7 +292,7 @@
             }
           }
 
-          echo functions::form_draw_textarea('options['.$group['name'][language::$selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
+          echo functions::form_draw_textarea('options['.$group['name'][language::$selected['code']].']', isset($_POST['options'][$group['name'][language::$selected['code']]]) ? true : $group['values'][$value_id]['value'], !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
           break;
       }
       

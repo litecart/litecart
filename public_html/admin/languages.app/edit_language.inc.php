@@ -198,8 +198,8 @@
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></strong><br />
 <?php
   $options = array(
-    array(language::translate('char_dot[char]', 'Dot'), '.'),
-    array(language::translate('char_comma[char]', 'Comma'), ','),
+    array(language::translate('char_dot', 'Dot'), '.'),
+    array(language::translate('char_comma', 'Comma'), ','),
   );
   echo functions::form_draw_select_field('decimal_point', $options, true, false, 'data-size="auto"');
 ?>

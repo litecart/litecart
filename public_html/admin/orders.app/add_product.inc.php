@@ -19,16 +19,6 @@
     $weight = $product->weight;
     $sku = $product->sku;
     
-    if ($_POST['quantity'] <= 0) {
-      if (!$silent) notices::add('errors', 'Cannot add product to cart. Invalid product_id');
-      return;
-    }
-    
-    if (($product->quantity - $_POST['quantity']) < 0 && empty($product->sold_out_status['orderable'])) {
-      if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
-      return;
-    }
-    
     $_POST['options'] = array_filter($_POST['options']);
     $selected_options = array();
     
