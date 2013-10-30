@@ -167,7 +167,8 @@
       
     // Extract first image
       if (!empty($this->data['images'])){
-        $image = array_shift(array_values($this->data['images']));
+        $images = array_values($this->data['images']);
+        $image = array_shift($images);
         $this->data['image'] = $image['filename'];
       } else {
         $this->data['image'];

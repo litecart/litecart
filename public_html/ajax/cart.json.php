@@ -9,11 +9,13 @@
   );
   
   if (!empty($system->notices->data['warnings'])) {
-    $params['alert'] = array_shift(array_values($system->notices->data['warnings']));
+    $warnings = array_values($system->notices->data['warnings']);
+    $params['alert'] = array_shift($warnings);
   }
   
   if (!empty($system->notices->data['errors'])) {
-    $params['alert'] = array_shift(array_values($system->notices->data['errors']));
+    $errors = array_values($system->notices->data['errors']);
+    $params['alert'] = array_shift($errors);
   }
   
   $system->notices->reset();

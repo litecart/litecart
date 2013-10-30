@@ -176,7 +176,8 @@
       if (isset($this->languages[$GLOBALS['system']->settings->get('store_language_code')])) return $GLOBALS['system']->settings->get('store_language_code');
       
     // Return first language
-      return array_shift(array_keys($this->languages));
+      $language = array_keys($this->languages);
+      return array_shift($languages);
     }
     
     public function translate($code, $default='', $language_code='') {
