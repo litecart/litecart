@@ -111,7 +111,7 @@
     public function add_product($product_id, $options, $quantity=1, $silent=false) {
       
       if ($quantity <= 0) {
-        if (!$silent) $GLOBALS['system']->notices->add('errors', 'Cannot add product to cart. Invalid product_id');
+        if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_cannot_add_to_cart_invalid_quantity', 'Cannot add product to cart. Invalid quantity'));
         return;
       }
       
@@ -290,7 +290,6 @@
       
       $product = new ref_product($this->data['items'][$item_key]['product_id']);
       
-      /*
       if (!empty($this->data['items'][$item_key]['options']) && ($product->options[$this->data['items'][$item_key]['option_id']]['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
         return;
@@ -298,7 +297,6 @@
         $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
         return;
       }
-      */
     
       if ($quantity > 0) {
         $this->data['items'][$item_key]['quantity'] = (int)$quantity;
