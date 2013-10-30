@@ -454,7 +454,7 @@
           
           $query = $GLOBALS['system']->database->query(
             "select id, orderable from ". DB_TABLE_SOLD_OUT_STATUSES ."
-            where id = '". (int)$this->_data['sold_out_status_id'] ."'
+            where id = '". (int)$this->sold_out_status_id ."'
             limit 1;"
           );
           $this->_data['sold_out_status'] = $GLOBALS['system']->database->fetch($query);
