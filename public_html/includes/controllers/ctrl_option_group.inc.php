@@ -208,7 +208,7 @@
         "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
         where combination like '%". (int)$this->data['id'] ."-%';"
       );
-      if (database::num_rows($products_options_stock) > 0) trigger_error('Cannot delete option group linked to products.', E_USER_ERROR);
+      if (database::num_rows($products_options_stock_query) > 0) trigger_error('Cannot delete option group linked to products.', E_USER_ERROR);
     
     // Check products for option values
       $option_values_query = database::query(

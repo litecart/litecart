@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($geo_zone_query);
-      if (empty($this->data)) trigger_error('Could not find tax class ('. $geo_zone_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find geo zone ('. $geo_zone_id .') in database.', E_USER_ERROR);
       
       $zones_to_geo_zones_query = database::query(
         "select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz

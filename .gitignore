@@ -4,10 +4,7 @@
 public_html/includes/config.inc.php
 public_html/data/backups/*
 public_html/cache/*
-public_html/images/banners/*
-public_html/images/categories/*
-public_html/images/manufacturers/*
-public_html/images/products/*
+
 *.bak
 *.000
 *.001
@@ -30,7 +27,6 @@ public_html/images/products/*
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
 ehthumbs.db
 Thumbs.db
 error_log
@@ -40,4 +36,5 @@ error_log
 # Exclude from ignore-filter #
 ##############################
 !.htaccess
+!public_html/images/*.html
 !public_html/includes/templates/default*
