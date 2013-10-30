@@ -562,7 +562,7 @@
       
       $this->data['weight_total'] += $item['quantity'] * $GLOBALS['system']->weight->convert($item['weight'], $item['weight_class'], $GLOBALS['system']->settings->get('store_weight_class'));
       
-      $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax']);
+      $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax'] * $item['quantity']);
     }
     
     public function add_ot_row($row) {
