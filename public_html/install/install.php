@@ -261,6 +261,13 @@
       where code = 'EUR'
       limit 1;"
     );
+  } else if (strtoupper(substr(PHP_OS, 0, 6)) == 'DARWIN') {
+    $database->query(
+      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
+      set locale = 'en_US.UTF-8',
+      where code = 'en'
+      limit 1;"
+    );
   }
   
   ### ###################################
