@@ -2,23 +2,23 @@
 
   function catalog_category_trail($category_id=0, $language_code='') {
     
-    if (empty($language_code)) $language_code = $GLOBALS['system']->language->selected['code'];
+    if (empty($language_code)) $language_code = language::$selected['code'];
     
     $trail = array();
     
     if (empty($category_id)) $category_id = 0;
     
-    $categories_query = $GLOBALS['system']->database->query(
+    $categories_query = database::query(
       "select c.id, c.parent_id, ci.name
       from ". DB_TABLE_CATEGORIES ." c 
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". $GLOBALS['system']->database->input($language_code) ."')
+      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
       where c.id = '". (int)$category_id ."'
       limit 1;"
     );
-    $category = $GLOBALS['system']->database->fetch($categories_query);
+    $category = database::fetch($categories_query);
     
     if (!empty($category['parent_id'])) {
-      $trail = $GLOBALS['system']->functions->catalog_category_trail($category['parent_id']);
+      $trail = functions::catalog_category_trail($category['parent_id']);
       $trail[$category['id']] = $category['name'];
     } else if (isset($category['id'])) {
       $trail = array($category['id'] => $category['name']);
@@ -29,19 +29,19 @@
   
   function catalog_category_descendants($category_id=0, $language_code='') {
     
-    if (empty($language_code)) $language_code = $GLOBALS['system']->language->selected['code'];
+    if (empty($language_code)) $language_code = language::$selected['code'];
     
     $subcategories = array();
     
     if (empty($category_id)) $category_id = 0;
     
-    $categories_query = $GLOBALS['system']->database->query(
+    $categories_query = database::query(
       "select c.id, c.parent_id, ci.name
       from ". DB_TABLE_CATEGORIES ." c 
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". $GLOBALS['system']->database->input($language_code) ."')
+      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
       where c.parent_id = '". (int)$category_id ."';"
     );
-    while ($category = $GLOBALS['system']->database->fetch($categories_query)) {
+    while ($category = database::fetch($categories_query)) {
       $subcategories[$category['id']] = $category['name'];
       $subcategories = $subcategories + catalog_category_descendants($category['id'], $language_code);
     }
@@ -51,12 +51,12 @@
   
   function catalog_categories_query($parent_id=0) {
     
-    $categories_query = $GLOBALS['system']->database->query(
+    $categories_query = database::query(
       "select c.id, c.image, ci.name, ci.short_description
       from ". DB_TABLE_CATEGORIES ." c, ". DB_TABLE_CATEGORIES_INFO ." ci
       where c.status
       and parent_id = '". (int)$parent_id ."'
-      and (ci.category_id = c.id and ci.language_code = '". $GLOBALS['system']->language->selected['code'] ."')
+      and (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
       order by c.priority asc, ci.name asc;"
     );
     
@@ -101,7 +101,7 @@
     
     if (!empty($filter['exclude_products']) && !is_array($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
     
-    $filter = $GLOBALS['system']->database->input($filter);
+    $filter = database::input($filter);
     
     $sql_select_occurrences = "";
     $sql_andor = "and";
@@ -109,13 +109,13 @@
   // Define match points
     if ($filter['sort'] == 'occurrences') {
       $sql_select_occurrences = "(0
-        ". (isset($filter['product_name']) ? "+ if(pi.name = '". $GLOBALS['system']->database->input($filter['product_name']) ."', 1, 0)" : false) ."
+        ". (isset($filter['product_name']) ? "+ if(pi.name = '". database::input($filter['product_name']) ."', 1, 0)" : false) ."
         ". (isset($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', p.categories), 1, 0) + if(find_in_set('", $filter['categories']) ."', p.categories), 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", $filter['keywords']) ."', p.keywords), 1, 0)" : false) ."
-        ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
+        ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
         ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", $filter['product_groups']) ."', p.product_groups), 1, 0)" : false) ."
-        ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", $GLOBALS['system']->database->input($filter['products'])) ."'), 1, 0)" : false) ."
+        ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", database::input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences";
       $sql_andor = "or";
     }
@@ -146,15 +146,15 @@
       "select p.id, p.product_groups, p.image, p.tax_class_id, p.quantity, p.date_created, pi.name, pi.short_description, pp_tmp.price, pc_tmp.campaign_price, if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp_tmp.price) as final_price, p.manufacturer_id, m.name as manufacturer_name
       ". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ."
       from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". $GLOBALS['system']->database->input($GLOBALS['system']->language->selected['code']) ."')
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". database::input(language::$selected['code']) ."')
       left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
       left join (
-        select pp.product_id, if(pp.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) .", pp.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ."  / ". $GLOBALS['system']->currency->selected['value'] .", pp.". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('store_currency_code')) .") as price
+        select pp.product_id, if(pp.". database::input(currency::$selected['code']) .", pp.". database::input(currency::$selected['code']) ."  / ". currency::$selected['value'] .", pp.". database::input(settings::get('store_currency_code')) .") as price
         from ". DB_TABLE_PRODUCTS_PRICES ." pp
       ) pp_tmp on (pp_tmp.product_id = p.id)
       left join (
-        select pc.product_id, if(pc.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) .", pc.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ." / ". $GLOBALS['system']->currency->selected['value'] .", pc.". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('store_currency_code')) .") as campaign_price
+        select pc.product_id, if(pc.". database::input(currency::$selected['code']) .", pc.". database::input(currency::$selected['code']) ." / ". currency::$selected['value'] .", pc.". database::input(settings::get('store_currency_code')) .") as campaign_price
         from ". DB_TABLE_PRODUCTS_CAMPAIGNS ." pc
         where (pc.start_date = '0000-00-00 00:00:00' or pc.start_date <= '". date('Y-m-d H:i:s') ."')
         and (pc.end_date = '0000-00-00 00:00:00' or pc.end_date >= '". date('Y-m-d H:i:s') ."')
@@ -165,10 +165,10 @@
       and (p.date_valid_to = '0000-00-00 00:00:00' or p.date_valid_to >= '". date('Y-m-d H:i:59') ."')
       ". (isset($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : false) ."
       and (p.id
-        ". (isset($filter['product_name']) ? "$sql_andor pi.name = '". $GLOBALS['system']->database->input($filter['product_name']) ."'" : false) ."
+        ". (isset($filter['product_name']) ? "$sql_andor pi.name = '". database::input($filter['product_name']) ."'" : false) ."
         ". (isset($filter['sql_where']) ? "$sql_andor (". $filter['sql_where'] .")" : false) ."
         ". (!empty($filter['categories']) ? "$sql_andor (find_in_set('". implode("', p.categories) or find_in_set('", $filter['categories']) ."', p.categories))" : false) ."
-        ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."')" : false) ."
+        ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : false) ."
         ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
         ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : false) ."
         ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", $filter['keywords']) ."', p.keywords))" : false) ."
@@ -180,7 +180,7 @@
       ". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";"
     ;
     
-    $products_query = $GLOBALS['system']->database->query($query);
+    $products_query = database::query($query);
     
     return $products_query;
   }
@@ -190,20 +190,20 @@
     if (empty($product_id)) return;
     
     if (!empty($option_stock_combination)) {
-      $products_options_stock_query = $GLOBALS['system']->database->query(
+      $products_options_stock_query = database::query(
         "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
         where product_id = '". (int)$product_id ."'
-        and combination = '". $GLOBALS['system']->database->input($option_stock_combination) ."';"
+        and combination = '". database::input($option_stock_combination) ."';"
       );
-      if ($GLOBALS['system']->database->num_rows($products_options_stock_query) > 0) {
+      if (database::num_rows($products_options_stock_query) > 0) {
         if (empty($option_stock_combination)) {
           trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
         } else {
-          $GLOBALS['system']->database->query(
+          database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
             set quantity = quantity + ". (int)$quantity ."
             where product_id = '". (int)$product_id ."'
-            and combination =  '". $GLOBALS['system']->database->input($option_stock_combination) ."'
+            and combination =  '". database::input($option_stock_combination) ."'
             limit 1;"
           );
         }
@@ -212,7 +212,7 @@
       }
     }
     
-    $GLOBALS['system']->database->query(
+    database::query(
       "update ". DB_TABLE_PRODUCTS ."
       set quantity = quantity + ". (int)$quantity ."
       where id = '". (int)$product_id ."'
@@ -222,7 +222,7 @@
   
   function catalog_purchase_count_adjust($product_id, $quantity) {
     
-    $products_options_query = $GLOBALS['system']->database->query(
+    $products_options_query = database::query(
       "update ". DB_TABLE_PRODUCTS ."
       set purchases = purchases + ". (int)$quantity ."
       where id = '". (int)$product_id ."'

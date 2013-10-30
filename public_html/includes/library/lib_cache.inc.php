@@ -1,68 +1,55 @@
 <?php
   
-  class lib_cache {
-    private $recorders = array();
-    private $data;
-    public $enabled = true;
+  class cache {
+    private static $_recorders = array();
+    private static $_data;
+    public static $enabled = true;
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    //public function load_dependencies() {
+    //public static function load_dependencies() {
     //}
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    public function startup() {
+    public static function startup() {
       
-      $this->enabled = $GLOBALS['system']->settings->get('cache_enabled') ? true : false;
+      self::$enabled = settings::get('cache_enabled') ? true : false;
       
-      if (!isset($GLOBALS['system']->session->data['cache'])) $GLOBALS['system']->session->data['cache'] = array();
-      $this->data = &$GLOBALS['system']->session->data['cache'];
+      if (!isset(session::$data['cache'])) session::$data['cache'] = array();
+      self::$_data = &session::$data['cache'];
       
-      if ($GLOBALS['system']->settings->get('cache_clear_thumbnails')) {
+      if (settings::get('cache_clear_thumbnails')) {
         $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '*');
         if (!empty($files)) foreach($files as $file) {
           if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
         }
-        $GLOBALS['system']->database->query(
+        database::query(
           "update ". DB_TABLE_SETTINGS ."
           set value = ''
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
         );
-        $GLOBALS['system']->notices->add('success', 'Image thumbnails cache cleared');
+        notices::add('success', 'Image thumbnails cache cleared');
       }
-      
-      if ($GLOBALS['system']->settings->get('cache_clear_seo_links')) {
-        $GLOBALS['system']->database->query(
-          "delete from ". DB_TABLE_SEO_LINKS_CACHE .";"
-        );
-        $GLOBALS['system']->database->query(
-          "update ". DB_TABLE_SETTINGS ."
-          set value = ''
-          where `key` = 'cache_clear_seo_links'
-          limit 1;"
-        );
-        $GLOBALS['system']->notices->add('success', 'SEO links cache cleared');
       }
-    }
     
-    public function before_capture() {}
+    public static function before_capture() {}
     
-    public function after_capture() {}
+    public static function after_capture() {}
     
-    public function prepare_output() {}
+    public static function prepare_output() {}
     
-    public function before_output() {}
+    public static function before_output() {}
     
-    public function shutdown() {}
+    public static function shutdown() {}
     
     ######################################################################
     
-    public function set_breakpoint() {
-      $GLOBALS['system']->database->query(
+    public static function set_breakpoint() {
+      database::query(
         "update ". DB_TABLE_SETTINGS ."
         set value = '". date('Y-m-d H:i:s') ."'
         where `key` = 'cache_system_breakpoint'
@@ -70,7 +57,7 @@
       );
     }
     
-    public function cache_id($name, $dependants=array()) {
+    public static function cache_id($name, $dependants=array()) {
       
       if (!is_array($dependants)) $dependants = array($dependants);
       
@@ -78,10 +65,10 @@
       foreach ($dependants as $dependant) {
         switch ($dependant) {
           case 'currency':
-            $dependants_string .= $GLOBALS['system']->currency->selected['code'];
+            $dependants_string .= currency::$selected['code'];
             break;
           case 'customer':
-            $dependants_string .= serialize($GLOBALS['system']->customer->data);
+            $dependants_string .= serialize(customer::$data);
             break;
           case 'host':
             $dependants_string .= $_SERVER['HTTP_HOST'];
@@ -99,10 +86,10 @@
             $dependants_string .= $_SERVER['REQUEST_URI'];
             break;
           case 'language':
-            $dependants_string .= $GLOBALS['system']->language->selected['code'];
+            $dependants_string .= language::$selected['code'];
             break;
           case 'prices':
-            $dependants_string .= $GLOBALS['system']->settings->get('display_prices_including_tax');
+            $dependants_string .= settings::get('display_prices_including_tax');
             break;
           default:
             if (is_array($dependant)) {
@@ -116,19 +103,19 @@
       return $name .'_'. md5($name . $dependants_string);
     }
     
-    public function capture($cache_id, $type='session', $max_age=3600) {
+    public static function capture($cache_id, $type='session', $max_age=3600) {
       
-      if (isset($this->recorders[$cache_id])) trigger_error('Cache recorder already initiated ('. $cache_id .')', E_USER_ERROR);
+      if (isset(self::$_recorders[$cache_id])) trigger_error('Cache recorder already initiated ('. $cache_id .')', E_USER_ERROR);
       
-      $data = $this->get($cache_id, $type, $max_age);
-      if (!empty($data)) {
+      $_data = self::get($cache_id, $type, $max_age);
+      if (!empty($_data)) {
         echo '<!-- Begin: Cache \''. $cache_id .'\' -->' . PHP_EOL
-           . $data . PHP_EOL
+           . $_data . PHP_EOL
            . '<!-- End: Cache \''. $cache_id .'\' -->' . PHP_EOL;
         return false;
       }
       
-      $this->recorders[$cache_id] = array(
+      self::$_recorders[$cache_id] = array(
         'id' => $cache_id,
         'type' => $type,
       );
@@ -137,24 +124,24 @@
       return true;
     }
     
-    public function end_capture($cache_id=null) {
+    public static function end_capture($cache_id=null) {
     
-      if (empty($this->enabled)) return false;
+      if (empty(self::$enabled)) return false;
     
-      if (empty($cache_id)) $cache_id = current(array_reverse($this->recorders));
+      if (empty($cache_id)) $cache_id = current(array_reverse(self::$_recorders));
       
-      if (!isset($this->recorders[$cache_id])) return false;
+      if (!isset(self::$_recorders[$cache_id])) return false;
       
-      $data = ob_get_flush();
+      $_data = ob_get_flush();
       
-      $this->set($cache_id, $this->recorders[$cache_id]['type'], $data);
+      self::set($cache_id, self::$_recorders[$cache_id]['type'], $_data);
       
-      unset($this->recorders[$cache_id]);
+      unset(self::$_recorders[$cache_id]);
     }
     
-    public function get($cache_id, $type, $max_age=900) {
+    public static function get($cache_id, $type, $max_age=900) {
       
-      if (empty($this->enabled)) return null;
+      if (empty(self::$enabled)) return null;
       
     // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
       if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return null;
@@ -172,15 +159,15 @@
         case 'file':
           $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$cache_id;
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
-            if (filemtime($cache_file) < strtotime($GLOBALS['system']->settings->get('cache_system_breakpoint'))) return null;
+            if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return null;
             return unserialize(file_get_contents($cache_file));
           }
           return null;
         
         case 'session':
-          if (isset($this->data[$cache_id]['mtime']) && $this->data[$cache_id]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            if ($this->data[$cache_id]['mtime'] < strtotime($GLOBALS['system']->settings->get('cache_system_breakpoint'))) return null;
-            return $this->data[$cache_id]['data'];
+          if (isset(self::$_data[$cache_id]['mtime']) && self::$_data[$cache_id]['mtime'] > strtotime('-'.$max_age .' seconds')) {
+            if (self::$_data[$cache_id]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return null;
+            return self::$_data[$cache_id]['data'];
           }
           return null;
           
@@ -192,9 +179,9 @@
       }
     }
     
-    public function set($cache_id, $type, $data) {
+    public static function set($cache_id, $type, $_data) {
     
-      if (empty($this->enabled)) return false;
+      if (empty(self::$enabled)) return false;
       
       switch ($type) {
       
@@ -203,13 +190,13 @@
       
         case 'file':
           $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $cache_id;
-          file_put_contents($cache_file, serialize($data));
+          file_put_contents($cache_file, serialize($_data));
           return true;
         
         case 'session':
-          $this->data[$cache_id] = array(
+          self::$_data[$cache_id] = array(
             'mtime' => time(),
-            'data' => $data,
+            'data' => $_data,
           );
           return true;
           

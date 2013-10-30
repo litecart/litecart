@@ -1,25 +1,25 @@
 <?php
   if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
     require_once('../includes/app_header.inc.php');
-    header('Content-type: text/html; charset='. $system->language->selected['charset']);
-    $system->document->layout = 'ajax';
+    header('Content-type: text/html; charset='. language::$selected['charset']);
+    document::$layout = 'ajax';
   }
   
-  if ($system->cart->data['total']['items'] == 0) {
-    echo '<p><em>'. $system->language->translate('description_no_items_in_cart', 'There are no items in your cart.') .'</em></p>';
+  if (cart::$data['total']['items'] == 0) {
+    echo '<p><em>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</em></p>';
     return;
   }
 ?>
 <div id="box-checkout-cart">
   <div class="viewport">
     <ul class="items">
-    <?php foreach ($system->cart->data['items'] as $key => $item) { ?>
+    <?php foreach (cart::$data['items'] as $key => $item) { ?>
       <li class="item">
-        <?php echo $system->functions->form_draw_form_begin('cart_form') . $system->functions->form_draw_hidden_field('key', $key); ?>
-          <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" class="image-wrapper shadow"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" /></a>
+        <?php echo functions::form_draw_form_begin('cart_form') . functions::form_draw_hidden_field('key', $key); ?>
+          <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" class="image-wrapper shadow"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" /></a>
           <div>
-            <p style="margin-top: 0px;"><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" style="color: inherit;"><strong><?php echo $item['name'][$system->language->selected['code']]; ?></strong></a>
-            <?php echo $item['sku'] ? '<br /><span style="color: #999; font-size: 10px;">[' .$system->language->translate('title_sku', 'SKU') .': '. $item['sku'] .']</span>' : ''; ?></p>
+            <p style="margin-top: 0px;"><a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" style="color: inherit;"><strong><?php echo $item['name'][language::$selected['code']]; ?></strong></a>
+            <?php echo $item['sku'] ? '<br /><span style="color: #999; font-size: 10px;">[' .language::translate('title_sku', 'SKU') .': '. $item['sku'] .']</span>' : ''; ?></p>
 <?php
   if (!empty($item['options'])) {
     echo '<p>';
@@ -32,28 +32,28 @@
     echo '</p>' . PHP_EOL;
   }
 ?>
-            <p><?php echo $system->currency->format($system->tax->calculate($item['price'], $item['tax_class_id'])); ?></p>
-            <p><?php echo $system->language->translate('title_quantity', 'Quantity'); ?>: <?php echo $system->functions->form_draw_number_field('quantity', $item['quantity'], ''); ?> &nbsp; <?php echo $system->functions->form_draw_button('update_cart_item', $system->language->translate('text_update', 'Update'), 'submit'); ?></p>
-            <p><?php echo $system->functions->form_draw_button('remove_cart_item', $system->language->translate('text_remove', 'Remove'), 'submit'); ?></p>
+            <p><?php echo currency::format(tax::calculate($item['price'], $item['tax_class_id'])); ?></p>
+            <p><?php echo language::translate('title_quantity', 'Quantity'); ?>: <?php echo functions::form_draw_number_field('quantity', $item['quantity'], ''); ?> &nbsp; <?php echo functions::form_draw_button('update_cart_item', language::translate('text_update', 'Update'), 'submit'); ?></p>
+            <p><?php echo functions::form_draw_button('remove_cart_item', language::translate('text_remove', 'Remove'), 'submit'); ?></p>
           </div>
-        <?php echo $system->functions->form_draw_form_end(); ?>
+        <?php echo functions::form_draw_form_end(); ?>
       </li>
     <?php } ?>
     </ul>
   </div>
   
-  <?php if (count($system->cart->data['items']) > 1) { ?>
+  <?php if (count(cart::$data['items']) > 1) { ?>
   <ul class="shortcuts">
-    <?php foreach ($system->cart->data['items'] as $item) { ?>
+    <?php foreach (cart::$data['items'] as $item) { ?>
     <li class="shortcut">
-      <a href="#" style="list-style:none; display:inline-block; text-align: center;"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 42, 32, 'FIT'); ?>" /></a>
+      <a href="#" style="list-style:none; display:inline-block; text-align: center;"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 42, 32, 'FIT'); ?>" /></a>
     </li>
     <?php } ?>
   </ul>
   <?php } ?>
 </div>
 
-<?php if (count($system->cart->data['items']) > 1) { ?>
+<?php if (count(cart::$data['items']) > 1) { ?>
 <script type="text/javascript">
   var current = 1;
   var totalWidth = 0;

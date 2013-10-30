@@ -1,6 +1,6 @@
 <?php
   
-  class jobs extends module {
+  class mod_jobs extends module {
     public $data;
     public $cheapest = '';
     public $items = array();

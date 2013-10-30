@@ -2,8 +2,8 @@
   
   function admin_get_apps() {
     
-    $apps_cache_id = $GLOBALS['system']->cache->cache_id('admin_apps', array('language'));
-    if (!$apps = $GLOBALS['system']->cache->get($apps_cache_id, 'file')) {
+    $apps_cache_id = cache::cache_id('admin_apps', array('language'));
+    if (!$apps = cache::get($apps_cache_id, 'file')) {
       $apps = array();
       
       foreach (glob('*.app/') as $dir) {
@@ -16,7 +16,7 @@
         return ($a['name'] < $b['name']) ? -1 : 1;
       });
       
-      $GLOBALS['system']->cache->set($apps_cache_id, 'file', $apps);
+      cache::set($apps_cache_id, 'file', $apps);
     }
     
     return $apps;
@@ -24,8 +24,8 @@
   
   function admin_get_widgets() {
     
-    $widgets_cache_id = $GLOBALS['system']->cache->cache_id('admin_widgets', array('language'));
-    if (!$widgets = $GLOBALS['system']->cache->get($widgets_cache_id, 'file')) {
+    $widgets_cache_id = cache::cache_id('admin_widgets', array('language'));
+    if (!$widgets = cache::get($widgets_cache_id, 'file')) {
       $widgets = array();
       
       foreach (glob('*.widget/') as $dir) {
@@ -39,7 +39,7 @@
         return ($a['priority'] < $b['priority']) ? -1 : 1;
       });
       
-      $GLOBALS['system']->cache->set($widgets_cache_id, 'file', $widgets);
+      cache::set($widgets_cache_id, 'file', $widgets);
     }
     
     return $widgets;

@@ -1,6 +1,6 @@
 <?php
 
-  class order_total extends module {
+  class mod_order_total extends module {
     public $options;
     public $rows = array();
 

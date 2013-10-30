@@ -1,6 +1,6 @@
 <?php
 
-  class order_success extends module {
+  class mod_order_success extends module {
     public $options;
     public $rows = array();
 

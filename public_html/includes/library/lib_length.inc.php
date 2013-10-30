@@ -1,13 +1,13 @@
 <?php
 
-  class lib_length {
-    public $classes = array();
+  class length {
+    public static $classes = array();
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    public function load_dependencies() {
-      $this->classes = array(
+    public static function load_dependencies() {
+      self::$classes = array(
         'm' => array(
           'name' => 'Metres',
           'unit' => 'm',
@@ -41,52 +41,52 @@
       );
     }
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    //public function startup() {
+    //public static function startup() {
     //}
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function convert($value, $from, $to) {
+    public static function convert($value, $from, $to) {
       
       if ($value == 0) return 0;
       
       if ($from == $to) return $value;
       
-      if (!isset($this->classes[$from])) trigger_error('The unit '. $from .' is not a valid length class.', E_USER_WARNING);
-      if (!isset($this->classes[$to])) trigger_error('The unit '. $to .' is not a valid length class.', E_USER_WARNING);
+      if (!isset(self::$classes[$from])) trigger_error('The unit '. $from .' is not a valid length class.', E_USER_WARNING);
+      if (!isset(self::$classes[$to])) trigger_error('The unit '. $to .' is not a valid length class.', E_USER_WARNING);
       
-      return $value * ($this->classes[$to]['value'] / $this->classes[$from]['value']);
+      return $value * (self::$classes[$to]['value'] / self::$classes[$from]['value']);
     }
 
-    public function format($value, $unit) {
+    public static function format($value, $unit) {
     
-      if (!isset($this->classes[$unit])) {
+      if (!isset(self::$classes[$unit])) {
         trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);
         return;
       }
       
-      $num_decimals = $this->classes[$class]['decimals'];
+      $num_decimals = self::$classes[$class]['decimals'];
       if (round($value) == $value) $num_decimals = 0;
       
-      return number_format($value, 2, $GLOBALS['system']->language->selected['decimal_point'], $GLOBALS['system']->language->selected['thousands_sep']) .' '. $this->classes[$unit]['unit'];
+      return number_format($value, 2, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$unit]['unit'];
     }
   }
   

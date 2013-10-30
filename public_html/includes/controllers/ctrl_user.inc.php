@@ -33,12 +33,12 @@
       
       $this->reset();
       
-      $user_query = $GLOBALS['system']->database->query(
+      $user_query = database::query(
         "select * from ". DB_TABLE_USERS ."
         where id = '". (int)$user_id ."'
         limit 1;"
       );
-      $this->data = $GLOBALS['system']->database->fetch($user_query);
+      $this->data = database::fetch($user_query);
       
       if (empty($this->data)) trigger_error('Could not find user ('. $user_id .') in database.', E_USER_ERROR);
       
@@ -54,19 +54,19 @@
     public function save() {
       
       if (empty($this->data['id'])) {
-        $GLOBALS['system']->database->query(
+        database::query(
           "insert into ". DB_TABLE_USERS ."
           (date_created)
-          values ('". $GLOBALS['system']->database->input(date('Y-m-d H:i:s')) ."');"
+          values ('". database::input(date('Y-m-d H:i:s')) ."');"
         );
-        $this->data['id'] = $GLOBALS['system']->database->insert_id();
+        $this->data['id'] = database::insert_id();
       } else {
-        $user_query = $GLOBALS['system']->database->query(
+        $user_query = database::query(
           "select * from ". DB_TABLE_USERS ."
           where id = '". (int)$this->data['id'] ."'
           limit 1;"
         );
-        $old_user = $GLOBALS['system']->database->fetch($user_query);
+        $old_user = database::fetch($user_query);
       }
       
       $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
@@ -85,13 +85,13 @@
       
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_USERS ."
         set
           status = '". (empty($this->data['status']) ? 0 : 1) ."',
-          username = '". $GLOBALS['system']->database->input($this->data['username']) ."',
-          date_blocked = '". $GLOBALS['system']->database->input($this->data['date_blocked']) ."',
-          date_expires = '". $GLOBALS['system']->database->input($this->data['date_expires']) ."',
+          username = '". database::input($this->data['username']) ."',
+          date_blocked = '". database::input($this->data['date_blocked']) ."',
+          date_expires = '". database::input($this->data['date_expires']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -102,9 +102,9 @@
       
       $this->save();
       
-      $password_hash = $GLOBALS['system']->functions->password_checksum($this->data['id'], $password, PASSWORD_SALT);
+      $password_hash = functions::password_checksum($this->data['id'], $password, PASSWORD_SALT);
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_USERS ."
         set
           password = '". $password_hash ."',
@@ -132,7 +132,7 @@
       $htpasswd = preg_replace('/^(?:#+)?'. preg_quote($this->data['username'], '/') .':.*(?:\r?\n?)+/m', '', $htpasswd);
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_USERS ."
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -140,7 +140,7 @@
       
       $this->data['id'] = null;
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
   }
   

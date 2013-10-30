@@ -2,22 +2,22 @@
 
   function format_address($address) {
     
-    $country_query = $GLOBALS['system']->database->query(
+    $country_query = database::query(
       "select * from ". DB_TABLE_COUNTRIES ."
-      where iso_code_2 = '". $GLOBALS['system']->database->input($address['country_code']) ."'
+      where iso_code_2 = '". database::input($address['country_code']) ."'
       limit 1;"
     );
-    $country = $GLOBALS['system']->database->fetch($country_query);
+    $country = database::fetch($country_query);
     if (empty($country)) trigger_error('Invalid country code for address format', E_USER_ERROR);
     
     if (isset($address['zone_code'])) {
-      $zones_query = $GLOBALS['system']->database->query(
+      $zones_query = database::query(
         "select * from ". DB_TABLE_ZONES ."
-        where country_code = '". $GLOBALS['system']->database->input($country['iso_code_2']) ."'
-        and code = '". $GLOBALS['system']->database->input($address['zone_code']) ."'
+        where country_code = '". database::input($country['iso_code_2']) ."'
+        and code = '". database::input($address['zone_code']) ."'
         limit 1;"
       );
-      $zone = $GLOBALS['system']->database->fetch($zones_query);
+      $zone = database::fetch($zones_query);
     }
     
     $translation_map = array(
@@ -34,7 +34,7 @@
       '%zone_name' => !empty($zone['name']) ? $zone['name'] : '',
     );
     
-    $output = $country['address_format'] ? $country['address_format'] : $GLOBALS['system']->settings->get('default_address_format');
+    $output = $country['address_format'] ? $country['address_format'] : settings::get('default_address_format');
     
     foreach ($translation_map as $search => $replace) {
       $output = str_replace($search, $replace, $output);

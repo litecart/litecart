@@ -44,20 +44,20 @@
           
           $this->_data['info'] = array();
           
-          $query = $GLOBALS['system']->database->query(
+          $query = database::query(
             "select language_code, name, description, short_description, head_title, meta_description, meta_keywords from ". DB_TABLE_CATEGORIES_INFO ."
             where category_id = '". (int)$this->_data['id'] ."'
-            and language_code in ('". implode("', '", array_keys($GLOBALS['system']->language->languages)) ."');"
+            and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
           );
           
-          while ($row = $GLOBALS['system']->database->fetch($query)) {
+          while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) $this->_data[$key][$row['language_code']] = $value;
           }
           
         // Fix missing translations
           foreach (array('name', 'description', 'short_description', 'head_title', 'meta_description', 'meta_keywords') as $key) {
-            foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-              if (empty($this->_data[$key][$language_code])) $this->_data[$key][$language_code] = $this->_data[$key][$GLOBALS['system']->settings->get('default_language_code')];
+            foreach (array_keys(language::$languages) as $language_code) {
+              if (empty($this->_data[$key][$language_code])) $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
             }
           }
           
@@ -67,14 +67,14 @@
         
           $this->_data['products_alphabetical'] = array();
           
-          $query = $GLOBALS['system']->database->query(
-            "select p.id, p.image, p.tax_class_id, pi.name, pp.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ." as price, pc_tmp.campaign_price, m.name as manufacturer_name
+          $query = database::query(
+            "select p.id, p.image, p.tax_class_id, pi.name, pp.". database::input(currency::$selected['code']) ." as price, pc_tmp.campaign_price, m.name as manufacturer_name
             from ". DB_TABLE_PRODUCTS ." p
-            join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". $GLOBALS['system']->database->input($GLOBALS['system']->language->selected['code']) ."')
+            join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". database::input(language::$selected['code']) ."')
             join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
             join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
             left outer join (
-              select pc.product_id, pc.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ." as campaign_price
+              select pc.product_id, pc.". database::input(currency::$selected['code']) ." as campaign_price
               from ". DB_TABLE_PRODUCTS_CAMPAIGNS ." pc
               where (pc.start_date = '0000-00-00 00:00:00' or pc.start_date <= '". date('Y-m-d H:i:s') ."')
               and (pc.end_date = '0000-00-00 00:00:00' or pc.end_date >= '". date('Y-m-d H:i:s') ."')
@@ -86,7 +86,7 @@
             order by pi.name asc;"
           );
           
-          while ($row = $GLOBALS['system']->database->fetch($query)) {
+          while ($row = database::fetch($query)) {
             $this->_data['products_alphabetical'][$row['id']] = $row;
           }
           
@@ -96,12 +96,12 @@
         
           $this->_data['subcategories'] = array();
           
-          $query = $GLOBALS['system']->database->query(
+          $query = database::query(
             "select id, name from ". DB_TABLE_CATEGORIES ."
             where parent_id = '". (int)$this->_data['id'] ."';"
           );
           
-          while ($row = $GLOBALS['system']->database->fetch($query)) {
+          while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) $this->_data['subcategories'][] = $row['id'];
           }
           
@@ -111,15 +111,15 @@
           
           if (isset($this->_data['date_added'])) return;
           
-          $query = $GLOBALS['system']->database->query(
+          $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES ."
             where id = '". (int)$this->_data['id'] ."'
             limit 1;"
           );
           
-          $row = $GLOBALS['system']->database->fetch($query);
+          $row = database::fetch($query);
           
-          if ($GLOBALS['system']->database->num_rows($query) == 0) trigger_error('Invalid category id ('. $this->_data['id'] .')', E_USER_ERROR);
+          if (database::num_rows($query) == 0) trigger_error('Invalid category id ('. $this->_data['id'] .')', E_USER_ERROR);
           
           foreach ($row as $key => $value) $this->_data[$key] = $value;
           

@@ -3,13 +3,13 @@
   require_once('includes/app_header.inc.php');
   
   header('X-Robots-Tag: noindex');
-  $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
-  $system->breadcrumbs->add($system->language->translate('title_checkout', 'Checkout'), $system->document->link());
+  breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::link());
   
-  $system->document->snippets['title'][] = $system->language->translate('title_checkout', 'Checkout');
-  //$system->document->snippets['keywords'] = '';
-  //$system->document->snippets['description'] = '';
+  document::$snippets['title'][] = language::translate('title_checkout', 'Checkout');
+  //document::$snippets['keywords'] = '';
+  //document::$snippets['description'] = '';
 ?>
 
 <div id="checkout-cart-wrapper">
@@ -37,7 +37,7 @@
   function refreshCart() {
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -45,7 +45,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-cart-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
@@ -58,7 +58,7 @@
   
   function refreshCustomer() {
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -66,7 +66,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
@@ -79,7 +79,7 @@
 
   function refreshShipping() {
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -87,7 +87,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-shipping-wrapper').html(textStatus + ': ' + errorThrown);
@@ -100,7 +100,7 @@
 
   function refreshPayment() {
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -108,7 +108,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-payment-wrapper').html(textStatus + ': ' + errorThrown);
@@ -122,7 +122,7 @@
   function refreshSummary() {
     var comments = $('textarea[name=comments]').val();
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_summary.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_summary.html.php'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -130,7 +130,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-summary-wrapper').html(textStatus + ': ' + errorThrown);
@@ -151,14 +151,14 @@
     $('body').css('cursor', 'wait');
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-cart-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
@@ -207,7 +207,7 @@
   $("body").on('submit', 'form[name="order_form"]', function(e) {
     if (stateCustomerChanged) {
       e.preventDefault();
-      alert("<?php echo $system->language->translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
+      alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
   });
   
@@ -216,7 +216,7 @@
     clearTimeout(timerSubmitCustomer);
     $('*').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
@@ -224,7 +224,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
@@ -253,14 +253,14 @@
     $('*').css('cursor', 'wait');
     $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-shipping-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
@@ -284,7 +284,7 @@
     $('*').css('cursor', 'wait');
     $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
@@ -292,7 +292,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-payment-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
@@ -315,7 +315,7 @@
     $('*').css('cursor', 'wait');
     $('#checkout-comments-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_comments.html.php'); ?>',
+      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_comments.html.php'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
@@ -323,7 +323,7 @@
       async: true,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo $system->language->selected['charset']; ?>");
+        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $('#checkout-comments-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);

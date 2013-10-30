@@ -2,7 +2,7 @@
 
   function email_send($from, $recipients, $subject='(No subject)', $message, $html=false, $attachments=array()) {
     
-    if (empty($from)) $from = $GLOBALS['system']->settings->get('store_name') . ' <'. $GLOBALS['system']->settings->get('store_email') .'>';
+    if (empty($from)) $from = settings::get('store_name') . ' <'. settings::get('store_email') .'>';
     
     $from = str_replace(array("\r", "\n"), " ", $from);
     $subject = str_replace(array("\r", "\n"), " ", $subject);
@@ -20,7 +20,7 @@
   // Add a multipart boundary above the plain message
     $message = 'This is a multi-part message in MIME format.' . "\r\n\r\n"
               . '--' . $mime_boundary . "\r\n"
-              . 'Content-Type: '. (($html) ? 'text/html' : 'text/plain') .'; charset='. $GLOBALS['system']->language->selected['charset'] . "\r\n"
+              . 'Content-Type: '. (($html) ? 'text/html' : 'text/plain') .'; charset='. language::$selected['charset'] . "\r\n"
               . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
               //. 'This message was sent from computer '. gethostbyaddr($_SERVER['REMOTE_ADDR']) . ' at '. date('Y-m-d H:i') .'.'. "\r\n\r\n"
               . $message . "\r\n\r\n";

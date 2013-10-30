@@ -11,7 +11,7 @@
     
     public function __construct() {
       
-      $this->name = $GLOBALS['system']->language->translate(__CLASS__.':title_subtotal', 'Subtotal');
+      $this->name = language::translate(__CLASS__.':title_subtotal', 'Subtotal');
     }
     
     public function process() {
@@ -29,7 +29,7 @@
       }
       
       $output[] = array(
-        'title' => $GLOBALS['system']->language->translate('title_subtotal', 'Subtotal'),
+        'title' => language::translate('title_subtotal', 'Subtotal'),
         'value' => $value,
         'tax' => $tax,
         'calculate' => false,
@@ -47,15 +47,15 @@
         array(
           'key' => 'status',
           'default_value' => 'Enabled',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => language::translate(__CLASS__.':title_status', 'Status'),
+          'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'radio("Enabled")',
         ),
         array(
           'key' => 'priority',
           'default_value' => '1',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );

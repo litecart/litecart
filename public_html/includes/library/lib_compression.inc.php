@@ -1,38 +1,38 @@
 <?php
 
-  class lib_compression {
+  class compression {
     
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    //public function load_dependencies() {
+    //public static function load_dependencies() {
     //}
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    //public function startup() {
+    //public static function startup() {
     //}
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    public function before_output() {
+    public static function before_output() {
       
     // Initialize GZIP compression to reduce bandwidth.
-      if (!headers_sent() && $GLOBALS['system']->settings->get('gzip_enabled')) {
+      if (!headers_sent() && settings::get('gzip_enabled')) {
         ob_start("ob_gzhandler");
       }
     }
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################

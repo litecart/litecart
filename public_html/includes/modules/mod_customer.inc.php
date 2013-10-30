@@ -1,6 +1,6 @@
 <?php
   
-  class customer extends module {
+  class mod_customer extends module {
     private $_cache;
 
     public function __construct($type='session') {
@@ -15,7 +15,7 @@
       
       if (empty($this->modules)) return false;
       
-      $this->_cache = &$GLOBALS['system']->session->data['get_address_cache'];
+      $this->_cache = &session::$data['get_address_cache'];
       
       foreach ($this->modules as $module) {
         $checksum = sha1(serialize($fields));

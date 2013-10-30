@@ -20,9 +20,9 @@
     while(!feof($fp)) $output .= fgets($fp);
     fclose($fp);
     
-    if (strtolower($GLOBALS['system']->language->selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
+    if (strtolower(language::$selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
       $output = utf8_decode($output);
-    } else if (strtolower($GLOBALS['system']->language->selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
+    } else if (strtolower(language::$selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
       $output = utf8_encode($output);
     }
     
@@ -35,9 +35,9 @@
     
     $ini_eol = ini_get('auto_detect_line_endings');
     
-    if (strtolower($GLOBALS['system']->language->selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
+    if (strtolower(language::$selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
       $string = utf8_encode($string);
-    } else if (strtolower($GLOBALS['system']->language->selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
+    } else if (strtolower(language::$selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
       $string = utf8_decode($string);
     }
     

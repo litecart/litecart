@@ -11,12 +11,12 @@
     
     public function load($customer_id) {
     
-      $customer_query = $GLOBALS['system']->database->query(
+      $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where id = '". $GLOBALS['system']->database->input($customer_id) ."'
+        where id = '". database::input($customer_id) ."'
         limit 1;"
       );
-      $customer = $GLOBALS['system']->database->fetch($customer_query);
+      $customer = database::fetch($customer_query);
       if (empty($customer)) trigger_error('Could not find customer ('. $customer_id .') in database.', E_USER_ERROR);
       
       $key_map = array(
@@ -61,58 +61,58 @@
     public function save() {
       
       if (empty($this->data['id'])) {
-        $GLOBALS['system']->database->query(
+        database::query(
           "insert into ". DB_TABLE_CUSTOMERS ."
           (email, date_created)
-          values (email = '". $GLOBALS['system']->database->input($this->data['email']) ."', '". $GLOBALS['system']->database->input(date('Y-m-d H:i:s')) ."');"
+          values (email = '". database::input($this->data['email']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
         );
-        $this->data['id'] = $GLOBALS['system']->database->insert_id();
+        $this->data['id'] = database::insert_id();
         
         if (!empty($this->data['email'])) {
-          $GLOBALS['system']->database->query(
+          database::query(
             "update ". DB_TABLE_ORDERS ."
             set customer_id = '". (int)$this->data['id'] ."'
-            where customer_email = '". $GLOBALS['system']->database->input($this->data['email']) ."';"
+            where customer_email = '". database::input($this->data['email']) ."';"
           );
         }
       }
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set
-          email = '". $GLOBALS['system']->database->input($this->data['email']) ."',
-          tax_id = '". $GLOBALS['system']->database->input($this->data['tax_id']) ."',
-          company = '". $GLOBALS['system']->database->input($this->data['company']) ."',
-          firstname = '". $GLOBALS['system']->database->input($this->data['firstname']) ."',
-          lastname = '". $GLOBALS['system']->database->input($this->data['lastname']) ."',
-          address1 = '". $GLOBALS['system']->database->input($this->data['address1']) ."',
-          address2 = '". $GLOBALS['system']->database->input($this->data['address2']) ."',
-          postcode = '". $GLOBALS['system']->database->input($this->data['postcode']) ."',
-          city = '". $GLOBALS['system']->database->input($this->data['city']) ."',
-          country_code = '". $GLOBALS['system']->database->input($this->data['country_code']) ."',
-          zone_code = '". $GLOBALS['system']->database->input($this->data['zone_code']) ."',
-          phone = '". $GLOBALS['system']->database->input($this->data['phone']) ."',
-          mobile = '". $GLOBALS['system']->database->input($this->data['mobile']) ."',
+          email = '". database::input($this->data['email']) ."',
+          tax_id = '". database::input($this->data['tax_id']) ."',
+          company = '". database::input($this->data['company']) ."',
+          firstname = '". database::input($this->data['firstname']) ."',
+          lastname = '". database::input($this->data['lastname']) ."',
+          address1 = '". database::input($this->data['address1']) ."',
+          address2 = '". database::input($this->data['address2']) ."',
+          postcode = '". database::input($this->data['postcode']) ."',
+          city = '". database::input($this->data['city']) ."',
+          country_code = '". database::input($this->data['country_code']) ."',
+          zone_code = '". database::input($this->data['zone_code']) ."',
+          phone = '". database::input($this->data['phone']) ."',
+          mobile = '". database::input($this->data['mobile']) ."',
           different_shipping_address = '". (int)$this->data['different_shipping_address'] ."',
-          shipping_company = '". $GLOBALS['system']->database->input($this->data['shipping_address']['company']) ."',
-          shipping_firstname = '". $GLOBALS['system']->database->input($this->data['shipping_address']['firstname']) ."',
-          shipping_lastname = '". $GLOBALS['system']->database->input($this->data['shipping_address']['lastname']) ."',
-          shipping_address1 = '". $GLOBALS['system']->database->input($this->data['shipping_address']['address1']) ."',
-          shipping_address2 = '". $GLOBALS['system']->database->input($this->data['shipping_address']['address2']) ."',
-          shipping_postcode = '". $GLOBALS['system']->database->input($this->data['shipping_address']['postcode']) ."',
-          shipping_city = '". $GLOBALS['system']->database->input($this->data['shipping_address']['city']) ."',
-          shipping_country_code = '". $GLOBALS['system']->database->input($this->data['shipping_address']['country_code']) ."',
-          shipping_zone_code = '". $GLOBALS['system']->database->input($this->data['shipping_address']['zone_code']) ."',
+          shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
+          shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
+          shipping_lastname = '". database::input($this->data['shipping_address']['lastname']) ."',
+          shipping_address1 = '". database::input($this->data['shipping_address']['address1']) ."',
+          shipping_address2 = '". database::input($this->data['shipping_address']['address2']) ."',
+          shipping_postcode = '". database::input($this->data['shipping_address']['postcode']) ."',
+          shipping_city = '". database::input($this->data['shipping_address']['city']) ."',
+          shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
+          shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
           newsletter = '". (!empty($this->data['newsletter']) ? 1 : 0) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
       
-      $customer_modules = new customer();
+      $customer_modules = new mod_customer();
       $customer_modules->after_save($this);
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
     
     public function set_password($password) {
@@ -123,9 +123,9 @@
         $this->save();
       }
       
-      $password_hash = $GLOBALS['system']->functions->password_checksum($this->data['email'], $password, PASSWORD_SALT);
+      $password_hash = functions::password_checksum($this->data['email'], $password, PASSWORD_SALT);
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set
           password = '". $password_hash ."',
@@ -139,7 +139,7 @@
     
     public function delete() {
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_CUSTOMERS ."
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -147,7 +147,7 @@
       
       $this->data['id'] = null;
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
   }
 

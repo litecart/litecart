@@ -9,15 +9,15 @@
       
       if (!isset($parsed_link['query']['manufacturer_id'])) return;
       
-      $manufacturer_query = $GLOBALS['system']->database->query(
+      $manufacturer_query = database::query(
         "select id, name from ". DB_TABLE_MANUFACTURERS ."
         where id = '". (int)$parsed_link['query']['manufacturer_id'] ."'
         limit 1;"
       );
-      $manufacturer = $GLOBALS['system']->database->fetch($manufacturer_query);
+      $manufacturer = database::fetch($manufacturer_query);
       if (empty($manufacturer)) return;
       
-      $parsed_link['path'] = WS_DIR_HTTP_HOME . $GLOBALS['system']->functions->general_path_friendly($manufacturer['name']) .'-m-'. $manufacturer['id'];
+      $parsed_link['path'] = WS_DIR_HTTP_HOME . functions::general_path_friendly($manufacturer['name']) .'-m-'. $manufacturer['id'];
       
       unset($parsed_link['query']['manufacturer_id']);
       

@@ -46,7 +46,7 @@ html, body, body > table, body > table {
     </div>
     <div id="content-wrapper" class="rounded-corners shadow">
       <div id="box-login-wrapper">
-        <p><a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo $system->settings->get('store_name'); ?>" /></a></p>
+        <p><a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a></p>
         <div class="content">
           <!--snippet:notices-->
           <!--snippet:content-->

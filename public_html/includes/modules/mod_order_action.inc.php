@@ -1,6 +1,6 @@
 <?php
   
-  class order_action extends module {
+  class mod_order_action extends module {
     public $data;
     
     public function __construct($type='session') {

@@ -1,7 +1,7 @@
 <?php
 
 $app_config = array(
-  'name' => $GLOBALS['system']->language->translate('title_geo_zones', 'Geo Zones'),
+  'name' => language::translate('title_geo_zones', 'Geo Zones'),
   'default' => 'geo_zones',
   'icon' => 'icon.png',
   'menu' => array(),

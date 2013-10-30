@@ -1,15 +1,15 @@
 <?php
   require_once('../includes/app_header.inc.php');
   
-  $system->document->template = $system->settings->get('store_template_admin');
-  $system->document->layout = 'login';
+  document::$template = settings::get('store_template_admin');
+  document::$layout = 'login';
   
   header('X-Robots-Tag: noindex');
-  $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
-  if (!empty($system->customer->data['id'])) $system->notices->add('notice', $system->language->translate('text_already_logged_in', 'You are already logged in'));
+  if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
   
-  if (!empty($_POST['login'])) $system->user->login($_POST['username'], $_POST['password']);
+  if (!empty($_POST['login'])) user::login($_POST['username'], $_POST['password']);
   
   if (empty($_POST['username']) && !empty($_SERVER['PHP_AUTH_USER'])) $_POST['username'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
 ?>
@@ -17,22 +17,22 @@
 
   <div id="box-login">
     <div class="content">
-      <?php echo $system->functions->form_draw_form_begin('login_form', 'post'); ?>
-      <?php echo $system->functions->form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : $system->document->link(WS_DIR_HTTP_HOME)); ?>
+      <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
+      <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link(WS_DIR_HTTP_HOME)); ?>
         <table>
           <tr>
-            <td align="left"><?php echo $system->language->translate('title_username', 'Username'); ?><br />
-              <?php echo $system->functions->form_draw_text_field('username', true); ?></td>
+            <td align="left"><?php echo language::translate('title_username', 'Username'); ?><br />
+              <?php echo functions::form_draw_text_field('username', true); ?></td>
           </tr>
           <tr>
-            <td align="left"><?php echo $system->language->translate('title_password', 'Password'); ?><br />
-            <?php echo $system->functions->form_draw_password_field('password', ''); ?></td>
+            <td align="left"><?php echo language::translate('title_password', 'Password'); ?><br />
+            <?php echo functions::form_draw_password_field('password', ''); ?></td>
           </tr>
           <tr>
-            <td align="left"><?php echo $system->functions->form_draw_button('login', $system->language->translate('title_login', 'Login')); ?></td>
+            <td align="left"><?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?></td>
           </tr>
         </table>
-      <?php echo $system->functions->form_draw_form_end(); ?>
+      <?php echo functions::form_draw_form_end(); ?>
     </div>
   </div>
 
