@@ -183,9 +183,17 @@
         'shipping_country_code' => 'country_code',
         'shipping_zone_code' => 'zone_code',
       );
-      foreach ($key_map as $skey => $tkey){
-        $this->data['shipping_address'][$tkey] = $this->data[$skey];
-        unset($this->data[$skey]);
+      
+      if (!empty($this->data['different_shipping_address'])) {
+        foreach ($key_map as $skey => $tkey){
+          $this->data['shipping_address'][$tkey] = $this->data[$skey];
+          unset($this->data[$skey]);
+        }
+      } else {
+        foreach ($key_map as $skey => $tkey){
+          $this->data['shipping_address'][$tkey] = $this->data[$tkey];
+          unset($this->data[$skey]);
+        }
       }
     }
     
