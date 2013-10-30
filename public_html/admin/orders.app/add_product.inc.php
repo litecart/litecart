@@ -60,7 +60,8 @@
             
             case 'input':
             case 'textarea':
-              $value = array_shift(array_values($product->options[$key]['values']));
+              $values = array_values($product->options[$key]['values']);
+              $value = array_shift($values);
               $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
               $price += $value['price_adjust'];
               break;
@@ -133,9 +134,9 @@
         echo '              + \'        <tr>\'' . PHP_EOL;
         if (is_array($_POST['options'][$field])) {
           echo '              + \'          <td style="padding-left: 10px;">'. $field .'</td>\'' . PHP_EOL
-             . '              + \'          <td>\'';
-          foreach (array_keys($_POST['options'][$field]) as $k) {
-            echo $system->functions->form_draw_text_field('items[new_item_index][options]['.$field.']['. $_POST['options'][$field][$k] .']', true, !empty($option_stock_combination) ? 'readonly="readonly"' : '');
+             . '              + \'          <td>';
+          foreach (array_keys($_POST['options'][$field]) as $key) {
+            echo $system->functions->form_draw_text_field('items[new_item_index][options]['.$field.']['. $_POST['options'][$field][$key] .']', true, !empty($option_stock_combination) ? 'readonly="readonly"' : '');
           }
           echo '              + \'          </td>\'' . PHP_EOL;
         } else {
@@ -249,8 +250,8 @@
               break;
               
             case 'input':
-            
-              $value_id = array_shift(array_keys($group['values']));
+              $keys = array_keys($group['values']);
+              $value_id = array_shift($keys);
             
               $price_adjust_text = '';
               if ($group['values'][$value_id]['price_adjust']) {
