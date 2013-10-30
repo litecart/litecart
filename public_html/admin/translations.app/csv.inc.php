@@ -37,7 +37,7 @@
         
         if (empty($translation)) {
         
-          if (empty($_POST['insert'])) {
+          if (!empty($_POST['insert'])) {
             $system->database->query(
               "insert into ". DB_TABLE_TRANSLATIONS ."
               (code)
