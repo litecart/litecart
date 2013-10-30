@@ -4,12 +4,11 @@
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
   
     if (!empty($_POST['currencies'])) {
-      foreach ($_POST['currencies'] as $key => $value) $_POST['currencies'][$key] = $system->database->input($value);
-      $system->database->query(
-        "update ". DB_TABLE_CURRENCIES ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['currencies']) ."');"
-      );
+      foreach ($_POST['currencies'] as $key => $value) {
+        $currency = new ctrl_currency($_POST['currencies'][$key]);
+        $currency->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $currency->save();
+      }
     }
     
     header('Location: '. $system->document->link());
@@ -56,7 +55,7 @@
     
 ?>
   <tr class="<?php echo $rowclass . ($currency['status'] ? false : ' semi-transparent'); ?>">
-    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($currency['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('currencies['. $currency['id'] .']', $currency['id']); ?></td>
+    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($currency['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
     <td align="left"><?php echo $currency['id']; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $currency['code']; ?></td>
     <td align="left"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>

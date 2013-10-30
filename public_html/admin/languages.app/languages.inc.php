@@ -4,12 +4,11 @@
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
   
     if (!empty($_POST['languages'])) {
-      foreach ($_POST['languages'] as $key => $value) $_POST['languages'][$key] = $system->database->input($value);
-      $system->database->query(
-        "update ". DB_TABLE_LANGUAGES ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['languages']) ."');"
-      );
+      foreach ($_POST['languages'] as $key => $value) {
+        $language = new ctrl_language($_POST['languages'][$key]);
+        $language->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $language->save();
+      }
     }
     
     header('Location: '. $system->document->link());
@@ -51,7 +50,7 @@
       }
 ?>
   <tr class="<?php echo $rowclass . ($language['status'] ? false : ' semi-transparent'); ?>">
-    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($language['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('languages['. $language['id'] .']', $language['id']); ?></td>
+    <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($language['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo $system->functions->form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
     <td align="left"><?php echo $language['id']; ?></td>
     <td align="center"><?php echo $language['code']; ?></td>
     <td align="left"><a href="<?php echo $system->document->href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
