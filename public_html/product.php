@@ -34,7 +34,10 @@
   $system->document->snippets['head_tags']['animate_from_to'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
   
   if (empty($_GET['category_id']) && empty($product->manufacturer)) {
-    if (count($product->category_ids)) $_GET['category_id'] = array_shift(array_values($product->category_ids));
+    if (count($product->category_ids)) {
+      $category_ids = array_values($product->category_ids);
+      $_GET['category_id'] = array_shift($category_ids);
+    }
   }
   
   if (!empty($_GET['category_id'])) {

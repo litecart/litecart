@@ -205,10 +205,10 @@
               mysqli_free_result($result);
             }
           }
-          while (mysqli_next_result($link));
+          while (mysqli_next_result($this->_links[$link]));
         }
       } else {
-        $this->query($query, $link); // don't pick up results - we're not supporting it
+        $this->query($query, $this->_links[$link]); // don't pick up results - we're not supporting it
       }
       return;
     }
