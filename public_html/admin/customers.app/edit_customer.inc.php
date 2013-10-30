@@ -97,14 +97,18 @@
       <?php echo $system->functions->form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
   </tr>
   <tr>
-    <td width="50%"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
-      <?php echo $system->functions->form_draw_email_field('email', true); ?></td>
     <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
     <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>
+    <td><?php echo $system->language->translate('title_mobile_phone', 'Mobile Phone'); ?><br />
+    <?php echo $system->functions->form_draw_text_field('mobile', true); ?></td>
   </tr>
   <tr>
+    <td width="50%"><?php echo $system->language->translate('title_email_address', 'E-mail Address'); ?><br />
+      <?php echo $system->functions->form_draw_email_field('email', true); ?></td>
     <td><?php echo $system->language->translate('title_newsletter', 'Newsletter'); ?><br />
       <label><?php echo $system->functions->form_draw_checkbox('newsletter', '1', true); ?> <?php echo $system->language->translate('title_subscribe', 'Subscribe'); ?></label></td>
+  </tr>
+  <tr>
     <td><?php echo !empty($customer->data['id']) ? $system->language->translate('title_new_password', 'New Password') : $system->language->translate('title_password', 'Password'); ?><br />
       <?php echo $system->functions->form_draw_text_field('new_password', '', 'password'); ?></td>
   </tr>
