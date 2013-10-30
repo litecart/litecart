@@ -56,8 +56,15 @@
           }
           
         // Fix missing translations
-          foreach (array('name', 'description', 'short_description', 'attributes', 'head_title', 'meta_description', 'meta_keywords') as $key) {
-            foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
+          foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
+            if (empty($this->_data['name'][$language_code])) {
+              if (!empty($this->_data['name'][$GLOBALS['system']->settings->get('default_language_code')])) {
+                $this->_data['name'][$language_code] = $this->_data['name'][$GLOBALS['system']->settings->get('default_language_code')];
+              } else { 
+                $this->_data['name'][$language_code] = '[untitled]';
+              }
+            }
+            foreach (array('description', 'short_description', 'attributes', 'head_title', 'meta_description', 'meta_keywords') as $key) {
               if (empty($this->_data[$key][$language_code])) {
                 if (!empty($this->_data[$key][$GLOBALS['system']->settings->get('default_language_code')])) {
                   $this->_data[$key][$language_code] = $this->_data[$key][$GLOBALS['system']->settings->get('default_language_code')];
@@ -110,7 +117,13 @@
             // Fix missing translations
               foreach (array('name') as $key) {
                 foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-                  if (empty($this->_data['categories'][$category_id][$language_code])) $this->_data['categories'][$category_id][$language_code] = $this->_data['categories'][$category_id][$GLOBALS['system']->settings->get('default_language_code')];
+                  if (empty($this->_data['categories'][$category_id][$language_code])) {
+                    if (!empty($this->_data['categories'][$category_id][$GLOBALS['system']->settings->get('default_language_code')])) {
+                      $this->_data['categories'][$category_id][$language_code] = $this->_data['categories'][$category_id][$GLOBALS['system']->settings->get('default_language_code')];
+                    } else {
+                      $this->_data['categories'][$category_id][$language_code] = '[untitled]';
+                    }
+                  }
                 }
               }
             }
@@ -136,7 +149,13 @@
         // Fix missing translations
           foreach (array('name') as $key) {
             foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-              if (empty($this->_data['delivery_status'][$key][$language_code])) $this->_data['delivery_status'][$key][$language_code] = $this->_data['delivery_status'][$key][$GLOBALS['system']->settings->get('default_language_code')];
+              if (empty($this->_data['delivery_status'][$key][$language_code])) {
+                if (!empty($this->_data['delivery_status'][$key][$GLOBALS['system']->settings->get('default_language_code')])) {
+                  $this->_data['delivery_status'][$key][$language_code] = $this->_data['delivery_status'][$key][$GLOBALS['system']->settings->get('default_language_code')];
+                } else {
+                  $this->_data['delivery_status'][$key][$language_code] = '[untitled]';
+                }
+              }
             }
           }
           
@@ -207,9 +226,20 @@
               }
               
             // Fix missing translations
-              foreach (array('name', 'description') as $key) {
-                foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-                  $this->_data['options'][$product_option['group_id']][$key][$language_code] = isset($this->_data['options'][$product_option['group_id']][$key][$GLOBALS['system']->settings->get('default_language_code')]) ? $this->_data['options'][$product_option['group_id']][$key][$GLOBALS['system']->settings->get('default_language_code')] : '';
+              foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
+                if (empty($this->_data['options'][$product_option['group_id']]['name'][$language_code])) {
+                  if (!empty($this->_data['options'][$product_option['group_id']]['name'][$GLOBALS['system']->settings->get('default_language_code')])) {
+                    $this->_data['options'][$product_option['group_id']]['name'][$language_code] = $this->_data['options'][$product_option['group_id']]['name'][$GLOBALS['system']->settings->get('default_language_code')];
+                  } else {
+                    $this->_data['options'][$product_option['group_id']]['name'][$language_code] = '[untitled]';
+                  }
+                }
+                if (empty($this->_data['options'][$product_option['group_id']]['description'][$language_code])) {
+                  if (!empty($this->_data['options'][$product_option['group_id']]['description'][$GLOBALS['system']->settings->get('default_language_code')])) {
+                    $this->_data['options'][$product_option['group_id']]['description'][$language_code] = $this->_data['options'][$product_option['group_id']]['description'][$GLOBALS['system']->settings->get('default_language_code')];
+                  } else {
+                    $this->_data['options'][$product_option['group_id']]['description'][$language_code] = '';
+                  }
                 }
               }
             }
@@ -239,8 +269,13 @@
             // Fix missing translations
               foreach (array('name') as $key) {
                 foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-                  if (empty($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$GLOBALS['system']->settings->get('default_language_code')])) break;
-                  if (isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code]) == false) $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code] = $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$GLOBALS['system']->settings->get('default_language_code')];
+                  if (empty($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code])) {
+                    if (!empty($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$GLOBALS['system']->settings->get('default_language_code')])) {
+                      $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code] = $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$GLOBALS['system']->settings->get('default_language_code')];
+                    } else {
+                      $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code] = '[untitled]';
+                    }
+                  }
                 }
               }
             }
@@ -325,7 +360,13 @@
           // Fix missing translations
             foreach (array('name') as $key) {
               foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-                if (empty($row[$key][$language_code])) $row[$key][$language_code] = $row[$key][$GLOBALS['system']->settings->get('default_language_code')];
+                if (empty($row[$key][$language_code])) {
+                  if (!empty($row[$key][$GLOBALS['system']->settings->get('default_language_code')])) {
+                    $row[$key][$language_code] = $row[$key][$GLOBALS['system']->settings->get('default_language_code')];
+                  } else {
+                    $row[$key][$language_code] = '[untitled]';
+                  }
+                }
               }
             }
             
@@ -374,7 +415,11 @@
             // Fix missing translations
               foreach (array('name') as $key) {
                 foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-                  if (empty($this->_data['product_groups'][$group_id]['name'][$language_code])) $this->_data['product_groups'][$group_id]['name'][$language_code] = $this->_data['product_groups'][$group_id]['name'][$GLOBALS['system']->settings->get('default_language_code')];
+                  if (empty($this->_data['product_groups'][$group_id]['name'][$language_code])) {
+                    $this->_data['product_groups'][$group_id]['name'][$language_code] = $this->_data['product_groups'][$group_id]['name'][$GLOBALS['system']->settings->get('default_language_code')];
+                  } else {
+                    $this->_data['product_groups'][$group_id]['name'][$language_code] = '[untitled]';
+                  }
                 }
               }
               
@@ -389,7 +434,13 @@
             // Fix missing translations
               foreach (array('name') as $key) {
                 foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-                  if (empty($this->_data['product_groups'][$group_id]['values'][$value_id][$language_code])) $this->_data['product_groups'][$group_id]['values'][$value_id][$language_code] = $this->_data['product_groups'][$group_id]['values'][$value_id][$GLOBALS['system']->settings->get('default_language_code')];
+                  if (empty($this->_data['product_groups'][$group_id]['values'][$value_id][$language_code])) {
+                    if (!empty($this->_data['product_groups'][$group_id]['values'][$value_id][$GLOBALS['system']->settings->get('default_language_code')])) {
+                      $this->_data['product_groups'][$group_id]['values'][$value_id][$language_code] = $this->_data['product_groups'][$group_id]['values'][$value_id][$GLOBALS['system']->settings->get('default_language_code')];
+                    } else {
+                      $this->_data['product_groups'][$group_id]['values'][$value_id][$language_code] = '[untitled]';
+                    }
+                  }
                 }
               }
             }
@@ -422,7 +473,13 @@
         // Fix missing translations
           foreach (array('name') as $key) {
             foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-              if (empty($this->_data['sold_out_status'][$key][$language_code])) $this->_data['sold_out_status'][$key][$language_code] = $this->_data['sold_out_status'][$key][$GLOBALS['system']->settings->get('default_language_code')];
+              if (empty($this->_data['sold_out_status'][$key][$language_code])) {
+                if (!empty($this->_data['sold_out_status'][$key][$GLOBALS['system']->settings->get('default_language_code')])) {
+                  $this->_data['sold_out_status'][$key][$language_code] = $this->_data['sold_out_status'][$key][$GLOBALS['system']->settings->get('default_language_code')];
+                } else {
+                  $this->_data['sold_out_status'][$key][$language_code] = '[untitled]';
+                }
+              }
             }
           }
           
