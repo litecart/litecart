@@ -241,9 +241,9 @@
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_countries_list('shipping_address[country_code]', isset($_POST['shipping_address[country_code]']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), ''); ?></td>
+                      <?php echo $system->functions->form_draw_countries_list('shipping_address[country_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), ''); ?></td>
                     <td><?php echo $system->language->translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_zones_list(isset($_POST['shipping_address[country_code]']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), 'shipping_address[zone_code]', true, ''); ?></td>
+                      <?php echo $system->functions->form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), 'shipping_address[zone_code]', true, ''); ?></td>
                   </tr>
                 </table>
               </div>
