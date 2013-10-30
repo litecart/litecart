@@ -15,7 +15,7 @@
     $order_statuses[] = (int)$order_status['id'];
   }
 
-  for ($timestamp = mktime(); $timestamp > strtotime('-12 months'); $timestamp = strtotime('-1 month', $timestamp)) {
+  for ($timestamp = time(); $timestamp > strtotime('-12 months'); $timestamp = strtotime('-1 month', $timestamp)) {
     $orders_query = $system->database->query(
       "select sum(payment_due) as total_sales, sum(tax_total) as total_tax from ". DB_TABLE_ORDERS ."
       where order_status_id in ('". implode("', '", $order_statuses) ."')

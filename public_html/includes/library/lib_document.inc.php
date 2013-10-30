@@ -107,9 +107,9 @@
     ######################################################################
     
     public function expires($string=false) {
-      if (strtotime($string) > mktime()) {
+      if (strtotime($string) > time()) {
         header('Pragma:');
-        header('Cache-Control: max-age='. (strtotime($string) - mktime()));
+        header('Cache-Control: max-age='. (strtotime($string) - time()));
         header('Expires: '. date('r', strtotime($string)));
         $this->snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="public">' .PHP_EOL
                                                     . '<meta http-equiv="expires" content="'. date('r', strtotime($string)) .'">';

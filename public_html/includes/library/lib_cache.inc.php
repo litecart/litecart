@@ -208,7 +208,7 @@
         
         case 'session':
           $this->data[$cache_id] = array(
-            'mtime' => mktime(),
+            'mtime' => time(),
             'data' => $data,
           );
           return true;
