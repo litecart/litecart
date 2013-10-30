@@ -291,11 +291,11 @@
       $product = new ref_product(self::$data['items'][$item_key]['product_id']);
       
       if (empty($product->sold_out_status['orderable'])) {
-        if (!empty($this->data['items'][$item_key]['option_stock_combination'])) {
+        if (!empty(self::$data['items'][$item_key]['option_stock_combination'])) {
           foreach (array_keys($product->options_stock) as $key) {
-            if ($product->options_stock[$key]['combination'] == $this->data['items'][$item_key]['option_stock_combination']) {
+            if ($product->options_stock[$key]['combination'] == self::$data['items'][$item_key]['option_stock_combination']) {
               if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
-                notices::add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
+                notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
         return;
               }
             }
