@@ -31,7 +31,7 @@
       );
       
       if (!empty($this->settings['free_shipping_amount'])) {
-      
+        
       // Calculate cart total
         $subtotal = 0;
         foreach ($order->data['items'] as $item) {
@@ -43,7 +43,7 @@
           $output[] = array(
             'title' => $GLOBALS['system']->language->translate('title_free_shipping', 'Free Shipping'),
             'value' => -$shipping->data['selected']['cost'],
-            'tax' => -$GLOBALS['system']->tax->calculate($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], true),
+            'tax' => -$GLOBALS['system']->tax->get_tax($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
             'tax_class_id' => $shipping->data['selected']['tax_class_id'],
             'calculate' => true,
           );
