@@ -537,8 +537,8 @@
       while (isset($this->data['items']['new'.$key_i])) $key_i++;
       
     // Round decimals
-      $rounded_price = round($GLOBALS['system']->currency->calculate($item['price'], $this->data['currency_code']), $GLOBALS['system']->currency->currencies[$this->data['currency_code']]['decimals']);
-      $item['price'] = $GLOBALS['system']->currency->convert($rounded_price, $this->data['currency_code'], $GLOBALS['system']->settings->get('store_currency_code'));
+      //$rounded_price = round($GLOBALS['system']->currency->calculate($item['price'], $this->data['currency_code']), $GLOBALS['system']->currency->currencies[$this->data['currency_code']]['decimals']);
+      //$item['price'] = $GLOBALS['system']->currency->convert($rounded_price, $this->data['currency_code'], $GLOBALS['system']->settings->get('store_currency_code'));
       
       if (!empty($item['tax_class_id'])) {
         $item['tax'] = $GLOBALS['system']->tax->get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
@@ -571,8 +571,8 @@
       while (isset($this->data['order_total']['new'.$key_i])) $key_i++;
       
     // Round decimals
-      $rounded_value = round($GLOBALS['system']->currency->calculate($row['value'], $this->data['currency_code']), $GLOBALS['system']->currency->currencies[$this->data['currency_code']]['decimals']);
-      $row['value'] = $GLOBALS['system']->currency->convert($rounded_value, $this->data['currency_code'], $GLOBALS['system']->settings->get('store_currency_code'));
+      //$rounded_value = round($GLOBALS['system']->currency->calculate($row['value'], $this->data['currency_code']), $GLOBALS['system']->currency->currencies[$this->data['currency_code']]['decimals']);
+      //$row['value'] = $GLOBALS['system']->currency->convert($rounded_value, $this->data['currency_code'], $GLOBALS['system']->settings->get('store_currency_code'));
       
       $this->data['order_total']['new'.$key_i] = array(
         'id' => 0,
