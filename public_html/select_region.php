@@ -49,7 +49,7 @@
   </tr>
 </table>
 <?php echo $system->functions->form_draw_form_end(); ?>
-<script type="text/javascript">
+<script>
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({

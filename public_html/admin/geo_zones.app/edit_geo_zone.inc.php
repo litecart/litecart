@@ -88,7 +88,7 @@
     </tr>
   </table>
   
-  <script type="text/javascript">
+  <script>
     $("select[name$='[zone_code]'][disabled]").each(function() {
       $(this).html('<option value="">-- '+ '<?php echo $system->language->translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
     });

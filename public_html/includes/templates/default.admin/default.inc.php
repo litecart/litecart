@@ -47,7 +47,7 @@
     }
   }
 ?>
-<script type="text/javascript">
+<script>
   function set_language(code) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('language_form', 'post')

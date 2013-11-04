@@ -114,7 +114,7 @@
   </tr>
 </table>
 
-<script type="text/javascript">
+<script>
   $("select[name='country[code]']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({

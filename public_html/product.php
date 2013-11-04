@@ -31,7 +31,7 @@
   
   $system->functions->draw_fancybox('a.fancybox');
   
-  $system->document->snippets['head_tags']['animate_from_to'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
+  $system->document->snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
   
   if (empty($_GET['category_id']) && empty($product->manufacturer)) {
     if (count($product->category_ids)) {
@@ -334,7 +334,7 @@
             <a class="addthis_button_email"></a>
             <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
             </div>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
+            <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
             <!-- AddThis Button END -->
           </div>
         </td>

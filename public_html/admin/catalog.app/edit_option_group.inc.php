@@ -30,7 +30,6 @@
       );
       
       foreach ($fields as $field) {
-        var_dump($_POST[$field]);
         if (isset($_POST[$field])) $option_group->data[$field] = $_POST[$field];
       }
       
@@ -253,7 +252,6 @@
       <th></th>
     </tr>
 <?php
-    //var_dump(array_keys($_POST['values']));
     if (!empty($_POST['values'])) {
       $keys = array_keys($_POST['values']);
       $key = array_shift($keys);
@@ -268,7 +266,7 @@
     </tr>
   </table>
 </div>
-<script type="text/javascript">
+<script>
   $('select[name=function]').trigger('change');
 </script>
 <p><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($option_group->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'remove') : false; ?></p>

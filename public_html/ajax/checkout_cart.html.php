@@ -54,7 +54,7 @@
 </div>
 
 <?php if (count($system->cart->data['items']) > 1) { ?>
-<script type="text/javascript">
+<script>
   var current = 1;
   var totalWidth = 0;
   var positions = new Array();

@@ -5,7 +5,7 @@
   header('Cache-Control: must-revalidate');
   header('Expires: ' . date('r', (time()+60*60)) . ' GMT');
   
-  $optimize = false;
+  $optimize = true;
   
   ######################################################################
   
@@ -34,7 +34,7 @@
     if ($optimize) {
       include($stylesheet);
     } else {
-      echo '@import url('. $stylesheet .')' . PHP_EOL;
+      echo '@import url('. $stylesheet .');' . PHP_EOL;
     }
   }
   

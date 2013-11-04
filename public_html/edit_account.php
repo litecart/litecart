@@ -222,7 +222,7 @@
     </div>
   </div>
   
-  <script type="text/javascript">
+  <script>
     $("select[name='country_code']").change(function(){
       $('body').css('cursor', 'wait');
       $.ajax({
