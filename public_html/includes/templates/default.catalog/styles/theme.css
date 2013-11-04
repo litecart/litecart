@@ -12,20 +12,27 @@ body {
   background: #f0f0f0;
 }
 
-#page-wrapper {
-  margin: 0px;
-  padding: 10px;
-  background: #f9f9f9;
-  border-bottom: 1px solid #e5e5e5;
-}
-#page {
-}
-
 #header-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 999;
 }
 #header {
   position: relative;
   height: 75px;
+}
+
+#page-wrapper {
+  margin: 0px;
+  padding: 10px;
+  padding-top: 90px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #e5e5e5;
+}
+#page {
 }
 
 #logotype-wrapper {
@@ -52,23 +59,35 @@ body {
 #languages-wrapper {
   display: inline-block;
   position: absolute;
-  right: 280px;
-  top: 25px;
+  right: 28%;
+  top: 20px;
+  width: 200px;
+  margin: 0px -100px;
+}
+#languages {
+  text-align: center;
+}
+#languages a.active {
 }
 
 #currencies-wrapper {
   display: inline-block;
   position: absolute;
-  right: 190px;
-  top: 25px;
+  right: 28%;
+  top: 40px;
+  width: 200px;
+  margin: 0px -100px;
+}
+#currencies {
+  text-align: center;
 }
 #currencies a {
   color: #777;
   border: 1px solid #d1d1d1;
-  padding: 2px 4px;
+  padding: 0px 4px;
   background-color: #fff;
 }
-#currencies a:hover {
+#currencies a:hover, #currencies a.active {
   color: rgb(0, 136, 204);
   border: 1px solid rgb(0, 136, 204);
   text-decoration: none;
@@ -77,16 +96,16 @@ body {
 #search-wrapper {
   display: inline-block;
   position: absolute;
-  left: 0px;
+  left: 45%;
   top: 10px;
-  margin: 0px auto;
-  width: 100%;
+  margin: 0px -120px;
+  width: 240px;
   text-align: center;
 }
 #search img {
   opacity: 0.6;
 }
-@media (max-width: 920px) {
+@media (max-width: 640px) {
   #search-wrapper {
     display: none;
   }

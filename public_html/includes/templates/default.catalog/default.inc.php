@@ -23,38 +23,38 @@
 </head>
 <body>
 
+<div id="header-wrapper" class="shadow">
+  <header id="header" class="nine-eighty">
+  
+    <div id="search-wrapper">
+    <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php'); ?>
+    </div>
+
+    <div id="logotype-wrapper">
+      <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
+    </div>
+    
+    <div id="site-links-wrapper">
+    <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
+    </div>
+    
+    <div id="languages-wrapper">
+      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'languages.inc.php'); ?>
+    </div>
+    
+    <div id="currencies-wrapper">
+      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'currencies.inc.php'); ?>
+    </div>
+    
+    <div id="cart-wrapper">
+      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
+    </div>
+    
+  </header>
+</div>
+
 <div id="page-wrapper">
   <div id="page">
-    
-    <div id="header-wrapper">
-      <header id="header" class="nine-eighty">
-      
-        <div id="search-wrapper">
-        <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php'); ?>
-        </div>
-
-        <div id="logotype-wrapper">
-          <a href="<?php echo $system->document->href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo $system->settings->get('store_name'); ?>" /></a>
-        </div>
-        
-        <div id="site-links-wrapper">
-        <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
-        </div>
-        
-        <div id="languages-wrapper">
-          <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'languages.inc.php'); ?>
-        </div>
-        
-        <div id="currencies-wrapper">
-          <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'currencies.inc.php'); ?>
-        </div>
-        
-        <div id="cart-wrapper">
-          <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
-        </div>
-        
-      </header>
-    </div>
     
     <div id="site-menu-wrapper">
       <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
@@ -129,22 +129,22 @@
         </td>
         <td class="account">
           <nav>
-            <h4><?php echo $system->language->translate('title_account', 'Account'); ?></h4>
+            <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
             <ul class="list-vertical">
-              <li><a href="<?php echo $system->document->link('select_region.php'); ?>"><?php echo $system->language->translate('title_select_region', 'Select Region'); ?></a></li>
-              <?php if (empty($system->customer->data['id'])) { ?>
-              <li><a href="<?php echo $system->document->link('create_account.php'); ?>"><?php echo $system->language->translate('title_create_account', 'Create Account'); ?></a></li>
-              <li><a href="<?php echo $system->document->link('login.php'); ?>"><?php echo $system->language->translate('title_login', 'Login'); ?></a></li>
+              <li><a href="<?php echo document::link('select_region.php'); ?>"><?php echo language::translate('title_select_region', 'Select Region'); ?></a></li>
+              <?php if (empty(customer::$data['id'])) { ?>
+              <li><a href="<?php echo document::link('create_account.php'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
+              <li><a href="<?php echo document::link('login.php'); ?>"><?php echo language::translate('title_login', 'Login'); ?></a></li>
               <?php } else { ?>
-              <li><a href="<?php echo $system->document->link('order_history.php'); ?>"><?php echo $system->language->translate('title_order_history', 'Order History'); ?></a></li>
-              <li><a href="<?php echo $system->document->link('edit_account.php'); ?>"><?php echo $system->language->translate('title_edit_account', 'Edit Account'); ?></a></li>
-              <li><a href="javascript:logout();"><?php echo $system->language->translate('title_logout', 'Logout'); ?></a></li>
+              <li><a href="<?php echo document::link('order_history.php'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+              <li><a href="<?php echo document::link('edit_account.php'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+              <li><a href="javascript:logout();"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
               <script>
                 function logout() {
                   var form = $('<?php
-                    echo str_replace(array("\r", "\n"), '', $system->functions->form_draw_form_begin('logout_form', 'post')
-                                                          . $system->functions->form_draw_hidden_field('logout', 'true')
-                                                          . $system->functions->form_draw_form_end()
+                    echo str_replace(array("\r", "\n"), '', functions::form_draw_form_begin('logout_form', 'post')
+                                                          . functions::form_draw_hidden_field('logout', 'true')
+                                                          . functions::form_draw_form_end()
                     );
                   ?>');
                   $(document.body).append(form);
@@ -159,17 +159,17 @@
           <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_information.inc.php'); ?>
         </td>
         <td class="contact">
-          <h4><?php echo $system->language->translate('title_contact', 'Contact'); ?></h4>
-          <p><?php echo nl2br($system->settings->get('store_postal_address')); ?></p><br />
-          <p><?php echo $system->settings->get('store_phone'); ?><br />
-          <?php echo $system->settings->get('store_email'); ?></p>
+          <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
+          <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
+          <p><?php echo settings::get('store_phone'); ?><br />
+          <?php echo settings::get('store_email'); ?></p>
         </td>
       </tr>
     </table>
   </footer>
   
   <div id="copyright" class="nine-eighty engraved-text">
-    <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo $system->settings->get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
+    <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
   </div>
 </div>
 
