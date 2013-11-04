@@ -5,8 +5,13 @@
   document::$snippets['keywords'] = language::translate('support.php:meta_keywords', '');
   document::$snippets['description'] = language::translate('support.php:meta_description', '');
   
+<<<<<<< HEAD
   breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'), basename(__FILE__));
 
+=======
+  $system->breadcrumbs->add($system->language->translate('title_customer_service', 'Customer Service'), basename(__FILE__));
+  
+>>>>>>> 1cbd6a3dd73b38fa0cd257f81d704997820abbc9
   if (!empty($_POST['send'])) {
   
     if (settings::get('contact_form_captcha_enabled')) {

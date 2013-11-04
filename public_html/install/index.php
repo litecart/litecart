@@ -128,7 +128,11 @@ span.error {
     <li>Apacahe 2 compatible HTTP daemon
       <ul>
         <li>Allow, Deny</li>
-        <li>mod_auth (SHA-supported)</li>
+        <li>Options -Indexes</li>
+        <li>mod_auth_basic (SHA)</li>
+        <li>mod_deflate</li>
+        <li>mod_headers</li>
+        <li>mod_rewrite</li>
         <li>mod_redirect</li>
       </ul>
     </li>

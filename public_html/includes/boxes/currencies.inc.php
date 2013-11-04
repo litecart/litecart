@@ -10,7 +10,7 @@
   }
 ?>
 </ul>
-<script type="text/javascript">
+<script>
   function set_currency(code) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', functions::form_draw_form_begin('currency_form', 'post')

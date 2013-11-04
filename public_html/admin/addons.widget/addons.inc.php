@@ -1,6 +1,7 @@
 <?php
   
-  $rss = functions::http_fetch('http://www.litecart.net/feeds/addons');
+  $url = document::link('http://www.litecart.net/feeds/addons', array('whoami' => $system->document->link(WS_DIR_HTTP_HOME), 'version' => PLATFORM_VERSION));
+  $rss = functions::http_fetch($url);
   
   $rss = simplexml_load_string($rss);
   

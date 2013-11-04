@@ -31,7 +31,7 @@
   
   functions::draw_fancybox('a.fancybox');
   
-  document::$snippets['head_tags']['animate_from_to'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
+  document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
   
   if (empty($_GET['category_id']) && empty($product->manufacturer)) {
     if (count($product->category_ids)) {
@@ -145,8 +145,13 @@
           <div style="margin-bottom: 10px;">
 <?php
   if ($product->quantity > 0) {
+<<<<<<< .mine
     echo '<div class="stock-available">'. language::translate('title_stock_status', 'Stock Status') .': <span class="value">'. ((settings::get('display_stock_count') == 'true') ? sprintf(language::translate('text_d_pieces', '%d pieces'), $product->quantity) : language::translate('title_in_stock', 'In Stock')) .'</span></div>';
     if (!empty($product->delivery_status['name'][language::$selected['code']])) echo '<div class="stock-delivery">'. language::translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][language::$selected['code']] .'</span></div>';
+=======
+    echo '<div class="stock-available">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. (($system->settings->get('display_stock_count')) ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span></div>';
+    if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<div class="stock-delivery">'. $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']] .'</span></div>';
+>>>>>>> .theirs
   } else {
     if (!empty($product->sold_out_status['name'][language::$selected['code']])) {
       echo '<div class="'. ($product->sold_out_status['orderable'] ? 'stock-partly-available' : 'stock-unavailable') .'">'. language::translate('title_stock_status', 'Stock Status') .': <span class="value">'. $product->sold_out_status['name'][language::$selected['code']] .'</span></div>';
@@ -334,7 +339,7 @@
             <a class="addthis_button_email"></a>
             <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
             </div>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
+            <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
             <!-- AddThis Button END -->
           </div>
         </td>

@@ -8,7 +8,7 @@
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
-<script type="text/javascript">
+<script>
   window.onload = function() {
     window.print();
   }

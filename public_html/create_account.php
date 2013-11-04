@@ -159,7 +159,7 @@
   </div>
 </div>
 
-<script type="text/javascript">
+<script>
   $("#box-checkout-account input, #box-checkout-account select").change(function() {
     if ($(this).val() == '') return;
     $('body').css('cursor', 'wait');

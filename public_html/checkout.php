@@ -32,7 +32,7 @@
   <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_summary.html.php'); ?>
 </div>
 
-<script type="text/javascript">
+<script>
 
   function refreshCart() {
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);

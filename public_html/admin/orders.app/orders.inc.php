@@ -120,7 +120,7 @@
   </ul>
 </p>
 
-<script type="text/javascript">
+<script>
   $(".dataTable input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));

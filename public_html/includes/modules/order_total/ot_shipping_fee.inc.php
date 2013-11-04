@@ -43,7 +43,7 @@
           $output[] = array(
             'title' => language::translate('title_free_shipping', 'Free Shipping'),
             'value' => -$shipping->data['selected']['cost'],
-            'tax' => -tax::calculate($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], true),
+            'tax' => -tax::get_tax($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
             'tax_class_id' => $shipping->data['selected']['tax_class_id'],
             'calculate' => true,
           );

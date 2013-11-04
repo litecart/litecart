@@ -49,7 +49,7 @@
     <td colspan="5" align="left"><?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>: <?php echo database::num_rows($geo_zones_query); ?></td>
   </tr>
 </table>
-<script type="text/javascript">
+<script>
   $(".dataTable input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));

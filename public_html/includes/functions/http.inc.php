@@ -16,14 +16,14 @@
       if (empty($parts['port'])) $parts['port'] = (substr($url, 0, 8) == 'https://') ? 443 : 80;
       
       if (empty($parts['host'])) {
-        trigger_error('No host to connect to in url "'. $url .'"', E_USER_ERROR);
+        trigger_error('No host to connect to in url "'. $url .'"', E_USER_WARNING);
         return;
       }
       
       $fp = fsockopen($parts['protocol'] . $parts['host'], $parts['port'], $errno, $errstr, 30);
       
       if (!$fp) {
-        trigger_error('Error contacting URL ('. $url .'), '. $errstr, E_USER_ERROR);
+        trigger_error('Error contacting URL ('. $url .'), '. $errstr, E_USER_WARNING);
         return;
       }
       

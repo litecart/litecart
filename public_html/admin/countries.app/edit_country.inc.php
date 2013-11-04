@@ -91,9 +91,15 @@
         </td>
       </tr>
       <tr>
+<<<<<<< HEAD
         <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong> <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo language::translate('title_reference', 'Reference')?></a><br />
           <?php echo functions::form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
           <script type="text/javascript">
+=======
+        <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong> <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference')?></a><br />
+          <?php echo $system->functions->form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
+          <script>
+>>>>>>> 1cbd6a3dd73b38fa0cd257f81d704997820abbc9
             $("#address-format-hint").click(function() {
               alert(
                 "<?php echo language::translate('title_syntax', 'Syntax'); ?>:\n\n" +
@@ -155,7 +161,7 @@
       </tr>
     </table>
     
-    <script type="text/javascript">
+    <script>
       $("body").on("click", "#remove-zone", function(event) {
         event.preventDefault();
         $(this).closest('tr').remove();

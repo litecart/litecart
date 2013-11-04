@@ -25,7 +25,44 @@
     exit;
   }
   
-  // Move products
+// Duplicate products
+  if (isset($_POST['duplicate'])) {
+
+    if (!empty($_POST['categories'])) $system->notices->add('errors', $system->language->translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
+    if (empty($_POST['products'])) $system->notices->add('errors', $system->language->translate('error_must_select_products', 'You must select products'));
+    if (isset($_POST['category_id']) && $_POST['category_id'] == '') $system->notices->add('errors', $system->language->translate('error_must_select_category', 'You must select a category'));
+    
+    if (empty($system->notices->data['errors'])) {
+      
+      foreach ($_POST['products'] as $product_id) {
+        $product = new ctrl_product($product_id);
+        
+        $product->data['id'] = null;
+        $product->data['categories'] = array($_POST['category_id']);
+        $product->data['image'] = null;
+        $product->data['images'] = array();
+        
+        foreach (array_keys($product->data['name']) as $language_code) {
+          $product->data['name'][$language_code] .= ' (copy)';
+        }
+        
+        foreach (array('campaigns', 'options', 'options_stock') as $field) {
+          if (empty($product->data[$field])) continue;
+          foreach (array_keys($product->data[$field]) as $key) {
+            $product->data[$field][$key]['id'] = null;
+          }
+        }
+        
+        $product->save();
+      }
+      
+      $system->notices->add('success', sprintf($system->language->translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
+      header('Location: '. $system->document->link('', array('category_id' => $_POST['category_id']), true));
+      exit;
+    }
+  }
+  
+// Copy products
   if (isset($_POST['copy'])) {
 
     if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_cant_copy_category', 'You can\'t copy a category'));
@@ -370,8 +407,8 @@
 <p>
   <ul class="list-horizontal">
     <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-    <li><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></li>
-    <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?> <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?></li>
+    <li><?php echo functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></li>
+    <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <?php echo functions:::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?><?php echo $system->functions->form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?><?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?></li>
     <li><?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?></li>
     <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></li>
   </ul>

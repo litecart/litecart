@@ -53,8 +53,13 @@
   <?php } ?>
 </div>
 
+<<<<<<< HEAD
 <?php if (count(cart::$data['items']) > 1) { ?>
 <script type="text/javascript">
+=======
+<?php if (count($system->cart->data['items']) > 1) { ?>
+<script>
+>>>>>>> 1cbd6a3dd73b38fa0cd257f81d704997820abbc9
   var current = 1;
   var totalWidth = 0;
   var positions = new Array();

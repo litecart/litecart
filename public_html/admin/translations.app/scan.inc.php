@@ -27,7 +27,7 @@
       $contents = file_get_contents($file);
       
       $regexp = array(
-        '(?:GLOBALS\[\'system\'\]|system->language->|language::)translate\((?:(?!\$)',
+        '(language->|language::)translate\((?:(?!\$)',
         '(?:(__CLASS__)?\.)?',
         '(?:[\'"])([^\'"]+)(?:[\'"])',
         '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?',

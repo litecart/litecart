@@ -1,9 +1,9 @@
 <?php
 
-  document::$snippets['head_tags']['jqplot'] = '<script type="text/javascript" src="'. WS_DIR_EXT .'/jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
-                                                     . '<script type="text/javascript" src="'. WS_DIR_EXT .'/jqplot/plugins/jqplot.highlighter.min.js"></script>' . PHP_EOL
-                                                     . '<script type="text/javascript" src="'. WS_DIR_EXT .'/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>' . PHP_EOL
-                                                     . '<link rel="stylesheet" type="text/css" href="'. WS_DIR_EXT .'/jqplot/jquery.jqplot.min.css" />';
+  document::snippets['head_tags']['jqplot'] = '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
+                                            . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>' . PHP_EOL
+                                            . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>' . PHP_EOL
+                                            . '<link rel="stylesheet" href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" />';
   
   $order_statuses = array();
   $orders_status_query = database::query(
@@ -30,7 +30,7 @@
   }
 ?>
   <div id="chart-sales-monthly" style="height: 150px;"></div>
-  <script type="text/javascript">
+  <script>
     var line1 = [<?php echo implode(',', $monthly_sales); ?>];
     var plot1 = $.jqplot('chart-sales-monthly', [line1], {
         title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_months', '%s months'), '12'); ?>)',
@@ -79,7 +79,7 @@
   
 ?>
   <div id="chart-sales-daily" style="height: 150px;"></div>
-  <script type="text/javascript">
+  <script>
     var line1 = [<?php echo implode(',', $daily_sales); ?>];
     var plot1 = $.jqplot('chart-sales-daily', [line1], {
         title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_days', '%s days'), '30'); ?>)',

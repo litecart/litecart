@@ -198,7 +198,7 @@
         </tr>
       </table>
       
-      <script type="text/javascript">
+      <script>
         $("select[name='customer[country_code]']").change(function(){
           $('body').css('cursor', 'wait');
           $.ajax({
@@ -263,7 +263,7 @@
         </tr>
       </table>
 
-      <script type="text/javascript">
+      <script>
         $("select[name='customer[shipping_address][country_code]']").change(function(){
           $('body').css('cursor', 'wait');
           $.ajax({
@@ -353,7 +353,7 @@
   </tr>
 </table>
 
-<script type="text/javascript">
+<script>
 <?php
   functions::draw_fancybox('#add_product', array(
     'type' => 'iframe',
@@ -444,7 +444,7 @@
     <td colspan="6" nowrap="nowrap" align="right"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong id="order-total"><?php echo currency::format($order->data['payment_due']); ?></strong></td>
   </tr>
 </table>
-<script type="text/javascript">
+<script>
   var new_ot_row_index = 0;
   $("body").on("click", "a.add_ot_row", function(event) {
     while ($("input[name='order_total["+new_ot_row_index+"][id]']").length) new_ot_row_index++;
@@ -524,7 +524,7 @@
     <td nowrap="nowrap" align="left" colspan="4"><a class="add_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
   </tr>
 </table>
-<script type="text/javascript">
+<script>
   var new_comment_index = 0;
   $("a.add_comment").click(function(event) {
     while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
