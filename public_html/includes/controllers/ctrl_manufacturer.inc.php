@@ -128,8 +128,8 @@
         exit;
       }
     
-      if (!empty($this->data['image']) && is_file(FS_DIR_HTTP_ROOT . WS_DIR_DATA_IMAGES . 'manufacturers/' . $this->data['image'])) {
-        unlink(FS_DIR_HTTP_ROOT . WS_DIR_DATA_IMAGES . 'manufacturers/' . $this->data['image']);
+      if (!empty($this->data['image']) && is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'manufacturers/' . $this->data['image'])) {
+        unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'manufacturers/' . $this->data['image']);
       }
       
       $GLOBALS['system']->database->query(

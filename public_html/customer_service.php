@@ -6,7 +6,7 @@
   $system->document->snippets['description'] = $system->language->translate('support.php:meta_description', '');
   
   $system->breadcrumbs->add($system->language->translate('title_customer_service', 'Customer Service'), basename(__FILE__));
-
+  
   if (!empty($_POST['send'])) {
   
     if ($system->settings->get('contact_form_captcha_enabled')) {
