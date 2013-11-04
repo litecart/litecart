@@ -28,9 +28,9 @@
 // Duplicate products
   if (isset($_POST['duplicate'])) {
 
-    if (!empty($_POST['categories'])) $system->notices->add('errors', $system->language->translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
-    if (empty($_POST['products'])) $system->notices->add('errors', $system->language->translate('error_must_select_products', 'You must select products'));
-    if (isset($_POST['category_id']) && $_POST['category_id'] == '') $system->notices->add('errors', $system->language->translate('error_must_select_category', 'You must select a category'));
+    if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
+    if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
+    if (isset($_POST['category_id']) && $_POST['category_id'] == '') notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
     
     if (empty($system->notices->data['errors'])) {
       
@@ -56,8 +56,8 @@
         $product->save();
       }
       
-      $system->notices->add('success', sprintf($system->language->translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
-      header('Location: '. $system->document->link('', array('category_id' => $_POST['category_id']), true));
+      $system->notices->add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
+      header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
     }
   }
@@ -407,8 +407,8 @@
 <p>
   <ul class="list-horizontal">
     <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-    <li><?php echo functions->form_draw_button('enable', $system->language->translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></li>
-    <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <?php echo functions:::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?><?php echo $system->functions->form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?><?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?></li>
+    <li><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></li>
+    <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?><?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?><?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?></li>
     <li><?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?></li>
     <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></li>
   </ul>

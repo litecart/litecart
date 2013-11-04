@@ -1,9 +1,9 @@
 <?php
 
-  document::snippets['head_tags']['jqplot'] = '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
-                                            . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>' . PHP_EOL
-                                            . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>' . PHP_EOL
-                                            . '<link rel="stylesheet" href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" />';
+  document::$snippets['head_tags']['jqplot'] = '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
+                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>' . PHP_EOL
+                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>' . PHP_EOL
+                                             . '<link rel="stylesheet" href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" />';
   
   $order_statuses = array();
   $orders_status_query = database::query(

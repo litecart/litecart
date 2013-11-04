@@ -145,13 +145,8 @@
           <div style="margin-bottom: 10px;">
 <?php
   if ($product->quantity > 0) {
-<<<<<<< .mine
-    echo '<div class="stock-available">'. language::translate('title_stock_status', 'Stock Status') .': <span class="value">'. ((settings::get('display_stock_count') == 'true') ? sprintf(language::translate('text_d_pieces', '%d pieces'), $product->quantity) : language::translate('title_in_stock', 'In Stock')) .'</span></div>';
+    echo '<div class="stock-available">'. language::translate('title_stock_status', 'Stock Status') .': <span class="value">'. ((settings::get('display_stock_count')) ? sprintf(language::translate('text_d_pieces', '%d pieces'), $product->quantity) : language::translate('title_in_stock', 'In Stock')) .'</span></div>';
     if (!empty($product->delivery_status['name'][language::$selected['code']])) echo '<div class="stock-delivery">'. language::translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][language::$selected['code']] .'</span></div>';
-=======
-    echo '<div class="stock-available">'. $system->language->translate('title_stock_status', 'Stock Status') .': <span class="value">'. (($system->settings->get('display_stock_count')) ? sprintf($system->language->translate('text_d_pieces', '%d pieces'), $product->quantity) : $system->language->translate('title_in_stock', 'In Stock')) .'</span></div>';
-    if (!empty($product->delivery_status['name'][$system->language->selected['code']])) echo '<div class="stock-delivery">'. $system->language->translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][$system->language->selected['code']] .'</span></div>';
->>>>>>> .theirs
   } else {
     if (!empty($product->sold_out_status['name'][language::$selected['code']])) {
       echo '<div class="'. ($product->sold_out_status['orderable'] ? 'stock-partly-available' : 'stock-unavailable') .'">'. language::translate('title_stock_status', 'Stock Status') .': <span class="value">'. $product->sold_out_status['name'][language::$selected['code']] .'</span></div>';

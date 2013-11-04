@@ -146,13 +146,8 @@
     }
 ?>
 </table>
-<<<<<<< HEAD
-<?php echo functions::form_draw_form_end(); ?>
-<script type="text/javascript">
-=======
 <?php echo $system->functions->form_draw_form_end(); ?>
 <script>
->>>>>>> 1cbd6a3dd73b38fa0cd257f81d704997820abbc9
   function delete_translation(id) {
     var form = $('<?php
       echo str_replace(array("\r", "\n"), '', functions::form_draw_form_begin('delete_translation_form', 'post')
