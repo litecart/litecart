@@ -21,12 +21,12 @@
   
   foreach ($system->functions->admin_get_apps() as $app) {
     $params = array('app' => $app['code'], 'doc' => $app['default']);
-    $apps_list .= '    <li'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> '. $app['name'] .'</a>' . PHP_EOL;
+    $apps_list .= '    <li id="app-'. $app['code'] .'"'. ((isset($_GET['app']) && $_GET['app'] == $app['code']) ? ' class="selected"' : '') .'>'. PHP_EOL .'      <a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'"><img src="'. WS_DIR_ADMIN . $app['code'] .'.app/'. $app['icon'] .'" width="24" height="24" style="vertical-align: middle;" alt="'. $app['name'] .'" title="'. $app['name'] .'" /> <span class="name">'. $app['name'] .'</span></a>' . PHP_EOL;
     
     if (!empty($_GET['app']) && $_GET['app'] == $app['code']) {
       
       if (!empty($app['menu'])) {
-        $apps_list .= '      <ul>' . PHP_EOL;
+        $apps_list .= '      <ul class="docs">' . PHP_EOL;
         
         foreach ($app['menu'] as $item) {
           
@@ -45,7 +45,7 @@
           }
           
           $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['doc']), $item['params']) : array('app' => $app['code'], 'doc' => $item['doc']);
-          $apps_list .= '        <li'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'">'. $item['title'] .'</a></li>' . PHP_EOL;
+          $apps_list .= '        <li id="doc-'. $item['doc'] .'"'. ($selected ? ' class="selected"' : '') .'><a href="'. $system->document->href_link(WS_DIR_ADMIN, $params) .'"><span class="name">'. $item['title'] .'</span></a></li>' . PHP_EOL;
         }
         
         $apps_list .= '      </ul>' . PHP_EOL;
@@ -91,7 +91,7 @@
   <ul id="widgets">
 <?php
     foreach ($system->functions->admin_get_widgets() as $widget) {
-      echo '    <li>' . PHP_EOL;
+      echo '    <li id="widget-'. basename($widget['dir'], '.widget') .'">' . PHP_EOL;
       include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $widget['dir'] . $widget['file']);
       echo '    </li>' . PHP_EOL;
     }
