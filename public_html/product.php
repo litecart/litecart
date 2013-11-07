@@ -306,7 +306,7 @@
   }
 ?>
               <tr>
-                <td class="quantity"><strong><?php echo $system->language->translate('title_quantity', 'Antal'); ?></strong><br />
+                <td class="quantity"><strong><?php echo $system->language->translate('title_quantity', 'Quantity'); ?></strong><br />
                 <?php echo $system->functions->form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?> &nbsp; 
 <?php
   if ($product->quantity > 0) {
