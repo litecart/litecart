@@ -41,7 +41,7 @@
         }
         
         if (strtolower($gateway['method']) == 'post') {
-          echo '<p><img src="'. WS_DIR_IMAGES .'icons/16x16/loading.gif" width="16" height="16" /> '. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
+          echo '<p>'. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
              . '<form name="gateway_form" method="post" action="'. $gateway['action'].'">' . PHP_EOL;
           if (is_array($gateway['fields'])) {
             foreach ($gateway['fields'] as $key => $value) echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;

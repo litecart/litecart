@@ -74,6 +74,7 @@
         set parent_id = '". (int)$this->data['parent_id'] ."',
           status = '". (int)$this->data['status'] ."',
           code = '". database::input($this->data['code']) ."',
+          list_style = '". database::input($this->data['list_style']) ."',
           keywords = '". database::input($this->data['keywords']) ."',
           priority = '". (int)$this->data['priority'] ."',
           date_updated = '". date('Y-m-d H:i:s') ."'

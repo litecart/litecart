@@ -44,7 +44,7 @@
       
         if (self::$enabled) {
         // Import cached links
-          self::$_cache_id = cache::cache_id('links', array('language'));
+          self::$_cache_id = cache::cache_id('seo_links', array('language'));
           self::$_cache = cache::get(self::$_cache_id, 'file');
         }
       }

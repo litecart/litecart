@@ -28,6 +28,7 @@
         'status',
         'parent_id',
         'code',
+        'list_style',
         'image',
         'name',
         'short_description',
@@ -113,6 +114,17 @@ foreach (array_keys(language::$languages) as $language_code) {
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_parent_category', 'Parent Category'); ?></strong><br />
               <?php echo functions::form_draw_categories_list('parent_id', true); ?>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_list_style', 'List Style'); ?></strong><br />
+<?php
+  $options = array(
+    array(language::translate('title_columns', 'Columns'), 'columns'),
+    array(language::translate('title_rows', 'Rows'), 'rows'),
+  );
+  echo functions::form_draw_select_field('list_style', $options, true);
+?>
             </td>
           </tr>
           <tr>

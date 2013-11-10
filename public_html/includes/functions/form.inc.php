@@ -115,7 +115,7 @@
   function form_draw_hidden_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    return form_draw_input($name, $value, 'hidden', $parameters);
+    return '<input type="hidden" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_image($name, $src, $parameters=false) {
@@ -360,7 +360,7 @@
       case 'timezones':
         return form_draw_timezones_list($name, $input);
       case 'templates':
-        return form_draw_templates_list($name, $input);
+        return form_draw_templates_list($options[0], $name, $input);
       case 'toggle':
         return form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
       case 'tax_classes':
@@ -706,9 +706,9 @@
     return form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_templates_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_templates_list($type='catalog', $name, $input=true, $multiple=false, $parameters='') {
     
-    $folders = glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'*');
+    $folders = glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'*.'. $type);
     
     $options = array();
     

@@ -30,6 +30,7 @@ CREATE TABLE `lc_categories` (
   `parent_id` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `code` varchar(64) NOT NULL,
+  `list_style` VARCHAR(32) NOT NULL,
   `keywords` varchar(256) NOT NULL,
   `image` varchar(256) NOT NULL,
   `priority` tinyint(2) NOT NULL,

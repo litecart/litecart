@@ -1,11 +1,11 @@
 <?php
-  ob_start();
+  require_once('../../../app_header.inc.php');
   
   header('Content-Type: text/css');
   header('Cache-Control: must-revalidate');
   header('Expires: ' . date('r', (time()+60*60)) . ' GMT');
   
-  $optimize = true;
+  $optimize = false;
   
   ######################################################################
   
@@ -25,6 +25,9 @@
     'product.css',
     'tables.css',
     'tabs.css',
+    
+  // Dynamics
+    'dynamics.css.php',
     
   // Overrides
     'custom.css',

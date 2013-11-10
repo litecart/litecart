@@ -67,7 +67,11 @@ body {
 #languages {
   text-align: center;
 }
-#languages a.active {
+#languages li {
+  opacity: 0.25;
+}
+#languages li.active, #languages li:hover {
+  opacity: 1;
 }
 
 #currencies-wrapper {
@@ -86,11 +90,13 @@ body {
   border: 1px solid #d1d1d1;
   padding: 0px 4px;
   background-color: #fff;
+  opacity: 0.25;
 }
-#currencies a:hover, #currencies a.active {
+#currencies li:hover a, #currencies li.active a {
   color: rgb(0, 136, 204);
   border: 1px solid rgb(0, 136, 204);
   text-decoration: none;
+  opacity: 1;
 }
 
 #search-wrapper {

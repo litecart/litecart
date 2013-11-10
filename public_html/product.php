@@ -88,7 +88,7 @@
         $sticker = '';
         if (!empty($product->campaign['price'])) {
           $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" border="0" title="'. language::translate('title_on_sale', 'On Sale') .'" class="sticker" />';
-        } else if ($product->date_created > date('Y-m-d', strtotime('-1 month'))) {
+        } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
           $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" border="0" title="'. language::translate('title_new', 'New') .'" class="sticker" />';
         }
         

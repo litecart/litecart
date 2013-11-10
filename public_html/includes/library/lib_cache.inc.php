@@ -48,6 +48,75 @@
     
     ######################################################################
     
+    public static function get($cache_id, $type, $max_age=900) {
+      
+      if (empty(self::$enabled)) return null;
+      
+    // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
+      if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return null;
+      
+      if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
+        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return null;
+        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return null;
+      }
+    
+      switch ($type) {
+      
+        case 'database': // Not supported yet
+          return null;
+      
+        case 'file':
+          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$cache_id;
+          if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
+            if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return null;
+            return unserialize(file_get_contents($cache_file));
+          }
+          return null;
+        
+        case 'session':
+          if (isset(self::$_data[$cache_id]['mtime']) && self::$_data[$cache_id]['mtime'] > strtotime('-'.$max_age .' seconds')) {
+            if (self::$_data[$cache_id]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return null;
+            return self::$_data[$cache_id]['data'];
+          }
+          return null;
+          
+        case 'memory': // Not supported yet
+          return null;
+          
+        default:
+          trigger_error('Invalid cache type ('. $type .')', E_USER_ERROR);
+      }
+    }
+    
+    public static function set($cache_id, $type, $data) {
+    
+      if (empty(self::$enabled)) return false;
+      
+      switch ($type) {
+      
+        case 'database': // Not supported yet
+          return false;
+      
+        case 'file':
+          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $cache_id;
+          file_put_contents($cache_file, serialize($data));
+          return true;
+        
+        case 'session':
+          self::$_data[$cache_id] = array(
+            'mtime' => time(),
+            'data' => $data,
+          );
+          return true;
+          
+        case 'memory': // Not supported yet
+          return false;
+          
+        default:
+          trigger_error('Invalid cache type ('. $type .')', E_USER_ERROR);
+      }
+    }
+    
     public static function set_breakpoint() {
       database::query(
         "update ". DB_TABLE_SETTINGS ."
@@ -137,75 +206,6 @@
       self::set($cache_id, self::$_recorders[$cache_id]['type'], $_data);
       
       unset(self::$_recorders[$cache_id]);
-    }
-    
-    public static function get($cache_id, $type, $max_age=900) {
-      
-      if (empty(self::$enabled)) return null;
-      
-    // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
-      if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return null;
-      
-      if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return null;
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return null;
-      }
-    
-      switch ($type) {
-      
-        case 'database': // Not supported yet
-          return null;
-      
-        case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$cache_id;
-          if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
-            if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return null;
-            return unserialize(file_get_contents($cache_file));
-          }
-          return null;
-        
-        case 'session':
-          if (isset(self::$_data[$cache_id]['mtime']) && self::$_data[$cache_id]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            if (self::$_data[$cache_id]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return null;
-            return self::$_data[$cache_id]['data'];
-          }
-          return null;
-          
-        case 'memory': // Not supported yet
-          return null;
-          
-        default:
-          trigger_error('Invalid cache type ('. $type .')', E_USER_ERROR);
-      }
-    }
-    
-    public static function set($cache_id, $type, $_data) {
-    
-      if (empty(self::$enabled)) return false;
-      
-      switch ($type) {
-      
-        case 'database': // Not supported yet
-          return false;
-      
-        case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $cache_id;
-          file_put_contents($cache_file, serialize($_data));
-          return true;
-        
-        case 'session':
-          self::$_data[$cache_id] = array(
-            'mtime' => time(),
-            'data' => $_data,
-          );
-          return true;
-          
-        case 'memory': // Not supported yet
-          return false;
-          
-        default:
-          trigger_error('Invalid cache type ('. $type .')', E_USER_ERROR);
-      }
     }
   }
   
