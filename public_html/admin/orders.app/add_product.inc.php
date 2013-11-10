@@ -127,22 +127,17 @@
          . '              + \'      <table cellpadding="0">\'' . PHP_EOL;
       foreach (array_keys($_POST['options']) as $field) {
         echo '              + \'        <tr>\'' . PHP_EOL;
+          echo '              + \'          <td style="padding-left: 10px;">'. $field .'</td>\'' . PHP_EOL
+           . '              + \'          <td>';
         if (is_array($_POST['options'][$field])) {
-          echo '              + \'          <td style="padding-left: 10px;">'. $field .'</td>\'' . PHP_EOL
-             . '              + \'          <td>\'';
-          foreach (array_keys($_POST['options'][$field]) as $k) {
-            echo functions::form_draw_text_field('items[new_item_index][options]['.$field.']['. $_POST['options'][$field][$k] .']', true, !empty($option_stock_combination) ? 'readonly="readonly"' : '');
-             . '              + \'          <td>\'';
-          foreach (array_keys($_POST['options'][$field]) as $k) {
-            echo functions::form_draw_text_field('items[new_item_index][options]['.$field.']['. $_POST['options'][$field][$k] .']', true, !empty($option_stock_combination) ? 'readonly="readonly"' : '');
+          foreach (array_keys($_POST['options'][$field]) as $key) {
+            echo functions::form_draw_text_field('items[new_item_index][options]['.$field.']['. $_POST['options'][$field][$key] .']', true, !empty($option_stock_combination) ? 'readonly="readonly"' : '');
           }
-          echo '              + \'          </td>\'' . PHP_EOL;
         } else {
-          echo '              + \'          <td style="padding-left: 10px;">'. $field .'</td>\'' . PHP_EOL
-             . '              + \'          <td> '. functions::form_draw_text_field('items[new_item_index]['.$field.']', $_POST['options'][$field], !empty($option_stock_combination) ? 'readonly="readonly"' : '') .'</td>\'' . PHP_EOL;
-             . '              + \'          <td> '. functions::form_draw_text_field('items[new_item_index]['.$field.']', $_POST['options'][$field], !empty($option_stock_combination) ? 'readonly="readonly"' : '') .'</td>\'' . PHP_EOL;
+          echo functions::form_draw_text_field('items[new_item_index][options]['.$field.']', $_POST['options'][$field], !empty($option_stock_combination) ? 'readonly="readonly"' : '');
         }
-        echo '              + \'        </tr>\'' . PHP_EOL;
+        echo '</td>\'' . PHP_EOL
+           . '              + \'        </tr>\'' . PHP_EOL;
       }
       echo '              + \'    </table>\'' . PHP_EOL;
     }
@@ -156,9 +151,7 @@
               + '    <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
               + '  </tr>';
   
-  var new_item_index = 0
-  while ($("input[name='items["+new_item_index+"][id]']", window.parent.document).length) new_item_index++;
-  new_row = new_row.replace(/new_item_index/g, "new_" + new_item_index);
+  new_row = new_row.replace(/new_item_index/g, "new_<?php echo time(); ?>");
   
   $("#order-items .footer", window.parent.document).before(new_row);
   parent.calculate_total();

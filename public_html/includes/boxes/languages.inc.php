@@ -5,7 +5,7 @@
 <?php
   foreach (language::$languages as $language) {
     if ($language['status']) {
-      echo '  <li'. (($language['code'] == language::$selected['code']) ? ' class="active"' : '') .'><a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" /></a></li>' . PHP_EOL;
+      echo '  <li id="'. $language['code'] .'" '. (($language['code'] == language::$selected['code']) ? ' class="active"' : '') .'><a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" /></a></li>' . PHP_EOL;
     }
   }
 ?>

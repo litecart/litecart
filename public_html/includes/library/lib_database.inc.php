@@ -73,7 +73,7 @@
         $execution_time_duration = $execution_time_stop - $execution_time_start;
         
       // Check if duration was way too long
-        if ($execution_time_duration > 5) {
+        if ($execution_time_duration > 1) {
           error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.');
         }
         
@@ -180,7 +180,7 @@
       $execution_time_duration = $execution_time_stop - $execution_time_start;
       
     // Check if duration was way too long
-      if ($execution_time_duration > 5) {
+      if ($execution_time_duration > 3) {
         error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query));
       }
       

@@ -5,7 +5,7 @@
 <?php
   foreach (currency::$currencies as $currency) {
     if ($currency['status']) {
-      echo '<li'. (($currency['code'] == currency::$selected['code']) ? ' class="active"' : '') .'><a href="javascript:set_currency(\''. $currency['code'] .'\');">'. $currency['code'] .'</a></li>' . PHP_EOL;
+      echo '  <li id="'. $currency['code'] .'"'. (($currency['code'] == currency::$selected['code']) ? ' class="active"' : '') .'><a href="javascript:set_currency(\''. $currency['code'] .'\');">'. $currency['code'] .'</a></li>' . PHP_EOL;
     }
   }
 ?>

@@ -35,9 +35,7 @@
               + '    <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
               + '  </tr>';
   
-  var new_item_index = 0
-  while ($("input[name='items["+new_item_index+"][id]']", window.parent.document).length) new_item_index++;
-  new_row = new_row.replace(/new_item_index/g, "new_" + new_item_index);
+  new_row = new_row.replace(/new_item_index/g, "new_<?php echo time(); ?>");
   
   $("#order-items .footer", window.parent.document).before(new_row);
   parent.calculate_total();

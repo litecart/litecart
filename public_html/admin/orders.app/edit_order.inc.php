@@ -325,14 +325,16 @@
       foreach (array_keys($_POST['items'][$key]['options']) as $field) {
         echo '        <tr>' . PHP_EOL
            . '          <td style="padding-left: 10px;">'. $field .'</td>' . PHP_EOL
-           . '          <td> '. functions::form_draw_text_field('items['.$key.'][options]['.$field.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '') .'</td>' . PHP_EOL
+           . '          <td>';
+        if (is_array($_POST['items'][$key]['options'][$field])) {
+          foreach (array_keys($_POST['items'][$key][$field]) as $k) {
+            echo functions::form_draw_text_field('items['.$key.'][options]['.$field.']['.$k.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '');
+      }
+        } else {
+          echo functions::form_draw_text_field('items['.$key.'][options]['.$field.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '');
+        }
+        echo '          </td>' . PHP_EOL
            . '        </tr>' . PHP_EOL;
-        echo '        <tr>' . PHP_EOL
-           . '          <td style="padding-left: 10px;">'. $field .'</td>' . PHP_EOL
-           . '          <td> '. functions::form_draw_text_field('items['.$key.']['.$field.']', true) .'</td>' . PHP_EOL
-           . '        </tr>' . PHP_EOL;
-
-
       }
       echo '      </table>' . PHP_EOL;
     }
