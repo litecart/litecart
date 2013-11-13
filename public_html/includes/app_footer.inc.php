@@ -6,13 +6,13 @@
 // Run after capture processes
   system::run('after_capture');
   
-// Prepare output
-  system::run('prepare_output');
-  
 // Capture template
   ob_start();
   require(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/'. document::$layout .'.inc.php');
   $output = ob_get_clean();
+  
+// Prepare output
+  system::run('prepare_output');
   
 // Stitch content
   foreach (document::$snippets as $snippet => $content) {

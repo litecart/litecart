@@ -6,11 +6,9 @@
   }
   
   $settings = unserialize(settings::get('store_template_catalog_settings'));
+  
+  if (empty($settings['fixed_header'])) {
+    echo '#header-wrapper { position: absolute !important; }' . PHP_EOL;
+  }
+  
 ?>
-
-<?php if (empty($settings['fixed_header'])) { ?>
-#header-wrapper {
-  position: absolute !important;
-}
-<?php } else { ?>
-<?php }?>

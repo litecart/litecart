@@ -131,7 +131,9 @@
       } else {
         switch (gettype($params[$key])) {
           case 'boolean':
-            document::$snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. ($params[$key] ? 'true' : 'false') .',' . PHP_EOL;
+            document::$snippets['javascript']['fancybox-'.$selector] .=
+            '        "'. $key .'" : '.
+            ($params[$key] ? 'true' : 'false') .',' . PHP_EOL;
             break;
           case 'integer':
             document::$snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. $params[$key] .',' . PHP_EOL;

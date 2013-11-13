@@ -56,53 +56,33 @@ body {
   text-decoration: none;
 }
 
-#languages-wrapper {
+#region-wrapper {
   display: inline-block;
   position: absolute;
-  right: 28%;
-  top: 20px;
+  right: 33%;
+  top: 28px;
   width: 200px;
   margin: 0px -100px;
 }
-#languages {
+#region {
   text-align: center;
 }
-#languages li {
-  opacity: 0.25;
+#region .language {
+  display: inline;
 }
-#languages li.active, #languages li:hover {
-  opacity: 1;
-}
-
-#currencies-wrapper {
-  display: inline-block;
-  position: absolute;
-  right: 28%;
-  top: 40px;
-  width: 200px;
-  margin: 0px -100px;
-}
-#currencies {
-  text-align: center;
-}
-#currencies a {
+#region .currency {
+  margin: 0px 5px;
+  display: inline;
   color: #777;
   border: 1px solid #d1d1d1;
   padding: 0px 4px;
   background-color: #fff;
-  opacity: 0.25;
-}
-#currencies li:hover a, #currencies li.active a {
-  color: rgb(0, 136, 204);
-  border: 1px solid rgb(0, 136, 204);
-  text-decoration: none;
-  opacity: 1;
 }
 
 #search-wrapper {
   display: inline-block;
   position: absolute;
-  left: 45%;
+  left: 40%;
   top: 10px;
   margin: 0px -120px;
   width: 240px;

@@ -66,7 +66,7 @@
   <table>
     <tr>
       <td><?php echo language::translate('title_catalog_template', 'Catalog Template'); ?><br />
-        <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?> [<a href="<?php echo document::href_link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app')); ?>"><?php echo language::translate('title_change_settings', 'Change Settings'); ?></a>]</td>
+        <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app')); ?>"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/settings.png'; ?>" width="16" height="16" alt="<?php language::translate('title_settings', 'Settings'); ?>" /></a></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_admin_template', 'Admin Template'); ?><br />

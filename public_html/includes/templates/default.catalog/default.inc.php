@@ -38,12 +38,8 @@
     <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
     </div>
     
-    <div id="languages-wrapper">
-      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'languages.inc.php'); ?>
-    </div>
-    
-    <div id="currencies-wrapper">
-      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'currencies.inc.php'); ?>
+    <div id="region-wrapper">
+      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php'); ?>
     </div>
     
     <div id="cart-wrapper">

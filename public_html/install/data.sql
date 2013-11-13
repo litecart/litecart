@@ -295,7 +295,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('advanced', 'global', 'SEO Links Enabled', 'Enabling this requires .htaccess and mod_rewrite rules.', 'seo_links_enabled', '1', 'toggle()', 20, NOW(), NOW()),
 ('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'templates("catalog")', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'templates("admin")', 0, NOW(), NOW()),
-('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', 0, NOW(), NOW())
+('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', 0, NOW(), NOW()),
 ('', 'local', 'Installed Job Modules', '', 'jobs_modules', '', '', 0, NOW(), NOW()),
 ('', 'local', 'Installed Shipping Modules', '', 'shipping_modules', '', '', 0, NOW(), NOW()),
 ('', 'local', 'Installed Payment Modules', '', 'payment_modules', '', '', 0, NOW(), NOW()),
