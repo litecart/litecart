@@ -286,7 +286,7 @@
               
               switch ($product_option['price_operator']) {
                 case '+':
-                  $product_option['price_adjust'] = $product_option[$this->_currency_code];
+                  $product_option['price_adjust'] = $GLOBALS['system']->currency->convert($product_option[$this->_currency_code], $this->_currency_code, $GLOBALS['system']->settings->get('store_currency_code'));
                   break;
                 case '*':
                   $product_option['price_adjust'] = (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) - (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) * $product_option[$this->_currency_code];
