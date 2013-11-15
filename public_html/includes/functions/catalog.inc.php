@@ -113,7 +113,7 @@
         ". (isset($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', p.categories), 1, 0) + if(find_in_set('", $filter['categories']) ."', p.categories), 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", $filter['keywords']) ."', p.keywords), 1, 0)" : false) ."
-        ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
+        ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
         ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", $filter['product_groups']) ."', p.product_groups), 1, 0)" : false) ."
         ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", $GLOBALS['system']->database->input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences";

@@ -44,19 +44,20 @@
 <div class="box" id="box-checkout-payment">
   <div class="heading"><h2><?php echo $system->language->translate('title_payment', 'Payment'); ?></h2></div>
   <div class="content listing-wrapper">
+    <ul id="payment-options" class="list-horizontal">
 <?php
   foreach ($options as $module) {
     foreach ($module['options'] as $option) {
 ?>
-    <div class="option-wrapper<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
-      <?php echo $system->functions->form_draw_form_begin('payment_form', 'post') . $system->functions->form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
-        <div class="icon"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING'); ?>" width="160" height="60" /></div>
-        <div class="title"><?php echo $module['title']; ?></div>
-        <div class="name"><?php echo $option['name']; ?></div>
-        <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
-        <div class="footer">
-          <div class="price"><?php echo $system->currency->format($system->tax->calculate($option['cost'], $option['tax_class_id'])); ?></div>
-          <div class="select">
+      <li class="option<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
+        <?php echo $system->functions->form_draw_form_begin('payment_form', 'post') . $system->functions->form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
+          <div class="icon"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING'); ?>" width="160" height="60" /></div>
+          <div class="title"><?php echo $module['title']; ?></div>
+          <div class="name"><?php echo $option['name']; ?></div>
+          <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
+          <div class="footer">
+            <div class="price"><?php echo $system->currency->format($system->tax->calculate($option['cost'], $option['tax_class_id'])); ?></div>
+            <div class="select">
 <?php
   if ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) {
     if (!empty($option['fields'])) {
@@ -68,14 +69,15 @@
     echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_select', 'Select'), 'submit');
   }
 ?>
+            </div>
           </div>
-        </div>
-      <?php echo $system->functions->form_draw_form_end(); ?>
-    </div>
+        <?php echo $system->functions->form_draw_form_end(); ?>
+      </li>
 <?php
     }
   }
 ?>
+    </ul>
   </div>
 </div>
 <?php

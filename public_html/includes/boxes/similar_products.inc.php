@@ -37,6 +37,7 @@
     <ul class="listing-wrapper products">
 <?php
   while ($listing_product = $system->database->fetch($products_query)) {
+    if (empty($listing_product['occurrences'])) break;
     echo $system->functions->draw_listing_product($listing_product);
   }
 ?>

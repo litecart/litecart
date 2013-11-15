@@ -48,6 +48,9 @@
         'items',
         'order_total',
         'order_status_id',
+        'payment_option',
+        'payment_transaction_id',
+        'shipping_option',
         'shipping_tracking_id',
         'comments',
       );
@@ -118,13 +121,13 @@
       <table>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
-            <?php echo $system->functions->form_draw_text_field('payment_option[id]', true, 'readonly="readonly"'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('payment_option[id]', true); ?></td>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_text_field('payment_option[name]', true, 'readonly="readonly"'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('payment_option[name]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_transaction_id', 'Transaction ID'); ?><br />
-            <?php echo $system->functions->form_draw_text_field('payment_transaction_id', true, 'readonly="readonly"'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('payment_transaction_id', true); ?></td>
           <td></td>
         </tr>
       </table>
@@ -134,9 +137,9 @@
       <table>
         <tr>
           <td><?php echo $system->language->translate('title_option_id', 'Option ID'); ?><br />
-            <?php echo $system->functions->form_draw_text_field('shipping_option[id]', true, 'readonly="readonly"'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('shipping_option[id]', true); ?></td>
           <td><?php echo $system->language->translate('title_name', 'Name'); ?><br />
-            <?php echo $system->functions->form_draw_text_field('shipping_option[name]', true, 'readonly="readonly"'); ?></td>
+            <?php echo $system->functions->form_draw_text_field('shipping_option[name]', true); ?></td>
         </tr>
         <tr>
           <td><?php echo $system->language->translate('title_weight', 'Weight'); ?><br />

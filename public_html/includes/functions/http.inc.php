@@ -101,8 +101,8 @@
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
       curl_setopt($ch, CURLOPT_POST, $post_fields ? true : false);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields ? http_build_query($post_fields) : false);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, $asyncrounous ? false : true);
-      curl_setopt($ch, CURLOPT_TIMEOUT, $asyncrounous ? 1 : 30);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, $asynchronous ? false : true);
+      curl_setopt($ch, CURLOPT_TIMEOUT, $asynchronous ? 1 : 30);
       
       switch ($return) {
         case 'both':
