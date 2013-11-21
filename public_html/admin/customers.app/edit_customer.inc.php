@@ -65,89 +65,89 @@
 
 <?php echo functions::form_draw_form_begin('customer_form', 'post'); ?>
 
-<table>
-  <tr>
-    <td nowrap="nowrap"><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
-      <?php echo functions::form_draw_text_field('tax_id', true); ?></td>
-    <td><?php echo language::translate('title_company', 'Company'); ?><br />
-      <?php echo functions::form_draw_text_field('company', true); ?></td>
-  </tr>
-  <tr>
-    <td><?php echo language::translate('title_firstname', 'First Name'); ?><br />
-      <?php echo functions::form_draw_text_field('firstname', true); ?></td>
-    <td><?php echo language::translate('title_lastname', 'Last Name'); ?><br />
-      <?php echo functions::form_draw_text_field('lastname', true); ?></td>
-  </tr>
-  <tr>
-    <td><?php echo language::translate('title_address1', 'Address 1'); ?><br />
-      <?php echo functions::form_draw_text_field('address1', true); ?></td>
-    <td><?php echo language::translate('title_address2', 'Address 2'); ?><br />
-    <?php echo functions::form_draw_text_field('address2', true); ?></td>
-  </tr>
-  <tr>
-    <td><?php echo language::translate('title_city', 'City'); ?><br />
-      <?php echo functions::form_draw_text_field('city', true); ?></td>
-    <td><?php echo language::translate('title_postcode', 'Postcode'); ?><br />
-      <?php echo functions::form_draw_text_field('postcode', true); ?></td>
-  </tr>
-  <tr>
-    <td><?php echo language::translate('title_country', 'Country'); ?><br />
-      <?php echo functions::form_draw_countries_list('country_code', true); ?></td>
-    <td><?php echo language::translate('title_zone', 'Zone'); ?><br />
-      <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
-  </tr>
-  <tr>
-    <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
-    <?php echo functions::form_draw_text_field('phone', true); ?></td>
-    <td><?php echo language::translate('title_mobile_phone', 'Mobile Phone'); ?><br />
-    <?php echo functions::form_draw_text_field('mobile', true); ?></td>
-  </tr>
-  <tr>
-    <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
-      <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
-    <td><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?><br />
-      <?php echo functions::form_draw_text_field('new_password', '', 'password'); ?></td>
-    <td width="50%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?><br />
-      <?php echo functions::form_draw_email_field('email', true); ?></td>
-    <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
-      <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
-  </tr>
-  <tr>
-    <td><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?><br />
-      <?php echo functions::form_draw_text_field('new_password', '', 'password'); ?></td>
-  </tr>
-</table>
+  <table>
+    <tr>
+      <td nowrap="nowrap"><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
+        <?php echo functions::form_draw_text_field('tax_id', true); ?></td>
+      <td><?php echo language::translate('title_company', 'Company'); ?><br />
+        <?php echo functions::form_draw_text_field('company', true); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo language::translate('title_firstname', 'First Name'); ?><br />
+        <?php echo functions::form_draw_text_field('firstname', true); ?></td>
+      <td><?php echo language::translate('title_lastname', 'Last Name'); ?><br />
+        <?php echo functions::form_draw_text_field('lastname', true); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo language::translate('title_address1', 'Address 1'); ?><br />
+        <?php echo functions::form_draw_text_field('address1', true); ?></td>
+      <td><?php echo language::translate('title_address2', 'Address 2'); ?><br />
+      <?php echo functions::form_draw_text_field('address2', true); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo language::translate('title_city', 'City'); ?><br />
+        <?php echo functions::form_draw_text_field('city', true); ?></td>
+      <td><?php echo language::translate('title_postcode', 'Postcode'); ?><br />
+        <?php echo functions::form_draw_text_field('postcode', true); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo language::translate('title_country', 'Country'); ?><br />
+        <?php echo functions::form_draw_countries_list('country_code', true); ?></td>
+      <td><?php echo language::translate('title_zone', 'Zone'); ?><br />
+        <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
+      <?php echo functions::form_draw_text_field('phone', true); ?></td>
+      <td><?php echo language::translate('title_mobile_phone', 'Mobile Phone'); ?><br />
+      <?php echo functions::form_draw_text_field('mobile', true); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
+        <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
+      <td><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?><br />
+        <?php echo functions::form_draw_text_field('new_password', '', 'password'); ?></td>
+      <td width="50%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?><br />
+        <?php echo functions::form_draw_email_field('email', true); ?></td>
+      <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
+        <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
+    </tr>
+    <tr>
+      <td><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?><br />
+        <?php echo functions::form_draw_text_field('new_password', '', 'password'); ?></td>
+    </tr>
+  </table>
 
-<script>
-  $("select[name='country[code]']").change(function(){
-    $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo WS_DIR_AJAX .'zones.json.php'; ?>?country_code=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-      },
-      success: function(data) {
-        $('select[name=\'zone[code]\']').html('');
-        if ($('select[name=\'zone[code]\']').attr('disabled')) $('select[name=\'zone[code]\']').removeAttr('disabled');
-        if (data) {
-          $.each(data, function(i, zone) {
-            $('select[name=\'zone[code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name=\'zone[code]\']').attr('disabled', 'disabled');
+  <script>
+    $("select[name='country[code]']").change(function(){
+      $('body').css('cursor', 'wait');
+      $.ajax({
+        url: '<?php echo WS_DIR_AJAX .'zones.json.php'; ?>?country_code=' + $(this).val(),
+        type: 'get',
+        cache: true,
+        async: true,
+        dataType: 'json',
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+        },
+        success: function(data) {
+          $('select[name=\'zone[code]\']').html('');
+          if ($('select[name=\'zone[code]\']').attr('disabled')) $('select[name=\'zone[code]\']').removeAttr('disabled');
+          if (data) {
+            $.each(data, function(i, zone) {
+              $('select[name=\'zone[code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+            });
+          } else {
+            $('select[name=\'zone[code]\']').attr('disabled', 'disabled');
+          }
+        },
+        complete: function() {
+          $('body').css('cursor', 'auto');
         }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
+      });
     });
-  });
-</script>
+  </script>
 
-<p><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></p>
+  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
 
 <?php echo functions::form_draw_form_end(); ?>

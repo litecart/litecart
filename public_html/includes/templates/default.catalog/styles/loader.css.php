@@ -1,11 +1,13 @@
 <?php
+  define('SEO_REDIRECT', false);
   require_once('../../../app_header.inc.php');
   
   header('Content-Type: text/css');
   header('Cache-Control: must-revalidate');
-  header('Expires: ' . date('r', (time()+60*60)) . ' GMT');
+  header('Pragma: cache');
+  header('Expires: ' . date('r', (time()+60*60*3)) . ' GMT');
   
-  $optimize = false;
+  $optimize = true;
   
   ######################################################################
   

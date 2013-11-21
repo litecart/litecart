@@ -63,6 +63,7 @@
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_template', 'Template'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('template_form', 'post'); ?>
+
   <table>
     <tr>
       <td><?php echo language::translate('title_catalog_template', 'Catalog Template'); ?><br />
@@ -72,8 +73,8 @@
       <td><?php echo language::translate('title_admin_template', 'Admin Template'); ?><br />
         <?php echo functions::form_draw_templates_list('admin', 'template_admin', empty($_POST['template_admin']) ? settings::get('store_template_admin') : true); ?></td>
     </tr>
-    <tr>
-      <td><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
-    </tr>
   </table>
+  
+  <p><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></p>
+  
 <?php echo functions::form_draw_form_end(); ?>

@@ -88,7 +88,7 @@ option {
   margin: 3px 6px;
 }
 
-button, a.button, span.button {
+button, a.button, span.button, .button-set {
   display: inline-block;
   
   margin: 3px 1px;
@@ -156,6 +156,25 @@ button img, a.button img, span.button img {
   width: 12px;
   height: 12px;
   vertical-align: middle;
+}
+
+.button-set {
+  padding: 0px;
+}
+.button-set button, .button-set .button {
+  float: left;
+  display: inline;
+  border-radius: 0px;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  margin: 0px;
+}
+.button-set button:first-child, .button-set .button:first-child {
+  border-left: none;
 }
 
 form > table:not(.dataTable) {

@@ -43,8 +43,8 @@
     exit;
   }
 ?>
-
 <h1 style="margin-top: 0;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_edit_module', 'Edit Module'); ?></h1>
+
 <h2 style="margin-top: 0;"><?php echo $module->name; ?></h2>
 
 <?php echo !empty($module->author) ? '<p style="font-style: italic;"><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $module->website .'" target="_blank">'. $module->author .'</a></p>' : false; ?>
@@ -64,6 +64,9 @@
     }
   ?>
   </table>
-  <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?> <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+  
+  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?> <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></span></p>
+  
 <?php echo functions::form_draw_form_end(); ?>
+
 <p><a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id)); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a></p>

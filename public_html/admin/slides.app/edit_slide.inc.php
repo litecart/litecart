@@ -61,57 +61,56 @@
 
 <?php echo functions::form_draw_form_begin('', 'post', false, true); ?>
 
-<table>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-      <?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?>
-      <?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_language', 'Language'); ?></strong><br />
-      <?php echo functions::form_draw_languages_list('language_code', true); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
-      <?php echo functions::form_draw_text_field('name', true); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_caption', 'Caption'); ?></strong><br />
-      <?php echo functions::form_draw_text_field('caption', true); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_link', 'Link'); ?></strong><br />
-      <?php echo functions::form_draw_url_field('link', true); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_image', 'Image'); ?></strong><br />
-      <?php echo functions::form_draw_file_field('image'); ?>
-      <?php echo (!empty($slide->data['image'])) ? '<br />' . $slide->data['image'] : ''; ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></strong><br />
-      <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></strong><br />
-      <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
-      <?php echo functions::form_draw_number_field('priority', true); ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="left" nowrap="nowrap"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($slide->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
-  </tr>
-</table>
+  <table>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+        <?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?>
+        <?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_language', 'Language'); ?></strong><br />
+        <?php echo functions::form_draw_languages_list('language_code', true); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+        <?php echo functions::form_draw_text_field('name', true); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_caption', 'Caption'); ?></strong><br />
+        <?php echo functions::form_draw_text_field('caption', true); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_link', 'Link'); ?></strong><br />
+        <?php echo functions::form_draw_url_field('link', true); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_image', 'Image'); ?></strong><br />
+        <?php echo functions::form_draw_file_field('image'); ?>
+        <?php echo (!empty($slide->data['image'])) ? '<br />' . $slide->data['image'] : ''; ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></strong><br />
+        <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></strong><br />
+        <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+        <?php echo functions::form_draw_number_field('priority', true); ?>
+      </td>
+    </tr>
+  </table>
+  
+  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($slide->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
   
 <?php echo functions::form_draw_form_end(); ?>

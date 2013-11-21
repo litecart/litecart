@@ -7,12 +7,9 @@
     
     public static function __callstatic($function, $arguments) {
       
-      if (!function_exists($function)) {
-        $function_file = FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . substr($function, 0, strpos($function, '_')).'.inc.php';
-        require_once($function_file);
-      }
+      $class = 'func_' . substr($function, 0, strpos($function, '_'));
       
-      return call_user_func_array($function, $arguments);
+      return forward_static_call_array(array($class, $function), $arguments);
     }
   }
   

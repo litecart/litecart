@@ -25,6 +25,9 @@
       case (substr($name, 0, 3) == 'cm_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $name . '.inc.php';
         break;
+      case (substr($name, 0, 5) == 'func_'):
+        require_once FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $name . '.inc.php';
+        break;
       case (substr($name, 0, 4) == 'job_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';
         break;
