@@ -205,6 +205,7 @@
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". $system->language->selected['code'] ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (p.manufacturer_id = m.id)
+      left join ". DB_TABLE_SUPPLIERS ." s on (p.supplier_id = s.id)
       where (
         p.id = '". $system->database->input($_GET['query']) ."'
         or pi.name like '%". $system->database->input($_GET['query']) ."%'
@@ -212,6 +213,7 @@
         or pi.short_description like '%". $system->database->input($_GET['query']) ."%'
         or pi.description like '%". $system->database->input($_GET['query']) ."%'
         or m.name like '%". $system->database->input($_GET['query']) ."%'
+        or s.name like '%". $system->database->input($_GET['query']) ."%'
       )
       order by pi.name asc;"
     );
