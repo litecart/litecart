@@ -282,11 +282,15 @@
             
             $product_option['price_adjust'] = 0;
               
-            if ($product_option[$this->_currency_code] > 0) {
+            if ((isset($product_option[$this->_currency_code]) && $product_option[$this->_currency_code] != 0) || (isset($product_option[$GLOBALS['system']->settings->get('store_currency_code')]) && $product_option[$GLOBALS['system']->settings->get('store_currency_code')] != 0)) {
               
               switch ($product_option['price_operator']) {
                 case '+':
-                  $product_option['price_adjust'] = $GLOBALS['system']->currency->convert($product_option[$this->_currency_code], $this->_currency_code, $GLOBALS['system']->settings->get('store_currency_code'));
+                  if ($product_option[$this->_currency_code] != 0) {
+                    $product_option['price_adjust'] = $GLOBALS['system']->currency->convert($product_option[$this->_currency_code], $this->_currency_code, $GLOBALS['system']->settings->get('store_currency_code'));
+                  } else {
+                    $product_option['price_adjust'] = $product_option[$GLOBALS['system']->settings->get('store_currency_code')];
+                  }
                   break;
                 case '*':
                   $product_option['price_adjust'] = (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) - (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) * $product_option[$this->_currency_code];

@@ -40,29 +40,38 @@
           exit;
         }
         
-        if (strtolower($gateway['method']) == 'post') {
-          echo '<p><img src="'. WS_DIR_IMAGES .'icons/16x16/loading.gif" width="16" height="16" /> '. $system->language->translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
-             . '<form name="gateway_form" method="post" action="'. $gateway['action'].'">' . PHP_EOL;
-          if (is_array($gateway['fields'])) {
-            foreach ($gateway['fields'] as $key => $value) echo '  ' . $system->functions->form_draw_hidden_field($key, $value) . PHP_EOL;
-          } else {
-            echo $gateway['fields'];
-          }
-          echo '</form>' . PHP_EOL
-             . '<script language="javascript">' . PHP_EOL;
-          if (!empty($gateway['delay'])) {
-            echo '  var t=setTimeout(function(){' . PHP_EOL
-               . '    document.forms["gateway_form"].submit();' . PHP_EOL
-               . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
-          } else {
-            echo '  document.forms["gateway_form"].submit();' . PHP_EOL;
-          }
-          echo '</script>';
-          exit;
+        var_dump($gateway);exit;
+        switch (strtolower($gateway['method'])) {
           
-        } else {
-          header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : $system->document->link()));
-          exit;
+          case 'post':
+            echo '<p><img src="'. WS_DIR_IMAGES .'icons/16x16/loading.gif" width="16" height="16" /> '. $system->language->translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
+               . '<form name="gateway_form" method="post" action="'. $gateway['action'].'">' . PHP_EOL;
+            if (is_array($gateway['fields'])) {
+              foreach ($gateway['fields'] as $key => $value) echo '  ' . $system->functions->form_draw_hidden_field($key, $value) . PHP_EOL;
+            } else {
+              echo $gateway['fields'];
+            }
+            echo '</form>' . PHP_EOL
+               . '<script language="javascript">' . PHP_EOL;
+            if (!empty($gateway['delay'])) {
+              echo '  var t=setTimeout(function(){' . PHP_EOL
+                 . '    document.forms["gateway_form"].submit();' . PHP_EOL
+                 . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
+            } else {
+              echo '  document.forms["gateway_form"].submit();' . PHP_EOL;
+            }
+            echo '</script>';
+            exit;
+            
+          case 'html':
+            echo $gateway['content'];
+            require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+            exit;
+          
+          case 'get':
+          default:
+            header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : $system->document->link()));
+            exit;
         }
       }
     }

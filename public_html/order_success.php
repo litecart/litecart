@@ -2,6 +2,8 @@
   require_once('includes/app_header.inc.php');
   header('X-Robots-Tag: noindex');
   
+  $payment = new payment();
+  
   $order = new ctrl_order('resume');
   
   if (empty($order->data['id'])) die('Error: Missing session order object');
@@ -40,6 +42,8 @@
   $order_success = new order_success();
   
   echo $order_success->process();
-
+  
+  echo $payment->run('receipt');
+  
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>
