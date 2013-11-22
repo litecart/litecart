@@ -60,6 +60,7 @@
           if ($follow_redirects && stristr($row, "location:") != false) {
             $redirect_url = preg_replace("/location:/i", "", trim($row));
             if ($redirect_url == '') $redirect_url = $url;
+            $redirect_url = trim($url);
             return http_fetch($redirect_url, $post_fields, $headers, $asynchronous, $follow_redirects, $return);
           }
           $response_header .= $row;
