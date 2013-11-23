@@ -40,7 +40,6 @@
           exit;
         }
         
-        var_dump($gateway);exit;
         switch (strtolower($gateway['method'])) {
           
           case 'post':
