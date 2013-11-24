@@ -177,14 +177,18 @@
     });
   });
   
-  var customer_checksum;
+  var customer_form_checksum;
+  var customer_saved_checksum = $('form[name=customer_form]').serialize();
   var stateCustomerChanged = false;
-  $("body").on('change', 'form[name=customer_form] *', function(e) {
-    if (customer_checksum != $(this).closest('form').serialize()) {
+  $("body").on('change keyup', 'form[name=customer_form] *', function(e) {
+    customer_form_checksum = $('form[name=customer_form]').serialize();
+    if (customer_form_checksum != customer_saved_checksum) {
       stateCustomerChanged = true;
       $("#box-checkout-account button[name='set_addresses']").removeAttr('disabled');
+    } else {
+      stateCustomerChanged = false;
+      $("#box-checkout-account button[name='set_addresses']").attr('disabled', 'disabled');
     }
-    customer_checksum = $(this).closest('form').serialize();
   });
   
   var timerSubmitCustomer;
@@ -193,7 +197,6 @@
       function() {
         if (!$('form[name=customer_form]').is(':focus')) {
           if (stateCustomerChanged) {
-            $('form[name=customer_form]').append('<input type="hidden" name="set_addresses" value="true" />');
             $('form[name=customer_form]').trigger('submit');
           }
         }
@@ -217,7 +220,7 @@
     $('*').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo $system->document->link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
-      data: $(this).serialize(),
+      data: $(this).serialize()+'&set_addresses=true',
       type: 'post',
       cache: false,
       context: $('#checkout-customer-wrapper'),
@@ -231,8 +234,9 @@
       },
       success: function(data) {
         $("#box-checkout-account button[name='set_addresses']").attr('disabled', 'disabled');
-        stateCustomerChanged = false;
         $('#checkout-customer-wrapper').html(data);
+        stateCustomerChanged = false;
+        customer_saved_checksum = $('form[name=customer_form]').serialize();
         if (jQuery.isFunction(window.updateCart)) updateCart();
         refreshCart();
         refreshShipping();
