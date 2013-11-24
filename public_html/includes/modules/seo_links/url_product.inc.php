@@ -9,16 +9,6 @@
       
       if (!isset($parsed_link['query']['product_id'])) return false;
       
-      /*
-      $product_query = $GLOBALS['system']->database->query(
-        "select product_id, name from ". DB_TABLE_PRODUCTS_INFO ."
-        where product_id = '". (int)$parsed_link['query']['product_id'] ."'
-        and language_code = '". $GLOBALS['system']->database->input($language_code) ."'
-        limit 1;"
-      );
-      $product = $GLOBALS['system']->database->fetch($product_query);
-      */
-      
       $product = new ref_product($parsed_link['query']['product_id'], $language_code);
       
       if (!$product->id) return $parsed_link;
@@ -34,6 +24,7 @@
       }
       $parsed_link['path'] .= $GLOBALS['system']->functions->general_path_friendly($product->name[$language_code]) .'-p-'. $product->id;
       
+      unset($parsed_link['query']['category_id']);
       unset($parsed_link['query']['product_id']);
       
       return $parsed_link;
