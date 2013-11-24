@@ -85,8 +85,8 @@
       
       if (empty($from)) $from = $GLOBALS['system']->settings->get('store_currency_code');
       
-      if (!isset($this->currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_ERROR);
-      if (!isset($this->currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_ERROR);
+      if (!isset($this->currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_WARNING);
+      if (!isset($this->currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_WARNING);
       
       return $value / $this->currencies[$from]['value'] * $this->currencies[$to]['value'];
     }
@@ -100,7 +100,7 @@
       if (empty($code)) $code = $this->selected['code'];
       if ($currency_value === null) $currency_value = $GLOBALS['system']->currency->currencies[$code]['value'];
       
-      if (!isset($this->currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_ERROR);
+      if (!isset($this->currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_WARNING);
       
       $value = $value * $currency_value;
       
