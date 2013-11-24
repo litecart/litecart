@@ -23,7 +23,7 @@
       
       if (empty($_POST['email'])) $system->notices->add('errors', $system->language->translate('error_email_missing', 'You must enter your e-mail address.'));
       
-      if ($system->settings->get('fields_customer_password')) {
+      if ($system->settings->get('register_guests') && $system->settings->get('fields_customer_password')) {
         if (empty($system->customer->data['desired_password'])) {
           if (empty($_POST['password'])) $system->notices->add('errors', $system->language->translate('error_missing_password', 'You must enter a password.'));
           if (empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('error_missing_confirmed_password', 'You must confirm your password.'));
@@ -201,12 +201,12 @@
                     <?php echo $system->functions->form_draw_email_field('email', true, ''); ?></td>
                   <td><?php echo $system->language->translate('title_phone', 'Phone'); ?><br />
                   <?php echo $system->functions->form_draw_text_field('phone', true); ?></td>                </tr>
-                <?php if ($system->settings->get('fields_customer_password') == 'true') { ?>
+                <?php if ($system->settings->get('register_guests') && $system->settings->get('fields_customer_password')) { ?>
                 <tr>
                   <td><?php echo $system->language->translate('title_password', 'Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_password_field('password', ''); ?></td>
+                  <?php echo $system->functions->form_draw_password_field('password', '', 'required="required"'); ?></td>
                   <td nowrap="nowrap"><?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
-                  <?php echo $system->functions->form_draw_password_field('confirmed_password', ''); ?></td>
+                  <?php echo $system->functions->form_draw_password_field('confirmed_password', '', 'required="required"'); ?></td>
                 </tr>
                 <?php } ?>
                 <?php } ?>
@@ -218,26 +218,26 @@
                 <table>
                   <tr>
                     <td><?php echo $system->language->translate('title_company', 'Company'); ?><br />
-                      <?php echo $system->functions->form_draw_text_field('shipping_address[company]', true); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[company]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_text_field('shipping_address[firstname]', true); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[firstname]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
                     <td><?php echo $system->language->translate('title_lastname', 'Last Name'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_text_field('shipping_address[lastname]', true); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[lastname]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_text_field('shipping_address[address1]', true); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[address1]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
                     <td><?php echo $system->language->translate('title_address2', 'Address 2'); ?><br />
-                      <?php echo $system->functions->form_draw_text_field('shipping_address[address2]', true); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[address2]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_text_field('shipping_address[postcode]', true, 'style="width: 50px;"'); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[postcode]', !empty($_POST['different_shipping_address']) ? true : '', 'style="width: 50px;"'); ?></td>
                     <td><?php echo $system->language->translate('title_city', 'City'); ?> <span class="required">*</span><br />
-                      <?php echo $system->functions->form_draw_text_field('shipping_address[city]', true); ?></td>
+                      <?php echo $system->functions->form_draw_text_field('shipping_address[city]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
                   </tr>
                   <tr>
                     <td><?php echo $system->language->translate('title_country', 'Country'); ?> <span class="required">*</span><br />
