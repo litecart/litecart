@@ -44,11 +44,12 @@
 <div class="box" id="box-checkout-payment">
   <div class="heading"><h2><?php echo language::translate('title_payment', 'Payment'); ?></h2></div>
   <div class="content listing-wrapper">
+    <ul id="payment-options" class="list-horizontal">
 <?php
   foreach ($options as $module) {
     foreach ($module['options'] as $option) {
 ?>
-    <div class="option-wrapper<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
+      <li class="option<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
       <?php echo functions::form_draw_form_begin('payment_form', 'post') . functions::form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
         <div class="icon"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING'); ?>" width="160" height="60" /></div>
         <div class="title"><?php echo $module['title']; ?></div>
@@ -71,11 +72,12 @@
           </div>
         </div>
       <?php echo functions::form_draw_form_end(); ?>
-    </div>
+      </li>
 <?php
     }
   }
 ?>
+    </ul>
   </div>
 </div>
 <?php

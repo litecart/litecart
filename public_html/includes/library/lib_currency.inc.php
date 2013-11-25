@@ -85,8 +85,8 @@
       
       if (empty($from)) $from = settings::get('store_currency_code');
       
-      if (!isset(self::$currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_ERROR);
-      if (!isset(self::$currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_ERROR);
+      if (!isset(self::$currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_WARNING);
+      if (!isset(self::$currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_WARNING);
       
       return $value / self::$currencies[$from]['value'] * self::$currencies[$to]['value'];
     }
@@ -100,7 +100,7 @@
       if (empty($code)) $code = self::$selected['code'];
       if ($currency_value === null) $currency_value = currency::$currencies[$code]['value'];
       
-      if (!isset(self::$currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_ERROR);
+      if (!isset(self::$currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_WARNING);
       
       $value = $value * $currency_value;
       

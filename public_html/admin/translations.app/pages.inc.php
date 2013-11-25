@@ -146,7 +146,7 @@
     }
 ?>
 </table>
-<?php echo $system->functions->form_draw_form_end(); ?>
+<?php echo functions::form_draw_form_end(); ?>
 <script>
   function delete_translation(id) {
     var form = $('<?php

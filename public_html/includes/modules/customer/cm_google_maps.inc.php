@@ -1,18 +1,12 @@
 <?php
 
   class cm_google_maps {
-    private $system;
     public $id = __CLASS__;
     public $name = 'Google Maps - Get Address';
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $website = 'http://www.litecart.net';
     public $version = '1.0';
-    
-    public function __construct() {
-      global $system;
-      $this->system = &$system;
-    }
     
     public function get_address($data) {
       

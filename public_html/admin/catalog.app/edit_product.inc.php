@@ -649,23 +649,23 @@ foreach (currency::$currencies as $currency) {
             <td nowrap="nowrap"><strong><?php echo language::translate('title_end_date', 'End Date'); ?></strong><br />
               <?php echo functions::form_draw_datetime_field('campaigns['.$key.'][end_date]', true); ?>
             </td>
-            <td nowrap="nowrap">%<br />
-              <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', null, null, null, 'data-size="tiny"'); ?>
+            <td nowrap="nowrap">- %<br />
+              <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, null, null, 'data-size="tiny"'); ?>
             </td>
             <td nowrap="nowrap"><strong><?php echo settings::get('store_currency_code'); ?></strong><br />
-              <?php echo functions::form_draw_text_field('campaigns['.$key.']['. settings::get('store_currency_code') .']', true, 'data-size="small"'); ?>
+              <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns['.$key.']['. settings::get('store_currency_code') .']', true, 'data-size="small"'); ?>
             </td>
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
     if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
             <td nowrap="nowrap"><?php echo $currency_code; ?><br />
-              <?php echo functions::form_draw_text_field('campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'data-size="small"'); ?>
+              <?php echo functions::form_draw_currency_field($currency_code, 'campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format($_POST['campaigns'][$key][$currency_code], 4, '.', '') : '', 'data-size="small"'); ?>
             </td>
 <?php
   }
 ?>
-            <td><a id="remove-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+            <td><a id="remove-campaign" href="#"><br /><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
           </tr>
           <?php } ?>
           <tr>
@@ -674,14 +674,41 @@ foreach (currency::$currencies as $currency) {
         </table>
         
         <script>
-          $("body").on("keyup, change", "input[name^='campaigns'][name$='[percentage]']", function() {
+          $("body").on("keyup change", "input[name^='campaigns'][name$='[percentage]']", function() {
             var parent = $(this).closest('tr');
-            <?php foreach (currency::$currencies as $currency) { ?>if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() != 0) $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val($("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100));<?php } ?>
+            
+            <?php foreach ($system->currency->currencies as $currency) { ?>
+            if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() > 0) {
+              var value = $("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100);
+              value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
+              $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val(value);
+            } else {
+              $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val('');
+            }
+            <?php } ?>
+            
+            <?php foreach ($system->currency->currencies as $currency) { ?>
+            var value = $(parent).find("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").val() * <?php echo $currency['value']; ?>;
+            value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
+            $(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").attr('placeholder', value);
+            <?php } ?>
           });
           
-          $("body").on("keyup, change", "input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']", function() {
+          $("body").on("keyup change", "input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']", function() {
             var parent = $(this).closest('tr');
-            $(parent).find("input[name$='[percentage]']").val(($("input[name='prices[<?php echo settings::get('store_currency_code'); ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo settings::get('store_currency_code'); ?>]']").val() * 100);
+            var percentage = ($("input[name='prices[<?php echo settings::get('store_currency_code'); ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo settings::get('store_currency_code'); ?>]']").val() * 100;
+            percentage = Number(percentage).toFixed(2);
+            $(parent).find("input[name$='[percentage]']").val(percentage);
+            
+            <?php foreach ($system->currency->currencies as $currency) { ?>
+            var value = 0;
+            value = $(parent).find("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").val() * <?php echo $currency['value']; ?>;
+            value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
+            $(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").attr('placeholder', value);
+            if ($(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").val() == 0) {
+              $(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").val('');
+            }
+            <?php } ?>
           });
           $("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").trigger("keyup");
           
@@ -700,23 +727,23 @@ foreach (currency::$currencies as $currency) {
                        + '  <td nowrap="nowrap"><strong><?php echo language::translate('title_end_date', 'End Date'); ?></strong><br />'
                        + '    <?php echo str_replace(PHP_EOL, '', functions::form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
                        + '  </td>'
-                       + '  <td nowrap="nowrap">%<br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', null, null, null, 'data-size="tiny"')); ?>'
+                       + '  <td nowrap="nowrap">- %<br />'
+                       + '    <?php echo str_replace(PHP_EOL, '', functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, null, null, 'data-size="tiny"')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap"><strong><?php echo settings::get('store_currency_code'); ?></strong><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', functions::form_draw_text_field('campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', '', 'data-size="small"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', '')); ?>'
                        + '  </td>'
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
     if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
                        + '  <td nowrap="nowrap"><?php echo $currency_code; ?><br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', functions::form_draw_text_field('campaigns[new_campaign_i]['. $currency_code. ']', '', 'data-size="small"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '', 'data-size="small"')); ?>'
                        + '  </td>'
 <?php
   }
 ?>
-                       + '  <td><a id="remove-campaign" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>'
+                       + '  <td><a id="remove-campaign" href="#"><br /><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>'
                        + '</tr>';
            while ($("input[name='campaigns[new_"+new_campaign_i+"]']").length) new_campaign_i++;
             output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);

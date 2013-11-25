@@ -40,7 +40,9 @@
           exit;
         }
         
-        if (strtolower($gateway['method']) == 'post') {
+        switch (strtolower($gateway['method'])) {
+          
+          case 'post':
           echo '<p>'. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
              . '<form name="gateway_form" method="post" action="'. $gateway['action'].'">' . PHP_EOL;
           if (is_array($gateway['fields'])) {
@@ -60,7 +62,13 @@
           echo '</script>';
           exit;
           
-        } else {
+          case 'html':
+            echo $gateway['content'];
+            require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+            exit;
+          
+          case 'get':
+          default:
           header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::link()));
           exit;
         }

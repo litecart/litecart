@@ -62,7 +62,8 @@
             if ($follow_redirects && stristr($row, "location:") != false) {
               $redirect_url = preg_replace("/location:/i", "", trim($row));
               if ($redirect_url == '') $redirect_url = $url;
-              return http_fetch($redirect_url, $post_fields, $headers, $asynchronous, $follow_redirects, $return);
+              $redirect_url = trim($url);
+              return functions::http_fetch($redirect_url, $post_fields, $headers, $asynchronous, $follow_redirects, $return);
             }
             $response_header .= $row;
           }
@@ -103,8 +104,8 @@
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
         curl_setopt($ch, CURLOPT_POST, $post_fields ? true : false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields ? http_build_query($post_fields) : false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, $asyncrounous ? false : true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $asyncrounous ? 1 : 30);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, $asynchronous ? false : true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $asynchronous ? 1 : 30);
         
         switch ($return) {
           case 'both':
@@ -159,5 +160,5 @@
       return $out;
     }
   }
-    
+  
 ?>

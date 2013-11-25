@@ -92,7 +92,7 @@
       return '<input type="datetime" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
     }
     
-    public static function form_draw_decimal_field($name, $value=true, $decimals=2, $min=0, $max=0, $parameters='', $hint='') {
+    public static function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='', $hint='') {
       if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
       
       if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
@@ -136,12 +136,12 @@
       return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $title .'</a>';
     }
     
-    public static function form_draw_number_field($name, $value=true, $min='', $max='', $parameters='', $hint='') {
+    public static function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='', $hint='') {
       if ($value === true) $value = (int)form_reinsert_value($name);
       
       if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="tiny"';
       
-      return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1" min="'. (float)$min .'"'. (!empty($max) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+      return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1"' . (($min !== null) ? ' min="'. (int)$min .'"' : false) . (($max !== null) ? ' max="'. (int)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
     }
     
     public static function form_draw_password_field($name, $value=true, $parameters='', $hint='') {
@@ -163,15 +163,15 @@
     }
     
     public static function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='', $hint='') {
-      return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: middle;" /> '. functions::form_draw_text_field($name, $value, $parameters, $hint) .'</span>';
+      return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters, $hint) .'</span>';
     }
     
     public static function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='', $hint='') {
-      return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: top;" /> '. functions::form_draw_textarea($name, $value, $parameters, $hint) .'</span>';
+      return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters, $hint) .'</span>';
     }
     
     public static function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='', $hint='') {
-      return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" style="vertical-align: top;" /> '. functions::form_draw_wysiwyg_field($name, $value, $parameters, $hint) .'</span>';
+      return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters, $hint) .'</span>';
     }
     
     public static function form_draw_search_field($name, $value=true, $parameters='', $hint='') {

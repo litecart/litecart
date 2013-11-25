@@ -60,6 +60,7 @@
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+    <th nowrap="nowrap" align="center">&nbsp;</th>
     <th nowrap="nowrap" align="left"><?php echo language::translate('title_version', 'Version'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo language::translate('title_developed_by', 'Developed By'); ?></th>
     <th nowrap="nowrap" align="left"><?php echo language::translate('title_id', 'ID'); ?></th>
@@ -80,6 +81,11 @@
   <tr class="<?php echo $rowclass . (!empty($module->status) ? false : ' semi-transparent'); ?>">
     <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($module->status) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
     <td align="left"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
+    <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
+    <td nowrap="nowrap" align="center"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
+    <?php } else { ?>
+    <td nowrap="nowrap" align="center"></td>
+    <?php } ?>
     <td align="right" nowrap="nowrap"><?php echo $module->version; ?></td>
     <td align="left" nowrap="nowrap"><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $module->id; ?></td>
@@ -106,6 +112,7 @@
   <tr class="<?php echo $rowclass; ?> semi-transparent">
     <td></td>
     <td align="left"><?php echo $module->name; ?></td>
+    <td align="center" nowrap="nowrap"></td>
     <td align="right" nowrap="nowrap"><?php echo $module->version; ?></td>
     <td align="left" nowrap="nowrap"><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td align="left" nowrap="nowrap"><?php echo $module->id; ?></td>
@@ -117,7 +124,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="7" align="left"><?php echo language::translate('title_modules', 'Modules'); ?>: <?php echo $num_module_rows; ?></td>
+    <td colspan="8" align="left"><?php echo language::translate('title_modules', 'Modules'); ?>: <?php echo $num_module_rows; ?></td>
   </tr>
 </table>
 

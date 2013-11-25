@@ -48,6 +48,7 @@
       'edit_order_action' => 'edit_module.inc.php',
       'edit_customer' => 'edit_module.inc.php',
       'edit_job' => 'edit_module.inc.php',
+      'run_job' => 'run_job.inc.php',
     ),
   );
 ?>

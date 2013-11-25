@@ -77,7 +77,7 @@ JavaScript
 
 Inspired By
 -----------
-LiteCart was born out of thoughts of what was missing or what could have been different in osCommerce Online Merchant and OpenCart.
+LiteCart was born out of thoughts of what was missing, what was too much, and/or what could have been different in other free e-commerce platforms.
 
 * osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
-* openCart by Daniel Kerr - http://www.opencart.com
+* OpenCart by Daniel Kerr - http://www.opencart.com

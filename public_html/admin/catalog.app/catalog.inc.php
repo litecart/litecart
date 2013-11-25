@@ -32,7 +32,7 @@
     if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
     if (isset($_POST['category_id']) && $_POST['category_id'] == '') notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
     
-    if (empty($system->notices->data['errors'])) {
+    if (empty(notices::$data['errors'])) {
       
       foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
@@ -56,7 +56,7 @@
         $product->save();
       }
       
-      $system->notices->add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
+      notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
       header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
     }
@@ -205,6 +205,7 @@
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (p.manufacturer_id = m.id)
+      left join ". DB_TABLE_SUPPLIERS ." s on (p.supplier_id = s.id)
       where (
         p.id = '". database::input($_GET['query']) ."'
         or pi.name like '%". database::input($_GET['query']) ."%'
@@ -212,6 +213,7 @@
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
         or m.name like '%". database::input($_GET['query']) ."%'
+        or s.name like '%". database::input($_GET['query']) ."%'
       )
       order by pi.name asc;"
     );

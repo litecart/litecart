@@ -607,7 +607,7 @@
       if (functions::reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
       
       foreach ($required_fields as $field) {
-        if (empty($this->data['customer'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' ('.$field.')'*/;
+        if (empty($this->data['customer'][$field])) return $GLOBALS['system']->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ('.$field.')';
       }
       
       if ($this->data['customer']['different_shipping_address']) {
@@ -618,12 +618,11 @@
           'city',
           'country_code',
         );
+        if ($GLOBALS['system']->functions->reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'postcode';
+        if ($GLOBALS['system']->functions->reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'zone_code';
       
-        if (functions::reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'shipping_address[postcode]';
-        if (functions::reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'shipping_address[zone_code]';
-        
         foreach ($required_fields as $field) {
-          if (empty($this->data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' (shipping_address['.$field.'])'*/;
+          if (empty($this->data['customer']['shipping_address'][$field])) return $GLOBALS['system']->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' (shipping_address['.$field.'])';
         }
       }
       
