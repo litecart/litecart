@@ -1,5 +1,12 @@
 <?php
 
+  if (!function_exists('password_hash')) {
+    function password_hash($login, $password) {
+      trigger_error('password_hash() is deprecated due to name collision in PHP 5.5. Use password_checksum() instead.', E_USER_DEPRECATED);
+      return functions::password_checksum($login, $password);
+    }
+  }
+
   class func_password {
     
     public static function password_generate($length=6) {
@@ -25,13 +32,6 @@
       }
       
       return $password;
-    }
-    
-    if (!function_exists('password_hash')) {
-      public static function password_hash($login, $password) {
-        trigger_error('password_hash() is deprecated due to name collision in PHP 5.5. Use password_checksum() instead.', E_USER_DEPRECATED);
-        return password_checksum($login, $password);
-      }
     }
     
     public static function password_checksum($login, $password) {

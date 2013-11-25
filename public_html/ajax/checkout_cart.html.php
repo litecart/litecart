@@ -53,7 +53,7 @@
   <?php } ?>
 </div>
 
-<?php if (count(cart::data['items']) > 1) { ?>
+<?php if (count(cart::$data['items']) > 1) { ?>
 <script>
   var current = 1;
   var totalWidth = 0;

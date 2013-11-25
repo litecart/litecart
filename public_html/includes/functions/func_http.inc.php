@@ -1,13 +1,13 @@
 <?php
   
-  class func_http {
-    
-    if (!function_exists('http_request')) {
-      public static function http_request($url, $post_fields=false, $headers=false, $asynchronous=false, $follow_redirects=true, $return='body') {
-        trigger_error('http_request() is deprecated due to name collision with pecl_http package. Use http_fetch() instead.', E_USER_DEPRECATED);
-        return http_fetch($url, $post_fields, $headers, $asynchronous, $follow_redirects, $return);
-      }
+  if (!function_exists('http_request')) {
+    function http_request($url, $post_fields=false, $headers=false, $asynchronous=false, $follow_redirects=true, $return='body') {
+      trigger_error('http_request() is deprecated due to name collision with pecl_http package. Use http_fetch() instead.', E_USER_DEPRECATED);
+      return functions::http_fetch($url, $post_fields, $headers, $asynchronous, $follow_redirects, $return);
     }
+  }
+  
+  class func_http {
     
     public static function http_fetch($url, $post_fields=false, $headers=false, $asynchronous=false, $follow_redirects=true, $return='body') {
       

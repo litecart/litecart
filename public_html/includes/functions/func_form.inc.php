@@ -405,7 +405,7 @@
               limit 1;"
             );
             
-            $sub_options = functions::form_draw_categories_list_options_iterator($category['id'], $level+1);
+            $sub_options = form_draw_categories_list_options_iterator($category['id'], $level+1);
             
             $options = array_merge($options, $sub_options);
           }
