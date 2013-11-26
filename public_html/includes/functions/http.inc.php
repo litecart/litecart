@@ -7,7 +7,7 @@
     }
   }
   
-  function http_fetch($url, $post_fields=false, $headers=false, $asynchronous=false, $follow_redirects=true, $return='body') {
+  function http_fetch($url, $post_fields=null, $headers=null, $asynchronous=false, $follow_redirects=true, $return='body') {
     
     if (ini_get('allow_url_fopen')) {
       $parts = parse_url($url);
@@ -99,7 +99,7 @@
       
       curl_setopt($ch, CURLOPT_URL, $url);
       curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
+      if ($headers) curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
       curl_setopt($ch, CURLOPT_POST, $post_fields ? true : false);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields ? http_build_query($post_fields) : false);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, $asynchronous ? false : true);
