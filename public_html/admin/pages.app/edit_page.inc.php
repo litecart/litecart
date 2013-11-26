@@ -59,7 +59,7 @@
   <table>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
-      <?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></td>
+        <label><?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_published', 'Published'); ?></label></td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap">
@@ -124,9 +124,9 @@ foreach (array_keys($system->language->languages) as $language_code) {
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_dock', 'Dock'); ?></strong><br />
-        <?php echo $system->functions->form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo $system->language->translate('text_dock_in_dock_menu', 'Dock in site menu'); ?><br />
-        <?php echo $system->functions->form_draw_checkbox('dock[]', 'customer_service', (isset($_POST['dock']) && in_array('customer_service', $_POST['dock'])) ? 'customer_service' : ''); ?> <?php echo $system->language->translate('text_dock_in_customer_service', 'Dock in customer service'); ?><br />
-        <?php echo $system->functions->form_draw_checkbox('dock[]', 'information', (isset($_POST['dock']) && in_array('information', $_POST['dock'])) ? 'information' : '0'); ?> <?php echo $system->language->translate('text_dock_in_information', 'Dock in information'); ?>
+        <label><?php echo $system->functions->form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo $system->language->translate('text_dock_in_dock_menu', 'Dock in site menu'); ?></label><br />
+        <label><?php echo $system->functions->form_draw_checkbox('dock[]', 'customer_service', (isset($_POST['dock']) && in_array('customer_service', $_POST['dock'])) ? 'customer_service' : ''); ?> <?php echo $system->language->translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br />
+        <label><?php echo $system->functions->form_draw_checkbox('dock[]', 'information', (isset($_POST['dock']) && in_array('information', $_POST['dock'])) ? 'information' : '0'); ?> <?php echo $system->language->translate('text_dock_in_information', 'Dock in information'); ?></label>
       </td>
     </tr>
     <tr>

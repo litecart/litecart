@@ -115,7 +115,7 @@
   function form_draw_hidden_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    return form_draw_input($name, $value, 'hidden', $parameters);
+    return '<input type="hidden" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_image($name, $src, $parameters=false) {
