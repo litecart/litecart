@@ -7,8 +7,8 @@
     "select * from ". DB_TABLE_SLIDES ."
     where status
     and language_code = '". $system->database->input($system->language->selected['code']) ."'
-    and (date_valid_from < '1971' or date_valid_from >= '". date('Y-m-d H:i:s') ."')
-    and (date_valid_to < '1971' or date_valid_to <= '". date('Y-m-d H:i:s') ."')
+    and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
+    and (date_valid_to < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
     order by priority asc;"
   );
   
@@ -30,6 +30,7 @@
 </div>
 <script>
   $('.nivoSlider').nivoSlider({
-    controlNav: false
+    controlNav: false,
+    pauseTime: 5000     // How long each slide will show in milliseconds
   });
 </script>
