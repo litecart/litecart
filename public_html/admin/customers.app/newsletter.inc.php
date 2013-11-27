@@ -1,6 +1,28 @@
 <?php
   if (!isset($_GET['template'])) $_GET['template'] = '';
 ?>
+<style>
+#service-providers li a {
+  position: relative;
+  padding: 10px;
+}
+#service-providers li img {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
+#service-providers li .name {
+  font-size: 1.5em;
+  margin-left: 40px;
+}
+#service-providers li .offer {
+  margin-left: 40px;
+}
+</style>
+
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $system->language->translate('title_newsletter', 'Newsletter'); ?></h1>
 
 <h2><?php echo $system->language->translate('title_list_of_subscribers', 'List of Subscribers'); ?></h2>
@@ -43,7 +65,12 @@
   echo $system->functions->form_draw_textarea('subscribers', $output, 'style="width: 100%; height: 400px;"');
 ?>
 
-<ul class="list-horizontal">
-  <li><a href="http://www.mailchimp.com" target="_blank">MailChimp</a></li>
-  <li><a href="http://www.getanewsletter.com" target="_blank">Get A Newsletter</a></li>
+<ul id="service-providers" class="list-horizontal">
+  <li>
+    <a href="http://eepurl.com/JAeav" target="_blank" class="button">
+      <img src="<?php echo WS_DIR_ADMIN . 'customers.app/mailchimp.png'; ?>" />
+      <div class="name">MailChimp</div>
+      <div class="offer">LiteCart gives you $30 free credits</div>
+    </a>
+  </li>
 </ul>
