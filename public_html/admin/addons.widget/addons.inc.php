@@ -1,5 +1,12 @@
 <?php
   
+  $cache_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'addons.cache';
+  
+  if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-12 hours')) {
+    echo file_get_contents($cache_file);
+    return;
+  }
+  
   $url = $system->document->link('http://www.litecart.net/feeds/addons', array('whoami' => $system->document->link(WS_DIR_HTTP_HOME), 'version' => PLATFORM_VERSION));
   $rss = $system->functions->http_fetch($url);
   
@@ -23,6 +30,7 @@
     if ($total == 12) break;
   }
   
+  ob_start();
 ?>
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
@@ -55,3 +63,10 @@
     </tr>
   </table>
 </div>
+<?php
+  $buffer = ob_get_clean();
+  
+  file_put_contents($cache_file, $buffer);
+  
+  echo $buffer;
+?>
