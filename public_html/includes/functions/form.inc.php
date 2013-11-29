@@ -784,11 +784,9 @@
   
   function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='', $preamble='none') {
     
-    if ($country_code == '') $country_code = $GLOBALS['system']->settings->get('default_country_code');
+    if (empty($country_code)) $country_code = $GLOBALS['system']->settings->get('default_country_code');
   
     if ($input === true) $input = form_reinsert_value($name);
-    
-    if ($input == '') $input = $GLOBALS['system']->settings->get('default_zone_code');
     
     $zones_query = $GLOBALS['system']->database->query(
       "select * from ". DB_TABLE_ZONES ."
