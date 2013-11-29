@@ -368,7 +368,8 @@
       case 'weight_classes':
         return form_draw_weight_classes_list($name, $input);
       case 'zones':
-        $option = !empty($options) ? $options[0] : $GLOBALS['system']->settings->get('store_country_code');
+        $option = !empty($options) ? $options[0] : '';
+        //if (empty($option)) $option = $GLOBALS['system']->settings->get('store_country_code');
         return form_draw_zones_list($option, $name, $input);
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_ERROR);
@@ -782,7 +783,7 @@
   }
   
   function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='', $preamble='none') {
-
+    
     if ($country_code == '') $country_code = $GLOBALS['system']->settings->get('default_country_code');
   
     if ($input === true) $input = form_reinsert_value($name);

@@ -480,7 +480,7 @@ foreach (array_keys($system->language->languages) as $language_code) {
           <tr>
             <td style="width: 75px;"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong></td>
             <td><?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'prices['. $system->settings->get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $system->settings->get('store_currency_code') .']', '', 0, '0', '', 'placeholder=""'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $system->settings->get('store_currency_code') .']', '', $system->currency->currencies[$system->settings->get('store_currency_code')]['decimals'], 0, null, 'placeholder=""'); ?></td>
           </tr>
 <?php
 foreach ($system->currency->currencies as $currency) {
@@ -489,7 +489,7 @@ foreach ($system->currency->currencies as $currency) {
           <tr>
             <td align="left" nowrap="nowrap"><?php echo $currency['code']; ?></td>
             <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], '0', '', 'placeholder=""'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], 0, null, 'placeholder=""'); ?></td>
           </tr>
 <?php
 }
@@ -650,7 +650,7 @@ foreach ($system->currency->currencies as $currency) {
               <?php echo $system->functions->form_draw_datetime_field('campaigns['.$key.'][end_date]', true); ?>
             </td>
             <td nowrap="nowrap">- %<br />
-              <?php echo $system->functions->form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, null, null, 'data-size="tiny"'); ?>
+              <?php echo $system->functions->form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 0, null, 'data-size="tiny"'); ?>
             </td>
             <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />
               <?php echo $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'campaigns['.$key.']['. $system->settings->get('store_currency_code') .']', true, 'data-size="small"'); ?>
@@ -728,7 +728,7 @@ foreach ($system->currency->currencies as $currency) {
                        + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap">- %<br />'
-                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, null, null, 'data-size="tiny"')); ?>'
+                       + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 0, null, 'data-size="tiny"')); ?>'
                        + '  </td>'
                        + '  <td nowrap="nowrap"><strong><?php echo $system->settings->get('store_currency_code'); ?></strong><br />'
                        + '    <?php echo str_replace(PHP_EOL, '', $system->functions->form_draw_currency_field($system->settings->get('store_currency_code'), 'campaigns[new_campaign_i]['. $system->settings->get('store_currency_code') .']', '')); ?>'
