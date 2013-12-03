@@ -2,7 +2,6 @@
   
   class lib_document {
     
-    private $cache = array();
     public $template = '';
     public $layout = 'default';
     public $snippets = array();
@@ -28,8 +27,8 @@
       $this->snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>' . PHP_EOL
                                              . '<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>' . PHP_EOL
                                              . '<script>' . PHP_EOL
-                                             . '  if (typeof jQuery == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.10.2.min.js\'%3E%3C/script%3E"));' . PHP_EOL
-                                             . '  if (typeof jQuery.migrateTrace == "undefined") document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.10.2.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
       
       $this->snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
@@ -118,6 +117,25 @@
         $this->snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="no-cache">' . PHP_EOL
                                                     . '<meta http-equiv="expires" content="'. date('r', strtotime($string)) .'">';
       }
+    }
+    
+    public function stitch(&$html) {
+      
+      foreach ($this->snippets as $key => $replace) {
+      
+        if (is_array($replace)) $replace = implode(PHP_EOL, $replace);
+        
+        $search = array(
+          '/'. preg_quote('{snippet:'.$key.'}', '/') .'/',
+          '/'. preg_quote('<!--snippet:'.$key.'-->', '/') .'/'
+        );
+        
+        $html = preg_replace($search, $replace, $html, -1, $replacements);
+        
+        if ($replacements) unset($this->snippets[$key]);
+      }
+      
+      $html = preg_replace($search, '', $html);
     }
     
     public function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {

@@ -15,12 +15,7 @@
   $output = ob_get_clean();
   
 // Stitch content
-  foreach ($system->document->snippets as $key => $content) {
-    if (is_array($content)) $content = implode(PHP_EOL, $content);
-    $output = str_replace(array('{snippet:'. $key .'}', '<!--snippet:'. $key .'-->'), $content, $output);
-  }
-  $output = preg_replace('/{snippet:.*?}/', '', $output);
-  $output = preg_replace('/<!--snippet:.*?-->/', '', $output);
+  $system->document->stitch($output);
   
 // Run before output processes
   $system->run('before_output');

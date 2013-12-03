@@ -735,7 +735,7 @@
       
       if (in_array($zone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) {
         if (!empty($zone[1])) {
-          $options[] = array($zone[0]. '/' . $zone[1]);
+          $options[] = array(implode('/', $zone));
         }
       }
     }
@@ -785,7 +785,11 @@
   function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='', $preamble='none') {
     
     if (empty($country_code)) $country_code = $GLOBALS['system']->settings->get('default_country_code');
-  
+    
+    if ($country_code == 'default_country_code') $country_code = $GLOBALS['system']->settings->get('default_country_code');
+    
+    if ($country_code == 'store_country_code') $country_code = $GLOBALS['system']->settings->get('store_country_code');
+    
     if ($input === true) $input = form_reinsert_value($name);
     
     $zones_query = $GLOBALS['system']->database->query(

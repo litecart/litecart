@@ -18,6 +18,7 @@
         return $this->_data[$name];
       }
       
+      $this->_data[$name] = null;
       $this->load($name);
       
       return $this->_data[$name];

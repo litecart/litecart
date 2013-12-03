@@ -6,8 +6,8 @@ In this early stage there are no upgrade tools available for upgrading from an o
   
   MySQL changes:
   
-	  UPDATE `lc_settings` SET value = 0 WHERE value = 'false';
-	  UPDATE `lc_settings` SET value = 1 WHERE value = 'true';
+	  UPDATE `lc_settings` SET `value` = 0 WHERE `value` = 'false';
+	  UPDATE `lc_settings` SET `value` = 1 WHERE `value` = 'true';
 
 ## LiteCart 1.0.1. to 1.0.1.1
 
@@ -32,4 +32,11 @@ In this early stage there are no upgrade tools available for upgrading from an o
   New RewriteRule for products.php in ~/.htacces:
   
     RewriteRule ^(?:[a-z]{2}/)?(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$ product.php?category_id=$1&product_id=$2&%{QUERY_STRING} [L]
+  
+## LiteCart 1.0.1.6
+
+  MySQL changes:
+  
+    UPDATE `lc_settings` SET `function` = 'zones("default_country_code")' WHERE `key` = 'default_zone_code';
+    UPDATE `lc_settings` SET `function` = 'zones("store_country_code")' WHERE `key` = 'store_zone_code';
   
