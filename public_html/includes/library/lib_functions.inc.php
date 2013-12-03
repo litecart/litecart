@@ -9,7 +9,7 @@
       
       $class = 'func_' . substr($function, 0, strpos($function, '_'));
       
-      return forward_static_call_array(array($class, $function), $arguments);
+      return call_user_func_array($function, $arguments);
     }
   }
   

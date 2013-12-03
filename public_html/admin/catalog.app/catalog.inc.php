@@ -246,7 +246,7 @@
   } else {
   
     $category_trail = functions::catalog_category_trail($_GET['category_id']);
-    if (is_array($category_trail)) {
+    if (!empty($category_trail)) {
       $category_trail = array_keys($category_trail);
     } else {
       $category_trail = array();
@@ -272,9 +272,9 @@
     // Output subcategories
       $categories_query = database::query(
         "select c.id, c.status, ci.name
-        from ". DB_TABLE_CATEGORIES ." c, ". DB_TABLE_CATEGORIES_INFO ." ci
+        from ". DB_TABLE_CATEGORIES ." c
+        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
         where c.parent_id = '". (int)$category_id ."'
-        and (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
         order by c.priority asc, ci.name asc;"
       );
       
@@ -341,10 +341,9 @@
       $output = '';
       
       $products_query = database::query(
-        "select p.id, p.status, p.image, pi.name from ". DB_TABLE_PRODUCTS ." p, ". DB_TABLE_PRODUCTS_INFO ." pi
-        where (find_in_set('". (int)$category_id ."', p.categories)
-        ". (($category_id == 0) ? "or p.categories = ''" : false) .")
-        and (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+        "select p.id, p.status, p.image, pi.name from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+        where (find_in_set('". (int)$category_id ."', p.categories) ". (($category_id == 0) ? "or p.categories = ''" : "") .")
         order by pi.name asc;"
       );
       

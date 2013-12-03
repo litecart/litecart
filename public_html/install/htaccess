@@ -46,12 +46,16 @@ ErrorDocument 500 "Internal Server Error"
 </FilesMatch>
 
 # Cacheable external content
-<IfModule mod_headers.c>
-  <FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
-    Header set Cache-Control "max-age=864000, public, must-revalidate"
-    Header unset Last-Modified
-  </FilesMatch>
-</IfModule>
+<FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
+  Header set Cache-Control "max-age=864000, public, must-revalidate"
+  Header unset Last-Modified
+</FilesMatch>
+
+# Cacheable external content
+<FilesMatch "\.(css)$">
+  Header set Cache-Control "max-age=3600, public, must-revalidate"
+  Header unset Last-Modified
+</FilesMatch>
 
 # GZip compress external content
 <IfModule mod_deflate.c>

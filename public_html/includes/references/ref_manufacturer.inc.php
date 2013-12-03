@@ -21,6 +21,7 @@
         return $this->_cache[$name];
       }
       
+      $this->_data[$name] = null;
       $this->load($name);
       
       return $this->_cache[$name];

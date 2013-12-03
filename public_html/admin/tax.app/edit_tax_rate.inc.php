@@ -87,17 +87,17 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_customer_type', 'Customer Type'); ?></strong><br />
-        <?php echo functions::form_draw_radio_button('customer_type', 'individuals', true); ?> <?php echo language::translate('text_tax_rate_rule_individuals', 'Applies to individuals'); ?><br />
-        <?php echo functions::form_draw_radio_button('customer_type', 'companies', true); ?> <?php echo language::translate('text_tax_rate_rule_companies', 'Applies to companies'); ?><br />
-        <?php echo functions::form_draw_radio_button('customer_type', 'both', empty($_POST['customer_type']) ? 'both' : true); ?> <?php echo language::translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?>
+            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_customer_type', 'Customer Type'); ?></strong><br />
+              <label><?php echo functions::form_draw_radio_button('customer_type', 'individuals', true); ?> <?php echo language::translate('text_tax_rate_rule_individuals', 'Applies to individuals'); ?></label><br />
+              <label><?php echo functions::form_draw_radio_button('customer_type', 'companies', true); ?> <?php echo language::translate('text_tax_rate_rule_companies', 'Applies to companies'); ?></label><br />
+              <label><?php echo functions::form_draw_radio_button('customer_type', 'both', empty($_POST['customer_type']) ? 'both' : true); ?> <?php echo language::translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?></label>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_tax_id', 'Tax ID'); ?></strong><br />
-        <?php echo functions::form_draw_radio_button('tax_id_rule', 'with', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_with_tax_id', 'Applies to customers with a tax ID'); ?><br />
-        <?php echo functions::form_draw_radio_button('tax_id_rule', 'without', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_without_tax_id', 'Applies to customers without a tax ID'); ?><br />
-        <?php echo functions::form_draw_radio_button('tax_id_rule', 'both', empty($_POST['customer_type']) ? 'both' : true); ?> <?php echo language::translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?>
+            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_tax_id', 'Tax ID'); ?></strong><br />
+              <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'with', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_with_tax_id', 'Applies to customers with a tax ID'); ?></label><br />
+              <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'without', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_without_tax_id', 'Applies to customers without a tax ID'); ?></label><br />
+              <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'both', empty($_POST['customer_type']) ? 'both' : true); ?> <?php echo language::translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?></label>
       </td>
     </tr>
   </table>

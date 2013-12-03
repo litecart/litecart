@@ -11,13 +11,13 @@
       switch ($action) {
         case 'load':
           if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
-          $this->load($order_id);
+          self::load($order_id);
           break;
         case 'new':
-          $this->reset();
+          self::reset();
           break;
         case 'import_session':
-          $this->import_session();
+          self::import_session();
           break;
         case 'resume':
         default:
@@ -80,41 +80,41 @@
     private function import_session() {
       global $shipping, $payment, $order_total;
       
-      $this->reset();
+      self::reset();
       
-      $this->data['weight_class'] = settings::get('store_weight_class');
-      $this->data['currency_code'] = currency::$selected['code'];
-      $this->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
-      $this->data['language_code'] = language::$selected['code'];
+      self::$data['weight_class'] = settings::get('store_weight_class');
+      self::$data['currency_code'] = currency::$selected['code'];
+      self::$data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
+      self::$data['language_code'] = language::$selected['code'];
       
-      $this->data['customer'] = customer::$data;
+      self::$data['customer'] = customer::$data;
       
       if (!empty($shipping->data['selected'])) {
-        $this->data['shipping_option'] = array(
+        self::$data['shipping_option'] = array(
           'id' => $shipping->data['selected']['id'],
           'name' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
         );
       }
       
       if (!empty($payment->data['selected'])) {
-        $this->data['payment_option'] = array(
+        self::$data['payment_option'] = array(
           'id' => $payment->data['selected']['id'],
           'name' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
         );
       }
       
       foreach (cart::$data['items'] as $item) {
-        $this->add_item($item);
+        self::add_item($item);
       }
       
       foreach ($order_total->rows as $row) {
-        $this->add_ot_row($row);
+        self::add_ot_row($row);
       }
     }
     
     private function load($order_id) {
       
-      $this->reset();
+      self::reset();
       
       $order_query = database::query(
         "select * from ". DB_TABLE_ORDERS ."
@@ -137,7 +137,7 @@
         'payment_transaction_id' => 'payment_transaction_id',
       );
       foreach ($key_map as $skey => $tkey){
-        $this->data[$tkey] = $order[$skey];
+        self::$data[$tkey] = $order[$skey];
       }
       
       $key_map = array(
@@ -157,7 +157,7 @@
         'customer_zone_code' => 'zone_code',
       );
       foreach ($key_map as $skey => $tkey){
-        $this->data['customer'][$tkey] = $order[$skey];
+        self::$data['customer'][$tkey] = $order[$skey];
       }
       
       $key_map = array(
@@ -172,7 +172,7 @@
         'shipping_zone_code' => 'zone_code',
       );
       foreach ($key_map as $skey => $tkey){
-        $this->data['customer']['shipping_address'][$tkey] = $order[$skey];
+        self::$data['customer']['shipping_address'][$tkey] = $order[$skey];
       }
       
       $key_map = array(
@@ -180,7 +180,7 @@
         'shipping_option_name' => 'name',
       );
       foreach ($key_map as $skey => $tkey){
-        $this->data['shipping_option'][$tkey] = $order[$skey];
+        self::$data['shipping_option'][$tkey] = $order[$skey];
       }
       
       $key_map = array(
@@ -188,7 +188,7 @@
         'payment_option_name' => 'name',
       );
       foreach ($key_map as $skey => $tkey){
-        $this->data['payment_option'][$tkey] = $order[$skey];
+        self::$data['payment_option'][$tkey] = $order[$skey];
       }
       
       $order_items_query = database::query(
@@ -198,7 +198,7 @@
       );
       while ($item = database::fetch($order_items_query)) {
         $item['options'] = unserialize($item['options']);
-        $this->data['items'][$item['id']] = $item;
+        self::$data['items'][$item['id']] = $item;
       }
       
       $order_totals_query = database::query(
@@ -207,7 +207,7 @@
         order by priority;"
       );
       while ($row = database::fetch($order_totals_query)) {
-        $this->data['order_total'][$row['id']] = $row;
+        self::$data['order_total'][$row['id']] = $row;
       }
       
       $order_comments_query = database::query(
@@ -216,24 +216,24 @@
         order by id;"
       );
       while ($row = database::fetch($order_comments_query)) {
-        $this->data['comments'][$row['id']] = $row;
+        self::$data['comments'][$row['id']] = $row;
       }
     }
     
     public function save() {
       
     // Re-calculate total if there are changes
-      $this->calculate_total();
+      self::calculate_total();
       
     // Update purchase count
-      if (empty($this->data['id'])) {
-        if (!empty($this->data['items'])) {
-          foreach (array_keys($this->data['items']) as $key) {
-            if (!empty($this->data['items'][$key]['product_id'])) {
+      if (empty(self::$data['id'])) {
+        if (!empty(self::$data['items'])) {
+          foreach (array_keys(self::$data['items']) as $key) {
+            if (!empty(self::$data['items'][$key]['product_id'])) {
               database::query(
                 "update ". DB_TABLE_PRODUCTS ."
-                set purchases = purchases + ". (int)$this->data['items'][$key]['quantity'] ."
-                where id = ". (int)$this->data['items'][$key]['product_id'] ."
+                set purchases = purchases + ". (int)self::$data['items'][$key]['quantity'] ."
+                where id = ". (int)self::$data['items'][$key]['product_id'] ."
                 limit 1;"
               );
             }
@@ -241,28 +241,28 @@
         }
       }
       
-      if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
+      if (empty(self::$data['uid'])) self::$data['uid'] = uniqid();
       
     // If changed order status 
-      if (!empty($this->data['id'])) {
+      if (!empty(self::$data['id'])) {
         $order_query = database::query(
           "select order_status_id from ". DB_TABLE_ORDERS ."
-          where id = ". (int)$this->data['id'] ."
+          where id = ". (int)self::$data['id'] ."
           limit 1;"
         );
         $order = database::fetch($order_query);
         
-        if ((int)$order['order_status_id'] != (int)$this->data['order_status_id']) {
+        if ((int)$order['order_status_id'] != (int)self::$data['order_status_id']) {
           $order_status_query = database::query(
             "select os.*, osi.name from ". DB_TABLE_ORDER_STATUSES ." os
-            left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
-            where os.id = ". (int)$this->data['order_status_id'] ."
+            left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input(self::$data['language_code']) ."')
+            where os.id = ". (int)self::$data['order_status_id'] ."
             limit 1;"
           );
           $order_status = database::fetch($order_status_query);
           
           if (!empty($order_status)) {
-            $this->data['comments'][] = array(
+            self::$data['comments'][] = array(
               'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $order_status['name']),
               'hidden' => 1,
             );
@@ -271,9 +271,9 @@
             if (!empty($order_status['notify'])) {
               functions::email_send(
                 '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
-                $this->data['customer']['email'],
-                sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $order_status['name']),
-                $this->draw_printable_copy(),
+                self::$data['customer']['email'],
+                sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', self::$data['language_code']), self::$data['id'], $order_status['name']),
+                self::draw_printable_copy(),
                 true
               );
             }
@@ -282,90 +282,90 @@
       }
       
     // Link guests to customer profile
-      if (empty($this->data['customer']['id'])) {
+      if (empty(self::$data['customer']['id'])) {
         $customers_query = database::query(
           "select id from ". DB_TABLE_CUSTOMERS ."
-          where email = '". database::input($this->data['customer']['email']) ."'
+          where email = '". database::input(self::$data['customer']['email']) ."'
           limit 1;"
         );
         $customer = database::fetch($customers_query);
         if (!empty($customer['id'])) {
-          $this->data['customer']['id'] = $customer['id'];
+          self::$data['customer']['id'] = $customer['id'];
         }
       }
       
     // Insert/update order
-      if (empty($this->data['id'])) {
+      if (empty(self::$data['id'])) {
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
           (uid, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". database::input(self::$data['uid']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
         );
-        $this->data['id'] = database::insert_id();
+        self::$data['id'] = database::insert_id();
       }
       
       database::query(
         "update ". DB_TABLE_ORDERS ." set
-        order_status_id = '". (int)$this->data['order_status_id'] ."',
-        customer_id = '". (int)$this->data['customer']['id'] ."',
-        customer_email = '". database::input($this->data['customer']['email']) ."',
-        customer_phone = '". database::input($this->data['customer']['phone']) ."',
-        customer_tax_id = '". database::input($this->data['customer']['tax_id']) ."',
-        customer_company = '". database::input($this->data['customer']['company']) ."',
-        customer_firstname = '". database::input($this->data['customer']['firstname']) ."',
-        customer_lastname = '". database::input($this->data['customer']['lastname']) ."',
-        customer_address1 = '". database::input($this->data['customer']['address1']) ."',
-        customer_address2 = '". database::input($this->data['customer']['address2']) ."',
-        customer_city = '". database::input($this->data['customer']['city']) ."',
-        customer_postcode = '". database::input($this->data['customer']['postcode']) ."',
-        customer_country_code = '". database::input($this->data['customer']['country_code']) ."',
-        customer_zone_code = '". database::input($this->data['customer']['zone_code']) ."',
-        shipping_company = '". database::input($this->data['customer']['shipping_address']['company']) ."',
-        shipping_firstname = '". database::input($this->data['customer']['shipping_address']['firstname']) ."',
-        shipping_lastname = '". database::input($this->data['customer']['shipping_address']['lastname']) ."',
-        shipping_address1 = '". database::input($this->data['customer']['shipping_address']['address1']) ."',
-        shipping_address2 = '". database::input($this->data['customer']['shipping_address']['address2']) ."',
-        shipping_city = '". database::input($this->data['customer']['shipping_address']['city']) ."',
-        shipping_postcode = '". database::input($this->data['customer']['shipping_address']['postcode']) ."',
-        shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
-        shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
-        shipping_option_id = '". ((!empty($this->data['shipping_option'])) ? database::input($this->data['shipping_option']['id']) : false) ."',
-        shipping_option_name = '". ((!empty($this->data['shipping_option'])) ? database::input($this->data['shipping_option']['name']) : false) ."',
-        shipping_tracking_id = '". ((!empty($this->data['shipping_tracking_id'])) ? database::input($this->data['shipping_tracking_id']) : false) ."',
-        payment_option_id = '". ((!empty($this->data['payment_option'])) ? database::input($this->data['payment_option']['id']) : false) ."',
-        payment_option_name = '". ((!empty($this->data['payment_option'])) ? database::input($this->data['payment_option']['name']) : false) ."',
-        payment_transaction_id = '". ((!empty($this->data['payment_transaction_id'])) ? database::input($this->data['payment_transaction_id']) : false) ."',
-        language_code = '". database::input($this->data['language_code']) ."',
-        currency_code = '". database::input($this->data['currency_code']) ."',
-        currency_value = '". (float)$this->data['currency_value'] ."',
-        weight_total = '". (float)$this->data['weight_total'] ."',
-        weight_class = '". database::input($this->data['weight_class']) ."',
-        payment_due = '". (float)$this->data['payment_due'] ."',
-        tax_total = '". (float)$this->data['tax_total'] ."',
+        order_status_id = '". (int)self::$data['order_status_id'] ."',
+        customer_id = '". (int)self::$data['customer']['id'] ."',
+        customer_email = '". database::input(self::$data['customer']['email']) ."',
+        customer_phone = '". database::input(self::$data['customer']['phone']) ."',
+        customer_tax_id = '". database::input(self::$data['customer']['tax_id']) ."',
+        customer_company = '". database::input(self::$data['customer']['company']) ."',
+        customer_firstname = '". database::input(self::$data['customer']['firstname']) ."',
+        customer_lastname = '". database::input(self::$data['customer']['lastname']) ."',
+        customer_address1 = '". database::input(self::$data['customer']['address1']) ."',
+        customer_address2 = '". database::input(self::$data['customer']['address2']) ."',
+        customer_city = '". database::input(self::$data['customer']['city']) ."',
+        customer_postcode = '". database::input(self::$data['customer']['postcode']) ."',
+        customer_country_code = '". database::input(self::$data['customer']['country_code']) ."',
+        customer_zone_code = '". database::input(self::$data['customer']['zone_code']) ."',
+        shipping_company = '". database::input(self::$data['customer']['shipping_address']['company']) ."',
+        shipping_firstname = '". database::input(self::$data['customer']['shipping_address']['firstname']) ."',
+        shipping_lastname = '". database::input(self::$data['customer']['shipping_address']['lastname']) ."',
+        shipping_address1 = '". database::input(self::$data['customer']['shipping_address']['address1']) ."',
+        shipping_address2 = '". database::input(self::$data['customer']['shipping_address']['address2']) ."',
+        shipping_city = '". database::input(self::$data['customer']['shipping_address']['city']) ."',
+        shipping_postcode = '". database::input(self::$data['customer']['shipping_address']['postcode']) ."',
+        shipping_country_code = '". database::input(self::$data['customer']['shipping_address']['country_code']) ."',
+        shipping_zone_code = '". database::input(self::$data['customer']['shipping_address']['zone_code']) ."',
+        shipping_option_id = '". ((!empty(self::$data['shipping_option'])) ? database::input(self::$data['shipping_option']['id']) : false) ."',
+        shipping_option_name = '". ((!empty(self::$data['shipping_option'])) ? database::input(self::$data['shipping_option']['name']) : false) ."',
+        shipping_tracking_id = '". ((!empty(self::$data['shipping_tracking_id'])) ? database::input(self::$data['shipping_tracking_id']) : false) ."',
+        payment_option_id = '". ((!empty(self::$data['payment_option'])) ? database::input(self::$data['payment_option']['id']) : false) ."',
+        payment_option_name = '". ((!empty(self::$data['payment_option'])) ? database::input(self::$data['payment_option']['name']) : false) ."',
+        payment_transaction_id = '". ((!empty(self::$data['payment_transaction_id'])) ? database::input(self::$data['payment_transaction_id']) : false) ."',
+        language_code = '". database::input(self::$data['language_code']) ."',
+        currency_code = '". database::input(self::$data['currency_code']) ."',
+        currency_value = '". (float)self::$data['currency_value'] ."',
+        weight_total = '". (float)self::$data['weight_total'] ."',
+        weight_class = '". database::input(self::$data['weight_class']) ."',
+        payment_due = '". (float)self::$data['payment_due'] ."',
+        tax_total = '". (float)self::$data['tax_total'] ."',
         client_ip = '". $_SERVER['REMOTE_ADDR'] ."',
         date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = '". (int)self::$data['id'] ."'
         limit 1;"
       );
       
     // Build array of item ids
       $item_ids = array();
-      if (!empty($this->data['items'])) {
-        foreach (array_keys($this->data['items']) as $key) {
-          if (!empty($this->data['items'][$key]['id'])) $item_ids[] = $this->data['items'][$key]['id'];
+      if (!empty(self::$data['items'])) {
+        foreach (array_keys(self::$data['items']) as $key) {
+          if (!empty(self::$data['items'][$key]['id'])) $item_ids[] = self::$data['items'][$key]['id'];
         }
       }
       
     // Delete order items
       $order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
-        where order_id = '". (int)$this->data['id'] ."'
+        where order_id = '". (int)self::$data['id'] ."'
         and id not in ('". @implode("', '", $item_ids) ."');"
       );
       while($order_item = database::fetch($order_items_query)) {
         database::query(
           "delete from ". DB_TABLE_ORDERS_ITEMS ."
-          where order_id = '". (int)$this->data['id'] ."'
+          where order_id = '". (int)self::$data['id'] ."'
           and id = '". (int)$order_item['id'] ."'
           limit 1;"
         );
@@ -375,40 +375,40 @@
       }
       
     // Insert/update order items
-      if (!empty($this->data['items'])) {
-        foreach (array_keys($this->data['items']) as $key) {
-          if (empty($this->data['items'][$key]['id'])) {
+      if (!empty(self::$data['items'])) {
+        foreach (array_keys(self::$data['items']) as $key) {
+          if (empty(self::$data['items'][$key]['id'])) {
             database::query(
               "insert into ". DB_TABLE_ORDERS_ITEMS ."
               (order_id)
-              values ('". (int)$this->data['id'] ."');"
+              values ('". (int)self::$data['id'] ."');"
             );
-            $this->data['items'][$key]['id'] = database::insert_id();
-            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
+            self::$data['items'][$key]['id'] = database::insert_id();
+            functions::catalog_stock_adjust(self::$data['items'][$key]['product_id'], self::$data['items'][$key]['option_stock_combination'], -self::$data['items'][$key]['quantity']);
           } else {
           // Update stock qty
             $orders_items_query = database::query(
               "select quantity from ". DB_TABLE_ORDERS_ITEMS ."
-              where id = '". (int)$this->data['items'][$key]['id'] ."'
-              and order_id = '". (int)$this->data['id'] ."';"
+              where id = '". (int)self::$data['items'][$key]['id'] ."'
+              and order_id = '". (int)self::$data['id'] ."';"
             );
             $order_item = database::fetch($orders_items_query);
-            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -($this->data['items'][$key]['quantity'] - $order_item['quantity']));
+            functions::catalog_stock_adjust(self::$data['items'][$key]['product_id'], self::$data['items'][$key]['option_stock_combination'], -(self::$data['items'][$key]['quantity'] - $order_item['quantity']));
           }
           database::query(
             "update ". DB_TABLE_ORDERS_ITEMS ." 
-            set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
-            option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
-            options = '". database::input(serialize($this->data['items'][$key]['options'])) ."',
-            name = '". database::input($this->data['items'][$key]['name']) ."',
-            sku = '". database::input($this->data['items'][$key]['sku']) ."',
-            quantity = '". (float)$this->data['items'][$key]['quantity'] ."',
-            price = '". (float)$this->data['items'][$key]['price'] ."',
-            tax = '". (float)$this->data['items'][$key]['tax'] ."',
-            weight = '". (float)$this->data['items'][$key]['weight'] ."',
-            weight_class = '". database::input($this->data['items'][$key]['weight_class']) ."'
-            where order_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['items'][$key]['id'] ."'
+            set product_id = '". (int)self::$data['items'][$key]['product_id'] ."',
+            option_stock_combination = '". database::input(self::$data['items'][$key]['option_stock_combination']) ."',
+            options = '". database::input(serialize(self::$data['items'][$key]['options'])) ."',
+            name = '". database::input(self::$data['items'][$key]['name']) ."',
+            sku = '". database::input(self::$data['items'][$key]['sku']) ."',
+            quantity = '". (float)self::$data['items'][$key]['quantity'] ."',
+            price = '". (float)self::$data['items'][$key]['price'] ."',
+            tax = '". (float)self::$data['items'][$key]['tax'] ."',
+            weight = '". (float)self::$data['items'][$key]['weight'] ."',
+            weight_class = '". database::input(self::$data['items'][$key]['weight_class']) ."'
+            where order_id = '". (int)self::$data['id'] ."'
+            and id = '". (int)self::$data['items'][$key]['id'] ."'
             limit 1;"
           );
         }
@@ -416,41 +416,41 @@
       
     // Build array of order total ids
       $order_total_ids = array();
-      if (!empty($this->data['order_total'])) {
-        foreach (array_keys($this->data['order_total']) as $key) {
-          if (!empty($this->data['order_total'][$key]['id'])) $order_total_ids[] = $this->data['order_total'][$key]['id'];
+      if (!empty(self::$data['order_total'])) {
+        foreach (array_keys(self::$data['order_total']) as $key) {
+          if (!empty(self::$data['order_total'][$key]['id'])) $order_total_ids[] = self::$data['order_total'][$key]['id'];
         }
       }
       
     // Delete order total items
       database::query(
         "delete from ". DB_TABLE_ORDERS_TOTALS ."
-        where order_id = '". (int)$this->data['id'] ."'
+        where order_id = '". (int)self::$data['id'] ."'
         and id not in ('". @implode("', '", $order_total_ids) ."');;"
       );
       
     // Insert/update order total
-      if (!empty($this->data['order_total'])) {
+      if (!empty(self::$data['order_total'])) {
         $i = 0;
-        foreach (array_keys($this->data['order_total']) as $key) {
-          if (empty($this->data['order_total'][$key]['id'])) {
+        foreach (array_keys(self::$data['order_total']) as $key) {
+          if (empty(self::$data['order_total'][$key]['id'])) {
             database::query(
               "insert into ". DB_TABLE_ORDERS_TOTALS ."
               (order_id)
-              values ('". (int)$this->data['id'] ."');"
+              values ('". (int)self::$data['id'] ."');"
             );
-            $this->data['order_total'][$key]['id'] = database::insert_id();
+            self::$data['order_total'][$key]['id'] = database::insert_id();
           }
           database::query(
             "update ". DB_TABLE_ORDERS_TOTALS ." 
-            set title = '". database::input($this->data['order_total'][$key]['title']) ."',
-            module_id = '". database::input($this->data['order_total'][$key]['module_id']) ."',
-            value = '". (float)$this->data['order_total'][$key]['value'] ."',
-            tax = '". (float)$this->data['order_total'][$key]['tax'] ."',
-            calculate = '". (empty($this->data['order_total'][$key]['calculate']) ? 0 : 1) ."',
+            set title = '". database::input(self::$data['order_total'][$key]['title']) ."',
+            module_id = '". database::input(self::$data['order_total'][$key]['module_id']) ."',
+            value = '". (float)self::$data['order_total'][$key]['value'] ."',
+            tax = '". (float)self::$data['order_total'][$key]['tax'] ."',
+            calculate = '". (empty(self::$data['order_total'][$key]['calculate']) ? 0 : 1) ."',
             priority = '". database::input(++$i) ."'
-            where order_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['order_total'][$key]['id'] ."'
+            where order_id = '". (int)self::$data['id'] ."'
+            and id = '". (int)self::$data['order_total'][$key]['id'] ."'
             limit 1;"
           );
         }
@@ -458,37 +458,37 @@
       
     // Build array of comments ids
       $comments_ids = array();
-      if (!empty($this->data['comments'])) {
-        foreach (array_keys($this->data['comments']) as $key) {
-          if (!empty($this->data['comments'][$key]['id'])) $comments_ids[] = $this->data['comments'][$key]['id'];
+      if (!empty(self::$data['comments'])) {
+        foreach (array_keys(self::$data['comments']) as $key) {
+          if (!empty(self::$data['comments'][$key]['id'])) $comments_ids[] = self::$data['comments'][$key]['id'];
         }
       }
       
     // Delete comments
       database::query(
         "delete from ". DB_TABLE_ORDERS_COMMENTS ."
-        where order_id = '". (int)$this->data['id'] ."'
+        where order_id = '". (int)self::$data['id'] ."'
         and id not in ('". @implode("', '", $comments_ids) ."');"
       );
       
     // Insert/update comments
-      if (!empty($this->data['comments'])) {
-        foreach (array_keys($this->data['comments']) as $key) {
-          if (empty($this->data['comments'][$key]['id'])) {
+      if (!empty(self::$data['comments'])) {
+        foreach (array_keys(self::$data['comments']) as $key) {
+          if (empty(self::$data['comments'][$key]['id'])) {
             database::query(
               "insert into ". DB_TABLE_ORDERS_COMMENTS ."
               (order_id, date_created)
-              values ('". (int)$this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
+              values ('". (int)self::$data['id'] ."', '". date('Y-m-d H:i:s') ."');"
             );
-            $this->data['comments'][$key]['id'] = database::insert_id();
-            $this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
+            self::$data['comments'][$key]['id'] = database::insert_id();
+            self::$data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
           }
           database::query(
             "update ". DB_TABLE_ORDERS_COMMENTS ." 
-            set text = '". database::input($this->data['comments'][$key]['text']) ."',
-            hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'
-            where order_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['comments'][$key]['id'] ."'
+            set text = '". database::input(self::$data['comments'][$key]['text']) ."',
+            hidden = '". (empty(self::$data['comments'][$key]['hidden']) ? 0 : 1) ."'
+            where order_id = '". (int)self::$data['id'] ."'
+            and id = '". (int)self::$data['comments'][$key]['id'] ."'
             limit 1;"
           );
         }
@@ -498,35 +498,35 @@
     }
     
     public function delete() {
-      if (empty($this->data['id'])) return;
+      if (empty(self::$data['id'])) return;
     
     // Empty order first..
-      $this->data['items'] = array();
-      $this->data['order_total'] = array();
-      $this->calculate_total();
-      $this->save();
+      self::$data['items'] = array();
+      self::$data['order_total'] = array();
+      self::calculate_total();
+      self::save();
       
     // ..then delete
       database::query(
         "delete from ". DB_TABLE_ORDERS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = '". (int)self::$data['id'] ."'
         limit 1;"
       );
     }
     
     public function calculate_total() {
-      $this->data['payment_due'] = 0;
-      $this->data['tax_total'] = 0;
-      $this->data['weight_total'] = 0;
+      self::$data['payment_due'] = 0;
+      self::$data['tax_total'] = 0;
+      self::$data['weight_total'] = 0;
       
-      foreach ($this->data['items'] as $item) {
-        $this->add_cost($item['price'], $item['tax'], $item['quantity']);
-        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+      foreach (self::$data['items'] as $item) {
+        self::add_cost($item['price'], $item['tax'], $item['quantity']);
+        self::$data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], self::$data['weight_class']) * $item['quantity'];
       }
       
-      foreach ($this->data['order_total'] as $order_total) {
+      foreach (self::$data['order_total'] as $order_total) {
         if (!empty($order_total['calculate'])) {
-          $this->add_cost($order_total['value'], $order_total['tax']);
+          self::add_cost($order_total['value'], $order_total['tax']);
         }
       }
     }
@@ -534,19 +534,19 @@
     public function add_item($item) {
       
       $key_i = 1;
-      while (isset($this->data['items']['new'.$key_i])) $key_i++;
+      while (isset(self::$data['items']['new'.$key_i])) $key_i++;
       
     // Round decimals
-      //$rounded_price = round(currency::calculate($item['price'], $this->data['currency_code']), currency::$currencies[$this->data['currency_code']]['decimals']);
-      //$item['price'] = currency::convert($rounded_price, $this->data['currency_code'], settings->get('store_currency_code'));
+      //$rounded_price = round(currency::calculate($item['price'], self::$data['currency_code']), currency::$currencies[self::$data['currency_code']]['decimals']);
+      //$item['price'] = currency::convert($rounded_price, self::$data['currency_code'], settings->get('store_currency_code'));
       
       if (!empty($item['tax_class_id'])) {
-        $item['tax'] = tax::get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
+        $item['tax'] = tax::get_tax($item['price'], $item['tax_class_id'], self::$data['customer']['country_code'], self::$data['customer']['zone_code']);
       } else {
         $item['tax'] = isset($item['tax']) ? $item['tax'] : 0;
       }
       
-      $this->data['items']['new'.$key_i] = array(
+      self::$data['items']['new'.$key_i] = array(
         'id' => '',
         'product_id' => $item['product_id'],
         'options' => $item['options'],
@@ -560,36 +560,36 @@
         'weight_class' => $item['weight_class'],
       );
       
-      $this->data['weight_total'] += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
+      self::$data['weight_total'] += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
       
-      $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax'] * $item['quantity']);
+      self::add_cost($item['price'] * $item['quantity'], self::$data['items']['new'.$key_i]['tax'] * $item['quantity']);
     }
     
     public function add_ot_row($row) {
       
       $key_i = 1;
-      while (isset($this->data['order_total']['new'.$key_i])) $key_i++;
+      while (isset(self::$data['order_total']['new'.$key_i])) $key_i++;
       
     // Round decimals
-      //$rounded_value = round(currency::calculate($row['value'], $this->data['currency_code']), currency::$currencies[$this->data['currency_code']]['decimals']);
-      //$row['value'] = currency::convert($rounded_value, $this->data['currency_code'], settings::get('store_currency_code'));
+      //$rounded_value = round(currency::calculate($row['value'], self::$data['currency_code']), currency::$currencies[self::$data['currency_code']]['decimals']);
+      //$row['value'] = currency::convert($rounded_value, self::$data['currency_code'], settings::get('store_currency_code'));
       
-      $this->data['order_total']['new'.$key_i] = array(
+      self::$data['order_total']['new'.$key_i] = array(
         'id' => 0,
         'module_id' => $row['id'],
         'title' =>  $row['title'],
         'value' => $row['value'],
-        'tax' => !empty($row['tax_class_id']) ? tax::get_tax($row['value'], $row['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $row['tax'],
+        'tax' => !empty($row['tax_class_id']) ? tax::get_tax($row['value'], $row['tax_class_id'], self::$data['customer']['country_code'], self::$data['customer']['zone_code']) : $row['tax'],
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       );
       
-      if (!empty($row['calculate'])) $this->add_cost($row['value'], $row['tax']);
+      if (!empty($row['calculate'])) self::add_cost($row['value'], $row['tax']);
     }
     
     private function add_cost($gross, $tax, $quantity=1) {
-      $this->data['payment_due'] += $gross * $quantity;
-      $this->data['payment_due'] += $tax * $quantity;
-      $this->data['tax_total'] += $tax * $quantity;
+      self::$data['payment_due'] += $gross * $quantity;
+      self::$data['payment_due'] += $tax * $quantity;
+      self::$data['tax_total'] += $tax * $quantity;
     }
     
     public function checkout_forbidden() {
@@ -603,14 +603,14 @@
         'country_code',
       );
       
-      if (functions::reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'postcode';
-      if (functions::reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
+      if (functions::reference_get_postcode_required(self::$data['customer']['country_code'])) $required_fields[] = 'postcode';
+      if (functions::reference_country_num_zones(self::$data['customer']['country_code'])) $required_fields[] = 'zone_code';
       
       foreach ($required_fields as $field) {
-        if (empty($this->data['customer'][$field])) return $GLOBALS['system']->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ('.$field.')';
+        if (empty(self::$data['customer'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ('.$field.')';
       }
       
-      if ($this->data['customer']['different_shipping_address']) {
+      if (self::$data['customer']['different_shipping_address']) {
         $required_fields = array(
           'firstname',
           'lastname',
@@ -618,15 +618,15 @@
           'city',
           'country_code',
         );
-        if ($GLOBALS['system']->functions->reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'postcode';
-        if ($GLOBALS['system']->functions->reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'zone_code';
+        if (functions::reference_get_postcode_required(self::$data['customer']['shipping_address']['country_code'])) $required_fields[] = 'postcode';
+        if (functions::reference_country_num_zones(self::$data['customer']['shipping_address']['country_code'])) $required_fields[] = 'zone_code';
       
         foreach ($required_fields as $field) {
-          if (empty($this->data['customer']['shipping_address'][$field])) return $GLOBALS['system']->language->translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' (shipping_address['.$field.'])';
+          if (empty(self::$data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' (shipping_address['.$field.'])';
         }
       }
       
-      if ($this->data['payment_due'] > 0 && empty($order->data['payment_option_id'])) $errors[] = language::translate('text_please_select_a_payment_option', 'Please select a payment option.');
+      if (self::$data['payment_due'] > 0 && empty($order->data['payment_option_id'])) $errors[] = language::translate('text_please_select_a_payment_option', 'Please select a payment option.');
       
       return false;
     }
@@ -638,15 +638,15 @@
       functions::email_send(
         '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
         $email,
-        language::translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
-        $this->draw_printable_copy(),
+        language::translate('title_order_copy', 'Order Copy') .' #'. self::$data['id'],
+        self::draw_printable_copy(),
         true
       );
     }
     
     public function draw_printable_copy() {
     
-      $order = $this->data;
+      $order = self::$data;
       
       ob_start();
       include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_order_copy.inc.php');
@@ -657,7 +657,7 @@
     
     public function draw_printable_packing_slip() {
     
-      $order = $this->data;
+      $order = self::$data;
       
       ob_start();
       include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_packing_slip.inc.php');
