@@ -19,7 +19,7 @@
     $weight = $product->weight;
     $sku = $product->sku;
     
-    $_POST['options'] = array_filter($_POST['options']);
+    $_POST['options'] = !empty($_POST['options']) ? array_filter($_POST['options']) : array();
     $selected_options = array();
     
     if (count($product->options) > 0) {

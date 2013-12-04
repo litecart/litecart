@@ -123,9 +123,9 @@
       }
     }
     
-    public function stitch(&$html) {
+    public static function stitch(&$html) {
       
-      foreach ($this->snippets as $key => $replace) {
+      foreach (self::$snippets as $key => $replace) {
       
         if (is_array($replace)) $replace = implode(PHP_EOL, $replace);
         
@@ -136,19 +136,18 @@
         
         $html = preg_replace($search, $replace, $html, -1, $replacements);
         
-        if ($replacements) unset($this->snippets[$key]);
+        if ($replacements) unset(self::$snippets[$key]);
       }
       
       $html = preg_replace($search, '', $html);
     }
     
-    public function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return htmlspecialchars($this->link($document, $new_params, $inherit_params, $skip_params, $language_code));
-    }
-    
-  // Substituted
     public static function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
       return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
+    }
+
+    public static function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
     }
   }
   

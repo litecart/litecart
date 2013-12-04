@@ -30,6 +30,10 @@
   margin: 0px;
 }
 
+#box-search img {
+  opacity: 0.6;
+}
+
 #box-campaigns h3, #box-latest-products h3, #box-most-popular h3, #box-similar-products h3, #box-also-purchased-products h3 {
   font: 2em 'Open Sans', sans-serif;
   font-weight: normal;

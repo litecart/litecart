@@ -1,7 +1,7 @@
 <?php
   functions::draw_fancybox('.fancybox-region', array(
     'centerOnScroll' => true,
-    'hideOnContentClick' => true,
+    'hideOnContentClick' => false,
     'modal' => false,
     'speedIn' => 600,
     'transitionIn' => 'fade',

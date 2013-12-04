@@ -78,7 +78,7 @@
         ),
         array(
           'key' => 'priority',
-          'default_value' => '0',
+          'default_value' => '99',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',

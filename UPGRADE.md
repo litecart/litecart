@@ -29,6 +29,12 @@ WinMerge is a powerful free tool to discover differences between two different s
 
     Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)\[
     Replace: $1::\$${2}\[
+
+    Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)(?:\(|;|\s)
+    Replace: $1::\$${2}\[
+
+    Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)(\)|;|\s)
+    Replace: $1::\$${2}${3}
   
   Deleted Files:
     

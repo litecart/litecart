@@ -3,7 +3,7 @@
   padding: 0px;
   margin-bottom: 20px;
   text-decoration: none;
-  overflow: auto;
+  overflow: hidden;
 }
 
 /* Category */
@@ -207,17 +207,6 @@
 }
 .listing-wrapper > .product .campaign-price {
   color: #c00;
-}
-
-/* Full page width override */
-#box-campaigns .listing-wrapper > .product.column a.link {
-  width: 166px;
-}
-#box-latest-products .listing-wrapper > .product.column a.link {
-  width: 166px;
-}
-#box-most-popular .listing-wrapper > .product.column a.link {
-  width: 166px;
 }
 
 @media (max-width: 640px) {

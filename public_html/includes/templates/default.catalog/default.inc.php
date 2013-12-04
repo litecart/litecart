@@ -7,8 +7,8 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
 <link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
-<link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
 <link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
 <!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie8.css" /><![endif]-->
@@ -20,16 +20,24 @@
     $("meta[name='viewport']").attr("content", "width=640");
   }
 </script>
+<style>
+<?php
+  $settings = unserialize(settings::get('store_template_catalog_settings'));
+  
+  if (!empty($settings['fixed_header'])) {
+    echo '#header-wrapper { position: fixed !important; }' . PHP_EOL;
+  } else {
+    echo '#header-wrapper { position: absolute !important; box-shadow: none !important; background: none; }' . PHP_EOL;
+    echo '#page-wrapper { padding-top: 80px; }' . PHP_EOL;
+  }
+?>
+</style>
 </head>
 <body>
 
 <div id="header-wrapper" class="shadow">
   <header id="header" class="nine-eighty">
   
-    <div id="search-wrapper">
-    <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'search.inc.php'); ?>
-    </div>
-
     <div id="logotype-wrapper">
       <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
     </div>

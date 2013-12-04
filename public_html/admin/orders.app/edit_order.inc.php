@@ -475,12 +475,14 @@
       $("input[name^='items['][name$='[price]']").each(function() {
         subtotal += Number($(this).val()) * Number($(this).closest('tr').find("input[name^='items['][name$='[quantity]']").val());
       });
+      subtotal = Math.round(subtotal * 1* 1<?php echo str_repeat('0', currency::$currencies[$order->data['currency_code']]['decimals']); ?>) / 1<?php echo str_repeat('0', currency::$currencies[$order->data['currency_code']]['decimals']); ?>;
       $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[value]']").val(subtotal);
       
       var subtotal_tax = 0;
       $("input[name^='items['][name$='[tax]']").each(function() {
         subtotal_tax += Number($(this).val()) * Number($(this).closest('tr').find("input[name^='items['][name$='[quantity]']").val());
       });
+      subtotal_tax = Math.round(subtotal_tax * 1* 1<?php echo str_repeat('0', currency::$currencies[$order->data['currency_code']]['decimals']); ?>) / 1<?php echo str_repeat('0', currency::$currencies[$order->data['currency_code']]['decimals']); ?>;
       $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[tax]']").val(subtotal_tax);
       
       var order_total = subtotal + subtotal_tax;

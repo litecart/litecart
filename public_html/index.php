@@ -11,6 +11,8 @@
                                                         //. '<meta property="og:description" content="'. htmlspecialchars(language::translate('index.php:meta_description')) .'" />' . PHP_EOL
                                                         . '<meta property="og:type" content="website" />' . PHP_EOL
                                                         . '<meta property="og:image" content="'. document::href_link(WS_DIR_IMAGES . 'logotype.png') .'" />';
+                                                        
+  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 ?>
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'slider.inc.php'); ?>
@@ -19,9 +21,9 @@
 
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'most_popular.inc.php'); ?>
 
-<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'latest_products.inc.php'); ?>
-
 <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'campaigns.inc.php'); ?>
+
+<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'latest_products.inc.php'); ?>
 
 <?php
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

@@ -42,7 +42,7 @@
 <?php
   while ($listing_product = database::fetch($products_query)) {
     if (empty($listing_product['occurrences'])) break;
-    echo functions::draw_listing_product($listing_product);
+    echo functions::draw_listing_product_column($listing_product);
       }
 ?>
     </ul>

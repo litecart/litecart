@@ -11,7 +11,6 @@ body {
 }
 
 #header-wrapper {
-  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -43,7 +42,7 @@ body {
 #site-links-wrapper {
   display: inline-block;
   position: absolute;
-  top: 0px;
+  top: 5px;
   right: 0px;
 }
 #site-links a {
@@ -75,24 +74,6 @@ body {
   border: 1px solid #d1d1d1;
   padding: 0px 4px;
   background-color: #fff;
-}
-
-#search-wrapper {
-  display: inline-block;
-  position: absolute;
-  left: 40%;
-  top: 10px;
-  margin: 0px -120px;
-  width: 240px;
-  text-align: center;
-}
-#search img {
-  opacity: 0.6;
-}
-@media (max-width: 640px) {
-  #search-wrapper {
-    display: none;
-  }
 }
 
 #cart-wrapper {

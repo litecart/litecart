@@ -11,13 +11,6 @@
   
   functions::draw_fancybox('a.fancybox');
   
-  ob_start();
-  echo '<aside class="shadow rounded-corners">' . PHP_EOL;
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
-  echo '</aside>' . PHP_EOL;
-  document::$snippets['column_left'] = ob_get_clean();
-  
   $manufacturer = new ref_manufacturer($_GET['manufacturer_id']);
   
   if (empty($manufacturer->status)) {
@@ -33,6 +26,7 @@
   document::$snippets['keywords'] = $manufacturer->meta_keywords[language::$selected['code']] ? $manufacturer->meta_keywords[language::$selected['code']] : $manufacturer->keywords;
   document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : $manufacturer->short_description[language::$selected['code']];
   
+  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 
   $manufacturer_cache_id = cache::cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($manufacturer_cache_id, 'file')) {
