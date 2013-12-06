@@ -95,7 +95,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
     
-    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any"' . (($min !== null) ? ' min="'. (int)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_email_field($name, $value=true, $parameters='', $hint='') {
@@ -139,7 +139,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="tiny"';
     
-    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1"' . (($min !== null) ? ' min="'. (int)$min .'"' : false) . (($max !== null) ? ' max="'. (int)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" title="'. htmlspecialchars($hint) .'" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_password_field($name, $value=true, $parameters='', $hint='') {
