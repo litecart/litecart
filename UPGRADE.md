@@ -1,42 +1,92 @@
 # Upgrade
 
-In this early stage there are no upgrade tools available for upgrading from an older version of LiteCart. You may perform a manual upgrade by replacing the set of files and performing any SQL modifications listed below.
+The following is a list of changes that can be of importance when performing a manual upgrade.
 
-## LiteCart 1.0.1-dev to 1.0.1
+The standard procedure for upgrading is to replace the old set of files with the new ones and perform any MySQL changes to the database. When replacing the set of files you may keep the following (created by the installer):
+
+  ~/admin/.htaccess
+  ~/admin/.htpasswd
+  ~/includes/config.inc.php
+  ~/.htaccess
   
-  MySQL changes:
-  
-	  UPDATE `lc_settings` SET `value` = 0 WHERE `value` = 'false';
-	  UPDATE `lc_settings` SET `value` = 1 WHERE `value` = 'true';
+WinMerge is a powerful free tool to discover differences between two different sets of files and folders.
 
-## LiteCart 1.0.1. to 1.0.1.1
-
-  (No MySQL changes)
-
-## LiteCart 1.0.1. to 1.0.1.2
-
-  (No MySQL changes)
-
-## LiteCart 1.0.1.2 to 1.0.1.3
-
-  (No MySQL changes)
-
-## LiteCart 1.0.1.3 to 1.0.1.4
-
-  (No MySQL changes)
-
-## LiteCart 1.0.1.4 to 1.0.1.5
-
-  (No MySQL changes)
-  
-  New RewriteRule for products.php in ~/.htacces:
-  
-    RewriteRule ^(?:[a-z]{2}/)?(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$ product.php?category_id=$1&product_id=$2&%{QUERY_STRING} [L]
-  
 ## LiteCart 1.0.1.6
 
   MySQL changes:
   
     UPDATE `lc_settings` SET `function` = 'zones("default_country_code")' WHERE `key` = 'default_zone_code';
     UPDATE `lc_settings` SET `function` = 'zones("store_country_code")' WHERE `key` = 'store_zone_code';
+  
+  New Files:
+    
+    ~/includes/templates/default.catalog/styles/loader.css
+    
+  Deleted Files:
+    
+    ~/includes/templates/default.catalog/styles/loader.css.php
+    
+## LiteCart 1.0.1.4 to 1.0.1.5
+
+  (No MySQL Changes)
+  
+  New RewriteRule for products.php in ~/.htacces:
+  
+    RewriteRule ^(?:[a-z]{2}/)?(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$ product.php?category_id=$1&product_id=$2&%{QUERY_STRING} [L]
+    
+  New Files:
+  
+    ~/admin/customers.app/mailchimp.png
+    ~/admin/modules.app/run_job.inc.php
+    
+  Deleted Files:
+  
+    ~/includes/modules/jobs/job_currency_updater.inc.php
+    
+## LiteCart 1.0.1.3 to 1.0.1.4
+
+  (No MySQL Changes)
+  
+  (No New Files)
+  
+  (No Deleted Files)
+  
+## LiteCart 1.0.1.2 to 1.0.1.3
+
+  (No MySQL Changes)
+  
+  New Files:
+  
+    ~/ext/jquery/jquery-1.10.2.min.js
+    ~/ext/jquery/jquery-migrate-1.2.1.min.js
+    ~/images/icons/16x16/calendar.png
+    
+  Deleted Files:
+  
+    ~/ext/jquery/jquery-1.9.1.min.js
+    ~/ext/jquery/jquery-migrate-1.1.1.min.js
+    ~/includes/functions/error.inc.php
+  
+## LiteCart 1.0.1. to 1.0.1.2
+
+  (No MySQL Changes)
+  
+## LiteCart 1.0 to 1.0.1
+  
+  MySQL changes:
+  
+	  UPDATE `lc_settings` SET `value` = 0 WHERE `value` = 'false';
+	  UPDATE `lc_settings` SET `value` = 1 WHERE `value` = 'true';
+
+  New Files:
+  
+    ~/admin/orders.app/add_custom_item.inc.php
+    ~/admin/orders.app/add_product.inc.php
+    ~/admin/slides.app/*
+    ~/images/slides/*
+    ~/includes/modules/customer/*
+    
+  Deleted Files:
+  
+    ~/includes/modules/get_address/*
   
