@@ -20,13 +20,13 @@
     
     return $output;
   }
-
+  
   function draw_listing_manufacturer($manufacturer) {
     
     $output = '<li class="manufacturer shadow hover-light">' . PHP_EOL
             . '  <a class="link" href="'. document::href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'" title="'. htmlspecialchars($manufacturer['name']) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 215, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="215" height="60" alt="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
+            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="220" height="60" alt="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="title">'. $manufacturer['name'] .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL

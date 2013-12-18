@@ -3,13 +3,19 @@
   
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link('manufacturers.php'));
   
-  if (empty($_GET['manufacturer_id'])) $_GET['manufacturer_id'] = 0;
+  if (empty($_GET['manufacturer_id'])) {
+    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
+    exit;
+  }
+  
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
   
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars(document::link('', array(), array('manufacturer_id'))) .'" />';
   
   functions::draw_fancybox('a.fancybox');
+  
+  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   $manufacturer = new ref_manufacturer($_GET['manufacturer_id']);
   
@@ -25,8 +31,6 @@
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;
   document::$snippets['keywords'] = $manufacturer->meta_keywords[language::$selected['code']] ? $manufacturer->meta_keywords[language::$selected['code']] : $manufacturer->keywords;
   document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : $manufacturer->short_description[language::$selected['code']];
-  
-  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 
   $manufacturer_cache_id = cache::cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($manufacturer_cache_id, 'file')) {

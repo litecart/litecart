@@ -34,7 +34,7 @@
     
     public static function calculate($value, $tax_class_id, $calculate=null, $country_code=null, $zone_code=null) {
       
-      if ($calculate === null) $calculate = settings::get('display_prices_including_tax') ? true : false;
+      if ($calculate === null) $calculate = customer::$data['display_prices_including_tax'] ? true : false;
       
       if ($calculate) {
         return $value + self::get_tax($value, $tax_class_id, $country_code, $zone_code);

@@ -28,6 +28,29 @@
         );
         self::load(self::$data['id']);
       }
+      
+      if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST)) {
+        list($username, $key) = explode(':', $_COOKIE['remember_me']);
+        
+        $user_query = database::query(
+          "select * from ". DB_TABLE_USERS ."
+          where username = '". database::input($username) ."'
+          limit 1;"
+        );
+        $user = database::fetch($user_query);
+        
+        $do_login = false;
+        if (!empty($user)) {
+          $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+          if ($checksum == $key) $do_login = true;
+        }
+        
+        if ($do_login) {
+          self::load($user['id']);
+        } else {
+          setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+        }
+      }
     }
     
     //public static function before_capture() {
@@ -90,9 +113,11 @@
       session::$data['user'] = $user;
     }
     
-    public static function login($username, $password, $redirect_url='') {
+    public static function login($username, $password, $redirect_url='', $remember_me=false) {
       $config_login_attempts = 3;
-    
+      
+      setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      
       if (empty($username)) {
         notices::add('errors', language::translate('error_missing_username', 'You must provide a username'));
         return;
@@ -175,6 +200,13 @@
       
       self::load($user['id']);
       
+      if ($remember_me) {
+        $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
+      } else {
+        setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      }
+      
       if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_ADMIN);
       
       notices::add('success', str_replace(array('%username'), array(self::$data['username']), language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
@@ -184,6 +216,8 @@
     
     public static function logout($redirect_url='') {
       self::reset();
+      
+      setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
       
       if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_ADMIN . 'login.php');
       

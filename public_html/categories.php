@@ -7,6 +7,8 @@
   //document::$snippets['keywords'] = '';
   //document::$snippets['description'] = '';
   
+  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'categories.inc.php');
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

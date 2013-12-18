@@ -1,7 +1,11 @@
 <?php
   require_once('includes/app_header.inc.php');
   
-  if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
+  if (empty($_GET['category_id'])) {
+    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'categories.php'));
+    exit;
+  }
+  
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
   

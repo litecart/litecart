@@ -259,17 +259,17 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('store_info', 'local', 'Store Postal Address', 'The store postal address.', 'store_postal_address', 'My Store\r\nStreet\r\nPostcode City\r\nCountry', 'bigtext()', 13, NOW(), NOW()),
 ('store_info', 'local', 'Store Visiting Address', 'The store visiting address if applicable.', 'store_visiting_address', '', 'bigtext()', 14, NOW(), NOW()),
 ('store_info', 'local', 'Store Phone Number', 'The store phone number.', 'store_phone', '+46 8-123 45 67', 'input()', 15, NOW(), NOW()),
-('store_info', 'global', 'Store Country', 'The country of your store.', 'store_country_code', 'SE', 'countries()', 16, NOW(), NOW()),
+('store_info', 'global', 'Store Country', 'The country of your store.', 'store_country_code', '{STORE_COUNTRY_CODE}', 'countries()', 16, NOW(), NOW()),
 ('store_info', 'global', 'Store Time Zone', 'The store time zone.', 'store_timezone', '{STORE_TIME_ZONE}', 'timezones()', 17, NOW(), NOW()),
 ('store_info', 'local', 'Store Language', 'The spoken language of your organization.', 'store_language_code', 'en', 'languages()', 18, NOW(), NOW()),
-('store_info', 'global', 'Store Currency', 'The currency of which all prices conform to.', 'store_currency_code', 'EUR', 'currencies()', 19, NOW(), NOW()),
+('store_info', 'global', 'Store Currency', 'The currency of which all prices conform to.', 'store_currency_code', 'USD', 'currencies()', 19, NOW(), NOW()),
 ('store_info', 'global', 'Store Zone', 'The zone of your store.', 'store_zone_code', '', 'zones()', 20, NOW(), NOW()),
 ('store_info', 'global', 'Store Weight Class', 'The preselected weight class.', 'store_weight_class', 'kg', 'weight_classes()', 21, NOW(), NOW()),
 ('store_info', 'global', 'Store Length Class', 'The preselected length class.', 'store_length_class', 'cm', 'length_classes()', 22, NOW(), NOW()),
 ('defaults', 'global', 'Default Language', 'The default language selected, if failed to identify.', 'default_language_code', 'en', 'languages()', 10, NOW(), NOW()),
-('defaults', 'global', 'Default Currency', 'The default currency selected.', 'default_currency_code', 'EUR', 'currencies()', 11, NOW(), NOW()),
-('defaults', 'global', 'Default Country', 'The default country selected if not set otherwise.', 'default_country_code', 'GB', 'countries()', 12, NOW(), NOW()),
-('defaults', 'global', 'Default Zone', 'The default zone selected if not set otherwise.', 'default_zone_code', '0', 'zones()', 13, NOW(), NOW()),
+('defaults', 'global', 'Default Currency', 'The default currency selected.', 'default_currency_code', 'USD', 'currencies()', 11, NOW(), NOW()),
+('defaults', 'global', 'Default Country', 'The default country selected if not set otherwise.', 'default_country_code', '{STORE_COUNTRY_CODE}', 'countries()', 12, NOW(), NOW()),
+('defaults', 'global', 'Default Zone', 'The default zone selected if not set otherwise.', 'default_zone_code', '', 'zones()', 13, NOW(), NOW()),
 ('defaults', 'local', 'Default Tax Class', 'Default tax class that will be preset when creating new products.', 'default_tax_class_id', '1', 'tax_classes()', 14, NOW(), NOW()),
 ('general', 'global', 'Set Currency by Language', 'Chain select currency when changing language.', 'set_currency_by_language', '1', 'toggle()', 15, NOW(), NOW()),
 ('general', 'local', 'Contact Form CAPTCHA', 'Prevents spam by enabling CAPTCHA in the contact form.', 'contact_form_captcha_enabled', '1', 'toggle()', 16, NOW(), NOW()),
@@ -308,7 +308,8 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_currencies` (`status`, `code`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'EUR', 'Euro', 1, 2, '', ' €', 0, NOW(), NOW());
+(1, 'USD', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
+(1, 'EUR', 'Euros', 1, 2, '', ' €', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 1, NOW(), NOW()),

@@ -1,4 +1,6 @@
 <?php
+  require('includes/header.inc.php');
+  
   ini_set('display_errors', 'On');
   
 // Function to get object from a relative path to this script
@@ -33,74 +35,250 @@
     return $val;
   }
   
+  $countries = array(
+    'AF' => 'Afghanistan',
+    'AL' => 'Albania',
+    'DZ' => 'Algeria',
+    'AS' => 'American Samoa',
+    'AD' => 'Andorra',
+    'AO' => 'Angola',
+    'AI' => 'Anguilla',
+    'AQ' => 'Antarctica',
+    'AG' => 'Antigua and Barbuda',
+    'AR' => 'Argentina',
+    'AM' => 'Armenia',
+    'AW' => 'Aruba',
+    'AU' => 'Australia',
+    'AT' => 'Austria',
+    'AZ' => 'Azerbaijan',
+    'BS' => 'Bahamas',
+    'BH' => 'Bahrain',
+    'BD' => 'Bangladesh',
+    'BB' => 'Barbados',
+    'BY' => 'Belarus',
+    'BE' => 'Belgium',
+    'BZ' => 'Belize',
+    'BJ' => 'Benin',
+    'BM' => 'Bermuda',
+    'BT' => 'Bhutan',
+    'BO' => 'Bolivia',
+    'BA' => 'Bosnia and Herzegowina',
+    'BW' => 'Botswana',
+    'BV' => 'Bouvet Island',
+    'BR' => 'Brazil',
+    'IO' => 'British Indian Ocean Territory',
+    'BN' => 'Brunei Darussalam',
+    'BG' => 'Bulgaria',
+    'BF' => 'Burkina Faso',
+    'BI' => 'Burundi',
+    'KH' => 'Cambodia',
+    'CM' => 'Cameroon',
+    'CA' => 'Canada',
+    'CV' => 'Cape Verde',
+    'KY' => 'Cayman Islands',
+    'CF' => 'Central African Republic',
+    'TD' => 'Chad',
+    'CL' => 'Chile',
+    'CN' => 'China',
+    'CX' => 'Christmas Island',
+    'CC' => 'Cocos (Keeling) Islands',
+    'CO' => 'Colombia',
+    'KM' => 'Comoros',
+    'CG' => 'Congo',
+    'CK' => 'Cook Islands',
+    'CR' => 'Costa Rica',
+    'CI' => 'Cote D\'Ivoire',
+    'HR' => 'Croatia',
+    'CU' => 'Cuba',
+    'CY' => 'Cyprus',
+    'CZ' => 'Czech Republic',
+    'CD' => 'Democratic Republic of Congo',
+    'DK' => 'Denmark',
+    'DJ' => 'Djibouti',
+    'DM' => 'Dominica',
+    'DO' => 'Dominican Republic',
+    'TP' => 'East Timor',
+    'EC' => 'Ecuador',
+    'EG' => 'Egypt',
+    'SV' => 'El Salvador',
+    'GQ' => 'Equatorial Guinea',
+    'ER' => 'Eritrea',
+    'EE' => 'Estonia',
+    'ET' => 'Ethiopia',
+    'FK' => 'Falkland Islands (Malvinas)',
+    'FO' => 'Faroe Islands',
+    'FJ' => 'Fiji',
+    'FI' => 'Finland',
+    'FR' => 'France',
+    'FX' => 'France, Metropolitan',
+    'GF' => 'French Guiana',
+    'PF' => 'French Polynesia',
+    'TF' => 'French Southern Territories',
+    'GA' => 'Gabon',
+    'GM' => 'Gambia',
+    'GE' => 'Georgia',
+    'DE' => 'Germany',
+    'GH' => 'Ghana',
+    'GI' => 'Gibraltar',
+    'GR' => 'Greece',
+    'GL' => 'Greenland',
+    'GD' => 'Grenada',
+    'GP' => 'Guadeloupe',
+    'GU' => 'Guam',
+    'GT' => 'Guatemala',
+    'GN' => 'Guinea',
+    'GW' => 'Guinea-bissau',
+    'GY' => 'Guyana',
+    'HT' => 'Haiti',
+    'HM' => 'Heard and Mc Donald Islands',
+    'HN' => 'Honduras',
+    'HK' => 'Hong Kong',
+    'HU' => 'Hungary',
+    'IS' => 'Iceland',
+    'IN' => 'India',
+    'ID' => 'Indonesia',
+    'IR' => 'Iran (Islamic Republic of)',
+    'IQ' => 'Iraq',
+    'IE' => 'Ireland',
+    'IL' => 'Israel',
+    'IT' => 'Italy',
+    'JM' => 'Jamaica',
+    'JP' => 'Japan',
+    'JO' => 'Jordan',
+    'KZ' => 'Kazakhstan',
+    'KE' => 'Kenya',
+    'KI' => 'Kiribati',
+    'KR' => 'Korea, Republic of',
+    'KW' => 'Kuwait',
+    'KG' => 'Kyrgyzstan',
+    'LA' => 'Lao People\'s Democratic Republic',
+    'LV' => 'Latvia',
+    'LB' => 'Lebanon',
+    'LS' => 'Lesotho',
+    'LR' => 'Liberia',
+    'LY' => 'Libyan Arab Jamahiriya',
+    'LI' => 'Liechtenstein',
+    'LT' => 'Lithuania',
+    'LU' => 'Luxembourg',
+    'MO' => 'Macau',
+    'MK' => 'Macedonia',
+    'MG' => 'Madagascar',
+    'MW' => 'Malawi',
+    'MY' => 'Malaysia',
+    'MV' => 'Maldives',
+    'ML' => 'Mali',
+    'MT' => 'Malta',
+    'MH' => 'Marshall Islands',
+    'MQ' => 'Martinique',
+    'MR' => 'Mauritania',
+    'MU' => 'Mauritius',
+    'YT' => 'Mayotte',
+    'MX' => 'Mexico',
+    'FM' => 'Micronesia, Federated States of',
+    'MD' => 'Moldova, Republic of',
+    'MC' => 'Monaco',
+    'MN' => 'Mongolia',
+    'MS' => 'Montserrat',
+    'MA' => 'Morocco',
+    'MZ' => 'Mozambique',
+    'MM' => 'Myanmar',
+    'NA' => 'Namibia',
+    'NR' => 'Nauru',
+    'NP' => 'Nepal',
+    'NL' => 'Netherlands',
+    'AN' => 'Netherlands Antilles',
+    'NC' => 'New Caledonia',
+    'NZ' => 'New Zealand',
+    'NI' => 'Nicaragua',
+    'NE' => 'Niger',
+    'NG' => 'Nigeria',
+    'NU' => 'Niue',
+    'NF' => 'Norfolk Island',
+    'KP' => 'North Korea',
+    'MP' => 'Northern Mariana Islands',
+    'NO' => 'Norway',
+    'OM' => 'Oman',
+    'PK' => 'Pakistan',
+    'PW' => 'Palau',
+    'PA' => 'Panama',
+    'PG' => 'Papua New Guinea',
+    'PY' => 'Paraguay',
+    'PE' => 'Peru',
+    'PH' => 'Philippines',
+    'PN' => 'Pitcairn',
+    'PL' => 'Poland',
+    'PT' => 'Portugal',
+    'PR' => 'Puerto Rico',
+    'QA' => 'Qatar',
+    'RE' => 'Reunion',
+    'RO' => 'Romania',
+    'RU' => 'Russian Federation',
+    'RW' => 'Rwanda',
+    'KN' => 'Saint Kitts and Nevis',
+    'LC' => 'Saint Lucia',
+    'VC' => 'Saint Vincent and the Grenadines',
+    'WS' => 'Samoa',
+    'SM' => 'San Marino',
+    'ST' => 'Sao Tome and Principe',
+    'SA' => 'Saudi Arabia',
+    'SN' => 'Senegal',
+    'SC' => 'Seychelles',
+    'SL' => 'Sierra Leone',
+    'SG' => 'Singapore',
+    'SK' => 'Slovak Republic',
+    'SI' => 'Slovenia',
+    'SB' => 'Solomon Islands',
+    'SO' => 'Somalia',
+    'ZA' => 'South Africa',
+    'GS' => 'South Georgia &amp; South Sandwich Islands',
+    'ES' => 'Spain',
+    'LK' => 'Sri Lanka',
+    'SH' => 'St. Helena',
+    'PM' => 'St. Pierre and Miquelon',
+    'SD' => 'Sudan',
+    'SR' => 'Suriname',
+    'SJ' => 'Svalbard and Jan Mayen Islands',
+    'SZ' => 'Swaziland',
+    'SE' => 'Sweden',
+    'CH' => 'Switzerland',
+    'SY' => 'Syrian Arab Republic',
+    'TW' => 'Taiwan',
+    'TJ' => 'Tajikistan',
+    'TZ' => 'Tanzania, United Republic of',
+    'TH' => 'Thailand',
+    'TG' => 'Togo',
+    'TK' => 'Tokelau',
+    'TO' => 'Tonga',
+    'TT' => 'Trinidad and Tobago',
+    'TN' => 'Tunisia',
+    'TR' => 'Turkey',
+    'TM' => 'Turkmenistan',
+    'TC' => 'Turks and Caicos Islands',
+    'TV' => 'Tuvalu',
+    'UG' => 'Uganda',
+    'UA' => 'Ukraine',
+    'AE' => 'United Arab Emirates',
+    'GB' => 'United Kingdom',
+    'US' => 'United States',
+    'UM' => 'United States Minor Outlying Islands',
+    'UY' => 'Uruguay',
+    'UZ' => 'Uzbekistan',
+    'VU' => 'Vanuatu',
+    'VA' => 'Vatican City State (Holy See)',
+    'VE' => 'Venezuela',
+    'VN' => 'Viet Nam',
+    'VG' => 'Virgin Islands (British)',
+    'VI' => 'Virgin Islands (U.S.)',
+    'WF' => 'Wallis and Futuna Islands',
+    'EH' => 'Western Sahara',
+    'YE' => 'Yemen',
+    'YU' => 'Yugoslavia',
+    'ZM' => 'Zambia',
+    'ZW' => 'Zimbabwe',
+  );
+  
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>LiteCart Installer</title>
-<style>
-body {
-  margin: 10px;
-  
-  background: none repeat scroll 0% 0% rgb(184, 211, 244);
-  
-  font-size: 12px;
-  font-family: Arial, Helvetica,sans-serif;
-  color: #333;
-}
-a:link, a:visited{
-  color: #3863c5;
-  text-decoration: none;
-}
-a:hover, a:active{
-  color: #c00;
-  text-decoration: underline;
-}
-#body-wrapper {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-  
-  max-width: 640px;
-  
-  padding: 10px;
-  
-  border: 1px solid rgba(128,128,128,0.5);
-  
-  border-radius: 15px 15px 15px 15px;
-  -moz-border-radius: 15px 15px 15px 15px;
-  -webkit-border-radius: 15px;
-  
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-  -o-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-  -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-}
-#body{
-  padding: 20px;
-  background-color: #fff;
-  border: 1px rgba(128,128,128,0.5) solid;
-  
-  border-radius: 15px;
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
-}
-span.ok {
-  color: #0c0;
-  font-weight: bold;
-}
-span.error {
-  color: #f00;
-  font-weight: bold;
-}
-</style>
-</head>
-<body>
-<div id="body-wrapper">
-  <div id="body">
-  <img src="../images/logotype.png" height="60" align="right" />
-  
+
   <h1>Installer</h1>
   
   <h2>System Requirements</h2>
@@ -204,7 +382,7 @@ span.error {
         <td><strong>Table Prefix</strong><br />
         <input name="db_table_prefix" type="text" value="lc_" style="width: 75px;" /></td>
         <td><strong>Demo Data</strong><br />
-          <label><input name="demo_data" type="checkbox" value="true" <?php echo (file_get_contents('demo.sql') == '') ? 'disabled="disabled"' : ''; ?> /> Install demo data</label></td>
+          <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled="disabled"' : ''; ?> /> Install demo data</label></td>
       </tr>
     </table>
     <h3>Store Information</h3>
@@ -213,10 +391,18 @@ span.error {
         <td><strong>Store Name</strong><br />
           <input name="store_name" type="text" value="My Store"  /></td>
         <td><strong>Store E-mail</strong><br />
-          <input name="store_email" type="text" value="store@email.com"  /></td>
+          <input name="store_email" type="text" value="store@email.com" /></td>
       </tr>
       <tr>
-        <td><strong>Time Zone</strong><br />
+        <td colspan="2"><strong>Country</strong><br />
+          <select name="country_code">
+            <option value="">-- Select --</option>
+            <?php foreach ($countries as $code => $name) echo '<option value="'. $code .'">'. $name .'</option>' . PHP_EOL; ?>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><strong>Time Zone</strong><br />
           <select name="store_time_zone" >
 <?php
   $zones = timezone_identifiers_list();
@@ -233,7 +419,6 @@ span.error {
   }
 ?>
         </select></td>
-        <td>&nbsp;</td>
       </tr>
     </table>
     <h3>Administration</h3>
@@ -260,8 +445,4 @@ span.error {
       <input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing installations will be overwritten with new data.')) return false;" />
     </p>
   </form>
-  </div>
-</div>
-<body>
-</body>
-</html>
+<?php require('includes/footer.inc.php'); ?>

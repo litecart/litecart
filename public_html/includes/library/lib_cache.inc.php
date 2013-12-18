@@ -158,7 +158,7 @@
             $dependants_string .= language::$selected['code'];
             break;
           case 'prices':
-            $dependants_string .= settings::get('display_prices_including_tax');
+            $dependants_string .= customer::$data['display_prices_including_tax'];
             break;
           default:
             if (is_array($dependant)) {

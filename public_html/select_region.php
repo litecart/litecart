@@ -22,6 +22,8 @@
     customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
     customer::$data['shipping_address']['zone_code'] = $_POST['zone_code'];
     
+    customer::$data['display_prices_including_tax'] = (int)$_POST['display_prices_including_tax'];
+    
     if (empty($_GET['redirect'])) $_GET['redirect'] = WS_DIR_HTTP_HOME;
     
     header('Location: '. $_GET['redirect']);
@@ -43,6 +45,12 @@
       <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?></td>
     <td><?php echo language::translate('title_zone', 'Zone'); ?><br />
       <?php echo functions::form_draw_zones_list(customer::$data['country_code'], 'zone_code', customer::$data['zone_code']); ?></td>
+  </tr>
+  <tr>
+    <td><?php echo language::translate('title_display_prices', 'Display Prices'); ?><br />
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label><br />
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label></td>
+    <td></td>
   </tr>
   <tr>
     <td colspan="2"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?></td>

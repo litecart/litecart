@@ -29,6 +29,7 @@
         'parent_id',
         'code',
         'list_style',
+        'dock',
         'image',
         'name',
         'short_description',
@@ -114,6 +115,11 @@ foreach (array_keys(language::$languages) as $language_code) {
           <tr>
             <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_parent_category', 'Parent Category'); ?></strong><br />
               <?php echo functions::form_draw_categories_list('parent_id', true); ?>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_dock', 'Dock'); ?></strong><br />
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', !isset($_POST['dock']) ? 'menu' : true); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in menu'); ?></label>
             </td>
           </tr>
           <tr>

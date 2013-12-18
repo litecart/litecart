@@ -19,11 +19,11 @@
     <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link(WS_DIR_HTTP_HOME)); ?>
       <table width="100%">
         <tr>
-          <td><?php echo language::translate('title_email_address', 'E-mail Address'); ?><br />
+          <td><?php echo language::translate('title_email_address', 'E-mail Address'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_text_field('email', true); ?></td>
         </tr>
         <tr>
-          <td><?php echo language::translate('title_password', 'Password'); ?><br />
+          <td><?php echo language::translate('title_password', 'Password'); ?> <span class="required">*</span><br />
           <?php echo functions::form_draw_password_field('password', ''); ?></td>
         </tr>
         <tr>

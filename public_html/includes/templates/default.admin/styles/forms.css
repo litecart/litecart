@@ -10,12 +10,7 @@ input[type=date], input[type=datetime], input[type=email], input[type=number], i
   border: 1px solid #d1d1d1;
   border-radius: 3px;
   
-  background-color: #f9f9f9;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
-  background-image: -webkit-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -moz-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -ms-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -o-linear-gradient(top, #ececec, #f9f9f9);
+  background-color: #f4f4f4;
   
   font: normal 12px Sans-serif;
   color: #333;
