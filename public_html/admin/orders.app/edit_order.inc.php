@@ -444,7 +444,7 @@
       <td colspan="6" nowrap="nowrap" align="left"><a class="add_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
     </tr>
     <tr class="footer" style="font-size: 1.5em;">
-      <td colspan="6" nowrap="nowrap" align="right"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong id="order-total"><?php echo currency::format($order->data['payment_due']); ?></strong></td>
+    <td colspan="6" nowrap="nowrap" align="right"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong id="order-total"><?php echo currency::format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?></strong></td>
     </tr>
   </table>
   <script>
@@ -500,7 +500,7 @@
       $("#order-total").text("<?php echo currency::$currencies[$order->data['currency_code']]['prefix']; ?>" + order_total + "<?php echo currency::$currencies[$order->data['currency_code']]['suffix']; ?>");
     }
     
-    $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], a.remove_item, a.remove_ot_row", function() {
+  $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], a.remove_item, a.remove_ot_row", function() {
       calculate_total();
     });
   </script>

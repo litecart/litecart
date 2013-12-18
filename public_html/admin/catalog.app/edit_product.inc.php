@@ -677,7 +677,7 @@ foreach (currency::$currencies as $currency) {
           $("body").on("keyup change", "input[name^='campaigns'][name$='[percentage]']", function() {
             var parent = $(this).closest('tr');
             
-            <?php foreach ($system->currency->currencies as $currency) { ?>
+            <?php foreach (currency::$currencies as $currency) { ?>
             if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() > 0) {
               var value = $("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100);
               value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
@@ -687,7 +687,7 @@ foreach (currency::$currencies as $currency) {
             }
             <?php } ?>
             
-            <?php foreach ($system->currency->currencies as $currency) { ?>
+            <?php foreach (currency::$currencies as $currency) { ?>
             var value = $(parent).find("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").val() * <?php echo $currency['value']; ?>;
             value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
             $(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").attr('placeholder', value);
@@ -700,7 +700,7 @@ foreach (currency::$currencies as $currency) {
             percentage = Number(percentage).toFixed(2);
             $(parent).find("input[name$='[percentage]']").val(percentage);
             
-            <?php foreach ($system->currency->currencies as $currency) { ?>
+            <?php foreach (currency::$currencies as $currency) { ?>
             var value = 0;
             value = $(parent).find("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").val() * <?php echo $currency['value']; ?>;
             value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);

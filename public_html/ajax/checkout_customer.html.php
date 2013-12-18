@@ -173,13 +173,13 @@
                 </tr>
                 <tr>
                   <td><?php echo language::translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-                    <?php echo functions::form_draw_text_field('firstname', true); ?></td>
+                    <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?></td>
                   <td><?php echo language::translate('title_lastname', 'Last Name'); ?> <span class="required">*</span><br />
-                    <?php echo functions::form_draw_text_field('lastname', true); ?></td>
+                    <?php echo functions::form_draw_text_field('lastname', true, 'required="required"'); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo language::translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-                    <?php echo functions::form_draw_text_field('address1', true); ?></td>
+                    <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?></td>
                   <td><?php echo language::translate('title_address2', 'Address 2'); ?><br />
                   <?php echo functions::form_draw_text_field('address2', true); ?></td>
                 </tr>
@@ -187,20 +187,21 @@
                   <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
                     <?php echo functions::form_draw_text_field('postcode', true, 'style="width: 50px;"'); ?></td>
                   <td><?php echo language::translate('title_city', 'City'); ?> <span class="required">*</span><br />
-                    <?php echo functions::form_draw_text_field('city', true); ?></td>
+                    <?php echo functions::form_draw_text_field('city', true, 'required="required"'); ?></td>
                 </tr>
                 <tr>
                   <td><?php echo language::translate('title_country', 'Country'); ?> <span class="required">*</span><br />
-                    <?php echo functions::form_draw_countries_list('country_code', true); ?></td>
+                    <?php echo functions::form_draw_countries_list('country_code', true, 'required="required"'); ?></td>
                   <td><?php echo language::translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
                     <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
                 </tr>
                 <?php if (empty(customer::$data['id'])) { ?>
                 <tr>
                   <td width="50%"><?php echo language::translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
-                    <?php echo functions::form_draw_email_field('email', true, ''); ?></td>
-                  <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
-                  <?php echo functions::form_draw_text_field('phone', true); ?></td>                </tr>
+                    <?php echo functions::form_draw_email_field('email', true, 'required="required"'); ?></td>
+                  <td><?php echo language::translate('title_phone', 'Phone'); ?> <span class="required">*</span><br />
+                  <?php echo functions::form_draw_text_field('phone', true, 'required="required"'); ?></td>
+                </tr>
                 <?php if (settings::get('register_guests') && settings::get('fields_customer_password')) { ?>
                 <tr>
                   <td><?php echo language::translate('title_password', 'Password'); ?> <span class="required">*</span><br />

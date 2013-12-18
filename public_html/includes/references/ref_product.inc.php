@@ -328,7 +328,7 @@
               $row['sku'] = $this->sku;
             }
             
-            if (empty($row['weight'])) {
+            if (empty($row['weight']) || $row['weight'] == 0) {
               $row['weight'] = $this->weight;
               $row['weight_class'] = $this->weight_class;
             }

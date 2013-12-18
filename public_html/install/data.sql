@@ -309,7 +309,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 -- --------------------------------------------------------
 INSERT INTO `lc_currencies` (`status`, `code`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'USD', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
-(1, 'EUR', 'Euros', 1, 2, '', ' €', 0, NOW(), NOW());
+(1, 'EUR', 'Euros', 0.726, 2, '', ' €', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 1, NOW(), NOW()),

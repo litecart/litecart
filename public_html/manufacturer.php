@@ -4,7 +4,7 @@
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link('manufacturers.php'));
   
   if (empty($_GET['manufacturer_id'])) {
-    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
+    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
     exit;
   }
   

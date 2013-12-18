@@ -2,7 +2,7 @@
   require_once('includes/app_header.inc.php');
   
   if (empty($_GET['category_id'])) {
-    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'categories.php'));
+    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'categories.php'));
     exit;
   }
   
