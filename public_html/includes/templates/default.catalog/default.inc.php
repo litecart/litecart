@@ -109,7 +109,6 @@
       
       <div id="social-bookmarks-wrapper">
         <!-- AddThis Button BEGIN -->
-        <!--
         <div id="social-bookmarks" class="addthis_toolbox addthis_default_style addthis_24x24_style" style="display: inline;">
         <a class="addthis_button_facebook"></a>
         <a class="addthis_button_google_plusone_share"></a>
@@ -118,7 +117,6 @@
         <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
         </div>
         <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
-        -->
         <!-- AddThis Button END -->
       </div>
     </div>

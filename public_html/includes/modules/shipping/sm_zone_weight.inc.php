@@ -34,7 +34,7 @@
         
         $options[] = array(
           'id' => 'zone_'.$i,
-          'icon' => '',
+          'icon' => $this->settings['icon'],
           'name' => functions::reference_get_country_name($customer['country_code']),
           'description' => $GLOBALS['system']->weight->format($weight, 'kg'),
           'fields' => '',
@@ -51,7 +51,7 @@
           
           $options[] = array(
             'id' => 'zone_x',
-            'icon' => '',
+            'icon' => $this->settings['icon'],
             'name' => functions::reference_get_country_name($customer['country_code']),
             'description' => $GLOBALS['system']->weight->format($weight, 'kg'),
             'fields' => '',

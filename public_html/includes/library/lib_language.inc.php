@@ -174,7 +174,7 @@
       if (isset(self::$languages[settings::get('store_language_code')])) return settings::get('store_language_code');
       
     // Return first language
-      $language = array_keys($this->languages);
+      $language = array_keys(self::$languages);
       return array_shift($languages);
     }
     

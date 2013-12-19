@@ -48,16 +48,60 @@
     return ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? '' : '/') . implode('/', $absolutes);
   }
   
-  $installation_path = get_absolute_path(dirname(__FILE__) .'/..') .'/';
+  ### Set Environment Variables ###################################
   
-  ### Set ###################################
+  $installation_path = get_absolute_path(dirname(__FILE__) .'/..') .'/';
   
   $_POST['admin_folder'] = str_replace('\\', '/', $_POST['admin_folder']);
   $_POST['admin_folder'] = rtrim($_POST['admin_folder'], '/') . '/';
   
-  ### Config ###################################
+  ### PHP > Check Version #############################
+
+  echo '<p>Checking PHP version... ';
   
-  echo '<p>Writing config file...';
+  if (version_compare(PHP_VERSION, '5.3', '<')) {
+    die('<span class="error">[Error] PHP 5.3+ required - Detected '. PHP_VERSION .'</span></p>');
+  } else if (version_compare(PHP_VERSION, '5.4', '<')) {
+    echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
+       . '<span class="warning">PHP 5.4+ recommended</span></span></p>';
+  } else {
+    echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+  
+  ### Database > Connection ###################################
+
+  echo '<p>Connecting to database... ';
+  
+  define('DB_SERVER', $_POST['db_server']);
+  define('DB_USERNAME', $_POST['db_username']);
+  define('DB_PASSWORD', $_POST['db_password']);
+  define('DB_DATABASE', $_POST['db_database']);
+  define('DB_TABLE_PREFIX', $_POST['db_table_prefix']);
+  define('DB_DATABASE_CHARSET', 'utf8');
+  define('DB_PERSISTENT_CONNECTIONS', 'false');
+  
+  require('database.class.php');
+  $database = new database(null);
+  
+  echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+  
+  ### Database > Check Version #############################
+
+  echo '<p>Checking MySQL version... ';
+  
+  $version_query = $database->query("SELECT VERSION();");
+  $version = $database->fetch($version_query);
+
+  
+  if (version_compare($version['VERSION()'], '5.5', '<')) {
+    die($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+  } else {
+    echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+  
+  ### Config > Write ###################################
+  
+  echo '<p>Writing config file... ';
   
   $config = file_get_contents('config');
   
@@ -80,30 +124,15 @@
   
   define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
   
-  file_put_contents('../includes/config.inc.php', $config);
-  
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
-  
-  ### Database > Connection ################################### 
-
-  echo 'Connecting to database...';
-  
-  define('DB_SERVER', $_POST['db_server']);
-  define('DB_USERNAME', $_POST['db_username']);
-  define('DB_PASSWORD', $_POST['db_password']);
-  define('DB_DATABASE', $_POST['db_database']);
-  define('DB_TABLE_PREFIX', $_POST['db_table_prefix']);
-  define('DB_DATABASE_CHARSET', 'utf8');
-  define('DB_PERSISTENT_CONNECTIONS', 'false');
-  
-  require('database.class.php');
-  $database = new database(null);
-  
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  if (file_put_contents('../includes/config.inc.php', $config)) {
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+  } else {
+    die('<span class="error">[Done]</span></p>' . PHP_EOL);
+  }
   
   ### Database > Cleaning ###################################
   
-  echo '<p>Cleaning database...';
+  echo '<p>Cleaning database... ';
   
   $sql = file_get_contents('clean.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
@@ -115,11 +144,11 @@
     $database->query($query);
   }
   
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
   
   ### Database > Tables > Structure ###################################
   
-  echo '<p>Writing database tables...';
+  echo '<p>Writing database tables... ';
   
   $sql = file_get_contents('structure.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
@@ -131,11 +160,11 @@
     $database->query($query);
   }
   
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
   
   ### Database > Tables > Data ###################################
   
-  echo '<p>Writing database table data...';
+  echo '<p>Writing database table data... ';
   
   $sql = file_get_contents('data.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
@@ -158,12 +187,12 @@
     $database->query($query);
   }
   
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
   
   ### Database > Tables > Demo Data ###################################
   
   if (!empty($_POST['demo_data'])) {
-    echo '<p>Writing demo data...';
+    echo '<p>Writing demo data... ';
     
     $sql = file_get_contents('data/demo/data.sql');
     
@@ -178,7 +207,7 @@
       }
     }
     
-    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
   }
   
   ### Files > Demo Data ###################################

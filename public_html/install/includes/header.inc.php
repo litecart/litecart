@@ -58,6 +58,10 @@ span.error {
   color: #f00;
   font-weight: bold;
 }
+span.warning {
+  color: #c60;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>

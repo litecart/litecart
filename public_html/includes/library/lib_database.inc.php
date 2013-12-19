@@ -194,21 +194,21 @@
     public function multi_query($query, $link='default') {
     
     // Establish a link if not previously made
-      if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
+      if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
       
-      if ($this->_type == 'mysqli') {
-        if (mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]))) {
+      if (self::$_type == 'mysqli') {
+        if (mysqli_multi_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]))) {
           do {
-            if ($result = mysqli_use_result($this->_links[$link])) {
+            if ($result = mysqli_use_result(self::$_links[$link])) {
               while ($row = mysqli_fetch_row($result)) {
               }
               mysqli_free_result($result);
             }
           }
-          while (mysqli_next_result($this->_links[$link]));
+          while (mysqli_next_result(self::$_links[$link]));
         }
       } else {
-        $this->query($query, $this->_links[$link]); // don't pick up results - we're not supporting it
+        self::query($query, self::$_links[$link]); // don't pick up results - we're not supporting it
       }
       return;
     }

@@ -86,11 +86,21 @@
 <?php
     }
     
+    switch ($category->list_style) {
+      case 'rows':
+        $items_per_page = 10;
+        break;
+      case 'columns':
+      default:
+        $items_per_page = settings::get('items_per_page');
+        break;
+    }
+    
     $products_query = functions::catalog_products_query(array('category_id' => $category->id, 'sort' => $_GET['sort']));
     if (database::num_rows($products_query)) {
       echo '<ul class="listing-wrapper products">' . PHP_EOL;
       
-      if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page') * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) database::seek($products_query, $items_per_page * ($_GET['page'] - 1));
       
       $page_items = 0;
       while ($listing_product = database::fetch($products_query)) {
@@ -103,14 +113,13 @@
             echo functions::draw_listing_product_column($listing_product);
             break;
         }
-        
-        if (++$page_items == settings::get('items_per_page')) break;
+        if (++$page_items == $items_per_page) break;
       }
     }
     
     echo '    </ul>' . PHP_EOL;
     
-    echo functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
+    echo functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
 ?>
   </div>
 </div>
