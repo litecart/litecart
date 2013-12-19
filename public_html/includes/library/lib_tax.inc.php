@@ -102,8 +102,9 @@
       
       if ($country_code === null) {
         $country_code = (!empty($GLOBALS['system']->customer->data['country_code'])) ? $GLOBALS['system']->customer->data['country_code'] : $GLOBALS['system']->settings->get('default_country_code');
-      } else if ($zone_code === null) {
-        $zone_code = (!empty($GLOBALS['system']->customer->data['zone_code'])) ? $GLOBALS['system']->customer->data['zone_code'] : $GLOBALS['system']->settings->get('default_zone_code');
+        if ($zone_code === null) {
+          $zone_code = (!empty($GLOBALS['system']->customer->data['zone_code'])) ? $GLOBALS['system']->customer->data['zone_code'] : $GLOBALS['system']->settings->get('default_zone_code');
+        }
       }
       
       if (isset($this->cache['rates'][$tax_class_id][$country_code.':'.$zone_code])) return $this->cache['rates'][$tax_class_id][$country_code.':'.$zone_code];

@@ -121,18 +121,17 @@
     
     public function stitch(&$html) {
       
-      foreach ($this->snippets as $key => $replace) {
+      foreach (self::$snippets as $key => $replace) {
       
         if (is_array($replace)) $replace = implode(PHP_EOL, $replace);
         
         $search = array(
-          '/'. preg_quote('{snippet:'.$key.'}', '/') .'/',
-          '/'. preg_quote('<!--snippet:'.$key.'-->', '/') .'/'
+          '{snippet:'.$key.'}',
+          '<!--snippet:'.$key.'-->',
         );
+        $html = str_replace($search, $replace, $html, $replacements);
         
-        $html = preg_replace($search, $replace, $html, -1, $replacements);
-        
-        if ($replacements) unset($this->snippets[$key]);
+        if ($replacements) unset(self::$snippets[$key]);
       }
       
       $html = preg_replace($search, '', $html);

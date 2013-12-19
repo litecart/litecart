@@ -79,23 +79,31 @@
     
     switch ($filter['sort']) {
       case 'name':
-        $sql_sort = "pi.name asc";
+        $sql_local_sort = "";
+        $sql_global_sort = "order by pi.name asc";
         break;
       case 'price':
-        $sql_sort = "final_price asc";
+        $sql_local_sort = "";
+        $sql_global_sort = "order by final_price asc";
         break;
       case 'date':
-        $sql_sort = "p.date_created desc";
+        $sql_local_sort = "order by date_created desc";
+        $sql_global_sort = "";
         break;
       case 'occurrences':
-        $sql_sort = "occurrences desc";
+        $sql_local_sort = "";
+        $sql_global_sort = "order by occurrences desc";
         break;
       case 'rand':
-        $sql_sort = "rand()";
+        $sql_local_sort = "";
+        $sql_global_sort = "order by rand()";
         break;
       case 'popularity':
       default:
-        $sql_sort = "(p.purchases / p.views) desc, (p.views / ((unix_timestamp() - unix_timestamp(p.date_created)) / 86400)) desc, p.date_created desc";
+        //$sql_local_sort = "order by (p.purchases / p.views) desc";
+        //$sql_local_sort = "order by (views / ((unix_timestamp() - unix_timestamp(date_created)) / 86400)) desc, date_created desc";
+        $sql_local_sort = "order by (views / timestampdiff(day, now(), from_unixtime(date_created))) desc";
+        $sql_global_sort = "";
         break;
     }
     
@@ -109,11 +117,11 @@
   // Define match points
     if ($filter['sort'] == 'occurrences') {
       $sql_select_occurrences = "(0
-        ". (isset($filter['product_name']) ? "+ if(pi.name = '". $GLOBALS['system']->database->input($filter['product_name']) ."', 1, 0)" : false) ."
+        ". (isset($filter['product_name']) ? "+ if(pi.name like '%". $GLOBALS['system']->database->input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (isset($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', p.categories), 1, 0) + if(find_in_set('", $filter['categories']) ."', p.categories), 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", $filter['keywords']) ."', p.keywords), 1, 0)" : false) ."
-        ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
+        ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
         ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", $filter['product_groups']) ."', p.product_groups), 1, 0)" : false) ."
         ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", $GLOBALS['system']->database->input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences";
@@ -129,7 +137,7 @@
         $product_groups[$group][] = $group_value;
       }
       foreach ($product_groups as $group_value) {
-        $sql_where_product_groups .= "$sql_andor (find_in_set('". implode("', p.product_groups) or find_in_set('", $group_value) ."', p.product_groups))";
+        $sql_where_product_groups .= "$sql_andor (find_in_set('". implode("', product_groups) or find_in_set('", $group_value) ."', product_groups))";
       }
     }
     
@@ -137,48 +145,51 @@
     if (!empty($filter['price_ranges'])) {
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
-        $sql_where_prices .= " or (if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp_tmp.price) >= ". (float)$min ." and if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp_tmp.price) <= ". (float)$max .")";
+        $sql_where_prices .= " or (if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
       }
       $sql_where_prices = "$sql_andor (". ltrim($sql_where_prices, " or ") .")";
     }
     
-    $query =
-      "select p.id, p.product_groups, p.image, p.tax_class_id, p.quantity, p.date_created, pi.name, pi.short_description, pp_tmp.price, pc_tmp.campaign_price, if(pc_tmp.campaign_price, pc_tmp.campaign_price, pp_tmp.price) as final_price, p.manufacturer_id, m.name as manufacturer_name
-      ". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ."
-      from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". $GLOBALS['system']->database->input($GLOBALS['system']->language->selected['code']) ."')
-      left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
+    $sql_price_column = "if(pp.`". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ."`, pp.`". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ."` / ". (float)$GLOBALS['system']->currency->selected['value'] .", pp.`". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('store_currency_code')) ."`)";
+    $sql_campaign_price_column = "if(`". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ."`, `". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ."` / ". (float)$GLOBALS['system']->currency->selected['value'] .", `". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('store_currency_code')) ."`)";
+    
+    $query = "
+      select p.*, pi.name, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
+        select id, manufacturer_id, categories, keywords, product_groups, image, tax_class_id, quantity, date_created from ". DB_TABLE_PRODUCTS ."
+        where status
+          and (id
+          ". (isset($filter['products']) ? "$sql_andor id in ('". implode("', '", $filter['products']) ."')" : false) ."
+          ". (!empty($filter['categories']) ? "$sql_andor (find_in_set('". implode("', categories) or find_in_set('", $filter['categories']) ."', categories))" : false) ."
+          ". (!empty($filter['manufacturers']) ? "$sql_andor manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."')" : false) ."
+          ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', keywords) or find_in_set('", $filter['keywords']) ."', keywords))" : false) ."
+          ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
+          ". (!empty($filter['purchased']) ? "$sql_andor purchases" : false) ."
+        )
+        and (date_valid_from < '1971' or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+        and (date_valid_to < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+        ". (isset($filter['exclude_products']) ? "and id not in ('". implode("', '", $filter['exclude_products']) ."')" : false) ."
+        ". $sql_local_sort ."
+        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : "") ."
+      ) p
+      join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.language_code = 'en' and pi.product_id = p.id and name != '')
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
+      left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
       left join (
-        select pp.product_id, if(pp.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) .", pp.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ."  / ". $GLOBALS['system']->currency->selected['value'] .", pp.". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('store_currency_code')) .") as price
-        from ". DB_TABLE_PRODUCTS_PRICES ." pp
-      ) pp_tmp on (pp_tmp.product_id = p.id)
-      left join (
-        select pc.product_id, if(pc.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) .", pc.". $GLOBALS['system']->database->input($GLOBALS['system']->currency->selected['code']) ." / ". $GLOBALS['system']->currency->selected['value'] .", pc.". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('store_currency_code')) .") as campaign_price
-        from ". DB_TABLE_PRODUCTS_CAMPAIGNS ." pc
-        where (pc.start_date = '0000-00-00 00:00:00' or pc.start_date <= '". date('Y-m-d H:i:s') ."')
-        and (pc.end_date = '0000-00-00 00:00:00' or pc.end_date >= '". date('Y-m-d H:i:s') ."')
-        order by pc.end_date asc
-      ) pc_tmp on (pc_tmp.product_id = p.id)
-      where p.status
-      and (p.date_valid_from = '0000-00-00 00:00:00' or p.date_valid_from <= '". date('Y-m-d H:i:00') ."')
-      and (p.date_valid_to = '0000-00-00 00:00:00' or p.date_valid_to >= '". date('Y-m-d H:i:59') ."')
-      ". (isset($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : false) ."
-      and (p.id
-        ". (isset($filter['product_name']) ? "$sql_andor pi.name = '". $GLOBALS['system']->database->input($filter['product_name']) ."'" : false) ."
+        select product_id, ". $sql_campaign_price_column ." as campaign_price
+        from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        where (start_date < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
+        and (end_date < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+        order by end_date asc
+      ) pc on (pc.product_id = p.id)
+      where (p.id
         ". (isset($filter['sql_where']) ? "$sql_andor (". $filter['sql_where'] .")" : false) ."
-        ". (!empty($filter['categories']) ? "$sql_andor (find_in_set('". implode("', p.categories) or find_in_set('", $filter['categories']) ."', p.categories))" : false) ."
-        ". (!empty($filter['manufacturers']) ? "$sql_andor p.manufacturer_id in ('". implode("', '", $GLOBALS['system']->database->input($filter['manufacturers'])) ."')" : false) ."
-        ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
+        ". (isset($filter['product_name']) ? "$sql_andor pi.name like '%". $GLOBALS['system']->database->input($filter['product_name']) ."%'" : false) ."
         ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : false) ."
-        ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", $filter['keywords']) ."', p.keywords))" : false) ."
-        ". (isset($filter['products']) ? "$sql_andor p.id in ('". implode("', '", $filter['products']) ."')" : false) ."
         ". (!empty($sql_where_prices) ? $sql_where_prices : false) ."
-        ". (!empty($filter['purchased']) ? "$sql_andor purchases" : false) ."
       )
-      order by $sql_sort
-      ". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";"
-    ;
+      ". $sql_global_sort ."
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";
+    ";
     
     $products_query = $GLOBALS['system']->database->query($query);
     
