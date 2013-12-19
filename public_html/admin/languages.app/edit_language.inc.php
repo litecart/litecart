@@ -42,6 +42,7 @@
     
     if (empty($system->notices->data['errors'])) {
       
+      $_POST['code'] = strtolower($_POST['code']);
       $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
       $_POST['format_datetime'] = $_POST['format_date'] .' '. $_POST['format_time'];
       
@@ -120,7 +121,7 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 639-1)</strong><br />
-        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?></a>
+        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?></a>
       </td>
     </tr>
     <tr>

@@ -42,6 +42,8 @@
     }
     
     if (empty($system->notices->data['errors'])) {
+     
+     $_POST['code'] = strtoupper($_POST['code']);
       
       $fields = array(
         'status',
@@ -105,7 +107,7 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_code', 'Code'); ?> (ISO 4217)</strong><br />
-        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?>
+        <?php echo $system->functions->form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo $system->language->translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>
