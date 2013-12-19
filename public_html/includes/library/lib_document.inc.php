@@ -130,11 +130,11 @@
         if (is_array($replace)) $replace = implode(PHP_EOL, $replace);
         
         $search = array(
-          '/'. preg_quote('{snippet:'.$key.'}', '/') .'/',
-          '/'. preg_quote('<!--snippet:'.$key.'-->', '/') .'/'
+          '{snippet:'.$key.'}',
+          '<!--snippet:'.$key.'-->',
         );
-        
-        $html = preg_replace($search, $replace, $html, -1, $replacements);
+
+        $html = str_replace($search, $replace, $html, $replacements);
         
         if ($replacements) unset(self::$snippets[$key]);
       }

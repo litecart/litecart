@@ -102,8 +102,9 @@
       
       if ($country_code === null) {
         $country_code = (!empty(customer::$data['country_code'])) ? customer::$data['country_code'] : settings::get('default_country_code');
-      } else if ($zone_code === null) {
-        $zone_code = (!empty(customer::$data['zone_code'])) ? customer::$data['zone_code'] : settings::get('default_zone_code');
+        if ($zone_code === null) {
+          $zone_code = (!empty(customer::$data['zone_code'])) ? customer::$data['zone_code'] : settings::get('default_zone_code');
+        }
       }
       
       if (isset(self::$_cache['rates'][$tax_class_id][$country_code.':'.$zone_code])) return self::$_cache['rates'][$tax_class_id][$country_code.':'.$zone_code];

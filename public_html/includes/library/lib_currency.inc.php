@@ -13,24 +13,20 @@
       if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) session::$data['currency'] = array();
       self::$selected = &session::$data['currency'];
       
-    // Get currencies from database
-      $currencies_query = database::query(
-        "select * from ". DB_TABLE_CURRENCIES ."
-        where status
-        order by priority;"
-      );
-      while ($row = database::fetch($currencies_query)) {
-        self::$currencies[$row['code']] = $row;
-      }
+      self::load();
       
     // Set currency, if not set
       if (empty(self::$selected) || empty(self::$currencies[self::$selected['code']]['status'])) self::set();
     }
     
-    //public static function initiate() {
-    //}
-    
     public static function startup() {
+    
+    // Reload currencies if not UTF-8
+      if (strtoupper(language::$selected['charset']) != 'UTF-8') {
+        self::load();
+        self::set(self::$selected['code']);
+      }
+      
       if (!empty($_POST['set_currency'])) {
         self::set($_POST['set_currency']);
         header('Location: '. $_SERVER['REQUEST_URI']);
@@ -54,6 +50,21 @@
     //}
     
     ######################################################################
+    
+    public static function load() {    
+      
+      self::$currencies = array();
+      
+    // Get currencies from database
+      $currencies_query = database::query(
+        "select * from ". DB_TABLE_CURRENCIES ."
+        where status
+        order by priority;"
+      );
+      while ($row = database::fetch($currencies_query)) {
+        self::$currencies[$row['code']] = $row;
+      }
+    }
     
     public static function set($code=null) {
       

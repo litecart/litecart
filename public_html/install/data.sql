@@ -242,7 +242,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_2
 (239, 1, 'Zimbabwe', '', 'ZW', 'ZWE', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', 0, '', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_languages` (`status`, `code`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'en', 'English', 'en_US.utf8', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
+(1, 'en', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('store_info', 'Store Info', 'Store information', 10),
@@ -271,11 +271,11 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('defaults', 'global', 'Default Country', 'The default country selected if not set otherwise.', 'default_country_code', '{STORE_COUNTRY_CODE}', 'countries()', 12, NOW(), NOW()),
 ('defaults', 'global', 'Default Zone', 'The default zone selected if not set otherwise.', 'default_zone_code', '', 'zones()', 13, NOW(), NOW()),
 ('defaults', 'local', 'Default Tax Class', 'Default tax class that will be preset when creating new products.', 'default_tax_class_id', '1', 'tax_classes()', 14, NOW(), NOW()),
+('defaults', 'global', 'Default Display Prices Including Tax', 'Displays prices in including tax by default.', 'default_display_prices_including_tax', '1', 'toggle()', 15, NOW(), NOW()),
 ('general', 'global', 'Set Currency by Language', 'Chain select currency when changing language.', 'set_currency_by_language', '1', 'toggle()', 15, NOW(), NOW()),
 ('general', 'local', 'Contact Form CAPTCHA', 'Prevents spam by enabling CAPTCHA in the contact form.', 'contact_form_captcha_enabled', '1', 'toggle()', 16, NOW(), NOW()),
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'int()', 10, NOW(), NOW()),
 ('listings', 'local', 'Data Table Rows', 'The number of data table rows per page.', 'data_table_rows_per_page', '15', 'input()', 11, NOW(), NOW()),
-('listings', 'global', 'Display Prices Including Tax', 'Displays all prices in catalog including tax.', 'display_prices_including_tax', '1', 'toggle()', 12, NOW(), NOW()),
 ('listings', 'local', 'Display Stock Count', 'Show the available amounts of products in stock.', 'display_stock_count', '1', 'toggle()', 13, NOW(), NOW()),
 ('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping cost on product page.', 'display_cheapest_shipping', '1', 'toggle()', 14, NOW(), NOW()),
 ('listings', 'local', 'Max Age for New Products', 'Display the new sticker for products younger than the give age. I.e. 1 month or 14 days', 'new_products_max_age', '1 month', 'input()', 14, NOW(), NOW()),

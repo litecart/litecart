@@ -266,14 +266,8 @@
     $database->query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
       set locale = 'english',
-      charset = 'ISO-8859-1'
+      charset = 'Windows-1252'
       where code = 'en'
-      limit 1;"
-    );
-    $database->query(
-      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_currencies`') ."
-      set suffix = ' EUR'
-      where code = 'EUR'
       limit 1;"
     );
     echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;

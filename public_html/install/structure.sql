@@ -31,6 +31,7 @@ CREATE TABLE `lc_categories` (
   `status` tinyint(1) NOT NULL,
   `code` varchar(64) NOT NULL,
   `list_style` VARCHAR(32) NOT NULL,
+  `dock` VARCHAR(32) NOT NULL,
   `keywords` varchar(256) NOT NULL,
   `image` varchar(256) NOT NULL,
   `priority` tinyint(2) NOT NULL,
@@ -428,7 +429,7 @@ CREATE TABLE `lc_products_campaigns` (
   `product_id` int(11) NOT NULL,
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
-  `SEK` decimal(11,4) NOT NULL,
+  `USD` decimal(11,4) NOT NULL,
   `EUR` decimal(11,4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
@@ -465,8 +466,8 @@ CREATE TABLE `lc_products_options` (
   `group_id` int(11) NOT NULL,
   `value_id` int(11) NOT NULL,
   `price_operator` varchar(1) NOT NULL,
+  `USD` decimal(11,4) NOT NULL,
   `EUR` decimal(11,4) NOT NULL,
-  `SEK` decimal(11,4) NOT NULL,
   `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
@@ -496,8 +497,8 @@ CREATE TABLE `lc_products_options_stock` (
 CREATE TABLE `lc_products_prices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
+  `USD` decimal(11,4) NOT NULL,
   `EUR` decimal(11,4) NOT NULL,
-  `SEK` decimal(11,4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

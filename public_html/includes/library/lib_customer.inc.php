@@ -103,7 +103,7 @@
           'country_code' => settings::get('default_country_code'),
           'zone_code' => settings::get('default_zone_code'),
         ),
-        'display_prices_including_tax' => settings::get('display_prices_including_tax'),
+        'display_prices_including_tax' => (settings::get('default_display_prices_including_tax') == true) ? 1 : 0,
       );
     }
     

@@ -24,6 +24,8 @@ WinMerge is a powerful free tool to discover differences between two different s
     ALTER TABLE `lc_categories` ADD `dock` VARCHAR(32) NOT NULL AFTER `list_style`;
     
     ALTER TABLE `lc_categories` ADD INDEX (`dock`);
+    
+    UPDATE `lc_settings` SET `setting_group_key` = 'defaults', `key` = 'default_display_prices_including_tax' WHERE `key` = 'display_prices_including_tax' LIMIT 1;
   
   Regular expressions for the new system model syntax:
   (Can be used with i.e. Notepad++ for updating add-ons)
