@@ -199,7 +199,7 @@
       if ($this->_type == 'mysqli') {
         if (mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]))) {
           do {
-            if ($result = mysqli_use_result($link)) {
+            if ($result = mysqli_use_result($this->_links[$link])) {
               while ($row = mysqli_fetch_row($result)) {
               }
               mysqli_free_result($result);
