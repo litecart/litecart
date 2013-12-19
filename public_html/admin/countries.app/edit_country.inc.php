@@ -24,6 +24,9 @@
     
     if (!notices::get('errors')) {
     
+      $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
+      $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
+      
       $fields = array(
         'status',
         'iso_code_2',
@@ -71,13 +74,13 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2)</strong><br />
-        <?php echo functions::form_draw_text_field('iso_code_2', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
+        <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2)</strong><br />
+          <?php echo functions::form_draw_text_field('iso_code_2', true, 'data-size="tiny" required="required" pattern="[A-Z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3)</strong><br />
-        <?php echo functions::form_draw_text_field('iso_code_3', true, 'data-size="tiny"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
+        <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3)</strong><br />
+          <?php echo functions::form_draw_text_field('iso_code_3', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>

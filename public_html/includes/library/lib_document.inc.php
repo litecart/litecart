@@ -133,6 +133,7 @@
           '{snippet:'.$key.'}',
           '<!--snippet:'.$key.'-->',
         );
+        $html = str_replace($search, $replace, $html, $replacements);
 
         $html = str_replace($search, $replace, $html, $replacements);
         

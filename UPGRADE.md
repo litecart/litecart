@@ -1,17 +1,22 @@
 # Upgrade
 
-The following is a list of changes that can be of importance when performing a manual upgrade.
+  The following is a list of changes that can be of importance when performing a manual upgrade.
 
-The standard procedure for upgrading is to replace the old set of files with the new ones and perform any MySQL changes to the database. When replacing the set of files you may keep the following (created by the installer):
+  The standard procedure for upgrading is to replace the old set of files with the new ones and perform any MySQL changes to the database. When replacing the set of files you may keep the following (created by the installer):
 
-  ~/admin/.htaccess
-  ~/admin/.htpasswd
-  ~/includes/config.inc.php
-  ~/.htaccess
-  
-WinMerge is a powerful free tool to discover differences between two different sets of files and folders.
+    ~/admin/.htaccess
+    ~/admin/.htpasswd
+    ~/includes/config.inc.php
+    ~/.htaccess
+    
+  You may also want to keep data stored in the following folders:
 
-## LiteCart 1.1
+    ~/data
+    ~/images
+    
+  WinMerge is a powerful free tool to discover differences between two different sets of files and folders.
+
+## LiteCart 1.0.1.6 to 1.1
   
 	MySQL Changes:
   
@@ -64,7 +69,7 @@ WinMerge is a powerful free tool to discover differences between two different s
     
   (No Deleted Files)
   
-## LiteCart 1.0.1.6
+## LiteCart 1.0.1.5 to 1.0.1.6
 
   MySQL changes:
   
@@ -73,10 +78,14 @@ WinMerge is a powerful free tool to discover differences between two different s
   
   New Files:
     
+    ~/includes/modules/shipping/sm_zone_weight.inc
     ~/includes/templates/default.catalog/styles/loader.css
     
   Deleted Files:
     
+    ~/includes/modules/shipping/sm_flat_rate.inc
+    ~/includes/modules/shipping/sm_weight_table.inc
+    ~/includes/modules/shipping/sm_zone.inc
     ~/includes/templates/default.catalog/styles/loader.css.php
     
 ## LiteCart 1.0.1.4 to 1.0.1.5
@@ -127,7 +136,67 @@ WinMerge is a powerful free tool to discover differences between two different s
 ## LiteCart 1.0 to 1.0.1
   
   MySQL changes:
-  
+    
+    RENAME TABLE `lc_delivery_status` TO `lc_delivery_statuses`;
+    RENAME TABLE `lc_delivery_status_info` TO `lc_delivery_statuses_info`;
+    
+    RENAME TABLE `lc_sold_out_status` TO `lc_sold_out_statuses`;
+    RENAME TABLE `lc_sold_out_status_info` TO `lc_sold_out_statuses_info`;
+    
+    ALTER TABLE `lc_orders` CHANGE `weight` `weight_total` DECIMAL( 11, 4 ) NOT NULL;
+    
+    ALTER TABLE `lc_orders_items` DROP `code`, DROP `upc`, DROP `taric`, DROP `tax_class_id`, ADD `weight` DECIMAL(11, 4) NOT NULL AFTER `tax`, ADD `weight_class` VARCHAR(2) NOT NULL AFTER `weight`;
+    
+    RENAME TABLE `lc_orders_status` TO `lc_order_statuses`;
+    RENAME TABLE `lc_orders_status_info` TO `lc_order_statuses_info`;
+    
+    ALTER TABLE `lc_orders_status` ADD `priority` TINYINT(2) NOT NULL AFTER `notify`;
+    
+    DROP TABLE `lc_orders_tax`;
+    
+    ALTER TABLE `lc_orders_totals` DROP `tax_class_id`;
+    
+    ALTER TABLE `lc_products_options_stock` CHANGE `weight` `weight` DECIMAL(11, 4) NOT NULL;
+    
+    CREATE TABLE `lc_slides` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `status` tinyint(1) NOT NULL,
+      `language_code` varchar(8) NOT NULL,
+      `name` varchar(128) NOT NULL,
+      `caption` varchar(256) NOT NULL,
+      `link` varchar(256) NOT NULL,
+      `image` varchar(64) NOT NULL,
+      `priority` tinyint(2) NOT NULL,
+      `date_valid_from` datetime NOT NULL,
+      `date_valid_to` datetime NOT NULL,
+      `date_updated` datetime NOT NULL,
+      `date_created` datetime NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    
+    CREATE TABLE `lc_users` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `status` tinyint(1) NOT NULL,
+      `username` varchar(32) NOT NULL,
+      `password` varchar(128) NOT NULL,
+      `last_ip` varchar(15) NOT NULL,
+      `last_host` varchar(64) NOT NULL,
+      `login_attempts` int(11) NOT NULL,
+      `total_logins` int(11) NOT NULL,
+      `date_blocked` datetime NOT NULL,
+      `date_expires` datetime NOT NULL,
+      `date_active` datetime NOT NULL,
+      `date_login` datetime NOT NULL,
+      `date_created` datetime NOT NULL,
+      `date_updated` datetime NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+    
+    INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+    ('', 'local', 'Installed Customer Modules', '', 'customer_modules', '', '', 0, NOW(), NOW());
+    
+    DELETE FROM `lc_settings` where `key` in ('checkout_captcha_enabled', 'checkout_ajax_enabled', 'get_address_modules');
+    
 	  UPDATE `lc_settings` SET `value` = 0 WHERE `value` = 'false';
 	  UPDATE `lc_settings` SET `value` = 1 WHERE `value` = 'true';
 
