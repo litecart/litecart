@@ -32,34 +32,7 @@
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
       
-      self::$snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
-                                                  . '    $("body").on("keyup", "input[data-type=\'number\'], input[data-type=\'decimal\'], input[data-type=\'currency\']", function(){' . PHP_EOL
-                                                  . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
-                                                  . '    });' . PHP_EOL
-                                                  . '  });';
-      
-    // Set regional data
-      if (settings::get('regional_settings_screen_enabled')) {
-        
-        if (empty(customer::$data['id']) && empty(session::$data['region_data_set']) && empty($_COOKIE['skip_set_region_data'])) {
-          
-          functions::draw_fancybox('', array(
-            'centerOnScroll' => true,
-            'hideOnContentClick' => false,
-            'href' => document::link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
-            'modal' => true,
-            'speedIn' => 600,
-            'transitionIn' => 'fade',
-            'transitionOut' => 'fade',
-            'type' => 'ajax',
-            'scrolling' => 'false',
-          ));
-          
-          session::$data['skip_set_region_data'] = true;
-          setcookie('skip_set_region_data', 'true', time() + (60*60*24*10), WS_DIR_HTTP_HOME);
-        }
-      }
-      
+    // Set template
       if (substr(link::relpath(link::get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
         self::$template = settings::get('store_template_admin');
       } else {

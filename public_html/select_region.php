@@ -24,6 +24,12 @@
     
     customer::$data['display_prices_including_tax'] = (int)$_POST['display_prices_including_tax'];
     
+    setcookie('language_code', $_POST['language_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('currency_code', $_POST['currency_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('country_code', $_POST['country_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('zone_code', $_POST['zone_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('display_prices_including_tax', $_POST['display_prices_including_tax'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    
     if (empty($_GET['redirect'])) $_GET['redirect'] = WS_DIR_HTTP_HOME;
     
     header('Location: '. $_GET['redirect']);
@@ -48,8 +54,8 @@
   </tr>
   <tr>
     <td><?php echo language::translate('title_display_prices', 'Display Prices'); ?><br />
-      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label><br />
-      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label></td>
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, (int)customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label><br />
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, (int)customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label></td>
     <td></td>
   </tr>
   <tr>

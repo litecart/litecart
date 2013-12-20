@@ -74,6 +74,7 @@ body {
   border: 1px solid #d1d1d1;
   padding: 0px 4px;
   background-color: #fff;
+  cursor: default;
 }
 
 #cart-wrapper {
@@ -156,7 +157,6 @@ body {
 }
 
 #breadcrumbs-wrapper {
-  float: left;
   width: 50%;
   overflow: hidden;
 }
@@ -164,21 +164,6 @@ body {
   padding: 0px 20px;
   display: inline-block;
   float: left;
-}
-
-#social-bookmarks-wrapper {
-  float: right;
-  width: 50%;
-  position: relative;
-}
-#social-bookmarks {
-  position: absolute;
-  display: inline;
-  right: 0px;
-  margin-right: 20px;
-}
-#social-bookmarks {
-
 }
 
 #footer-wrapper {

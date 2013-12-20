@@ -17,11 +17,30 @@
       
       if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
         self::reset();
+        self::identify();
       }
     }
     
-    //public static function before_capture() {
-    //}
+    public static function before_capture() {
+    
+    // Set regional data
+      if (settings::get('regional_settings_screen_enabled')) {
+        if (empty(customer::$data['id']) && empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
+          
+          functions::draw_fancybox('', array(
+            'centerOnScroll' => true,
+            'hideOnContentClick' => false,
+            'href' => document::link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
+            'modal' => true,
+            'speedIn' => 600,
+            'transitionIn' => 'fade',
+            'transitionOut' => 'fade',
+            'type' => 'ajax',
+            'scrolling' => 'false',
+          ));
+        }
+      }
+    }
     
     //public static function after_capture() {
     //}
@@ -29,8 +48,13 @@
     //public static function prepare_output() {
     //}
     
-    //public static function before_output() {
-    //}
+    public static function before_output() {
+      
+      if (empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
+        session::$data['skip_set_region_data'] = true;
+        setcookie('skip_set_region_data', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+      }
+    }
     
     //public static function shutdown() {
     //}
@@ -39,40 +63,67 @@
     
     public static function identify() {
       
+    // Return country from cookie
+      if (empty(self::$data['country_code'])) {
+        if (!empty($_COOKIE['country_code'])) {
+          self::$data['country_code'] = $_COOKIE['country_code'];
+        }
+      }
+      
+    // Return country from browser
+      if (empty(self::$data['country_code'])) {
+        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+          if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+            if (!empty($matches[1])) self::$data['country_code'] = $matches[1];
+          }
+        }
+      }
+
     // Build list of supported countries
       $countries_query = database::query(
         "select * from ". DB_TABLE_COUNTRIES ."
-        where iso_code_2 = '". database::input(settings::get('default_country_code')) ."'
-        limit 1;"
+        where status;"
       );
-      $country = database::fetch($countries_query);
       
       $countries = array();
       while ($country = database::fetch($countries_query)) {
-        if ($country['status']) {
-          $countries[] = $country['iso_code_2'];
-        }
+        $countries[] = $country['iso_code_2'];
       }
       
-    // Return country from cookie
-      if (isset($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $countries)) return $_COOKIE['country_code'];
-      
-    // Return country from browser
-      if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        $browser_locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-      } elseif (isset($_SERVER['LC_CTYPE'])) {
-        $browser_locales = explode(',', $_SERVER['LC_CTYPE']);
-      } else {
-        $browser_locales = array();
-      }
-      foreach ($browser_locales as $browser_locale) {
-        if (preg_match('/('. implode('|', $countries) .')-?.*/', $browser_locale, $reg)) {
-          if (!empty($reg[1])) return $reg[1];
-        }
-      }
+    // Unset non supported country
+      if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';
       
     // Return default country
-      return settings::get('default_country_code');
+      if (empty(self::$data['country_code'])) {
+        self::$data['country_code'] = settings::get('default_country_code');
+      }
+      
+    // Return zone from cookie
+      if (empty(self::$data['zone_code'])) {
+        if (!empty($_COOKIE['zone_code'])) {
+          self::$data['zone_code'] = $_COOKIE['zone_code'];
+        }
+      }
+      
+      if (empty(self::$data['zone_code'])) {
+          self::$data['zone_code'] = settings::get('default_zone_code');
+      }
+      
+    // Unset zone if not in country
+      if (!functions::reference_verify_zone_code(self::$data['country_code'], self::$data['zone_code'])) {
+        self::$data['zone_code'] = '';
+      }
+      
+      self::$data['shipping_address']['country_code'] = self::$data['country_code'];
+      self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
+      
+      if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
+        if (isset($_COOKIE['display_prices_including_tax'])) self::$data['display_prices_including_tax'] = !empty($_COOKIE['display_prices_including_tax']) ? 1 : 0;
+      }
+      
+      if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
+        self::$data['display_prices_including_tax'] = settings::get('default_display_prices_including_tax') ? 1 : 0;
+      }
     }
     
     public static function reset() {
@@ -89,8 +140,8 @@
         'address2' => '',
         'city' => '',
         'postcode' => '',
-        'country_code' => settings::get('default_country_code'),
-        'zone_code' => settings::get('default_zone_code'),
+        'country_code' => '',
+        'zone_code' => '',
         'different_shipping_address' => false,
         'shipping_address' => array(
           'company' => '',
@@ -100,10 +151,10 @@
           'address2' => '',
           'city' => '',
           'postcode' => '',
-          'country_code' => settings::get('default_country_code'),
-          'zone_code' => settings::get('default_zone_code'),
+          'country_code' => '',
+          'zone_code' => '',
         ),
-        'display_prices_including_tax' => (settings::get('default_display_prices_including_tax') == true) ? 1 : 0,
+        'display_prices_including_tax' => null,
       );
     }
     
