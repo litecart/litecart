@@ -16,7 +16,7 @@
     
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders.
 
-## LiteCart 1.0.1.6
+## LiteCart 1.0.1.5 to 1.0.1.6
 
   MySQL changes:
   
@@ -25,10 +25,14 @@
   
   New Files:
     
+    ~/includes/modules/shipping/sm_zone_weight.inc
     ~/includes/templates/default.catalog/styles/loader.css
     
   Deleted Files:
     
+    ~/includes/modules/shipping/sm_flat_rate.inc
+    ~/includes/modules/shipping/sm_weight_table.inc
+    ~/includes/modules/shipping/sm_zone.inc
     ~/includes/templates/default.catalog/styles/loader.css.php
     
 ## LiteCart 1.0.1.4 to 1.0.1.5

@@ -37,44 +37,6 @@
     
     ######################################################################
     
-    public function identify() {
-      
-    // Build list of supported countries
-      $countries_query = $GLOBALS['system']->database->query(
-        "select * from ". DB_TABLE_COUNTRIES ."
-        where iso_code_2 = '". $GLOBALS['system']->database->input($GLOBALS['system']->settings->get('default_country_code')) ."'
-        limit 1;"
-      );
-      $country = $GLOBALS['system']->database->fetch($countries_query);
-      
-      $countries = array();
-      while ($country = $GLOBALS['system']->database->fetch($countries_query)) {
-        if ($country['status']) {
-          $countries[] = $country['iso_code_2'];
-        }
-      }
-      
-    // Return country from cookie
-      if (isset($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $countries)) return $_COOKIE['country_code'];
-      
-    // Return country from browser
-      if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        $browser_locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-      } elseif (isset($_SERVER['LC_CTYPE'])) {
-        $browser_locales = explode(',', $_SERVER['LC_CTYPE']);
-      } else {
-        $browser_locales = array();
-      }
-      foreach ($browser_locales as $browser_locale) {
-        if (preg_match('/('. implode('|', $countries) .')-?.*/', $browser_locale, $reg)) {
-          if (!empty($reg[1])) return $reg[1];
-        }
-      }
-      
-    // Return default country
-      return $GLOBALS['system']->settings->get('default_country_code');
-    }
-    
     public function reset() {
       $GLOBALS['system']->session->data['customer'] = array(
         'id' => '',
