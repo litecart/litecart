@@ -33,8 +33,8 @@
 </div>
 
 <script>
-
   function refreshCart() {
+    if (console) console.log("Refreshing cart");
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
     $.ajax({
       url: '<?php echo document::link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
@@ -57,6 +57,7 @@
   }
   
   function refreshCustomer() {
+    if (console) console.log("Refreshing customer");
     $.ajax({
       url: '<?php echo document::link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
       data: false,
@@ -78,6 +79,7 @@
   }
 
   function refreshShipping() {
+    if (console) console.log("Refreshing shipping");
     $.ajax({
       url: '<?php echo document::link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
       data: false,
@@ -99,6 +101,7 @@
   }
 
   function refreshPayment() {
+    if (console) console.log("Refreshing payment");
     $.ajax({
       url: '<?php echo document::link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
       data: false,
@@ -120,6 +123,7 @@
   }
   
   function refreshSummary() {
+    if (console) console.log("Refreshing summary");
     var comments = $('textarea[name=comments]').val();
     $.ajax({
       url: '<?php echo document::link(WS_DIR_AJAX .'checkout_summary.html.php'); ?>',

@@ -39,14 +39,6 @@
       if ($tax === null) $tax = cart::$data['total']['tax'];
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
-      
-      $checksum = sha1(serialize(array_merge($this->items, $this->destination)));
-      
-      //if (isset($this->data['checksum']) && $this->data['checksum'] == $checksum) {
-      //  return $this->data['options'];
-      //} else {
-      //  $this->data['checksum'] = $checksum;
-      //}
 
       $this->data['options'] = array();
       

@@ -20,7 +20,7 @@
     if (empty($payment->data['selected'])) trigger_error('No payment selected', E_USER_ERROR);
     //list($payment_module_id, $payment_option_id) = explode(':', $payment->data['selected']['id']);
     
-    if ($payment_error = $payment->run('pre_check')) {
+    if ($payment_error = $payment->pre_check($order)) {
       notices::add('errors', $payment_error);
       header('Location: '. document::link(WS_DIR_HTTP_HOME . 'checkout.php'));
       exit;
@@ -32,7 +32,7 @@
         $order->data['comments']['session']['text'] = $_POST['comments'];
       }
       
-      if ($gateway = $payment->transfer()) {
+      if ($gateway = $payment->transfer($order)) {
       
         if (!empty($gateway['error'])) {
           notices::add('errors', $gateway['error']);
@@ -76,7 +76,7 @@
     }
     
   // Verify transaction
-    $result = $payment->run('verify');
+    $result = $payment->verify($order);
     
   // If payment error
     if (!empty($result['error'])) {

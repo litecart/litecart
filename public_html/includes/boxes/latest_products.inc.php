@@ -4,7 +4,7 @@
   $cache_id = cache::cache_id('box_latest_products', array('language', 'currency', 'prices'));
   if (cache::capture($cache_id, 'file')) {
   
-    $products_query = functions::catalog_products_query(array('sort' => 'date', 'limit' => 10));
+    $products_query = functions::catalog_products_query(array('sort' => 'date', 'limit' => 8));
     if (database::num_rows($products_query)) {
 ?>
 <div class="box" id="box-latest-products">

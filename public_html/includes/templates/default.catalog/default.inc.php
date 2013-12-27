@@ -35,26 +35,29 @@
 </head>
 <body>
 
+
 <div id="header-wrapper" class="shadow">
-  <header id="header" class="nine-eighty">
-  
-    <div id="logotype-wrapper">
-      <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
-    </div>
+  <div style="padding: 0px 10px;">
+    <header id="header" class="nine-eighty">
     
-    <div id="site-links-wrapper">
-    <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
-    </div>
-    
-    <div id="region-wrapper">
-      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php'); ?>
-    </div>
-    
-    <div id="cart-wrapper">
-      <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
-    </div>
-    
-  </header>
+      <div id="logotype-wrapper">
+        <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
+      </div>
+      
+      <div id="site-links-wrapper">
+      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
+      </div>
+      
+      <div id="region-wrapper">
+        <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php'); ?>
+      </div>
+      
+      <div id="cart-wrapper">
+        <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
+      </div>
+      
+    </header>
+  </div>
 </div>
 
 <div id="page-wrapper">
@@ -102,23 +105,8 @@
 <div id="footer-wrapper">
   <footer id="footer" class="nine-eighty">
     
-    <div style="overflow: hidden;">
-      <div id="breadcrumbs-wrapper">
-        <!--snippet:breadcrumbs-->
-      </div>
-      
-      <div id="social-bookmarks-wrapper">
-        <!-- AddThis Button BEGIN -->
-        <div id="social-bookmarks" class="addthis_toolbox addthis_default_style addthis_24x24_style" style="display: inline;">
-        <a class="addthis_button_facebook"></a>
-        <a class="addthis_button_google_plusone_share"></a>
-        <a class="addthis_button_twitter"></a>
-        <a class="addthis_button_email"></a>
-        <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
-        </div>
-        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
-        <!-- AddThis Button END -->
-      </div>
+    <div id="breadcrumbs-wrapper">
+      <!--snippet:breadcrumbs-->
     </div>
 
     <table>

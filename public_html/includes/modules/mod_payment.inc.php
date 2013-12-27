@@ -33,7 +33,6 @@
     }
     
     public function options($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
-      global $shipping;
       
       if ($items === null) $items = cart::$data['items'];
       if ($subtotal === null) $subtotal = cart::$data['total']['value'];
@@ -41,14 +40,7 @@
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
       
-      $cart_checksum = sha1(serialize(cart::$data) . @serialize($shipping->data['selected']));
-      
-      //if (isset($this->data['order_checksum']) && $this->data['order_checksum'] == $cart_checksum) {
-      //  return $this->data['options'];
-      //}
-      
       $this->data['options'] = array();
-      $this->data['order_checksum'] = $cart_checksum;
       
       if (empty($this->modules)) return;
       
@@ -116,7 +108,18 @@
       $this->select($module_id, $option_id);
     }
     
-    public function transfer() {
+    public function pre_check($order) {
+      
+      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      
+      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      
+      if (!method_exists($this->modules[$module_id], 'pre_check')) return;
+      
+      return $this->modules[$module_id]->pre_check($order);
+    }
+    
+    public function transfer($order) {
       
       if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
       
@@ -124,7 +127,18 @@
       
       if (!method_exists($this->modules[$module_id], 'transfer')) return;
       
-      return $this->modules[$module_id]->transfer();
+      return $this->modules[$module_id]->transfer($order);
+    }
+    
+    public function verify($order) {
+      
+      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      
+      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      
+      if (!method_exists($this->modules[$module_id], 'verify')) return;
+      
+      return $this->modules[$module_id]->verify($order);
     }
     
     public function run($method_name, $module_id='') {

@@ -233,14 +233,14 @@
                     $this->_data['options'][$product_option['group_id']]['name'][$language_code] = $this->_data['options'][$product_option['group_id']]['name'][settings::get('default_language_code')];
                   } else {
                     $this->_data['options'][$product_option['group_id']]['name'][$language_code] = '[untitled]';
+                  }
                 }
-              }
                 if (empty($this->_data['options'][$product_option['group_id']]['description'][$language_code])) {
                   if (!empty($this->_data['options'][$product_option['group_id']]['description'][settings::get('default_language_code')])) {
                     $this->_data['options'][$product_option['group_id']]['description'][$language_code] = $this->_data['options'][$product_option['group_id']]['description'][settings::get('default_language_code')];
                   } else {
                     $this->_data['options'][$product_option['group_id']]['description'][$language_code] = '';
-            }
+                  }
                 }
               }
             }
@@ -275,9 +275,9 @@
                       $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code] = $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][settings::get('default_language_code')];
                     } else {
                       $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key][$language_code] = '[untitled]';
+                    }
+                  }
                 }
-              }
-            }
               }
             }
             
