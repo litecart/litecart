@@ -15,13 +15,18 @@
     exit;
   }
   
-  $output = '[';
+  $json = array();
   while ($zone = database::fetch($zones_query)) {
-    $output .= '{"code":"'. $zone['code'] .'","name":"'. $zone['name'] .'"},';
+    $json[] = array(
+      'code' => $zone['code'],
+      'name' => $zone['name'],
+    );
   }
-  $output = rtrim($output, ',');
-  $output .= ']';
   
-  echo $output;
+  mb_convert_variables(language::$selected['charset'], 'UTF-8', $json);
+  $json = json_encode($json);
+  
+  mb_convert_variables('UTF-8', language::$selected['charset'], $json);
+  echo $json;
   
 ?>

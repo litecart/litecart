@@ -2,7 +2,7 @@
   require_once('../includes/app_header.inc.php');
   header('Content-type: application/json; charset='. language::$selected['charset']);
   
-  $params = array(
+  $json = array(
     'quantity' => cart::$data['total']['items'],
     'value' => customer::$data['display_prices_including_tax'] ? cart::$data['total']['value'] + cart::$data['total']['tax'] : cart::$data['total']['value'],
     'formatted_value' => customer::$data['display_prices_including_tax'] ? currency::format(cart::$data['total']['value'] + cart::$data['total']['tax']) : currency::format(cart::$data['total']['value']),
@@ -10,22 +10,20 @@
   
   if (!empty(notices::$data['warnings'])) {
     $warnings = array_values(notices::$data['warnings']);
-    $params['alert'] = array_shift($warnings);
+    $json['alert'] = array_shift($warnings);
   }
   
   if (!empty(notices::$data['errors'])) {
     $errors = array_values(notices::$data['errors']);
-    $params['alert'] = array_shift($errors);
+    $json['alert'] = array_shift($errors);
   }
   
   notices::reset();
   
-  echo '{';
-  foreach ($params as $key => $value) {
-    if (!empty($use_coma)) echo ',';
-    echo '"'.$key.'":"'. $value .'"';
-    $use_coma = true;
-  }
-  echo '}';
+  mb_convert_variables(language::$selected['charset'], 'UTF-8', $json);
+  $json = json_encode($json);
+  
+  mb_convert_variables('UTF-8', language::$selected['charset'], $json);
+  echo $json;
   
 ?>
