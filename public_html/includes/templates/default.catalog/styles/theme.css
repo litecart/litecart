@@ -56,24 +56,46 @@ body {
 #region-wrapper {
   display: inline-block;
   position: absolute;
-  right: 33%;
+  left: 50%;
   top: 28px;
-  width: 200px;
-  margin: 0px -100px;
+  width: 400px;
+  margin: 0px -200px;
 }
 #region {
-  text-align: center;
+  font-size: 1em;
+}
+#region table {
+  border-collapse: collapse;
+  margin: 0px auto;
+}
+#region table tr td {
+  padding: 5px 5px;
+}
+#region table tr td {
+  border: 1px #ccc solid;
+  text-align: left;
+}
+#region table tr td:first-child {
+  background: #eee;
+  vertical-align: middle;
 }
 #region .language {
   display: inline;
 }
 #region .currency {
-  margin: 0px 5px;
+  margin-left: 5px;
   display: inline;
   color: #777;
   border: 1px solid #d1d1d1;
   padding: 0px 4px;
   background-color: #fff;
+  cursor: default;
+}
+#region .country {
+  margin-left: 5px;
+  display: inline;
+  color: #777;
+  padding: 0px 4px;
   cursor: default;
 }
 

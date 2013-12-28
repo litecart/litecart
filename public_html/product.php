@@ -348,9 +348,9 @@
         
         <?php if (!empty($product->attributes[language::$selected['code']])) { ?>
         <div class="tab" id="tab-details">
-          <table cellspacing="0" cellpadding="5" border="0">
+          <table>
 <?php
-  $attributes = explode(PHP_EOL, $product->attributes[language::$selected['code']]);
+  $attributes = preg_split('/\R+/', $product->attributes[language::$selected['code']]);
   for ($i=0; $i<count($attributes); $i++) {
     if (!isset($rowclass) || $rowclass == 'even') {
       $rowclass = 'odd';
@@ -360,12 +360,12 @@
     if (strpos($attributes[$i], ':') !== false) {
       list($key, $value) = explode(':', $attributes[$i]);
       echo '<tr class="'. $rowclass .'">' . PHP_EOL
-         . '  <td nowrap="nowrap">'. trim($key) .':</td>' . PHP_EOL
-         . '  <td style="max-width: 100%; padding-left: 10px;">'. trim($value) .'</td>' . PHP_EOL
+         . '  <td>'. trim($key) .':</td>' . PHP_EOL
+         . '  <td>'. trim($value) .'</td>' . PHP_EOL
          . '</tr>' . PHP_EOL;
     } else if (trim($attributes[$i] != '')) {
       echo '<tr class="'. $rowclass .' header">' . PHP_EOL
-         . '  <th colspan="2" class="header" style="text-align: left; padding-top: 10px;"><strong>'. $attributes[$i] .'</strong></th>' . PHP_EOL
+         . '  <th colspan="2" class="header">'. $attributes[$i] .'</th>' . PHP_EOL
          . '</tr>' . PHP_EOL;
     }
   }

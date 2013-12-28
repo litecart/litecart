@@ -65,14 +65,14 @@
     
     public static function identify() {
       
-    // Return country from cookie
+    // Set country from cookie
       if (empty(self::$data['country_code'])) {
         if (!empty($_COOKIE['country_code'])) {
           self::$data['country_code'] = $_COOKIE['country_code'];
         }
       }
       
-    // Return country from browser
+    // Set country from browser
       if (empty(self::$data['country_code'])) {
         if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
           if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
@@ -95,12 +95,12 @@
     // Unset non supported country
       if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';
       
-    // Return default country
+    // Set default country
       if (empty(self::$data['country_code'])) {
         self::$data['country_code'] = settings::get('default_country_code');
       }
       
-    // Return zone from cookie
+    // Set zone from cookie
       if (empty(self::$data['zone_code'])) {
         if (!empty($_COOKIE['zone_code'])) {
           self::$data['zone_code'] = $_COOKIE['zone_code'];
@@ -119,10 +119,12 @@
       self::$data['shipping_address']['country_code'] = self::$data['country_code'];
       self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
       
+    // Set tax from cookie
       if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
         if (isset($_COOKIE['display_prices_including_tax'])) self::$data['display_prices_including_tax'] = !empty($_COOKIE['display_prices_including_tax']) ? 1 : 0;
       }
-      
+    
+    // Set default tax
       if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
         self::$data['display_prices_including_tax'] = settings::get('default_display_prices_including_tax') ? 1 : 0;
       }

@@ -79,16 +79,33 @@
     public static function identify() {
     
     // Build list of supported currencies
-      $currencies = array();
-      foreach (self::$currencies as $currency) {
-        if ($currency['status']) {
-          $currencies[] = $currency['code'];
+      $currencies = array_keys(self::$currencies);
+      
+    // Set currency from cookie
+      if (!empty($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $currencies)) {
+        return $_COOKIE['country_code'];
+      }
+      
+    // Get country from browser
+      if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+          if (!empty($matches[1])) $country_code = $matches[1];
+        }
+        if (!empty($country_code)) {
+          $countries_query = database::query(
+            "select * from ". DB_TABLE_COUNTRIES ."
+            where iso_code_2 = '". database::input($country_code) ."'
+            limit 1;"
+          );
+          $country = database::fetch($countries_query);
+          
+          if (!empty($country['currency_code'])) {
+            return $country['currency_code'];
+          }
         }
       }
       
-    // Return currency from cookie
-      if (isset($_COOKIE['currency_code']) && in_array($_COOKIE['currency_code'], $currencies)) return $_COOKIE['currency_code'];
-      
+    // Return default currency
       return settings::get('default_currency_code');
     }
     

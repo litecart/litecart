@@ -45,7 +45,7 @@
       </div>
       
       <div id="customer-service-wrapper">
-        <span class="title"><?php echo $system->language->translate('title_customer_service', 'Customer Service'); ?>:</span><br />
+        <span class="title"><?php echo $system->language->translate('title_customer_service', 'Customer Service'); ?></span><br />
         <span class="phone"><?php echo $system->settings->get('store_phone'); ?></span>
       </div>
       
