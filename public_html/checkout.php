@@ -2,6 +2,8 @@
   define('REQUIRE_POST_TOKEN', false);
   require_once('includes/app_header.inc.php');
   
+  document::$layout = 'checkout';
+  
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 

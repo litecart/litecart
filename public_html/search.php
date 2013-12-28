@@ -87,11 +87,12 @@
         find_in_set('". database::input($_GET['query']) ."', p.keywords)
         ". (!empty($sql_where_categories) ? "or " . implode(" or ", $sql_where_categories) : false) ."
         ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in ('". implode("', '", $manufacturer_ids) . "')" : false) ."
-        or (
-          pi.name like '%". database::input($_GET['query']) ."%'
-          or pi.short_description like '%". database::input($_GET['query']) ."%'
-          or pi.description like '%". database::input($_GET['query']) ."%'
-        )
+        or p.code like '%". database::input($_GET['query']) ."%'
+        or p.sku like '%". database::input($_GET['query']) ."%'
+        or p.upc like '%". database::input($_GET['query']) ."%'
+        or pi.name like '%". database::input($_GET['query']) ."%'
+        or pi.short_description like '%". database::input($_GET['query']) ."%'
+        or pi.description like '%". database::input($_GET['query']) ."%'
       );"
     );
     
@@ -107,7 +108,7 @@
       
       $page_items = 0;
       while ($listing_product = database::fetch($products_query)) {
-        echo functions::draw_listing_product($listing_product);
+        echo functions::draw_listing_product_column($listing_product);
         
         if (++$page_items == settings::get('items_per_page')) break;
       }

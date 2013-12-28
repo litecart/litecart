@@ -1,3 +1,22 @@
+#customer-service-wrapper {
+  position: absolute;
+  width: 300px;
+  top: 18px;
+  right: 0;
+  font-weight: bold;
+  text-align: right;
+}
+#customer-service-wrapper .title {
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+}
+#customer-service-wrapper .phone {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
 #box-checkout-cart {
   margin-top: 10px;
   margin-bottom: 20px;

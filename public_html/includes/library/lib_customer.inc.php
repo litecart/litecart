@@ -50,9 +50,11 @@
     
     public static function before_output() {
       
-      if (empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
-        session::$data['skip_set_region_data'] = true;
-        setcookie('skip_set_region_data', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+      if (settings::get('regional_settings_screen_enabled')) {
+        if (empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
+          session::$data['skip_set_region_data'] = true;
+          setcookie('skip_set_region_data', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+        }
       }
     }
     
