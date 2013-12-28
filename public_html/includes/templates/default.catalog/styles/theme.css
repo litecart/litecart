@@ -57,12 +57,12 @@ body {
   display: inline-block;
   position: absolute;
   left: 50%;
-  top: 28px;
+  top: 25px;
   width: 400px;
   margin: 0px -200px;
 }
 #region {
-  font-size: 1em;
+  font-size: 0.95em;
 }
 #region table {
   border-collapse: collapse;
@@ -92,7 +92,6 @@ body {
   cursor: default;
 }
 #region .country {
-  margin-left: 5px;
   display: inline;
   color: #777;
   padding: 0px 4px;

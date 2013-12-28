@@ -95,6 +95,7 @@
     
     $default_params = array(
       'hideOnContentClick' => true,
+      'padding'            => 20,
       'showCloseButton'    => true,
       'speedIn'            => 200,
       'speedOut'           => 200,
