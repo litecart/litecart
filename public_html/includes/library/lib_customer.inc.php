@@ -20,8 +20,27 @@
       }
     }
     
-    //public function before_capture() {
-    //}
+    public function before_capture() {
+      
+    // Set regional data
+      if ($GLOBALS['system']->settings->get('regional_settings_screen_enabled')) {
+        
+        if (empty($GLOBALS['system']->customer->data['id']) && empty($GLOBALS['system']->session->data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
+          
+          $GLOBALS['system']->functions->draw_fancybox('', array(
+            'centerOnScroll' => true,
+            'hideOnContentClick' => false,
+            'href' => $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
+            'modal' => true,
+            'speedIn' => 600,
+            'transitionIn' => 'fade',
+            'transitionOut' => 'fade',
+            'type' => 'ajax',
+            'scrolling' => 'false',
+          ));
+        }
+      }
+    }
     
     //public function after_capture() {
     //}
@@ -29,8 +48,15 @@
     //public function prepare_output() {
     //}
     
-    //public function before_output() {
-    //}
+    public function before_output() {
+      
+      if ($GLOBALS['system']->settings->get('regional_settings_screen_enabled')) {
+        if (empty($GLOBALS['system']->session->data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
+          $GLOBALS['system']->session->data['skip_set_region_data'] = true;
+          setcookie('skip_set_region_data', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+        }
+      }
+    }
     
     //public function shutdown() {
     //}

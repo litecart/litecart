@@ -44,8 +44,13 @@
       }
     }
     
-    //public function before_capture() {
-    //}
+    public function before_capture() {
+      $GLOBALS['system']->document->snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
+                                                             . '    $("body").on("keyup", "input[data-type=\'number\'], input[data-type=\'decimal\'], input[data-type=\'currency\']", function(){' . PHP_EOL
+                                                             . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
+                                                             . '    });' . PHP_EOL
+                                                             . '  });';
+    }
     
     //public function after_capture() {
     //}

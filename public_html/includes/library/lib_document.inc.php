@@ -31,34 +31,6 @@
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
       
-      $this->snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
-                                                  . '    $("body").on("keyup", "input[data-type=\'number\'], input[data-type=\'decimal\'], input[data-type=\'currency\']", function(){' . PHP_EOL
-                                                  . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
-                                                  . '    });' . PHP_EOL
-                                                  . '  });';
-      
-    // Set regional data
-      if ($GLOBALS['system']->settings->get('regional_settings_screen_enabled')) {
-        
-        if (empty($GLOBALS['system']->customer->data['id']) && empty($GLOBALS['system']->session->data['region_data_set']) && empty($_COOKIE['skip_set_region_data'])) {
-          
-          $GLOBALS['system']->functions->draw_fancybox('', array(
-            'centerOnScroll' => true,
-            'hideOnContentClick' => false,
-            'href' => $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
-            'modal' => true,
-            'speedIn' => 600,
-            'transitionIn' => 'fade',
-            'transitionOut' => 'fade',
-            'type' => 'ajax',
-            'scrolling' => 'false',
-          ));
-          
-          $GLOBALS['system']->session->data['skip_set_region_data'] = true;
-          setcookie('skip_set_region_data', 'true', time() + (60*60*24*10), WS_DIR_HTTP_HOME);
-        }
-      }
-      
       if (substr($GLOBALS['system']->link->relpath($GLOBALS['system']->link->get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
         $this->template = $GLOBALS['system']->settings->get('store_template_admin');
       } else {

@@ -15,13 +15,18 @@
     exit;
   }
   
-  $output = '[';
+  $json = array();
   while ($configuration_value = $system->database->fetch($option_values_query)) {
-    $output .= '{"id":"'. $configuration_value['id'] .'","name":"'. $configuration_value['name'] .'"},';
+    $json[] = array(
+      'id' => $configuration_value['id'],
+      'name' => $configuration_value['name'],
+    );
   }
-  $output = rtrim($output, ',');
-  $output .= ']';
   
-  echo $output;
+  mb_convert_variables($system->language->selected['charset'], 'UTF-8', $json);
+  $json = json_encode($json);
+  
+  mb_convert_variables('UTF-8', $system->language->selected['charset'], $json);
+  echo $json;
   
 ?>
