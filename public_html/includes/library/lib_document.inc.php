@@ -1,99 +1,104 @@
 <?php
   
-  class lib_document {
+  class document {
     
-    public $template = '';
-    public $layout = 'default';
-    public $snippets = array();
-    public $settings = array();
+    private static $_cache = array();
+    public static $template = '';
+    public static $layout = 'default';
+    public static $snippets = array();
+    public static $settings = array();
     
-    public function __construct(&$system) {
+    public static function construct() {
     }
     
-    //public function load_dependencies() {
+    //public static function load_dependencies() {
     //}
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    //public function startup() {
+    //public static function startup() {
     //}
     
-    public function before_capture() {
+    public static function before_capture() {
     
     // Set before-snippets
-      $this->snippets['title'] = array($GLOBALS['system']->settings->get('store_name'));
+      self::$snippets['title'] = array(settings::get('store_name'));
       
-      $this->snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>' . PHP_EOL
+      self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>' . PHP_EOL
                                              . '<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>' . PHP_EOL
                                              . '<script>' . PHP_EOL
                                              . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.10.2.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
       
-      if (substr($GLOBALS['system']->link->relpath($GLOBALS['system']->link->get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
-        $this->template = $GLOBALS['system']->settings->get('store_template_admin');
+    // Set template
+      if (substr(link::relpath(link::get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
+        self::$template = settings::get('store_template_admin');
       } else {
-        $this->template = $GLOBALS['system']->settings->get('store_template_catalog');
+        self::$template = settings::get('store_template_catalog');
       }
     }
     
-    public function after_capture() {
+    public static function after_capture() {
     
     // Set after-snippets
-      $this->snippets['language'] = $GLOBALS['system']->language->selected['code'];
-      $this->snippets['charset'] = $GLOBALS['system']->language->selected['charset'];
-      $this->snippets['home_path'] = WS_DIR_HTTP_HOME;
-      $this->snippets['template_path'] = WS_DIR_TEMPLATES . $this->template .'/';
+      self::$snippets['language'] = language::$selected['code'];
+      self::$snippets['charset'] = language::$selected['charset'];
+      self::$snippets['home_path'] = WS_DIR_HTTP_HOME;
+      self::$snippets['template_path'] = WS_DIR_TEMPLATES . self::$template .'/';
     }
     
-    public function prepare_output() {
+    public static function prepare_output() {
       
     // Prepare title
-      if (!is_array($this->snippets['title'])) $this->snippets['title'] = array($this->snippets['title']);
-      $this->snippets['title'] = implode(' | ', array_reverse($this->snippets['title']));
+      if (!is_array(self::$snippets['title'])) self::$snippets['title'] = array(self::$snippets['title']);
+      self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
       
     // Prepare javascript
-      if (isset($this->snippets['javascript'])) {
-        $this->snippets['javascript'] = '<script>' . PHP_EOL
-                                      . implode(PHP_EOL . PHP_EOL, $this->snippets['javascript']) . PHP_EOL
+      if (isset(self::$snippets['javascript'])) {
+        self::$snippets['javascript'] = '<script>' . PHP_EOL
+                                      . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
                                       . '</script>' . PHP_EOL;
       }
       
     // Sort head tags
-      if (!empty($this->snippets['head_tags'])) asort($this->snippets['head_tags']);
+      if (!empty(self::$snippets['head_tags'])) asort(self::$snippets['head_tags']);
       
     // Prepare snippets
-      foreach (array_keys($this->snippets) as $snippet) {
-        if (is_array($this->snippets[$snippet])) $this->snippets[$snippet] = implode(PHP_EOL, $this->snippets[$snippet]);
+      foreach (array_keys(self::$snippets) as $snippet) {
+        if (is_array(self::$snippets[$snippet])) self::$snippets[$snippet] = implode(PHP_EOL, self::$snippets[$snippet]);
       }
     }
     
-    //public function before_output() {
-    //}
+    public static function before_output() {
+      
+    // Get template settings
+      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
+    }
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function expires($string=false) {
+    public static function expires($string=false) {
       if (strtotime($string) > time()) {
         header('Pragma:');
         header('Cache-Control: max-age='. (strtotime($string) - time()));
         header('Expires: '. date('r', strtotime($string)));
-        $this->snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="public">' .PHP_EOL
+        self::$snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="public">' .PHP_EOL
                                                     . '<meta http-equiv="expires" content="'. date('r', strtotime($string)) .'">';
       } else {
         header('Cache-Control: no-cache');
-        $this->snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="no-cache">' . PHP_EOL
+        self::$snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="no-cache">' . PHP_EOL
                                                     . '<meta http-equiv="expires" content="'. date('r', strtotime($string)) .'">';
       }
     }
     
-    public function stitch(&$html) {
+    public static function stitch(&$html) {
       
-      foreach ($this->snippets as $key => $replace) {
+      foreach (self::$snippets as $key => $replace) {
       
         if (is_array($replace)) $replace = implode(PHP_EOL, $replace);
         
@@ -102,20 +107,21 @@
           '<!--snippet:'.$key.'-->',
         );
         $html = str_replace($search, $replace, $html, $replacements);
+
+        $html = str_replace($search, $replace, $html, $replacements);
         
-        if ($replacements) unset($this->snippets[$key]);
+        if ($replacements) unset(self::$snippets[$key]);
       }
       
       $html = preg_replace($search, '', $html);
     }
     
-    public function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return htmlspecialchars($this->link($document, $new_params, $inherit_params, $skip_params, $language_code));
+    public static function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
     }
-    
-  // Substituted
-    public function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return $GLOBALS['system']->link->create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
+
+    public static function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
     }
   }
   

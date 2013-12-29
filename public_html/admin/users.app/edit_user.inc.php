@@ -15,16 +15,16 @@
   
   if (isset($_POST['save'])) {
     
-    if (empty($_POST['username'])) $system->notices->add('errors', $system->language->translate('error_must_enter_username', 'You must enter a username'));
+    if (empty($_POST['username'])) notices::add('errors', language::translate('error_must_enter_username', 'You must enter a username'));
     
     if (empty($user->data['username'])) {
-      if (empty($_POST['password'])) $system->notices->add('errors', $system->language->translate('error_must_enter_password', 'You must enter a password'));
-      if (empty($_POST['confirmed_password'])) $system->notices->add('errors', $system->language->translate('error_must_enter_confirmed_password', 'You must confirm the password'));
+      if (empty($_POST['password'])) notices::add('errors', language::translate('error_must_enter_password', 'You must enter a password'));
+      if (empty($_POST['confirmed_password'])) notices::add('errors', language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
     }
     
-    if (!empty($_POST['password']) && !empty($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) $system->notices->add('errors', $system->language->translate('error_passwords_missmatch', 'The passwords did not match'));
+    if (!empty($_POST['password']) && !empty($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) notices::add('errors', language::translate('error_passwords_missmatch', 'The passwords did not match'));
     
-    if (empty($system->notices->data['errors'])) {
+    if (empty(notices::$data['errors'])) {
       
       if (empty($_POST['status'])) $_POST['status'] = 0;
       
@@ -44,8 +44,8 @@
       
       $user->save();
       
-      $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. $system->document->link('', array(), array('app')));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link('', array(), array('app')));
       exit;
     }
   }
@@ -56,70 +56,72 @@
     
       $user->delete();
     
-      $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. $system->document->link('', array(), array('app')));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link('', array(), array('app')));
       exit;
     }
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($user->data['username'])) ? $system->language->translate('title_edit_user', 'Edit User') : $system->language->translate('title_create_new_user', 'Create New User'); ?></h1>
-<?php echo $system->functions->form_draw_form_begin(false, 'post'); ?>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($user->data['username'])) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
+
+<?php echo functions::form_draw_form_begin(false, 'post'); ?>
+
   <table>
     <tr>
-      <td colspan="2"><strong><?php echo $system->language->translate('title_status', 'Status'); ?></strong><br />
-        <label><?php echo $system->functions->form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo $system->language->translate('title_enabled', 'Enabled'); ?></label></td>
+      <td colspan="2"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+        <label><?php echo functions::form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label></td>
     </tr>
     <tr>
       <td>
-        <?php echo $system->language->translate('title_username', 'Username'); ?><br />
-          <?php echo $system->functions->form_draw_text_field('username', true, 'required="required"'); ?>
+        <?php echo language::translate('title_username', 'Username'); ?><br />
+          <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
       </td>
       <td>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <?php echo $system->language->translate('title_new_password', 'New Password'); ?><br />
-          <?php echo $system->functions->form_draw_password_field('password', ''); ?>
-      </td>
-      <td>
-        <?php echo $system->language->translate('title_confirm_password', 'Confirm Password'); ?><br />
-          <?php echo $system->functions->form_draw_password_field('confirmed_password', ''); ?>
       </td>
     </tr>
     <tr>
       <td>
-        <?php echo $system->language->translate('title_blocked_until', 'Blocked Until'); ?><br />
-          <?php echo $system->functions->form_draw_datetime_field('date_blocked', true); ?>
+        <?php echo language::translate('title_new_password', 'New Password'); ?><br />
+          <?php echo functions::form_draw_password_field('password', ''); ?>
       </td>
       <td>
-        <?php echo $system->language->translate('title_expires', 'Expires'); ?><br />
-          <?php echo $system->functions->form_draw_datetime_field('date_expires', true); ?>
+        <?php echo language::translate('title_confirm_password', 'Confirm Password'); ?><br />
+          <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <?php echo language::translate('title_blocked_until', 'Blocked Until'); ?><br />
+          <?php echo functions::form_draw_datetime_field('date_blocked', true); ?>
+      </td>
+      <td>
+        <?php echo language::translate('title_expires', 'Expires'); ?><br />
+          <?php echo functions::form_draw_datetime_field('date_expires', true); ?>
       </td>
     </tr>
     <?php if (!empty($user->data['id'])) { ?>
     <tr>
       <td>
-        <?php echo $system->language->translate('title_last_ip', 'Last IP'); ?><br />
-          <?php echo $system->functions->form_draw_static_field('last_ip', true); ?>
+        <?php echo language::translate('title_last_ip', 'Last IP'); ?><br />
+          <?php echo functions::form_draw_static_field('last_ip', true); ?>
       </td>
       <td>
-        <?php echo $system->language->translate('title_last_host', 'Last Host'); ?><br />
-          <?php echo $system->functions->form_draw_static_field('last_host', true); ?>
+        <?php echo language::translate('title_last_host', 'Last Host'); ?><br />
+          <?php echo functions::form_draw_static_field('last_host', true); ?>
       </td>
     </tr>
     <tr>
       <td>
-        <?php echo $system->language->translate('title_last_login', 'Last Login'); ?><br />
-          <?php echo $system->functions->form_draw_static_field('date_login', true); ?>
+        <?php echo language::translate('title_last_login', 'Last Login'); ?><br />
+          <?php echo functions::form_draw_static_field('date_login', true); ?>
       </td>
       <td>
       </td>
     </tr>
     <?php } ?>
-    <tr>
-      <td colspan="2"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($user->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
-    </tr>
   </table>
-<?php echo $system->functions->form_draw_form_end(); ?>
+  
+  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+  
+<?php echo functions::form_draw_form_end(); ?>

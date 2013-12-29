@@ -10,12 +10,7 @@ input[type=date], input[type=datetime], input[type=email], input[type=number], i
   border: 1px solid #d1d1d1;
   border-radius: 3px;
   
-  background-color: #f9f9f9;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
-  background-image: -webkit-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -moz-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -ms-linear-gradient(top, #ececec, #f9f9f9);
-  background-image: -o-linear-gradient(top, #ececec, #f9f9f9);
+  background-color: #f4f4f4;
   
   font: normal 12px Sans-serif;
   color: #333;
@@ -88,7 +83,7 @@ option {
   margin: 3px 6px;
 }
 
-button, a.button, span.button {
+button, a.button, span.button, .button-set {
   display: inline-block;
   
   margin: 3px 1px;
@@ -156,6 +151,25 @@ button img, a.button img, span.button img {
   width: 12px;
   height: 12px;
   vertical-align: middle;
+}
+
+.button-set {
+  padding: 0px;
+}
+.button-set button, .button-set .button {
+  float: left;
+  display: inline;
+  border-radius: 0px;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  margin: 0px;
+}
+.button-set button:first-child, .button-set .button:first-child {
+  border-left: none;
 }
 
 form > table:not(.dataTable) {

@@ -1,59 +1,51 @@
 <?php
   require_once('includes/app_header.inc.php');
   
-  if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
-  if (empty($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
-  
-  $system->document->snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars($system->document->link('', array(), array('category_id'))) .'" />';
-  
-  $system->breadcrumbs->add($system->language->translate('title_categories', 'Categories'), $system->document->link('categories.php'));
-
-  $categories_query = $system->database->query(
-    "select c.id, c.status, c.image, c.keywords, ci.name, ci.description, ci.short_description, ci.head_title, ci.h1_title, ci.meta_description, ci.meta_keywords
-    from ". DB_TABLE_CATEGORIES ." c
-    left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". $system->language->selected['code'] ."')
-    where c.id = '". (int)$_GET['category_id'] ."'
-    limit 1;"
-  );
-  $category = $system->database->fetch($categories_query);
-  
-  if (empty($category['status'])) {
-    $system->notices->add('errors', $system->language->translate('error_page_not_found', 'The requested page could not be found'));
-    header('HTTP/1.1 404 Not Found');
-    header('Location: '. $system->document->link(WS_DIR_HTTP_HOME . 'categories.php'));
+  if (empty($_GET['category_id'])) {
+    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'categories.php'));
     exit;
   }
   
-  foreach ($system->functions->catalog_category_trail($category['id']) as $category_id => $category_name) {
-    $system->breadcrumbs->add($category_name, $system->document->link(basename(__FILE__), array('category_id' => $category_id)));
+  if (empty($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
+  
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars(document::link('', array(), array('category_id'))) .'" />';
+  
+  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::link('categories.php'));
+  
+  $category = new ref_category($_GET['category_id']);
+  
+  if (empty($category->status)) {
+    notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
+    header('HTTP/1.1 404 Not Found');
+    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'categories.php'));
+    exit;
   }
   
-  $system->document->snippets['title'][] = $category['head_title'] ? $category['head_title'] : $category['name'];
-  $system->document->snippets['keywords'] = $category['meta_keywords'] ? $category['meta_keywords'] : $category['keywords'];
-  $system->document->snippets['description'] = $category['meta_description'] ? $category['meta_description'] : $category['short_description'];
+  foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
+    breadcrumbs::add($category_name, document::link(basename(__FILE__), array('category_id' => $category_id)));
+  }
   
-  $system->functions->draw_fancybox('a.fancybox');
+  document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];
+  document::$snippets['keywords'] = $category->meta_keywords[language::$selected['code']] ? $category->meta_keywords[language::$selected['code']] : $category->keywords;
+  document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
   
-  ob_start();
-  echo '<aside class="shadow rounded-corners">' . PHP_EOL;
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'category_tree.inc.php');
-  include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'manufacturers.inc.php');
-  echo '</aside>' . PHP_EOL;
-  $system->document->snippets['column_left'] = ob_get_clean();
+  functions::draw_fancybox('a.fancybox');
   
-  $category_cache_id = $system->cache->cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if ($system->cache->capture($category_cache_id, 'file')) {
+  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  
+  $category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
+  if (cache::capture($category_cache_id, 'file')) {
 ?>
 <div class="box" id="box-category">
   <div class="heading">
     <nav class="filter" style="float: right;">
 <?php
     $sort_alternatives = array(
-      'popularity' => $system->language->translate('title_popularity', 'Popularity'),
-      'name' => $system->language->translate('title_name', 'Name'),
-      'price' => $system->language->translate('title_price', 'Price') ,
-      'date' => $system->language->translate('title_date', 'Date'),
+      'popularity' => language::translate('title_popularity', 'Popularity'),
+      'name' => language::translate('title_name', 'Name'),
+      'price' => language::translate('title_price', 'Price') ,
+      'date' => language::translate('title_date', 'Date'),
     );
     
     $separator = false;
@@ -62,58 +54,77 @@
       if ($_GET['sort'] == $key) {
         echo '<span class="button active">'. $title .'</span>';
       } else {
-        echo '<a class="button" href="'. $system->document->href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
+        echo '<a class="button" href="'. document::href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
       }
       $separator = true;
     }
 ?>
       </nav>
-    <h1><?php echo $category['h1_title'] ? $category['h1_title'] : $category['name']; ?></h1>
+    <h1><?php echo $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']]; ?></h1>
   </div>
   <div class="content">
 <?php
     if ($_GET['page'] == 1) {
 ?>    
-    <?php if ($category['description']) { ?>
+    <?php if ($category->description) { ?>
     <div class="description-wrapper">
-      <?php echo $category['description'] ? '<p class="category-description">'. $category['description'] .'</p>' : false; ?>
+      <?php echo $category->description[language::$selected['code']] ? '<p class="category-description">'. $category->description[language::$selected['code']] .'</p>' : false; ?>
     </div>
     <?php } ?>
     
-    <ul class="listing-wrapper categories">
 <?php
-      $subcategories_query = $system->functions->catalog_categories_query($category['id']);
-      while ($subcategory = $system->database->fetch($subcategories_query)) {
-        echo $system->functions->draw_listing_category($subcategory);
+      $subcategories_query = functions::catalog_categories_query($category->id);
+      if (database::num_rows($subcategories_query)) {
+        echo '<ul class="listing-wrapper categories">' . PHP_EOL;
+        while ($subcategory = database::fetch($subcategories_query)) {
+          echo functions::draw_listing_category($subcategory);
+        }
+        echo '</ul>' . PHP_EOL;
       }
 ?>
-    </ul>
+    
 <?php
     }
-?>
-    <ul class="listing-wrapper products">
-<?php
-    $products_query = $system->functions->catalog_products_query(array('category_id' => $category['id'], 'sort' => $_GET['sort']));
-    if ($system->database->num_rows($products_query) > 0) {
-      if ($_GET['page'] > 1) $system->database->seek($products_query, ($system->settings->get('items_per_page') * ($_GET['page']-1)));
+    
+    switch ($category->list_style) {
+      case 'rows':
+        $items_per_page = 10;
+        break;
+      case 'columns':
+      default:
+        $items_per_page = settings::get('items_per_page');
+        break;
+    }
+    
+    $products_query = functions::catalog_products_query(array('category_id' => $category->id, 'sort' => $_GET['sort']));
+    if (database::num_rows($products_query)) {
+      echo '<ul class="listing-wrapper products">' . PHP_EOL;
+      
+      if ($_GET['page'] > 1) database::seek($products_query, $items_per_page * ($_GET['page'] - 1));
       
       $page_items = 0;
-      while ($listing_product = $system->database->fetch($products_query)) {
-      
-        echo $system->functions->draw_listing_product($listing_product);
-        
-        if (++$page_items == $system->settings->get('items_per_page')) break;
+      while ($listing_product = database::fetch($products_query)) {
+        switch ($category->list_style) {
+          case 'rows':
+            echo functions::draw_listing_product_row($listing_product);
+            break;
+          case 'columns':
+          default:
+            echo functions::draw_listing_product_column($listing_product);
+            break;
+        }
+        if (++$page_items == $items_per_page) break;
       }
     }
-?>
-    </ul>
-<?php
-    echo $system->functions->draw_pagination(ceil($system->database->num_rows($products_query)/$system->settings->get('items_per_page')));
+    
+    echo '    </ul>' . PHP_EOL;
+    
+    echo functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
 ?>
   </div>
 </div>
 <?php
-    $system->cache->end_capture($category_cache_id);
+    cache::end_capture($category_cache_id);
   }
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

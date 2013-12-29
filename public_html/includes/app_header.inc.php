@@ -1,7 +1,7 @@
 <?php
   
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '1.0.1.6');
+  define('PLATFORM_VERSION', '1.1');
   
 // Start redirecting output to the output buffer
   ob_start();
@@ -25,11 +25,14 @@
       case (substr($name, 0, 3) == 'cm_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $name . '.inc.php';
         break;
+      case (substr($name, 0, 5) == 'func_'):
+        require_once FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $name . '.inc.php';
+        break;
       case (substr($name, 0, 4) == 'job_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';
         break;
-      case (substr($name, 0, 4) == 'lib_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . $name . '.inc.php';
+      case (substr($name, 0, 4) == 'mod_'):
+        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $name . '.inc.php';
         break;
       case (substr($name, 0, 3) == 'oa_'):
         require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $name . '.inc.php';
@@ -116,22 +119,25 @@
   set_error_handler('error_handler');
   
 // Set up the system object 
+  system::init();
+  
+// Create compatibility with old library::$method()
   $system = new system();
   
 // Load dependencies
-  $system->run('load_dependencies');
+  system::run('load_dependencies');
   
 // Initiate system modules
-  $system->run('initiate');
+  system::run('initiate');
   
 // Run start operations
-  $system->run('startup');
+  system::run('startup');
   
 // Run operations before capture
-  $system->run('before_capture');
+  system::run('before_capture');
   
 // If page should be overriden
-  $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . $system->document->template .'/overrides/'. $system->link->relpath($system->link->get_base_link());
+  $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/overrides/'. link::relpath(link::get_base_link());
   if (file_exists($override_file)) {
     require_once($override_file);
     exit;

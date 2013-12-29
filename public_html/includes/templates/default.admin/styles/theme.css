@@ -16,8 +16,6 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
 #sidebar {
   width: 230px;
   
-  padding: 0px 10px 0px 5px;
-  
   background: #f5f5f5;
   
   box-shadow: 3px 0 10px 0 #aaa inset;
@@ -65,13 +63,11 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
   
   padding: 0;
   
-  border-bottom: 1px #fff solid;
-  border-top: 1px #ccc solid;
+  border-top: 1px #dfdfdf solid;
 }
 #apps li {
   padding: 0px;
-  border-top: 1px #fff solid;
-  border-bottom: 1px #ccc solid;
+  border-bottom: 1px #dfdfdf solid;
 }
 #apps li a {
   display: block;
@@ -87,7 +83,7 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
   color: #f00;
 }
 #apps li a:hover {
-  background: #fff;
+  background: rgba(255,255,255,0.8);
 }
 #apps li img {
   margin: 2px 5px;

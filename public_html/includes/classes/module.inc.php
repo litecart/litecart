@@ -11,7 +11,7 @@
     public function load($module_id='') {
       
       if (empty($module_id)) {
-        $load_modules = explode(';', $GLOBALS['system']->settings->get($this->type.'_modules'));
+        $load_modules = explode(';', settings::get($this->type.'_modules'));
         if (empty($load_modules)) return;
       } else {
         $load_modules = array($module_id);
@@ -22,21 +22,21 @@
       // Uninstall orphan modules
         if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type . '/' . $module_id .'.inc.php')) {
           
-          $installed_modules = explode(';', $GLOBALS['system']->settings->get($this->type.'_modules'));
+          $installed_modules = explode(';', settings::get($this->type.'_modules'));
           
           $key = array_search($module_id, $installed_modules);
           if ($key !== false) unset($installed_modules[$key]);
           
-          $GLOBALS['system']->database->query(
+          database::query(
             "update ". DB_TABLE_SETTINGS ."
-            set value = '". $GLOBALS['system']->database->input(implode(';', $installed_modules)) ."'
+            set value = '". database::input(implode(';', $installed_modules)) ."'
             where `key` = '". $this->type ."_modules'
             limit 1;"
           );
           
-          $GLOBALS['system']->database->query(
+          database::query(
             "delete from ". DB_TABLE_SETTINGS ."
-            where `key` = '". $GLOBALS['system']->database->input($this->type.'_module_'. $module_id) ."';"
+            where `key` = '". database::input($this->type.'_module_'. $module_id) ."';"
           );
           
           continue;
@@ -46,8 +46,8 @@
         
       // Get settings from database
         $settings = array();
-        if ($GLOBALS['system']->settings->get($this->type.'_module_'.$module_id)) {
-          $settings = unserialize($GLOBALS['system']->settings->get($this->type.'_module_'.$module_id));
+        if (settings::get($this->type.'_module_'.$module_id)) {
+          $settings = unserialize(settings::get($this->type.'_module_'.$module_id));
         }
         
       // Set settings to module

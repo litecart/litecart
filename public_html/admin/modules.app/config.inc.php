@@ -1,35 +1,35 @@
 <?php
   $app_config = array(
-    'name' => $GLOBALS['system']->language->translate('title_modules', 'Modules'),
+    'name' => language::translate('title_modules', 'Modules'),
     'default' => 'shipping',
     'icon' => 'icon.png',
     'menu' => array(
       array(
-        'title' => $GLOBALS['system']->language->translate('title_customer', 'Customer'),
+        'title' => language::translate('title_customer', 'Customer'),
         'doc' => 'customer',
       ),
       array(
-        'title' => $GLOBALS['system']->language->translate('title_shipping', 'Shipping'),
+        'title' => language::translate('title_shipping', 'Shipping'),
         'doc' => 'shipping',
       ),
       array(
-        'title' => $GLOBALS['system']->language->translate('title_payment', 'Payment'),
+        'title' => language::translate('title_payment', 'Payment'),
         'doc' => 'payment',
       ),
       array(
-        'title' => $GLOBALS['system']->language->translate('title_order_total', 'Order Total'),
+        'title' => language::translate('title_order_total', 'Order Total'),
         'doc' => 'order_total',
       ),
       array(
-        'title' => $GLOBALS['system']->language->translate('title_order_success', 'Order Success'),
+        'title' => language::translate('title_order_success', 'Order Success'),
         'doc' => 'order_success',
       ),
       array(
-        'title' => $GLOBALS['system']->language->translate('title_order_action', 'Order Action'),
+        'title' => language::translate('title_order_action', 'Order Action'),
         'doc' => 'order_action',
       ),
       array(
-        'title' => $GLOBALS['system']->language->translate('title_background_jobs', 'Background Jobs'),
+        'title' => language::translate('title_background_jobs', 'Background Jobs'),
         'doc' => 'jobs',
       ),
     ),

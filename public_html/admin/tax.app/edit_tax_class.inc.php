@@ -16,9 +16,9 @@
   // Save data to database
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) $system->notices->add('errors', $system->language->translate('error_must_enter_name', 'You must enter a name'));
+    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     
-    if (!$system->notices->get('errors')) {
+    if (!notices::get('errors')) {
     
       $fields = array(
         'name',
@@ -31,8 +31,8 @@
       
       $tax_class->save();
       
-      $system->notices->add('success', $system->language->translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. $system->document->link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
       exit;
     }
   }
@@ -41,31 +41,29 @@
 
     $tax_class->delete();
     
-    $system->notices->add('success', $system->language->translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. $system->document->link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
+    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
+    header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
     exit();
   }
 
 ?>
-  <table width="100%">
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($tax_class->data['id'])) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
+
+<?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
+
+  <table>
     <tr>
-      <td><h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($tax_class->data['id'])) ? $system->language->translate('title_edit_tax_class', 'Edit Tax Class') : $system->language->translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
-        <?php echo $system->functions->form_draw_form_begin(false, 'post', false, true); ?>
-        <table>
-          <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_name', 'Name'); ?></strong><br />
-              <?php echo $system->functions->form_draw_text_field('name', true); ?>
-            </td>
-          </tr>
-          <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo $system->language->translate('title_description', 'Description'); ?></strong><br />
-              <?php echo $system->functions->form_draw_text_field('description', true, 'data-size="large"'); ?>
-            </td>
-          </tr>
-          <tr>
-            <td align="left" nowrap="nowrap"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo $system->functions->form_draw_button('cancel', $system->language->translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($tax_class->data['id'])) ? $system->functions->form_draw_button('delete', $system->language->translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. $system->language->translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></td>
-          </tr>
-        </table>
-      <?php echo $system->functions->form_draw_form_end(); ?></td>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+        <?php echo functions::form_draw_text_field('name', true); ?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
+        <?php echo functions::form_draw_text_field('description', true, 'data-size="large"'); ?>
+      </td>
     </tr>
   </table>
+  
+  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($tax_class->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+  
+<?php echo functions::form_draw_form_end(); ?>

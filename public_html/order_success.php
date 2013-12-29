@@ -8,18 +8,18 @@
   
   if (empty($order->data['id'])) die('Error: Missing session order object');
   
-  $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
-  $system->document->snippets['title'][] = $system->language->translate('title_order_success', 'Order Success');
-  //$system->document->snippets['keywords'] = '';
-  //$system->document->snippets['description'] = '';
+  document::$snippets['title'][] = language::translate('title_order_success', 'Order Success');
+  //document::$snippets['keywords'] = '';
+  //document::$snippets['description'] = '';
   
-  $system->breadcrumbs->add($system->language->translate('title_checkout', 'Checkout'), $system->document->link('checkout.php'));
-  $system->breadcrumbs->add($system->language->translate('title_order_success', 'Order Success'), $system->document->link());
+  breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::link('checkout.php'));
+  breadcrumbs::add(language::translate('title_order_success', 'Order Success'), document::link());
   
-  $system->cart->reset();
+  cart::reset();
   
-  $system->functions->draw_fancybox('a.fancybox', array(
+  functions::draw_fancybox('a.fancybox', array(
     'type'          => 'iframe',
     'padding'       => '40',
     'width'         => 600,
@@ -33,13 +33,13 @@
   ));
   
 ?>
-<h1><?php echo $system->language->translate('title_order_completed', 'Your order is successfully completed!'); ?></h1>
-<?php echo $system->language->translate('description_order_completed', 'Thank you for shopping in our store. We will process your order shortly.'); ?>
-<p><a href="<?php echo $system->document->href_link('printable_order_copy.php', array('order_id' => $order->data['id'], 'checksum' => $system->functions->general_order_public_checksum($order->data['id']), 'media' => 'print')); ?>" class="fancybox"><?php echo $system->language->translate('description_click_printable_copy', 'Click here for a printable copy'); ?></a></p>
+<h1><?php echo language::translate('title_order_completed', 'Your order is successfully completed!'); ?></h1>
+<?php echo language::translate('description_order_completed', 'Thank you for shopping in our store. We will process your order shortly.'); ?>
+<p><a href="<?php echo document::href_link('printable_order_copy.php', array('order_id' => $order->data['id'], 'checksum' => functions::general_order_public_checksum($order->data['id']), 'media' => 'print')); ?>" class="fancybox"><?php echo language::translate('description_click_printable_copy', 'Click here for a printable copy'); ?></a></p>
 <?php
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'order_success.inc.php');
-  $order_success = new order_success();
+  $order_success = new mod_order_success();
   
   echo $order_success->process();
   

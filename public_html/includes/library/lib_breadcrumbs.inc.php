@@ -1,38 +1,38 @@
 <?php
   
-  class lib_breadcrumbs {
+  class breadcrumbs {
     
-    public $data = array();
+    public static $data = array();
     
-    public function __construct() {
+    //public static function construct() {
+    //}
+    
+    //public static function load_dependencies() {
+    //}
+    
+    //public static function initiate() {
+    //}
+    
+    //public static function startup() {
+    //}
+    
+    public static function before_capture() {
+      self::add(language::translate('title_home', 'Home'), WS_DIR_HTTP_HOME);
     }
     
-    //public function load_dependencies() {
+    //public static function after_capture() {
     //}
     
-    //public function initiate() {
-    //}
+    public static function prepare_output() {
     
-    //public function startup() {
-    //}
-    
-    public function before_capture() {
-      $this->add($GLOBALS['system']->language->translate('title_home', 'Home'), WS_DIR_HTTP_HOME);
-    }
-    
-    //public function after_capture() {
-    //}
-    
-    public function prepare_output() {
-    
-      if (is_object($GLOBALS['system']->breadcrumbs)) {
+      if (class_exists('breadcrumbs')) {
         $breadcrumbs = '';
         $separator = '';
-        foreach ($this->data as $breadcrumb) {
+        foreach (self::$data as $breadcrumb) {
           $breadcrumbs .= $separator .'<li><a href="'. $breadcrumb['link'] .'">'. $breadcrumb['title'] .'</a></li>';
           $separator = ' &raquo; ';
         }
-        $GLOBALS['system']->document->snippets['breadcrumbs'] = '<nav id="breadcrumbs">' . PHP_EOL
+        document::$snippets['breadcrumbs'] = '<nav id="breadcrumbs">' . PHP_EOL
                                                          . '  <ul class="list-horizontal">' . PHP_EOL
                                                          . '    '. $breadcrumbs . PHP_EOL
                                                          . '  </ul>' . PHP_EOL
@@ -40,16 +40,16 @@
       }
     }
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function add($title, $link) {
-      $this->data[] = array(
+    public static function add($title, $link) {
+      self::$data[] = array(
         'title' => $title,
         'link' => $link,
       );

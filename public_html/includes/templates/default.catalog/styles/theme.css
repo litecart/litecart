@@ -10,20 +10,26 @@ body {
   background: #f0f0f0;
 }
 
-#page-wrapper {
-  margin: 0px;
-  padding: 10px;
-  background: #f9f9f9;
-  border-bottom: 1px solid #e5e5e5;
-}
-#page {
-}
-
 #header-wrapper {
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 999;
 }
 #header {
   position: relative;
   height: 75px;
+}
+
+#page-wrapper {
+  margin: 0px;
+  padding: 10px;
+  padding-top: 90px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #e5e5e5;
+}
+#page {
 }
 
 #logotype-wrapper {
@@ -36,7 +42,7 @@ body {
 #site-links-wrapper {
   display: inline-block;
   position: absolute;
-  top: 0px;
+  top: 5px;
   right: 0px;
 }
 #site-links a {
@@ -47,47 +53,52 @@ body {
   text-decoration: none;
 }
 
-#languages-wrapper {
+#region-wrapper {
   display: inline-block;
   position: absolute;
-  right: 280px;
+  left: 50%;
   top: 25px;
+  width: 400px;
+  margin: 0px -200px;
 }
-
-#currencies-wrapper {
-  display: inline-block;
-  position: absolute;
-  right: 190px;
-  top: 25px;
+#region {
+  font-size: 0.95em;
 }
-#currencies a {
+#region table {
+  border-collapse: collapse;
+  margin: 0px auto;
+}
+#region table tr td {
+  padding: 5px 5px;
+}
+#region table tr td {
+  border: 1px #ccc solid;
+  text-align: left;
+}
+#region table tr td:first-child {
+  background: #eee;
+  vertical-align: middle;
+}
+#region .language {
+  vertical-align: middle;
+  margin-left: 4px;
+  display: inline;
+  line-height: 1em;
+}
+#region .currency {
+  margin-left: 5px;
+  display: inline;
   color: #777;
   border: 1px solid #d1d1d1;
-  padding: 2px 4px;
+  padding: 0px 4px;
   background-color: #fff;
+  cursor: default;
 }
-#currencies a:hover {
-  color: rgb(0, 136, 204);
-  border: 1px solid rgb(0, 136, 204);
-  text-decoration: none;
-}
-
-#search-wrapper {
-  display: inline-block;
-  position: absolute;
-  left: 0px;
-  top: 10px;
-  margin: 0px auto;
-  width: 100%;
-  text-align: center;
-}
-#search img {
-  opacity: 0.6;
-}
-@media (max-width: 920px) {
-  #search-wrapper {
-    display: none;
-  }
+#region .country {
+  display: inline;
+  color: #777;
+  padding: 0px 4px;
+  cursor: default;
 }
 
 #cart-wrapper {
@@ -170,7 +181,6 @@ body {
 }
 
 #breadcrumbs-wrapper {
-  float: left;
   width: 50%;
   overflow: hidden;
 }
@@ -178,21 +188,6 @@ body {
   padding: 0px 20px;
   display: inline-block;
   float: left;
-}
-
-#social-bookmarks-wrapper {
-  float: right;
-  width: 50%;
-  position: relative;
-}
-#social-bookmarks {
-  position: absolute;
-  display: inline;
-  right: 0px;
-  margin-right: 20px;
-}
-#social-bookmarks {
-
 }
 
 #footer-wrapper {

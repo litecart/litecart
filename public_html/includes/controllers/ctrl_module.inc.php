@@ -22,7 +22,7 @@
       $this->settings = array();
       
     // Get settings from database
-      $settings = unserialize($GLOBALS['system']->settings->get($this->type.'_module_'.$module_id, ''));
+      $settings = unserialize(settings::get($this->type.'_module_'.$module_id, ''));
       
     // Set settings to module
       foreach ($this->_module->settings() as $setting) {
@@ -41,7 +41,7 @@
       
       if (empty($this->_module->id)) return false;
       
-      if (!in_array($this->_module->id, explode(';', $GLOBALS['system']->settings->get($this->type.'_modules')))) {
+      if (!in_array($this->_module->id, explode(';', settings::get($this->type.'_modules')))) {
         $this->install();
       }
       
@@ -50,22 +50,22 @@
         $save_array[$setting['key']] = $values[$setting['key']];
       }
       
-      if (!$GLOBALS['system']->settings->get($this->type.'_module_'.$this->_module->id, '')) {
-        $GLOBALS['system']->database->query(
+      if (!settings::get($this->type.'_module_'.$this->_module->id, '')) {
+        database::query(
           "insert into ". DB_TABLE_SETTINGS ."
           (`key`, date_created)
           values ('". $this->type.'_module_'. $this->_module->id ."', '". date('Y-m-d H:i:s') ."');"
         );
       }
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_SETTINGS ."
-        set value = '". $GLOBALS['system']->database->input(serialize($save_array)) ."'
-        where `key` = '". $GLOBALS['system']->database->input($this->type.'_module_'. $this->_module->id) ."'
+        set value = '". database::input(serialize($save_array)) ."'
+        where `key` = '". database::input($this->type.'_module_'. $this->_module->id) ."'
         limit 1;"
       );
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
     
     public function install() {
@@ -74,13 +74,13 @@
         $this->_module->uninstall();
       }
       
-      $installed_modules = explode(';', $GLOBALS['system']->settings->get($this->type.'_modules'));
+      $installed_modules = explode(';', settings::get($this->type.'_modules'));
       $installed_modules[] = $this->_module->id;
       $installed_modules = array_unique($installed_modules);
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_SETTINGS ."
-        set value = '". $GLOBALS['system']->database->input(implode(';', $installed_modules)) ."'
+        set value = '". database::input(implode(';', $installed_modules)) ."'
         where `key` = '". $this->type."_modules'
         limit 1;"
       );
@@ -89,7 +89,7 @@
         $this->_module->install();
       }
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
     
     public function uninstall() {
@@ -98,23 +98,23 @@
         $this->_module->uninstall();
       }
       
-      $installed_modules = explode(';', $GLOBALS['system']->settings->get($this->type.'_modules'));
+      $installed_modules = explode(';', settings::get($this->type.'_modules'));
       $key = array_search($this->_module->id, $installed_modules);
       if ($key !== false) unset($installed_modules[$key]);
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_SETTINGS ."
-        set value = '". $GLOBALS['system']->database->input(implode(';', $installed_modules)) ."'
+        set value = '". database::input(implode(';', $installed_modules)) ."'
         where `key` = '". $this->type ."_modules'
         limit 1;"
       );
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "delete from ". DB_TABLE_SETTINGS ."
-        where `key` = '". $GLOBALS['system']->database->input($this->type.'_module_'. $this->_module->id) ."';"
+        where `key` = '". database::input($this->type.'_module_'. $this->_module->id) ."';"
       );
       
-      $GLOBALS['system']->cache->set_breakpoint();
+      cache::set_breakpoint();
     }
   }
 

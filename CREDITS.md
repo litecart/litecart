@@ -40,6 +40,7 @@ Language Icons
 
 Admin Module Icons
 ------------------
+* (appearance) Aha-Soft - Creative Commons (Attribution 3.0 Unported) - http://www.aha-soft.com/ 
 * (catalog) Everaldo Coelho - LGPL - http://www.iconarchive.com/artist/mazenl77.html
 * (countries) MazeNL77 - Freeware - http://www.fitzsimon.com.au
 * (currencies) Dmitry Costenco - Free for commercial use - http://www.aha-soft.com

@@ -1,15 +1,18 @@
 <?php
   
   class ref_manufacturer {
-    
+    private $_cache_id;
     private $_data = array();
     
     function __construct($manufacturer_id) {
     
+      if (empty($manufacturer_id)) trigger_error('Missing manufacturer id', E_USER_WARNING);
       
-      if (empty($manufacturer_id)) trigger_error('Missing manufacturer id');
+      $this->_cache_id = cache::cache_id('manufacturer_'.(int)$manufacturer_id);
       
-      $this->_data['id'] = (int)$manufacturer_id;
+      $cache = cache::get($this->_cache_id, 'file');
+      
+      $this->_data = array_merge(array('id' => (int)$manufacturer_id), $cache ? $cache : array());
     }
     
     public function __get($name) {
@@ -29,7 +32,7 @@
     }
     
     public function __set($name, $value) {
-      trigger_error('Setting data is prohibited', E_USER_ERROR);
+      trigger_error('Setting data is prohibited', E_USER_WARNING);
     }
     
     private function load($type='') {
@@ -41,23 +44,33 @@
         case 'head_title':
         case 'meta_description':
         case 'meta_keywords':
+        case 'h1_title':
           
           $this->_data['info'] = array();
           
-          $query = $GLOBALS['system']->database->query(
-            "select language_code, description, short_description, head_title, meta_description, meta_keywords from ". DB_TABLE_MANUFACTURERS_INFO ."
+          $query = database::query(
+            "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
             where manufacturer_id = '". (int)$this->_data['id'] ."'
-            and language_code in ('". implode("', '", array_keys($GLOBALS['system']->language->languages)) ."');"
+            and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
           );
           
-          while ($row = $GLOBALS['system']->database->fetch($query)) {
-            foreach ($row as $key => $value) $this->_data[$key][$row['language_code']] = $value;
+          $fields = array(
+            'description',
+            'short_description',
+            'head_title',
+            'meta_description',
+            'meta_keywords',
+            'h1_title',
+          );
+          
+          while ($row = database::fetch($query)) {
+            foreach ($fields as $key) $this->_data[$key][$row['language_code']] = $row[$key];
           }
           
         // Fix missing translations
-          foreach (array('description', 'short_description', 'head_title', 'meta_description', 'meta_keywords') as $key) {
-            foreach (array_keys($GLOBALS['system']->language->languages) as $language_code) {
-              if (empty($this->_data[$key][$language_code])) $this->_data[$key][$language_code] = $this->_data[$key][$GLOBALS['system']->settings->get('default_language_code')];
+          foreach ($fields as $key) {
+            foreach (array_keys(language::$languages) as $language_code) {
+              if (empty($this->_data[$key][$language_code])) $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
             }
           }
           
@@ -67,20 +80,22 @@
           
           if (isset($this->_data['date_added'])) return;
           
-          $query = $GLOBALS['system']->database->query(
+          $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS ."
             where id = '". (int)$this->_data['id'] ."'
             limit 1;"
           );
           
-          $row = $GLOBALS['system']->database->fetch($query);
+          $row = database::fetch($query);
           
-          if ($GLOBALS['system']->database->num_rows($query) == 0) trigger_error('Invalid manufacturer id ('. $this->_data['id'] .')', E_USER_ERROR);
+          if (database::num_rows($query) == 0) trigger_error('Invalid manufacturer id ('. $this->_data['id'] .')', E_USER_ERROR);
           
           foreach ($row as $key => $value) $this->_data[$key] = $value;
           
           break;
       }
+      
+      cache::set($this->_cache_id, 'file', $this->_data);
     }
   }
   

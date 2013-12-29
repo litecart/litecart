@@ -11,7 +11,7 @@
     
     public function __construct() {
       
-      $this->name = $GLOBALS['system']->language->translate(__CLASS__.':title_payment_fee', 'Payment Fee');
+      $this->name = language::translate(__CLASS__.':title_payment_fee', 'Payment Fee');
     }
     
     public function process() {
@@ -26,7 +26,7 @@
       $output[] = array(
         'title' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
         'value' => $payment->data['selected']['cost'],
-        'tax' => $GLOBALS['system']->tax->get_tax($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
+        'tax' => tax::get_tax($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
         'calculate' => true,
       );
       
@@ -42,15 +42,15 @@
         array(
           'key' => 'status',
           'default_value' => '1',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => language::translate(__CLASS__.':title_status', 'Status'),
+          'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'priority',
           'default_value' => '30',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );

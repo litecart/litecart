@@ -1,69 +1,69 @@
 <?php
 
-  class lib_database {
+  class database {
     
-    private $_links = array();
-    private $_type = 'mysql';
+    private static $_links = array();
+    private static $_type = 'mysql';
     
-    public function __construct() {
+    public static function construct() {
       
-      if (function_exists('mysqli_connect')) $this->_type = 'mysqli';
+      if (function_exists('mysqli_connect')) self::$_type = 'mysqli';
     }
     
-    //public function load_dependencies() {
+    //public static function load_dependencies() {
     //}
     
-    //public function startup() {
+    //public static function startup() {
     //}
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    public function shutdown() {
+    public static function shutdown() {
       
     // Close a non-persistent database connection
       if (!in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-        $GLOBALS['system']->database->disconnect();
+        database::disconnect();
       }
     }
     
     ######################################################################
   
-    public function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE) {
+    public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE) {
       
     // Create link
-      if (!isset($this->_links[$link]) || (!is_resource($this->_links[$link]) && !is_object($this->_links[$link]))) {
+      if (!isset(self::$_links[$link]) || (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link]))) {
       
       // Set start timestamp for debug
         $execution_time_start = microtime(true);
       
       // Connect
-        if ($this->_type == 'mysqli') {
+        if (self::$_type == 'mysqli') {
         
           if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            $this->_links[$link] = mysqli_connect('p:'.$server, $username, $password, $database) or exit;
+            self::$_links[$link] = mysqli_connect('p:'.$server, $username, $password, $database) or exit;
           } else {
-            $this->_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
+            self::$_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
           }
           
         } else {
         
           if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            $this->_links[$link] = mysql_pconnect($server, $username, $password, 65536) or exit;
+            self::$_links[$link] = mysql_pconnect($server, $username, $password, 65536) or exit;
           } else {
-            $this->_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;
+            self::$_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;
           }
           
-          mysql_select_db($database) or $this->_error(false, mysql_errno(), mysql_error());
+          mysql_select_db($database) or self::_error(false, mysql_errno(), mysql_error());
         }
         
       // Set stop timestamp for debug
@@ -77,23 +77,23 @@
           error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.');
         }
         
-        $GLOBALS['system']->stats->set('database_execution_time', $GLOBALS['system']->stats->get('database_execution_time') + $execution_time_duration);
+        stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
       }
       
-      $this->query("set character set ". DB_DATABASE_CHARSET);
-      $this->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'");
+      self::query("set character set ". DB_DATABASE_CHARSET);
+      self::query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'");
       
     // Make sure link was established
-      if (!is_resource($this->_links[$link]) && !is_object($this->_links[$link])) {
+      if (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link])) {
         trigger_error('Error: Invalid database link', E_USER_ERROR);
       }
       
     // Return connection link
-      return $this->_links[$link];
+      return self::$_links[$link];
     }
     
   // Set input/output mysql charset
-    public function set_character($charset) {
+    public static function set_character($charset) {
     
       $charset = strtolower($charset);
       
@@ -126,18 +126,18 @@
         return false;
       }
       
-      $this->query("set character set ". $charset_map[$charset]);
+      self::query("set character set ". $charset_map[$charset]);
       
       return true;
     }
     
   // Close database connection
-    public function disconnect($link='') {
+    public static function disconnect($link='') {
       
       if ($link != '') {
-        $links = array($this->_links[$link]);
+        $links = array(self::$_links[$link]);
       } else {
-        $links = $this->_links;
+        $links = self::$_links;
       }
       
       $errors = false;
@@ -145,7 +145,7 @@
         if (!is_resource($link)) {
           $errors = true;
         } else {
-          if ($this->_type == 'mysqli') {
+          if (self::$_type == 'mysqli') {
             mysqli_close($link);
           } else {
             mysql_close($link);
@@ -156,10 +156,10 @@
       return $errors ? true : false;
     }
     
-    public function query($query, $link='default') {
+    public static function query($query, $link='default') {
       
     // Establish a link if not previously made
-      if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
+      if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
       
     // Set start timestamp for debug
       $execution_time_start = microtime(true);
@@ -167,10 +167,10 @@
       //if (strtolower(substr($query, 0, 6)) == 'select') $query = '/*qc=on*/' . $query; // mysqlnd query cache plugin
       
     // Perform mysql query
-      if ($this->_type == 'mysqli') {
-        $result = mysqli_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));
+      if (self::$_type == 'mysqli') {
+        $result = mysqli_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]));
       } else {
-        $result = mysql_query($query, $this->_links[$link]) or exit;
+        $result = mysql_query($query, self::$_links[$link]) or exit;
       }
       
     // Set stop timestamp for debug
@@ -184,8 +184,8 @@
         error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query));
       }
       
-      $GLOBALS['system']->stats->set('database_queries', $GLOBALS['system']->stats->get('database_queries') + 1);
-      $GLOBALS['system']->stats->set('database_execution_time', $GLOBALS['system']->stats->get('database_execution_time') + $execution_time_duration);
+      stats::set('database_queries', stats::get('database_queries') + 1);
+      stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
       
     // Return query resource
       return $result;
@@ -194,32 +194,32 @@
     public function multi_query($query, $link='default') {
     
     // Establish a link if not previously made
-      if (!isset($this->_links[$link]) || is_resource($this->_links[$link])) $this->connect($link);
+      if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
       
-      if ($this->_type == 'mysqli') {
-        if (mysqli_multi_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]))) {
+      if (self::$_type == 'mysqli') {
+        if (mysqli_multi_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]))) {
           do {
-            if ($result = mysqli_use_result($this->_links[$link])) {
+            if ($result = mysqli_use_result(self::$_links[$link])) {
               while ($row = mysqli_fetch_row($result)) {
               }
               mysqli_free_result($result);
             }
           }
-          while (mysqli_next_result($this->_links[$link]));
+          while (mysqli_next_result(self::$_links[$link]));
         }
       } else {
-        $this->query($query, $this->_links[$link]); // don't pick up results - we're not supporting it
+        self::query($query, self::$_links[$link]); // don't pick up results - we're not supporting it
       }
       return;
     }
     
-    public function fetch($result) {
+    public static function fetch($result) {
     
     // Set start timestamp for debug
       $execution_time_start = microtime(true);
       
     // Perform mysql query
-      if ($this->_type == 'mysqli') {
+      if (self::$_type == 'mysqli') {
         $array = mysqli_fetch_assoc($result);
       } else {
         $array = mysql_fetch_assoc($result);
@@ -231,65 +231,65 @@
     // Calculate duration time for debug
       $execution_time_duration = $execution_time_stop - $execution_time_start;
       
-      $GLOBALS['system']->stats->set('database_execution_time', $GLOBALS['system']->stats->get('database_execution_time') + $execution_time_duration);
+      stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
       
       return $array;
     }
     
-    public function seek($result, $offset) {
-      if ($this->_type == 'mysqli') {
+    public static function seek($result, $offset) {
+      if (self::$_type == 'mysqli') {
         return mysqli_data_seek($result, $offset);
       } else {
         return mysql_data_seek($result, $offset);
       }
     }
     
-    public function num_rows($result) {
-      if ($this->_type == 'mysqli') {
+    public static function num_rows($result) {
+      if (self::$_type == 'mysqli') {
         return mysqli_num_rows($result);
       } else {
         return mysql_num_rows($result);
       }
     }
 
-    public function free($result) {
-      if ($this->_type == 'mysqli') {
+    public static function free($result) {
+      if (self::$_type == 'mysqli') {
         return mysqli_free_result($result);
       } else {
         return mysql_free_result($result);
       }
     }
     
-    public function insert_id($link='default') {
-      if ($this->_type == 'mysqli') {
-        return mysqli_insert_id($this->_links[$link]);
+    public static function insert_id($link='default') {
+      if (self::$_type == 'mysqli') {
+        return mysqli_insert_id(self::$_links[$link]);
       } else {
-        return mysql_insert_id($this->_links[$link]);
+        return mysql_insert_id(self::$_links[$link]);
       }
     }
     
-    public function affected_rows($link='default') {
-      if ($this->_type == 'mysqli') {
-        return mysqli_affected_rows($this->_links[$link]);
+    public static function affected_rows($link='default') {
+      if (self::$_type == 'mysqli') {
+        return mysqli_affected_rows(self::$_links[$link]);
       } else {
-        return mysql_affected_rows($this->_links[$link]);
+        return mysql_affected_rows(self::$_links[$link]);
       }
     }
     
-    public function info($link='default') {
-      if ($this->_type == 'mysqli') {
-        return mysqli_info($this->_links[$link]);
+    public static function info($link='default') {
+      if (self::$_type == 'mysqli') {
+        return mysqli_info(self::$_links[$link]);
       } else {
-        return mysql_info($this->_links[$link]);
+        return mysql_info(self::$_links[$link]);
       }
     }
     
-    public function input($string, $allowable_tags=false, $link='default') {
+    public static function input($string, $allowable_tags=false, $link='default') {
       
     // Return safe array
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
-          $string[$key] = $this->input($string[$key]);
+          $string[$key] = self::input($string[$key]);
         }
         return $string;
       }
@@ -303,17 +303,17 @@
       }
       
     // Establish a link if not previously made
-      if (!isset($this->_links[$link])) $this->connect();
+      if (!isset(self::$_links[$link])) self::connect();
       
     // Return safe input string
-      if ($this->_type == 'mysqli') {
-        return mysqli_real_escape_string($this->_links[$link], $string);
+      if (self::$_type == 'mysqli') {
+        return mysqli_real_escape_string(self::$_links[$link], $string);
       } else {
-        return mysql_real_escape_string($string, $this->_links[$link]);
+        return mysql_real_escape_string($string, self::$_links[$link]);
       }
     }
     
-    private function _error($query, $errno, $error) {
+    private static function _error($query, $errno, $error) {
       trigger_error($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
     }
   }

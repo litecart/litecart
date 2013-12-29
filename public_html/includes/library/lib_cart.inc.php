@@ -1,106 +1,106 @@
 <?php
   
-  class lib_cart {
+  class cart {
     
-    public $data = array();
-    public $cache = array();
-    public $checksum;
+    public static $data = array();
+    public static $cache = array();
+    public static $checksum;
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    public function load_dependencies() {
+    public static function load_dependencies() {
     
-      if (!isset($GLOBALS['system']->session->data['cart']) || !is_array($GLOBALS['system']->session->data['cart'])) {
-        $this->data = &$GLOBALS['system']->session->data['cart'];
-        $GLOBALS['system']->session->data['cart'] = array(
+      if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
+        self::$data = &session::$data['cart'];
+        session::$data['cart'] = array(
           'items' => array(),
           'comments' => array(),
         );
       }
       
-      $this->data = &$GLOBALS['system']->session->data['cart'];
+      self::$data = &session::$data['cart'];
     }
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    public function startup() {
+    public static function startup() {
     
       if (!empty($_POST['add_cart_product'])) {
-        $this->add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        self::add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['remove_cart_item'])) {
-        $this->remove($_POST['key']);
+        self::remove($_POST['key']);
       }
       
       if (!empty($_POST['update_cart_item'])) {
-        $this->update($_POST['key'], (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        self::update($_POST['key'], (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['clear_cart_items'])) {
-        $this->reset();
+        self::reset();
       }
       
-      $this->calculate_total();
-      $this->checksum();
+      self::_calculate_total();
+      self::checksum();
     }
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    //public function before_output() {
+    //public static function before_output() {
     //}
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function load() {
-      if (empty($GLOBALS['system']->customer->data['id'])) return;
+    public static function load() {
+      if (empty(customer::$data['id'])) return;
       
-      $cache_id = $GLOBALS['system']->cache->cache_id('cart_'.$GLOBALS['system']->customer->data['id']);
-      $cart_data = $GLOBALS['system']->cache->get($cache_id, 'file', 60*60*24*365);
+      $cache_id = cache::cache_id('cart_'.customer::$data['id']);
+      $cart_data = cache::get($cache_id, 'file', 60*60*24*365);
       
       if (empty($cart_data)) return;
       
-      foreach ($cart_data as $item) $this->add_product($item['product_id'], $item['options'], $item['quantity'], true);
+      foreach ($cart_data as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
       
       if (!empty($_COOKIE['cart']['items'])) {
         $cart_data = unserialize($_COOKIE['cart']['items']);
-        foreach ($_COOKIE['cart']['items'] as $item) $this->add_product($item['product_id'], $item['options'], $item['quantity'], true);
+        foreach ($_COOKIE['cart']['items'] as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
       }
     }
     
-    public function save() {
+    public static function save() {
       
       $cart_data = array();
       
-      foreach (array_keys($this->data['items']) as $key) {
+      foreach (array_keys(self::$data['items']) as $key) {
         
-        $item_key = md5(serialize(array($this->data['items'][$key]['product_id'], $this->data['items'][$key]['options'])));
+        $item_key = md5(serialize(array(self::$data['items'][$key]['product_id'], self::$data['items'][$key]['options'])));
         
         $cart_data[$item_key] = array(
-          'product_id' => $this->data['items'][$key]['product_id'],
-          'options' => $this->data['items'][$key]['options'],
-          'quantity' => $this->data['items'][$key]['quantity'],
+          'product_id' => self::$data['items'][$key]['product_id'],
+          'options' => self::$data['items'][$key]['options'],
+          'quantity' => self::$data['items'][$key]['quantity'],
         );
       }
       
       setcookie('cart', '', mktime(0, 0, 0, 1, 1, 2000));
       
-      if (!empty($GLOBALS['system']->customer->data['id'])) {
+      if (!empty(customer::$data['id'])) {
         
-        $cache_id = $GLOBALS['system']->cache->cache_id('cart_'.$GLOBALS['system']->customer->data['id']);
-        $GLOBALS['system']->cache->set($cache_id, 'file', $cart_data);
+        $cache_id = cache::cache_id('cart_'.customer::$data['id']);
+        cache::set($cache_id, 'file', $cart_data);
         
       } else {
       
@@ -108,10 +108,10 @@
       }
     }
     
-    public function add_product($product_id, $options, $quantity=1, $silent=false) {
+    public static function add_product($product_id, $options, $quantity=1, $silent=false) {
       
       if ($quantity <= 0) {
-        if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_cannot_add_to_cart_invalid_quantity', 'Cannot add product to cart. Invalid quantity'));
+        if (!$silent) notices::add('errors', language::translate('error_cannot_add_to_cart_invalid_quantity', 'Cannot add product to cart. Invalid quantity'));
         return;
       }
       
@@ -120,22 +120,22 @@
       $product = new ref_product($product_id);
       
       if ($product->status == 0) {
-        if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_product_not_available_for_purchase', 'The product is not available for purchase'));
+        if (!$silent) notices::add('errors', language::translate('text_product_not_available_for_purchase', 'The product is not available for purchase'));
         return;
       }
       
       if (substr($product->date_valid_from, 0, 10) != '0000-00-00 00:00:00' && $product->date_valid_from > date('Y-m-d H:i:s')) {
-        if (!$silent) $GLOBALS['system']->notices->add('errors', sprintf($GLOBALS['system']->language->translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime($GLOBALS['system']->language->selected['format_date'], strtotime($product->date_valid_from))));
+        if (!$silent) notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
         return;
       }
       
       if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && $product->date_valid_to < date('Y-m-d H:i:s')) {
-        if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
+        if (!$silent) notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
         return;
       }
       
       if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-        if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+        if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
         return;
       }
       
@@ -168,28 +168,28 @@
         foreach (array_keys($product->options) as $key) {
           
           if ($product->options[$key]['required'] != 0) {
-            if (empty($options[$product->options[$key]['name'][$GLOBALS['system']->language->selected['code']]])) {
-              if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][$GLOBALS['system']->language->selected['code']] .')');
+            if (empty($options[$product->options[$key]['name'][language::$selected['code']]])) {
+              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][language::$selected['code']] .')');
               return;
             }
           }
           
-          if (!empty($options[$product->options[$key]['name'][$GLOBALS['system']->language->selected['code']]])) {
+          if (!empty($options[$product->options[$key]['name'][language::$selected['code']]])) {
             switch ($product->options[$key]['function']) {
               case 'checkbox':
               
                 $valid_values = array();
                 foreach ($product->options[$key]['values'] as $value) {
-                  $valid_values[] = $value['name'][$GLOBALS['system']->language->selected['code']];
-                  if (in_array($value['name'][$GLOBALS['system']->language->selected['code']], $options[$product->options[$key]['name'][$GLOBALS['system']->language->selected['code']]])) {
+                  $valid_values[] = $value['name'][language::$selected['code']];
+                  if (in_array($value['name'][language::$selected['code']], $options[$product->options[$key]['name'][language::$selected['code']]])) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                     $item['price'] += $value['price_adjust'];
                   }
                 }
                 
-                foreach ($options[$product->options[$key]['name'][$GLOBALS['system']->language->selected['code']]] as $current_value) {
+                foreach ($options[$product->options[$key]['name'][language::$selected['code']]] as $current_value) {
                   if (!in_array($current_value, $valid_values)) {
-                    if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_product_options_contains_errors', 'The product options contains errors'));
+                    if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
                     return;
                   }
                 }
@@ -208,15 +208,15 @@
               
                 $valid_values = array();
                 foreach ($product->options[$key]['values'] as $value) {
-                  $valid_values[] = $value['name'][$GLOBALS['system']->language->selected['code']];
-                  if ($value['name'][$GLOBALS['system']->language->selected['code']] == $options[$product->options[$key]['name'][$GLOBALS['system']->language->selected['code']]]) {
+                  $valid_values[] = $value['name'][language::$selected['code']];
+                  if ($value['name'][language::$selected['code']] == $options[$product->options[$key]['name'][language::$selected['code']]]) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                     $item['price'] += $value['price_adjust'];
                   }
                 }
                 
-                if (!in_array($options[$product->options[$key]['name'][$GLOBALS['system']->language->selected['code']]], $valid_values)) {
-                  if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_product_options_contains_errors', 'The product options contains errors'));
+                if (!in_array($options[$product->options[$key]['name'][language::$selected['code']]], $valid_values)) {
+                  if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
                   return;
                 }
                 
@@ -245,7 +245,7 @@
           
           if ($option_match) {
             if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-              if (!$silent) $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.'));
+              if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.'));
               return;
             }
             
@@ -262,85 +262,85 @@
         }
       }
       
-      if (isset($this->data['items'][$item_key]) && $options == $this->data['items'][$item_key]['options']) {
+      if (isset(self::$data['items'][$item_key]) && $options == self::$data['items'][$item_key]['options']) {
         
-        $this->update($item_key, $this->data['items'][$item_key]['quantity'] + $quantity);
+        self::update($item_key, self::$data['items'][$item_key]['quantity'] + $quantity);
         
       } else {
         
-        $this->data['items'][$item_key] = $item;
+        self::$data['items'][$item_key] = $item;
         
-        $this->calculate_total();
-        $this->checksum();
-        $this->save();
+        self::_calculate_total();
+        self::checksum();
+        self::save();
       }
       
       if (!$silent) {
-        $GLOBALS['system']->notices->add('success', $GLOBALS['system']->language->translate('success_product_added_to_cart', 'Your product was successfully added to the cart.'));
+        notices::add('success', language::translate('success_product_added_to_cart', 'Your product was successfully added to the cart.'));
         return;
       }
     }
     
-    public function update($item_key, $quantity) {
+    public static function update($item_key, $quantity) {
     
-      if (!isset($this->data['items'][$item_key])) {
-        $GLOBALS['system']->notices->add('errors', 'The product does not exist in cart.');
+      if (!isset(self::$data['items'][$item_key])) {
+        notices::add('errors', 'The product does not exist in cart.');
         return;
       }
       
-      $product = new ref_product($this->data['items'][$item_key]['product_id']);
+      $product = new ref_product(self::$data['items'][$item_key]['product_id']);
       
       if (empty($product->sold_out_status['orderable'])) {
-        if (!empty($this->data['items'][$item_key]['option_stock_combination'])) {
+        if (!empty(self::$data['items'][$item_key]['option_stock_combination'])) {
           foreach (array_keys($product->options_stock) as $key) {
-            if ($product->options_stock[$key]['combination'] == $this->data['items'][$item_key]['option_stock_combination']) {
+            if ($product->options_stock[$key]['combination'] == self::$data['items'][$item_key]['option_stock_combination']) {
               if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
-                $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
-                return;
+                notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
+        return;
               }
             }
           }
         } else if (($product->quantity - $quantity) < 0) {
-          $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
-          return;
-        }
+        notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+        return;
+      }
       }
     
       if ($quantity > 0) {
-        $this->data['items'][$item_key]['quantity'] = (int)$quantity;
+        self::$data['items'][$item_key]['quantity'] = (int)$quantity;
       } else {
-        $this->remove($item_key);
+        self::remove($item_key);
       }
       
-      $this->calculate_total();
-      $this->checksum();
-      $this->save();
+      self::_calculate_total();
+      self::checksum();
+      self::save();
     }
 
-    public function remove($item_key) {
+    public static function remove($item_key) {
     
-      if (isset($this->data['items'][$item_key])) {
-        unset($this->data['items'][$item_key]);
+      if (isset(self::$data['items'][$item_key])) {
+        unset(self::$data['items'][$item_key]);
       }
       
-      $this->calculate_total();
-      $this->checksum();
-      $this->save();
+      self::_calculate_total();
+      self::checksum();
+      self::save();
       
-      header('Location: '. $GLOBALS['system']->document->link('', array(), true));
+      header('Location: '. document::link('', array(), true));
       exit;
     }
 
-    public function reset() {
+    public static function reset() {
     
-      $this->data['items'] = array();
+      self::$data['items'] = array();
       
-      $this->calculate_total();
-      $this->checksum();
-      $this->save();
+      self::_calculate_total();
+      self::checksum();
+      self::save();
     }
     
-    private function calculate_total() {
+    private static function _calculate_total() {
       
       $total_value = 0;
       $total_tax = 0;
@@ -349,19 +349,19 @@
       $total_physical = 0;
       $total_virtual = 0;
       
-      foreach ($this->data['items'] as $item) {
+      foreach (self::$data['items'] as $item) {
         $total_value += $item['price'] * $item['quantity'];
-        $total_tax += $GLOBALS['system']->tax->get_tax($item['price'], $item['tax_class_id']) * $item['quantity'];
+        $total_tax += tax::get_tax($item['price'], $item['tax_class_id']) * $item['quantity'];
         $total_items += $item['quantity'];
         //if ($item['type'] == 'physical') {
-        //  $total_weight += $item['quantity'] * $GLOBALS['system']->weight->convert($item['weight'], $item['weight_class'], $GLOBALS['system']->settings->get('store_weight_class'));
+        //  $total_weight += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
           $total_physical += $item['quantity'];
         //} else if ($item['type'] == 'virtual') {
         //  $total_virtual += $item['quantity'];
         //}
       }
       
-      $this->data['total'] = array(
+      self::$data['total'] = array(
         'value' => $total_value,
         'tax' => $total_tax,
         'items' => $total_items,
@@ -371,8 +371,8 @@
       );
     }
     
-    public function checksum() {
-      $this->data['checksum'] = sha1(serialize(array_merge($this->data['items'], $GLOBALS['system']->language->selected)));
+    public static function checksum() {
+      self::$data['checksum'] = sha1(serialize(array_merge(self::$data['items'], language::$selected)));
     }
   }
   

@@ -1,36 +1,36 @@
 <?php
   
-  class lib_customer {
-    public $data;
+  class customer {
+    public static $data;
     
-    public function __construct(&$system) {
+    public static function construct() {
     }
     
-    public function load_dependencies() {
-      $this->data = &$GLOBALS['system']->session->data['customer'];
+    public static function load_dependencies() {
+      self::$data = &session::$data['customer'];
     }
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    public function startup() {
+    public static function startup() {
       
-      if (empty($GLOBALS['system']->session->data['customer']) || !is_array($GLOBALS['system']->session->data['customer'])) {
-        $this->reset();
+      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
+        self::reset();
+        self::identify();
       }
     }
     
-    public function before_capture() {
-      
+    public static function before_capture() {
+    
     // Set regional data
-      if ($GLOBALS['system']->settings->get('regional_settings_screen_enabled')) {
-        
-        if (empty($GLOBALS['system']->customer->data['id']) && empty($GLOBALS['system']->session->data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
+      if (settings::get('regional_settings_screen_enabled')) {
+        if (empty(customer::$data['id']) && empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
           
-          $GLOBALS['system']->functions->draw_fancybox('', array(
+          functions::draw_fancybox('', array(
             'centerOnScroll' => true,
             'hideOnContentClick' => false,
-            'href' => $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
+            'href' => document::link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
             'modal' => true,
             'speedIn' => 600,
             'transitionIn' => 'fade',
@@ -42,29 +42,96 @@
       }
     }
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    public function before_output() {
+    public static function before_output() {
       
-      if ($GLOBALS['system']->settings->get('regional_settings_screen_enabled')) {
-        if (empty($GLOBALS['system']->session->data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
-          $GLOBALS['system']->session->data['skip_set_region_data'] = true;
+      if (settings::get('regional_settings_screen_enabled')) {
+        if (empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
+          session::$data['skip_set_region_data'] = true;
           setcookie('skip_set_region_data', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
         }
       }
     }
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function reset() {
-      $GLOBALS['system']->session->data['customer'] = array(
+    public static function identify() {
+      
+    // Set country from cookie
+      if (empty(self::$data['country_code'])) {
+        if (!empty($_COOKIE['country_code'])) {
+          self::$data['country_code'] = $_COOKIE['country_code'];
+        }
+      }
+      
+    // Set country from browser
+      if (empty(self::$data['country_code'])) {
+        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+          if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+            if (!empty($matches[1])) self::$data['country_code'] = $matches[1];
+          }
+        }
+      }
+
+    // Build list of supported countries
+      $countries_query = database::query(
+        "select * from ". DB_TABLE_COUNTRIES ."
+        where status;"
+      );
+      
+      $countries = array();
+      while ($country = database::fetch($countries_query)) {
+        $countries[] = $country['iso_code_2'];
+      }
+      
+    // Unset non supported country
+      if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';
+      
+    // Set default country
+      if (empty(self::$data['country_code'])) {
+        self::$data['country_code'] = settings::get('default_country_code');
+      }
+      
+    // Set zone from cookie
+      if (empty(self::$data['zone_code'])) {
+        if (!empty($_COOKIE['zone_code'])) {
+          self::$data['zone_code'] = $_COOKIE['zone_code'];
+        }
+      }
+      
+      if (empty(self::$data['zone_code'])) {
+          self::$data['zone_code'] = settings::get('default_zone_code');
+      }
+      
+    // Unset zone if not in country
+      if (!functions::reference_verify_zone_code(self::$data['country_code'], self::$data['zone_code'])) {
+        self::$data['zone_code'] = '';
+      }
+      
+      self::$data['shipping_address']['country_code'] = self::$data['country_code'];
+      self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
+      
+    // Set tax from cookie
+      if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
+        if (isset($_COOKIE['display_prices_including_tax'])) self::$data['display_prices_including_tax'] = !empty($_COOKIE['display_prices_including_tax']) ? 1 : 0;
+      }
+    
+    // Set default tax
+      if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
+        self::$data['display_prices_including_tax'] = settings::get('default_display_prices_including_tax') ? 1 : 0;
+      }
+    }
+    
+    public static function reset() {
+      session::$data['customer'] = array(
         'id' => '',
         'email' => '',
         'tax_id' => '',
@@ -77,8 +144,8 @@
         'address2' => '',
         'city' => '',
         'postcode' => '',
-        'country_code' => $GLOBALS['system']->settings->get('default_country_code'),
-        'zone_code' => $GLOBALS['system']->settings->get('default_zone_code'),
+        'country_code' => '',
+        'zone_code' => '',
         'different_shipping_address' => false,
         'shipping_address' => array(
           'company' => '',
@@ -88,77 +155,78 @@
           'address2' => '',
           'city' => '',
           'postcode' => '',
-          'country_code' => $GLOBALS['system']->settings->get('default_country_code'),
-          'zone_code' => $GLOBALS['system']->settings->get('default_zone_code'),
+          'country_code' => '',
+          'zone_code' => '',
         ),
+        'display_prices_including_tax' => null,
       );
     }
     
-    public function require_login() {
-      if (!$this->check_login()) {
-        $GLOBALS['system']->notices->add('warnings', $GLOBALS['system']->language->translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME));
+    public static function require_login() {
+      if (!self::check_login()) {
+        notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
+        header('Location: ' . document::link(WS_DIR_HTTP_HOME));
         exit;
       }
     }
     
-    public function check_login() {
-      if (!empty($this->data['id'])) return true;
+    public static function check_login() {
+      if (!empty(self::$data['id'])) return true;
     }
     
-    public function password_reset($email) {
+    public static function password_reset($email) {
       
       if (empty($email)) {
-        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_missing_email', 'To reset your password you must provide an e-mail address.'));
+        notices::add('errors', language::translate('error_missing_email', 'To reset your password you must provide an e-mail address.'));
         return;
       }
 
-      $customer_query = $GLOBALS['system']->database->query(
+      $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where email = '". $GLOBALS['system']->database->input($email) ."'
+        where email = '". database::input($email) ."'
         limit 1;"
       );
-      $customer = $GLOBALS['system']->database->fetch($customer_query);
+      $customer = database::fetch($customer_query);
       
       if (empty($customer)) {
         sleep(10);
-        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
+        notices::add('errors', language::translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
         return;
       }
       
-      $new_password = $GLOBALS['system']->functions->password_generate(6);
+      $new_password = functions::password_generate(6);
       
-      $customer_query = $GLOBALS['system']->database->query(
+      $customer_query = database::query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set password = '". $GLOBALS['system']->functions->password_checksum($email, $new_password) ."'
-        where email = '". $GLOBALS['system']->database->input($email) ."'
+        set password = '". functions::password_checksum($email, $new_password) ."'
+        where email = '". database::input($email) ."'
         limit 1;"
       );
       
-      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME)), $GLOBALS['system']->language->translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
+      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::link(WS_DIR_HTTP_HOME)), language::translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
       
-      $GLOBALS['system']->functions->email_send(
-        $GLOBALS['system']->settings->get('store_email'),
+      functions::email_send(
+        settings::get('store_email'),
         $email,
-        $GLOBALS['system']->language->translate('email_subject_new_password', 'New Password'),
+        language::translate('email_subject_new_password', 'New Password'),
         $message
       );
       
-      $GLOBALS['system']->notices->add('success', $GLOBALS['system']->language->translate('success_password_reset', 'A new password has been sent to your e-mail address.'));
+      notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your e-mail address.'));
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
     }
     
-    public function load($customer_id) {
+    public static function load($customer_id) {
       
-      $customer_query = $GLOBALS['system']->database->query(
+      $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where id = '". (int)$customer_id ."'
         limit 1;"
       );
-      $customer = $GLOBALS['system']->database->fetch($customer_query);
+      $customer = database::fetch($customer_query);
       
-      $GLOBALS['system']->session->data['customer'] = $customer;
+      session::$data['customer'] = $customer;
       
       $key_map = array(
         'shipping_company' => 'company',
@@ -172,60 +240,60 @@
         'shipping_zone_code' => 'zone_code',
       );
       
-      if (!empty($this->data['different_shipping_address'])) {
+      if (!empty(self::$data['different_shipping_address'])) {
         foreach ($key_map as $skey => $tkey){
-          $this->data['shipping_address'][$tkey] = $this->data[$skey];
-          unset($this->data[$skey]);
+        self::$data['shipping_address'][$tkey] = self::$data[$skey];
+        unset(self::$data[$skey]);
         }
       } else {
         foreach ($key_map as $skey => $tkey){
-          $this->data['shipping_address'][$tkey] = $this->data[$tkey];
-          unset($this->data[$skey]);
+          self::$data['shipping_address'][$tkey] = self::$data[$tkey];
+          unset(self::$data[$skey]);
         }
       }
     }
     
-    public function login($email, $password, $redirect_url='') {
+    public static function login($email, $password, $redirect_url='') {
     
       if (empty($email) || empty($password)) {
-        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
+        notices::add('errors', language::translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
         return;
       }
       
-      $customer_query = $GLOBALS['system']->database->query(
+      $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where email = '". $GLOBALS['system']->database->input($email) ."'
-        and password = '". $GLOBALS['system']->functions->password_checksum($email, $password) ."'
+        where email = '". database::input($email) ."'
+        and password = '". functions::password_checksum($email, $password) ."'
         limit 1;"
       );
-      $customer = $GLOBALS['system']->database->fetch($customer_query);
+      $customer = database::fetch($customer_query);
       
       if (empty($customer)) {
         sleep(10);
-        $GLOBALS['system']->notices->add('errors', $GLOBALS['system']->language->translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
+        notices::add('errors', language::translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
         return;
       }
       
-      $this->load($customer['id']);
+      self::load($customer['id']);
       
-      $GLOBALS['system']->session->regenerate_id();
+      session::regenerate_id();
       
-      $GLOBALS['system']->cart->load();
+      cart::load();
       
-      if (empty($redirect_url)) $redirect_url = $GLOBALS['system']->document->link(WS_DIR_HTTP_HOME);
+      if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_HTTP_HOME);
       
-      $GLOBALS['system']->notices->add('success', str_replace(array('%firstname', '%lastname'), array($this->data['firstname'], $this->data['lastname']), $GLOBALS['system']->language->translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
+      notices::add('success', str_replace(array('%firstname', '%lastname'), array(self::$data['firstname'], self::$data['lastname']), language::translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
       header('Location: '. $redirect_url);
       exit;
     }
     
-    public function logout($redirect_url='') {
-      $this->reset();
-      $GLOBALS['system']->cart->reset();
+    public static function logout($redirect_url='') {
+      self::reset();
+      cart::reset();
       
-      $GLOBALS['system']->session->regenerate_id();
+      session::regenerate_id();
       
-      $GLOBALS['system']->notices->add('success', $GLOBALS['system']->language->translate('description_logged_out', 'You are now logged out.'));
+      notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
       
       if ($redirect_url) {
         header('Location: ' . $redirect_url);

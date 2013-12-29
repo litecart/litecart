@@ -7,8 +7,8 @@
     return;
   }
   
-  $url = $system->document->link('http://www.litecart.net/feeds/addons', array('whoami' => $system->document->link(WS_DIR_HTTP_HOME), 'version' => PLATFORM_VERSION));
-  $rss = $system->functions->http_fetch($url);
+  $url = document::link('http://www.litecart.net/feeds/addons', array('whoami' => document::link(WS_DIR_HTTP_HOME), 'version' => PLATFORM_VERSION));
+  $rss = functions::http_fetch($url);
   
   $rss = simplexml_load_string($rss);
   
@@ -35,7 +35,7 @@
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
     <tr class="header">
-      <th colspan="4" align="left"><?php echo $system->language->translate('title_latest_addons', 'Latest Add-ons'); ?></th>
+      <th colspan="4" align="left"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></th>
     </tr>
     <tr>
 <?php

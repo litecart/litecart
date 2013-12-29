@@ -1,10 +1,10 @@
 <?php
   require_once('../includes/app_header.inc.php');
-  header('Content-type: text/plain; charset='. $system->language->selected['charset']);
+  header('Content-type: text/plain; charset='. language::$selected['charset']);
   
   if (empty($_GET['trigger'])) die('{}');
   
-  $customer = new customer();
+  $customer = new mod_customer();
   
   $result = $customer->get_address(array_merge($_POST, $_GET));
   
@@ -29,10 +29,10 @@
     'alert' => isset($result['alert']) ? $result['alert'] : '',
   );
   
-  mb_convert_variables($system->language->selected['charset'], 'UTF-8', $json);
+  mb_convert_variables(language::$selected['charset'], 'UTF-8', $json);
   $json = json_encode($json);
   
-  mb_convert_variables('UTF-8', $system->language->selected['charset'], $json);
+  mb_convert_variables('UTF-8', language::$selected['charset'], $json);
   echo $json;
   
 ?>

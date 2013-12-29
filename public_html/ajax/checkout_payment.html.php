@@ -1,20 +1,20 @@
 <?php
   if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
     require_once('../includes/app_header.inc.php');
-    header('Content-type: text/html; charset='. $system->language->selected['charset']);
-    $system->document->layout = 'ajax';
+    header('Content-type: text/html; charset='. language::$selected['charset']);
+    document::$layout = 'ajax';
   }
   
-  if ($system->cart->data['total']['items'] == 0) return;
+  if (cart::$data['total']['items'] == 0) return;
   
-  $payment = new payment();
+  $payment = new mod_payment();
   
-  if (empty($system->customer->data['country_code'])) return;
+  if (empty(customer::$data['country_code'])) return;
   
   if (!empty($_POST['set_payment'])) {
     list($module_id, $option_id) = explode(':', $_POST['selected_payment']);
     $payment->select($module_id, $option_id, $_POST);
-    header('Location: '. ((FS_DIR_HTTP_ROOT . $_SERVER['SCRIPT_NAME'] == __FILE__) ? $_SERVER['REQUEST_URI'] : $system->document->link(WS_DIR_HTTP_HOME . 'checkout.php')));
+    header('Location: '. ((FS_DIR_HTTP_ROOT . $_SERVER['SCRIPT_NAME'] == __FILE__) ? $_SERVER['REQUEST_URI'] : document::link(WS_DIR_HTTP_HOME . 'checkout.php')));
     exit;
   }
   
@@ -42,7 +42,7 @@
   
 ?>
 <div class="box" id="box-checkout-payment">
-  <div class="heading"><h2><?php echo $system->language->translate('title_payment', 'Payment'); ?></h2></div>
+  <div class="heading"><h2><?php echo language::translate('title_payment', 'Payment'); ?></h2></div>
   <div class="content listing-wrapper">
     <ul id="payment-options" class="list-horizontal">
 <?php
@@ -50,28 +50,28 @@
     foreach ($module['options'] as $option) {
 ?>
       <li class="option<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
-        <?php echo $system->functions->form_draw_form_begin('payment_form', 'post') . $system->functions->form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
-          <div class="icon"><img src="<?php echo $system->functions->image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING'); ?>" width="160" height="60" /></div>
-          <div class="title"><?php echo $module['title']; ?></div>
-          <div class="name"><?php echo $option['name']; ?></div>
-          <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
-          <div class="footer">
-            <div class="price"><?php echo $system->currency->format($system->tax->calculate($option['cost'], $option['tax_class_id'])); ?></div>
-            <div class="select">
+      <?php echo functions::form_draw_form_begin('payment_form', 'post') . functions::form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
+        <div class="icon"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING'); ?>" width="160" height="60" /></div>
+        <div class="title"><?php echo $module['title']; ?></div>
+        <div class="name"><?php echo $option['name']; ?></div>
+        <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
+        <div class="footer">
+          <div class="price"><?php echo currency::format(tax::calculate($option['cost'], $option['tax_class_id'])); ?></div>
+          <div class="select">
 <?php
   if ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) {
     if (!empty($option['fields'])) {
-      echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_update', 'Update'), 'submit');
+      echo functions::form_draw_button('set_payment', language::translate('title_update', 'Update'), 'submit');
     } else {
-    echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_selected', 'Selected'), 'submit', 'class="active"');
+    echo functions::form_draw_button('set_payment', language::translate('title_selected', 'Selected'), 'submit', 'class="active"');
     }
   } else {
-    echo $system->functions->form_draw_button('set_payment', $system->language->translate('title_select', 'Select'), 'submit');
+    echo functions::form_draw_button('set_payment', language::translate('title_select', 'Select'), 'submit');
   }
 ?>
-            </div>
           </div>
-        <?php echo $system->functions->form_draw_form_end(); ?>
+        </div>
+      <?php echo functions::form_draw_form_end(); ?>
       </li>
 <?php
     }

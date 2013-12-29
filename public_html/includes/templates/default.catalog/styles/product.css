@@ -1,5 +1,5 @@
 #box-product {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 #box-product .sticker {
@@ -34,4 +34,25 @@
 
 #box-product .stock-unavailable .value {
   color: #c00;
+}
+
+#box-product #tab-details table {
+  width: 100%;
+}
+#box-product #tab-details table td, #box-product #tab-details table th {
+  padding: 5px 10px;
+}
+#box-product #tab-details table tr td:first-child {
+  width: 100px;
+  white-space: nowrap;
+}
+#box-product #tab-details table tr th {
+  text-align: left;
+  font-weight: bold;
+}
+#box-product #tab-details table tr.odd {
+  background-color: #fcfcfc;
+}
+#box-product #tab-details table tr.even {
+  background-color: #f5f5f5;
 }

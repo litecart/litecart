@@ -1,14 +1,14 @@
 <?php
 
-  class lib_volume {
-    public $class = '';
-    public $classes = array();
+  class volume {
+    public static $class = '';
+    public static $classes = array();
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    public function load_dependencies() {
-      $this->classes = array(
+    public static function load_dependencies() {
+      self::$classes = array(
         'L' => array(
           'name' => 'Litres',
           'unit' => 'L',
@@ -90,53 +90,53 @@
       );
     }
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    public function startup() {
-      $this->class = &$GLOBALS['system']->customer->data['volume_class'];
+    public static function startup() {
+      self::$class = &customer::$data['volume_class'];
     }
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    public function before_output() {
+    public static function before_output() {
     }
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function convert($value, $from, $to) {
+    public static function convert($value, $from, $to) {
       
       if ($value == 0) return 0;
       
       if ($from == $to) return $value;
       
-      if (!isset($this->classes[$from])) trigger_error('The unit '. $from .' is not a valid volume class.', E_USER_WARNING);
-      if (!isset($this->classes[$to])) trigger_error('The unit '. $to .' is not a valid volume class.', E_USER_WARNING);
+      if (!isset(self::$classes[$from])) trigger_error('The unit '. $from .' is not a valid volume class.', E_USER_WARNING);
+      if (!isset(self::$classes[$to])) trigger_error('The unit '. $to .' is not a valid volume class.', E_USER_WARNING);
       
-      return $value * ($this->classes[$to]['value'] / $this->classes[$from]['value']);
+      return $value * (self::$classes[$to]['value'] / self::$classes[$from]['value']);
     }
 
-    public function format($value, $class) {
+    public static function format($value, $class) {
     
-      if (!isset($this->classes[$class])) {
+      if (!isset(self::$classes[$class])) {
         trigger_error('Invalid volume class ('. $class .')', E_USER_WARNING);
         return;
       }
       
-      $num_decimals = $this->classes[$class]['decimals'];
+      $num_decimals = self::$classes[$class]['decimals'];
       if (round($value) == $value) $num_decimals = 0;
       
-      return number_format($value, $this->classes[$class]['decimals'], $GLOBALS['system']->language->selected['decimal_point'], $GLOBALS['system']->language->selected['thousands_sep']) .' '. $this->classes[$class]['unit'];
+      return number_format($value, self::$classes[$class]['decimals'], language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
     }
   }
   

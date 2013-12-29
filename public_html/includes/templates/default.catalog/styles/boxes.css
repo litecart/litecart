@@ -30,7 +30,15 @@
   margin: 0px;
 }
 
-#box-campaigns h3, #box-latest-products h3, #box-most-popular h3, #box-similar-products h3 {
+#box-search img {
+  opacity: 0.6;
+}
+#box-search .input-wrapper {
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+#box-campaigns h3, #box-latest-products h3, #box-most-popular h3, #box-similar-products h3, #box-also-purchased-products h3 {
   font: 2em 'Open Sans', sans-serif;
   font-weight: normal;
   border-bottom: 2px solid #e5e5e5;
@@ -38,7 +46,7 @@
   padding: 5px 0px;
 }
 
-#box-campaigns h3:before, #box-latest-products h3:before, #box-most-popular h3:before, #box-similar-products h3:before {
+#box-campaigns h3:before, #box-latest-products h3:before, #box-most-popular h3:before, #box-similar-products h3:before, #box-also-purchased-products h3:before {
   content: "\25bc";
   padding-right: 10px;
   opacity: 0.7;

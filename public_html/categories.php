@@ -1,11 +1,13 @@
 <?php
   require_once('includes/app_header.inc.php');
   
-  $system->breadcrumbs->add($system->language->translate('title_categories', 'Categories'), $system->document->link(basename(__FILE__)));
+  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::link(basename(__FILE__)));
   
-  $system->document->snippets['title'][] = $system->language->translate('title_categories', 'Categories');
-  //$system->document->snippets['keywords'] = '';
-  //$system->document->snippets['description'] = '';
+  document::$snippets['title'][] = language::translate('title_categories', 'Categories');
+  //document::$snippets['keywords'] = '';
+  //document::$snippets['description'] = '';
+  
+  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'categories.inc.php');
   

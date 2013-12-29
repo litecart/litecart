@@ -3,24 +3,32 @@
     require_once('includes/config.inc.php');
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-      header('Content-type: text/html; charset='. $system->language->selected['charset']);
-      $system->document->layout = 'ajax';
+      header('Content-type: text/html; charset='. language::$selected['charset']);
+      document::$layout = 'ajax';
     }
     header('X-Robots-Tag: noindex');
-    $system->document->snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+    document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   }
   
   if (isset($_POST['save'])) {
     
-    $system->language->set($_POST['language_code']);
+    language::set($_POST['language_code']);
     
-    $system->currency->set($_POST['currency_code']);
+    currency::set($_POST['currency_code']);
     
-    $system->customer->data['country_code'] = $_POST['country_code'];
-    $system->customer->data['zone_code'] = $_POST['zone_code'];
+    customer::$data['country_code'] = $_POST['country_code'];
+    customer::$data['zone_code'] = $_POST['zone_code'];
     
-    $system->customer->data['shipping_address']['country_code'] = $_POST['country_code'];
-    $system->customer->data['shipping_address']['zone_code'] = $_POST['zone_code'];
+    customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
+    customer::$data['shipping_address']['zone_code'] = $_POST['zone_code'];
+    
+    customer::$data['display_prices_including_tax'] = (int)$_POST['display_prices_including_tax'];
+    
+    setcookie('language_code', $_POST['language_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('currency_code', $_POST['currency_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('country_code', $_POST['country_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('zone_code', $_POST['zone_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+    setcookie('display_prices_including_tax', $_POST['display_prices_including_tax'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
     
     if (empty($_GET['redirect'])) $_GET['redirect'] = WS_DIR_HTTP_HOME;
     
@@ -29,26 +37,32 @@
   }
 
 ?>
-<h1<?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>><?php echo $system->language->translate('title_regional_settings', 'Regional Settings'); ?></h1>
-<?php echo $system->functions->form_draw_form_begin('region_form', 'post', $system->document->link()); ?>
+<h1<?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
+<?php echo functions::form_draw_form_begin('region_form', 'post', document::link()); ?>
 <table>
   <tr>
-    <td><?php echo $system->language->translate('title_language', 'Language'); ?><br />
-      <?php echo $system->functions->form_draw_languages_list('language_code', $system->language->selected['code']); ?></td>
-    <td><?php echo $system->language->translate('title_currency', 'Currency'); ?><br />
-      <?php echo $system->functions->form_draw_currencies_list('currency_code', $system->currency->selected['code']); ?></td>
+    <td><?php echo language::translate('title_language', 'Language'); ?><br />
+      <?php echo functions::form_draw_languages_list('language_code', language::$selected['code']); ?></td>
+    <td><?php echo language::translate('title_currency', 'Currency'); ?><br />
+      <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?></td>
   </tr>
   <tr>
-    <td><?php echo $system->language->translate('title_country', 'Country'); ?><br />
-      <?php echo $system->functions->form_draw_countries_list('country_code', $system->customer->data['country_code']); ?></td>
-    <td><?php echo $system->language->translate('title_zone', 'Zone'); ?><br />
-      <?php echo $system->functions->form_draw_zones_list($system->customer->data['country_code'], 'zone_code', $system->customer->data['zone_code']); ?></td>
+    <td><?php echo language::translate('title_country', 'Country'); ?><br />
+      <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?></td>
+    <td><?php echo language::translate('title_zone', 'Zone'); ?><br />
+      <?php echo functions::form_draw_zones_list(customer::$data['country_code'], 'zone_code', customer::$data['zone_code']); ?></td>
   </tr>
   <tr>
-    <td colspan="2"><?php echo $system->functions->form_draw_button('save', $system->language->translate('title_save', 'Save')); ?></td>
+    <td><?php echo language::translate('title_display_prices', 'Display Prices'); ?><br />
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label><br />
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="2"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?></td>
   </tr>
 </table>
-<?php echo $system->functions->form_draw_form_end(); ?>
+<?php echo functions::form_draw_form_end(); ?>
 <script>
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');

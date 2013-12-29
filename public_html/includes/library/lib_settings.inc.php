@@ -1,72 +1,72 @@
 <?php
   
-  class lib_settings {
-    private $cache;
+  class settings {
+    private static $_cache;
     
-    public function __construct() {
+    public static function construct() {
     }
     
-    public function load_dependencies() {
+    public static function load_dependencies() {
       
-      $configuration_query = $GLOBALS['system']->database->query(
+      $configuration_query = database::query(
         "select * from ". DB_TABLE_SETTINGS ."
         where `type` = 'global';"
       );
-      while ($row = $GLOBALS['system']->database->fetch($configuration_query)) {
-        $this->cache[$row['key']] = $row['value'];
+      while ($row = database::fetch($configuration_query)) {
+        self::$_cache[$row['key']] = $row['value'];
       }
       
     // Set time zone
-      date_default_timezone_set($this->get('store_timezone'));
+      date_default_timezone_set(self::get('store_timezone'));
     }
     
-    //public function initiate() {
+    //public static function initiate() {
     //}
     
-    //public function startup() {
+    //public static function startup() {
     //}
     
-    //public function before_capture() {
+    //public static function before_capture() {
     //}
     
-    //public function after_capture() {
+    //public static function after_capture() {
     //}
     
-    //public function prepare_output() {
+    //public static function prepare_output() {
     //}
     
-    public function before_output() {
+    public static function before_output() {
     }
     
-    //public function shutdown() {
+    //public static function shutdown() {
     //}
     
     ######################################################################
     
-    public function get($key, $default=null) {
+    public static function get($key, $default=null) {
       
-      if (isset($this->cache[$key])) return $this->cache[$key];
+      if (isset(self::$_cache[$key])) return self::$_cache[$key];
       
-      $configuration_query = $GLOBALS['system']->database->query(
+      $configuration_query = database::query(
         "select * from ". DB_TABLE_SETTINGS ."
-        where `key` = '". $GLOBALS['system']->database->input($key) ."'
+        where `key` = '". database::input($key) ."'
         limit 1;"
       );
       
-      if (!$GLOBALS['system']->database->num_rows($configuration_query)) {
+      if (!database::num_rows($configuration_query)) {
         if ($default === null) trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
         return $default;
       }
       
-      while ($row = $GLOBALS['system']->database->fetch($configuration_query)) {
-        $this->cache[$key] = $row['value'];
+      while ($row = database::fetch($configuration_query)) {
+        self::$_cache[$key] = $row['value'];
       }
       
-      return $this->cache[$key];
+      return self::$_cache[$key];
     }
     
-    public function set($key, $value) {
-      $this->cache[$key] = $value;
+    public static function set($key, $value) {
+      self::$_cache[$key] = $value;
     }
   }
   

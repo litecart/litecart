@@ -1,18 +1,12 @@
 <?php
 
   class cm_google_maps {
-    private $system;
     public $id = __CLASS__;
     public $name = 'Google Maps - Get Address';
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $website = 'http://www.litecart.net';
     public $version = '1.0';
-    
-    public function __construct() {
-      global $system;
-      $this->system = &$system;
-    }
     
     public function get_address($data) {
       
@@ -33,7 +27,7 @@
         'sensor' => 'false',
       );
       
-      $response = $this->system->functions->http_fetch('http://maps.googleapis.com/maps/api/geocode/xml?'. http_build_query($params));
+      $response = functions::http_fetch('http://maps.googleapis.com/maps/api/geocode/xml?'. http_build_query($params));
       
       if (empty($response)) return;
       $response = simplexml_load_string($response);
@@ -66,7 +60,7 @@
       
       if (!empty($output['address1'])) $output['address1'] = str_replace('  ', ' ', $output['address1']);
       
-      if (strtolower($this->system->language->selected['charset']) != 'utf-8') {
+      if (strtolower(language::$selected['charset']) != 'utf-8') {
         $output = array_walk($output, 'utf8_decode');
       }
       
@@ -78,15 +72,15 @@
         array(
           'key' => 'status',
           'default_value' => 'Enabled',
-          'title' => $this->system->language->translate(__CLASS__.':title_status', 'Status'),
-          'description' => $this->system->language->translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+          'title' => language::translate(__CLASS__.':title_status', 'Status'),
+          'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'radio("Enabled", "Disabled")',
         ),
         array(
           'key' => 'priority',
-          'default_value' => '0',
-          'title' => $this->system->language->translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => $this->system->language->translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
+          'default_value' => '99',
+          'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
+          'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'int()',
         ),
       );
