@@ -243,41 +243,39 @@
       
       if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
       
-    // If changed order status 
-      if (!empty($this->data['id'])) {
-        $order_query = database::query(
-          "select order_status_id from ". DB_TABLE_ORDERS ."
-          where id = ". (int)$this->data['id'] ."
-          limit 1;"
+    // Previous order status
+      $previous_order_status_query = database::query(
+        "select os.*, osi.name from ". DB_TABLE_ORDERS ." o
+        left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
+        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
+        where o.id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+      $previous_order_status = database::fetch($previous_order_status_query);
+      
+    // Current order status
+      $current_order_status_query = database::query(
+        "select os.*, osi.name from ". DB_TABLE_ORDER_STATUSES ." os
+        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
+        where os.id = ". (int)$this->data['order_status_id'] ."
+        limit 1;"
+      );
+      $current_order_status = database::fetch($current_order_status_query);
+      
+    // Send update notice e-mail
+      if (!empty($this->data['id']) && !empty($current_order_status) && $current_order_status['id'] != $previous_order_status['id']) {
+        $this->data['comments'][] = array(
+          'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $current_order_status['name']),
+          'hidden' => 1,
         );
-        $order = database::fetch($order_query);
-        
-        if ((int)$order['order_status_id'] != (int)$this->data['order_status_id']) {
-          $order_status_query = database::query(
-            "select os.*, osi.name from ". DB_TABLE_ORDER_STATUSES ." os
-            left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
-            where os.id = ". (int)$this->data['order_status_id'] ."
-            limit 1;"
+        if (!empty($current_order_status['notify'])) {
+          functions::email_send(
+            '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
+            $this->data['customer']['email'],
+            sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
+            self::draw_printable_copy(),
+            true
           );
-          $order_status = database::fetch($order_status_query);
-          
-          if (!empty($order_status)) {
-            $this->data['comments'][] = array(
-              'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $order_status['name']),
-              'hidden' => 1,
-            );
-            
-          // Send update notice e-mail
-            if (!empty($order_status['notify'])) {
-              functions::email_send(
-                '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
-                $this->data['customer']['email'],
-                sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $order_status['name']),
-                self::draw_printable_copy(),
-                true
-              );
-            }
-          }
         }
       }
       
@@ -357,21 +355,23 @@
       }
       
     // Delete order items
-      $order_items_query = database::query(
+      $previous_order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = '". (int)$this->data['id'] ."'
         and id not in ('". @implode("', '", $item_ids) ."');"
       );
-      while($order_item = database::fetch($order_items_query)) {
+      while($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
           "delete from ". DB_TABLE_ORDERS_ITEMS ."
           where order_id = '". (int)$this->data['id'] ."'
-          and id = '". (int)$order_item['id'] ."'
+          and id = '". (int)$previous_order_item['id'] ."'
           limit 1;"
         );
         
       // Restock
-        functions::catalog_stock_adjust($order_item['product_id'], $order_item['option_stock_combination'], $order_item['quantity']);
+        if (!empty($previous_order_status['is_sale'])) {
+          functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+        }
       }
       
     // Insert/update order items
@@ -384,17 +384,24 @@
               values ('". (int)$this->data['id'] ."');"
             );
             $this->data['items'][$key]['id'] = database::insert_id();
-            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
-          } else {
-          // Update stock qty
-            $orders_items_query = database::query(
-              "select quantity from ". DB_TABLE_ORDERS_ITEMS ."
-              where id = '". (int)$this->data['items'][$key]['id'] ."'
-              and order_id = '". (int)$this->data['id'] ."';"
-            );
-            $order_item = database::fetch($orders_items_query);
-            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -($this->data['items'][$key]['quantity'] - $order_item['quantity']));
           }
+          
+        // Get previous quantity
+          $previous_order_item_query = database::query(
+            "select * from ". DB_TABLE_ORDERS_ITEMS ."
+            where id = '". (int)$this->data['items'][$key]['id'] ."'
+            and order_id = '". (int)$this->data['id'] ."';"
+          );
+          $previous_order_item = database::fetch($previous_order_item_query);
+          
+        // Adjust stock
+          if (!empty($previous_order_status['is_sale'])) {
+            functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+          }
+          if (!empty($current_order_status['is_sale'])) {
+            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
+          }
+          
           database::query(
             "update ". DB_TABLE_ORDERS_ITEMS ." 
             set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
