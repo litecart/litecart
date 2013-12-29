@@ -12,17 +12,23 @@
   
   if (isset($_POST['save'])) {
     
+    $_POST['language_code'] = !empty($_POST['language_code']) ? $_POST['language_code'] : '';
+    $_POST['currency_code'] = !empty($_POST['currency_code']) ? $_POST['currency_code'] : '';
+    $_POST['country_code'] = !empty($_POST['country_code']) ? $_POST['country_code'] : '';
+    $_POST['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
+    $_POST['display_prices_including_tax'] = !empty($_POST['display_prices_including_tax']) ? (int)$_POST['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax');
+    
     language::set($_POST['language_code']);
     
     currency::set($_POST['currency_code']);
     
-    customer::$data['country_code'] = isset($_POST['country_code']) ? $_POST['country_code'] : '';
-    customer::$data['zone_code'] = isset($_POST['zone_code']) ? $_POST['zone_code'] : '';
+    customer::$data['country_code'] = $_POST['country_code'];
+    customer::$data['zone_code'] = $_POST['zone_code'];
     
-    customer::$data['shipping_address']['country_code'] = isset($_POST['country_code']) ? $_POST['country_code'] : '';
-    customer::$data['shipping_address']['zone_code'] = isset($_POST['zone_code']) ? $_POST['zone_code'] : '';
+    customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
+    customer::$data['shipping_address']['zone_code'] = $_POST['zone_code'];
     
-    customer::$data['display_prices_including_tax'] = (int)$_POST['display_prices_including_tax'];
+    customer::$data['display_prices_including_tax'] = $_POST['display_prices_including_tax'];
     
     setcookie('language_code', $_POST['language_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);
     setcookie('currency_code', $_POST['currency_code'], time() + (60*60*24*10), WS_DIR_HTTP_HOME);

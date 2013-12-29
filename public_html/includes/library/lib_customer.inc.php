@@ -17,8 +17,9 @@
       
       if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
         self::reset();
-        self::identify();
       }
+      
+      self::identify();
     }
     
     public static function before_capture() {
