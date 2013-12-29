@@ -16,11 +16,11 @@
     
     currency::set($_POST['currency_code']);
     
-    customer::$data['country_code'] = $_POST['country_code'];
-    customer::$data['zone_code'] = $_POST['zone_code'];
+    customer::$data['country_code'] = isset($_POST['country_code']) ? $_POST['country_code'] : '';
+    customer::$data['zone_code'] = isset($_POST['zone_code']) ? $_POST['zone_code'] : '';
     
-    customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
-    customer::$data['shipping_address']['zone_code'] = $_POST['zone_code'];
+    customer::$data['shipping_address']['country_code'] = isset($_POST['country_code']) ? $_POST['country_code'] : '';
+    customer::$data['shipping_address']['zone_code'] = isset($_POST['zone_code']) ? $_POST['zone_code'] : '';
     
     customer::$data['display_prices_including_tax'] = (int)$_POST['display_prices_including_tax'];
     

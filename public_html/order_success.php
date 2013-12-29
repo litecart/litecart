@@ -2,7 +2,7 @@
   require_once('includes/app_header.inc.php');
   header('X-Robots-Tag: noindex');
   
-  $payment = new payment();
+  $payment = new mod_payment();
   
   $order = new ctrl_order('resume');
   

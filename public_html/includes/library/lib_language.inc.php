@@ -154,7 +154,7 @@
         $browser_locales = array();
       }
       foreach ($browser_locales as $browser_locale) {
-        if (preg_match('/('. implode('|', $languages) .')-?.*/', $browser_locale, $reg)) {
+        if (preg_match('/('. implode('|', array_keys(self::$languages)) .')-?.*/', $browser_locale, $reg)) {
           if (!empty($reg[1]) && isset(self::$languages[$reg[1]])) return $reg[1];
         }
       }
