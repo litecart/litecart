@@ -38,7 +38,6 @@
 <p><a href="<?php echo document::href_link('printable_order_copy.php', array('order_id' => $order->data['id'], 'checksum' => functions::general_order_public_checksum($order->data['id']), 'media' => 'print')); ?>" class="fancybox"><?php echo language::translate('description_click_printable_copy', 'Click here for a printable copy'); ?></a></p>
 <?php
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'order_success.inc.php');
   $order_success = new mod_order_success();
   
   echo $order_success->process();

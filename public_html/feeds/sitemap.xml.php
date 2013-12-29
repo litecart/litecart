@@ -20,7 +20,7 @@
   
   $products_query = database::query(
     "select id, date_updated from ". DB_TABLE_PRODUCTS ."
-    where not find_in_set('1', categories)
+    where status
     order by id;"
   );
   while ($product = database::fetch($products_query)) {
@@ -34,9 +34,7 @@
   
   $output .= '</urlset>';
   
-  if (strtolower(language::$selected['charset']) != 'utf-8') {
-    $output = utf8_encode($output);
-  }
+  mb_convert_variables(language::$selected['charset'], 'UTF-8', $output);
   
   header('Content-type: application/xml; charset='. language::$selected['charset']);
   
