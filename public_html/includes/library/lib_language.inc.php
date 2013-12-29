@@ -135,23 +135,15 @@
     
     public static function identify() {
       
-    // Build list of supported languages
-      $languages = array();
-      foreach (self::$languages as $language) {
-        if ($language['status']) {
-          $languages[] = $language['code'];
-        }
-      }
-      
     // Return language from URI
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_HTTP_HOME))));
-      if (in_array($code, $languages)) return $code;
+      if (isset(self::$languages[$code])) return $code;
       
     // Return language from session
-      if (isset(self::$selected['code']) && in_array(self::$selected['code'], $languages)) return self::$selected['code'];
+      if (isset(self::$selected['code']) && isset(self::$languages[self::$selected['code']])) return self::$selected['code'];
       
     // Return language from cookie
-      if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $languages)) return $_COOKIE['language_code'];
+      if (isset($_COOKIE['language_code']) && isset(self::$languages[$_COOKIE['language_code']])) return $_COOKIE['language_code'];
       
     // Return language from browser
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -163,7 +155,7 @@
       }
       foreach ($browser_locales as $browser_locale) {
         if (preg_match('/('. implode('|', $languages) .')-?.*/', $browser_locale, $reg)) {
-          if (!empty($reg[1])) return $reg[1];
+          if (!empty($reg[1]) && isset(self::$languages[$reg[1]])) return $reg[1];
         }
       }
       
@@ -174,7 +166,7 @@
       if (isset(self::$languages[settings::get('store_language_code')])) return settings::get('store_language_code');
       
     // Return first language
-      $language = array_keys(self::$languages);
+      $languages = array_keys(self::$languages);
       return array_shift($languages);
     }
     

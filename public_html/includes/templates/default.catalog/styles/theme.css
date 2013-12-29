@@ -80,7 +80,10 @@ body {
   vertical-align: middle;
 }
 #region .language {
+  vertical-align: middle;
+  margin-left: 4px;
   display: inline;
+  line-height: 1em;
 }
 #region .currency {
   margin-left: 5px;

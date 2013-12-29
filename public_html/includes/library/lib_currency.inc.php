@@ -70,20 +70,20 @@
       
       if (empty($code)) $code = self::identify();
       
-      if (!isset(self::$currencies[$code])) trigger_error('Cannot set unsupported currency ('. $code .')', E_USER_ERROR);
+      if (!isset(self::$currencies[$code])) {
+        trigger_error('Cannot set unsupported currency ('. $code .')', E_USER_WARNING);
+        $code = self::identify();
+      }
       
       session::$data['currency'] = self::$currencies[$code];
       setcookie('currency_code', $code, time()+(60*60*24*30), WS_DIR_HTTP_HOME);
     }
     
     public static function identify() {
-    
-    // Build list of supported currencies
-      $currencies = array_keys(self::$currencies);
       
     // Set currency from cookie
-      if (!empty($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $currencies)) {
-        return $_COOKIE['country_code'];
+      if (!empty($_COOKIE['currency_code']) && isset(self::$currencies[$_COOKIE['currency_code']])) {
+        return $_COOKIE['currency_code'];
       }
       
     // Get country from browser
@@ -99,14 +99,18 @@
           );
           $country = database::fetch($countries_query);
           
-          if (!empty($country['currency_code'])) {
+          if (!empty($country['currency_code']) && isset(self::$currencies[$country['currency_code']])) {
             return $country['currency_code'];
           }
         }
       }
       
     // Return default currency
-      return settings::get('default_currency_code');
+      if (isset(self::$currencies[settings::get('default_currency_code')])) return settings::get('default_currency_code');
+      
+    // Return first currency
+      $languages = array_keys(self::$languages);
+      return array_shift($languages);
     }
     
     public static function calculate($value, $to, $from=null) {

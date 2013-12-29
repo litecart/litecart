@@ -8,7 +8,7 @@
   
 // Capture template
   ob_start();
-  require(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/'. document::$layout .'.inc.php');
+  require(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/layouts/'. document::$layout .'.inc.php');
   $output = ob_get_clean();
   
 // Prepare output

@@ -39,8 +39,16 @@
 #box-product #tab-details table {
   width: 100%;
 }
+#box-product #tab-details table td, #box-product #tab-details table th {
+  padding: 5px 10px;
+}
 #box-product #tab-details table tr td:first-child {
-  min-width: 150px;
+  width: 100px;
+  white-space: nowrap;
+}
+#box-product #tab-details table tr th {
+  text-align: left;
+  font-weight: bold;
 }
 #box-product #tab-details table tr.odd {
   background-color: #fcfcfc;
