@@ -45,8 +45,6 @@
       
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
-          return;
-        } else {
           $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $weight);
           
           $options[] = array(
@@ -58,6 +56,8 @@
             'cost' => $cost,
             'tax_class_id' => $this->settings['tax_class_id'],
           );
+        } else {
+          return;
         }
       }
       
