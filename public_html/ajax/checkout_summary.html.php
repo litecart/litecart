@@ -40,7 +40,7 @@
         <th style="vertical-align: text-top" align="left" nowrap="nowrap"><?php echo language::translate('title_product', 'Product'); ?></th>
         <th style="vertical-align: text-top" align="left" nowrap="nowrap"><?php echo language::translate('title_sku', 'SKU'); ?></th>
         <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo language::translate('title_unit_cost', 'Unit Cost'); ?></th>
-        <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo (customer::$data['display_prices_including_tax']) ? language::translate('title_incl_tax', 'Incl. Tax') : language::translate('title_excl_tax', 'Excl. Tax'); ?></th>
+        <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_incl_tax', 'Incl. Tax') : language::translate('title_excl_tax', 'Excl. Tax'); ?></th>
         <th style="vertical-align: text-top" align="right" nowrap="nowrap" width="100"><?php echo language::translate('title_total', 'Total'); ?></th>
       </tr>
 <?php
@@ -51,7 +51,7 @@
         <td align="left" nowrap="nowrap"><?php echo $item['name']; ?></td>
         <td align="left" nowrap="nowrap"><?php echo $item['sku']; ?></td>
 <?php
-    if (customer::$data['display_prices_including_tax']) {
+    if (!empty(customer::$data['display_prices_including_tax'])) {
 ?>
         <td align="right" nowrap="nowrap"><?php echo currency::format($item['price'] + $item['tax'], false); ?></td>
         <td align="right" nowrap="nowrap"><?php echo currency::format($item['tax'], false); ?></td>
@@ -79,7 +79,7 @@
         <td colspan="5" align="right"><strong><?php echo $row['title']; ?>:</strong></td>
         <td align="right" width="100" nowrap="nowrap">
 <?php
-    if (customer::$data['display_prices_including_tax']) {
+    if (!empty(customer::$data['display_prices_including_tax'])) {
       echo currency::format($row['value'] + $row['tax'], false);
     } else {
       echo currency::format($row['value'], false);
@@ -97,7 +97,7 @@
   if ($order->data['tax_total']) {
 ?>
       <tr>
-        <td colspan="5" align="right" style="color: #999999;"><?php echo (customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+        <td colspan="5" align="right" style="color: #999999;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
         <td align="right" width="100" nowrap="nowrap" style="color: #999999;"><?php echo currency::format($order->data['tax_total'], false); ?></td>
       </tr>
 <?php

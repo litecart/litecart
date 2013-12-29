@@ -54,8 +54,8 @@
   </tr>
   <tr>
     <td><?php echo language::translate('title_display_prices', 'Display Prices'); ?><br />
-      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, (int)customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label><br />
-      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, (int)customer::$data['display_prices_including_tax']); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label></td>
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label><br />
+      <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label></td>
     <td></td>
   </tr>
   <tr>

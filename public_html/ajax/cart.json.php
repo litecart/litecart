@@ -4,8 +4,8 @@
   
   $json = array(
     'quantity' => cart::$data['total']['items'],
-    'value' => customer::$data['display_prices_including_tax'] ? cart::$data['total']['value'] + cart::$data['total']['tax'] : cart::$data['total']['value'],
-    'formatted_value' => customer::$data['display_prices_including_tax'] ? currency::format(cart::$data['total']['value'] + cart::$data['total']['tax']) : currency::format(cart::$data['total']['value']),
+    'value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$data['total']['value'] + cart::$data['total']['tax'] : cart::$data['total']['value'],
+    'formatted_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$data['total']['value'] + cart::$data['total']['tax']) : currency::format(cart::$data['total']['value']),
   );
   
   if (!empty(notices::$data['warnings'])) {

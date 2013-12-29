@@ -77,7 +77,7 @@
 ?>
         </td>
         <td align="left"><?php echo $item['sku']; ?></td>
-      <?php if (customer::$data['display_prices_including_tax']) { ?>
+      <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
         <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
         <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
         <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, false, $order['currency_code'], $order['currency_value']); ?></td>
@@ -92,7 +92,7 @@
     
     <table id="order-total" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: none;">
       <?php foreach ($order['order_total'] as $ot_row) { ?>
-      <?php if (customer::$data['display_prices_including_tax']) { ?>
+      <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
       <tr>
         <td style="padding: 3px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?>:</td>
         <td style="padding: 3px 10px; text-align: right; width: 75px;"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
@@ -107,7 +107,7 @@
       
       <?php if (!empty($order['tax_total'])) { ?>
       <tr>
-        <td style="padding: 3px 10px; white-space: nowrap; text-align: right;"><?php echo (customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+        <td style="padding: 3px 10px; white-space: nowrap; text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
         <td style="padding: 3px 10px; text-align: right; width: 75px;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>

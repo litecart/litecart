@@ -34,7 +34,7 @@
         );
         notices::add('success', 'Image thumbnails cache cleared');
       }
-      }
+    }
     
     public static function before_capture() {}
     
@@ -158,7 +158,7 @@
             $dependants_string .= language::$selected['code'];
             break;
           case 'prices':
-            $dependants_string .= customer::$data['display_prices_including_tax'];
+            $dependants_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
             break;
           default:
             if (is_array($dependant)) {

@@ -856,7 +856,7 @@ foreach (currency::$currencies as $currency) {
             var output = '<tr>'
                        + '  <td nowrap="nowrap"><a class="add" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', functions::form_draw_option_groups_list('options[new_option_i][group_id]', '')); ?></td>'
-                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', functions:::form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
+                       + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('options[new_option_i][price_operator]', array('+','*'), '+', false, 'data-size="auto"')); ?></td>'
                        + '  <td nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field(settings::get('store_currency_code'), 'options[new_option_i]['. settings::get('store_currency_code') .']', 0)); ?></td>'
 <?php

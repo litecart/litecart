@@ -5,7 +5,7 @@
     <span class="quantity"><?php echo cart::$data['total']['items']; ?></span> <?php echo language::translate('text_items', 'item(s)'); ?>
     - <span class="formatted_value">
 <?php
-  if (customer::$data['display_prices_including_tax']) {
+  if (!empty(customer::$data['display_prices_including_tax'])) {
     echo currency::format(cart::$data['total']['value'] + cart::$data['total']['tax']);
   } else {
     echo currency::format(cart::$data['total']['value']);
