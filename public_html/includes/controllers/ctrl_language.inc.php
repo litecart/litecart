@@ -26,19 +26,19 @@
       }
       
       if (!empty($this->data['id'])) {
-        $language_query = database::query(
+        $previous_language_query = database::query(
           "select * from ". DB_TABLE_LANGUAGES ."
           where id = '". (int)$this->data['id'] ."'
           limit 1;"
         );
-        $language = database::fetch($language_query);
-        if ($this->data['code'] != $language['code']) {
-          if ($language['code'] == 'en') {
+        $previous_language = database::fetch($previous_language_query);
+        if ($this->data['code'] != $previous_language['code']) {
+          if ($previous_language['code'] == 'en') {
             trigger_error('You may not rename the english language because it is used for the PHP framework.', E_USER_ERROR);
           } else {
             database::query(
               "alter table ". DB_TABLE_TRANSLATIONS ."
-              change `text_". database::input($language['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
+              change `text_". database::input($previous_language['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
             );
             $info_tables = array(
               DB_TABLE_CATEGORIES_INFO,
@@ -57,7 +57,7 @@
               database::query(
                 "update ". $table ."
                 set language_code = '". $this->data['code'] ."'
-                where language_code = '". $language['code'] ."';"
+                where language_code = '". $previous_language['code'] ."';"
               );
             }
           }
