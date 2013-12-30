@@ -59,13 +59,20 @@
 #box-category-tree a:hover, #box-information a:hover {
   color: rgb(0, 136, 204);
 }
-#box-category-tree li.active a {
+#box-category-tree li a {
+  display: block;
+}
+#box-category-tree li a.active {
   color: rgb(0, 136, 204);
 }
-#box-category-tree li.active {
+#box-category-tree li a.active {
   background: #f3f3f3;
 }
 
-#box-information li.active a {
+#box-information li a.active {
   color: rgb(0, 136, 204);
+}
+
+#box-customer-service .content > h1 {
+  margin-top: 0px;
 }

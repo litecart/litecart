@@ -29,14 +29,14 @@
         $breadcrumbs = '';
         $separator = '';
         foreach (self::$data as $breadcrumb) {
-          $breadcrumbs .= $separator .'<li><a href="'. $breadcrumb['link'] .'">'. $breadcrumb['title'] .'</a></li>';
+          $breadcrumbs .= '<li>'. $separator .'<a href="'. $breadcrumb['link'] .'">'. $breadcrumb['title'] .'</a></li>';
           $separator = ' &raquo; ';
         }
         document::$snippets['breadcrumbs'] = '<nav id="breadcrumbs">' . PHP_EOL
-                                                         . '  <ul class="list-horizontal">' . PHP_EOL
-                                                         . '    '. $breadcrumbs . PHP_EOL
-                                                         . '  </ul>' . PHP_EOL
-                                                         . '</nav>';
+                                           . '  <ul class="list-horizontal">' . PHP_EOL
+                                           . '    '. $breadcrumbs . PHP_EOL
+                                           . '  </ul>' . PHP_EOL
+                                           . '</nav>';
       }
     }
     

@@ -29,7 +29,7 @@
   
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
   
-  functions::draw_fancybox('a.fancybox');
+  functions::draw_fancybox("a.fancybox[data-fancybox-group='product']");
   
   document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
   
@@ -80,22 +80,22 @@
       
         $sticker = '';
         if (!empty($product->campaign['price'])) {
-          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" border="0" title="'. language::translate('title_on_sale', 'On Sale') .'" class="sticker" />';
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. language::translate('title_on_sale', 'On Sale') .'" class="sticker" />';
         } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
-          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" border="0" title="'. language::translate('title_new', 'New') .'" class="sticker" />';
+          $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. language::translate('title_new', 'New') .'" class="sticker" />';
         }
         
         echo '<div style="position: relative;">' . PHP_EOL
-           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="main-image zoomable shadow rounded-corners" title="'. htmlspecialchars($product->name[language::$selected['code']]) .'" itemprop="image" /></a>' . PHP_EOL
+           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" data-fancybox-group="product"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" class="main-image zoomable shadow rounded-corners" alt="" title="'. htmlspecialchars($product->name[language::$selected['code']]) .'" itemprop="image" /></a>' . PHP_EOL
            . '  '. $sticker . PHP_EOL
            . '</div>' . PHP_EOL;
         $first_image = false;
       } else {
-        echo '<div style="display: inline;"><a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" rel="product"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 133, 'CROP') .'" border="0" style="margin: 5px 5px 0px 0px;" class="extra-image zoomable shadow" title="'. htmlspecialchars($product->name[language::$selected['code']]) .'" /></a></div>';
+        echo '<div style="display: inline;"><a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" data-fancybox-group="product"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 133, 'CROP') .'" style="margin: 5px 5px 0px 0px;" class="extra-image zoomable shadow" title="'. htmlspecialchars($product->name[language::$selected['code']]) .'" /></a></div>';
       }
     }
   } else {
-    echo '<img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" border="0" class="extra-image" alt="" />' . PHP_EOL;
+    echo '<img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" class="extra-image" alt="" />' . PHP_EOL;
   }
 ?>
           </div>
@@ -104,10 +104,10 @@
         <td style="padding-left: 20px; vertical-align: top; width: 100%;">
         
           <?php if ($product->manufacturer_id) { ?>
-          <div style="font-size: 1.5em; margin-bottom: 10px;" class="manufacturer" itemtype="http://www.schema.org/Organisation">
+          <div style="font-size: 1.5em; margin-bottom: 10px;" class="manufacturer" itemscope itemtype="http://www.schema.org/Organisation">
 <?php
       if ($product->manufacturer['image']) {
-        echo '<a href="'. document::href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) .'" border="0" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" itemprop="image" /></a>';
+        echo '<a href="'. document::href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) .'" alt="'. $product->manufacturer['name'] .'" title="'. $product->manufacturer['name'] .'" itemprop="image" /></a>';
       } else {
         echo '<a href="'. document::href_link('manufacturer.php', array('manufacturer_id' => $product->manufacturer_id)) .'" itemprop="name">'. $product->manufacturer['name'] .'</a>';
       }
@@ -140,7 +140,7 @@
 <?php
   if ($product->quantity > 0) {
     echo '<div class="stock-available">'. language::translate('title_stock_status', 'Stock Status') .': <span class="value">'. ((settings::get('display_stock_count')) ? sprintf(language::translate('text_d_pieces', '%d pieces'), $product->quantity) : language::translate('title_in_stock', 'In Stock')) .'</span></div>';
-    if (!empty($product->delivery_status['name'][language::$selected['code']])) echo '<div class="stock-delivery">'. language::translate('title_delivery_status', 'Delivery Status') .': '. $product->delivery_status['name'][language::$selected['code']] .'</span></div>';
+    if (!empty($product->delivery_status['name'][language::$selected['code']])) echo '<div class="stock-delivery">'. language::translate('title_delivery_status', 'Delivery Status') .': <span class="value">'. $product->delivery_status['name'][language::$selected['code']] .'</span></div>';
   } else {
     if (!empty($product->sold_out_status['name'][language::$selected['code']])) {
       echo '<div class="'. ($product->sold_out_status['orderable'] ? 'stock-partly-available' : 'stock-unavailable') .'">'. language::translate('title_stock_status', 'Stock Status') .': <span class="value">'. $product->sold_out_status['name'][language::$selected['code']] .'</span></div>';
@@ -336,14 +336,14 @@
     
     <?php if (!empty($product->description[language::$selected['code']]) || !empty($product->attributes[language::$selected['code']])) { ?>
     <div class="tabs" style="margin-top: 20px;">
-      <div class="index">
+      <ul class="index">
         <li><a href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
         <?php if (!empty($product->attributes[language::$selected['code']])) { ?><li><a href="#tab-details"><?php echo language::translate('title_details', 'Details'); ?></a></li><?php } ?>
-      </div>
+      </ul>
       
       <div class="content">
         <div class="tab" id="tab-information" itemprop="description">
-          <p><?php echo $product->description[language::$selected['code']] ? $product->description[language::$selected['code']] : '<em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') .'</em>'; ?></p>
+          <?php echo $product->description[language::$selected['code']] ? $product->description[language::$selected['code']] : '<p><em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') .'</em></p>'; ?>
         </div>
         
         <?php if (!empty($product->attributes[language::$selected['code']])) { ?>

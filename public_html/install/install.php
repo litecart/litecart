@@ -353,6 +353,19 @@
     echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
   }
   
+  ### Set cache breakpoint ###################################
+  
+  echo '<p>Set cache breakpoint...';
+  
+  $database->query(
+    "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+    set value = '". date('Y-m-d H:i:s') ."'
+    where `key` = 'cache_system_breakpoint'
+    limit 1;"
+  );
+  
+  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  
   ### ###################################
   
   echo PHP_EOL . '<h2>Complete</h2>' . PHP_EOL

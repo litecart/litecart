@@ -30,7 +30,7 @@
   document::$snippets['keywords'] = $category->meta_keywords[language::$selected['code']] ? $category->meta_keywords[language::$selected['code']] : $category->keywords;
   document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
   
-  functions::draw_fancybox('a.fancybox');
+  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   
   include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   

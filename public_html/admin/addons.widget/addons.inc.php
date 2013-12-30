@@ -8,7 +8,18 @@
   }
   
   $url = document::link('http://www.litecart.net/feeds/addons', array('whoami' => document::link(WS_DIR_HTTP_HOME), 'version' => PLATFORM_VERSION));
-  $rss = functions::http_fetch($url);
+  
+  $store_info = array(
+    'platform' => PLATFORM_NAME,
+    'version' => PLATFORM_VERSION,
+    'name' => settings::get('store_name'),
+    'email' => settings::get('store_email'),
+    'language_code' => settings::get('store_language_code'),
+    'country_code' => settings::get('store_country_code'),
+    'url' => document::link(WS_DIR_HTTP_HOME),
+  );
+  
+  $rss = functions::http_fetch($url, $store_info);
   
   $rss = simplexml_load_string($rss);
   

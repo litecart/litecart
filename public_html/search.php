@@ -11,7 +11,7 @@
   
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), $_SERVER['REQUEST_URI']);
   
-  functions::draw_fancybox('a.fancybox');
+  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   
   include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 ?>

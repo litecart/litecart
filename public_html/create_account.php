@@ -107,7 +107,7 @@
     <?php echo functions::form_draw_form_begin('customer_form', 'post'); ?>
       <table>
         <tr>
-          <td nowrap="nowrap"><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
+          <td><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
             <?php echo functions::form_draw_text_field('tax_id', true); ?></td>
           <td><?php echo language::translate('title_company', 'Company'); ?><br />
             <?php echo functions::form_draw_text_field('company', true); ?></td>
@@ -137,7 +137,7 @@
             <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
         </tr>
         <tr>
-          <td width="50%"><?php echo language::translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
+          <td><?php echo language::translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_email_field('email', true); ?></td>
           <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
             <?php echo functions::form_draw_text_field('phone', true); ?></td>
@@ -145,7 +145,7 @@
         <tr>
           <td><?php echo language::translate('title_desired_password', 'Desired Password'); ?> <span class="required">*</span><br />
           <?php echo functions::form_draw_password_field('password', ''); ?></td>
-          <td nowrap="nowrap"><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
+          <td><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
           <?php echo functions::form_draw_password_field('confirmed_password', ''); ?></td>
         </tr>
         <tr>
