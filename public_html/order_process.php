@@ -12,12 +12,12 @@
   $order = new ctrl_order('resume');
   
   if (count($shipping->options()) > 0) {
-    if (empty($shipping->data['selected'])) trigger_error('No shipping selected', E_USER_ERROR);
+    //if (empty($shipping->data['selected'])) trigger_error('No shipping selected', E_USER_ERROR);
     //list($shipping_module_id, $shipping_option_id) = explode(':', $shipping->data['selected']['id']);
   }
   
   if (count($payment->options()) > 0) {
-    if (empty($payment->data['selected'])) trigger_error('No payment selected', E_USER_ERROR);
+    //if (empty($payment->data['selected'])) trigger_error('No payment selected', E_USER_ERROR);
     //list($payment_module_id, $payment_option_id) = explode(':', $payment->data['selected']['id']);
     
     if ($payment_error = $payment->pre_check($order)) {

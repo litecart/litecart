@@ -295,7 +295,7 @@
     $database->query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
       set locale = 'english',
-      charset = 'Windows-1252'
+          charset = 'Windows-1252'
       where code = 'en'
       limit 1;"
     );
@@ -304,7 +304,7 @@
     echo '<p>Making adjustments for Darwin (Mac) platform...';
     $database->query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
-      set locale = 'en_US.UTF-8',
+      set locale = 'en_US.UTF-8'
       where code = 'en'
       limit 1;"
     );

@@ -29,6 +29,9 @@
       die('Unknown module type');
   }
   
+  $installed = in_array($module_id, explode(';', settings::get($type.'_modules'))) ? true : false;
+  
+  
   $module = new ctrl_module(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $type . '/' . $module_id .'.inc.php');
   
   if (isset($_POST['save'])) {
@@ -42,8 +45,12 @@
     header('Location: '. document::link('', array('doc' => $type), array('app')));
     exit;
   }
+  
+  if (empty($_POST)) {
+    if (!$installed) notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
+  }
 ?>
-<h1 style="margin-top: 0;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_edit_module', 'Edit Module'); ?></h1>
+<h1 style="margin-top: 0;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
 
 <h2 style="margin-top: 0;"><?php echo $module->name; ?></h2>
 
@@ -52,17 +59,18 @@
 <?php echo !empty($module->description) ? '<p style="max-width: 400px;">'. $module->description .'</p>' : false; ?>
 
 <?php echo functions::form_draw_form_begin('module_form', 'post'); ?>
+
   <table>
-  <?php
-    foreach ($module->settings as $setting) {
-  ?>
+<?php
+  foreach ($module->settings as $setting) {
+?>
     <tr>
       <td align="left"><strong><?php echo $setting['title']; ?></strong><?php echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
       <?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
     </tr>
-  <?php 
-    }
-  ?>
+<?php 
+  }
+?>
   </table>
   
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?> <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></span></p>
