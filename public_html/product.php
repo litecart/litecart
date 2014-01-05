@@ -86,7 +86,7 @@
         }
         
         echo '<div style="position: relative;">' . PHP_EOL
-           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" data-fancybox-group="product"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" class="main-image zoomable shadow rounded-corners" alt="" title="'. htmlspecialchars($product->name[language::$selected['code']]) .'" itemprop="image" /></a>' . PHP_EOL
+           . '  <a href="'. WS_DIR_IMAGES . $image .'" class="fancybox" data-fancybox-group="product"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 310, 'FIT_USE_WHITESPACING') .'" class="main-image zoomable shadow rounded-corners" alt="" title="'. htmlspecialchars($product->name[language::$selected['code']]) .'" itemprop="image" /></a>' . PHP_EOL
            . '  '. $sticker . PHP_EOL
            . '</div>' . PHP_EOL;
         $first_image = false;
@@ -95,7 +95,7 @@
       }
     }
   } else {
-    echo '<img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 0, 'FIT_USE_WHITESPACING') .'" class="extra-image" alt="" />' . PHP_EOL;
+    echo '<img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 310, 'FIT_USE_WHITESPACING') .'" class="extra-image" alt="" />' . PHP_EOL;
   }
 ?>
           </div>

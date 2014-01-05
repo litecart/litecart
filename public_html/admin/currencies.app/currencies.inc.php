@@ -14,7 +14,43 @@
     header('Location: '. document::link());
     exit;
   }
+  
+  if (!empty($_POST['update_rates'])) {
+    
+    foreach (array_keys(currency::$currencies) as $currency_code) {
+      
+      if ($currency_code == settings::get('store_currency_code')) continue;
+      
+      $url = 'http://download.finance.yahoo.com/d/quotes.csv?f=l1&s='. settings::get('store_currency_code') . $currency_code .'=X';
+      
+      $result = functions::http_fetch($url);
+      
+      if (empty($result)) {
+        trigger_error('Could not update currency value for '. $currency_code .': No data ('. $url .')', E_USER_ERROR);
+        continue;
+      }
+      
+      $value = (float)trim($result) * currency::$currencies[settings::get('store_currency_code')]['value'];
+      
+      if (empty($value)) {
+        trigger_error('Could not update currency value for '. $currency_code .': No value ('. $url .')', E_USER_ERROR);
+        continue;
+      }
+      
+      $GLOBALS['system']->database->query(
+        "update ". DB_TABLE_CURRENCIES ."
+        set value = '". (float)$value ."'
+        where code = '". database::input($currency_code) ."'
+        limit 1;"
+      );
+    }
+    
+    notices::$data['success'][] = language::translate('success_currency_rates_updated', 'Currency rates updated');
+    header('Location: '. document::link());
+    exit;
+  }
 ?>
+<div style="float: right;"><?php echo functions::form_draw_form_begin() . functions::form_draw_button('update_rates', language::translate('title_update_rates', 'Update Rates'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'down') . functions::form_draw_form_end(); ?></div>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_currency'), true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></div>
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_currencies', 'Currencies'); ?></h1>
 

@@ -17,6 +17,10 @@
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     if (empty($_POST['value'])) notices::add('errors', language::translate('error_must_enter_value', 'You must enter a value'));
     
+    if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('store_currency_code')) && (float)$_POST['value'] != 1) {
+      notices::add('errors', language::translate('error_store_currency_must_have_value_1', 'The store currency must always have the currency value 1.0.'));
+    }
+    
     if (empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('default_currency_code')) {
       notices::add('errors', language::translate('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
     }

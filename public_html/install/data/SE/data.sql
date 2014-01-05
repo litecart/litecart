@@ -1,5 +1,5 @@
 INSERT INTO `lc_currencies` (`status`, `code`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'SEK', 'Svenska kronor', '1.0000', 2, '', ' kr', 0, NOW(), NOW());
+(1, 'SEK', 'Svenska kronor', 1.00, 2, '', ' kr', 0, NOW(), NOW());
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_prices`
 ADD `SEK` DECIMAL(11,4) NOT NULL;
@@ -12,12 +12,12 @@ SET `value` = 'SEK'
 WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
 UPDATE `lc_currencies`
-SET `value` = 6.8
+SET `value` = 0.153
 WHERE `code` = 'USD'
 LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_currencies`
-SET `value` = 9.2
+SET `value` = 0.112
 WHERE `code` = 'EUR'
 LIMIT 1;
 -- --------------------------------------------------------

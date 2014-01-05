@@ -1,5 +1,5 @@
 <?php
-  if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
+  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
     require_once('includes/config.inc.php');
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
@@ -99,7 +99,7 @@
   });
 </script>
 <?php
-  if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
+  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
   }
 ?>

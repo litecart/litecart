@@ -4,21 +4,19 @@
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
   
     if (!empty($_POST['categories'])) {
-      foreach ($_POST['categories'] as $key => $value) $_POST['categories'][$key] = database::input($value);
-      database::query(
-        "update ". DB_TABLE_CATEGORIES ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['categories']) ."');"
-      );
+      foreach ($_POST['categories'] as $category_id) {
+        $category = new ctrl_category($category_id);
+        $category->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $category->save();
+      }
     }
     
     if (!empty($_POST['products'])) {
-      foreach ($_POST['products'] as $key => $value) $_POST['products'][$key] = database::input($value);
-      database::query(
-        "update ". DB_TABLE_PRODUCTS ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['products']) ."');"
-      );
+      foreach ($_POST['products'] as $key => $value) {
+        $product = new ctrl_product($product_id);
+        $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $product->save();
+      }
     }
     
     header('Location: '. document::link());
@@ -35,22 +33,31 @@
     if (empty(notices::$data['errors'])) {
       
       foreach ($_POST['products'] as $product_id) {
-        $product = new ctrl_product($product_id);
+        $old_product = new ctrl_product($product_id);
+        $product = new ctrl_product();
+        
+        $product->data = $old_product->data;
         
         $product->data['id'] = null;
         $product->data['categories'] = array($_POST['category_id']);
         $product->data['image'] = null;
         $product->data['images'] = array();
         
-        foreach (array_keys($product->data['name']) as $language_code) {
-          $product->data['name'][$language_code] .= ' (copy)';
-        }
-        
         foreach (array('campaigns', 'options', 'options_stock') as $field) {
           if (empty($product->data[$field])) continue;
           foreach (array_keys($product->data[$field]) as $key) {
             $product->data[$field][$key]['id'] = null;
           }
+        }
+        
+        if (!empty($old_product->data['images'])) {
+          foreach ($old_product->data['images'] as $image) {
+            $product->add_image(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename']);
+          }
+        }
+        
+        foreach (array_keys($product->data['name']) as $language_code) {
+          $product->data['name'][$language_code] .= ' (copy)';
         }
         
         $product->save();

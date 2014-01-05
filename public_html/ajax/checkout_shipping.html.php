@@ -1,5 +1,5 @@
 <?php
-  if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
+  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
     require_once('../includes/app_header.inc.php');
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
@@ -85,7 +85,7 @@
   </div>
 </div>
 <?php
-  if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
+  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
   }
 ?>
