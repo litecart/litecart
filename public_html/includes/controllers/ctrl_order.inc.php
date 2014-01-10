@@ -135,6 +135,8 @@
         'order_status_id' => 'order_status_id',
         'shipping_tracking_id' => 'shipping_tracking_id',
         'payment_transaction_id' => 'payment_transaction_id',
+        'date_updated' => 'date_updated',
+        'date_created' => 'date_created',
       );
       foreach ($key_map as $skey => $tkey){
         $this->data[$tkey] = $order[$skey];

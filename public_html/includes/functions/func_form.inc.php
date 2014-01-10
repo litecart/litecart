@@ -59,13 +59,10 @@
   function form_draw_date_field($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (substr($value, 0, 10) == '0000-00-00') {
-      $value = '';
-    } else if (substr($value, 0, 10) == '1970-00-00') {
-      $value = '';
-    } else {
+    if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
       $value = date('Y-m-d', strtotime($value));
-      if (substr($value, 0, 10) == '1970-01-01') $value = '';
+    } else {
+      $value = '';
     }
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
@@ -76,13 +73,10 @@
   function form_draw_datetime_field($name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (substr($value, 0, 16) == '0000-00-00 00:00') {
-      $value = '';
-    } else if (substr($value, 0, 16) == '1970-00-00 00:00') {
-      $value = '';
-    } else {
+    if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
       $value = date('Y-m-d H:i', strtotime($value));
-      if (substr($value, 0, 10) == '1970-01-01') $value = '';
+    } else {
+      $value = '';
     }
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';

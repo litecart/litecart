@@ -16,18 +16,22 @@
   
 // Function to copy recursive data
   function xcopy($source, $target) {
+    $errors = false;
     if (is_dir($source)) {
       $source = rtrim($source, '/') . '/';
       $target = rtrim($target, '/') . '/';
-      if (!file_exists($target)) mkdir($target);
+      if (!file_exists($target)) {
+        if (!mkdir($target)) $errors = true;
+      }
       $dir = opendir($source);
       while(($file = readdir($dir)) !== false) {
         if ($file == '.' || $file == '..') continue;
-        xcopy($source.$file, $target.$file);
+        if (!xcopy($source.$file, $target.$file)) $errors = true;
       }
     } else if (!file_exists($target)) {
-      copy($source, $target);
+      if (copy($source, $target)) $errors = true;
     }
+    return  empty($errors) ? true : false;
   }
   
 // Function to get object from a relative path to this script
@@ -125,9 +129,9 @@
   define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
   
   if (file_put_contents('../includes/config.inc.php', $config)) {
-    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+    echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
   } else {
-    die('<span class="error">[Done]</span></p>' . PHP_EOL);
+    die('<span class="error">[Error]</span></p>' . PHP_EOL);
   }
   
   ### Database > Cleaning ###################################
@@ -214,8 +218,11 @@
   
   if (!empty($_POST['demo_data'])) {
     echo '<p>Copying demo files...';
-    xcopy('data/demo/public_html/', $installation_path);
-    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    if (xcopy('data/demo/public_html/', $installation_path)) {
+      echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+    }
   }
   
   ### .htaccess mod rewrite ###################################
@@ -228,9 +235,11 @@
   
   $htaccess = str_replace('{BASE_DIR}', $base_dir, $htaccess);
   
-  file_put_contents('../.htaccess', $htaccess);
-  
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  if (file_put_contents('../.htaccess', $htaccess)) {
+    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  } else {
+    echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+  }
   
   ### Admin > Folder ###################################
   
@@ -240,7 +249,7 @@
       rename('../admin/', '../'.$_POST['admin_folder']);
       echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
     } else {
-      echo ' <span class="error">[Skipped]</span></p>' . PHP_EOL;
+      echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
     }
   }
   
@@ -266,17 +275,23 @@
     file_put_contents('../'. $_POST['admin_folder'] .'.htaccess', $htaccess);
     echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
   } else {
-    echo ' <span class="error">[Skipped]</span></p>' . PHP_EOL;
+    echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
   }
   
   ### Admin > .htpasswd Users ###################################
   
   echo '<p>Granting admin access for user '. $_POST['username'] .'...';
   
-  $htpasswd = $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
-  file_put_contents('../'. $_POST['admin_folder'] . '.htpasswd', $htpasswd);
-  
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  if (is_dir('../'.$_POST['admin_folder'])) {
+    $htpasswd = $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
+    if (file_put_contents('../'. $_POST['admin_folder'] . '.htpasswd', $htpasswd)) {
+      echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+    }
+  } else {
+    echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
+  }
   
   ### Admin > Database > Users ###################################
   

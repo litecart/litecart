@@ -512,6 +512,8 @@
       
       if (!$image->resample(1024, 1024, 'FIT_ONLY_BIGGER')) return false;
       
+      //$image->watermark(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'watermark.png', 'CENTER', 'MIDDLE'); // Watermark image
+      
       if (!$image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, '', 90)) return false;
       
       functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
