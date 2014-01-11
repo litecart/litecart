@@ -19,7 +19,7 @@
   if (empty($_POST['username']) && !empty($_SERVER['PHP_AUTH_USER'])) $_POST['username'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
   
   document::$snippets['javascript'][] = '  $(document).ready(function() {' . PHP_EOL
-                                      . '    if ($("input[name=\'username\']").val() == '') {' . PHP_EOL
+                                      . '    if ($("input[name=\'username\']").val() == \'\') {' . PHP_EOL
                                       . '      $("input[name=\'username\']").focus();' . PHP_EOL
                                       . '    } else {' . PHP_EOL
                                       . '      $("input[name=\'password\']").focus();' . PHP_EOL
