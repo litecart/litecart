@@ -87,4 +87,17 @@
     return (!empty($country['postcode_required'])) ? true : false;
   }
   
+  function reference_get_phone_country_code($code) {
+    
+    $country_query = database::query(
+      "select phone_code from ". DB_TABLE_COUNTRIES ."
+      where iso_code_2 = '". database::input($code) ."'
+      limit 1;"
+    );
+    
+    $country = database::fetch($country_query);
+    
+    return isset($country['phone_code']) ? '+'. ltrim($country['phone_code'], '+') : '';
+  }
+  
 ?>
