@@ -20,7 +20,7 @@
     // Calculate cart weight
       $weight = 0;
       foreach ($items as $item) {
-        $weight += $GLOBALS['system']->weight->convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
+        $weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
       }
       
       $options = array();
@@ -30,28 +30,29 @@
         
         if (!functions::reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
         
-        $cost = $this->calculate_cost($this->settings['weight_rate_table_'.$i], $weight);
+        $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $weight);
         
         $options[] = array(
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
           'name' => functions::reference_get_country_name($customer['country_code']),
-          'description' => $GLOBALS['system']->weight->format($weight, 'kg'),
+          'description' => weight::format($weight, 'kg'),
           'fields' => '',
           'cost' => $cost,
           'tax_class_id' => $this->settings['tax_class_id'],
+          'exclude_cheapest' => false,
         );
       }
       
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
-          $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $weight);
+          $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $weight);
           
           $options[] = array(
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
             'name' => functions::reference_get_country_name($customer['country_code']),
-            'description' => $GLOBALS['system']->weight->format($weight, 'kg'),
+            'description' => weight::format($weight, 'kg'),
             'fields' => '',
             'cost' => $cost,
             'tax_class_id' => $this->settings['tax_class_id'],
@@ -109,8 +110,8 @@
         array(
           'key' => 'weight_class',
           'default_value' => '',
-          'title' => $GLOBALS['system']->language->translate(__CLASS__.':title_weight_class', 'Weight Class'),
-          'description' => $GLOBALS['system']->language->translate(__CLASS__.':description_weight_class', 'The weight class for the rate table.'),
+          'title' => language::translate(__CLASS__.':title_weight_class', 'Weight Class'),
+          'description' => language::translate(__CLASS__.':description_weight_class', 'The weight class for the rate table.'),
           'function' => 'weight_classes()',
         ),
         array(

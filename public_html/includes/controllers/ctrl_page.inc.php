@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($page_query);
-      if (empty($this->data)) trigger_error('Could not find pages ('. $page_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find page (ID: '. $page_id .') in database.', E_USER_ERROR);
       
       $this->data['dock'] = explode(',', $this->data['dock']);
       
