@@ -813,7 +813,6 @@ foreach (currency::$currencies as $currency) {
           $("#table-options").on("click", ".move-up, .move-down", function(event) {
             event.preventDefault();
             var row = $(this).closest("tr");
-            alert('test');
             if ($(this).is(".move-up") && $(row).prevAll().length > 1) {
               $(row).insertBefore($(row).prev());
             } else if ($(this).is(".move-down") && $(row).nextAll().length > 0) {
