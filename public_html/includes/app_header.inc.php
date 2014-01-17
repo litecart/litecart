@@ -1,7 +1,7 @@
 <?php
   
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '1.1');
+  define('PLATFORM_VERSION', '1.1.0.1');
   
 // Start redirecting output to the output buffer
   ob_start();
@@ -137,7 +137,7 @@
   system::run('before_capture');
   
 // If page should be overriden
-  $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/overrides/'. link::relpath(link::get_base_link());
+  $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/overrides/'. link::relpath(parse_url(link::get_base_link(), PHP_URL_PATH));
   if (file_exists($override_file)) {
     require_once($override_file);
     exit;
