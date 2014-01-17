@@ -404,7 +404,7 @@ CREATE TABLE `lc_products` (
   `dim_class` varchar(2) NOT NULL,
   `purchase_price` decimal(10,4) NOT NULL,
   `tax_class_id` int(11) NOT NULL,
-  `image` varchar(64) NOT NULL,
+  `image` varchar(256) NOT NULL,
   `views` int(11) NOT NULL,
   `purchases` int(11) NOT NULL,
   `date_valid_from` date NOT NULL,

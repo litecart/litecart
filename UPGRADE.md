@@ -16,6 +16,12 @@
     
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders.
 
+## LiteCart 1.1 to 1.1.0.1
+
+  MySQL Changes:
+  
+    ALTER TABLE `lc_products` CHANGE `image` `image` VARCHAR(256);
+  
 ## LiteCart 1.0.1.6 to 1.1
   
 	MySQL Changes:
