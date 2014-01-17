@@ -157,20 +157,26 @@
           <div style="margin-bottom: 10px;" class="cheapest-shipping">
 <?php
     $shipping = new mod_shipping('local');
-    $shipping->items[$product->id] = array(
-      'quantity' => 1,
-      'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
-      'tax_class_id' => $product->tax_class_id,
-      'weight' => $product->weight,
-      'weight_class' => $product->weight_class,
-      'dim_x' => $product->dim_x,
-      'dim_x' => $product->dim_x,
-      'dim_y' => $product->dim_y,
-      'dim_z' => $product->dim_z,
-      'dim_class' => $product->dim_class,
+    $cheapest_shipping = $shipping->cheapest(
+      array(
+        $product->id => array(
+          'quantity' => 1,
+          'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
+          'tax_class_id' => $product->tax_class_id,
+          'weight' => $product->weight,
+          'weight_class' => $product->weight_class,
+          'dim_x' => $product->dim_x,
+          'dim_x' => $product->dim_x,
+          'dim_y' => $product->dim_y,
+          'dim_z' => $product->dim_z,
+          'dim_class' => $product->dim_class,
+        ),
+      ),
+      $product->campaign['price'] ? $product->campaign['price'] : $product->price,
+      tax::get_tax($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id),
+      currency::$selected['code'],
+      customer::$data
     );
-    $shipping->destination = customer::$data;
-    $cheapest_shipping = $shipping->cheapest();
     if (!empty($cheapest_shipping)) {
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
       $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];

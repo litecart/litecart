@@ -4,7 +4,6 @@
     public $data;
     public $cheapest = '';
     public $items = array();
-    public $destination = array();
 
     public function __construct($type='session') {
       
@@ -19,8 +18,6 @@
             $this->items[$key] = $item;
           }
           
-          $this->destination = customer::$data;
-          
           break;
         case 'local':
           $this->data = array();
@@ -33,13 +30,13 @@
     }
     
     public function options($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
-       
+      
       if ($items === null) $items = cart::$data['items'];
       if ($subtotal === null) $subtotal = cart::$data['total']['value'];
       if ($tax === null) $tax = cart::$data['total']['tax'];
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
-
+      
       $this->data['options'] = array();
       
       if (empty($this->modules)) return;
@@ -81,16 +78,25 @@
       );
     }
     
-    public function cheapest() {
+    public function cheapest($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
     
-      if (empty($this->data['options'])) $this->options();
+      $this->options($items, $subtotal, $tax, $currency_code, $customer);
       
       foreach ($this->data['options'] as $module) {
         foreach ($module['options'] as $option) {
-          if (!isset($cheapest_amount) || $option['cost'] < $cheapest_amount) {
+          if (!isset($cheapest_amount) || (empty($option['exclude_cheapest']) && $option['cost'] < $cheapest_amount)) {
             $cheapest_amount = $option['cost'];
             $module_id = $module['id'];
             $option_id = $option['id'];
+          }
+        }
+        if (!isset($cheapest_amount)) {
+          foreach ($module['options'] as $option) {
+            if (!isset($cheapest_amount) || $option['cost'] < $cheapest_amount) {
+              $cheapest_amount = $option['cost'];
+              $module_id = $module['id'];
+              $option_id = $option['id'];
+            }
           }
         }
       }
