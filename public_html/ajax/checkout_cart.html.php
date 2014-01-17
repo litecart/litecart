@@ -6,7 +6,8 @@
   }
   
   if (cart::$data['total']['items'] == 0) {
-    echo '<p><em>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</em></p>';
+    echo '<p><em>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</em></p>' . PHP_EOL
+       . '<p><a href="javascript:history.go(-1);">&lt;&lt; '. language::translate('title_back', 'Back') .'</a></p>';
     return;
   }
 ?>
