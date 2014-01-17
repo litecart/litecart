@@ -1,5 +1,5 @@
 <?php
-  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
+  if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
     require_once('../includes/app_header.inc.php');
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
@@ -35,10 +35,11 @@
     $payment->set_cheapest();
   }
   
-// Hide if only 1 option
+// Hide
   //if (count($options) == 1
   //&& count($options[key($options)]['options']) == 1
-  //&& empty($options[key($options)][key($options[key($options)]['options'])]['fields'])) return;
+  //&& empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
+  //&& $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
   
 ?>
 <div class="box" id="box-checkout-payment">
@@ -81,7 +82,7 @@
   </div>
 </div>
 <?php
-  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
+  if (!in_array(__FILE__, array_slice(get_included_files(), 1))) {
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
   }
 ?>
