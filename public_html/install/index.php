@@ -355,7 +355,7 @@
   }
 ?>
   
-  <form id="form1" name="form1" method="post" action="install.php">
+  <form name="installation_form" method="post" action="install.php">
     <h3>File System</h3>
     <table>
       <tr>
@@ -370,13 +370,13 @@
           <input name="db_server" type="text" value="localhost"  />
         </td>
         <td><strong>Database</strong><br />
-        <input type="text" name="db_database"  /></td>
+        <input type="text" name="db_database" /></td>
       </tr>
       <tr>
         <td><strong>Username</strong><br />
-        <input type="text" name="db_username"  /></td>
+        <input type="text" name="db_username" /></td>
         <td><strong>Password</strong><br />
-        <input type="password" name="db_password"  /></td>
+        <input type="password" name="db_password" /></td>
       </tr>
       <tr>
         <td><strong>Table Prefix</strong><br />

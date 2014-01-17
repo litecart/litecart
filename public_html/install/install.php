@@ -129,7 +129,7 @@
   define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
   
   if (file_put_contents('../includes/config.inc.php', $config)) {
-    echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   } else {
     die('<span class="error">[Error]</span></p>' . PHP_EOL);
   }
@@ -148,7 +148,7 @@
     $database->query($query);
   }
   
-  echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
+  echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   
   ### Database > Tables > Structure ###################################
   
@@ -164,7 +164,7 @@
     $database->query($query);
   }
   
-  echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
+  echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   
   ### Database > Tables > Data ###################################
   
@@ -191,7 +191,7 @@
     $database->query($query);
   }
   
-  echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
+  echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   
   ### Database > Tables > Demo Data ###################################
   
@@ -211,7 +211,7 @@
       }
     }
     
-    echo '<span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   }
   
   ### Files > Demo Data ###################################
@@ -219,7 +219,7 @@
   if (!empty($_POST['demo_data'])) {
     echo '<p>Copying demo files...';
     if (xcopy('data/demo/public_html/', $installation_path)) {
-      echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
     }
@@ -236,7 +236,7 @@
   $htaccess = str_replace('{BASE_DIR}', $base_dir, $htaccess);
   
   if (file_put_contents('../.htaccess', $htaccess)) {
-    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   } else {
     echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
   }
@@ -247,7 +247,7 @@
     echo '<p>Renaming admin folder...';
     if (is_dir('../admin/')) {
       rename('../admin/', '../'.$_POST['admin_folder']);
-      echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
     }
@@ -273,7 +273,7 @@
   
   if (is_dir('../'.$_POST['admin_folder'])) {
     file_put_contents('../'. $_POST['admin_folder'] .'.htaccess', $htaccess);
-    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   } else {
     echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
   }
@@ -285,7 +285,7 @@
   if (is_dir('../'.$_POST['admin_folder'])) {
     $htpasswd = $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
     if (file_put_contents('../'. $_POST['admin_folder'] . '.htpasswd', $htpasswd)) {
-      echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
     }
@@ -314,7 +314,7 @@
       where code = 'en'
       limit 1;"
     );
-    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   } else if (strtoupper(substr(PHP_OS, 0, 6)) == 'DARWIN') {
     echo '<p>Making adjustments for Darwin (Mac) platform...';
     $database->query(
@@ -323,7 +323,7 @@
       where code = 'en'
       limit 1;"
     );
-    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
   
   ### Regional Data Patch ###################################
@@ -365,7 +365,7 @@
       }
     }
     
-    echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
   
   ### Set cache breakpoint ###################################
@@ -379,7 +379,7 @@
     limit 1;"
   );
   
-  echo ' <span class="ok">[Done]</span></p>' . PHP_EOL;
+  echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   
   ### ###################################
   
