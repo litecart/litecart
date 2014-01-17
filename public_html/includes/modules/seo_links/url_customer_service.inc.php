@@ -18,6 +18,8 @@
         
         if (!empty($page)) {
           $parsed_link['path'] = WS_DIR_HTTP_HOME . functions::general_path_friendly($page['title']) .'-s-'. $page['page_id'];
+        } else {
+          $parsed_link['path'] = WS_DIR_HTTP_HOME . 'untitled-s-'. $page['page_id'];
         }
         
       } else {

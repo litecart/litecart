@@ -18,7 +18,7 @@
       $category = database::fetch($category_query);
       if (empty($category)) return;
       
-      $parsed_link['path'] = WS_DIR_HTTP_HOME . functions::general_path_friendly($category['name']) .'-c-'. $category['category_id'];
+      $parsed_link['path'] = WS_DIR_HTTP_HOME . functions::general_path_friendly($category['name']) .'-c-'. $category['category_id'] .'/';
       
       unset($parsed_link['query']['category_id']);
       

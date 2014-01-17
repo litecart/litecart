@@ -17,7 +17,7 @@
       $manufacturer = database::fetch($manufacturer_query);
       if (empty($manufacturer)) return;
       
-      $parsed_link['path'] = WS_DIR_HTTP_HOME . functions::general_path_friendly($manufacturer['name']) .'-m-'. $manufacturer['id'];
+      $parsed_link['path'] = WS_DIR_HTTP_HOME . functions::general_path_friendly($manufacturer['name']) .'-m-'. $manufacturer['id'] .'/';
       
       unset($parsed_link['query']['manufacturer_id']);
       
