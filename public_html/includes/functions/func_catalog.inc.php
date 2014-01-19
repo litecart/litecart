@@ -171,7 +171,7 @@
         ". $sql_local_sort ."
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : "") ."
       ) p
-      join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.language_code = 'en' and pi.product_id = p.id and name != '')
+      join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.language_code = '". language::$selected['code'] ."' and pi.product_id = p.id and name != '')
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
       left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
       left join (
