@@ -1,5 +1,6 @@
 <?php
-  require('includes/header.inc.php');
+  require_once('includes/header.inc.php');
+  require_once('includes/functions.inc.php');
   
   echo '<h1>Installer</h1>' . PHP_EOL;
   
@@ -8,53 +9,15 @@
   ini_set('log_errors', 'Off');
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
-
+  
   if (empty($_POST['install'])) {
     header('Location: index.php');
     exit;
   }
   
-// Function to copy recursive data
-  function xcopy($source, $target) {
-    $errors = false;
-    if (is_dir($source)) {
-      $source = rtrim($source, '/') . '/';
-      $target = rtrim($target, '/') . '/';
-      if (!file_exists($target)) {
-        if (!mkdir($target)) $errors = true;
-      }
-      $dir = opendir($source);
-      while(($file = readdir($dir)) !== false) {
-        if ($file == '.' || $file == '..') continue;
-        if (!xcopy($source.$file, $target.$file)) $errors = true;
-      }
-    } else if (!file_exists($target)) {
-      if (copy($source, $target)) $errors = true;
-    }
-    return  empty($errors) ? true : false;
-  }
-  
-// Function to get object from a relative path to this script
-  function get_absolute_path($path=null) {
-    if (empty($path)) $path = dirname(__FILE__);
-    $path = realpath($path);
-    $path = str_replace('\\', '/', $path);
-    $parts = array_filter(explode('/', $path), 'strlen');
-    $absolutes = array();
-    foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
-      }
-    }
-    return ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? '' : '/') . implode('/', $absolutes);
-  }
-  
   ### Set Environment Variables ###################################
   
-  $installation_path = get_absolute_path(dirname(__FILE__) .'/..') .'/';
+  $installation_path = file_absolute_path(dirname(__FILE__) .'/..') .'/';
   
   $_POST['admin_folder'] = str_replace('\\', '/', $_POST['admin_folder']);
   $_POST['admin_folder'] = rtrim($_POST['admin_folder'], '/') . '/';
@@ -218,7 +181,7 @@
   
   if (!empty($_POST['demo_data'])) {
     echo '<p>Copying demo files...';
-    if (xcopy('data/demo/public_html/', $installation_path)) {
+    if (file_xcopy('data/demo/public_html/', $installation_path)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
@@ -231,7 +194,7 @@
   
   $htaccess = file_get_contents('htaccess');
   
-  $base_dir = str_replace(get_absolute_path($_SERVER['DOCUMENT_ROOT']), '', $installation_path);
+  $base_dir = str_replace(file_absolute_path($_SERVER['DOCUMENT_ROOT']), '', $installation_path);
   
   $htaccess = str_replace('{BASE_DIR}', $base_dir, $htaccess);
   
@@ -361,7 +324,7 @@
       }
       
       if (file_exists('data/'. $dir .'/public_html/')) {
-        xcopy('data/'. $dir .'/public_html/', $installation_path);
+        file_xcopy('data/'. $dir .'/public_html/', $installation_path);
       }
     }
     

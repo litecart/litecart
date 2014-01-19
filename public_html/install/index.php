@@ -351,7 +351,7 @@
   
 <?php
   if (file_exists('../includes/config.inc.php')) {
-    echo '<p style="color: #f00; font-weight: bold;">Attention: An existing installation has been detected. If you continue the existing installation will be overwritten.</p>';
+    echo '<p style="color: #f00; font-weight: bold;">Attention: An existing installation has been detected. If you continue the existing installation will be overwritten. <a href="upgrade.php">Upgraders click here insted.</a></p>';
   }
 ?>
   
@@ -442,6 +442,6 @@
     <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.<br />
     </p>
     <p><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>
-    <p><input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing installations will be overwritten with new data.')) return false;" /></p>
+    <p><input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" /></p>
   </form>
 <?php require('includes/footer.inc.php'); ?>

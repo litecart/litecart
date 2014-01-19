@@ -1,28 +1,42 @@
 # Upgrade
 
-  The following is a list of changes that can be of importance when performing a manual upgrade.
+## Instructions
 
+  1. Backup your files and database.
+  
+  2. Upload a new set of files replacing the old ones. (So called drop-on-top)
+  
+  3. Point your browser to http://www.yoursite.com/path/to/install/upgrade.php and follow the instructions on the page.
+  
+  4. Make sure everything went fine and delete the install/ folder.
+  
+  If you need help, turn to our forums at http://forums.litecart.net.
+  
+## Performing a Manual Upgrade
+  
+  Below is following is a list of changes that can be of importance when performing a manual upgrade.
+  
   The standard procedure for upgrading is to replace the old set of files with the new ones and perform any MySQL changes to the database. When replacing the set of files you may keep the following (created by the installer):
-
+  
     ~/admin/.htaccess
     ~/admin/.htpasswd
     ~/includes/config.inc.php
     ~/.htaccess
-    
+  
   You may also want to keep data stored in the following folders:
-
+  
     ~/data
     ~/images
-    
+  
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders.
-
-## LiteCart 1.1 to 1.1.0.1
-
+  
+### LiteCart 1.1 to 1.1.0.1
+  
   MySQL Changes:
   
     ALTER TABLE `lc_products` CHANGE `image` `image` VARCHAR(256);
   
-## LiteCart 1.0.1.6 to 1.1
+### LiteCart 1.0.1.6 to 1.1
   
 	MySQL Changes:
   
@@ -546,7 +560,7 @@
     
   (No Deleted Files)
   
-## LiteCart 1.0.1.5 to 1.0.1.6
+### LiteCart 1.0.1.5 to 1.0.1.6
 
   MySQL changes:
   
@@ -565,7 +579,7 @@
     ~/includes/modules/shipping/sm_zone.inc
     ~/includes/templates/default.catalog/styles/loader.css.php
     
-## LiteCart 1.0.1.4 to 1.0.1.5
+### LiteCart 1.0.1.4 to 1.0.1.5
 
   (No MySQL Changes)
   
@@ -582,7 +596,7 @@
   
     ~/includes/modules/jobs/job_currency_updater.inc.php
     
-## LiteCart 1.0.1.3 to 1.0.1.4
+### LiteCart 1.0.1.3 to 1.0.1.4
 
   (No MySQL Changes)
   
@@ -590,7 +604,7 @@
   
   (No Deleted Files)
   
-## LiteCart 1.0.1.2 to 1.0.1.3
+### LiteCart 1.0.1.2 to 1.0.1.3
 
   (No MySQL Changes)
   
@@ -606,11 +620,11 @@
     ~/ext/jquery/jquery-migrate-1.1.1.min.js
     ~/includes/functions/error.inc.php
   
-## LiteCart 1.0.1. to 1.0.1.2
+### LiteCart 1.0.1. to 1.0.1.2
 
   (No MySQL Changes)
   
-## LiteCart 1.0 to 1.0.1
+### LiteCart 1.0 to 1.0.1
   
   MySQL changes:
     

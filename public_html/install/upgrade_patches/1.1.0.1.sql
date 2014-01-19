@@ -1,0 +1,1 @@
+ALTER TABLE `lc_products` CHANGE `image` `image` VARCHAR(256);
