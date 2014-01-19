@@ -309,7 +309,7 @@
     switch ($matches[1]) {
       case 'decimal':
       case 'float':
-        return functions::form_draw_decimal_field($name, $input, 2, '', '');
+        return functions::form_draw_decimal_field($name, $input, 2);
       case 'int':
         return functions::form_draw_number_field($name, $input);
       case 'currency':
