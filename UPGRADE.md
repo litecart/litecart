@@ -2,7 +2,7 @@
 
 ## Instructions
 
-  1. Backup your files and database.
+  1. Backup your files and database!!
   
   2. Upload a new set of files replacing the old ones. (So called drop-on-top)
   
@@ -10,13 +10,15 @@
   
   4. Make sure everything went fine and delete the install/ folder.
   
+  Note: Old add-ons and modules might not be compatible with a new version.
+  
   If you need help, turn to our forums at http://forums.litecart.net.
   
 ## Performing a Manual Upgrade
   
-  Below is following is a list of changes that can be of importance when performing a manual upgrade.
+  This chapter contains is a list of changes that can be of importance when performing a manual upgrade.
   
-  The standard procedure for upgrading is to replace the old set of files with the new ones and perform any MySQL changes to the database. When replacing the set of files you may keep the following (created by the installer):
+  The standard procedure for manual upgrading is to replace the old set of files with the new ones and perform any MySQL changes necessary to the database. When replacing the set of files you may keep the following (created by the installer):
   
     ~/admin/.htaccess
     ~/admin/.htpasswd
@@ -35,6 +37,10 @@
   MySQL Changes:
   
     ALTER TABLE `lc_products` CHANGE `image` `image` VARCHAR(256);
+  
+  (No New Files)
+  
+  (No Deleted Files)
   
 ### LiteCart 1.0.1.6 to 1.1
   

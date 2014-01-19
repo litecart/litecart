@@ -1,5 +1,5 @@
 <?php
-  // Automatic upgrade: upgrade.php?source={version}&upgrade=true&redirect={url}
+  // Automatic upgrade: upgrade.php?from_version={version}&upgrade=true&redirect={url}
   
   ob_start();
   
@@ -35,15 +35,17 @@
     return version_compare($a, $b, '>');
   });
   
-  echo '<h1>Upgrade Database</h1>' . PHP_EOL;
+  echo '<h1>Upgrade</h1>' . PHP_EOL;
   
-  if (!empty($_POST['upgrade'])) {
+  if (!empty($_REQUEST['upgrade'])) {
+    
+    if (empty($_REQUEST['from_version'])) die('You must select a version.');
     
     require('database.class.php');
     $database = new database(null);
     
     foreach ($supported_versions as $version) {
-      if (version_compare($_REQUEST['source'], $version, '<')) {
+      if (version_compare($_REQUEST['from_version'], $version, '<')) {
         if (file_exists('upgrade_patches/'. $version .'.sql')) {
           echo '<p>Upgrading database to '. $version .'... ';
             $sql = file_get_contents('upgrade_patches/'. $version .'.sql');
@@ -79,13 +81,14 @@
   
 ?>
 <p>Upgrade from an old installation to <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?>.</p>
+<p><strong style="color: #f00;">Backup your files and database before you continue!<br />Selecting the wrong version might damage your data.</strong></p>
 <form name="upgrade_form" method="post">
-  <h3>Version</h3>
+  <h3>Migrating From Version</h3>
   <table>
     <tr>
-      <td><strong>Select the <?php echo PLATFORM_NAME; ?> version you are migrating from:</strong><br />
-        Version <select name="source">
-          <option>-- Select --</option>
+      <td>Select the <?php echo PLATFORM_NAME; ?> version you are migrating from:<br />
+        <select name="from_version">
+          <option value="">-- Select Version --</option>
           <?php foreach ($supported_versions as $version) echo '<option>'. $version .'</option>' . PHP_EOL; ?>
         </select>
       </td>
