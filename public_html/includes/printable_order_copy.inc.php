@@ -78,13 +78,13 @@
         </td>
         <td align="left"><?php echo $item['sku']; ?></td>
       <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
-        <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <?php } else { ?>
-        <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['price'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td style="padding: 5px 10px; text-align: right; width: 75px;"><?php echo currency::format($item['quantity'] * $item['price'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['price'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['quantity'] * $item['price'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <?php } ?>
       </tr>
       <?php } ?>
@@ -95,12 +95,12 @@
       <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
       <tr>
         <td style="padding: 3px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?>:</td>
-        <td style="padding: 3px 10px; text-align: right; width: 75px;"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 3px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } else { ?>
       <tr>
         <td style="padding: 3px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?>:</td>
-        <td style="padding: 3px 10px; text-align: right; width: 75px;"><?php echo currency::format($ot_row['value'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 3px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
       <?php } ?>
@@ -108,13 +108,13 @@
       <?php if (!empty($order['tax_total'])) { ?>
       <tr>
         <td style="padding: 3px 10px; white-space: nowrap; text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-        <td style="padding: 3px 10px; text-align: right; width: 75px;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 3px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
       
       <tr>
         <td style="padding: 3px 10px; white-space: nowrap; text-align: right;"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
-        <td style="padding: 3px 10px; text-align: right; width: 75px;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 3px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
     </table>
     

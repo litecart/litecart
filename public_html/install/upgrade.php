@@ -83,7 +83,7 @@
 <p>Upgrade from an old installation to <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?>.</p>
 <p><strong style="color: #f00;">Backup your files and database before you continue!<br />Selecting the wrong version might damage your data.</strong></p>
 <form name="upgrade_form" method="post">
-  <h3>Migrating From Version</h3>
+  <h3>Version Migrating From</h3>
   <table>
     <tr>
       <td>Select the <?php echo PLATFORM_NAME; ?> version you are migrating from:<br />
