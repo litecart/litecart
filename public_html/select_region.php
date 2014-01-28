@@ -16,7 +16,7 @@
     $_POST['currency_code'] = !empty($_POST['currency_code']) ? $_POST['currency_code'] : '';
     $_POST['country_code'] = !empty($_POST['country_code']) ? $_POST['country_code'] : '';
     $_POST['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
-    $_POST['display_prices_including_tax'] = !empty($_POST['display_prices_including_tax']) ? (int)$_POST['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax');
+    $_POST['display_prices_including_tax'] = isset($_POST['display_prices_including_tax']) ? (int)$_POST['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax');
     
     language::set($_POST['language_code']);
     
