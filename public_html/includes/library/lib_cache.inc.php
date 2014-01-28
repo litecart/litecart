@@ -159,6 +159,8 @@
             break;
           case 'prices':
             $dependants_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
+            $dependants_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
+            $dependants_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
             break;
           default:
             if (is_array($dependant)) {
