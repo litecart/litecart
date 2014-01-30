@@ -26,10 +26,11 @@
       $fields = array(
         'tax_class_id',
         'geo_zone_id',
-        'type',
+        'code',
         'name',
         'description',
         'rate',
+        'type',
         'tax_id_rule',
         'customer_type',
       );
@@ -61,6 +62,11 @@
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
 
   <table>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?></strong><br />
+        <?php echo functions::form_draw_text_field('code', true, 'data-size="small"'); ?>
+      </td>
+    </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('name', true); ?>

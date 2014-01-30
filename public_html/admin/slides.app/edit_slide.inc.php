@@ -80,7 +80,7 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_caption', 'Caption'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('caption', true); ?>
+        <?php echo functions::form_draw_textarea('caption', true, 'style="height: 125px;"'); ?>
       </td>
     </tr>
     <tr>

@@ -21,6 +21,7 @@
     if (!notices::get('errors')) {
     
       $fields = array(
+        'code',
         'name',
         'description',
       );
@@ -52,6 +53,11 @@
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
 
   <table>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?></strong><br />
+        <?php echo functions::form_draw_text_field('code', true, 'data-size="small"'); ?>
+      </td>
+    </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('name', true); ?>

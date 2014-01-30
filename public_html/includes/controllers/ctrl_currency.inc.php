@@ -103,6 +103,7 @@
         set
           status = '". (int)$this->data['status'] ."',
           code = '". database::input($this->data['code']) ."',
+          number = '". database::input($this->data['number']) ."',
           name = '". database::input($this->data['name']) ."',
           value = '". database::input($this->data['value']) ."',
           prefix = '". database::input($this->data['prefix']) ."',

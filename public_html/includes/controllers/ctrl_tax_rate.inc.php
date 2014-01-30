@@ -33,6 +33,7 @@
         set
           tax_class_id = '". database::input($this->data['tax_class_id']) ."',
           geo_zone_id = '". database::input($this->data['geo_zone_id']) ."',
+          code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
           type = '". database::input($this->data['type']) ."',

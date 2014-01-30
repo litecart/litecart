@@ -52,6 +52,7 @@
       $fields = array(
         'status',
         'code',
+        'number',
         'name',
         'value',
         'prefix',
@@ -110,14 +111,18 @@
       </td>
     </tr>
     <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+        <?php echo functions::form_draw_text_field('name', true); ?>
+      </td>
+    </tr>
+    <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217)</strong><br />
         <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('name', true); ?>
-      </td>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217)</strong><br />
+      <?php echo functions::form_draw_text_field('number', true, 'data-size="tiny" pattern="[0-9]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?> </a></td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_value', 'Value'); ?></strong><br />
@@ -131,8 +136,7 @@
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_suffix', 'Suffix'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('suffix', true, 'data-size="tiny"'); ?>
-      </td>
+      <?php echo functions::form_draw_text_field('suffix', true, 'data-size="tiny"'); ?></td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_decimals', 'Decimals'); ?></strong><br />
@@ -151,7 +155,6 @@
       </td>
     </tr>
   </table>
-  
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($currency->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
   
 <?php echo functions::form_draw_form_end(); ?>

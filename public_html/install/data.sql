@@ -241,6 +241,10 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_2
 (238, 1, 'Zambia', '', 'ZM', 'ZMB', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', 0, 'ZMW', '260', NOW(), NOW()),
 (239, 1, 'Zimbabwe', '', 'ZW', 'ZWE', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', 0, 'ZWD', '263', NOW(), NOW());
 -- --------------------------------------------------------
+INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
+(1, 'EUR', '978', 'Euros', 0.726, 2, '', ' €', 0, NOW(), NOW());
+-- --------------------------------------------------------
 INSERT INTO `lc_languages` (`status`, `code`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
@@ -307,10 +311,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', '', '', 'order_total_module_ot_shipping_fee', 'a:1:{s:10:"sort_order";s:2:"10";}', '', 0, NOW(), NOW()),
 ('', 'local', '', '', 'order_total_module_ot_subtotal', 'a:1:{s:10:"sort_order";s:1:"1";}', '', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
--- --------------------------------------------------------
-INSERT INTO `lc_currencies` (`status`, `code`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'USD', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
-(1, 'EUR', 'Euros', 0.726, 2, '', ' €', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 1, NOW(), NOW()),
