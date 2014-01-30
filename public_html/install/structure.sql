@@ -584,7 +584,7 @@ CREATE TABLE `lc_slides` (
   `status` tinyint(1) NOT NULL,
   `language_code` varchar(8) NOT NULL,
   `name` varchar(128) NOT NULL,
-  `caption` varchar(256) NOT NULL,
+  `caption` varchar(512) NOT NULL,
   `link` varchar(256) NOT NULL,
   `image` varchar(64) NOT NULL,
   `priority` tinyint(2) NOT NULL,
