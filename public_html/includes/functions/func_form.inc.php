@@ -67,7 +67,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    return '<img src="'. WS_DIR_IMAGES .'icons/16x16/calendar.png" width="16" height="16" /> <input type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="YYYY-MM-DD"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_datetime_field($name, $value=true, $parameters='', $hint='') {
@@ -81,7 +81,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    return '<input type="datetime" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="16" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="datetime" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="16" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}.*" placeholder="YYYY-MM-DD [hh:nn]" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='', $hint='') {
@@ -126,6 +126,20 @@
   
   function form_draw_link_button($url, $title, $parameters='', $icon='') {
     return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $title .'</a>';
+  }
+  
+  function form_draw_month_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
+    
+    if (!in_array(substr($value, 0, 7), array('', '0000-00', '1970-00', '1970-01'))) {
+      $value = date('Y-m', strtotime($value));
+    } else {
+      $value = '';
+    }
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="month" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="month" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='', $hint='') {
