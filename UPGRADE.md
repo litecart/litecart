@@ -48,9 +48,48 @@
     ALTER TABLE `lc_tax_rates` ADD `code` VARCHAR(32) NOT NULL AFTER `geo_zone_id`;
   
     
-  (No New Files)
+  New Files:
   
-  (No Deleted Files)
+    admin/reports.app/most_shopping_customers.inc.php
+    admin/reports.app/most_sold_products.inc.php
+  
+  Deleted Files:
+  
+    ext/jqplot/plugins/jqplot.barRenderer.js
+    ext/jqplot/plugins/jqplot.BezierCurveRenderer.js
+    ext/jqplot/plugins/jqplot.blockRenderer.js
+    ext/jqplot/plugins/jqplot.bubbleRenderer.js
+    ext/jqplot/plugins/jqplot.canvasAxisLabelRenderer.js
+    ext/jqplot/plugins/jqplot.canvasAxisTickRenderer.js
+    ext/jqplot/plugins/jqplot.canvasOverlay.js
+    ext/jqplot/plugins/jqplot.canvasTextRenderer.js
+    ext/jqplot/plugins/jqplot.categoryAxisRenderer.js
+    ext/jqplot/plugins/jqplot.ciParser.js
+    ext/jqplot/plugins/jqplot.cursor.js
+    ext/jqplot/plugins/jqplot.dateAxisRenderer.js
+    ext/jqplot/plugins/jqplot.donutRenderer.js
+    ext/jqplot/plugins/jqplot.dragable.js
+    ext/jqplot/plugins/jqplot.enhancedLegendRenderer.js
+    ext/jqplot/plugins/jqplot.funnelRenderer.js
+    ext/jqplot/plugins/jqplot.highlighter.js
+    ext/jqplot/plugins/jqplot.json2.js
+    ext/jqplot/plugins/jqplot.logAxisRenderer.js
+    ext/jqplot/plugins/jqplot.mekkoAxisRenderer.js
+    ext/jqplot/plugins/jqplot.mekkoRenderer.js
+    ext/jqplot/plugins/jqplot.meterGaugeRenderer.js
+    ext/jqplot/plugins/jqplot.mobile.js
+    ext/jqplot/plugins/jqplot.ohlcRenderer.js
+    ext/jqplot/plugins/jqplot.pieRenderer.js
+    ext/jqplot/plugins/jqplot.pointLabels.js
+    ext/jqplot/plugins/jqplot.pyramidAxisRenderer.js
+    ext/jqplot/plugins/jqplot.pyramidGridRenderer.js
+    ext/jqplot/plugins/jqplot.pyramidRenderer.js
+    ext/jqplot/plugins/jqplot.trendline.js
+    ext/jqplot/excanvas.js
+    ext/jqplot/jquery.jqplot.css
+    ext/jqplot/jquery.jqplot.js
+    ext/jqplot/jquery.js
+    ext/jqplot/jquery.min.js
   
 ### LiteCart 1.1 to 1.1.0.1
   
