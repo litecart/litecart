@@ -174,11 +174,13 @@
       return $name .'_'. md5($name . $dependants_string);
     }
     
+    /* This option is not affected by $enabled since new data is always recorded */
     public static function capture($cache_id, $type='session', $max_age=3600) {
       
       if (isset(self::$_recorders[$cache_id])) trigger_error('Cache recorder already initiated ('. $cache_id .')', E_USER_ERROR);
       
       $_data = self::get($cache_id, $type, $max_age);
+      
       if (!empty($_data)) {
         echo '<!-- Begin: Cache \''. $cache_id .'\' -->' . PHP_EOL
            . $_data . PHP_EOL
@@ -190,20 +192,25 @@
         'id' => $cache_id,
         'type' => $type,
       );
+      
       ob_start();
       
       return true;
     }
     
+    /* This option is not affected by $enabled since new data is always recorded */
     public static function end_capture($cache_id=null) {
-    
-      if (empty(self::$enabled)) return false;
-    
+      
       if (empty($cache_id)) $cache_id = current(array_reverse(self::$_recorders));
       
-      if (!isset(self::$_recorders[$cache_id])) return false;
+      if (!isset(self::$_recorders[$cache_id])) {
+        if ($_data === false) trigger_error('Could not end buffer recording as cache_id doesn\'t exist', E_USER_ERROR);
+        return;
+      }
       
       $_data = ob_get_flush();
+      
+      if ($_data === false) trigger_error('No active recording while trying to end buffer recorder', E_USER_ERROR);
       
       self::set($cache_id, self::$_recorders[$cache_id]['type'], $_data);
       

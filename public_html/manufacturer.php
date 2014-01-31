@@ -75,7 +75,14 @@
 ?>
     <ul class="listing-wrapper products">
 <?php
-    $products_query = functions::catalog_products_query(array('manufacturer_id' => $manufacturer->id, 'sort' => $_GET['sort']));
+    $products_query = functions::catalog_products_query(
+      array(
+        'manufacturer_id' => $manufacturer->id,
+        'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
+        'sort' => $_GET['sort']
+      )
+    );
+    
     if (database::num_rows($products_query) > 0) {
       if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page', 20) * ($_GET['page']-1)));
       

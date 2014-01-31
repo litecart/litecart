@@ -8,7 +8,11 @@
       limit 1;"
     );
     $country = database::fetch($country_query);
-    if (empty($country)) trigger_error('Invalid country code for address format', E_USER_WARNING);
+    
+    if (empty($country)) {
+      trigger_error('Invalid country code for address format', E_USER_WARNING);
+      return;
+    }
     
     if (isset($address['zone_code'])) {
       $zones_query = database::query(

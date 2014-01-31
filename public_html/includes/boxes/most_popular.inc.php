@@ -1,5 +1,4 @@
 <?php
-  
   functions::draw_fancybox('a.fancybox');
   
   $cache_id = cache::cache_id('box_most_popular_products', array('language', 'currency', 'prices'));
@@ -12,7 +11,6 @@
     }
     
     if (database::num_rows($products_query)) {
-      
 ?>
 <div class="box" id="box-most-popular">
   <div class="heading"><h3><?php echo language::translate('title_most_popular', 'Most Popular'); ?></h3></div>

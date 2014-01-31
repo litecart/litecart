@@ -96,7 +96,15 @@
         break;
     }
     
-    $products_query = functions::catalog_products_query(array('category_id' => $category->id, 'sort' => $_GET['sort']));
+    $products_query = functions::catalog_products_query(
+      array(
+        'category_id' => $category->id,
+        'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
+        'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
+        'sort' => $_GET['sort']
+      )
+    );
+    
     if (database::num_rows($products_query)) {
       echo '<ul class="listing-wrapper products">' . PHP_EOL;
       

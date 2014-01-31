@@ -1,4 +1,6 @@
 <?php
+  if (!in_array(link::relpath($_SERVER['SCRIPT_NAME']), array('index.php', 'categories.php', 'manufacturers.php', 'product.php', 'search.php'))) return;
+
   $manufacturers_query = database::query(
     "select id, name from ". DB_TABLE_MANUFACTURERS ." m
     where status
