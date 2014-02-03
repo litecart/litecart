@@ -128,6 +128,8 @@
   </tr>
 </table>
 
+<p><?php echo language::translate('title_external_link', 'External Link'); ?>: <strong><a href="http://www.litecart.net/addons" target="_blank">LiteCart Add-ons</a></strong></p>
+
 <script>
   $(".dataTable input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {

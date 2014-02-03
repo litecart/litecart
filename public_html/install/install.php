@@ -1,4 +1,6 @@
 <?php
+  ob_start();
+  
   require_once('includes/header.inc.php');
   require_once('includes/functions.inc.php');
   
@@ -10,7 +12,7 @@
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
   
-  if (empty($_POST['install'])) {
+  if (empty($_REQUEST['install'])) {
     header('Location: index.php');
     exit;
   }
@@ -19,8 +21,8 @@
   
   $installation_path = file_absolute_path(dirname(__FILE__) .'/..') .'/';
   
-  $_POST['admin_folder'] = str_replace('\\', '/', $_POST['admin_folder']);
-  $_POST['admin_folder'] = rtrim($_POST['admin_folder'], '/') . '/';
+  $_REQUEST['admin_folder'] = str_replace('\\', '/', $_REQUEST['admin_folder']);
+  $_REQUEST['admin_folder'] = rtrim($_REQUEST['admin_folder'], '/') . '/';
   
   ### PHP > Check Version #############################
 
@@ -39,11 +41,11 @@
 
   echo '<p>Connecting to database... ';
   
-  define('DB_SERVER', $_POST['db_server']);
-  define('DB_USERNAME', $_POST['db_username']);
-  define('DB_PASSWORD', $_POST['db_password']);
-  define('DB_DATABASE', $_POST['db_database']);
-  define('DB_TABLE_PREFIX', $_POST['db_table_prefix']);
+  define('DB_SERVER', $_REQUEST['db_server']);
+  define('DB_USERNAME', $_REQUEST['db_username']);
+  define('DB_PASSWORD', $_REQUEST['db_password']);
+  define('DB_DATABASE', $_REQUEST['db_database']);
+  define('DB_TABLE_PREFIX', $_REQUEST['db_table_prefix']);
   define('DB_DATABASE_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
   
@@ -73,15 +75,15 @@
   $config = file_get_contents('config');
   
   $map = array(
-    '{ADMIN_FOLDER}' => rtrim($_POST['admin_folder'], '/'),
-    '{DB_SERVER}' => $_POST['db_server'],
-    '{DB_USERNAME}' => $_POST['db_username'],
-    '{DB_PASSWORD}' => $_POST['db_password'],
-    '{DB_DATABASE}' => $_POST['db_database'],
-    '{DB_TABLE_PREFIX}' => $_POST['db_table_prefix'],
+    '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
+    '{DB_SERVER}' => $_REQUEST['db_server'],
+    '{DB_USERNAME}' => $_REQUEST['db_username'],
+    '{DB_PASSWORD}' => $_REQUEST['db_password'],
+    '{DB_DATABASE}' => $_REQUEST['db_database'],
+    '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
     '{DB_DATABASE_CHARSET}' => 'utf8',
     '{DB_PERSISTENT_CONNECTIONS}' => 'false',
-    '{CLIENT_IP}' => $_POST['client_ip'],
+    '{CLIENT_IP}' => $_REQUEST['client_ip'],
     '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
   );
   
@@ -137,10 +139,10 @@
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
   
   $map = array(
-    '{STORE_NAME}' => $_POST['store_name'],
-    '{STORE_EMAIL}' => $_POST['store_email'],
-    '{STORE_TIME_ZONE}' => $_POST['store_time_zone'],
-    '{STORE_COUNTRY_CODE}' => $_POST['country_code'],
+    '{STORE_NAME}' => $_REQUEST['store_name'],
+    '{STORE_EMAIL}' => $_REQUEST['store_email'],
+    '{STORE_TIME_ZONE}' => $_REQUEST['store_time_zone'],
+    '{STORE_COUNTRY_CODE}' => $_REQUEST['country_code'],
   );
   
   foreach ($map as $search => $replace) {
@@ -158,7 +160,7 @@
   
   ### Database > Tables > Demo Data ###################################
   
-  if (!empty($_POST['demo_data'])) {
+  if (!empty($_REQUEST['demo_data'])) {
     echo '<p>Writing demo data... ';
     
     $sql = file_get_contents('data/demo/data.sql');
@@ -179,7 +181,7 @@
   
   ### Files > Demo Data ###################################
   
-  if (!empty($_POST['demo_data'])) {
+  if (!empty($_REQUEST['demo_data'])) {
     echo '<p>Copying demo files...';
     if (file_xcopy('data/demo/public_html/', $installation_path)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -206,10 +208,10 @@
   
   ### Admin > Folder ###################################
   
-  if (!empty($_POST['admin_folder']) && $_POST['admin_folder'] != 'admin/') {
+  if (!empty($_REQUEST['admin_folder']) && $_REQUEST['admin_folder'] != 'admin/') {
     echo '<p>Renaming admin folder...';
     if (is_dir('../admin/')) {
-      rename('../admin/', '../'.$_POST['admin_folder']);
+      rename('../admin/', '../'.$_REQUEST['admin_folder']);
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
@@ -230,12 +232,12 @@
             . '<IfModule mod_auth_basic.c>' . PHP_EOL
             . '  AuthType Basic' . PHP_EOL
             . '  AuthName "Restricted Area"' . PHP_EOL
-            . '  AuthUserFile ' . $installation_path . $_POST['admin_folder'] . '.htpasswd' . PHP_EOL
+            . '  AuthUserFile ' . $installation_path . $_REQUEST['admin_folder'] . '.htpasswd' . PHP_EOL
             . '  Require valid-user' . PHP_EOL
             . '</IfModule>' . PHP_EOL;
   
-  if (is_dir('../'.$_POST['admin_folder'])) {
-    file_put_contents('../'. $_POST['admin_folder'] .'.htaccess', $htaccess);
+  if (is_dir('../'.$_REQUEST['admin_folder'])) {
+    file_put_contents('../'. $_REQUEST['admin_folder'] .'.htaccess', $htaccess);
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   } else {
     echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
@@ -243,11 +245,11 @@
   
   ### Admin > .htpasswd Users ###################################
   
-  echo '<p>Granting admin access for user '. $_POST['username'] .'...';
+  echo '<p>Granting admin access for user '. $_REQUEST['username'] .'...';
   
-  if (is_dir('../'.$_POST['admin_folder'])) {
-    $htpasswd = $_POST['username'] .':{SHA}'. base64_encode(sha1($_POST['password'], true)) . PHP_EOL;
-    if (file_put_contents('../'. $_POST['admin_folder'] . '.htpasswd', $htpasswd)) {
+  if (is_dir('../'.$_REQUEST['admin_folder'])) {
+    $htpasswd = $_REQUEST['username'] .':{SHA}'. base64_encode(sha1($_REQUEST['password'], true)) . PHP_EOL;
+    if (file_put_contents('../'. $_REQUEST['admin_folder'] . '.htpasswd', $htpasswd)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
@@ -263,7 +265,7 @@
   $database->query(
     "insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_users`') ."
     (`id`, `status`, `username`, `password`, `date_updated`, `date_created`)
-    values ('1', '1', '". $database->input($_POST['username']) ."', '". password_checksum('1', $_POST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+    values ('1', '1', '". $database->input($_REQUEST['username']) ."', '". password_checksum('1', $_REQUEST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
   
   ## Windows OS Adjustments ###################################
@@ -291,11 +293,11 @@
   
   ### Regional Data Patch ###################################
   
-  if (!empty($_POST['country_code'])) {
+  if (!empty($_REQUEST['country_code'])) {
     
     echo '<p>Patching installation with regional data...';
     
-    $directories = glob('data/*'. $_POST['country_code'] .'*/');
+    $directories = glob('data/*'. $_REQUEST['country_code'] .'*/');
     
     if (empty($directories)) {
       $directories = glob('data/*XX*/');
@@ -348,7 +350,12 @@
   
   echo PHP_EOL . '<h2>Complete</h2>' . PHP_EOL
      . '<p style="font-weight: bold;">Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL
-     . '<p style="font-weight: bold;">You may now log in to the <a href="../'. $_POST['admin_folder'] .'">administration area</a> and start configuring your store.</p>' . PHP_EOL;
+     . '<p style="font-weight: bold;">You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'">administration area</a> and start configuring your store.</p>' . PHP_EOL;
+  
+  if (!empty($_REQUEST['redirect'])) {
+    header('Location: '. $_REQUEST['redirect']);
+    exit;
+  }
   
   require('includes/footer.inc.php');
 ?>

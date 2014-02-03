@@ -40,7 +40,8 @@ CREATE TABLE `lc_categories` (
   PRIMARY KEY (`id`),
   KEY `code` (`code`),
   KEY `parent_id` (`parent_id`),
-  KEY `status` (`status`)
+  KEY `status` (`status`),
+  KEY (`dock`);
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
