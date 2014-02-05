@@ -41,7 +41,7 @@ CREATE TABLE `lc_categories` (
   KEY `code` (`code`),
   KEY `parent_id` (`parent_id`),
   KEY `status` (`status`),
-  KEY (`dock`);
+  KEY `dock` (`dock`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
@@ -83,7 +83,7 @@ CREATE TABLE `lc_currencies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL,
   `code` varchar(3) NOT NULL,
-  `number` varchar(3) NOT NULL
+  `number` varchar(3) NOT NULL,
   `name` varchar(32) NOT NULL,
   `value` decimal(10,4) NOT NULL,
   `decimals` tinyint(1) NOT NULL,
