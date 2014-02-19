@@ -26,6 +26,7 @@
     breadcrumbs::add($category_name, document::link(basename(__FILE__), array('category_id' => $category_id)));
   }
   
+  //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];
   document::$snippets['keywords'] = $category->meta_keywords[language::$selected['code']] ? $category->meta_keywords[language::$selected['code']] : $category->keywords;
   document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];

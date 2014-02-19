@@ -71,6 +71,7 @@
         status = '". (int)$this->data['status'] ."',
         code = '". database::input($this->data['code']) ."',
         name = '". database::input($this->data['name']) ."',
+        image = '". database::input($this->data['image']) ."',
         keywords = '". database::input($this->data['keywords']) ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"

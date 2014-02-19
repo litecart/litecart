@@ -52,6 +52,7 @@
     breadcrumbs::add(functions::reference_get_manufacturer_name($product->manufacturer['id']), document::link('manufacturer.php', array('manufacturer_id' => $product->manufacturer['id'])));
   }
   
+  //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = $product->head_title[language::$selected['code']] ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']];
   document::$snippets['keywords'] = $product->meta_keywords[language::$selected['code']] ? $product->meta_keywords[language::$selected['code']] : $product->keywords;
   document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']];
@@ -303,22 +304,28 @@
     }
     
   }
+  
+  if (!settings::get('catalog_only_mode')) {
 ?>
               <tr>
                 <td class="quantity"><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong><br />
                 <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?> &nbsp; 
 <?php
-  if ($product->quantity > 0) {
-    echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
-  } else {
-    if ($product->sold_out_status['orderable']) {
+    if ($product->quantity > 0) {
       echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
     } else {
-      echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit', 'disabled="disabled"'); 
+      if ($product->sold_out_status['orderable']) {
+        echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
+      } else {
+        echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit', 'disabled="disabled"'); 
+      }
     }
+?>
+                </td>
+              </tr>
+<?php
   }
 ?>
-              </td>
             </table>
 
             <?php echo functions::form_draw_form_end(); ?>
@@ -338,6 +345,7 @@
           </div>
         </td>
       </tr>
+
     </table>
     
     <?php if (!empty($product->description[language::$selected['code']]) || !empty($product->attributes[language::$selected['code']])) { ?>

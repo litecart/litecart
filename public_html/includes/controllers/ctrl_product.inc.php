@@ -239,7 +239,7 @@
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
           meta_keywords = '". database::input($this->data['meta_keywords'][$language_code]) ."',
-          attributes = '". database::input($this->data['attributes'][$language_code]) ."'
+          attributes = '". database::input($this->data['attributes'][$language_code], true) ."'
           where product_id = '". (int)$this->data['id'] ."'
           and language_code = '". database::input($language_code) ."'
           limit 1;"

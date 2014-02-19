@@ -2,6 +2,8 @@
   define('REQUIRE_POST_TOKEN', false);
   require_once('includes/app_header.inc.php');
   
+  if (settings::get('catalog_only_mode')) return;
+  
   document::$layout = 'checkout';
   
   header('X-Robots-Tag: noindex');

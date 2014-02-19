@@ -39,7 +39,7 @@
     $geo_zone->delete();
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('geo_zone_id')));
+    header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
     exit();
   }
   

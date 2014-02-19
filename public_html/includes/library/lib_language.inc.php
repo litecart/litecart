@@ -170,11 +170,17 @@
       return array_shift($languages);
     }
     
-    public static function translate($code, $default='', $language_code='') {
+    public static function translate($code, $default=null, $language_code=null) {
       
       if (empty($language_code)) {
-        if (empty(self::$selected['code'])) self::set(self::identify());
-        $language_code = self::$selected['code'];
+        $language_code = language::$selected['code'];
+        $default_language_code = 'en';
+      } else {
+        $default_language_code = $language_code;
+      }
+      
+      if (empty($language_code) || empty(language::$languages[$language_code])) {
+        trigger_error('Unknown language code for translation '. $code, E_USER_ERROR);
       }
       
     // Return from cache
@@ -183,28 +189,28 @@
       }
       
     // Get translation from database
-      $translations_query = database::query(
+      $primary_translation_query = database::query(
         "select id, text_en, text_". database::input($language_code) .", pages from ". DB_TABLE_TRANSLATIONS ."
         where code = '". database::input($code) ."'
         limit 0, 1;"
       );
-      $row = database::fetch($translations_query);
+      $primary_translation = database::fetch($primary_translation_query);
       
     // Set translation
-      if (!empty($row['text_'.$language_code])) {
-        $translation = $row['text_'.$language_code];
+      if (!empty($primary_translation['text_'.$language_code])) {
+        $translation = $primary_translation['text_'.$language_code];
       }
       
     // Get identical translation
-      if (empty($translation) && (!empty($row['text_en']) || !empty($default))) {
-      
-        $secondary_translations_query = database::query(
+      if (empty($translation) && (!empty($primary_translation['text_en']) || !empty($default))) {
+        
+        $secondary_translation_query = database::query(
           "select * from ". DB_TABLE_TRANSLATIONS ."
           where text_". database::input($language_code) ." != ''
-          and binary text_en = '". database::input(!empty($row['text_en']) ? $row['text_en'] : $default) ."'
+          and binary text_en = '". database::input(!empty($primary_translation['text_en']) ? $primary_translation['text_en'] : $default) ."'
           limit 1;"
         );
-        $secondary_translation = database::fetch($secondary_translations_query);
+        $secondary_translation = database::fetch($secondary_translation_query);
         
         if (!empty($secondary_translation)) {
           database::query(
@@ -219,12 +225,12 @@
       }
       
     // Fallback on english translation
-      if (empty($translation) && !empty($row['text_en'])) {
-        $translation = $row['text_en'];
+      if (empty($translation) && !empty($primary_translation)) {
+        $translation = $primary_translation['text_en'];
       }
       
     // Fallback on injection translation
-      if (empty($translation)) {
+      if (!isset($translation)) {
         $translation = $default;
       }
       
@@ -237,13 +243,13 @@
         $page = substr(__FILE__, strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
       }
       
-      if (empty($row)) {
+      if (empty($primary_translation) && $default !== null) {
         database::query(
           "insert into ". DB_TABLE_TRANSLATIONS ."
-          (code, pages, text_en, date_created, date_updated)
+          (code, pages, text_". database::input($default_language_code) .", date_created, date_updated)
           values('". database::input($code) ."', '\'". str_replace(WS_DIR_HTTP_HOME, '', database::input($_SERVER['SCRIPT_NAME'])) ."\',', '". database::input($default) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
         );
-        $row = array(
+        $primary_translation = array(
           'id' => database::insert_id(),
           'text_en' => $default,
           'pages' => '\''.$page.'\'',
@@ -253,10 +259,10 @@
       database::query(
         "update ". DB_TABLE_TRANSLATIONS ."
         set date_accessed = '". date('Y-m-d H:i:s') ."'
-        ". (!in_array($page, explode(',', trim($row['pages'],','))) ? ",pages = '". database::input(implode(',', array_merge(array($page), explode(',', $row['pages'])))) ."'" : false) ."
-        where id = '". database::input($row['id']) ."';"
+        ". (!in_array($page, explode(',', trim($primary_translation['pages'],','))) ? ",pages = '". database::input(implode(',', array_merge(array($page), explode(',', $primary_translation['pages'])))) ."'" : false) ."
+        where id = '". database::input($primary_translation['id']) ."';"
       );
-        
+      
       return self::$_cache['translations'][$language_code][$code];
     }
     

@@ -17,7 +17,7 @@
     }
     return ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? '' : '/') . implode('/', $absolutes);
   }
-
+  
 // Function to delete recursive data
   function file_delete($path) {
     if (!file_exists($path)) return true;
@@ -44,10 +44,10 @@
       $dir = opendir($source);
       while (($file = readdir($dir)) !== false) {
         if ($file == '.' || $file == '..') continue;
-        if (!xcopy($source.$file, $target.$file)) $errors = true;
+        if (!file_xcopy($source.$file, $target.$file)) $errors = true;
       }
     } else if (!file_exists($target)) {
-      if (copy($source, $target)) $errors = true;
+      if (!copy($source, $target)) $errors = true;
     }
     return  empty($errors) ? true : false;
   }

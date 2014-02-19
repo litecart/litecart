@@ -53,7 +53,7 @@
       </div>
       
       <div id="cart-wrapper">
-        <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
+        <?php if (!settings::get('catalog_only_mode')) include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
       </div>
       
     </header>

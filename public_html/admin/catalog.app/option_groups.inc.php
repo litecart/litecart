@@ -33,6 +33,9 @@
 <?php
   }
 ?>
+  <tr class="footer">
+    <td colspan="5" align="left"><?php echo language::translate('title_option_groups', 'Option Groups'); ?>: <?php echo database::num_rows($option_groups_query); ?></td>
+  </tr>
 </table>
 
 <script>

@@ -1,3 +1,6 @@
+<?php
+  if (settings::get('catalog_only_mode')) return;
+?>
 <div id="cart">
   <a href="<?php echo document::link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>" class="image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/32x32/cart.png" alt="" /></a>
   <a href="<?php echo document::link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>" class="content">
