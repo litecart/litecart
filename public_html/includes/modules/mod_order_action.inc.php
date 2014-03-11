@@ -3,7 +3,7 @@
   class mod_order_action extends module {
     public $data;
     
-    public function __construct($type='session') {
+    public function __construct() {
       
       parent::set_type('order_action');
      

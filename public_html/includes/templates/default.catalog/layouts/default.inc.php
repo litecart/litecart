@@ -52,9 +52,11 @@
         <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php'); ?>
       </div>
       
+      <?php if (!settings::get('catalog_only_mode')) { ?>
       <div id="cart-wrapper">
-        <?php if (!settings::get('catalog_only_mode')) include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
+        <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
       </div>
+      <?php } ?>
       
     </header>
   </div>

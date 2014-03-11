@@ -98,6 +98,19 @@
   }
   
 ?>
+
+<div style="display: inline; float: right;">
+  <?php echo $system->functions->form_draw_form_begin('', 'get'); ?>
+  <?php echo $system->functions->form_draw_hidden_field('app', $_GET['app']); ?>
+  <?php echo $system->functions->form_draw_hidden_field('doc', $_GET['doc']); ?>
+  <?php echo $system->language->translate('title_order_id', 'Order ID') .': '. $system->functions->form_draw_number_field('order_id', $_GET['order_id'], 'onclick="$(this).select();"'); ?>
+  <?php echo $system->functions->form_draw_button('', $system->language->translate('title_go', 'Go'), 'submit'); ?>
+  <?php echo $system->functions->form_draw_form_end(); ?>
+  <script>
+    $("input[name='order_id']").select();
+  </script>
+</div>
+
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_order', 'post'); ?>

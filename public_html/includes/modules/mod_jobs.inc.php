@@ -6,7 +6,7 @@
     public $items = array();
     public $destination = array();
 
-    public function __construct($type='session') {
+    public function __construct() {
       
       parent::set_type('jobs');
      

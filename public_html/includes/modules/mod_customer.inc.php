@@ -1,26 +1,25 @@
 <?php
   
   class mod_customer extends module {
-    private $_cache;
+    private $_get_address_cache;
 
-    public function __construct($type='session') {
+    public function __construct() {
       
       parent::set_type('customer');
       
-      $this->load();
+      $this->_get_address_cache = &session::$data['get_address_cache'];
       
+      $this->load();
     }
     
     public function get_address($fields) {
       
       if (empty($this->modules)) return false;
       
-      $this->_cache = &session::$data['get_address_cache'];
-      
       foreach ($this->modules as $module) {
         $checksum = sha1(serialize($fields));
-        if (isset($this->_cache[$checksum])) {
-          $fields = $this->_cache[$checksum];
+        if (isset($this->_get_address_cache[$checksum])) {
+          $fields = $this->_get_address_cache[$checksum];
           continue;
         }
         if (method_exists($module, 'get_address')) {
@@ -34,8 +33,7 @@
         }
       }
       
-      
-      $this->_cache[$checksum] = $fields;
+      $this->_get_address_cache[$checksum] = $fields;
       
       return $fields;
     }
