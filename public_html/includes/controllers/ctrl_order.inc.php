@@ -132,6 +132,7 @@
         'currency_value' => 'currency_value',
         'language_code' => 'language_code',
         'payment_due' => 'payment_due',
+        'tax_total' => 'tax_total',
         'order_status_id' => 'order_status_id',
         'shipping_tracking_id' => 'shipping_tracking_id',
         'payment_transaction_id' => 'payment_transaction_id',
