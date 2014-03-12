@@ -4,6 +4,12 @@ UPDATE `lc_currencies` SET `number` = '978' WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_currencies` SET `number` = '840' WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
+ALTER TABLE `lc_orders` CHANGE `currency_value` `currency_value` DECIMAL(11,4) NOT NULL;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders` CHANGE `payment_due` `payment_due` DECIMAL(11,4) NOT NULL;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders` CHANGE `tax_total` `tax_total` DECIMAL(11,4) NOT NULL;
+-- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
 VALUES ('general', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 17, NOW(), NOW());
 -- --------------------------------------------------------    
