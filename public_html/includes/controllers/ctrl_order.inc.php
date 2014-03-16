@@ -636,8 +636,6 @@
         }
       }
       
-      //if ($this->data['payment_due'] > 0 && empty($order->data['payment_option_id'])) return language::translate('text_please_select_a_payment_option', 'Please select a payment option.');
-      
       return false;
     }
     
