@@ -46,7 +46,7 @@
           } else {
             $key = $matches[2][$i];
           }
-          $translations[$key] = $matches[3][$i];
+          $translations[$key] = str_replace(array("\\r", "\\n"), array("\r", "\n"), $matches[3][$i]);
           $translation_keys[] = $key;
         }
       }
