@@ -79,31 +79,39 @@
     }
     
     public function cheapest($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
-    
+      
       $this->options($items, $subtotal, $tax, $currency_code, $customer);
       
       foreach ($this->data['options'] as $module) {
         foreach ($module['options'] as $option) {
-          if (!isset($cheapest_amount) || (empty($option['exclude_cheapest']) && $option['cost'] < $cheapest_amount)) {
-            $cheapest_amount = $option['cost'];
-            $module_id = $module['id'];
-            $option_id = $option['id'];
+          if (!empty($option['exclude_cheapest'])) continue;
+          if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
+            $cheapest = array(
+              'cost' => $option['cost'],
+              'module_id' => $module['id'],
+              'option_id' => $option['id'],
+            );
           }
         }
-        if (!isset($cheapest_amount)) {
+      }
+      
+      if (empty($cheapest)) {
+        foreach ($this->data['options'] as $module) {
           foreach ($module['options'] as $option) {
-            if (!isset($cheapest_amount) || $option['cost'] < $cheapest_amount) {
-              $cheapest_amount = $option['cost'];
-              $module_id = $module['id'];
-              $option_id = $option['id'];
+            if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
+              $cheapest = array(
+                'cost' => $option['cost'],
+                'module_id' => $module['id'],
+                'option_id' => $option['id'],
+              );
             }
           }
         }
       }
       
-      if (empty($module_id) || empty($option_id)) return false;
+      if (empty($cheapest)) return false;
       
-      return $module_id.':'.$option_id;
+      return $cheapest['module_id'].':'.$cheapest['option_id'];
     }
     
     public function run($method_name, $module_id='') {
