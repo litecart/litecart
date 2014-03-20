@@ -136,6 +136,7 @@
         'order_status_id' => 'order_status_id',
         'shipping_tracking_id' => 'shipping_tracking_id',
         'payment_transaction_id' => 'payment_transaction_id',
+        'client_ip' => 'client_ip',
         'date_updated' => 'date_updated',
         'date_created' => 'date_created',
       );
@@ -299,8 +300,8 @@
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
-          (uid, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
+          (uid, client_ip, date_created)
+          values ('". database::input($this->data['uid']) ."', '". $_SERVER['REMOTE_ADDR'] ."', '". database::input(date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -343,7 +344,6 @@
         weight_class = '". database::input($this->data['weight_class']) ."',
         payment_due = '". (float)$this->data['payment_due'] ."',
         tax_total = '". (float)$this->data['tax_total'] ."',
-        client_ip = '". $_SERVER['REMOTE_ADDR'] ."',
         date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"

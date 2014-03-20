@@ -68,7 +68,7 @@
       
       $customer->set_password($_POST['password']);
       
-      $email_message = language::translate('email_subject_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your e-mail address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
+      $email_message = language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your e-mail address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
       
       $translations = array(
         '%store_name' => settings::get('store_name'),
