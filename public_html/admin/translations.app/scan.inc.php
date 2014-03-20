@@ -71,7 +71,7 @@
           $updated_translations++;
           database::query(
             "update ". DB_TABLE_TRANSLATIONS ."
-            set text_en = '". database::input($translation) ."'
+            set text_en = '". database::input($translation, true) ."'
             where code = '". database::input($code) ."'
             and text_en = ''
             limit 1;"
