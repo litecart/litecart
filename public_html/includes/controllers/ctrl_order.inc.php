@@ -276,10 +276,10 @@
         if (!empty($current_order_status['notify'])) {
         
         // Prepare e-mail body
-          if (!empty($current_order_status['email_message'])) {
-            $email_body = $this->prepare_email_message($current_order_status['email_message']);
-          } else {
+          if (empty($current_order_status['email_message']) || trim(strip_tags($current_order_status['email_message'])) == '') {
             $email_body = $this->draw_printable_copy();
+          } else {
+            $email_body = $this->inject_email_message($current_order_status['email_message']);
           }
         
           functions::email_send(
@@ -648,22 +648,20 @@
       return false;
     }
     
-    public function prepare_email_message($string) {
+    public function inject_email_message($html) {
       
       $aliases = array(
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
-        '%billing_address' => functions::format_address($this->data['customer']),
-        '%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
+        '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
+        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%order_copy_url' => document::link(WS_DIR_HTTP_HOME . 'printable_order_copy.php', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
       );
     
-      $string = str_replace(array_keys($aliases), array_values($aliases), $string);
-      
-      $string = nl2br($string);
+      $html = str_replace(array_keys($aliases), array_values($aliases), $html);
     
-      return $string;
+      return $html;
     }
     
     public function email_order_copy($email) {

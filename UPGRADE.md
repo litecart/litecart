@@ -4,13 +4,13 @@
 
   1. Backup your files and database!!
   
-  2. Upload a new set of files replacing the old ones. (So called drop-on-top)
+  2. Replace the old set set of files with the new ones. If you haven't patched your platform with add-ons and modifications that might be incompatible you can drop the new files on top of the old.
   
   3. Point your browser to http://www.yoursite.com/path/to/install/upgrade.php and follow the instructions on the page.
   
   4. Make sure everything went fine and delete the install/ folder.
   
-  Note: Old add-ons and modules might not be compatible with a new version.
+  Note: Add-ons are version specific and you might cause your upgraded platform to malfunction. Make sure your add-ons are up to date.
   
   If you need help, turn to our forums at http://forums.litecart.net.
   
@@ -30,7 +30,7 @@
     ~/data
     ~/images
   
-  WinMerge is a powerful free tool to discover differences between two different sets of files and folders.
+  WinMerge is a powerful free tool to discover differences between two different sets of files and folders. Especially if they contain modifications by third party add-ons.
   
 ### LiteCart 1.1.0.1 to 1.1.1
   

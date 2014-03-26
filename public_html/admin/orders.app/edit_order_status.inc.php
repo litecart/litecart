@@ -90,7 +90,7 @@
   $use_br = false;
   foreach (array_keys(language::$languages) as $language_code) {
     if ($use_br) echo '<br />';
-    echo functions::form_draw_regional_textarea($language_code, 'email_message['. $language_code .']', true, 'data-size="large" style="height: 70px;"');
+    echo functions::form_draw_regional_wysiwyg_field($language_code, 'email_message['. $language_code .']', true, 'style="height: 170px;"');
     $use_br = true;
   }
 ?>
