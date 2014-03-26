@@ -4,6 +4,8 @@ UPDATE `lc_currencies` SET `number` = '978' WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_currencies` SET `number` = '840' WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
+ALTER TABLE `lc_order_statuses_info` ADD `email_message` VARCHAR(2048) NOT NULL AFTER `description`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_orders` CHANGE `currency_value` `currency_value` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders` CHANGE `payment_due` `payment_due` DECIMAL(11,4) NOT NULL;

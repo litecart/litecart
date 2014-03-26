@@ -27,6 +27,7 @@
         'priority',
         'name',
         'description',
+        'email_message',
       );
       
       foreach ($fields as $field) {
@@ -60,23 +61,38 @@
       <td align="left" nowrap="nowrap">
         <strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
 <?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, '');
-  $use_br = true;
-}
+  $use_br = false;
+  foreach (array_keys(language::$languages) as $language_code) {
+    if ($use_br) echo '<br />';
+    echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, '');
+    $use_br = true;
+  }
 ?>
       </td>
     </tr>
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
 <?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 50px;"');  $use_br = true;
-}
+  $use_br = false;
+  foreach (array_keys(language::$languages) as $language_code) {
+    if ($use_br) echo '<br />';
+    echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 30px;"');
+    $use_br = true;
+  }
+?>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_email_message', 'E-mail Message'); ?></strong><br />
+        <p><?php echo language::translate('description_order_status_email_message', 'Compose a message that will be used as e-mail body or leave blank to display the order copy.'); ?></p>
+        <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>%order_id, %firstname, %lastname, %billing_address, %shipping_address, %order_copy_url</em></p>
+<?php
+  $use_br = false;
+  foreach (array_keys(language::$languages) as $language_code) {
+    if ($use_br) echo '<br />';
+    echo functions::form_draw_regional_textarea($language_code, 'email_message['. $language_code .']', true, 'data-size="large" style="height: 70px;"');
+    $use_br = true;
+  }
 ?>
       </td>
     </tr>

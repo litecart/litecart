@@ -18,7 +18,7 @@
       if (empty($this->data)) trigger_error('Could not find order_status ('. $order_status_id .') in database.', E_USER_ERROR);
       
       $order_status_info_query = database::query(
-        "select name, description, language_code from ". DB_TABLE_ORDER_STATUSES_INFO ."
+        "select name, description, email_message, language_code from ". DB_TABLE_ORDER_STATUSES_INFO ."
         where order_status_id = '". (int)$this->data['id'] ."';"
       );
       while ($order_status_info = database::fetch($order_status_info_query)) {
@@ -72,7 +72,8 @@
           "update ". DB_TABLE_ORDER_STATUSES_INFO ."
           set
             name = '". database::input($this->data['name'][$language_code]) ."',
-            description = '". database::input($this->data['description'][$language_code]) ."'
+            description = '". database::input($this->data['description'][$language_code]) ."',
+            email_message = '". database::input($this->data['email_message'][$language_code], true) ."'
           where id = '". (int)$order_status_info['id'] ."'
           and order_status_id = '". (int)$this->data['id'] ."'
           and language_code = '". $language_code ."'

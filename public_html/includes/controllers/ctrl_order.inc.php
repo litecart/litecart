@@ -259,7 +259,7 @@
       
     // Current order status
       $current_order_status_query = database::query(
-        "select os.*, osi.name from ". DB_TABLE_ORDER_STATUSES ." os
+        "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
         left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
         where os.id = ". (int)$this->data['order_status_id'] ."
         limit 1;"
@@ -272,12 +272,21 @@
           'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $current_order_status['name']),
           'hidden' => 1,
         );
+        
         if (!empty($current_order_status['notify'])) {
+        
+        // Prepare e-mail body
+          if (!empty($current_order_status['email_message'])) {
+            $email_body = $this->prepare_email_message($current_order_status['email_message']);
+          } else {
+            $email_body = $this->draw_printable_copy();
+          }
+        
           functions::email_send(
             '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
             $this->data['customer']['email'],
             sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
-            self::draw_printable_copy(),
+            $email_body,
             true
           );
         }
@@ -637,6 +646,24 @@
       }
       
       return false;
+    }
+    
+    public function prepare_email_message($string) {
+      
+      $aliases = array(
+        '%order_id' => $this->data['id'],
+        '%firstname' => $this->data['customer']['firstname'],
+        '%lastname' => $this->data['customer']['lastname'],
+        '%billing_address' => functions::format_address($this->data['customer']),
+        '%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
+        '%order_copy_url' => document::link(WS_DIR_HTTP_HOME . 'printable_order_copy.php', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
+      );
+    
+      $string = str_replace(array_keys($aliases), array_values($aliases), $string);
+      
+      $string = nl2br($string);
+    
+      return $string;
     }
     
     public function email_order_copy($email) {

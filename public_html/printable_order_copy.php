@@ -12,13 +12,11 @@
   }
   
   document::$snippets['title'][] = language::translate('title_order', 'Order') .' #'. $_GET['order_id'];
-  //document::$snippets['keywords'] = '';
-  //document::$snippets['description'] = '';
   
   $order = new ctrl_order('load', $_GET['order_id']);
   
-  if ($_GET['checksum'] != functions::general_order_public_checksum($order->data['id'])) {
-    header('HTTP/1.1 401 Unauthorized');
+  if (empty($order->data['id']) || $_GET['checksum'] != functions::general_order_public_checksum($order->data['id'])) {
+    header('HTTP/1.1 400 Bad Request');
     exit;
   }
   
