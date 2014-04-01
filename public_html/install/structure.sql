@@ -286,9 +286,9 @@ CREATE TABLE `lc_orders` (
   `weight_total` decimal(11,4) NOT NULL,
   `weight_class` varchar(2) NOT NULL,
   `currency_code` varchar(3) NOT NULL,
-  `currency_value` float NOT NULL,
-  `payment_due` float NOT NULL,
-  `tax_total` float NOT NULL,
+  `currency_value` decimal(11,4)NOT NULL,
+  `payment_due` decimal(11,4) NOT NULL,
+  `tax_total` decimal(11,4) NOT NULL,
   `client_ip` varchar(39) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
@@ -339,6 +339,7 @@ CREATE TABLE `lc_order_statuses_info` (
   `language_code` varchar(2) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(256) NOT NULL,
+  `email_message` VARCHAR(2048) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_status_id` (`order_status_id`),
   KEY `language_code` (`language_code`)
@@ -629,6 +630,7 @@ CREATE TABLE `lc_suppliers` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_tax_classes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` VARCHAR(32) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(64) NOT NULL,
   `date_updated` datetime NOT NULL,
