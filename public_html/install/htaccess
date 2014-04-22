@@ -16,12 +16,16 @@ ErrorDocument 500 "Internal Server Error"
     SetEnv HTTP_MOD_REWRITE On
   </IfModule>
   
-  # Web path to catalog root
-  RewriteBase {BASE_DIR}
-  
   # Non-www to www
   #RewriteCond %{HTTP_HOST} !^www\.
-  #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+  #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}{BASE_DIR}$1 [R=301,L]
+  
+  # Force HTTPS - Remember to clear the link cache
+  #RewriteCond %{HTTPS} off
+  #RewriteRule ^(.*)$ https://%{HTTP_HOST}{BASE_DIR}$1 [R=301,L]
+  
+  # Web path to catalog root
+  RewriteBase {BASE_DIR}
   
   # No rewrite logic for physical files
   RewriteCond %{REQUEST_FILENAME} -d [OR]
