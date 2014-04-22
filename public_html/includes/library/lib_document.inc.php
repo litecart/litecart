@@ -25,10 +25,10 @@
     // Set before-snippets
       self::$snippets['title'] = array(settings::get('store_name'));
       
-      self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>' . PHP_EOL
+      self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>' . PHP_EOL
                                              . '<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>' . PHP_EOL
                                              . '<script>' . PHP_EOL
-                                             . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.10.2.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.11.0.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
       
