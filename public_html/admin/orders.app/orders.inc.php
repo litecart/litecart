@@ -15,17 +15,31 @@
     'overlayShow'   => true
   ));
   
-  if (isset($_POST['perform']) && !empty($_POST['orders'])) {
-    if (!empty($_POST['order_action'])) {
+  if (!empty($_POST['order_action']) && !empty($_POST['orders'])) {
+    if (!empty($_POST['orders'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
       $order_action = new mod_order_action();
       $options = $order_action->options();
       echo $order_action->modules[$module_id]->$options[$module_id]['options'][$option_id]['function']($_POST['orders']);
       return;
+    } else {
+      notices::$data['errors'][] = language::translate('error_must_select_orders', 'You must select orders to perform the operation');
     }
   }
   
 ?>
+<style>
+#order-actions li {
+  vertical-align: middle;
+}
+#order-actions li fieldset {
+  border: 1px #ccc solid;
+}
+#order-actions li fieldset legend {
+  color: #999;
+}
+</style>
+
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order'), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></div>
 <div style="float: right; padding-right: 10px;"><?php echo functions::form_draw_order_status_list('order_status_id', true, false, 'onchange="location=(\''. document::link('', array(), true, array('page', 'order_status_id')) .'&order_status_id=\' + this.options[this.selectedIndex].value)"'); ?></div>
 <div style="float: right; padding-right: 10px;"><?php echo functions::form_draw_form_begin('search_form', 'get', '', false, 'onsubmit="return false;"') . functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"') . functions::form_draw_form_end(); ?></div>
@@ -90,34 +104,34 @@
 </table>
 
 <p>
-  <ul class="list-horizontal">
-    <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-    <li>
+  <ul id="order-actions" class="list-horizontal">
 <?php
-
   $order_action = new mod_order_action();
   
   $order_action_options = $order_action->options();
   
-  $options = array(
-    array('--'. language::translate('title_select', 'Select') .' --', ''),
-  );
-  
   if (!empty($order_action_options)) {
     foreach (array_keys($order_action_options) as $module_id) {
-      $options[] = array($order_action_options[$module_id]['name'], $module_id, 'disabled="disabled" style="font-weight: bold;"');
+      echo '<li><fieldset>' . PHP_EOL
+         . '  <legend>'. $order_action_options[$module_id]['name'] .'</legend>' . PHP_EOL;
       foreach (array_keys($order_action_options[$module_id]['options']) as $option_id) {
-        $options[] = array($order_action_options[$module_id]['options'][$option_id]['title'], $module_id.':'.$option_id, 'style="padding-left: 10px;"');
+        echo '<button name="order_action" value="'. $module_id.':'.$option_id .'">'. $order_action_options[$module_id]['options'][$option_id]['title'] .'</button>' . PHP_EOL;
       }
+      echo '</fieldset></li>' . PHP_EOL;
     }
-  } else {
-    $options[] = array(language::translate('text_no_order_action_modules', 'There are no order action modules installed or enabled.'), 'null', 'disabled="disabled" style="font-style: italic;"');
   }
-  
-  echo functions::form_draw_select_field('order_action', $options, true, false, 'data-size="medium"'); ?> <?php echo functions::form_draw_button('perform', language::translate('title_perform', 'Perform'), 'submit');
 ?>
-    </li>
   </ul>
+  <script>
+  $(".dataTable input[name^='orders[']").change(function() {
+    if ($(".dataTable input[name^='orders[']:checked").length > 0) {
+      $("#order-actions button").removeAttr('disabled');
+    } else {
+      $("#order-actions button").attr('disabled', 'disabled');
+    }
+  });
+  $(".dataTable input[name^='orders[']").trigger('change');
+  </script>
 </p>
 
 <script>
