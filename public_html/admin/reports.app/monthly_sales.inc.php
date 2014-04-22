@@ -33,7 +33,7 @@
   $timestamp_to = !empty($_GET['date_to']) ? mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to']))) : time();
   
   $row = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
-  if (empty($row['min(date_created)'])) $row['min(date_created)'] = time();
+  if (empty($row['min(date_created)'])) $row['min(date_created)'] = date('Y-m-01 00:00:00');
   
   $timestamp_from = ($timestamp_from < strtotime($row['min(date_created)'])) ? strtotime($row['min(date_created)']) : $timestamp_from;
   
