@@ -113,7 +113,7 @@
   }
   
   function form_draw_image($name, $src, $parameters=false) {
-    return '<input type="hidden" name="'. htmlspecialchars($name) .'" value="true" /><input type="image" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="image" name="'. htmlspecialchars($name) .'" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_input($name, $value=true, $type='text', $parameters='', $hint='') {
