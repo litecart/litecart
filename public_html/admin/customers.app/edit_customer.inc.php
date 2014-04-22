@@ -67,6 +67,11 @@
 
   <table>
     <tr>
+      <td width="50%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?><br />
+        <?php echo functions::form_draw_email_field('email', true); ?></td>
+      <td></td>
+    </tr>
+    <tr>
       <td nowrap="nowrap"><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
         <?php echo functions::form_draw_text_field('tax_id', true); ?></td>
       <td><?php echo language::translate('title_company', 'Company'); ?><br />
@@ -105,14 +110,6 @@
     <tr>
       <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
         <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
-      <td><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?><br />
-        <?php echo functions::form_draw_text_field('new_password', '', 'password'); ?></td>
-      <td width="50%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?><br />
-        <?php echo functions::form_draw_email_field('email', true); ?></td>
-      <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
-        <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
-    </tr>
-    <tr>
       <td><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?><br />
         <?php echo functions::form_draw_text_field('new_password', '', 'password'); ?></td>
     </tr>
