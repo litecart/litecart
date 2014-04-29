@@ -139,13 +139,13 @@ Wrong
 Class Variables & Methods
 ---------------
 
-	private $_data;
-	public $data;
+  private $_data;
+  public $data;
 
-    private function _my_private_method() {
+  private function _my_private_method() {
 	}
 
-    public function my_public_method() {
+  public function my_public_method() {
 	}
 
 

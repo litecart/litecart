@@ -25,8 +25,8 @@
       
     // Is there incoming ajax data that needs decoding?
       if (!empty($_POST) && strtolower(language::$selected['charset']) != 'utf-8') {
-        $flag_unicoded = false;
         
+        $flag_unicoded = false;
         if (strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset=utf-8') !== false) $flag_unicoded = true;
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset') === false) $flag_unicoded = true;
         
@@ -44,13 +44,8 @@
       }
     }
     
-    public static function before_capture() {
-      document::$snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
-                                                  . '    $("body").on("keyup", "input[data-type=\'number\'], input[data-type=\'decimal\'], input[data-type=\'currency\']", function(){' . PHP_EOL
-                                                  . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
-                                                  . '    });' . PHP_EOL
-                                                  . '  });';
-    }
+    //public static function before_capture() {
+    //}
     
     //public static function after_capture() {
     //}

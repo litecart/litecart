@@ -601,18 +601,22 @@
   Regular expressions for the new system model syntax:
   (Can be used with i.e. Notepad++ for updating add-ons)
   
+    # $system->library->method( to library::method(
     Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)\(
     Replace: $1::${2}\(
 
-    Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)\[
-    Replace: $1::\$${2}\[
-
-    Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)(?:\(|;|\s)
-    Replace: $1::\$${2}\[
-
-    Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)(\)|;|\s)
+    # $system->library->param to library::$param
+    Search: \$(?:GLOBALS\['system'\]|system|this->system)->([a-z]+)->([a-z|_]+)(\[|\)|;|,|\s)
     Replace: $1::\$${2}${3}
-  
+
+    # $this->param to self::$param (Library modules)
+    Search: \$this->([a-z|_]+)(\[|\)|;|,|\s)
+    Replace: self::\$${1}${2}
+
+    # $this->method( to self::method( (Library modules)
+    Search: \$this->([a-z|_]+)(\()
+    Replace: self::${1}${2}
+    
   New Files:
     
     ~/admin/appearance.app/*

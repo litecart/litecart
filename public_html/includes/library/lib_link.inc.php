@@ -83,7 +83,7 @@
       
       $link = self::unparse_link($base_link);
       
-      if (!empty(seo_links::$enabled)) {
+      if (class_exists('seo_links', false) && !empty(seo_links::$enabled)) {
         $seo_link = seo_links::link($link, $language_code);
       }
       

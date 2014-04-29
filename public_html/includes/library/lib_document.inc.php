@@ -52,8 +52,10 @@
     public static function prepare_output() {
       
     // Prepare title
-      if (!is_array(self::$snippets['title'])) self::$snippets['title'] = array(self::$snippets['title']);
-      self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
+      if (!empty(self::$snippets['title'])) {
+        if (!is_array(self::$snippets['title'])) self::$snippets['title'] = array(self::$snippets['title']);
+        self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
+      }
       
     // Prepare javascript
       if (isset(self::$snippets['javascript'])) {

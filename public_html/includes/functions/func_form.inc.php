@@ -53,6 +53,12 @@
     
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
     
+    document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
+                                                                        . '    $("body").on("keyup", "input[data-type=\'currency\']", function(){' . PHP_EOL
+                                                                        . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
+                                                                        . '    });' . PHP_EOL
+                                                                        . '  });';
+    
     return '<span class="input-wrapper">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
   }
   
@@ -88,6 +94,12 @@
     if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
+    
+    document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
+                                                                       . '    $("body").on("keyup", "input[data-type=\'decimal\']", function(){' . PHP_EOL
+                                                                       . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
+                                                                       . '    });' . PHP_EOL
+                                                                       . '  });';
     
     return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
