@@ -12,7 +12,7 @@
     }
     
     if (!empty($_POST['products'])) {
-      foreach ($_POST['products'] as $key => $value) {
+      foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
         $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $product->save();
