@@ -1,33 +1,31 @@
 <div id="header" style="margin-bottom: 10px;">
   <table style="width: 100%;">
     <tr>
-      <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 75px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
+      <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 50px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
       <td style="text-align: right;">
-        <h1 style="margin: 0;"><?php echo language::translate('title_packing_slip', 'Packing Slip'); ?></h1>
+        <h1 style="margin: 0; font-size: 18px;"><?php echo language::translate('title_packing_slip', 'Packing Slip'); ?></h1>
         <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
-        <div><?php echo date(language::$selected['raw_date']); ?>
+        <div><?php echo date(language::$selected['raw_date']); ?></div>
       </td>
     </tr>
   </table>
 </div>
 
 <div id="body">
-  <table id="addresses" class="dataTable" style="width: 100%;">
+  <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc;">
     <tr>
-      <td style="width: 55%;"><strong><?php echo language::translate('title_payment_address', 'Payment Address'); ?>:</strong></td>
-      <td style="width: 45%;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?>:</strong></td>
-    </tr>
-    <tr>
-      <td><?php echo nl2br(functions::format_address($order['customer'])); ?></td>
-      <td><?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></td>
+      <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?>:</strong><br />
+      <?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></td>
+      <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_address', 'Payment Address'); ?>:</strong><br />
+      <?php echo nl2br(functions::format_address($order['customer'])); ?></td>
     </tr>
   </table>
   
-  <table id="items" class="dataTable" style="width: 100%; clear: both;">
-    <tr class="header">
-      <th style="text-align: center; width: 30px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-      <th style="text-align: left;"><?php echo language::translate('title_item', 'Item'); ?></th>
-      <th style="text-align: left;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+  <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
+    <tr style="font-weight: bold; background-color: #f0f0f0;">
+      <th style="padding: 10px 10px 10px 20px; border-bottom: 1px solid #ccc; text-align: center; width: 30px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+      <th style="padding: 10px; border-bottom: 1px solid #ccc; text-align: left;"><?php echo language::translate('title_item', 'Item'); ?></th>
+      <th style="padding: 10px; border-bottom: 1px solid #ccc; text-align: left;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
     </tr>
 <?php
   $rowclass = '';
@@ -38,9 +36,9 @@
       $rowclass = 'odd';
     }
 ?>
-    <tr class="<?php echo $rowclass; ?>">
-      <td align="center"><?php echo $item['quantity']; ?></td>
-      <td align="left"><?php echo $item['name']; ?>
+    <tr style="<?php echo ($rowclass == 'odd') ? 'background-color: #fcfcfc;' : 'background-color: #f5f5f5;'; ?>">
+      <td style="padding: 10px 10px 10px 20px; text-align: center;"><?php echo $item['quantity']; ?></td>
+      <td style="padding: 5px 10px;"><?php echo $item['name']; ?>
 <?php
     if (!empty($item['options'])) {
       foreach ($item['options'] as $key => $value) {
@@ -54,3 +52,22 @@
     <?php } ?>
   </table>
 </div>
+
+<table id="footer" cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
+  <tr>
+    <td style="vertical-align: top;">
+      <?php echo nl2br(settings::get('store_postal_address')); ?>
+    </td>
+    <td style="vertical-align: top;">
+      <?php if (settings::get('store_phone')) { ?>
+      <?php echo language::translate('title_phone', 'Phone'); ?>: <?php echo settings::get('store_phone'); ?><br />
+      <?php } ?>
+      <?php echo language::translate('title_email', 'E-mail'); ?>: <?php echo settings::get('store_email'); ?>
+    </td>
+    <td style="vertical-align: top;">        
+      <?php if (settings::get('store_tax_id')) { ?>
+      <?php echo language::translate('title_tax_id', 'Tax ID'); ?>: <?php echo settings::get('store_tax_id'); ?>
+      <?php } ?>
+    </td>
+  </tr>
+</table>
