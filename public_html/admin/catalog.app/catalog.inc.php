@@ -217,6 +217,8 @@
         p.id = '". database::input($_GET['query']) ."'
         or pi.name like '%". database::input($_GET['query']) ."%'
         or p.code like '%". database::input($_GET['query']) ."%'
+        or p.sku like '%". database::input($_GET['query']) ."%'
+        or p.upc like '%". database::input($_GET['query']) ."%'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
         or m.name like '%". database::input($_GET['query']) ."%'
