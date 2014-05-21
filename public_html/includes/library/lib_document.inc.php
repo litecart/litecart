@@ -77,6 +77,14 @@
       
     // Get template settings
       self::$settings = unserialize(settings::get('store_template_catalog_settings'));
+      
+    // Clean orphan snippets
+      $search = array(
+        '/\{snippet:[^\}]+\}/',
+        '/<!--snippet:[^-->]+-->/',
+      );
+      
+      $GLOBALS['output'] = preg_replace($search, '', $GLOBALS['output']);
     }
     
     //public static function shutdown() {
