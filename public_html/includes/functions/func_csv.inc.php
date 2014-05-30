@@ -34,6 +34,7 @@
     $output = array();
     
     $ini_eol = ini_get('auto_detect_line_endings');
+    ini_set('auto_detect_line_endings', true);
     
     if (strtolower(language::$selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
       $string = utf8_encode($string);

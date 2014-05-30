@@ -170,7 +170,6 @@
   top: 40px;
   left: 150px;
   color: #999;
-  font-size: 0.9em;
 }
 
 .listing-wrapper > .product.row .description {
@@ -179,7 +178,6 @@
   left: 150px;
   margin-right: 20px;
   color: #999;
-  font-size: 0.9em;
 }
 
 .listing-wrapper > .product.column .price-wrapper {
