@@ -38,7 +38,7 @@
 
 <div id="header-wrapper" class="shadow">
   <div style="padding: 0px 10px;">
-    <header id="header" class="nine-eighty">
+    <header id="header" class="twelve-eighty">
     
       <div id="logotype-wrapper">
         <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
@@ -69,7 +69,7 @@
       <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
     </div>
     
-    <div id="main-wrapper" class="nine-eighty">
+    <div id="main-wrapper" class="twelve-eighty">
       <div id="main">
         <table style="width: 100%;">
           <tr>
@@ -105,7 +105,7 @@
 </div>
 
 <div id="footer-wrapper">
-  <footer id="footer" class="nine-eighty">
+  <footer id="footer" class="twelve-eighty">
     
     <div id="breadcrumbs-wrapper">
       <!--snippet:breadcrumbs-->
@@ -160,7 +160,7 @@
     </table>
   </footer>
   
-  <div id="copyright" class="nine-eighty engraved-text">
+  <div id="copyright" class="twelve-eighty engraved-text">
     <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
   </div>
 </div>

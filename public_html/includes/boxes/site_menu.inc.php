@@ -1,4 +1,4 @@
-<nav id="site-menu" class="nine-eighty">
+<nav id="site-menu" class="twelve-eighty">
   <ul>
     <li class="rounded-corners-left"><a href="<?php echo document::link(WS_DIR_HTTP_HOME); ?>"><img src="{snippet:template_path}images/home.png" width="12" height="12" alt="<?php echo htmlspecialchars(language::translate('title_home', 'Home')); ?>" /></a></li>
 <?php  
