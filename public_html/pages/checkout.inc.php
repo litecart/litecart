@@ -17,23 +17,23 @@
 ?>
 
 <div id="checkout-cart-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_cart.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_cart.html.php'); ?>
 </div>
 
 <div id="checkout-customer-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_customer.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_customer.html.php'); ?>
 </div>
 
 <div id="checkout-shipping-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_shipping.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_shipping.html.php'); ?>
 </div>
 
 <div id="checkout-payment-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_payment.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_payment.html.php'); ?>
 </div>
 
 <div id="checkout-summary-wrapper">
-  <?php include_once(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_summary.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_summary.html.php'); ?>
 </div>
 
 <script>

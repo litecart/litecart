@@ -11,52 +11,56 @@
     header('Location: ./install/');
     exit;
   }
-  require_once(realpath(dirname(__FILE__)) . '/config.inc.php');
+  require_once realpath(dirname(__FILE__)) . '/config.inc.php';
+  
+// vQmod
+  require_once FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqmod.php';
+  vqmod::bootup(FS_DIR_HTTP_ROOT, true);
   
 // Compatibility
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
+  require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
   
 // Autoloader
   function __autoload($name) {
     switch($name) {
       case (substr($name, 0, 5) == 'ctrl_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $name . '.inc.php');
         break;
       case (substr($name, 0, 3) == 'cm_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $name . '.inc.php');
         break;
       case (substr($name, 0, 5) == 'func_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $name . '.inc.php');
         break;
       case (substr($name, 0, 4) == 'job_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php');
         break;
       case (substr($name, 0, 4) == 'mod_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $name . '.inc.php');
         break;
       case (substr($name, 0, 3) == 'oa_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $name . '.inc.php');
         break;
       case (substr($name, 0, 3) == 'ot_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $name . '.inc.php');
         break;
       case (substr($name, 0, 3) == 'os_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $name . '.inc.php');
         break;
       case (substr($name, 0, 3) == 'pm_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $name . '.inc.php');
         break;
       case (substr($name, 0, 4) == 'ref_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . $name . '.inc.php');
         break;
       case (substr($name, 0, 3) == 'sm_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $name . '.inc.php');
         break;
       case (substr($name, 0, 4) == 'url_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/' . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/' . $name . '.inc.php');
         break;
       default:
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $name . '.inc.php';
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $name . '.inc.php');
         break;
     }
   }
@@ -139,7 +143,7 @@
 // If page should be overriden
   $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/overrides/'. link::relpath(parse_url(link::get_base_link(), PHP_URL_PATH));
   if (file_exists($override_file)) {
-    require_once($override_file);
+    require_once $override_file;
     exit;
   }
   

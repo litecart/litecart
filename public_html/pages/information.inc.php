@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/config.inc.php');
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
   
   ob_start();

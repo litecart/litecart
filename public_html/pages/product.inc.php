@@ -59,7 +59,7 @@
   
   breadcrumbs::add($product->name[language::$selected['code']], document::link('', array('product_id' => $product->id), array('category_id')));
   
-  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 ?>
 
 <div class="box" id="box-product" itemscope itemtype="http://www.schema.org/Product">
@@ -433,9 +433,9 @@
   });
 </script>
 
-<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'similar_products.inc.php'); ?>
+<?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'similar_products.inc.php'); ?>
 
-<?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'also_purchased_products.inc.php'); ?>
+<?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'also_purchased_products.inc.php'); ?>
 
 <?php
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/config.inc.php');
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
   
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link(basename(__FILE__)));
@@ -8,7 +7,7 @@
   document::$snippets['keywords'] = language::translate('manufacturers.php:meta_keywords', '');
   document::$snippets['description'] = language::translate('manufacturers.php:meta_description', '');
   
-  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
 ?>
   <div class="box" style="margin-top: 0px" id="box-manufacturers">

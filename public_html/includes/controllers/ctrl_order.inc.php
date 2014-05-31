@@ -682,7 +682,7 @@
       $order = $this->data;
       
       ob_start();
-      include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_order_copy.inc.php');
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_order_copy.inc.php');
       $output = ob_get_clean();
       
       return $output;
@@ -693,7 +693,7 @@
       $order = $this->data;
       
       ob_start();
-      include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_packing_slip.inc.php');
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_packing_slip.inc.php');
       $output = ob_get_clean();
       
       return $output;

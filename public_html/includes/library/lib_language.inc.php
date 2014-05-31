@@ -135,7 +135,13 @@
     
     public static function identify() {
       
-    // Return language from URI
+    // Return language from URI query
+      if (!empty($_GET['language'])) {
+        $code = $_GET['language'];
+        if (isset(self::$languages[$code])) return $code;
+      }
+      
+    // Return language from URI path
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_HTTP_HOME))));
       if (isset(self::$languages[$code])) return $code;
       
@@ -145,7 +151,7 @@
     // Return language from cookie
       if (isset($_COOKIE['language_code']) && isset(self::$languages[$_COOKIE['language_code']])) return $_COOKIE['language_code'];
       
-    // Return language from browser
+    // Return language from browser request headers
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $browser_locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
       } elseif (isset($_SERVER['LC_CTYPE'])) {
