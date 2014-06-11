@@ -1,5 +1,5 @@
-@import url(//fonts.googleapis.com/css?family=Open+Sans:300);
-@import url(//fonts.googleapis.com/css?family=Roboto:400,700);
+@import url(//fonts.googleapis.com/css?family=Open+Sans:300&subset=latin,latin-ext);
+@import url(//fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,latin-ext);
 
 body {
   font: 12px 'Roboto', sans-serif;
