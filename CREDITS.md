@@ -75,6 +75,10 @@ JavaScript
 * Nivo Slider by Dev7studios - MIT License - http://dev7studios.com/nivo-slider/
 * SCEditor by Sam Clarke - MIT license - http://www.sceditor.com/
 
+PHP
+---
+VQMod by Qphoria - Special permitted use - https://code.google.com/p/vqmod/
+
 Inspired By
 -----------
 LiteCart was born out of thoughts of what was missing, what was too much, and/or what could have been different in other free e-commerce platforms.
