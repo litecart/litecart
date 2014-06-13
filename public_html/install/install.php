@@ -60,12 +60,36 @@
   
   $version_query = $database->query("SELECT VERSION();");
   $version = $database->fetch($version_query);
-
   
   if (version_compare($version['VERSION()'], '5.5', '<')) {
     die($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
   } else {
     echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+  
+  ### Database > Check Charset #########################
+
+  echo '<p>Checking MySQL database default character set... ';
+  
+  $charset_query = $database->query(
+    "select default_character_set_name, default_collation_name from information_schema.SCHEMATA
+    where schema_name = '". $database->input(DB_DATABASE) ."'
+    limit 1;"
+  );
+  $charset = $database->fetch($charset_query);
+  
+  if ($charset['default_character_set_name'] != 'utf8') {
+    echo($charset['default_character_set_name'] . ' <span class="warning">[Warning] The database default charset is not \'utf8\' and you might experience trouble with foreign characters.</span></p>');
+  } else {
+    echo $charset['default_character_set_name'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+    
+    echo '<p>Checking MySQL database default collation... ';
+    
+    if ($charset['default_collation_name'] != 'utf8_unicode_ci') {
+      echo($charset['default_collation_name'] . ' <span class="warning">[Warning] The database default collation is not \'utf8_unicode_ci\' and you might experience trouble with foreign characters.</span></p>');
+    } else {
+      echo $charset['default_collation_name'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+    }
   }
   
   ### Config > Write ###################################
@@ -128,7 +152,7 @@
     $query = preg_replace('/--.*\s/', '', $query);
     $database->query($query);
   }
-  
+   
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   
   ### Database > Tables > Data ###################################
@@ -221,7 +245,7 @@
   ### Admin > .htaccess Protection ###################################
   
   echo '<p>Securing admin folder...';
-    
+   
   $htaccess = '# Denied content' . PHP_EOL
             . '<FilesMatch "\.(htaccess|htpasswd|inc.php)$">' . PHP_EOL
             . '  Order Allow,Deny' . PHP_EOL
