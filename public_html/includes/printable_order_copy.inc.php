@@ -31,24 +31,17 @@
         <?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></td>
       </tr>
       <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_option', 'Payment Option'); ?>:</strong><br />
-        <?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></td>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?>:</strong><br />
-          <?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></td>
-      </tr>
-      <tr>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?>:</strong><br />
         <?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></td>
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_option', 'Payment Option'); ?>:</strong><br />
+        <?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?>:</strong><br />
+          <?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></td>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?>:</strong><br />
           <?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></td>
       </tr>
-      <?php /*
-      <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_weight', 'Weight'); ?>:</strong><br />
-          <?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class']) : '-'; ?></td>
-        <td style="padding: 5px 10px;">&nbsp;</td>
-      </tr>
-      */ ?>
     </table>
     
     <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
@@ -124,23 +117,30 @@
       
 <?php
   if (!empty($order['comments'])) {
+    $has_comments = false;
+    foreach ($order['comments'] as $comment) {
+      if (empty($comment['hidden'])) $has_comments = true;
+      break;
+    }
+    if ($has_comments) {
 ?>
   <table id="comments" cellspacing="0" cellpadding="0" style="width: 100%; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc;">
     <tr>
       <td style="padding: 5px 20px;"><strong><?php echo language::translate('title_comments', 'Comments'); ?>:</strong></td>
     </tr>
 <?php
-    foreach ($order['comments'] as $comment) {
-      if (!empty($comment['hidden'])) continue;
+      foreach ($order['comments'] as $comment) {
+        if (!empty($comment['hidden'])) continue;
 ?>
     <tr>
       <td style="padding: 5px 20px;"><strong><?php echo strftime(language::$selected['format_date'], strtotime($comment['date_created'])); ?>:</strong> <?php echo $comment['text']; ?></td>
     </tr>
 <?php
-    }
+      }
 ?>
     </table>
 <?php
+    }
   }
 ?>
   </div>
