@@ -11,7 +11,7 @@ CREATE TABLE `lc_addresses` (
   `zone_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_cart_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -23,7 +23,7 @@ CREATE TABLE `lc_cart_items` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,7 +42,7 @@ CREATE TABLE `lc_categories` (
   KEY `parent_id` (`parent_id`),
   KEY `status` (`status`),
   KEY `dock` (`dock`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -58,7 +58,7 @@ CREATE TABLE `lc_categories_info` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ CREATE TABLE `lc_countries` (
   UNIQUE KEY `iso_code_2` (`iso_code_2`),
   UNIQUE KEY `iso_code_3` (`iso_code_3`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_currencies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -94,7 +94,7 @@ CREATE TABLE `lc_currencies` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_customers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -127,14 +127,14 @@ CREATE TABLE `lc_customers` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_delivery_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_delivery_statuses_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -145,7 +145,7 @@ CREATE TABLE `lc_delivery_statuses_info` (
   PRIMARY KEY (`id`),
   KEY `delivery_status_id` (`delivery_status_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_geo_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -154,7 +154,7 @@ CREATE TABLE `lc_geo_zones` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_languages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -177,7 +177,7 @@ CREATE TABLE `lc_languages` (
   `date_created` datetime NOT NULL,
   UNIQUE KEY `id` (`id`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_manufacturers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -191,7 +191,7 @@ CREATE TABLE `lc_manufacturers` (
   PRIMARY KEY (`id`),
   KEY `code` (`code`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_manufacturers_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -207,7 +207,7 @@ CREATE TABLE `lc_manufacturers_info` (
   PRIMARY KEY (`id`),
   KEY `manufacturer_id` (`manufacturer_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_option_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -217,7 +217,7 @@ CREATE TABLE `lc_option_groups` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_option_groups_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -228,7 +228,7 @@ CREATE TABLE `lc_option_groups_info` (
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_option_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -237,7 +237,7 @@ CREATE TABLE `lc_option_values` (
   `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_option_values_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -247,7 +247,7 @@ CREATE TABLE `lc_option_values_info` (
   PRIMARY KEY (`id`),
   KEY `value_id` (`value_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -294,7 +294,7 @@ CREATE TABLE `lc_orders` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_status_id` (`order_status_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -304,7 +304,7 @@ CREATE TABLE `lc_orders_comments` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -321,7 +321,7 @@ CREATE TABLE `lc_orders_items` (
   `weight_class` varchar(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -331,7 +331,7 @@ CREATE TABLE `lc_order_statuses` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -343,7 +343,7 @@ CREATE TABLE `lc_order_statuses_info` (
   PRIMARY KEY (`id`),
   KEY `order_status_id` (`order_status_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_totals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -356,7 +356,7 @@ CREATE TABLE `lc_orders_totals` (
   `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -368,7 +368,7 @@ CREATE TABLE `lc_pages` (
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
   KEY `dock` (`dock`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_pages_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -382,7 +382,7 @@ CREATE TABLE `lc_pages_info` (
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -425,7 +425,7 @@ CREATE TABLE `lc_products` (
   KEY `purchases` (`purchases`),
   KEY `views` (`views`),
   KEY `product_groups` (`product_groups`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_campaigns` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -436,7 +436,7 @@ CREATE TABLE `lc_products_campaigns` (
   `EUR` decimal(11,4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -445,7 +445,7 @@ CREATE TABLE `lc_products_images` (
   `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -461,7 +461,7 @@ CREATE TABLE `lc_products_info` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_options` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -476,7 +476,7 @@ CREATE TABLE `lc_products_options` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_options_stock` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -495,7 +495,7 @@ CREATE TABLE `lc_products_options_stock` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_prices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -504,7 +504,7 @@ CREATE TABLE `lc_products_prices` (
   `EUR` decimal(11,4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_product_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -513,7 +513,7 @@ CREATE TABLE `lc_product_groups` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_product_groups_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -523,7 +523,7 @@ CREATE TABLE `lc_product_groups_info` (
   PRIMARY KEY (`id`),
   KEY `product_group_id` (`product_group_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_product_groups_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -532,7 +532,7 @@ CREATE TABLE `lc_product_groups_values` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_group_id` (`product_group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_product_groups_values_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -542,7 +542,7 @@ CREATE TABLE `lc_product_groups_values_info` (
   PRIMARY KEY (`id`),
   KEY `product_group_value_id` (`product_group_value_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_seo_links_cache` (
   `uri` varchar(256) NOT NULL,
@@ -553,7 +553,7 @@ CREATE TABLE `lc_seo_links_cache` (
   KEY `seo_uri` (`seo_uri`),
   KEY `language_code` (`language_code`),
   KEY `uri` (`uri`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -570,7 +570,7 @@ CREATE TABLE `lc_settings` (
   PRIMARY KEY (`id`),
   KEY `key` (`key`),
   KEY `setting_group_key` (`setting_group_key`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -579,7 +579,7 @@ CREATE TABLE `lc_settings_groups` (
   `description` varchar(256) NOT NULL,
   `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_slides` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -595,7 +595,7 @@ CREATE TABLE `lc_slides` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_sold_out_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -603,7 +603,7 @@ CREATE TABLE `lc_sold_out_statuses` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_sold_out_statuses_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -614,7 +614,7 @@ CREATE TABLE `lc_sold_out_statuses_info` (
   PRIMARY KEY (`id`),
   KEY `sold_out_status_id` (`sold_out_status_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_suppliers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -626,7 +626,7 @@ CREATE TABLE `lc_suppliers` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_tax_classes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -636,7 +636,7 @@ CREATE TABLE `lc_tax_classes` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_tax_rates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -654,7 +654,7 @@ CREATE TABLE `lc_tax_rates` (
   PRIMARY KEY (`id`),
   KEY `tax_class_id` (`tax_class_id`),
   KEY `geo_zone_id` (`geo_zone_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_translations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -671,7 +671,7 @@ CREATE TABLE `lc_translations` (
   `date_accessed` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -689,7 +689,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -700,7 +700,7 @@ CREATE TABLE `lc_zones` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `country_code` (`country_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_zones_to_geo_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -713,4 +713,4 @@ CREATE TABLE `lc_zones_to_geo_zones` (
   KEY `geo_zone_id` (`geo_zone_id`),
   KEY `country_code` (`country_code`),
   KEY `zone_code` (`zone_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
