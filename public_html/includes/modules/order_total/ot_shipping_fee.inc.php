@@ -2,7 +2,7 @@
 
   class ot_shipping_fee {
     public $id = __CLASS__;
-    public $name = 'Shipping Fee';
+    public $name = '';
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
@@ -10,7 +10,6 @@
     public $priority = 0;
     
     public function __construct() {
-      
       $this->name = language::translate(__CLASS__.':title_shipping_fee', 'Shipping Fee');
     }
     
