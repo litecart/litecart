@@ -1,7 +1,6 @@
 <?php
   define('REQUIRE_POST_TOKEN', false);
   define('SEO_REDIRECT', false);
-  require_once('includes/app_header.inc.php');
   
   header('X-Robots-Tag: noindex');
   

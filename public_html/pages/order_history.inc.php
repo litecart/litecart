@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
@@ -82,6 +81,4 @@
 <?php
 // Display page links
   echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page')));
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

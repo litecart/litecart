@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   document::$snippets['title'][] = language::translate('support.php:head_title', 'Customer Service');
   document::$snippets['keywords'] = language::translate('support.php:meta_keywords', '');
@@ -139,6 +138,4 @@
   
 <?php
   }
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

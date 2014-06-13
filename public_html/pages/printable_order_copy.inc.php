@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
@@ -21,6 +20,4 @@
   }
   
   echo $order->draw_printable_copy();
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

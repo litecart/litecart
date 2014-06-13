@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   if (empty($_GET['query'])) $_GET['query'] = '';
   if (empty($_GET['page'])) $_GET['page'] = 1;
@@ -121,6 +120,4 @@
   </div>
 <?php
   echo functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

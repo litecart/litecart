@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link('manufacturers.php'));
   
@@ -104,6 +103,4 @@
 <?php
     cache::end_capture($manufacturer_cache_id);
   }
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

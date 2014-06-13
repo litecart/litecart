@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   header('X-Robots-Tag: noindex');
   
   $payment = new mod_payment();
@@ -43,6 +42,4 @@
   echo $order_success->process();
   
   echo $payment->run('receipt');
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
 
   //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = language::translate('index.php:head_title', 'One fancy web shop');

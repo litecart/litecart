@@ -52,6 +52,4 @@
 ?>
 <?php echo $page['content']; ?>
 
-<?php  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
-?>
+<?php?>

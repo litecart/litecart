@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::link(basename(__FILE__)));
   
@@ -10,6 +9,4 @@
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'categories.inc.php');
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

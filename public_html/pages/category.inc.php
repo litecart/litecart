@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   if (empty($_GET['category_id'])) {
     header('Location: '. document::link(WS_DIR_HTTP_HOME . 'categories.php'));
@@ -135,6 +134,4 @@
 <?php
     cache::end_capture($category_cache_id);
   }
-  
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

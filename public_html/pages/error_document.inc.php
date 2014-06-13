@@ -1,5 +1,4 @@
 <?php
-  require_once('includes/app_header.inc.php');
   
   if (!isset($_GET['code'])) $_GET['code'] = 404;
   

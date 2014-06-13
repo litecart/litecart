@@ -1,6 +1,5 @@
 <?php
   define('REQUIRE_POST_TOKEN', false);
-  require_once('includes/app_header.inc.php');
   
   if (settings::get('catalog_only_mode')) return;
   

@@ -1,8 +1,9 @@
 <?php
+  define('SEO_REDIRECT', false);
   require_once('includes/app_header.inc.php');
   
   $url_map = array(
-    '#^(?:[a-z]{2}/)?/(?:index\.php)?$#'                 => array('script' => 'pages/index.inc.php',              'params' => ''),
+    '#^(?:[a-z]{2}/)?(?:index\.php)?$#'                 => array('script' => 'pages/index.inc.php',              'params' => ''),
     '#^(?:[a-z]{2}/)?.*-c-([0-9]+)/?$#'                  => array('script' => 'pages/category.inc.php',           'params' => 'category_id=$1'),
     '#^(?:[a-z]{2}/)?.*-i-([0-9]+)/?$#'                  => array('script' => 'pages/information.inc.php',        'params' => 'manufacturer_id=$1'),
     '#^(?:[a-z]{2}/)?.*-m-([0-9]+)/?$#'                  => array('script' => 'pages/manufacturer.inc.php',       'params' => 'manufacturer_id=$1'),
@@ -28,7 +29,7 @@
   }
   
   if (!empty($route)) {
-    include(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $route['script']);
+    include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $route['script']);
   } else {
     header('HTTP/1.1 404 Not Found');
     echo '<h1>HTTP 404 - File Not Found</h1>';
