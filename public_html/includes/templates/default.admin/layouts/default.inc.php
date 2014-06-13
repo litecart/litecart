@@ -6,8 +6,8 @@
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="robots" content="noindex, nofollow" />
-<link href="<!--snippet:template_path-->styles/theme.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="<!--snippet:template_path-->styles/loader.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="<!--snippet:template_path-->styles/theme.css" rel="stylesheet" type="text/css" media="screen" />
 <!--[if IE]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie8.css" /><![endif]-->
