@@ -24,16 +24,6 @@
   $_REQUEST['admin_folder'] = str_replace('\\', '/', $_REQUEST['admin_folder']);
   $_REQUEST['admin_folder'] = rtrim($_REQUEST['admin_folder'], '/') . '/';
   
-  ### PHP > Check display_errors #############################
-
-  echo '<p>Checking PHP version... ';
-  
-  if (in_array(strtolower(ini_get('display_errors')), array('1', 'true', 'on', 'yes'))) {
-    echo ini_get('display_errors') . '<span class="ok">[OK]</span></p>');
-  } else {
-    echo ini_get('display_errors') . '<span class="warning">[Warning] Missing permissions to display errors?</span></p>';
-  }
-  
   ### PHP > Check Version #############################
 
   echo '<p>Checking PHP version... ';
@@ -45,6 +35,16 @@
        . '<span class="warning">PHP 5.4+ recommended</span></span></p>';
   } else {
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+  
+  ### PHP > Check display_errors #############################
+
+  echo '<p>Checking PHP display_errors... ';
+  
+  if (in_array(strtolower(ini_get('display_errors')), array('1', 'true', 'on', 'yes'))) {
+    echo ini_get('display_errors') . '<span class="ok">[OK]</span></p>';
+  } else {
+    echo ini_get('display_errors') . '<span class="warning">[Warning] Missing permissions to display errors?</span></p>';
   }
   
   ### Database > Connection ###################################

@@ -1,7 +1,7 @@
 <?php
   
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '1.1.1.1');
+  define('PLATFORM_VERSION', '1.1.2');
   
 // Start redirecting output to the output buffer
   ob_start();
