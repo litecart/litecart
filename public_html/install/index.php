@@ -299,7 +299,7 @@
             <li>MBString <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
             <li>MySQL or MySQLi <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
             <li>GD or GD2 <?php echo (extension_loaded('gd') || extension_loaded('gd2')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>FreeType <?php echo extension_loaded('freetype') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>FreeType <?php echo function_exists('imagettftext') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
           </ul>
         </li>
       </ul>
