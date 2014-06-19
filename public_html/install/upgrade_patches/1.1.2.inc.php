@@ -1,0 +1,4 @@
+<?php
+  // Nothing to process
+
+?>

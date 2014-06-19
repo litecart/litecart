@@ -598,6 +598,25 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
+  function form_draw_mysql_collations_list($name, $input=true, $multiple=false, $parameters='') {
+    
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    $collations_query = database::query(
+      "SHOW COLLATION;"
+    );
+    
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    
+    while ($row = database::fetch($collations_query)) {
+      $options[] = array($row['Collation'], $row['Collation']);
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
   function form_draw_option_groups_list($name, $input=true, $multiple=false, $parameters='') {
     
     $option_groups_query = database::query(
