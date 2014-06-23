@@ -74,6 +74,7 @@ JavaScript
 * jQuery Animate From To by Emil Stenström - MIT and GPL - http://friendlybit.com
 * Nivo Slider by Dev7studios - MIT License - http://dev7studios.com/nivo-slider/
 * SCEditor by Sam Clarke - MIT license - http://www.sceditor.com/
+* jQuery Cookie Plugin by Klaus Hartl - MIT License - https://github.com/carhartl/jquery-cookie
 
 Inspired By
 -----------
