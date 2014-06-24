@@ -439,7 +439,7 @@
     <h3>Errors
       <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>"  />
     </h3>
-    <p>Errros will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
+    <p>Errors will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
     <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.<br />
     </p>
     <p><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>
