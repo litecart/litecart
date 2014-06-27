@@ -294,11 +294,12 @@
         </li>
         <li>Extensions
           <ul>
-            <li>curl <?php echo extension_loaded('curl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>exif <?php echo extension_loaded('exif') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mysql / mysqli <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>gd <?php echo extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>CURL <?php echo extension_loaded('curl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>EXIF <?php echo extension_loaded('exif') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>MBString <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>MySQL or MySQLi <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>GD or GD2 <?php echo (extension_loaded('gd') || extension_loaded('gd2')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>FreeType <?php echo function_exists('imagettftext') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
           </ul>
         </li>
       </ul>
@@ -438,7 +439,7 @@
     <h3>Errors
       <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>"  />
     </h3>
-    <p>Errros will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
+    <p>Errors will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
     <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.<br />
     </p>
     <p><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>

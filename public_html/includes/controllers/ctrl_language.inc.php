@@ -4,14 +4,13 @@
     public $data = array();
     
     public function __construct($language_code=null) {
-      
       if ($language_code !== null) $this->load($language_code);
     }
     
     public function load($language_code) {
       $language_query = database::query(
         "select * from ". DB_TABLE_LANGUAGES ."
-        where code='". database::input($language_code) ."'
+        where code = '". database::input($language_code) ."'
         limit 1;"
       );
       $this->data = database::fetch($language_query);
@@ -92,6 +91,7 @@
           name = '". database::input($this->data['name']) ."',
           charset = '". database::input($this->data['charset']) ."',
           locale = '". database::input($this->data['locale']) ."',
+          mysql_collation = '". database::input($this->data['mysql_collation']) ."',
           raw_date = '". database::input($this->data['raw_date']) ."',
           raw_time = '". database::input($this->data['raw_time']) ."',
           raw_datetime = '". database::input($this->data['raw_datetime']) ."',

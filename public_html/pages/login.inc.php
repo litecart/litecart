@@ -6,7 +6,7 @@
   
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
   
-  if (!empty($_POST['login'])) customer::login($_POST['email'], $_POST['password'], $_POST['redirect_url'], $_POST['remember_me']);
+  if (!empty($_POST['login'])) customer::login($_POST['email'], $_POST['password'], $_POST['redirect_url'], isset($_POST['remember_me']) ? true : false);
 
   if (!empty($_POST['lost_password'])) customer::password_reset($_POST['email']);
 ?>
@@ -25,6 +25,9 @@
           <td><?php echo language::translate('title_password', 'Password'); ?> <span class="required">*</span><br />
           <?php echo functions::form_draw_password_field('password', ''); ?></td>
         </tr>
+        <tr>
+          <td align="left"><label><?php echo functions::form_draw_checkbox('remember_me', '1', true); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
+	    </tr>
         <tr>
           <td><?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?> &nbsp; <?php echo functions::form_draw_button('lost_password', language::translate('title_lost_password', 'Lost Password')); ?> </td>
         </tr>

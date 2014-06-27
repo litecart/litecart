@@ -162,7 +162,7 @@
                 <tr>
                   <td><?php echo language::translate('title_country', 'Country'); ?><br />
                     <?php echo functions::form_draw_countries_list('country_code', true); ?></td>
-                  <td><?php echo language::translate('title_zone', 'Zone'); ?><br />
+                  <td><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?><br />
                     <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
                 </tr>
                 <tr>
@@ -206,7 +206,7 @@
                   <tr>
                     <td><?php echo language::translate('title_country', 'Country'); ?><br />
                       <?php echo functions::form_draw_countries_list('shipping_address[country_code]'); ?></td>
-                    <td><?php echo language::translate('title_zone', 'Zone'); ?><br />
+                    <td><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?><br />
                       <?php echo form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : '', 'shipping_address[zone_code]', isset($_POST['shipping_address']['zone_code']) ? (isset($_POST['shipping_address']['zone_code']) ? $_POST['shipping_address']['zone_code'] : '') : ''); ?></td>
                   </tr>
                 </table>

@@ -265,3 +265,11 @@ body {
   text-indent: -9999px;
   background: url('../images/scroll_up.png') no-repeat;
 }
+
+#cookies-acceptance-wrapper {
+  background: #ccc;
+}
+#cookies-acceptance {
+  text-align: center;
+  padding: 5px 0px;
+}

@@ -2,7 +2,7 @@
 
   class pm_cod {
     public $id = __CLASS__;
-    public $name = 'Cash on Delivery';
+    public $name = '';
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
@@ -11,6 +11,7 @@
     public $priority = 0;
     
     public function __construct() {
+	  $this->name = language::translate(__CLASS__.':title_cash_on_delivery', 'Cash On Delivery');
     }
     
     public function options($items, $subtotal, $tax, $currency_code, $customer) {

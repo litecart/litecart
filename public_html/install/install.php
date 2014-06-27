@@ -37,6 +37,16 @@
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
   
+  ### PHP > Check display_errors #############################
+
+  echo '<p>Checking PHP display_errors... ';
+  
+  if (in_array(strtolower(ini_get('display_errors')), array('1', 'true', 'on', 'yes'))) {
+    echo ini_get('display_errors') . '<span class="ok">[OK]</span></p>';
+  } else {
+    echo ini_get('display_errors') . '<span class="warning">[Warning] Missing permissions to display errors?</span></p>';
+  }
+  
   ### Database > Connection ###################################
 
   echo '<p>Connecting to database... ';
@@ -246,7 +256,10 @@
   
   echo '<p>Securing admin folder...';
    
-  $htaccess = '# Denied content' . PHP_EOL
+  $htaccess = '# Solve 401 rewrite and auth conflict on some machines' . PHP_EOL
+            .  'ErrorDocument 401 "Access Forbidden"' . PHP_EOL
+		    . PHP_EOL
+            . '# Denied content' . PHP_EOL
             . '<FilesMatch "\.(htaccess|htpasswd|inc.php)$">' . PHP_EOL
             . '  Order Allow,Deny' . PHP_EOL
             . '  Deny from all' . PHP_EOL

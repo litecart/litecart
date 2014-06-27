@@ -54,7 +54,7 @@
   <tr>
     <td><?php echo language::translate('title_country', 'Country'); ?><br />
       <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?></td>
-    <td><?php echo language::translate('title_zone', 'Zone'); ?><br />
+    <td><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?><br />
       <?php echo functions::form_draw_zones_list(customer::$data['country_code'], 'zone_code', customer::$data['zone_code']); ?></td>
   </tr>
   <tr>

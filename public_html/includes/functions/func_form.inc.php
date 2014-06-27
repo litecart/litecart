@@ -298,9 +298,9 @@
     if ($value === true) $value = form_reinsert_value($name);
     
     document::$snippets['head_tags']['sceditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
-                                                         . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
-                                                         . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. language::$selected['code'] .'.js"></script>' . PHP_EOL
-                                                         . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
+                                                 . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
+                                                 . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. language::$selected['code'] .'.js"></script>' . PHP_EOL
+                                                 . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
     
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" data-size="auto" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
@@ -546,7 +546,7 @@
   
   function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
     
-    $currencies_query = database::query(
+    $languages_query = database::query(
       "select * from ". DB_TABLE_LANGUAGES ."
       where status
       order by name asc;"
@@ -556,7 +556,7 @@
     
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
-    while ($language = database::fetch($currencies_query)) {
+    while ($language = database::fetch($languages_query)) {
       $options[] = array($language['name'], $language['code']);
     }
     
@@ -593,6 +593,25 @@
     
     while ($manufacturer = database::fetch($manufacturers_query)) {
       $options[] = array($manufacturer['name'], $manufacturer['id']);
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
+  function form_draw_mysql_collations_list($name, $input=true, $multiple=false, $parameters='') {
+    
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    $collations_query = database::query(
+      "SHOW COLLATION;"
+    );
+    
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    
+    while ($row = database::fetch($collations_query)) {
+      $options[] = array($row['Collation'], $row['Collation']);
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);

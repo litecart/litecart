@@ -32,6 +32,17 @@
   
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders. Especially if they contain modifications by third party add-ons.
   
+### LiteCart 1.1.1 to 1.1.2
+
+  MySQL Changes:
+  
+    ALTER TABLE `lc_languages` ADD `mysql_collation` VARCHAR(32) NOT NULL AFTER `charset`;
+    
+  Deleted Files:
+  
+    ext/jquery/jquery-1.10.2.min.js
+    ext/jquery/jquery-1.10.2.min.map
+  
 ### LiteCart 1.1.0.1 to 1.1.1
   
   MySQL Changes:

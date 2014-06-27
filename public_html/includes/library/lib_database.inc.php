@@ -6,7 +6,6 @@
     private static $_type = 'mysql';
     
     public static function construct() {
-      
       if (function_exists('mysqli_connect')) self::$_type = 'mysqli';
     }
     
@@ -93,7 +92,25 @@
     }
     
   // Set input/output mysql charset
-    public static function set_character($charset) {
+    public static function set_encoding($collation, $link='default') {
+      
+      if (empty($collation)) return false;
+    
+      $charset = substr($collation, 0, strpos($collation, '_'));
+    
+      if (self::$_type == 'mysqli') {
+        mysqli_set_charset(self::$_links[$link], $charset);
+      } else {
+        mysql_set_charset(self::$_links[$link], $charset);
+      }
+      
+      self::query("set collation_connection = ". self::input($collation) .";");
+      
+      return true;
+    }
+    
+  // Set input/output mysql charset
+    public static function set_character($charset, $link='default') {
     
       $charset = strtolower($charset);
       
@@ -126,7 +143,12 @@
         return false;
       }
       
-      self::query("set character set ". $charset_map[$charset]);
+      //self::query("set character set ". $charset_map[$charset]);
+      if (self::$_type == 'mysqli') {
+        mysqli_set_charset(self::$_links[$link], $charset_map[$charset]);
+      } else {
+        mysql_set_charset(self::$_links[$link], $charset_map[$charset]);
+      }
       
       return true;
     }

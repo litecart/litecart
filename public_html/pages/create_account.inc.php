@@ -132,7 +132,7 @@
         <tr>
           <td><?php echo language::translate('title_country', 'Country'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_countries_list('country_code', true); ?></td>
-          <td><?php echo language::translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
+          <td><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?> <span class="required">*</span><br />
             <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
         </tr>
         <tr>
