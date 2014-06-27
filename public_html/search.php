@@ -3,7 +3,7 @@
   
   if (empty($_GET['query'])) $_GET['query'] = '';
   if (empty($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'occurences';
+  if (empty($_GET['sort'])) $_GET['sort'] = 'occurrences';
   
   document::$snippets['title'][] = empty($_GET['query']) ? language::translate('title_search_results', 'Search Results') : sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), $_GET['query']);
   //document::$snippets['keywords'] = '';
@@ -24,7 +24,7 @@
       'name' => language::translate('title_name', 'Name'),
       'price' => language::translate('title_price', 'Price') ,
       'date' => language::translate('title_date', 'Date'),
-      'occurences' => language::translate('title_occurences', 'Occurences'),
+      'occurrences' => language::translate('title_occurrences', 'Occurrences'),
     );
     
     $separator = false;

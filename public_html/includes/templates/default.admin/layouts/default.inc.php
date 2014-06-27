@@ -66,8 +66,6 @@
             <div id="copyright">&copy; <?php echo date('2012-Y'); ?> LiteCart<br />
               <a href="http://www.litecart.net" target="_blank">www.litecart.net</a>
             </div>
-            
-            <!--<div id="stats"><!--snippet:stats--></div>-->
           </div>
         </td>
         <td id="column_left" style="vertical-align: top;">

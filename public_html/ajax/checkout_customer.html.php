@@ -187,7 +187,7 @@
                 <tr>
                   <td><?php echo language::translate('title_country', 'Country'); ?> <span class="required">*</span><br />
                     <?php echo functions::form_draw_countries_list('country_code', true, false, 'required="required"'); ?></td>
-                  <td><?php echo language::translate('title_zone_state', 'Zone / State'); ?> <span class="required">*</span><br />
+                  <td><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?> <span class="required">*</span><br />
                     <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
                 </tr>
                 <?php if (empty(customer::$data['id'])) { ?>
@@ -240,7 +240,7 @@
                   <tr>
                     <td><?php echo language::translate('title_country', 'Country'); ?> <span class="required">*</span><br />
                       <?php echo functions::form_draw_countries_list('shipping_address[country_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), ''); ?></td>
-                    <td><?php echo language::translate('title_zone', 'Zone'); ?> <span class="required">*</span><br />
+                    <td><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?> <span class="required">*</span><br />
                       <?php echo functions::form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : (isset($_POST['country_code']) ? $_POST['country_code'] : ''), 'shipping_address[zone_code]', true, ''); ?></td>
                   </tr>
                 </table>
