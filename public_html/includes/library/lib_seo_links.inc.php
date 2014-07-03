@@ -53,7 +53,7 @@
     public static function before_capture() {
       
       if (!self::$enabled) return;
-    
+      
     // Set urls
       $base_link = link::get_base_link();
       $called_link = link::get_called_link();

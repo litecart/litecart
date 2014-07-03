@@ -1,8 +1,8 @@
 <?php
   functions::draw_fancybox('a.fancybox');
 
-  $cache_id = cache::cache_id('box_latest_products', array('language', 'currency', 'prices'));
-  if (cache::capture($cache_id, 'file')) {
+  $box_latest_products_cache_id = cache::cache_id('box_latest_products', array('language', 'currency', 'prices'));
+  if (cache::capture($box_latest_products_cache_id, 'file')) {
   
     $products_query = functions::catalog_products_query(array('sort' => 'date', 'limit' => 8));
     if (database::num_rows($products_query)) {
@@ -22,6 +22,6 @@
 <?php
     }
     
-    cache::end_capture($cache_id);
+    cache::end_capture($box_latest_products_cache_id);
   }
 ?>

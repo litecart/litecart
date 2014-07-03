@@ -1,3 +1,7 @@
+<?php  
+  $box_category_tree_cache_id = cache::cache_id('box_category_tree', array('language'));
+  if (cache::capture($box_category_tree_cache_id, 'file')) {
+?>
 <div class="box" id="box-category-tree">
   <div class="heading"><h3><?php echo language::translate('title_categories', 'Categories'); ?></h3></div>
   <nav class="content">
@@ -70,3 +74,7 @@
 ?>
   </nav>
 </div>
+<?php
+    cache::end_capture($box_category_tree_cache_id);
+  }
+?>

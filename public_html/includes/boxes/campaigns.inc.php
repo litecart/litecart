@@ -1,8 +1,8 @@
 <?php
   functions::draw_fancybox('a.fancybox');
   
-  $cache_id = cache::cache_id('box_campaigns', array('language', 'currency', 'prices'));
-  if (cache::capture($cache_id, 'file')) {
+  $box_campaigns_cache_id = cache::cache_id('box_campaigns', array('language', 'currency', 'prices'));
+  if (cache::capture($box_campaigns_cache_id, 'file')) {
   
     $products_query = functions::catalog_products_query(array('campaign' => true, 'sort' => 'rand', 'limit' => 4));
     
@@ -24,6 +24,6 @@
 <?php
     }
     
-    cache::end_capture($cache_id);
+    cache::end_capture($box_campaigns_cache_id);
   }
 ?>

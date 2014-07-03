@@ -1,3 +1,7 @@
+<?php  
+  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language'));
+  if (cache::capture($box_site_menu_cache_id, 'file')) {
+?>
 <nav id="site-menu" class="twelve-eighty">
   <ul>
     <li class="rounded-corners-left"><a href="<?php echo document::link(WS_DIR_HTTP_HOME); ?>"><img src="{snippet:template_path}images/home.png" width="12" height="12" alt="<?php echo htmlspecialchars(language::translate('title_home', 'Home')); ?>" /></a></li>
@@ -53,3 +57,7 @@
 ?>
   </ul>
 </nav>
+<?php
+    cache::end_capture($box_site_menu_cache_id);
+  }
+?>

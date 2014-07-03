@@ -35,8 +35,8 @@
   
   include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
-  $category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($category_cache_id, 'file')) {
+  $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
+  if (cache::capture($box_category_cache_id, 'file')) {
 ?>
 <div class="box" id="box-category">
   <div class="heading">
@@ -133,7 +133,7 @@
   </div>
 </div>
 <?php
-    cache::end_capture($category_cache_id);
+    cache::end_capture($box_category_cache_id);
   }
   
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

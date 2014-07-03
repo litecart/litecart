@@ -109,7 +109,7 @@
       }
       
       if (empty(self::$data['zone_code'])) {
-          self::$data['zone_code'] = settings::get('default_zone_code');
+        self::$data['zone_code'] = settings::get('default_zone_code');
       }
       
     // Unset zone if not in country

@@ -3,8 +3,8 @@
   
   functions::draw_fancybox('a.fancybox');
   
-  $cache_id = cache::cache_id('box_similar_products', array('get', 'language', 'currency', 'prices'));
-  if (cache::capture($cache_id, 'file')) {
+  $box_similar_products_cache_id = cache::cache_id('box_similar_products', array('get', 'language', 'currency', 'prices'));
+  if (cache::capture($box_similar_products_cache_id, 'file')) {
     
     $product_groups = array();
     if ($product->product_group_ids) {
@@ -51,6 +51,6 @@
 <?php
     }
     
-    cache::end_capture($cache_id);
+    cache::end_capture($box_similar_products_cache_id);
   }
 ?>

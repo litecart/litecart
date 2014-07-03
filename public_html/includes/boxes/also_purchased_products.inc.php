@@ -3,8 +3,8 @@
   
   functions::draw_fancybox('a.fancybox');
   
-  $cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
-  if (cache::capture($cache_id, 'file')) {
+  $box_also_purchased_products_cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
+  if (cache::capture($box_also_purchased_products_cache_id, 'file')) {
   
     $orders_query = database::query(
       "select distinct order_id as id from ". DB_TABLE_ORDERS_ITEMS ."
@@ -54,6 +54,6 @@
       }
     }
     
-    cache::end_capture($cache_id);
+    cache::end_capture($box_also_purchased_products_cache_id);
   }
 ?>
