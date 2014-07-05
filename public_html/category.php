@@ -40,7 +40,8 @@
 ?>
 <div class="box" id="box-category">
   <div class="heading">
-    <nav class="filter" style="float: right;">
+    <h1><?php echo $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']]; ?></h1>
+    <nav class="filter">
 <?php
     $sort_alternatives = array(
       'popularity' => language::translate('title_popularity', 'Popularity'),
@@ -60,8 +61,7 @@
       $separator = true;
     }
 ?>
-      </nav>
-    <h1><?php echo $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']]; ?></h1>
+    </nav>
   </div>
   <div class="content">
 <?php

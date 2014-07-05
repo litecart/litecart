@@ -8,8 +8,8 @@
     
     $output = '<li class="category shadow hover-light">' . PHP_EOL
             . '  <a class="link" href="'. document::href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'" title="'. htmlspecialchars($category['name']) .'">' . PHP_EOL
-            . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '    <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" width="340" height="180" alt="'. $category['name'] .'" />' . PHP_EOL
+            . '    <div class="image-wrapper" style="position: relative;">' . PHP_EOL
+            . '    <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" alt="'. $category['name'] .'" />' . PHP_EOL
             . '      <div class="footer" style="position: absolute; bottom: 0;">' . PHP_EOL
             . '        <div class="title">'. $category['name'] .'</div>' . PHP_EOL
             . '        <div class="description">'. $category['short_description'] .'</div>' . PHP_EOL
@@ -25,8 +25,8 @@
     
     $output = '<li class="manufacturer shadow hover-light">' . PHP_EOL
             . '  <a class="link" href="'. document::href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'" title="'. htmlspecialchars($manufacturer['name']) .'">' . PHP_EOL
-            . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="220" height="60" alt="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
+            . '    <div class="image-wrapper" style="position: relative;">' . PHP_EOL
+            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 320, 100, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" alt="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="title">'. $manufacturer['name'] .'</div>' . PHP_EOL
             . '  </a>' . PHP_EOL
@@ -51,8 +51,8 @@
     
     $output = '<li class="product column shadow hover-light">' . PHP_EOL
             . '  <a class="link" href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'" title="'. htmlspecialchars($product['name']) .'">' . PHP_EOL
-            . '    <div class="image" style="position: relative;">'. PHP_EOL
-            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING') .'" width="150" height="150" alt="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
+            . '    <div class="image-wrapper" style="position: relative;">'. PHP_EOL
+            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING') .'" alt="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
             . '      ' . $sticker . PHP_EOL
             . '    </div>' . PHP_EOL
             . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL

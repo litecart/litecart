@@ -1,4 +1,3 @@
-
 html, body {
   margin: 0px;
   padding: 0px;
@@ -99,6 +98,11 @@ body {
   color: #777;
   padding: 0px 4px;
   cursor: default;
+}
+@media (max-width: 640px) { /* WVGA 480x800 and lower */
+  #region-wrapper {
+    display: none;
+  }
 }
 
 #cart-wrapper {
@@ -245,6 +249,9 @@ body {
   #footer tr > .manufacturers {
     display: none;
   }
+  #footer tr > .account {
+    display: none;
+  }
 }
 
 #copyright p {
@@ -267,7 +274,8 @@ body {
 }
 
 #cookies-acceptance-wrapper {
-  background: #ccc;
+  border: 1px #ddd solid;
+  margin-bottom: 20px;
 }
 #cookies-acceptance {
   text-align: center;

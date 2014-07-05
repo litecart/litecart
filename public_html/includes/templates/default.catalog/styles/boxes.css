@@ -11,6 +11,7 @@
 
 .box > .heading h1 {
   margin: 0px;
+  white-space: nowrap;
 }
 
 .box > .heading h2 {
@@ -28,6 +29,7 @@
 .box > .content {
   padding: 10px 0px;
   margin: 0px;
+  clear: both;
 }
 
 #box-search img {
@@ -67,6 +69,16 @@
 }
 #box-category-tree li a.active {
   background: #f3f3f3;
+}
+
+#box-category {
+}
+#box-category .heading h1 {
+  display: inline-block;
+  float: left;
+}
+#box-category .filter {
+  float: right;
 }
 
 #box-information li a.active {
