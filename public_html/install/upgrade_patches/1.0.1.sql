@@ -14,7 +14,7 @@ RENAME TABLE `lc_orders_status` TO `lc_order_statuses`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_orders_status_info` TO `lc_order_statuses_info`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_orders_status` ADD `priority` TINYINT(2) NOT NULL AFTER `notify`;
+ALTER TABLE `lc_order_statuses` ADD `priority` TINYINT(2) NOT NULL AFTER `notify`;
 -- --------------------------------------------------------
 DROP TABLE `lc_orders_tax`;
 -- --------------------------------------------------------
