@@ -262,7 +262,7 @@
         }
       }
       
-      if (isset(self::$data['items'][$item_key]) && $options == self::$data['items'][$item_key]['options']) {
+      if (isset(self::$data['items'][$item_key])) {
         
         self::update($item_key, self::$data['items'][$item_key]['quantity'] + $quantity);
         
