@@ -4,6 +4,8 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
+  breadcrumbs::add(language::translate('title_login', 'Login'), document::link('login.php'));
+  
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
   
   if (!empty($_POST['login'])) customer::login($_POST['email'], $_POST['password'], $_POST['redirect_url'], isset($_POST['remember_me']) ? true : false);

@@ -10,6 +10,8 @@
     document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   }
   
+  breadcrumbs::add(language::translate('title_select_region', 'Select Region'), document::link('select_region.php'));
+  
   if (isset($_POST['save'])) {
     
     $_POST['language_code'] = !empty($_POST['language_code']) ? $_POST['language_code'] : '';

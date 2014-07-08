@@ -17,8 +17,8 @@
     if (database::num_rows($manufacturers_query) > 1) {
 ?>
     <div id="filter-manufacturers">
-      <h3><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
-      <div class="input-wrapper" style="display: block;">
+      <h3 style="margin: 0px;"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
+      <div class="input-wrapper" style="display: block; color: inherit;">
         <ul class="list-vertical">
 <?php
       while($manufacturer = database::fetch($manufacturers_query)) {
@@ -82,8 +82,8 @@
     while ($group = database::fetch($product_groups_query)) {
 ?>
       <div id="filter-product-group-<?php echo $group['id']; ?>">
-        <h3><?php echo $group['name']; ?></h3>
-        <div class="input-wrapper" style="display: block;">
+        <h3 style="margin: 0px;"><?php echo $group['name']; ?></h3>
+        <div class="input-wrapper" style="display: block; color: inherit;">
           <ul class="list-vertical">
 <?php
       $product_group_values_query = database::query(
