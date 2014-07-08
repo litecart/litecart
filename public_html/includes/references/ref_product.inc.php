@@ -282,7 +282,7 @@
             }
             
             $product_option['price_adjust'] = 0;
-              
+            
             if ((isset($product_option[$this->_currency_code]) && $product_option[$this->_currency_code] != 0) || (isset($product_option[settings::get('store_currency_code')]) && $product_option[settings::get('store_currency_code')] != 0)) {
               
               switch ($product_option['price_operator']) {
@@ -293,8 +293,19 @@
                     $product_option['price_adjust'] = $product_option[settings::get('store_currency_code')];
                   }
                   break;
+                case '%':
+                  if ($product_option[$this->_currency_code] != 0) {
+                    $product_option['price_adjust'] = $this->price * ((float)$product_option[$this->_currency_code] / 100);
+                  } else {
+                    $product_option['price_adjust'] = $this->price * $product_option[settings::get('store_currency_code')] / 100;
+                  }
+                  break;
                 case '*':
-                  $product_option['price_adjust'] = (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) - (empty($this->campaign['price']) == false ? $this->campaign['price'] : $this->price) * $product_option[$this->_currency_code];
+                  if ($product_option[$this->_currency_code] != 0) {
+                    $product_option['price_adjust'] = $this->price * $product_option[$this->_currency_code];
+                  } else {
+                    $product_option['price_adjust'] = $this->price * $product_option[settings::get('store_currency_code')];
+                  }
                   break;
                 default:
                   trigger_error('Unknown price operator for option', E_USER_WARNING);
