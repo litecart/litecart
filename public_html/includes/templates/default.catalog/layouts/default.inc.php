@@ -17,7 +17,7 @@
 <!--snippet:javascript-->
 <script>
   if (/iphone|ipod|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(navigator.userAgent.toLowerCase())) {
-    $("meta[name='viewport']").attr("content", "width=640");
+    $("meta[name='viewport']").attr("content", "width=320");
   }
 </script>
 <style>
@@ -71,34 +71,22 @@
     
     <div id="main-wrapper" class="twelve-eighty">
       <div id="main">
-        <table style="width: 100%;">
-          <tr>
-            <td colspan="3" class="top">
-              <!--snippet:notices-->
-              <!--snippet:top-->
-            </td>
-          </tr>
-          <tr>
-            <td class="left" style="vertical-align: top;">
-              <!--snippet:column_left-->
-            </td>
-            <td class="content" style="vertical-align: top;">
-              <div id="content-wrapper">
-                <div id="content" class="">
-                  <!--snippet:content-->
-                </div>
-              </div>
-            </td>
-            <td class="right" style="vertical-align: top;">
-              <!--snippet:column_right-->
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3" class="bottom">
-              <!--snippet:bottom-->
-            </td>
-          </tr>
-        </table>
+      
+        <div class="top">
+          <!--snippet:notices-->
+          <!--snippet:top-->
+        </div>
+        
+        <div class="middle">
+          
+          <div class="left">
+            <!--snippet:column_left-->
+          </div>
+          
+          <div class="content">
+            <!--snippet:content-->
+          </div>
+        </div>
       </div>
     </div>
   </div>

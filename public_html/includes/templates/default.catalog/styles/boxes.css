@@ -1,7 +1,7 @@
 .box {
   clear: both;
   max-width: 100%;
-  margin: 0px 0px 10px 0px;
+  margin: 0px 0px 20px 0px;
 }
 
 .box > .heading {
@@ -27,17 +27,46 @@
 }
 
 .box > .content {
-  padding: 10px 0px;
-  margin: 0px;
   clear: both;
 }
 
-#box-search img {
+#slider-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 0px;
+  background: #fff;
+}
+
+#box-logotypes {
+  margin-bottom: 20px;
+}
+@media (max-width: 480px) {
+  #box-logotypes {
+    display: none;
+  }
+}
+#box-logotypes .content{
+  height: 35px;
+  text-align: center;
+  font: 0px;
+  overflow: hidden;
+}
+
+#box-search .content {
+  position: realtive;
+}
+#box-search .content img {
+  position: absolute;
   opacity: 0.6;
 }
-#box-search .input-wrapper {
-  max-width: 100%;
+#box-search .content .input-wrapper {
+  display: block;
   white-space: nowrap;
+}
+#box-search .content input {
+  display: inline-block;
+  width: 100%;
+  text-indent: 16px;
 }
 
 #box-campaigns h3, #box-latest-products h3, #box-most-popular h3, #box-similar-products h3, #box-also-purchased-products h3 {
@@ -71,14 +100,16 @@
   background: #f3f3f3;
 }
 
-#box-category {
-}
 #box-category .heading h1 {
   display: inline-block;
   float: left;
 }
 #box-category .filter {
   float: right;
+}
+
+#box-manufacturers-list {
+  margin: 0px;
 }
 
 #box-information li a.active {

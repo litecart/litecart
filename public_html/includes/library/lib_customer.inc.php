@@ -190,7 +190,7 @@
       $customer = database::fetch($customer_query);
       
       if (empty($customer)) {
-        sleep(10);
+        sleep(5);
         notices::add('errors', language::translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
         return;
       }

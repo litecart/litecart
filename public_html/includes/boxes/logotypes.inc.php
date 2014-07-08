@@ -9,8 +9,8 @@
   if (database::num_rows($manufacturers_query) == 0) return;
   
 ?>
-<div id="logotypes-wrapper">
-  <div id="logotypes">
+<div id="box-logotypes">
+  <div class="content">
     <ul class="list-horizontal">
 <?php
   while($manufacturer = database::fetch($manufacturers_query)) {

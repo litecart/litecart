@@ -30,7 +30,7 @@
       'exclude_products' => $product->id,
       'keywords' => $keywords,
       'sort' => 'occurrences',
-      'limit' => 8,
+      'limit' => 10,
     ));
     
     if (database::num_rows($products_query)) {
