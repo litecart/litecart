@@ -14,9 +14,14 @@
     //}
     
     public static function startup() {
-    
+      
       if (empty(session::$data['user']) || !is_array(session::$data['user'])) {
         self::reset();
+      }
+      
+    // Turn on PHP errors for logged in admins
+      if (!empty(self::$data['id'])) {
+        ini_set('display_errors', 'On');
       }
       
       if (!empty(self::$data['id'])) {

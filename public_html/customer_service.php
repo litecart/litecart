@@ -20,12 +20,11 @@
       
       if (functions::email_send($_POST['name'] .' <'. $_POST['email'] .'>', settings::get('store_email'), $_POST['subject'], $_POST['message'])) {
         notices::add('success', language::translate('success_your_email_was_sent', 'Your e-mail has successfully been sent'));
+        header('Location: '. document::link());
+        exit;
       } else {
         notices::add('errors', language::translate('error_sending_email_for_unknown_reason', 'The e-mail could not be sent for an unknown reason'));
       }
-      
-      header('Location: '. document::link());
-      exit;
     }
   }
   

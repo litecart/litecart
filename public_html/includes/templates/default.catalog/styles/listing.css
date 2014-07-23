@@ -27,22 +27,22 @@ ul.listing-wrapper > li.category {
   }
 }
 @media (max-width: 980px) { /* Vertical XGA */
- ul.listing-wrapper > li.category {
+  ul.listing-wrapper > li.category {
     width: 47.3%;
   }
 }
 @media (max-width: 800px) { /* SVGA 800x600 and lower */
- ul.listing-wrapper > li.category {
+  ul.listing-wrapper > li.category {
     width: 47%;
   }
 }
 @media (max-width: 420px) {
- ul.listing-wrapper > li.category {
+  ul.listing-wrapper > li.category {
     width: 96%;
   }
 }
 @media (max-width: 390px) { /* HVGA 320x480 */
- ul.listing-wrapper > li.category {
+  ul.listing-wrapper > li.category {
     width: 95%;
   }
 }
@@ -96,22 +96,22 @@ ul.listing-wrapper > li.manufacturer {
   width: 31.8%;
 }
 @media (max-width: 980px) { /* Vertical XGA */
- ul.listing-wrapper > li.manufacturer {
+  ul.listing-wrapper > li.manufacturer {
     width: 48%;
   }
 }
 @media (max-width: 800px) { /* SVGA 800x600 and lower */
- ul.listing-wrapper > li.manufacturer {
+  ul.listing-wrapper > li.manufacturer {
     width: 47%;
   }
 }
 @media (max-width: 420px) {
- ul.listing-wrapper > li.manufacturer {
+  ul.listing-wrapper > li.manufacturer {
     width: 96%;
   }
 }
 @media (max-width: 390px) { /* HVGA 320x480 */
- ul.listing-wrapper > li.manufacturer {
+  ul.listing-wrapper > li.manufacturer {
     width: 95%;
   }
 }
