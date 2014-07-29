@@ -15,16 +15,10 @@
           'value' => 1,
           'decimals' => 2,
         ),
-        'tbs' => array(
-          'name' => 'Tablespoons',
-          'unit' => 'tbs',
-          'value' => 200,
-          'decimals' => 0,
-        ),
-        'tsp' => array(
-          'name' => 'Teaspoons',
-          'unit' => 'tsp',
-          'value' => 200,
+        'cL' => array(
+          'name' => 'Centilitres',
+          'unit' => 'cL',
+          'value' => 0.01,
           'decimals' => 0,
         ),
         'dL' => array(
@@ -33,16 +27,34 @@
           'value' => 0.1,
           'decimals' => 1,
         ),
-        'cL' => array(
-          'name' => 'Centilitres',
-          'unit' => 'cL',
-          'value' => 0.01,
+        'dm3' => array(
+          'name' => 'Cubic Decimetres',
+          'unit' => 'dm3',
+          'value' => 1,
+          'decimals' => 2,
+        ),
+        'cm3' => array(
+          'name' => 'Cubic Centimetres',
+          'unit' => 'cm3',
+          'value' => 1000,
+          'decimals' => 3,
+        ),
+        'ft3' => array(
+          'name' => 'Cubic Feet',
+          'unit' => 'ft3',
+          'value' => 0.035314666721,
           'decimals' => 0,
         ),
-        'mL' => array(
-          'name' => 'Millilitres',
-          'unit' => 'mL',
-          'value' => 0.001,
+        'gal' => array(
+          'name' => 'Gallons (US, liquid)',
+          'unit' => 'gal',
+          'value' =>  0.26417205236,
+          'decimals' => 2,
+        ),
+        'in3' => array(
+          'name' => 'Cubic Inches',
+          'unit' => 'in3',
+          'value' => 61.023744095,
           'decimals' => 0,
         ),
         'm3' => array(
@@ -51,29 +63,17 @@
           'value' => 0.001,
           'decimals' => 3,
         ),
-        'dm3' => array(
-          'name' => 'Cubic Decimetres',
-          'unit' => 'dm3',
-          'value' => 1,
-          'decimals' => 3,
-        ),
-        'cm3' => array(
-          'name' => 'Cubic Centimetres',
-          'unit' => 'cm3',
-          'value' => 1000,
-          'decimals' => 3,
+        'mL' => array(
+          'name' => 'Millilitres',
+          'unit' => 'mL',
+          'value' => 0.001,
+          'decimals' => 0,
         ),
         'oz' => array(
           'name' => 'Ounces (US, liquid)',
           'unit' => 'oz',
           'value' => 33.814022701,
           'decimals' => 0,
-        ),
-        'gal' => array(
-          'name' => 'Gallons (US, liquid)',
-          'unit' => 'gal',
-          'value' =>  0.26417205236,
-          'decimals' => 2,
         ),
         'pt' => array(
           'name' => 'Pints (UK, liquid)',
@@ -86,6 +86,24 @@
           'unit' => 'qt',
           'value' => 1.0566882094,
           'decimals' => 2,
+        ),
+        'tbs' => array(
+          'name' => 'Tablespoons',
+          'unit' => 'tbs',
+          'value' => 66.666666667,
+          'decimals' => 0,
+        ),
+        'tsp' => array(
+          'name' => 'Teaspoons',
+          'unit' => 'tsp',
+          'value' => 200,
+          'decimals' => 0,
+        ),
+        'yd3' => array(
+          'name' => 'Cubic Yards',
+          'unit' => 'yd3',
+          'value' => 0.0013079506193,
+          'decimals' => 3,
         ),
       );
     }

@@ -12,31 +12,43 @@
           'name' => 'Metres',
           'unit' => 'm',
           'value' => 1,
-        ),
-        'dm' => array(
-          'name' => 'Decimetres',
-          'unit' => 'dm',
-          'value' => 10,
+          'decimals' => 2,
         ),
         'cm' => array(
           'name' => 'Centimetres',
           'unit' => 'cm',
           'value' => 100,
+          'decimals' => 0,
         ),
-        'mm' => array(
-          'name' => 'Millimetres',
-          'unit' => 'mm',
-          'value' => 1000,
+        'dm' => array(
+          'name' => 'Decimetres',
+          'unit' => 'dm',
+          'value' => 10,
+          'decimals' => 2,
         ),
         'ft' => array(
           'name' => 'Feet',
           'unit' => 'ft',
           'value' => 3.2808,
+          'decimals' => 2,
         ),
         'in' => array(
           'name' => 'Inches',
           'unit' => 'in',
           'value' => 39.37,
+          'decimals' => 2,
+        ),
+        'mm' => array(
+          'name' => 'Millimetres',
+          'unit' => 'mm',
+          'value' => 1000,
+          'decimals' => 0,
+        ),
+        'yd' => array(
+          'name' => 'Yards',
+          'unit' => 'yd',
+          'value' => 1.0936133,
+          'decimals' => 2,
         ),
       );
     }
@@ -86,7 +98,7 @@
       $num_decimals = self::$classes[$class]['decimals'];
       if (round($value) == $value) $num_decimals = 0;
       
-      return number_format($value, 2, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$unit]['unit'];
+      return number_format($value, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$unit]['unit'];
     }
   }
   
