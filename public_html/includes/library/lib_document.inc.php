@@ -31,21 +31,6 @@
                                              . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.11.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
-    // Cookie acceptance - By EU law
-    if (empty($_COOKIE['cookies_accepted'])) {
-      self::$snippets['foot_tags']['cookie-acceptance'] = '<div id="cookies-acceptance-wrapper">' . PHP_EOL
-                                                        . '  <div id="cookies-acceptance" class="twelve-eighty">' . PHP_EOL
-                                                        . '    ' . language::translate('terms_cookies_acceptance', 'We rely on cookies to provide our services. By using our services, you agree to our use of cookies.') .' '. functions::form_draw_button('accept_cookies', language::translate('title_ok', 'OK'), 'button') . PHP_EOL
-                                                        . '  </div>' . PHP_EOL
-                                                        . '</div>' . PHP_EOL
-                                                        . '<script src="'. WS_DIR_EXT .'jquery/jquery.cookie.min.js"></script>' . PHP_EOL
-                                                        . '<script>' . PHP_EOL
-                                                        . '  $("button[name=\'accept_cookies\']").click(function(){' . PHP_EOL
-                                                        . '    $("#cookies-acceptance-wrapper").fadeOut();' . PHP_EOL
-                                                        . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
-                                                        . '  });' . PHP_EOL
-                                                        . '</script>';
-    }
       
     // Set template
       if (substr(link::relpath(link::get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
@@ -65,6 +50,22 @@
     }
     
     public static function prepare_output() {
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php');
+      self::$snippets['site_links'] = ob_get_clean();
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php');
+      self::$snippets['region'] = ob_get_clean();
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php');
+      self::$snippets['cart'] = ob_get_clean();
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php');
+      self::$snippets['site_menu'] = ob_get_clean();
       
     // Prepare title
       if (!empty(self::$snippets['title'])) {
@@ -93,13 +94,16 @@
     // Get template settings
       self::$settings = unserialize(settings::get('store_template_catalog_settings'));
       
+      /*
     // Clean orphan snippets
       $search = array(
         '/\{snippet:[^\}]+\}/',
         '/<!--snippet:[^-->]+-->/',
+        '/\{\$[^\}]+\}/',
       );
       
       $GLOBALS['output'] = preg_replace($search, '', $GLOBALS['output']);
+    */
     }
     
     //public static function shutdown() {
@@ -121,24 +125,58 @@
       }
     }
     
-    public static function stitch(&$html) {
+    public static function stitch($type, $input, $snippets) {
       
-      foreach (self::$snippets as $key => $replace) {
-      
-        if (is_array($replace)) $replace = implode(PHP_EOL, $replace);
-        
-        $search = array(
-          '{snippet:'.$key.'}',
-          '<!--snippet:'.$key.'-->',
-        );
-        $html = str_replace($search, $replace, $html, $replacements);
-
-        $html = str_replace($search, $replace, $html, $replacements);
-        
-        if ($replacements) unset(self::$snippets[$key]);
+      switch($type) {
+        case 'file':
+          $file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . self::$template .'/layouts/'. $input .'.inc.php';
+          $html = self::_process_layout($file, $snippets);
+          break;
+        case 'string':
+          $html = $input;
+          break;
+        default:
+          trigger_error('Unknown stitch type ('. $type .')', E_USER_WARNING);
+          return;
       }
       
-      $html = preg_replace($search, '', $html);
+    // Compatibility with old snippets syntax
+      if (!empty($snippets)) {
+        if (preg_match_all('/(<!--snippet:.*-->|\{\$.*\}|\{snippet:.*\})/', $html, $matches)) {
+          
+          $matches[0] = array_unique($matches[0]);
+          foreach ($matches[0] as $match) {
+            
+            $key = preg_replace(array('/<!--snippet:(.*)-->/', '/\{\$(.*)\}/', '/\{snippet:(.*)\}/'), '$1', $match);
+            
+            if (isset($snippets[$key])) {
+            
+              if (is_array($snippets[$key])) {
+                $html = str_replace($match, implode(PHP_EOL, $snippets[$key]), $html);
+              } else {
+                $html = str_replace($match, $snippets[$key], $html);
+              }
+            }
+          }
+        }
+      }
+      
+      return $html;
+    }
+    
+  // Method to process isolated PHP logic in a layout
+    private static function _process_layout($_file, $_snippets) {
+    
+    // Extract snippets for use $snippets
+      if (!empty($_snippets)) {
+        extract($_snippets);
+      }
+      
+      ob_start();
+      include vqmod::modcheck($_file);
+      $html = ob_get_clean();
+      
+      return $html;
     }
     
     public static function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {

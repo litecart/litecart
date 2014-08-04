@@ -18,27 +18,19 @@
     // Get languages from database
       self::load();
       
-  // Set language upon request
+    // Identify/set language upon every page load
+      self::set();
+      
+    // Set mysql charset and reinitiate list of languages
+      database::set_character(self::$selected['charset']);
+      self::load();
+      self::set(self::$selected['code']);
+      
       if (!empty($_POST['set_language'])) {
         self::set($_POST['set_language']);
         header('Location: '. document::link());
         exit;
       }
-    
-  // Identify session language
-    $language = self::identify();
-    
-    // Set language
-      self::set($language);
-      
-    // Set mysql charset and collation
-      if (!database::set_encoding(self::$selected['mysql_collation'])) {
-      database::set_character(self::$selected['charset']);
-    }
-    
-  // Reinstate list of languages
-      self::load();
-      self::set(self::$selected['code']);
     }
     
     //public static function initiate() {
@@ -142,8 +134,8 @@
     public static function identify() {
       
     // Return language from URI query
-      if (!empty($_GET['language'])) {
-        $code = $_GET['language'];
+      if (!empty($_GET['language']) || !empty($_GET['language_code']) ) {
+        $code = !empty($_GET['language']) ? $_GET['language'] : $_GET['language_code'];
         if (isset(self::$languages[$code])) return $code;
       }
       

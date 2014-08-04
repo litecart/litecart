@@ -21,51 +21,19 @@
     return $output;
   }
   
-  function draw_listing_manufacturer($manufacturer) {
-    
-    $output = '<li class="manufacturer shadow hover-light">' . PHP_EOL
-            . '  <a class="link" href="'. document::href_link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'" title="'. htmlspecialchars($manufacturer['name']) .'">' . PHP_EOL
-            . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING') .'" width="220" height="60" alt="'. $manufacturer['name'] .'" /><br />' . PHP_EOL
-            . '    </div>' . PHP_EOL
-            . '    <div class="title">'. $manufacturer['name'] .'</div>' . PHP_EOL
-            . '  </a>' . PHP_EOL
-            . '</li>' . PHP_EOL;
-    
-    return $output;
-  }
-  
-  function draw_listing_product($product) {
-    trigger_error('The function draw_listing_product() is deprecated, use instead draw_listing_product_column()', E_USER_DEPRECATED);
-    return functions::draw_listing_product_column($product);
-  }
-
   function draw_listing_product_column($product) {
-    
-    $sticker = '';
-    if ($product['campaign_price']) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. language::translate('title_on_sale', 'On Sale') .'" class="sticker" />';
-    } else if ($product['date_created'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
-      $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. language::translate('title_new', 'New') .'" class="sticker" />';
-    }
-    
-    $output = '<li class="product column shadow hover-light">' . PHP_EOL
-            . '  <a class="link" href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'" title="'. htmlspecialchars($product['name']) .'">' . PHP_EOL
-            . '    <div class="image" style="position: relative;">'. PHP_EOL
-            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING') .'" width="150" height="150" alt="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
-            . '      ' . $sticker . PHP_EOL
-            . '    </div>' . PHP_EOL
-            . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
-            . '    <div class="manufacturer">'. (($product['manufacturer_name']) ? $product['manufacturer_name'] : '&nbsp;') .'</div>' . PHP_EOL
-            . '    <div class="price-wrapper">'. ($product['campaign_price'] ? '<s class="regular-price">'. currency::format(tax::calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="campaign-price">'. currency::format(tax::calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. currency::format(tax::calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
-            . '  </a>' . PHP_EOL
-            . (($product['image']) ? '  <a href="'. WS_DIR_IMAGES . $product['image'] .'" class="fancybox" data-fancybox-group="product-listing" title="'. htmlspecialchars($product['name']) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/preview.png" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>' . PHP_EOL : '')
-            . '</li>' . PHP_EOL;
-    
-    return $output;
+    trigger_error('The function draw_listing_product_column() is deprecated, use instead draw_listing_product()', E_USER_DEPRECATED);
+    return functions::draw_listing_product($product, 'column');
   }
   
   function draw_listing_product_row($product) {
+    trigger_error('The function draw_listing_product_row() is deprecated, use instead draw_listing_product()', E_USER_DEPRECATED);
+    return functions::draw_listing_product($product, 'row');
+  }
+  
+  function draw_listing_product($product, $listing_type='column') {
+    
+    $list_item = new view();
     
     $sticker = '';
     if ($product['campaign_price']) {
@@ -74,21 +42,21 @@
       $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. language::translate('title_new', 'New') .'" class="sticker" />';
     }
     
-    $output = '<li class="product row shadow hover-light">' . PHP_EOL
-            . '  <a class="link" href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')) .'" title="'. htmlspecialchars($product['name']) .'">' . PHP_EOL
-            . '    <div class="image" style="position: relative;">'. PHP_EOL
-            . '      <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING') .'" width="125" height="125" alt="'. htmlspecialchars($product['name']) .'" />' . PHP_EOL
-            . '      ' . $sticker . PHP_EOL
-            . '    </div>' . PHP_EOL
-            . '    <div class="name">'. $product['name'] .'</div>' . PHP_EOL
-            . '    <div class="manufacturer">'. (($product['manufacturer_name']) ? $product['manufacturer_name'] : '&nbsp;') .'</div>' . PHP_EOL
-            . '    <div class="description">'. $product['short_description'] .'</div>' . PHP_EOL
-            . '    <div class="price-wrapper">'. ($product['campaign_price'] ? '<s class="regular-price">'. currency::format(tax::calculate($product['price'], $product['tax_class_id'])) .'</s> <strong class="campaign-price">'. currency::format(tax::calculate($product['campaign_price'], $product['tax_class_id'])) .'</strong>' : '<span class="price">'. currency::format(tax::calculate($product['price'], $product['tax_class_id'])) .'</span>') .'</div>' . PHP_EOL
-            . '  </a>' . PHP_EOL
-            . (($product['image']) ? '  <a href="'. WS_DIR_IMAGES . $product['image'] .'" class="fancybox" data-fancybox-group="product-listing" title="'. htmlspecialchars($product['name']) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/preview.png" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>' . PHP_EOL : '')
-            . '</li>' . PHP_EOL;
+    $list_item->snippets = array(
+      'listing_type' => $listing_type,
+      'name' => $product['name'],
+      'link' => document::link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')),
+      'image' => $product['image'] ? WS_DIR_IMAGES . $product['image'] : '',
+      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
+      'sticker' => $sticker,
+      'manufacturer' => $product['manufacturer_name'],
+      'description' => $product['short_description'],
+      'price' => currency::format(tax::calculate($product['price'], $product['tax_class_id'])),
+      'campaign_price' => $product['campaign_price'] ? currency::format(tax::calculate($product['campaign_price'], $product['tax_class_id'])) : null,
+      'preview_icon' => WS_DIR_IMAGES .'icons/16x16/preview.png',
+    );
     
-    return $output;
+    return $list_item->stitch('file', 'listing_product');
   }
   
   function draw_fancybox($selector='a.fancybox', $params=array()) {
@@ -164,7 +132,9 @@
   
     if ($pages < 2) return false;
     
-    if ($_GET['page'] < 2) $_GET['page'] = 1;
+    
+    
+    if (empty($_GET['page']) && $_GET['page'] < 2) $_GET['page'] = 1;
     
     if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']-1), true)) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']+1), true)) .'" />';
@@ -178,21 +148,25 @@
     
     if (!strpos($link, '?')) $link = $link . '?';
     
-    $html = '<nav class="pagination">'. PHP_EOL
-          . '  <ul class="list-horizontal">' . PHP_EOL;
+    $pagination = new view();
     
-    if ($_GET['page'] > 1) {
-      $html .= '    <li><a class="page button" href="'. document::href_link('', array('page' => $_GET['page']-1), true) .'">'. language::translate('title_previous', 'Previous') .'</a></li>' . PHP_EOL;
-    } else {
-      $html .= '    <li><a class="page button disabled" href="'. document::href_link('', array('page' => $_GET['page']-1), true) .'">'. language::translate('title_previous', 'Previous') .'</a></li>' . PHP_EOL;
-    }
+    $pagination->snippets['items'][] = array(
+      'title' => language::translate('title_previous', 'Previous'),
+      'link' => document::link('', array('page' => $_GET['page']-1), true),
+      'disabled' => ($_GET['page'] <= 1) ? true : false,
+    );
     
     for ($i=1; $i<=$pages; $i++) {
       
       if ($i < $pages-5) {
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
           $rewind = round(($_GET['page']-1)/2);
-          $html .= '    <li><a class="page button" href="'. document::href_link('', array('page' => $rewind), true) .'">'. (($rewind == $_GET['page']-2) ? $rewind : '...') .'</a></li>' . PHP_EOL;
+          $pagination->snippets['items'][] = array(
+            'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
+            'link' => document::link('', array('page' => $rewind), true),
+            'disabled' => false,
+            'active' => false,
+          );
           $i = $_GET['page'] - 1;
           if ($i > $pages-4) $i = $pages-4;
         }
@@ -201,26 +175,32 @@
       if ($i > 5) {  
         if ($i > $_GET['page'] + 1 && $i < $pages) {
           $forward = round(($_GET['page']+1+$pages)/2);
-          $html .= '    <li><a class="page button" href="'. document::href_link('', array('page' => $forward), true) .'">'. (($forward == $_GET['page']+2) ? $forward : '...') .'</a></li>' . PHP_EOL;
+          $pagination->snippets['items'][] = array(
+            'title' => ($forward == $_GET['page']+2) ? $forward : '...',
+            'link' => document::link('', array('page' => $forward), true),
+            'disabled' => false,
+            'active' => false,
+          );
           $i = $pages;
         }
       }
-    
-      if ($i == $_GET['page']) {
-        $html .= '    <li><span class="page button active">'. $i .'</span></li>' . PHP_EOL;
-      } else {
-        $html .= '    <li><a class="page button" href="'. document::href_link('', array('page' => $i), true) .'">'. $i .'</a></li>' . PHP_EOL;
-      }
+      
+      $pagination->snippets['items'][] = array(
+        'title' => $i,
+        'link' => document::link('', array('page' => $i), true),
+        'disabled' => false,
+        'active' => ($i == $_GET['page']) ? true : false,
+      );
     }
     
-    if ($_GET['page'] < $pages) {
-      $html .= '    <li><a class="page button" href="'. document::href_link('', array('page' => $_GET['page']+1), true) .'">'. language::translate('title_next', 'Next') .'</a></li>' . PHP_EOL;
-    } else {
-      $html .= '    <li><span class="page button disabled">'. language::translate('title_next', 'Next') .'</span></li>' . PHP_EOL;
-    }
+    $pagination->snippets['items'][] = array(
+      'title' => language::translate('title_next', 'Next'),
+      'link' => document::link('', array('page' => $_GET['page']+1), true),
+      'disabled' => ($_GET['page'] >= $pages) ? true : false,
+      'active' => false,
+    );
     
-    $html .= '  </ul>'
-           . '</nav>';
+    $html = $pagination->stitch('file', 'block_pagination');
     
     return $html;
   }

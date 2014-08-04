@@ -1,21 +1,18 @@
 <?php
   
 // Store the captured output buffer
-  document::$snippets['content'] = ob_get_clean();
-  
+  $content = ob_get_clean();
+
 // Run after capture processes
   system::run('after_capture');
   
-// Capture template
-  ob_start();
-  require vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/layouts/'. document::$layout .'.inc.php');
-  $output = ob_get_clean();
+// Stitch content
+  $output = document::stitch('file', document::$layout, array('content' => $content));
   
 // Prepare output
   system::run('prepare_output');
   
-// Stitch content
-  document::stitch($output);
+  $output = document::stitch('string', $output, document::$snippets);
   
 // Run before output processes
   system::run('before_output');
@@ -26,6 +23,7 @@
   
 // Run after processes
   system::run('shutdown');
+  exit;
   
 // Execute background jobs
   if (strtotime(settings::get('jobs_last_run')) < strtotime('-'. (settings::get('jobs_interval')+1) .' minutes')) {

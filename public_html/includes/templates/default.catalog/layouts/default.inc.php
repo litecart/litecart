@@ -45,16 +45,16 @@
       </div>
       
       <div id="site-links-wrapper">
-      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php'); ?>
+      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_links.inc.php'); ?>
       </div>
       
       <div id="region-wrapper">
-        <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php'); ?>
+        <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
       </div>
       
       <?php if (!settings::get('catalog_only_mode')) { ?>
       <div id="cart-wrapper">
-        <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php'); ?>
+        <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
       </div>
       <?php } ?>
       
@@ -66,7 +66,7 @@
   <div id="page">
     
     <div id="site-menu-wrapper">
-      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
+      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
     </div>
     
     <div id="main-wrapper" class="twelve-eighty">
@@ -114,10 +114,10 @@
     <table>
       <tr>
         <td class="categories">
-          <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_categories.inc.php'); ?>
+          <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_footer_categories.inc.php'); ?>
         </td>
         <td class="manufacturers">
-          <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_manufacturers.inc.php'); ?>
+          <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_footer_manufacturers.inc.php'); ?>
         </td>
         <td class="account">
           <nav>
@@ -148,7 +148,7 @@
           </nav>
         </td>
         <td class="information">
-          <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'footer_information.inc.php'); ?>
+          <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_footer_information.inc.php'); ?>
         </td>
         <td class="contact">
           <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
