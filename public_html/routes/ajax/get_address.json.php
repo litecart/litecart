@@ -1,5 +1,4 @@
 <?php
-  require_once('../includes/app_header.inc.php');
   header('Content-type: text/plain; charset='. language::$selected['charset']);
   
   if (empty($_GET['trigger'])) die('{}');
@@ -34,4 +33,5 @@
   mb_convert_variables('UTF-8', language::$selected['charset'], $json);
   echo $json;
   
+  exit;
 ?>

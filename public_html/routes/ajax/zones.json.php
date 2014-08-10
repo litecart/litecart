@@ -1,6 +1,4 @@
 <?php
-  require_once('../includes/app_header.inc.php');
-  
   header('Content-type: application/json; charset='. language::$selected['charset']);
   
   if (!isset($_GET['country_code'])) exit;
@@ -29,4 +27,5 @@
   mb_convert_variables('UTF-8', language::$selected['charset'], $json);
   echo $json;
   
+  exit;
 ?>

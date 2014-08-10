@@ -1,6 +1,4 @@
 <?php
-  require_once('../includes/app_header.inc.php');
-  
   $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
           . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
   
@@ -39,4 +37,5 @@
   header('Content-type: application/xml; charset='. language::$selected['charset']);
   
   echo $output;
+  exit;
 ?>
