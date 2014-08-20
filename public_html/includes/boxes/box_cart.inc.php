@@ -2,8 +2,8 @@
   if (settings::get('catalog_only_mode')) return;
 ?>
 <div id="cart">
-  <a href="<?php echo document::link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>" class="image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/32x32/cart.png" alt="" /></a>
-  <a href="<?php echo document::link(WS_DIR_HTTP_HOME . 'checkout.php'); ?>" class="content">
+  <a href="<?php echo document::ilink('checkout'); ?>" class="image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/32x32/cart.png" alt="" /></a>
+  <a href="<?php echo document::ilink('checkout'); ?>" class="content">
     <strong><?php echo language::translate('title_cart', 'Cart'); ?>:</strong><br />
     <span class="quantity"><?php echo cart::$data['total']['items']; ?></span> <?php echo language::translate('text_items', 'item(s)'); ?>
     - <span class="formatted_value">
@@ -20,7 +20,7 @@
 <script>
   function updateCart() {
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'cart.json.php'); ?>',
+      url: '<?php echo document::ilink('ajax/cart.json'); ?>',
       type: 'get',
       cache: false,
       async: true,

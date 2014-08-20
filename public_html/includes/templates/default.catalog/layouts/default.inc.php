@@ -41,11 +41,11 @@
     <header id="header" class="twelve-eighty">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
+        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
       </div>
       
       <div id="site-links-wrapper">
-      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_links.inc.php'); ?>
+      <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_links.inc.php'); ?>
       </div>
       
       <div id="region-wrapper">
@@ -66,7 +66,7 @@
   <div id="page">
     
     <div id="site-menu-wrapper">
-      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
+      <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
     </div>
     
     <div id="main-wrapper" class="twelve-eighty">
@@ -123,13 +123,13 @@
           <nav>
             <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
             <ul class="list-vertical">
-              <li><a href="<?php echo document::link('select_region.php'); ?>"><?php echo language::translate('title_select_region', 'Select Region'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('select_region'); ?>"><?php echo language::translate('title_select_region', 'Select Region'); ?></a></li>
               <?php if (empty(customer::$data['id'])) { ?>
-              <li><a href="<?php echo document::link('create_account.php'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
-              <li><a href="<?php echo document::link('login.php'); ?>"><?php echo language::translate('title_login', 'Login'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('login'); ?>"><?php echo language::translate('title_login', 'Login'); ?></a></li>
               <?php } else { ?>
-              <li><a href="<?php echo document::link('order_history.php'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-              <li><a href="<?php echo document::link('edit_account.php'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
               <li><a href="javascript:logout();"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
               <script>
                 function logout() {

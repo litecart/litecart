@@ -21,7 +21,7 @@
     
     if ($payment_error = $payment->pre_check($order)) {
       notices::add('errors', $payment_error);
-      header('Location: '. document::link(WS_DIR_HTTP_HOME . 'checkout.php'));
+      header('Location: '. document::ilink('checkout'));
       exit;
     }
     
@@ -35,7 +35,7 @@
       
         if (!empty($gateway['error'])) {
           notices::add('errors', $gateway['error']);
-          header('Location: '. document::link(WS_DIR_HTTP_HOME . 'checkout.php'));
+          header('Location: '. document::ilink('checkout'));
           exit;
         }
         
@@ -63,12 +63,12 @@
           
           case 'html':
             echo $gateway['content'];
-            require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+            require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
             exit;
           
           case 'get':
           default:
-          header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::link()));
+          header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink()));
           exit;
         }
       }
@@ -80,7 +80,7 @@
   // If payment error
     if (!empty($result['error'])) {
       notices::add('errors', $result['error']);
-      header('Location: '. document::link(WS_DIR_HTTP_HOME . 'checkout.php'));
+      header('Location: '. document::ilink('checkout'));
       exit;
     }
     
@@ -107,6 +107,6 @@
   $shipping->run('after_process');
   $payment->run('after_process');
   
-  header('Location: '. document::link(WS_DIR_HTTP_HOME . 'order_success.php'));
+  header('Location: '. document::ilink('order_success'));
   exit;
 ?>

@@ -10,7 +10,7 @@
       order by p.priority, pi.title;"
     );
     while ($page = database::fetch($pages_query)) {
-      echo '    <li><a href="'. document::href_link(WS_DIR_HTTP_HOME . 'information.php', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
+      echo '    <li><a href="'. document::href_ilink('information', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a></li>' . PHP_EOL;
     }
   ?>
   </ul>

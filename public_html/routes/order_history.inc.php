@@ -12,7 +12,7 @@
   //document::$snippets['description'] = '';
 
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
-  breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::link());
+  breadcrumbs::add(language::translate('title_order_history', 'Order History'));
   
   functions::draw_fancybox('a.fancybox', array(
     'type'          => 'iframe',
@@ -46,7 +46,7 @@
     while ($order = database::fetch($orders_query)) {
       $page->snippets['orders'][] = array(
         'id' => $order['id'],
-        'link' => document::link('printable_order_copy.php', array('order_id' => $order['id'], 'checksum' => functions::general_order_public_checksum($order['id']), 'media' => 'print')),
+        'link' => document::ilink('printable_order_copy', array('order_id' => $order['id'], 'checksum' => functions::general_order_public_checksum($order['id']), 'media' => 'print')),
         'order_status' => $order['order_status_name'],
         'date_created' => strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
         'payment_due' => currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']),

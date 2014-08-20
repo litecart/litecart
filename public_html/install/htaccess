@@ -37,7 +37,7 @@ ErrorDocument 500 "Internal Server Error"
 </IfModule>
 
 # Deny access to content
-<FilesMatch "\.(htaccess|htpasswd|inc.php)$">
+<FilesMatch "\.(htaccess|htpasswd|inc\.php)$">
   Order Allow,Deny
   Deny from all
 </FilesMatch>

@@ -14,10 +14,10 @@
   $i = 0;
   while ($category = database::fetch($categories_query)) {
     if (++$i == 10) {
-      echo '  <li><a href="'. document::href_link(WS_DIR_HTTP_HOME . 'categories.php') .'">'. language::translate('title_more', 'More') .'...</a></li>' . PHP_EOL;
+      echo '  <li><a href="'. document::href_ilink('categories') .'">'. language::translate('title_more', 'More') .'...</a></li>' . PHP_EOL;
       break;
     }
-    echo '  <li><a href="'. document::href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a></li>' . PHP_EOL;
+    echo '  <li><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a></li>' . PHP_EOL;
   }
 ?>
   </ul>

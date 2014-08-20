@@ -52,7 +52,6 @@
         'name',
         'charset',
         'locale',
-        'mysql_collation',
         'raw_date',
         'raw_time',
         'raw_datetime',
@@ -139,11 +138,6 @@
     <tr>
       <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_system_locale', 'System Locale'); ?></strong><br />
         <?php echo functions::form_draw_text_field('locale', true, 'placeholder="xx_XX.utf8" data-size="small"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_mysql_collation', 'MySQL Collation'); ?></strong><br />
-        <?php echo functions::form_draw_mysql_collations_list('mysql_collation', true); ?>
       </td>
     </tr>
     <tr>

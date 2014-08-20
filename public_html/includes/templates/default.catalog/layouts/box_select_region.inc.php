@@ -3,7 +3,7 @@
     <h1<?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
   </div>
   <div class="content">
-    <?php echo functions::form_draw_form_begin('region_form', 'post', document::link()); ?>
+    <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink()); ?>
     <table>
       <tr>
         <td><?php echo language::translate('title_language', 'Language'); ?><br />

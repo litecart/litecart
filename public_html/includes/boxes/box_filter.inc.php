@@ -22,7 +22,7 @@
         <ul class="list-vertical">
 <?php
       while($manufacturer = database::fetch($manufacturers_query)) {
-        echo '<li><label>'. functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true) .' '. $manufacturer['name'] .'</label> <a href="'. document::link(WS_DIR_HTTP_HOME . 'manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">&raquo;</a></li>' . PHP_EOL;
+        echo '<li><label>'. functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true) .' '. $manufacturer['name'] .'</label> <a href="'. document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])) .'">&raquo;</a></li>' . PHP_EOL;
       }
 ?>
         </ul>

@@ -3,8 +3,8 @@
   
   functions::draw_fancybox('a.fancybox');
   
-  $cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
-  if (cache::capture($cache_id, 'file')) {
+  $box_also_purchased_products_cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
+  if (cache::capture($box_also_purchased_products_cache_id, 'file')) {
   
     $orders_query = database::query(
       "select distinct order_id as id from ". DB_TABLE_ORDERS_ITEMS ."
@@ -29,31 +29,25 @@
     }
     
     if (!empty($also_purchased_products)) {
-    
+      
       arsort($also_purchased_products);
       $also_purchased_products = array_slice($also_purchased_products, 0, 4, true);
       
       $products_query = functions::catalog_products_query(array('products' => array_keys($also_purchased_products), 'sort' => 'rand', 'limit' => 5));
       
       if (database::num_rows($products_query)) {
-?>
-<div class="box" id="box-also-purchased-products">
-  <div class="heading"><h3><?php echo language::translate('title_also_purchased_products', 'Also Purchased Products'); ?></h3></div>
-  <div class="content">
-    <ul class="listing-wrapper products">
-<?php
-
+      
+        $box_also_purchased_products = new view();
+        
+        $box_also_purchased_products->snippets['products'] = '';
         while ($listing_product = database::fetch($products_query)) {
-          echo functions::draw_listing_product_column($listing_product);
+          $box_also_purchased_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
         }
-?>
-    </ul>
-  </div>
-</div>
-<?php
+        
+        echo $box_also_purchased_products->stitch('file', 'box_also_purchased_products');
       }
     }
     
-    cache::end_capture($cache_id);
+    cache::end_capture($box_also_purchased_products_cache_id);
   }
 ?>

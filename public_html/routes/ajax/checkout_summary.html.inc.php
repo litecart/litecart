@@ -108,7 +108,7 @@
       </tr>
     </table>
     
-    <?php echo functions::form_draw_form_begin('order_form', 'post', document::link(WS_DIR_HTTP_HOME . 'order_process.php'));  ?>
+    <?php echo functions::form_draw_form_begin('order_form', 'post', document::ilink('order_process'));  ?>
       <table width="100%">
         <tr>
           <td align="left" style="vertical-align: top; width: 40%;">

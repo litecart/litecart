@@ -656,7 +656,7 @@
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
-        '%order_copy_url' => document::link(WS_DIR_HTTP_HOME . 'printable_order_copy.php', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
       );
     
       $html = str_replace(array_keys($aliases), array_values($aliases), $html);

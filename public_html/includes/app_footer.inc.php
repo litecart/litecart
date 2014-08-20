@@ -2,17 +2,20 @@
   
 // Store the captured output buffer
   $content = ob_get_clean();
-
+  
 // Run after capture processes
   system::run('after_capture');
   
 // Stitch content
-  $output = document::stitch('file', document::$layout, array('content' => $content));
+  $page = new view();
+  $page->snippets = array('content' => $content);
+  $output = $page->stitch('file', document::$layout);
   
 // Prepare output
   system::run('prepare_output');
-  
-  $output = document::stitch('string', $output, document::$snippets);
+  $page->snippets = document::$snippets;
+  $page->html = $output;
+  $output = $page->stitch('string');
   
 // Run before output processes
   system::run('before_output');
@@ -30,7 +33,7 @@
     
     //error_log('Jobs executed manually because last run was '. settings::get('jobs_last_run').'. Is the cron job set up?');
     
-    $url = document::link(WS_DIR_HTTP_HOME . 'push_jobs.php');
+    $url = document::ilink('push_jobs');
     $disabled_functions = explode(',', str_replace(' ', '', ini_get('disable_functions')));
     
     if (!in_array('exec', $disabled_functions)) {

@@ -1,13 +1,13 @@
 <?php
   if (empty($_GET['manufacturer_id'])) {
-    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
+    header('Location: '. document::ilink('manufacturers'));
     exit;
   }
   
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
   
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars(document::link('', array(), array('manufacturer_id'))) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink(null, array(), array('manufacturer_id')) .'" />';
   
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   
@@ -18,12 +18,12 @@
   if (empty($manufacturer->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
     header('HTTP/1.1 404 Not Found');
-    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'manufacturers.php'));
+    header('Location: '. document::ilink('manufacturers'));
     exit;
   }
   
-  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link('manufacturers.php'));
-  breadcrumbs::add($manufacturer->name, $_SERVER['REQUEST_URI']);
+  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
+  breadcrumbs::add($manufacturer->name);
   
   //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;
@@ -45,7 +45,7 @@
         'price' => language::translate('title_price', 'Price'),
         'date' => language::translate('title_date', 'Date'),
       ),
-      'products' => '',
+      'products' => array(),
       'pagination' => null,
     );
     
@@ -60,7 +60,7 @@
       
       $page_items = 0;
       while ($listing_item = database::fetch($products_query)) {
-        echo functions::draw_listing_product($listing_item, 'column');
+        $page->snippets['products'][] = functions::draw_listing_product($listing_item, 'column');
         
         if (++$page_items == settings::get('items_per_page', 20)) break;
       }

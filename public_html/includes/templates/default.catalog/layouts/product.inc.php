@@ -195,7 +195,7 @@
       callback: function() {
         $('*').css('cursor', 'wait');
         $.ajax({
-          url: '<?php echo document::link(WS_DIR_AJAX .'cart.json.php'); ?>',
+          url: '<?php echo document::ilink('ajax/cart.json'); ?>',
           data: $(form).serialize() + '&add_cart_product=true',
           type: 'post',
           cache: false,

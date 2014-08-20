@@ -115,7 +115,7 @@
       
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully.'));
       
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
     }
   }

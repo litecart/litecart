@@ -3,8 +3,8 @@
   <div class="content">
     <div><?php echo sprintf(language::translate('text_logged_in_as_s', 'Logged in as %s'), $name); ?></div>
     <ul>
-      <li><a href="<?php echo document::href_link('order_history.php'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-      <li><a href="<?php echo document::href_link('edit_account.php'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+      <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+      <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
       <li><a href="javascript:logout();"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
     </ul>
     <script>

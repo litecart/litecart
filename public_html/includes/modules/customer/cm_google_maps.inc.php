@@ -2,19 +2,15 @@
 
   class cm_google_maps {
     public $id = __CLASS__;
-    public $name = '';
+    public $name = 'Google Maps - Get Address';
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $website = 'http://www.litecart.net';
     public $version = '1.0';
     
-    public function __construct() {
-      $this->name = 'Google Maps - ' . language::translate(__CLASS__.':title_get_address', 'Get Address');
-    }
-	
     public function get_address($data) {
       
-      if (empty($this->settings['status'])) return;
+      if ($this->settings['status'] != 'Enabled') return;
       
       if (!in_array($data['trigger'], array('company', 'address1', 'postcode', 'city'))) return;
       
@@ -75,10 +71,10 @@
       return array(
         array(
           'key' => 'status',
-          'default_value' => '1',
+          'default_value' => 'Enabled',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
-          'function' => 'toggle("e/d")',
+          'function' => 'radio("Enabled", "Disabled")',
         ),
         array(
           'key' => 'priority',

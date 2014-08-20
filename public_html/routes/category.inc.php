@@ -1,28 +1,28 @@
 <?php
   
   if (empty($_GET['category_id'])) {
-    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'categories.php'));
+    header('Location: '. document::ilink('categories'));
     exit;
   }
   
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
   
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars(document::link('', array(), array('category_id'))) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink(null, array(), array('category_id')) .'" />';
   
-  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::link('categories.php'));
+  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   
   $category = new ref_category($_GET['category_id']);
   
   if (empty($category->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
     header('HTTP/1.1 404 Not Found');
-    header('Location: '. document::link(WS_DIR_HTTP_HOME . 'categories.php'));
+    header('Location: '. document::ilink('categories'));
     exit;
   }
   
   foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::link(basename(__FILE__), array('category_id' => $category_id)));
+    breadcrumbs::add($category_name, document::ilink(null, array('category_id' => $category_id)));
   }
   
   //document::$snippets['title'] = array(); // reset
@@ -86,9 +86,17 @@
       
       $page_items = 0;
       while ($listing_product = database::fetch($products_query)) {
-        $page->snippets['products'] .= functions::draw_listing_product($listing_product, $category->list_style);
+        switch($category->list_style) {
+          case 'rows':
+            $page->snippets['products'] .= functions::draw_listing_product($listing_product, 'row');
+            break;
+          case 'columns':
+            $page->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
+            break;
+        }
         if (++$page_items == $items_per_page) break;
       }
+      
     }
     
     $page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));

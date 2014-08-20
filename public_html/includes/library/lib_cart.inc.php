@@ -327,7 +327,7 @@
       self::checksum();
       self::save();
       
-      header('Location: '. document::link('', array(), true));
+      header('Location: '. document::ilink());
       exit;
     }
 

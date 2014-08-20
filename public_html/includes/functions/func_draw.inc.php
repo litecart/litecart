@@ -7,9 +7,9 @@
   function draw_listing_category($category) {
     
     $output = '<li class="category shadow hover-light">' . PHP_EOL
-            . '  <a class="link" href="'. document::href_link(WS_DIR_HTTP_HOME .'category.php', array('category_id' => $category['id'])) .'" title="'. htmlspecialchars($category['name']) .'">' . PHP_EOL
+            . '  <a class="link" href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'" title="'. htmlspecialchars($category['name']) .'">' . PHP_EOL
             . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '    <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" width="340" height="180" alt="'. $category['name'] .'" />' . PHP_EOL
+            . '    <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" width="340" height="180" alt="'. htmlspecialchars($category['name']) .'" />' . PHP_EOL
             . '      <div class="footer" style="position: absolute; bottom: 0;">' . PHP_EOL
             . '        <div class="title">'. $category['name'] .'</div>' . PHP_EOL
             . '        <div class="description">'. $category['short_description'] .'</div>' . PHP_EOL
@@ -45,12 +45,12 @@
     $list_item->snippets = array(
       'listing_type' => $listing_type,
       'name' => $product['name'],
-      'link' => document::link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']), array('category_id')),
+      'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id')),
       'image' => $product['image'] ? WS_DIR_IMAGES . $product['image'] : '',
       'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
       'sticker' => $sticker,
-      'manufacturer' => $product['manufacturer_name'],
-      'description' => $product['short_description'],
+      'manufacturer_name' => $product['manufacturer_name'],
+      'short_description' => $product['short_description'],
       'price' => currency::format(tax::calculate($product['price'], $product['tax_class_id'])),
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::calculate($product['campaign_price'], $product['tax_class_id'])) : null,
       'preview_icon' => WS_DIR_IMAGES .'icons/16x16/preview.png',
@@ -136,10 +136,10 @@
     
     if (empty($_GET['page']) && $_GET['page'] < 2) $_GET['page'] = 1;
     
-    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']-1), true)) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']+1), true)) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prefetch'] = '<link rel="prerender" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']+1), true)) .'" />'; // Mozilla
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']+1), true)) .'" />'; // Webkit
+    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prefetch'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />'; // Mozilla
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />'; // Webkit
     
     $link = $_SERVER['REQUEST_URI'];
     $link = preg_replace('/page=[0-9]/', '', $link);
@@ -152,7 +152,7 @@
     
     $pagination->snippets['items'][] = array(
       'title' => language::translate('title_previous', 'Previous'),
-      'link' => document::link('', array('page' => $_GET['page']-1), true),
+      'link' => document::ilink(null, array('page' => $_GET['page']-1), true),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
     );
     
@@ -163,7 +163,7 @@
           $rewind = round(($_GET['page']-1)/2);
           $pagination->snippets['items'][] = array(
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
-            'link' => document::link('', array('page' => $rewind), true),
+            'link' => document::ilink(null, array('page' => $rewind), true),
             'disabled' => false,
             'active' => false,
           );
@@ -177,7 +177,7 @@
           $forward = round(($_GET['page']+1+$pages)/2);
           $pagination->snippets['items'][] = array(
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
-            'link' => document::link('', array('page' => $forward), true),
+            'link' => document::ilink(null, array('page' => $forward), true),
             'disabled' => false,
             'active' => false,
           );
@@ -187,7 +187,7 @@
       
       $pagination->snippets['items'][] = array(
         'title' => $i,
-        'link' => document::link('', array('page' => $i), true),
+        'link' => document::ilink(null, array('page' => $i), true),
         'disabled' => false,
         'active' => ($i == $_GET['page']) ? true : false,
       );
@@ -195,12 +195,12 @@
     
     $pagination->snippets['items'][] = array(
       'title' => language::translate('title_next', 'Next'),
-      'link' => document::link('', array('page' => $_GET['page']+1), true),
+      'link' => document::ilink(null, array('page' => $_GET['page']+1), true),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,
       'active' => false,
     );
     
-    $html = $pagination->stitch('file', 'block_pagination');
+    $html = $pagination->stitch('file', 'pagination');
     
     return $html;
   }

@@ -11,10 +11,10 @@
   $i = 0;
   while ($manufacturer = database::fetch($manufacturers_query)) {
     if (++$i == 10) {
-      echo '  <li><a href="'. document::href_link(WS_DIR_HTTP_HOME . 'manufacturers.php') .'">'. language::translate('title_more', 'More') .'...</a></li>' . PHP_EOL;
+      echo '  <li><a href="'. document::href_ilink('manufacturers') .'">'. language::translate('title_more', 'More') .'...</a></li>' . PHP_EOL;
       break;
     }
-    echo '  <li><a href="'. document::href_link(WS_DIR_HTTP_HOME . 'manufacturer.php', array('manufacturer_id' => $manufacturer['id'])) .'">'. $manufacturer['name'] .'</a>' . PHP_EOL;
+    echo '  <li><a href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])) .'">'. $manufacturer['name'] .'</a>' . PHP_EOL;
   }
 ?>
   </ul>

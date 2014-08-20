@@ -4,13 +4,7 @@
     
     $box_information_links = new view();
     
-    $box_information_links->snippets['pages'] = array(
-      array(
-        'id' => 0,
-        'title' => language::translate('title_contact_us', 'Contact Us')
-        'url' => document::href_link('', array()),
-      ),
-    );
+    $box_information_links->snippets['pages'] = array();
     
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p
@@ -23,7 +17,7 @@
       $box_information_links->snippets['pages'][] = array(
         'id' => $page['id'],
         'title' => $page['title'],
-        'href' => document::href_link('', array('page_id' => $page['id'])),
+        'href' => document::href_ilink('information', array('page_id' => $page['id'])),
       );
     }
     

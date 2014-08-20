@@ -1,6 +1,6 @@
 <nav id="site-menu" class="twelve-eighty">
   <ul>
-    <li class="rounded-corners-left"><a href="<?php echo document::link(WS_DIR_HTTP_HOME); ?>"><img src="{snippet:template_path}images/home.png" width="12" height="12" alt="<?php echo htmlspecialchars(language::translate('title_home', 'Home')); ?>" /></a></li>
+    <li class="rounded-corners-left"><a href="<?php echo document::ilink(''); ?>"><img src="{snippet:template_path}images/home.png" width="12" height="12" alt="<?php echo htmlspecialchars(language::translate('title_home', 'Home')); ?>" /></a></li>
 <?php  
   if (!function_exists('site_menu_category_tree')) {
     function site_menu_category_tree($parent_id=0, $depth=0) {
@@ -21,9 +21,9 @@
       while ($category = database::fetch($categories_query)) {
       
         if ($parent_id == 0) {
-          $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. document::href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a>' . PHP_EOL;
+          $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a>' . PHP_EOL;
         } else {
-          $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. document::href_link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id'])) .'"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP') .'" width="24" height="24" style="vertical-align: middle; margin-right: 10px;" alt="" />'. $category['name'] .'</a>' . PHP_EOL;
+          $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP') .'" width="24" height="24" style="vertical-align: middle; margin-right: 10px;" alt="" />'. $category['name'] .'</a>' . PHP_EOL;
         }
         
         if ($depth < 1) { // Max depth

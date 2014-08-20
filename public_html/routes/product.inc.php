@@ -6,7 +6,7 @@
   if (empty($product->id) || empty($product->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
     header('HTTP/1.1 404 File Not Found');
-    header('Location: '. document::link(WS_DIR_HTTP_HOME));
+    header('Location: '. document::ilink(''));
     exit;
   }
   
@@ -25,7 +25,7 @@
     limit 1;"
   );
   
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. htmlspecialchars(document::link('product.php', array('product_id' => $_GET['product_id']))) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => $_GET['product_id'])) .'" />';
   
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
   
@@ -41,15 +41,15 @@
   }
   
   if (!empty($_GET['category_id'])) {
-    breadcrumbs::add(language::translate('title_categories', 'Categories'), document::link('categories.php'));
+    breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
     foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
       document::$snippets['title'][] = $category_name;
-      breadcrumbs::add($category_name, document::link('category.php', array('category_id' => $category_id)));
+      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
     }
   } else if (!empty($product->manufacturer)) {
     document::$snippets['title'][] = $product->manufacturer['name'];
-    breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link('manufacturers.php'));
-    breadcrumbs::add(functions::reference_get_manufacturer_name($product->manufacturer['id']), document::link('manufacturer.php', array('manufacturer_id' => $product->manufacturer['id'])));
+    breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
+    breadcrumbs::add(functions::reference_get_manufacturer_name($product->manufacturer['id']), document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])));
   }
   
   //document::$snippets['title'] = array(); // reset
@@ -57,7 +57,7 @@
   document::$snippets['keywords'] = $product->meta_keywords[language::$selected['code']] ? $product->meta_keywords[language::$selected['code']] : $product->keywords;
   document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']];
   
-  breadcrumbs::add($product->name[language::$selected['code']], document::link('', array('product_id' => $product->id), array('category_id')));
+  breadcrumbs::add($product->name[language::$selected['code']], document::ilink(null, array('product_id' => $product->id), array('category_id')));
   
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
@@ -80,7 +80,7 @@
     'manufacturer_id' => !empty($product->manufacturer['id']) ? $product->manufacturer['id'] : '',
     'manufacturer_name' => !empty($product->manufacturer['name']) ? $product->manufacturer['name'] : '',
     'manufacturer_image' => !empty($product->manufacturer['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) : '',
-    'manufacturer_url' => !empty($product->manufacturer['id']) ? document::link('manufacturer.php', array('manufacturer_id' => $product->manufacturer['id'])) : '',
+    'manufacturer_url' => !empty($product->manufacturer['id']) ? document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])) : '',
     'regular_price' => currency::format(tax::calculate($product->price, $product->tax_class_id)),
     'campaign_price' => currency::format(tax::calculate($product->price, $product->tax_class_id)),
     'tax_status' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),

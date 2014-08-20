@@ -33,7 +33,7 @@
                                              . '</script>';
       
     // Set template
-      if (substr(link::relpath(link::get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
+      if (substr(link::relpath(link::get_physical_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
         self::$template = settings::get('store_template_admin');
       } else {
         self::$template = settings::get('store_template_catalog');
@@ -125,66 +125,21 @@
       }
     }
     
-    public static function stitch($type, $input, $snippets) {
-      
-      switch($type) {
-        case 'file':
-          $file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . self::$template .'/layouts/'. $input .'.inc.php';
-          $html = self::_process_layout($file, $snippets);
-          break;
-        case 'string':
-          $html = $input;
-          break;
-        default:
-          trigger_error('Unknown stitch type ('. $type .')', E_USER_WARNING);
-          return;
-      }
-      
-    // Compatibility with old snippets syntax
-      if (!empty($snippets)) {
-        if (preg_match_all('/(<!--snippet:.*-->|\{\$.*\}|\{snippet:.*\})/', $html, $matches)) {
-          
-          $matches[0] = array_unique($matches[0]);
-          foreach ($matches[0] as $match) {
-            
-            $key = preg_replace(array('/<!--snippet:(.*)-->/', '/\{\$(.*)\}/', '/\{snippet:(.*)\}/'), '$1', $match);
-            
-            if (isset($snippets[$key])) {
-            
-              if (is_array($snippets[$key])) {
-                $html = str_replace($match, implode(PHP_EOL, $snippets[$key]), $html);
-              } else {
-                $html = str_replace($match, $snippets[$key], $html);
-              }
-            }
-          }
-        }
-      }
-      
-      return $html;
-    }
-    
-  // Method to process isolated PHP logic in a layout
-    private static function _process_layout($_file, $_snippets) {
-    
-    // Extract snippets for use $snippets
-      if (!empty($_snippets)) {
-        extract($_snippets);
-      }
-      
-      ob_start();
-      include vqmod::modcheck($_file);
-      $html = ob_get_clean();
-      
-      return $html;
-    }
-    
     public static function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
       return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
     }
 
     public static function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
       return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
+    }
+    
+    public static function ilink($route=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      if ($route !== null) $route = WS_DIR_HTTP_HOME . $route;
+      return link::create_link($route, $new_params, $inherit_params, $skip_params, $language_code);
+    }
+
+    public static function href_ilink($route=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
     }
   }
   

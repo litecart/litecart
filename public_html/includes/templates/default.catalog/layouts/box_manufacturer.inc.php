@@ -15,7 +15,7 @@
       if ($_GET['sort'] == $key) {
         echo '<span class="button active">'. $title .'</span>';
       } else {
-        echo '<a class="button" href="'. document::href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
+        echo '<a class="button" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $title .'</a>';
       }
       $separator = true;
     }
@@ -34,7 +34,7 @@
     
     <?php if ($products) { ?>
     <ul class="listing-wrapper products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
+      <?php foreach ($products as $product) echo $product; ?>
     </ul>
     <?php } ?>
     

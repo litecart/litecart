@@ -8,7 +8,7 @@
   //document::$snippets['keywords'] = '';
   //document::$snippets['description'] = '';
   
-  breadcrumbs::add(language::translate('title_search_results', 'Search Results'), $_SERVER['REQUEST_URI']);
+  breadcrumbs::add(language::translate('title_search_results', 'Search Results'));
   
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   
@@ -32,7 +32,7 @@
       if ($_GET['sort'] == $key) {
         echo '<span class="button active">'. $title .'</span>';
       } else {
-        echo '<a class="button" href="'. document::href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
+        echo '<a class="button" href="'. document::href_link(null, array('sort' => $key), true) .'">'. $title .'</a>';
       }
       $separator = true;
     }

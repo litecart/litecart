@@ -16,9 +16,9 @@
     <?php foreach (cart::$data['items'] as $key => $item) { ?>
       <li class="item">
         <?php echo functions::form_draw_form_begin('cart_form') . functions::form_draw_hidden_field('key', $key); ?>
-          <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" class="image-wrapper shadow"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" /></a>
+          <a href="<?php echo document::href_ilink('product', array('product_id' => $item['product_id'])); ?>" class="image-wrapper shadow"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 150, 'FIT'); ?>" height="150" /></a>
           <div>
-            <p style="margin-top: 0px;"><a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $item['product_id'])); ?>" style="color: inherit;"><strong><?php echo $item['name'][language::$selected['code']]; ?></strong></a>
+            <p style="margin-top: 0px;"><a href="<?php echo document::href_ilink('product', array('product_id' => $item['product_id'])); ?>" style="color: inherit;"><strong><?php echo $item['name'][language::$selected['code']]; ?></strong></a>
             <?php echo $item['sku'] ? '<br /><span style="color: #999; font-size: 10px;">[' .language::translate('title_sku', 'SKU') .': '. $item['sku'] .']</span>' : ''; ?></p>
 <?php
   if (!empty($item['options'])) {

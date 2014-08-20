@@ -16,7 +16,7 @@
   if (empty($page['status'])) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
     header('HTTP/1.1 404 Not Found');
-    header('Location: '. document::link(WS_DIR_HTTP_HOME));
+    header('Location: '. document::ilink(''));
     exit;
   }
   
@@ -24,7 +24,7 @@
   document::$snippets['keywords'] = !empty($page['meta_keywords']) ? $page['meta_keywords'] : '';
   document::$snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
   
-  breadcrumbs::add($page['title'], document::link('', array(), true));
+  breadcrumbs::add($page['title'], document::ilink(null, array(), true));
   
   $snippets = array(
     'title' => $page['title'],

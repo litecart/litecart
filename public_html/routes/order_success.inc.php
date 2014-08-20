@@ -15,8 +15,8 @@
   //document::$snippets['keywords'] = '';
   //document::$snippets['description'] = '';
   
-  breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::link('checkout.php'));
-  breadcrumbs::add(language::translate('title_order_success', 'Order Success'), document::link());
+  breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout'));
+  breadcrumbs::add(language::translate('title_order_success', 'Order Success'));
   
   cart::reset();
   
@@ -36,7 +36,7 @@
   $page = new view();
   
   $page->snippets = array(
-    'description' => document::link('printable_order_copy.php', array('order_id' => $order->data['id'], 'checksum' => functions::general_order_public_checksum($order->data['id']), 'media' => 'print')),
+    'description' => document::ilink('printable_order_copy', array('order_id' => $order->data['id'], 'checksum' => functions::general_order_public_checksum($order->data['id']), 'media' => 'print')),
     'order_success_modules_output' => $order_success->process(),
     'payment_reciept' => $payment->run('receipt'),
   );

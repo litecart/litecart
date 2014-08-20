@@ -118,7 +118,7 @@
         
         $translations = array(
           '%store_name' => settings::get('store_name'),
-          '%store_link' => document::link(WS_DIR_HTTP_HOME),
+          '%store_link' => document::ilink(''),
           '%customer_firstname' => $_POST['firstname'],
           '%customer_lastname' => $_POST['lastname'],
           '%customer_email' => $_POST['email'],
@@ -146,7 +146,7 @@
   // Clear errors, we won't be using them in this component
     if (!empty(notices::$data['errors'])) notices::$data['errors'] = array();
     
-    header('Location: '. document::link());
+    header('Location: '. document::ilink());
     exit;
   }
   
@@ -258,7 +258,7 @@
   $("#box-checkout-account input, #box-checkout-account select").change(function() {
     if ($(this).val() == '') return;
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'get_address.json.php'); ?>?trigger='+$(this).attr('name'),
+      url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
       data: $(this).closest('form').serialize(),
       cache: false,
@@ -282,7 +282,7 @@
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'zones.json.php'); ?>?country_code=' + $(this).val(),
+      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
       async: true,
@@ -310,7 +310,7 @@
   $("select[name='shipping_address[country_code]']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'zones.json.php'); ?>?country_code=' + $(this).val(),
+      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
       async: false,

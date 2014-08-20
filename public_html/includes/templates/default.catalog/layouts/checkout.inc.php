@@ -7,8 +7,8 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
 <link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
-<link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
 <!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie8.css" /><![endif]-->
@@ -41,12 +41,12 @@
     <header id="header" class="twelve-eighty">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
+        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
       </div>
       
       <div id="customer-service-wrapper">
-        <span class="title"><?php echo $system->language->translate('title_customer_service', 'Customer Service'); ?></span><br />
-        <span class="phone"><?php echo $system->settings->get('store_phone'); ?></span>
+        <span class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></span><br />
+        <span class="phone"><?php echo settings::get('store_phone'); ?></span>
       </div>
       
     </header>
@@ -57,7 +57,7 @@
   <div id="page">
     
     <div id="site-menu-wrapper">
-      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
+      <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
     </div>
     
     <div id="main-wrapper" class="twelve-eighty">

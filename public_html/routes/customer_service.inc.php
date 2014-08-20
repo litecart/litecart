@@ -4,7 +4,7 @@
   document::$snippets['keywords'] = language::translate('support.php:meta_keywords', '');
   document::$snippets['description'] = language::translate('support.php:meta_description', '');
   
-  breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'), basename(__FILE__));
+  breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'));
   
   if (!empty($_POST['send'])) {
   
@@ -23,7 +23,7 @@
         notices::add('errors', language::translate('error_sending_email_for_unknown_reason', 'The e-mail could not be sent for an unknown reason'));
       }
       
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
     }
   }
@@ -57,7 +57,7 @@
     if (empty($page['status'])) {
       notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
       header('HTTP/1.1 404 Not Found');
-      header('Location: '. document::link(WS_DIR_HTTP_HOME));
+      header('Location: '. document::ilink(''));
       exit;
     }
     
@@ -65,7 +65,7 @@
     document::$snippets['keywords'] = !empty($page['meta_keywords']) ? $page['meta_keywords'] : '';
     document::$snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
     
-    breadcrumbs::add($page['title'], document::link('', array(), true));
+    breadcrumbs::add($page['title'], document::ilink(null, array(), true));
     
     $snippets = array(
       'title' => $page['title'],

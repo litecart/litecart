@@ -8,7 +8,7 @@
       if ($_GET['sort'] == $key) {
         echo '<span class="button active">'. $title .'</span>';
       } else {
-        echo '<a class="button" href="'. document::href_link('', array('sort' => $key), true) .'">'. $title .'</a>';
+        echo '<a class="button" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $title .'</a>';
       }
       $separator = true;
     }

@@ -13,7 +13,7 @@
   <div class="heading"><h3><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3></div>
   <div class="content">
   <?php
-  echo functions::form_draw_form_begin('manufacturers_form', 'get', document::link(WS_DIR_HTTP_HOME . 'manufacturer.php'));
+  echo functions::form_draw_form_begin('manufacturers_form', 'get', document::ilink('manufacturer'));
   
   $options = array(
     array(language::translate('option_select', '-- Select --'), ''),

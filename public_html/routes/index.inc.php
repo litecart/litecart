@@ -5,7 +5,7 @@
   document::$snippets['keywords'] = language::translate('index.php:meta_keywords', '');
   document::$snippets['description'] = language::translate('index.php:meta_description', '');
   
-  document::$snippets['head_tags']['opengraph'] = '<meta property="og:url" content="'. document::href_link(WS_DIR_HTTP_HOME) .'" />' . PHP_EOL
+  document::$snippets['head_tags']['opengraph'] = '<meta property="og:url" content="'. document::href_ilink('') .'" />' . PHP_EOL
                                                 //. '<meta property="og:title" content="'. htmlspecialchars(language::translate('index.php:head_title')) .'" />' . PHP_EOL
                                                 //. '<meta property="og:description" content="'. htmlspecialchars(language::translate('index.php:meta_description')) .'" />' . PHP_EOL
                                                 . '<meta property="og:type" content="website" />' . PHP_EOL

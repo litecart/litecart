@@ -22,10 +22,9 @@
           $matches[0] = array_unique($matches[0]);
           foreach ($matches[0] as $match) {
             
-            $key = preg_replace(array('/<!--snippet:(.*)-->/', '/\{\$(.*)\}/', '/\{snippet:(.*)\}/'), '$1', $match);
+            $key = preg_replace(array('/<!--snippet:([^-->]+)-->/', '/\{\$([^\}]+)\}/', '/\{snippet:([^\}]+)\}/'), '$1', $match);
             
             if (isset($this->snippets[$key])) {
-            
               if (is_array($this->snippets[$key])) {
                 $this->html = str_replace($match, implode(PHP_EOL, $this->snippets[$key]), $this->html);
               } else {

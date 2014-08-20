@@ -2,7 +2,7 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
-  breadcrumbs::add(language::translate('title_create_account', 'Create Account'), document::link());
+  breadcrumbs::add(language::translate('title_create_account', 'Create Account'));
   
   document::$snippets['title'][] = language::translate('title_create_account', 'Create Account');
   //document::$snippets['keywords'] = '';
@@ -70,7 +70,7 @@
       
       $translations = array(
         '%store_name' => settings::get('store_name'),
-        '%store_link' => document::link(WS_DIR_HTTP_HOME),
+        '%store_link' => document::ilink(''),
         '%customer_firstname' => $_POST['firstname'],
         '%customer_lastname' => $_POST['lastname'],
         '%customer_email' => $_POST['email'],
@@ -93,7 +93,7 @@
     // Login user
       customer::load($customer->data['id']);
       
-      header('Location: '. document::link(WS_DIR_HTTP_HOME));
+      header('Location: '. document::ilink(''));
       exit;
     }
   }

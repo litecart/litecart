@@ -35,16 +35,15 @@
     
     if (database::num_rows($products_query) == 0) return;
     
-    $similar_products_snippets = array(
-      'products' => '',
-    );
+    $box_similar_products = new view();
     
+    $box_similar_products->snippets['products'] = '';
     while ($listing_product = database::fetch($products_query)) {
       if (empty($listing_product['occurrences'])) break;
-      $similar_products_snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
+      $box_similar_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
     }
     
-    echo document::stitch('file', 'box_similar_products', $similar_products_snippets);
+    echo $box_similar_products->stitch('file', 'box_similar_products');
     
     cache::end_capture($cache_id);
   }

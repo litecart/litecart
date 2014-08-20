@@ -57,7 +57,7 @@
         require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 4) == 'url_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/' . $class . '.inc.php');
+        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . $class . '.inc.php');
         break;
       default:
         require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
@@ -90,7 +90,7 @@
         break;
     }
     
-    /*
+    
     $backtraces = debug_backtrace();
     $backtraces = array_slice($backtraces, 2);
     
@@ -101,7 +101,7 @@
         $output .= "<br />" . PHP_EOL . "  <- <b>{$backtrace['file']}</b> on line <b>{$backtrace['line']}</b> in <b>{$backtrace['function']}()</b>";
       }
     }
-    */
+    
     
     if (in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
       if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {
@@ -138,13 +138,5 @@
   system::run('startup');
   
 // Run operations before capture
-  system::run('before_capture');
-  
-// If page should be overriden
-  $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/overrides/'. link::relpath(parse_url(link::get_base_link(), PHP_URL_PATH));
-  if (file_exists($override_file)) {
-    require_once $override_file;
-    exit;
-  }
-  
+  system::run('before_capture');  
 ?>

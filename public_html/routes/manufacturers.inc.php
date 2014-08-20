@@ -1,7 +1,7 @@
 <?php
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
   
-  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link(basename(__FILE__)));
+  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
   
   document::$snippets['title'][] = language::translate('manufacturers.php:head_title', '');
   document::$snippets['keywords'] = language::translate('manufacturers.php:meta_keywords', '');
@@ -27,7 +27,7 @@
         'id' => $manufacturer['id'],
         'name' => $manufacturer['name'],
         'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
-        'link' => document::link('manufacturer.php', array('manufacturer_id' => $manufacturer['id'])),
+        'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
       );
     }
     

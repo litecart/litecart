@@ -31,77 +31,93 @@
     
     ######################################################################
     
-    public static function get_base_link() {
+    public static function get_physical_link() {
       $link = $_SERVER['SCRIPT_NAME'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
       
       return self::full_link($link);
     }
     
-    public static function get_called_link() {
+    public static function get_logical_link() {
       return self::full_link($_SERVER['REQUEST_URI']);
     }
     
-    public static function create_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+    public static function create_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
       
+      if (empty($language_code)) $language_code = language::$selected['code'];
+      
+    // Parse link
       if ($document === null) {
-        $document = parse_url(self::get_base_link(), PHP_URL_PATH);
-        $inherit_params = true;
+        $parsed_link = self::explode_link(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        if ($inherit_params === null) $inherit_params = true;
+        
       } else if ($document == '') {
-        $document = parse_url(self::get_base_link(), PHP_URL_PATH);
+        $parsed_link = self::explode_link(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        
       } else if (substr($document, 0, 4) == 'http' || strpos($document, '?') !== false) {
-        $base_link = self::parse_link($document);
+        $parsed_link = self::explode_link($document);
+        
       } else {
-        $base_link = array(
+        $parsed_link = array(
           'path' => self::fullpath($document),
           'query' => array(),
         );
       }
       
-      if (empty($base_link['path'])) $base_link['path'] = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
-      while (strpos($base_link['path'], '//')) $base_link['path'] = str_replace('//', '/', $base_link['path']);
+    // Clean any double slashes
+      while (strpos($parsed_link['path'], '//')) $parsed_link['path'] = str_replace('//', '/', $parsed_link['path']);
       
+    // Remove index file from links
+      $parsed_link['path'] = preg_replace('#/(index\.(asp|html|php))$#', '', $parsed_link['path']);
+      
+    // Set params that are inherited from the current page
       if ($inherit_params === true) {
-        $base_link['query'] = $_GET;
-      }
-      
-      if (is_array($inherit_params)) {
+        $parsed_link['query'] = $_GET;
+      } else if (is_array($inherit_params)) {
         foreach ($_GET as $key => $value) {
           if (in_array($key, $inherit_params)) {
-            $base_link['query'][$key] = $value;
+            $parsed_link['query'][$key] = $value;
           }
         }
       }
       
+    // Unset params that are to be skipped from the link
       if (is_string($skip_params)) $skip_params = array($skip_params);
       foreach ($skip_params as $key) {
-        if (isset($base_link['query'][$key])) unset($base_link['query'][$key]);
+        if (isset($parsed_link['query'][$key])) unset($parsed_link['query'][$key]);
       }
       
+    // Set new params (overwrites any existing inherited params)
       foreach ($new_params as $key => $value) {
-        $base_link['query'][$key] = $value;
+        $parsed_link['query'][$key] = $value;
       }
       
-      $link = self::unparse_link($base_link);
+    // Glue link
+      $link = self::implode_link($parsed_link);
       
-      if (class_exists('seo_links', false) && !empty(seo_links::$enabled)) {
-        $seo_link = seo_links::link($link, $language_code);
+    // Process catalog links
+      if (empty($parsed_link['host']) || $parsed_link['host'] == preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) {
+        if (preg_match('#^('. WS_DIR_HTTP_HOME .'.*)#', $parsed_link['path'])) {
+          if (class_exists('route', false)) {
+            if ($rewritten_link = route::rewrite($link, $language_code)) {
+              $link = $rewritten_link;
+            }
+          }
+        }
       }
-      
-      $link = !empty($seo_link) ? $seo_link : $link;
       
       return $link;
     }
     
     public static function full_link($link) {
       
-      $parts = self::parse_link($link);
-      $link = self::unparse_link($parts);
+      $parts = self::explode_link($link);
+      $link = self::implode_link($parts);
       
       return $link;
     }
     
     public static function relpath($link) {
-      $parts = self::parse_link($link);
+      $parts = self::explode_link($link);
       
       if (substr($parts['path'], 0, strlen(WS_DIR_HTTP_HOME)) == WS_DIR_HTTP_HOME) $parts['path'] = substr($parts['path'], strlen(WS_DIR_HTTP_HOME));
       
@@ -119,7 +135,7 @@
       
       $path = $dir . $path;
      
-    // relative path to absolute
+    // Relative path to absolute
       if (strpos($path, '..') !== false) {
         $parts = array_filter(explode('/', $path), 'strlen');
         $absolutes = array();
@@ -134,13 +150,13 @@
         $path = '/' . implode('/', $absolutes);
       }
       
-    // remove duplicate slashes
+    // Remove duplicate slashes
       while(strpos($path, '//') === true) str_replace('//', '/', $path);
       
       return $path;
     }
     
-    public static function parse_link($link='') {
+    public static function explode_link($link='') {
       
       $parts = parse_url($link);
       
@@ -187,7 +203,7 @@
       return $parts;
     }
     
-    public static function unparse_link($parts=array()) {
+    public static function implode_link(array$parts) {
       
       if (empty($parts['host'])) {
         $parts['scheme'] = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';

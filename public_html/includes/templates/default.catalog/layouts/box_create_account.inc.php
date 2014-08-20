@@ -60,7 +60,7 @@
       if ($(this).val() == '') return;
       $('body').css('cursor', 'wait');
       $.ajax({
-        url: '<?php echo document::link(WS_DIR_AJAX .'get_address.json.php'); ?>?trigger='+$(this).attr('name'),
+        url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
         type: 'post',
         data: $(this).closest('form').serialize(),
         cache: false,
@@ -88,7 +88,7 @@
       if ($(this).val() == '') return;
       $('body').css('cursor', 'wait');
       $.ajax({
-        url: '<?php echo document::link(WS_DIR_AJAX .'get_address.json.php'); ?>?trigger='+$(this).attr('name'),
+        url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
         type: 'post',
         data: $(this).closest('form').serialize(),
         cache: false,

@@ -54,7 +54,7 @@
           functions::draw_fancybox('', array(
             'centerOnScroll' => true,
             'hideOnContentClick' => true,
-            'href' => document::link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
+            'href' => document::ilink('select_region', array('redirect' => $_SERVER['REQUEST_URI'])),
             //'modal' => true,
             'speedIn' => 600,
             'transitionIn' => 'fade',
@@ -189,7 +189,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::link(WS_DIR_HTTP_HOME));
+        header('Location: ' . document::ilink(''));
         exit;
       }
     }
@@ -227,7 +227,7 @@
         limit 1;"
       );
       
-      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::link(WS_DIR_HTTP_HOME)), language::translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
+      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::ilink('')), language::translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
       
       functions::email_send(
         settings::get('store_email'),
@@ -318,7 +318,7 @@
         setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
       }
       
-      if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_HTTP_HOME);
+      if (empty($redirect_url)) $redirect_url = document::ilink('');
       
       notices::add('success', str_replace(array('%firstname', '%lastname'), array(self::$data['firstname'], self::$data['lastname']), language::translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
       header('Location: '. $redirect_url);

@@ -9,7 +9,7 @@
   );
   while ($category = database::fetch($categories_query)) {
     $output .= '  <url>' . PHP_EOL
-             . '    <loc>'. htmlspecialchars(document::link(WS_DIR_HTTP_HOME . 'category.php', array('category_id' => $category['id']))) .'</loc>' . PHP_EOL
+             . '    <loc>'. document::href_ilink('category', array('category_id' => $category['id'])) .'</loc>' . PHP_EOL
              . '    <lastmod>'. date('Y-m-d', strtotime($category['date_updated'])) .'</lastmod>' . PHP_EOL
              . '    <changefreq>weekly</changefreq>' . PHP_EOL
              . '    <priority>1.0</priority>' . PHP_EOL
@@ -23,7 +23,7 @@
   );
   while ($product = database::fetch($products_query)) {
     $output .= '  <url>' . PHP_EOL
-             . '    <loc>'. htmlspecialchars(document::link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product['id']))) .'</loc>' . PHP_EOL
+             . '    <loc>'. document::href_ilink('product', array('product_id' => $product['id'])) .'</loc>' . PHP_EOL
              . '    <lastmod>'. date('Y-m-d', strtotime($product['date_updated'])) .'</lastmod>' . PHP_EOL
              . '    <changefreq>weekly</changefreq>' . PHP_EOL
              . '    <priority>0.8</priority>' . PHP_EOL

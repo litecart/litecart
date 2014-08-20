@@ -8,7 +8,7 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
-  breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::link());
+  breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
   
   document::$snippets['title'][] = language::translate('title_checkout', 'Checkout');
   //document::$snippets['keywords'] = '';
@@ -40,7 +40,7 @@
     if (console) console.log("Refreshing cart");
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_cart.html'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -62,7 +62,7 @@
   function refreshCustomer() {
     if (console) console.log("Refreshing customer");
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_customer.html'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -84,7 +84,7 @@
   function refreshShipping() {
     if (console) console.log("Refreshing shipping");
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_shipping.html'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -106,7 +106,7 @@
   function refreshPayment() {
     if (console) console.log("Refreshing payment");
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_payment.html'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -129,7 +129,7 @@
     if (console) console.log("Refreshing summary");
     var comments = $('textarea[name=comments]').val();
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_summary.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_summary.html'); ?>',
       data: false,
       type: 'get',
       cache: false,
@@ -158,7 +158,7 @@
     $('body').css('cursor', 'wait');
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_cart.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_cart.html'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
@@ -226,7 +226,7 @@
     clearTimeout(timerSubmitCustomer);
     $('*').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_customer.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_customer.html'); ?>',
       data: $(this).serialize()+'&set_addresses=true',
       type: 'post',
       cache: false,
@@ -264,7 +264,7 @@
     $('*').css('cursor', 'wait');
     $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_shipping.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_shipping.html'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
@@ -295,7 +295,7 @@
     $('*').css('cursor', 'wait');
     $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_payment.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_payment.html'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
@@ -326,7 +326,7 @@
     $('*').css('cursor', 'wait');
     $('#checkout-comments-wrapper').fadeTo('slow', 0.25);
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_AJAX .'checkout_comments.html.php'); ?>',
+      url: '<?php echo document::ilink('ajax/checkout_comments.html'); ?>',
       data: $(this).serialize(),
       type: 'post',
       cache: false,
@@ -349,5 +349,5 @@
   });
 </script>
 <?php
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>
