@@ -1,4 +1,3 @@
-
 html, body {
   margin: 0px;
   padding: 0px;
@@ -35,7 +34,7 @@ body {
 #logotype-wrapper {
   display: inline-block;
   position: absolute;
-  top: 10px;
+  top: 15px;
   left: 0px;
 }
 
@@ -100,6 +99,11 @@ body {
   padding: 0px 4px;
   cursor: default;
 }
+@media (max-width: 640px) { /* WVGA 480x800 and lower */
+  #region-wrapper {
+    display: none;
+  }
+}
 
 #cart-wrapper {
   position: absolute;
@@ -125,6 +129,11 @@ body {
   white-space: nowrap;
   vertical-align: middle;
 }
+@media (max-width: 640px) { /* WVGA 480x800 and lower */
+  #cart > a.content {
+    display: none;
+  }
+}
 
 #site-menu-wrapper {
   position: relative;
@@ -134,6 +143,11 @@ body {
 }
 #site-menu {
   /* see site_menu.css */
+}
+@media (max-width: 640px) {
+  #site-menu-wrapper {
+    display: none;
+  }
 }
 
 #site-links {
@@ -154,34 +168,46 @@ body {
 #main-wrapper {
   margin-bottom: 20px;
   min-height: 400px;
-}
-#main tr > .top > *:first-child {
-  margin-bottom: 20px;
-}
-#main tr > .left > * {
-  margin-right: 20px;
-}
-#main tr > .content {
   width: 100%;
 }
-#main tr > .right > *:first-child {
-  margin-right: 20px;
+
+#main .middle {
+
 }
-#main tr > .bottom > *:first-child {
-  margin-top: 20px;
+#main .middle > .left, #main .middle  > .content {
+  display: table-cell;
+  vertical-align: top;
+  /*border: 1px #f00 solid;*/
+}
+#main .middle  > .content {
+  width: 100%;
+}
+#main .middle  > .left > * {
+  margin-right: 20px;
 }
 
 @media (max-width: 640px) {
-  #main tr > .left {
-    display: none;
+  #main .middle > .left {
+    display: block;
+    vertical-align: top;
+    margin-right: 0px;
   }
-  #main tr > .right {
-    display: none;
+  #main .middle > .left > * {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    margin-right: 0px;
+  }
+  #main .middle  > .left > *:last-child {
+    margin-bottom: 20px;
+  }
+  #main .middle > .content {
+    display: block;
+    vertical-align: top;
   }
 }
 
 #breadcrumbs-wrapper {
-  width: 50%;
   overflow: hidden;
 }
 #breadcrumbs {
@@ -245,6 +271,9 @@ body {
   #footer tr > .manufacturers {
     display: none;
   }
+  #footer tr > .account {
+    display: none;
+  }
 }
 
 #copyright p {
@@ -259,15 +288,16 @@ body {
   height: 40px;
   opacity: 0.3;
   position: fixed;
-  bottom: 50px;
-  right: 100px;
+  bottom: 5%;
+  right: 5%;
   display: none;
   text-indent: -9999px;
   background: url('../images/scroll_up.png') no-repeat;
 }
 
 #cookies-acceptance-wrapper {
-  background: #ccc;
+  border: 1px #ddd solid;
+  margin-bottom: 20px;
 }
 #cookies-acceptance {
   text-align: center;

@@ -1,3 +1,22 @@
+<?php
+// Cookie acceptance - By EU law
+  if (empty($_COOKIE['cookies_accepted'])) {
+    if (!isset(document::$snippets['top'])) document::$snippets['top'] = '';
+    document::$snippets['top'] =  '<div id="cookies-acceptance-wrapper">' . PHP_EOL
+                                . '  <div id="cookies-acceptance" class="twelve-eighty">' . PHP_EOL
+                                . '    ' . language::translate('terms_cookies_acceptance', 'We rely on cookies to provide our services. By using our services, you agree to our use of cookies.') .' '. functions::form_draw_button('accept_cookies', language::translate('title_ok', 'OK'), 'button') . PHP_EOL
+                                . '  </div>' . PHP_EOL
+                                . '</div>' . PHP_EOL
+                                . '<script src="'. WS_DIR_EXT .'jquery/jquery.cookie.min.js"></script>' . PHP_EOL
+                                . '<script>' . PHP_EOL
+                                . '  $("button[name=\'accept_cookies\']").click(function(){' . PHP_EOL
+                                . '    $("#cookies-acceptance-wrapper").fadeOut();' . PHP_EOL
+                                . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
+                                . '  });' . PHP_EOL
+                                . '</script>'
+                                . document::$snippets['top'];
+  }
+?>
 <!DOCTYPE html>
 <html lang="{snippet:language}">
 <head>
@@ -17,7 +36,7 @@
 <!--snippet:javascript-->
 <script>
   if (/iphone|ipod|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(navigator.userAgent.toLowerCase())) {
-    $("meta[name='viewport']").attr("content", "width=640");
+    $("meta[name='viewport']").attr("content", "width=320");
   }
 </script>
 <style>
@@ -71,34 +90,22 @@
     
     <div id="main-wrapper" class="twelve-eighty">
       <div id="main">
-        <table style="width: 100%;">
-          <tr>
-            <td colspan="3" class="top">
-              <!--snippet:notices-->
-              <!--snippet:top-->
-            </td>
-          </tr>
-          <tr>
-            <td class="left" style="vertical-align: top;">
-              <!--snippet:column_left-->
-            </td>
-            <td class="content" style="vertical-align: top;">
-              <div id="content-wrapper">
-                <div id="content" class="">
-                  <!--snippet:content-->
-                </div>
-              </div>
-            </td>
-            <td class="right" style="vertical-align: top;">
-              <!--snippet:column_right-->
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3" class="bottom">
-              <!--snippet:bottom-->
-            </td>
-          </tr>
-        </table>
+      
+        <div class="top">
+          <!--snippet:notices-->
+          <!--snippet:top-->
+        </div>
+        
+        <div class="middle">
+          
+          <div class="left">
+            <!--snippet:column_left-->
+          </div>
+          
+          <div class="content">
+            <!--snippet:content-->
+          </div>
+        </div>
       </div>
     </div>
   </div>

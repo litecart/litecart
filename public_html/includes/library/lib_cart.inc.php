@@ -67,8 +67,8 @@
     public static function load() {
       if (empty(customer::$data['id'])) return;
       
-      $cache_id = cache::cache_id('cart_'.customer::$data['id']);
-      $cart_data = cache::get($cache_id, 'file', 60*60*24*365);
+      $cart_cache_id = cache::cache_id('cart_'.customer::$data['id']);
+      $cart_data = cache::get($cart_cache_id, 'file', 60*60*24*365);
       
       if (empty($cart_data)) return;
       
@@ -262,7 +262,7 @@
         }
       }
       
-      if (isset(self::$data['items'][$item_key]) && $options == self::$data['items'][$item_key]['options']) {
+      if (isset(self::$data['items'][$item_key])) {
         
         self::update($item_key, self::$data['items'][$item_key]['quantity'] + $quantity);
         

@@ -59,10 +59,13 @@
             }
           echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
         }
-        if (file_exists('upgrade_patches/'. $version .'.inc.php')) {
-          echo '<p>Upgrading system to '. $version .'... ';
-          include('upgrade_patches/'. $version .'.inc.php');
-          echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+        
+        if (empty($_POST['database_only'])) {
+          if (file_exists('upgrade_patches/'. $version .'.inc.php')) {
+            echo '<p>Upgrading system to '. $version .'... ';
+            include('upgrade_patches/'. $version .'.inc.php');
+            echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+          }
         }
       }
     }
@@ -92,6 +95,9 @@
           <?php foreach ($supported_versions as $version) echo '<option>'. $version .'</option>' . PHP_EOL; ?>
         </select>
       </td>
+    </tr>
+    <tr>
+      <td><label><input type="checkbox" name="database_only" value="1" /> Database Upgrades Only</label><br />(Use this option if your files are already up to date but have an old database.)</td>
     </tr>
   </table>
   <p><input type="submit" name="upgrade" value="Upgrade To <?php echo PLATFORM_VERSION; ?>" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" /></p>

@@ -3,8 +3,8 @@
   
   functions::draw_fancybox('a.fancybox');
   
-  $cache_id = cache::cache_id('box_similar_products', array('get', 'language', 'currency', 'prices'));
-  if (cache::capture($cache_id, 'file')) {
+  $box_similar_products_cache_id = cache::cache_id('box_similar_products', array('get', 'language', 'currency', 'prices'));
+  if (cache::capture($box_similar_products_cache_id, 'file')) {
     
     $product_groups = array();
     if ($product->product_group_ids) {
@@ -30,7 +30,7 @@
       'exclude_products' => $product->id,
       'keywords' => $keywords,
       'sort' => 'occurrences',
-      'limit' => 8,
+      'limit' => 10,
     ));
     
     if (database::num_rows($products_query) == 0) return;

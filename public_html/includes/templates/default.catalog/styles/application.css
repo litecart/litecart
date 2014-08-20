@@ -43,23 +43,6 @@ h4, h5, h6{
   color: #333;
 }
 
-#slider-wrapper {
-  position: relative;
-  margin-bottom: 20px;
-  padding: 0px;
-  background: #fff;
-}
-
-#logotypes-wrapper {
-  margin-bottom: 20px;
-}
-#logotypes {
-  height: 35px;
-  text-align: center;
-  font: 0px;
-  overflow: hidden;
-}
-
 aside {
   width: 200px;
   padding: 20px;

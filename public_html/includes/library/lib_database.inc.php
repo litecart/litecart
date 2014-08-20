@@ -73,7 +73,7 @@
         
       // Check if duration was way too long
         if ($execution_time_duration > 1) {
-          error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.');
+          error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.' . PHP_EOL, 0, FS_DIR_HTTP_ROOT . WS_DIR_DATA .'performance.log');
         }
         
         stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
@@ -203,7 +203,7 @@
       
     // Check if duration was way too long
       if ($execution_time_duration > 3) {
-        error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query));
+        error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 0, FS_DIR_HTTP_ROOT . WS_DIR_DATA .'performance.log');
       }
       
       stats::set('database_queries', stats::get('database_queries') + 1);

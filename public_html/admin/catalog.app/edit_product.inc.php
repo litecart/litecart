@@ -780,7 +780,7 @@ foreach (currency::$currencies as $currency) {
             <td align="left" nowrap="nowrap"><a class="add" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a><?php echo functions::form_draw_hidden_field('options['.$key.'][id]', true); ?></td>
             <td align="left" nowrap="nowrap"><?php echo functions::form_draw_option_groups_list('options['.$key.'][group_id]', true); ?></td>
             <td align="left" nowrap="nowrap"><?php echo functions::form_draw_option_values_list($_POST['options'][$key]['group_id'], 'options['.$key.'][value_id]', true); ?></td>
-            <td align="left" nowrap="nowrap"><?php echo functions::form_draw_select_field('options['.$key.'][price_operator]', array('+','*'), $_POST['options'][$key]['price_operator'], false, 'data-size="auto"'); ?></td>
+            <td align="left" nowrap="nowrap"><?php echo functions::form_draw_select_field('options['.$key.'][price_operator]', array('+','%','*'), $_POST['options'][$key]['price_operator'], false, 'data-size="auto"'); ?></td>
             <td align="left" nowrap="nowrap"><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'options['.$key.']['.settings::get('store_currency_code').']', true); ?></td>
 <?php
       foreach (array_keys(currency::$currencies) as $currency_code) {

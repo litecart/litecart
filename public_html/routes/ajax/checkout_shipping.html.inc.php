@@ -55,7 +55,7 @@
 ?>
       <li class="option<?php echo ($module['id'].':'.$option['id'] == $shipping->data['selected']['id']) ? ' selected' : false; ?>">
       <?php echo functions::form_draw_form_begin('shipping_form') . functions::form_draw_hidden_field('selected_shipping', $module['id'].':'.$option['id'], $shipping->data['selected']['id']); ?>
-        <div class="icon"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING'); ?>" width="160" height="60" /></div>
+        <div class="icon-wrapper"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 70, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" /></div>
         <div class="title"><?php echo $module['title']; ?></div>
         <div class="name"><?php echo $option['name']; ?></div>
         <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
