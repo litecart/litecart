@@ -99,5 +99,5 @@
   }
   
   $page = new view();
-  echo $page->stitch('file', 'box_create_account');
+  echo $page->stitch('box_create_account');
 ?>

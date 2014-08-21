@@ -1,6 +1,6 @@
 <?php
   $box_customer_service_links_cache_id = cache::cache_id('box_customer_service_links', array('language'));
-  if (cache::capture($information_links_cache_id, 'file')) {
+  if (cache::capture($box_customer_service_links_cache_id, 'file')) {
     
     $box_customer_service_links = new view();
     
@@ -27,7 +27,7 @@
       );
     }
     
-    echo $box_customer_service_links->stitch('file', 'box_information_links');
+    echo $box_customer_service_links->stitch('box_information_links');
     
     cache::end_capture($box_customer_service_links_cache_id);
   }

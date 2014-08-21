@@ -47,7 +47,7 @@
 #site-menu ul li a {
 	display: block;
 	margin: 0px;
-  font-size: 12px; /* Recover from inline spacing */
+  font-size: 13px; /* Recover from inline spacing */
 	padding: 10px 15px;
 	text-decoration: none;
   color: #777;

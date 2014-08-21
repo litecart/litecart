@@ -11,5 +11,5 @@
   if (!empty($_POST['lost_password'])) customer::password_reset($_POST['email']);
   
   $page = new view();
-  echo $page->stitch('file', 'box_login');
+  echo $page->stitch('box_login');
 ?>

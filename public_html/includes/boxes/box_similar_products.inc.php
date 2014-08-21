@@ -43,8 +43,8 @@
       $box_similar_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
     }
     
-    echo $box_similar_products->stitch('file', 'box_similar_products');
+    echo $box_similar_products->stitch('box_similar_products');
     
-    cache::end_capture($cache_id);
+    cache::end_capture($box_similar_products_cache_id);
   }
 ?>

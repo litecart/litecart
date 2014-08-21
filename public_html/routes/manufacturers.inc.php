@@ -31,7 +31,7 @@
       );
     }
     
-    echo $page->stitch('file', 'box_manufacturers');
+    echo $page->stitch('box_manufacturers');
     
     cache::end_capture($box_manufacturers_cache_id);
   }

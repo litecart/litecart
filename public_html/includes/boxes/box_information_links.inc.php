@@ -13,6 +13,7 @@
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
     );
+    
     while ($page = database::fetch($pages_query)) {
       $box_information_links->snippets['pages'][] = array(
         'id' => $page['id'],
@@ -21,7 +22,7 @@
       );
     }
     
-    echo $box_information_links->stitch('file', 'box_information_links');
+    echo $box_information_links->stitch('box_information_links');
     
     cache::end_capture($box_information_links_cache_id);
   }

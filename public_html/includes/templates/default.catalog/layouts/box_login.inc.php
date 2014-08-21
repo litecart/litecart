@@ -2,7 +2,7 @@
   <div class="heading"><h1><?php echo language::translate('title_login', 'Login'); ?></h1></div>
   <div class="content">
     <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
-    <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::ilink('')); ?>
+    <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::ilink('login')); ?>
       <table>
         <tr>
           <td><?php echo language::translate('title_email_address', 'E-mail Address'); ?> <span class="required">*</span><br />

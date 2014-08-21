@@ -9,13 +9,13 @@
 // Stitch content
   $page = new view();
   $page->snippets = array('content' => $content);
-  $output = $page->stitch('file', document::$layout);
+  $output = $page->stitch(document::$layout);
   
 // Prepare output
   system::run('prepare_output');
   $page->snippets = document::$snippets;
   $page->html = $output;
-  $output = $page->stitch('string');
+  $output = $page->stitch();
   
 // Run before output processes
   system::run('before_output');

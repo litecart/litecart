@@ -260,5 +260,5 @@
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');
   $page->snippets['box_also_purchased_products'] = ob_get_clean();
   
-  echo $page->stitch('file', 'product');
+  echo $page->stitch('product');
 ?>

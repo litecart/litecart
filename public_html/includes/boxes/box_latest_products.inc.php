@@ -6,20 +6,16 @@
   
     $products_query = functions::catalog_products_query(array('sort' => 'date', 'limit' => 10));
     if (database::num_rows($products_query)) {
-?>
-<div class="box" id="box-latest-products">
-  <div class="heading"><h3><?php echo language::translate('title_latest_products', 'Latest Products'); ?></h3></div>
-  <div class="content">
-    <ul class="listing-wrapper products">
-<?php
+    
+      $box_latest_products = new view();
+      
+      $box_latest_products->snippets['products'] = '';
+      
       while ($listing_product = database::fetch($products_query)) {
-        echo functions::draw_listing_product($listing_product, 'column');
+        $box_latest_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
       }
-?>
-    </ul>
-  </div>
-</div>
-<?php
+      
+      echo $box_latest_products->stitch('box_latest_products');
     }
     
     cache::end_capture($box_latest_products_cache_id);

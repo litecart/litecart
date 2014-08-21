@@ -37,5 +37,5 @@
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_latest_products.inc.php');
   $page->snippets['box_latest_products'] = ob_get_clean();
   
-  echo $page->stitch('file', 'page_index');
+  echo $page->stitch('page_index');
 ?>

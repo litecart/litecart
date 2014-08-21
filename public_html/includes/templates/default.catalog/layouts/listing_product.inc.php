@@ -1,7 +1,7 @@
 <?php if ($listing_type == 'column') { ?>
   <li class="product column shadow hover-light">
     <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
-      <div class="image" style="position: relative;">
+      <div class="image-wrapper" style="position: relative;">
         <img src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" width="100" />
         <?php echo $sticker; ?>
       </div>
@@ -9,7 +9,7 @@
       <div class="manufacturer"><?php echo $manufacturer_name ? $manufacturer_name : '&nbsp;'; ?></div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
-        <s class="regular-price"><?php echo $price; ?></s> <strong class="campaign-price"><?php $campaign_price; ?></strong>
+        <s class="regular-price"><?php echo $price; ?></s> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
         <?php } else { ?>
         <span class="price"><?php echo $price; ?></span>
         <?php } ?>
@@ -22,7 +22,7 @@
 <?php } else if ($listing_type == 'row') { ?>
   <li class="product row shadow hover-light">
     <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
-      <div class="image" style="position: relative;">
+      <div class="image-wrapper" style="position: relative;">
         <img src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" width="100" />
         <?php echo $sticker; ?>
       </div>
@@ -31,7 +31,7 @@
       <div class="description"><?php echo $short_description; ?></div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
-        <s class="regular-price"><?php echo $price; ?></s> <strong class="campaign-price"><?php $campaign_price; ?></strong>
+        <s class="regular-price"><?php echo $price; ?></s> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
         <?php } else { ?>
         <span class="price"><?php echo $price; ?></span>
         <?php } ?>

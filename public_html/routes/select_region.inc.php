@@ -41,7 +41,7 @@
   }
   
   $page = new view();
-  echo $page->stitch('file', 'box_select_region');
+  echo $page->stitch('box_select_region');
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

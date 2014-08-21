@@ -1,22 +1,32 @@
 <?php
-  $manufacturers_query = database::query(
-    "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
-    where status
-    and image != ''
-    order by rand();"
-  );
   
-  if (database::num_rows($manufacturers_query) == 0) return;
-  
-?>
-<div id="box-logotypes">
-  <div class="content">
-    <ul class="list-horizontal">
-<?php
-  while($manufacturer = database::fetch($manufacturers_query)) {
-    echo '      <li><a href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])) .'"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30, 'FIT') .'" alt="" title="'. $manufacturer['name'] .'" style="margin: 0px 15px;"></a></li>' . PHP_EOL;
+  $box_logotypes_cache_id = cache::cache_id('box_logotypes', array());
+  if (cache::capture($box_logotypes_cache_id, 'file')) {
+    
+    $manufacturers_query = database::query(
+      "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
+      where status
+      and image != ''
+      order by rand();"
+    );
+    
+    if (database::num_rows($manufacturers_query)) {
+      
+      $box_logotypes = new view();
+      
+      $box_logotypes->snippets['logotypes'] = array();
+      
+      while ($manufacturer = database::fetch($manufacturers_query)) {
+        $box_logotypes->snippets['logotypes'][] = array(
+          'title' => $manufacturer['name'],
+          'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
+          'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30, 'FIT'),
+        );
+      }
+
+      echo $box_logotypes->stitch('box_logotypes');
+    }
+    
+    cache::end_capture($box_logotypes_cache_id);
   }
 ?>
-    </ul>
-  </div>
-</div>

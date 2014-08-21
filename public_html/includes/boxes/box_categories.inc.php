@@ -1,19 +1,20 @@
 <?php
-  $categories_query = functions::catalog_categories_query();
-  if (database::num_rows($categories_query) > 0) {
-?>
-<div class="box" id="box-categories">
-  <div class="heading"><h3><?php echo language::translate('title_categories', 'Categories'); ?></h3></div>
-  <div class="content">
-    <ul class="listing-wrapper categories">
-<?php
-    while ($category = database::fetch($categories_query)) {
-      echo functions::draw_listing_category($category);
+  $box_categories_cache_id = cache::cache_id('box_categories', array('language'));
+  if (cache::capture($box_categories_cache_id, 'file')) {
+    
+    $categories_query = functions::catalog_categories_query();
+    if (database::num_rows($categories_query)) {
+      
+      $box_categories = new view();
+      
+      $box_categories->snippets['categories'] = '';
+      
+      while ($category = database::fetch($categories_query)) {
+        $box_categories->snippets['categories'] .= functions::draw_listing_category($category);
+      }
+      
+      echo $box_categories->stitch('box_categories');
     }
-?>
-    </ul>
-  </div>
-</div>
-<?php
+    cache::end_capture($box_categories_cache_id);
   }
 ?>

@@ -52,7 +52,7 @@
   <div id="page">
     
     <div id="site-menu-wrapper">
-      <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
+      <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
     </div>
     
     <div id="main-wrapper" class="twelve-eighty">

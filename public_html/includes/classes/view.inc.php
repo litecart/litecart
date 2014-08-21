@@ -8,16 +8,19 @@
       $html = $this->_process_view($file, $snippets);
     }
     
-    public function stitch($type, $view=null) {
+    
+    public function stitch($view=null) {
       
       if ($view !== null) {
         $file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/layouts/'. $view .'.inc.php';
         $this->html = $this->_process_view($file, $this->snippets);
       }
       
+      if (empty($this->html)) return;
+      
     // Compatibility with old snippets syntax
       if (!empty($this->snippets)) {
-        if (preg_match_all('/(<!--snippet:.*-->|\{\$.*\}|\{snippet:.*\})/', $this->html, $matches)) {
+        if (preg_match_all('/(<!--snippet:[^-->]+-->|\{\$[^\}]+\}|\{snippet:[^\}]+\})/', $this->html, $matches)) {
           
           $matches[0] = array_unique($matches[0]);
           foreach ($matches[0] as $match) {

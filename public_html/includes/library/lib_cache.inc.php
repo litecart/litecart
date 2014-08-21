@@ -139,6 +139,12 @@
           case 'customer':
             $dependants_string .= serialize(customer::$data);
             break;
+          case 'region':
+            $dependants_string .= customer::$data['country_code'] . customer::$data['zone_code'];
+            break;
+          case 'login':
+            $dependants_string .= customer::$data['id'];
+            break;
           case 'host':
             $dependants_string .= $_SERVER['HTTP_HOST'];
             break;

@@ -6,19 +6,16 @@
   
   function draw_listing_category($category) {
     
-    $output = '<li class="category shadow hover-light">' . PHP_EOL
-            . '  <a class="link" href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'" title="'. htmlspecialchars($category['name']) .'">' . PHP_EOL
-            . '    <div class="image" style="position: relative;">' . PHP_EOL
-            . '    <img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP') .'" width="340" height="180" alt="'. htmlspecialchars($category['name']) .'" />' . PHP_EOL
-            . '      <div class="footer" style="position: absolute; bottom: 0;">' . PHP_EOL
-            . '        <div class="title">'. $category['name'] .'</div>' . PHP_EOL
-            . '        <div class="description">'. $category['short_description'] .'</div>' . PHP_EOL
-            . '      </div>' . PHP_EOL
-            . '    </div>' . PHP_EOL
-            . '  </a>' . PHP_EOL
-            . '</li>' . PHP_EOL;
+    $list_item = new view();
     
-    return $output;
+    $list_item->snippets = array(
+      'name' => $category['name'],
+      'link' => document::ilink('category', array('category_id' => $category['id'])),
+      'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP'),
+      'short_description' => $category['short_description'],
+    );
+    
+    return $list_item->stitch('listing_category');
   }
   
   function draw_listing_product_column($product) {
@@ -56,7 +53,7 @@
       'preview_icon' => WS_DIR_IMAGES .'icons/16x16/preview.png',
     );
     
-    return $list_item->stitch('file', 'listing_product');
+    return $list_item->stitch('listing_product');
   }
   
   function draw_fancybox($selector='a.fancybox', $params=array()) {
@@ -200,7 +197,7 @@
       'active' => false,
     );
     
-    $html = $pagination->stitch('file', 'pagination');
+    $html = $pagination->stitch('pagination');
     
     return $html;
   }

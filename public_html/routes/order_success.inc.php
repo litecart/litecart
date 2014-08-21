@@ -41,5 +41,5 @@
     'payment_reciept' => $payment->run('receipt'),
   );
   
-  echo $page->stitch('file', 'box_order_success's);
+  echo $page->stitch('box_order_success's);
 ?>

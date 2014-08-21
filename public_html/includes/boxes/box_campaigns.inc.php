@@ -1,8 +1,8 @@
 <?php
   functions::draw_fancybox('a.fancybox');
   
-  $cache_id = cache::cache_id('box_campaigns', array('language', 'currency', 'prices'));
-  if (cache::capture($cache_id, 'file')) {
+  $box_campaigns_cache_id = cache::cache_id('box_campaigns', array('language', 'currency', 'prices'));
+  if (cache::capture($box_campaigns_cache_id, 'file')) {
     
     $box_campaigns = new view();
     
@@ -15,8 +15,8 @@
       $box_campaigns->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
     }
     
-    echo $box_campaigns->stitch('file', 'box_campaigns');
+    echo $box_campaigns->stitch('box_campaigns');
     
-    cache::end_capture($cache_id);
+    cache::end_capture($box_campaigns_cache_id);
   }
 ?>

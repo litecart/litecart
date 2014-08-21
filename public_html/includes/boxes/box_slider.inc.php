@@ -16,28 +16,21 @@
     );
     
     if (database::num_rows($slides_query)) {
-?>
-
-<div id="slider-wrapper" class="theme-default shadow">
-  <div id="slider" class="nivoSlider">
-<?php
-  while ($slide = database::fetch($slides_query)) {
-    if (!empty($slide['link'])) {
-      echo '    <a href="'. htmlspecialchars($slide['link']) .'"><img src="'. WS_DIR_IMAGES . $slide['image'] .'" alt="" title="'. $slide['caption'] .'" /></a>' . PHP_EOL;
-    } else {
-      echo '    <img src="'. WS_DIR_IMAGES . $slide['image'] .'" alt="" title="'. htmlspecialchars($slide['caption']) .'" />' . PHP_EOL;
-    }
-  }
-?>
-  </div>
-</div>
-<script>
-  $('.nivoSlider').nivoSlider({
-    controlNav: false,
-    pauseTime: 5000     // How long each slide will show in milliseconds
-  });
-</script>
-<?php
+    
+      $box_slider = new view();
+      
+      $box_slider->snippets['slides'] = array();
+      
+      while ($slide = database::fetch($slides_query)) {
+        $box_slider->snippets['slides'][] = array(
+          'link' => $slide['link'],
+          'image' => WS_DIR_IMAGES . $slide['image'],
+          'caption' => $slide['caption'],
+        );
+      }
+      
+      echo $box_slider->stitch('box_slider');
+      
     }
     
     cache::end_capture($box_slider_cache_id);

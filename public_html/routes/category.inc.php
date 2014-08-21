@@ -101,7 +101,7 @@
     
     $page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
     
-    echo $page->stitch('file', 'box_category');
+    echo $page->stitch('box_category');
     
     cache::end_capture($category_cache_id);
   }

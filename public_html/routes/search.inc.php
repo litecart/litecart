@@ -107,7 +107,7 @@
       
       $page_items = 0;
       while ($listing_product = database::fetch($products_query)) {
-        echo functions::draw_listing_product_column($listing_product);
+        echo functions::draw_listing_product($listing_product, 'column');
         
         if (++$page_items == settings::get('items_per_page')) break;
       }

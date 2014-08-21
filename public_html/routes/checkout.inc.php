@@ -16,23 +16,23 @@
 ?>
 
 <div id="checkout-cart-wrapper">
-  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_cart.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'routes/ajax/checkout_cart.html.inc.php'); ?>
 </div>
 
 <div id="checkout-customer-wrapper">
-  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_customer.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '/routes/ajax/checkout_customer.html.inc.php'); ?>
 </div>
 
 <div id="checkout-shipping-wrapper">
-  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_shipping.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '/routes/ajax/checkout_shipping.html.inc.php'); ?>
 </div>
 
 <div id="checkout-payment-wrapper">
-  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_payment.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '/routes/ajax/checkout_payment.html.inc.php'); ?>
 </div>
 
 <div id="checkout-summary-wrapper">
-  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_AJAX . 'checkout_summary.html.php'); ?>
+  <?php include_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '/routes/ajax/checkout_summary.html.inc.php'); ?>
 </div>
 
 <script>
