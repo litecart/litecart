@@ -112,7 +112,7 @@
       $customer_modules = new mod_customer();
       $customer_modules->after_save($this);
       
-      cache::set_breakpoint();
+      cache::clear_cache('customers');
     }
     
     public function set_password($password) {
@@ -145,9 +145,9 @@
         limit 1;"
       );
       
-      $this->data['id'] = null;
+      cache::clear_cache('customers');
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
   }
 

@@ -107,7 +107,7 @@
         limit 1;"
       );
       
-      cache::set_breakpoint();
+      cache::clear_cache('languages');
     }
     
     public function delete() {
@@ -139,9 +139,9 @@
         );
       }
       
-      $this->data['id'] = null;
+      cache::clear_cache('languages');
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
   }
 

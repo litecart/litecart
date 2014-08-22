@@ -1,5 +1,5 @@
 <?php
-  if (!in_array(link::relpath($_SERVER['SCRIPT_NAME']), array('index.php', 'categories.php', 'manufacturers.php', 'product.php', 'search.php'))) return;
+  if (in_array(basename(route::$route), array('index', 'categories', 'manufacturers', 'product', 'search'))) return;
   
   $box_manufacturers_list_cache_id = cache::cache_id('box_manufacturers_list', array('language'));
   if (cache::capture($box_manufacturers_list_cache_id, 'file')) {
@@ -24,7 +24,7 @@
       
       $box_manufacturers_list->snippets['options'] = $options;
       
-      echo $box_manufacturers_list->stitch();
+      echo $box_manufacturers_list->stitch('box_manufacturers_list');
     }
     
     cache::end_capture($box_manufacturers_list_cache_id);

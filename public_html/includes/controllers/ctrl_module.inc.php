@@ -65,7 +65,7 @@
         limit 1;"
       );
       
-      cache::set_breakpoint();
+      cache::clear_cache('modules');
     }
     
     public function install() {
@@ -89,7 +89,7 @@
         $this->_module->install();
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('modules');
     }
     
     public function uninstall() {
@@ -114,7 +114,7 @@
         where `key` = '". database::input($this->type.'_module_'. $this->_module->id) ."';"
       );
       
-      cache::set_breakpoint();
+      cache::clear_cache('modules');
     }
   }
 

@@ -96,6 +96,8 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
+      
+      cache::clear_cache('users');
     }
     
     public function set_password($password) {
@@ -140,7 +142,7 @@
       
       $this->data['id'] = null;
       
-      cache::set_breakpoint();
+      cache::clear_cache('users');
     }
   }
   

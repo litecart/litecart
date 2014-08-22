@@ -116,11 +116,12 @@
       }
     }
     
+    cache::clear_cache('translations');
+    
     echo '<p>'. sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found_translations, $found_files) .'</p>';
     echo '<p>'. sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations) .'</p>';
     echo '<p>'. sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated_translations) .'</p>';
     echo '<p>'. sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) .'</p>';
-    
   }
   
 ?>

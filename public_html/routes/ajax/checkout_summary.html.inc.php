@@ -1,5 +1,5 @@
 <?php
-  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
   }

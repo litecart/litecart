@@ -49,7 +49,7 @@
             foreach ($routes as $route) {
               self::$_routes[$route['pattern']] = array(
                 'script' => $route['script'],
-                'params' => $route['params'],
+                'params' => !empty($route['params']) ? $route['params'] : '',
               );
             }
           }
@@ -62,7 +62,26 @@
     // Neutralize request path (removes logical prefixes)
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
       
-/*
+    // Abort mission if admin panel
+      if (preg_match('#^'. preg_quote(WS_DIR_ADMIN, '#') .'.*#', self::$request)) return;
+      
+    // Set target route for requested URL
+      foreach (self::$_routes as $match => $properties) {
+        
+        if (!preg_match($match, self::$request)) continue;
+          
+        $properties['script'] = preg_replace($match, $properties['script'], self::$request);
+        
+        if (!empty($properties['params'])) {
+          parse_str(preg_replace($match, $properties['params'], self::$request), $params);
+          $_GET = array_merge($_GET, $params);
+        }
+        
+        self::$route = $properties['script'];
+        break;
+      }
+      
+      /*
     // Forward to rewritten URL (if necessary)
       $requested_url = self::rewrite($_SERVER['REQUEST_URI']);
       if (document::link($_SERVER['REQUEST_URI']) != $requested_url) {
@@ -89,22 +108,7 @@
           exit;
         }
       }
-*/
-    // Set target route for requested URL
-      foreach (self::$_routes as $match => $properties) {
-        
-        if (!preg_match($match, self::$request)) continue;
-          
-        $properties['script'] = preg_replace($match, $properties['script'], self::$request);
-        
-        if (!empty($properties['params'])) {
-          parse_str(preg_replace($match, $properties['params'], self::$request), $params);
-          $_GET = array_merge($_GET, $params);
-        }
-        
-        self::$route = $properties['script'];
-        break;
-      }
+      */
     }
     
     public static function after_capture() {
@@ -156,13 +160,13 @@
     // Don't override links for external domains
       if ($parsed_link['host'] != preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) return;
       
-    // Don't rewrite links in the admin folder
-      if (preg_match('#^'. preg_quote(basename(WS_DIR_ADMIN), '#') .'#', $parsed_link['path'])) return;
-      
       ###
       
     // Strip logic from string
       $parsed_link['path'] = self::strip_url_logic($parsed_link['path']);
+      
+    // Don't rewrite links in the admin folder
+      if (preg_match('#^'. preg_quote(basename(WS_DIR_ADMIN), '#') .'.*#', $parsed_link['path'])) return;
       
     // Set route name
       $route_name = preg_replace('#^(.*)$/#', '$1', $parsed_link['path']);

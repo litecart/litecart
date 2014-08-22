@@ -112,8 +112,11 @@
   }
   
 // Tax
-  foreach (tax::get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id) as $tax_rate) {
-    $page->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
+  $tax_rates = tax::get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id);
+  if (!empty($tax_rates)) {
+    foreach ($taxX_rates as $tax_rate) {
+      $page->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
+    }
   }
   
 // Cheapest shipping

@@ -11,9 +11,7 @@
                                                 . '<meta property="og:type" content="website" />' . PHP_EOL
                                                 . '<meta property="og:image" content="'. document::href_link(WS_DIR_IMAGES . 'logotype.png') .'" />';
   
-  ob_start();
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
-  document::$snippets['column_left'] = ob_get_clean();
+  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');  
   
   $page = new view();
   
@@ -22,16 +20,16 @@
   $page->snippets['box_slider'] = ob_get_clean();
   
   ob_start();
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_logotypes.inc.php');
-  $page->snippets['box_logotypes'] = ob_get_clean();
+  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturer_logotypes.inc.php');
+  $page->snippets['box_manufacturer_logotypes'] = ob_get_clean();
   
   ob_start();
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_most_popular.inc.php');
-  $page->snippets['box_most_popular'] = ob_get_clean();
+  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_most_popular_products.inc.php');
+  $page->snippets['box_most_popular_products'] = ob_get_clean();
   
   ob_start();
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_campaigns.inc.php');
-  $page->snippets['box_campaigns'] = ob_get_clean();
+  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_campaign_products.inc.php');
+  $page->snippets['box_campaign_products'] = ob_get_clean();
   
   ob_start();
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_latest_products.inc.php');

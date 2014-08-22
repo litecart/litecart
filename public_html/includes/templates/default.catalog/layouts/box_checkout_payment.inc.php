@@ -6,8 +6,8 @@
   foreach ($options as $module) {
     foreach ($module['options'] as $option) {
 ?>
-      <li class="option<?php echo ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) ? ' selected' : false; ?>">
-      <?php echo functions::form_draw_form_begin('payment_form', 'post') . functions::form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $payment->data['selected']['id']); ?>
+      <li class="option<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' selected' : false; ?>">
+      <?php echo functions::form_draw_form_begin('payment_form', 'post') . functions::form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $selected['id']); ?>
         <div class="icon-wrapper"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 70, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" /></div>
         <div class="title"><?php echo $module['title']; ?></div>
         <div class="name"><?php echo $option['name']; ?></div>
@@ -16,7 +16,7 @@
           <div class="price"><?php echo currency::format(tax::calculate($option['cost'], $option['tax_class_id'])); ?></div>
           <div class="select">
 <?php
-  if ($module['id'].':'.$option['id'] == $payment->data['selected']['id']) {
+  if ($module['id'].':'.$option['id'] == $selected['id']) {
     if (!empty($option['fields'])) {
       echo functions::form_draw_button('set_payment', language::translate('title_update', 'Update'), 'submit');
     } else {

@@ -5,12 +5,12 @@
   <div class="content">
     <ul class="listing-wrapper" class="manufacturers">
       <?php foreach($manufacturers as $manufacturer) { ?>
-      <li class="manufacturer shadow hover-light">' . PHP_EOL
+      <li class="manufacturer shadow hover-light">
         <a class="link" href="<?php echo htmlspecialchars($manufacturer['link']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>">
-          <div class="image" style="position: relative;">' . PHP_EOL
+          <div class="image" style="position: relative;">
               <img src="<?php echo htmlspecialchars($manufacturer['image']); ?>" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" /><br />
             </div>
-           <div class="title"><?php echo $name; ?></div>
+           <div class="title"><?php echo $manufacturer['name']; ?></div>
          </a>
       </li>
       <?php } ?>

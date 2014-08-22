@@ -116,7 +116,9 @@
         );
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('category_tree');
+      cache::clear_cache('categories');
+      cache::clear_cache('category_'. (int)$this->data['id']);
     }
     
     public function delete() {
@@ -163,9 +165,11 @@
         limit 1;"
       );
       
-      $this->data['id'] = null;
+      cache::clear_cache('category_tree');
+      cache::clear_cache('categories');
+      cache::clear_cache('category_'. (int)$this->data['id']);
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
     
     public function save_image($file) {

@@ -1,12 +1,13 @@
 <?php
-  if (!in_array(link::relpath($_SERVER['SCRIPT_NAME']), array('category.php', 'manufacturer.php'))) return;
   
-  $box_filter_cache_id = cache::cache_id('box_customer_service_links', array('language'));
+  if (!in_array(basename(route::$route), array('category.inc.php', 'manufacturer.inc.php'))) return;
+  
+  $box_filter_cache_id = cache::cache_id('box_filter', array('language', 'get'));
   if (cache::capture($box_filter_cache_id, 'file')) {
   
     $box_filter = new view();
 
-    $box_fitler->snippets = array(
+    $box_filter->snippets = array(
       'manufacturers' => array(),
       'product_groups' => array(),
     );
@@ -23,7 +24,7 @@
       if (database::num_rows($manufacturers_query) > 1) {
         
         while($manufacturer = database::fetch($manufacturers_query)) {
-          $box_fitler->snippets['manufacturers'][] = array(
+          $box_filter->snippets['manufacturers'][] = array(
             'id' => $manufacturer['id'],
             'name' => $manufacturer['name'],
             'href' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
@@ -51,17 +52,17 @@
       }
     }
     
-    $has_multiple_product_groups = false;
+    $has_multiple_product_group_values = false;
     if (!empty($product_groups)) {
       foreach ($product_groups as $group) {
         if (count($group) > 1) {
-          $has_multiple_product_groups = true;
+          $has_multiple_product_group_values = true;
           break;
         }
       }
     }
     
-    if ($has_multiple_product_groups) {
+    if ($has_multiple_product_group_values) {
       
       $product_groups_query = database::query(
         "select product_group_id as id, name from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
@@ -96,6 +97,6 @@
     
     echo $box_filter->stitch('box_filter');
     
-    cache::end_capture($box_customer_service_links_cache_id);
+    cache::end_capture($box_filter_cache_id);
   }
 ?>

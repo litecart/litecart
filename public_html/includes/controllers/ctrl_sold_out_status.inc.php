@@ -78,7 +78,7 @@
         );
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('sold_out_statuses');
     }
     
     public function delete() {
@@ -101,7 +101,7 @@
       
       $this->data['id'] = null;
       
-      cache::set_breakpoint();
+      cache::clear_cache('sold_out_statuses');
     }
   }
 

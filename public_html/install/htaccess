@@ -1,7 +1,7 @@
 # Define some error documents
-ErrorDocument 403 {BASE_DIR}error_document.php?code=403
-ErrorDocument 404 {BASE_DIR}error_document.php?code=404
-ErrorDocument 410 {BASE_DIR}error_document.php?code=410
+ErrorDocument 403 {BASE_DIR}error_document?code=403
+ErrorDocument 404 {BASE_DIR}error_document?code=404
+ErrorDocument 410 {BASE_DIR}error_document?code=410
 ErrorDocument 500 "Internal Server Error"
 
 # Deny showing indexes for directory content - Uncomment if supported by you web host

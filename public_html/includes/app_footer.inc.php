@@ -13,6 +13,8 @@
   
 // Prepare output
   system::run('prepare_output');
+  
+// Stitch global snippets
   $page->snippets = document::$snippets;
   $page->html = $output;
   $output = $page->stitch();

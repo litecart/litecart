@@ -1,5 +1,5 @@
 <?php  
-  $box_category_tree_cache_id = cache::cache_id('box_category_tree', array('language'));
+  $box_category_tree_cache_id = cache::cache_id('box_category_tree', array('language', isset($_GET['category_id']) ? $_GET['category_id'] : null));
   if (cache::capture($box_category_tree_cache_id, 'file')) {
   
     $box_category_tree = new view();

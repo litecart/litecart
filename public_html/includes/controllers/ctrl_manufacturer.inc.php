@@ -110,7 +110,7 @@
         );
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('manufacturers');
     }
     
     public function delete() {
@@ -145,9 +145,9 @@
         limit 1;"
       );
       
-      $this->data['id'] = null;
+      cache::clear_cache('manufacturers');
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
     
     public function save_image($file) {

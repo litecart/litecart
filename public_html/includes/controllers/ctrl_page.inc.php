@@ -85,7 +85,7 @@
         );
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('pages');
     }
     
     public function delete() {
@@ -103,7 +103,7 @@
       
       $this->data['id'] = null;
       
-      cache::set_breakpoint();
+      cache::clear_cache('pages');
     }
   }
 

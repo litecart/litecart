@@ -151,6 +151,7 @@
       'title' => language::translate('title_previous', 'Previous'),
       'link' => document::ilink(null, array('page' => $_GET['page']-1), true),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
+      'active' => false,
     );
     
     for ($i=1; $i<=$pages; $i++) {

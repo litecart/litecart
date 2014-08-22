@@ -60,7 +60,7 @@
           <td align="right" style="vertical-align: bottom; width: 40%;">
           
             <?php if ($selected_payment) { ?>
-            <p align="right"><?php echo $selected_payment['icon'] ? '<img src="'. $selected_payment['icon'] .'" alt="'. htmlspecialchars($selected_payment['title']) .'" />' : '<strong>'. $payment->data['selected']['title'] .'</strong>'; ?></p>
+            <p align="right"><?php echo $selected_payment['icon'] ? '<img src="'. $selected_payment['icon'] .'" alt="'. htmlspecialchars($selected_payment['title']) .'" />' : '<strong>'. $selected_payment['title'] .'</strong>'; ?></p>
             <?php } ?>
             
             <?php if ($errors) echo '<div class="warning">'. $errors[0] .'</div>' . PHP_EOL; ?>

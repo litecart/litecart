@@ -196,7 +196,7 @@
         }
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('option_groups');
     }
     
     public function delete() {
@@ -250,9 +250,9 @@
         where group_id = '". (int)$this->data['id'] ."';"
       );
       
-      $this->data['id'] = null;
+      cache::clear_cache('option_groups');
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
   }
 

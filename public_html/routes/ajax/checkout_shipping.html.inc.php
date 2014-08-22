@@ -1,5 +1,5 @@
 <?php
-  if (realpath(__FILE__) == realpath($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME'])) {
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
   }
@@ -17,7 +17,7 @@
     } else {
       $shipping->select($module_id, $option_id);
     }
-    header('Location: '. ((FS_DIR_HTTP_ROOT . $_SERVER['SCRIPT_NAME'] == __FILE__) ? $_SERVER['REQUEST_URI'] : document::ilink('checkout')));
+    header('Location: '. ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') ? $_SERVER['REQUEST_URI'] : document::ilink('checkout')));
     exit;
   }
   
@@ -45,6 +45,11 @@
   && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
   
   $box_checkout_shipping = new view();
+  
+  $box_checkout_shipping->snippets = array(
+    'selected' => !empty($shipping->data['selected']) ? $shipping->data['selected'] : array(),
+    'options' => $options,
+  );
   
   echo $box_checkout_shipping->stitch('box_checkout_shipping');
 ?>
