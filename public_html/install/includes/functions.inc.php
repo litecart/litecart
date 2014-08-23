@@ -21,7 +21,10 @@
 // Function to delete recursive data
   function file_delete($path) {
     if (!file_exists($path)) return true;
-    if (!is_dir($path) || is_link($path)) return unlink($path);
+    if (!is_dir($path) || is_link($path)) {
+      echo 'Delete '. $path . '<br />' . PHP_EOL;
+      return unlink($path);
+    }
     foreach (scandir($path) as $file) {
       if ($file == '.' || $file == '..') continue;
       if (!file_delete($path .'/'. $file)) {
@@ -29,6 +32,7 @@
         if (!file_delete($path .'/'. $file)) return false;
       }
     }
+    echo 'Delete '. $path . '... ';
     return rmdir($path); 
   }
   
@@ -47,9 +51,19 @@
         if (!file_xcopy($source.$file, $target.$file)) $errors = true;
       }
     } else if (!file_exists($target)) {
+      echo 'Write '. $target . '... ';
       if (!copy($source, $target)) $errors = true;
     }
-    return  empty($errors) ? true : false;
+    return empty($errors) ? true : false;
+  }
+  
+// Function to delete recursive data
+  function file_modify($file, $search, $replace) {
+    echo 'Modify '. $file . '... ';
+    if (!is_file($file)) return false;
+    $contents = file_get_contents($file);
+    $contents = str_replace($search, $replace, $contents);
+    return file_put_contents($file, $contents);
   }
 
 ?>

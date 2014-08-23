@@ -66,5 +66,61 @@
       die('<span class="error">[Error]</span></p>');
     }
   }
+  
+  $modified_files = array(
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
+      'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');",
+      'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');" . PHP_EOL
+                 . "  define('WS_DIR_PAGES',       WS_DIR_HTTP_HOME . 'pages/');",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
+      'search'  => "  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');",
+      'replace' => "  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');" . PHP_EOL
+                 . "  define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)/?$ category.php?category_id=$1&%{QUERY_STRING} [L]",
+      'replace' => "  RewriteRule ^.*$ index.php%{QUERY_STRING} [L]",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)/?$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]",
+      'replace' => "",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ information.php?page_id=$1&%{QUERY_STRING} [L]",
+      'replace' => "",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-s-([0-9]+)$ customer_service.php?page_id=$1&%{QUERY_STRING} [L]",
+      'replace' => "",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "RewriteRule ^(?:[a-z]{2}/)?(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$ product.php?category_id=$1&product_id=$2&%{QUERY_STRING} [L]",
+      'replace' => "",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "RewriteRule ^(?:[a-z]{2}/)?search/(.*)?$ search.php?query=$1&%{QUERY_STRING} [L]",
+      'replace' => "",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "RewriteRule ^(?:[a-z]{2}/)?(.*) $1?%{QUERY_STRING} [L]",
+      'replace' => "",
+    ),
+  );
+  
+  foreach ($modified_files as $modification) {
+    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
+      die('<span class="error">[Error]</span></p>');
+    }
+  }
 
 ?>
