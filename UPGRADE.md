@@ -31,6 +31,192 @@
     ~/images
   
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders. Especially if they contain modifications by third party add-ons.
+
+### LiteCart 1.1.2.1 to 1.2
+  
+  (No MySQL Changes)
+  
+  New Files:
+  
+    admin/vqmods.app/config.inc.php
+    admin/vqmods.app/download.inc.php
+    admin/vqmods.app/log.inc.php
+    admin/vqmods.app/vqmods.inc.php
+    includes/boxes/box_account.inc.php
+    includes/boxes/box_also_purchased_products.inc.php
+    includes/boxes/box_campaign_products.inc.php
+    includes/boxes/box_cart.inc.php
+    includes/boxes/box_categories.inc.php
+    includes/boxes/box_category_tree.inc.php
+    includes/boxes/box_customer_service_links.inc.php
+    includes/boxes/box_filter.inc.php
+    includes/boxes/box_information_links.inc.php
+    includes/boxes/box_latest_products.inc.php
+    includes/boxes/box_manufacturer_logotypes.inc.php
+    includes/boxes/box_manufacturers_list.inc.php
+    includes/boxes/box_most_popular_products.inc.php
+    includes/boxes/box_region.inc.php
+    includes/boxes/box_search.inc.php
+    includes/boxes/box_similar_products.inc.php
+    includes/boxes/box_site_footer.inc.php
+    includes/boxes/box_site_links.inc.php
+    includes/boxes/box_site_menu.inc.php
+    includes/boxes/box_slider.inc.php
+    includes/classes/view.inc.php
+    includes/library/lib_route.inc.php
+    includes/routes/url_category.inc.php
+    includes/routes/url_customer_service.inc.php
+    includes/routes/url_information.inc.php
+    includes/routes/url_manufacturer.inc.php
+    includes/routes/url_product.inc.php
+    includes/routes/url_search.inc.php
+    includes/templates/default.admin/layouts/pagination.inc.php
+    includes/templates/default.catalog/views/box_account.inc.php
+    includes/templates/default.catalog/views/box_also_purchased_products.inc.php
+    includes/templates/default.catalog/views/box_campaign_products.inc.php
+    includes/templates/default.catalog/views/box_cart.inc.php
+    includes/templates/default.catalog/views/box_categories.inc.php
+    includes/templates/default.catalog/views/box_category.inc.php
+    includes/templates/default.catalog/views/box_category_tree.inc.php
+    includes/templates/default.catalog/views/box_checkout_cart.inc.php
+    includes/templates/default.catalog/views/box_checkout_customer.inc.php
+    includes/templates/default.catalog/views/box_checkout_payment.inc.php
+    includes/templates/default.catalog/views/box_checkout_shipping.inc.php
+    includes/templates/default.catalog/views/box_checkout_summary.inc.php
+    includes/templates/default.catalog/views/box_contact_us.inc.php
+    includes/templates/default.catalog/views/box_create_account.inc.php
+    includes/templates/default.catalog/views/box_filter.inc.php
+    includes/templates/default.catalog/views/box_information_links.inc.php
+    includes/templates/default.catalog/views/box_information_list.inc.php
+    includes/templates/default.catalog/views/box_infromation.inc.php
+    includes/templates/default.catalog/views/box_latest_products.inc.php
+    includes/templates/default.catalog/views/box_login.inc.php
+    includes/templates/default.catalog/views/box_manufacturer.inc.php
+    includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php
+    includes/templates/default.catalog/views/box_manufacturers.inc.php
+    includes/templates/default.catalog/views/box_manufacturers_list.inc.php
+    includes/templates/default.catalog/views/box_most_popular_products.inc.php
+    includes/templates/default.catalog/views/box_order_history.inc.php
+    includes/templates/default.catalog/views/box_order_success.inc.php
+    includes/templates/default.catalog/views/box_region.inc.php
+    includes/templates/default.catalog/views/box_search.inc.php
+    includes/templates/default.catalog/views/box_select_region.inc.php
+    includes/templates/default.catalog/views/box_similar_products.inc.php
+    includes/templates/default.catalog/views/box_site_footer.inc.php
+    includes/templates/default.catalog/views/box_site_menu.inc.php
+    includes/templates/default.catalog/views/box_slider.inc.php
+    includes/templates/default.catalog/views/box_store_map.inc.php
+    includes/templates/default.catalog/views/index.inc.php
+    includes/templates/default.catalog/views/information.inc.php
+    includes/templates/default.catalog/views/listing_category.inc.php
+    includes/templates/default.catalog/views/listing_product.inc.php
+    includes/templates/default.catalog/views/pagination.inc.php
+    includes/templates/default.catalog/views/product.inc.php
+    pages/ajax/cart.json.inc.php
+    pages/ajax/checkout_cart.html.inc.php
+    pages/ajax/checkout_customer.html.inc.php
+    pages/ajax/checkout_payment.html.inc.php
+    pages/ajax/checkout_shipping.html.inc.php
+    pages/ajax/checkout_summary.html.inc.php
+    pages/ajax/get_address.json.inc.php
+    pages/ajax/option_values.json.inc.php
+    pages/ajax/zones.json.inc.php
+    pages/feeds/sitemap.xml.inc.php
+    pages/categories.inc.php
+    pages/category.inc.php
+    pages/checkout.inc.php
+    pages/create_account.inc.php
+    pages/customer_service.inc.php
+    pages/edit_account.inc.php
+    pages/error_document.inc.php
+    pages/index.inc.php
+    pages/information.inc.php
+    pages/login.inc.php
+    pages/logout.inc.php
+    pages/manufacturer.inc.php
+    pages/manufacturers.inc.php
+    pages/order_history.inc.php
+    pages/order_process.inc.php
+    pages/order_success.inc.php
+    pages/printable_order_copy.inc.php
+    pages/product.inc.php
+    pages/push_jobs.inc.php
+    pages/search.inc.php
+    pages/select_region.inc.php
+    vqmod/vqmod.php
+  
+  Deleted Files:
+    
+    ajax/cart.json.php
+    ajax/checkout_cart.html.php
+    ajax/checkout_customer.html.php
+    ajax/checkout_payment.html.php
+    ajax/checkout_shipping.html.php
+    ajax/checkout_summary.html.php
+    ajax/get_address.json.php
+    ajax/option_values.json.php
+    ajax/zones.json.php
+    feeds/sitemap.xml.php
+    includes/boxes/account.inc.php
+    includes/boxes/also_purchased_products.inc.php
+    includes/boxes/campaigns.inc.php
+    includes/boxes/cart.inc.php
+    includes/boxes/categories.inc.php
+    includes/boxes/category_tree.inc.php
+    includes/boxes/filter.inc.php
+    includes/boxes/footer_categories.inc.php
+    includes/boxes/footer_information.inc.php
+    includes/boxes/footer_manufacturers.inc.php
+    includes/boxes/latest_products.inc.php
+    includes/boxes/login.inc.php
+    includes/boxes/logotypes.inc.php
+    includes/boxes/manufacturers.inc.php
+    includes/boxes/most_popular.inc.php
+    includes/boxes/region.inc.php
+    includes/boxes/search.inc.php
+    includes/boxes/similar_products.inc.php
+    includes/boxes/site_links.inc.php
+    includes/boxes/site_menu.inc.php
+    includes/boxes/slider.inc.php
+    includes/library/lib_seo_links.inc.php
+    includes/modules/seo_links/url_category.inc.php
+    includes/modules/seo_links/url_customer_service.inc.php
+    includes/modules/seo_links/url_information.inc.php
+    includes/modules/seo_links/url_manufacturer.inc.php
+    includes/modules/seo_links/url_product.inc.php
+    includes/modules/seo_links/url_search.inc.php
+    categories.php
+    category.php
+    checkout.php
+    create_account.php
+    customer_service.php
+    edit_account.php
+    error_document.php
+    information.php
+    login.php
+    logout.php
+    manufacturer.php
+    manufacturers.php
+    order_history.php
+    order_process.php
+    order_success.php
+    printable_order_copy.php
+    product.php
+    push_jobs.php
+    search.php
+    select_region.php
+    
+  Deleted Folders:
+  
+    ajax/
+    feeds/
+    includes/modules/seo_links/
+  
+### LiteCart 1.1.2 to 1.1.2.1
+  
+  (No MySQL Changes)
+  
+  (No Deleted Files)
   
 ### LiteCart 1.1.1 to 1.1.2
 
