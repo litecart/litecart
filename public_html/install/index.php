@@ -315,7 +315,7 @@
         <li>mod_redirect</li>
       </ul>
     </li>
-    <li>MySQL 5.5+</li>
+    <li>MySQL 5.5+ / MariaDB 5.5+</li>
   </ul>
   
   <h2>Client Requirements</h2>

@@ -485,6 +485,11 @@
         where product_id = '". (int)$this->data['id'] ."';"
       );
       
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        where product_id = '". (int)$this->data['id'] ."';"
+      );
+      
       cache::set_breakpoint();
     }
     
