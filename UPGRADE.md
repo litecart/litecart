@@ -31,6 +31,12 @@
     ~/images
   
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders. Especially if they contain modifications by third party add-ons.
+
+### LiteCart 1.1.2 to 1.1.2.1
+  
+  (No MySQL Changes)
+  
+  (No deleted files)
   
 ### LiteCart 1.1.1 to 1.1.2
 
