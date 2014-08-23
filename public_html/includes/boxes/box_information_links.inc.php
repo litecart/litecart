@@ -1,6 +1,6 @@
 <?php
   $box_information_links_cache_id = cache::cache_id('box_information_links', array('language'));
-  if (cache::capture($information_links_cache_id, 'file')) {
+  if (cache::capture($box_information_links_cache_id, 'file')) {
     
     $box_information_links = new view();
     

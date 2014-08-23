@@ -90,18 +90,18 @@
         break;
     }
     
-    
-    $backtraces = debug_backtrace();
-    $backtraces = array_slice($backtraces, 2);
-    
-    if (!empty($backtraces)) {
-      foreach ($backtraces as $backtrace) {
-        if (empty($backtrace['file'])) continue;
-        $backtrace['file'] = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $backtrace['file']));
-        $output .= "<br />" . PHP_EOL . "  <- <b>{$backtrace['file']}</b> on line <b>{$backtrace['line']}</b> in <b>{$backtrace['function']}()</b>";
+    if (isset($_GET['debug'])) {
+      $backtraces = debug_backtrace();
+      $backtraces = array_slice($backtraces, 2);
+      
+      if (!empty($backtraces)) {
+        foreach ($backtraces as $backtrace) {
+          if (empty($backtrace['file'])) continue;
+          $backtrace['file'] = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $backtrace['file']));
+          $output .= "<br />" . PHP_EOL . "  <- <b>{$backtrace['file']}</b> on line <b>{$backtrace['line']}</b> in <b>{$backtrace['function']}()</b>";
+        }
       }
     }
-    
     
     if (in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
       if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {

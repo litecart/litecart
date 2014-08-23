@@ -67,12 +67,13 @@
     
     breadcrumbs::add($page['title'], document::ilink(null, array(), true));
     
-    $snippets = array(
+    $box_information = new view();
+    
+    $box_information->snippets = array(
       'title' => $page['title'],
       'content' => $page['content'],
     );
     
-    $box_information = new view();
     echo $box_information->stitch('views/box_information');
   }
   

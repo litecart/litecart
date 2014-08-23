@@ -6,7 +6,7 @@
       return array(
         array(
           'pattern' => '#^search/(.*)?$#',
-          'script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'search.inc.php',
+          'page' => 'search',
           'params' => 'query=$1',
         ),
       );

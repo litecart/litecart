@@ -1,6 +1,6 @@
 <?php
   
-  if (!in_array(basename(route::$route), array('category.inc.php', 'manufacturer.inc.php'))) return;
+  if (!in_array(route::$route['page'], array('category', 'manufacturer'))) return;
   
   $box_filter_cache_id = cache::cache_id('box_filter', array('language', 'get'));
   if (cache::capture($box_filter_cache_id, 'file')) {

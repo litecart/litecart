@@ -17,11 +17,12 @@
     default:
       header('HTTP/1.1 400 Bad Request');
   }
-  var_dump(route::$request);
+  
   if (preg_match('#\.(jpg|png|gif)$#', route::$request)) {
     echo file_get_contents(WS_DIR_IMAGES . 'no_image.png');
     exit;
   }
+  
   exit;
   header('Location: '. document::ilink(''));
   exit;

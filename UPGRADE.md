@@ -185,6 +185,8 @@
     includes/modules/seo_links/url_manufacturer.inc.php
     includes/modules/seo_links/url_product.inc.php
     includes/modules/seo_links/url_search.inc.php
+    includes/printable_order_copy.inc.php
+    includes/printable_packing_slip.inc.php
     categories.php
     category.php
     checkout.php
@@ -211,6 +213,11 @@
     ajax/
     feeds/
     includes/modules/seo_links/
+  
+  Modified Files:
+  
+    .htaccess (See install/htaccess)
+    includes/config.inc.php (See install/config)
   
 ### LiteCart 1.1.2 to 1.1.2.1
   

@@ -26,10 +26,12 @@
   
   breadcrumbs::add($page['title'], document::ilink(null, array(), true));
   
-  $snippets = array(
+  $box_information = new view();
+  
+  $box_information->snippets = array(
     'title' => $page['title'],
     'content' => $page['content'],
   );
   
-  echo document::stitch('views/file', 'information', $snippets);
+  echo $box_information->stitch('views/box_information');
 ?>

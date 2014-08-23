@@ -39,6 +39,8 @@
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'includes/modules/seo_links/url_manufacturer.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'includes/modules/seo_links/url_product.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'includes/modules/seo_links/url_search.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'includes/printable_order_copy.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'includes/printable_packing_slip.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'categories.php',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'category.php',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'checkout.php',
@@ -79,6 +81,21 @@
       'search'  => "  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');",
       'replace' => "  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');" . PHP_EOL
                  . "  define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "ErrorDocument 403 {BASE_DIR}error_document.php?code=403",
+      'replace' => "ErrorDocument 403 {BASE_DIR}index.php/error_document?code=403",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "ErrorDocument 404 {BASE_DIR}error_document.php?code=404",
+      'replace' => "ErrorDocument 404 {BASE_DIR}index.php/error_document?code=404",
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => "ErrorDocument 410 {BASE_DIR}error_document.php?code=410",
+      'replace' => "ErrorDocument 410 {BASE_DIR}index.php/error_document?code=410",
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',

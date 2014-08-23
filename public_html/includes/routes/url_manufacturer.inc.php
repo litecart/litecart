@@ -6,7 +6,7 @@
       return array(
         array(
           'pattern' => '#^.*-m-([0-9]+)/?$#',
-          'script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'manufacturer.inc.php',
+          'page' => 'manufacturer',
           'params' => 'manufacturer_id=$1',
         ),
       );

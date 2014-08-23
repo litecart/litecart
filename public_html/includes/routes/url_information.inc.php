@@ -6,7 +6,7 @@
       return array(
         array(
           'pattern' => '#^.*-i-([0-9]+)/?$#',
-          'script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'information.inc.php',
+          'page' => 'information',
           'params' => 'page_id=$1',
         ),
       );

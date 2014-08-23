@@ -6,6 +6,7 @@
     private static $_links_cache_id = '';
     private static $_routes = array();
     public static $route = array();
+    public static $properties = '';
     public static $request = '';
     
     //public static function construct() {}
@@ -22,10 +23,11 @@
       
     // Add default routes
       $routes = array(
-        '#^(?:index\.php)?$#'                  => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'index.inc.php',              'params' => ''),
-        '#^ajax/(.*)(?:\.php)?$#'              => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'ajax/$1.inc.php',            'params' => ''),
-        '#^feeds/(.*)(?:\.php)?$#'             => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'feeds/$1.inc.php',           'params' => ''),
-        '#^([0-9|a-z|_]+)(?:\.php)?$#'         => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'$1.inc.php',                 'params' => ''),
+        '#^(?:index\.php)?$#'                  => array('page' => 'index',          'params' => '',  'redirect' => true),
+        '#^ajax/(.*)(?:\.php)?$#'              => array('page' => 'ajax/$1',        'params' => '',  'redirect' => true),
+        '#^feeds/(.*)(?:\.php)?$#'             => array('page' => 'feeds/$1',       'params' => '',  'redirect' => true),
+        '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false), // No redirect
+        '#^([0-9|a-z|_]+)(?:\.php)?$#'         => array('page' => '$1',             'params' => '',  'redirect' => true),
         // See ~/includes/routes/ folder for more advanced routes
       );
       
@@ -48,8 +50,9 @@
           if (!empty($routes)) {
             foreach ($routes as $route) {
               self::$_routes[$route['pattern']] = array(
-                'script' => $route['script'],
+                'page' => $route['page'],
                 'params' => !empty($route['params']) ? $route['params'] : '',
+                'redirect' => !empty($route['redirect']) ? true : false,
               );
             }
           }
@@ -62,50 +65,53 @@
     // Neutralize request path (removes logical prefixes)
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
       
-    // Abort mission if admin panel
+    // Abort mission if in admin panel
       if (preg_match('#^'. preg_quote(WS_DIR_ADMIN, '#') .'.*#', self::$request)) return;
       
     // Set target route for requested URL
-      foreach (self::$_routes as $match => $properties) {
+      foreach (self::$_routes as $matched_route => $properties) {
         
-        if (!preg_match($match, self::$request)) continue;
+        if (!preg_match($matched_route, self::$request)) continue;
           
-        $properties['script'] = preg_replace($match, $properties['script'], self::$request);
+        $properties['page'] = preg_replace($matched_route, $properties['page'], self::$request);
         
         if (!empty($properties['params'])) {
-          parse_str(preg_replace($match, $properties['params'], self::$request), $params);
+          parse_str(preg_replace($matched_route, $properties['params'], self::$request), $params);
           $_GET = array_merge($_GET, $params);
         }
         
-        self::$route = $properties['script'];
+        self::$route = $properties;
         break;
       }
       
     // Forward to rewritten URL (if necessary)
-      $rewritten_url = self::rewrite(document::ilink(basename(route::$route, '.inc.php'), $_GET));
-      
-      if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
+      if (!empty(route::$route['page'])) {
         
-        $redirect = true;
+        $rewritten_url = self::rewrite(document::ilink(route::$route['page'], $_GET));
         
-      // Don't forward if there is HTTP POST data
-        if (!empty($_POST)) $redirect = false;
-        
-      // Don't forward if requested not to
-        if (defined('SEO_REDIRECT') && SEO_REDIRECT == false) $redirect = false;
-        
-      // Don't forward if there are notices in stack
-        if (!empty(notices::$data)) {
-          foreach (notices::$data as $notices) {
-            if (!empty($notices)) $redirect = false;
+        if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
+          
+          $redirect = true;
+          
+        // Don't forward if there is HTTP POST data
+          if (!empty($_POST)) $redirect = false;
+          
+        // Don't forward if requested not to
+          if (empty(self::$properties['redirect'])) $redirect = false;
+          
+        // Don't forward if there are notices in stack
+          if (!empty(notices::$data)) {
+            foreach (notices::$data as $notices) {
+              if (!empty($notices)) $redirect = false;
+            }
           }
-        }
-        
-        if ($redirect) {
-          //error_log('Redirecting user from '. $_SERVER['REQUEST_URI'] .' to '. $rewritten_url);
-          header('HTTP/1.1 301 Moved Permanently');
-          header('Location: '. $rewritten_url);
-          exit;
+          
+          if ($redirect) {
+            //error_log('Redirecting user from '. $_SERVER['REQUEST_URI'] .' to '. $rewritten_url);
+            header('HTTP/1.1 301 Moved Permanently');
+            header('Location: '. $rewritten_url);
+            exit;
+          }
         }
       }
     }

@@ -6,7 +6,7 @@
       return array(
         array(
           'pattern' => '#^(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$#',
-          'script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'product.inc.php',
+          'page' => 'product',
           'params' => 'category_id=$1&product_id=$2',
         ),
       );

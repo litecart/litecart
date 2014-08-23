@@ -679,24 +679,20 @@
     
     public function draw_printable_copy() {
     
-      $order = $this->data;
+      $printable_order_copy = new view();
       
-      ob_start();
-      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_order_copy.inc.php');
-      $output = ob_get_clean();
+      $printable_order_copy->snippets['order'] = $this->data;
       
-      return $output;
+      return $printable_order_copy->stitch('views/printable_order_copy');
     }
     
     public function draw_printable_packing_slip() {
     
-      $order = $this->data;
+      $printable_packing_slip = new view();
       
-      ob_start();
-      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_packing_slip.inc.php');
-      $output = ob_get_clean();
+      $printable_packing_slip->snippets['order'] = $this->data;
       
-      return $output;
+      return $printable_packing_slip->stitch('views/printable_packing_slip');
     }
   }
 

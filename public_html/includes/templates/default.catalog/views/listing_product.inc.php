@@ -1,8 +1,8 @@
 <?php if ($listing_type == 'column') { ?>
   <li class="product column shadow hover-light">
     <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
-      <div class="image-wrapper" style="position: relative;">
-        <img src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" width="100" />
+      <div class="image-wrapper">
+        <img src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" />
         <?php echo $sticker; ?>
       </div>
       <div class="name"><?php echo $name; ?></div>
@@ -22,8 +22,8 @@
 <?php } else if ($listing_type == 'row') { ?>
   <li class="product row shadow hover-light">
     <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
-      <div class="image-wrapper" style="position: relative;">
-        <img src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" width="100" />
+      <div class="image-wrapper">
+        <img src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" />
         <?php echo $sticker; ?>
       </div>
       <div class="name"><?php echo $name; ?></div>
@@ -40,4 +40,5 @@
     <?php if ($image) { ?>
     <a href="<?php echo htmlspecialchars($image); ?>" class="fancybox" data-fancybox-group="product-listing" title="<?php echo htmlspecialchars($name); ?>"><img src="<?php echo htmlspecialchars($preview_icon); ?>" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>
     <?php } ?>
-<?php } ?>
+  </li>
+<?php } else trigger_error('Unknown product listing type definition ('. $listing_type .')', E_USER_WARNING); ?>

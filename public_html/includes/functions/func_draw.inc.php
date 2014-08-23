@@ -30,7 +30,7 @@
   
   function draw_listing_product($product, $listing_type='column') {
     
-    $list_item = new view();
+    $listing_product = new view();
     
     $sticker = '';
     if ($product['campaign_price']) {
@@ -39,7 +39,7 @@
       $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. language::translate('title_new', 'New') .'" class="sticker" />';
     }
     
-    $list_item->snippets = array(
+    $listing_product->snippets = array(
       'listing_type' => $listing_type,
       'name' => $product['name'],
       'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id')),
@@ -52,8 +52,8 @@
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::calculate($product['campaign_price'], $product['tax_class_id'])) : null,
       'preview_icon' => WS_DIR_IMAGES .'icons/16x16/preview.png',
     );
-    
-    return $list_item->stitch('views/listing_product');
+    //var_dump($listing_product->stitch('views/listing_product'));
+    return $listing_product->stitch('views/listing_product');
   }
   
   function draw_fancybox($selector='a.fancybox', $params=array()) {

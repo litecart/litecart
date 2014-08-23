@@ -1,10 +1,12 @@
 <?php
   require_once('includes/app_header.inc.php');
   
-  if (!empty(route::$route) && is_file(route::$route)) {
+  $file = FS_DIR_HTTP_ROOT . WS_DIR_PAGES . route::$route['page'] .'.inc.php';
   
-    include vqmod::modcheck(route::$route);
+  if (!empty(route::$route) && is_file($file)) {
     
+    include vqmod::modcheck($file);
+     
   } else {
   
     header('HTTP/1.1 404 Not Found');

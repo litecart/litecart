@@ -15,7 +15,8 @@
   $box_checkout_cart->snippets['items'] = array();
   foreach (cart::$data['items'] as $key => $item) {
     $box_checkout_cart->snippets['items'][$key] = array(
-      'items' => cart::$data['items'],
+      'id' => $item['id'],
+      'product_id' => $item['product_id'],
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
       'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 160, 'FIT_USE_WHITESPACING'),
       'name' => $item['name'][language::$selected['code']],
@@ -27,7 +28,7 @@
     );
     if (!empty($item['options'])) {
       foreach ($item['options'] as $k => $v) {
-        $box_checkout_cart->snippets['items'][$item['id']]['options'][] = $k .': '. $v;
+        $box_checkout_cart->snippets['items'][$key]['options'][] = $k .': '. $v;
       }
     }
   }

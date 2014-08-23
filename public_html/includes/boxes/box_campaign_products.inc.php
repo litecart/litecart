@@ -6,10 +6,10 @@
     
     $box_campaign_products = new view();
     
-    $products_query = functions::catalog_products_query(array('campaign' => true, 'sort' => 'rand', 'limit' => 4));
+    $products_query = functions::catalog_products_query(array('campaign' => true, 'sort' => 'rand', 'limit' => 5));
     
     if (database::num_rows($products_query)) {
-    
+      
       $box_campaign_products->snippets['products'] = '';
       while ($listing_product = database::fetch($products_query)) {
         $box_campaign_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');

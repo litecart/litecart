@@ -5,7 +5,7 @@
       return array(
         array(
           'pattern' => '#^.*-c-([0-9]+)/?$#',
-          'script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'category.inc.php',
+          'page' => 'category',
           'params' => 'category_id=$1',
         ),
       );

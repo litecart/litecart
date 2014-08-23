@@ -4,7 +4,7 @@
     <div class="content">
       <nav>
         <ul class="list-vertical">
-          <?php foreach ($links as $page) echo '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. $page['href'] .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
+          <?php foreach ($pages as $page) echo '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
         </ul>
       </nav>
     </div>

@@ -10,7 +10,7 @@
     <?php echo $payment_receipt; ?>
     <?php } ?>
     
-    <?php if ($payment_receipt) { ?>
+    <?php if ($order_success_modules_output) { ?>
     <?php echo $order_success_modules_output; ?>
     <?php } ?>
   </div>

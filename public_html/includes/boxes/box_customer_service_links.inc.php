@@ -7,8 +7,8 @@
     $box_customer_service_links->snippets['pages'] = array(
       array(
         'id' => 0,
-        'title' => language::translate('title_contact_us', 'Contact Us')
-        'url' => document::href_ilink('customer_service'),
+        'title' => language::translate('title_contact_us', 'Contact Us'),
+        'link' => document::href_ilink('customer_service'),
       ),
     );
     
@@ -23,7 +23,7 @@
       $box_customer_service_links->snippets['pages'][] = array(
         'id' => $page['id'],
         'title' => $page['title'],
-        'href' => document::href_ilink('customer_service', array('page_id' => $page['id'])),
+        'link' => document::ilink('customer_service', array('page_id' => $page['id'])),
       );
     }
     
