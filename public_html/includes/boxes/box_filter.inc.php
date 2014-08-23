@@ -95,7 +95,7 @@
       }
     }
     
-    echo $box_filter->stitch('box_filter');
+    echo $box_filter->stitch('views/box_filter');
     
     cache::end_capture($box_filter_cache_id);
   }

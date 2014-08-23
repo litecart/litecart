@@ -152,6 +152,6 @@
   
   $box_checkout_customer = new view();
   
-  echo $box_checkout_customer->stitch('box_checkout_customer');
+  echo $box_checkout_customer->stitch('views/box_checkout_customer');
   
 ?>

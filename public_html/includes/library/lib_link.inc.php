@@ -53,6 +53,7 @@
       } else if ($document == '') {
         $parsed_link = self::explode_link(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         
+        
       } else if (substr($document, 0, 4) == 'http' || strpos($document, '?') !== false) {
         $parsed_link = self::explode_link($document);
         
@@ -62,6 +63,8 @@
           'query' => array(),
         );
       }
+      
+      if ($inherit_params === null) $inherit_params = false;
       
     // Clean any double slashes
       while (strpos($parsed_link['path'], '//')) $parsed_link['path'] = str_replace('//', '/', $parsed_link['path']);

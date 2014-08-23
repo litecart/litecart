@@ -24,7 +24,7 @@
         );
       }
 
-      echo $box_manufacturer_logotypes->stitch('box_manufacturer_logotypes');
+      echo $box_manufacturer_logotypes->stitch('views/box_manufacturer_logotypes');
     }
     
     cache::end_capture($box_manufacturer_logotypes_cache_id);

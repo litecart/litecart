@@ -44,7 +44,7 @@
           $box_also_purchased_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
         }
         
-        echo $box_also_purchased_products->stitch('box_also_purchased_products');
+        echo $box_also_purchased_products->stitch('views/box_also_purchased_products');
       }
     }
     

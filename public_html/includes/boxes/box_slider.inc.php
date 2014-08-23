@@ -29,7 +29,7 @@
         );
       }
       
-      echo $box_slider->stitch('box_slider');
+      echo $box_slider->stitch('views/box_slider');
       
     }
     

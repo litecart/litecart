@@ -9,7 +9,7 @@
 // Stitch content
   $page = new view();
   $page->snippets = array('content' => $content);
-  $output = $page->stitch(document::$layout);
+  $output = $page->stitch('layouts/'.document::$layout);
   
 // Prepare output
   system::run('prepare_output');

@@ -73,6 +73,6 @@
     );
   }
   
-  echo $box_checkout_summary->stitch('box_checkout_summary');
+  echo $box_checkout_summary->stitch('views/box_checkout_summary');
   
 ?>

@@ -51,5 +51,5 @@
     'options' => $options,
   );
   
-  echo $box_checkout_shipping->stitch('box_checkout_shipping');
+  echo $box_checkout_shipping->stitch('views/box_checkout_shipping');
 ?>

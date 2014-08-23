@@ -32,6 +32,6 @@
     }
   }
   
-  echo $box_checkout_cart->stitch('box_checkout_cart');
+  echo $box_checkout_cart->stitch('views/box_checkout_cart');
   
 ?>

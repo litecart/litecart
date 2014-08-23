@@ -24,7 +24,7 @@
       
       $box_manufacturers_list->snippets['options'] = $options;
       
-      echo $box_manufacturers_list->stitch('box_manufacturers_list');
+      echo $box_manufacturers_list->stitch('views/box_manufacturers_list');
     }
     
     cache::end_capture($box_manufacturers_list_cache_id);

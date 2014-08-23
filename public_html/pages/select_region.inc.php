@@ -8,6 +8,10 @@
     document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   }
   
+  document::$snippets['title'][] = language::translate('select_region:head_title', 'Regional Settings');
+  document::$snippets['keywords'] = language::translate('select_region:meta_keywords', '');
+  document::$snippets['description'] = language::translate('select_region:meta_description', '');
+  
   if (isset($_POST['save'])) {
     
     $_POST['language_code'] = !empty($_POST['language_code']) ? $_POST['language_code'] : '';
@@ -41,7 +45,7 @@
   }
   
   $page = new view();
-  echo $page->stitch('box_select_region');
+  echo $page->stitch('views/box_select_region');
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

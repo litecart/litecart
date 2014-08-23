@@ -11,7 +11,7 @@
       }
     }
     
-    header('Location: '. document::link());
+    header('Location: '. document::ilink());
     exit;
   }
   
@@ -23,7 +23,7 @@
       }
     }
     
-    header('Location: '. document::link());
+    header('Location: '. document::ilink());
     exit;
   }
   
@@ -32,7 +32,7 @@
     
     if (empty(notices::$data['errors'])) {
       move_uploaded_file($_FILES['vqmod']['tmp_name'], FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. $_FILES['vqmod']['name']);
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
     }
   }
@@ -73,7 +73,7 @@
       <td nowrap="nowrap"><?php echo (string)$xml->id; ?></td>
       <td nowrap="nowrap"><?php echo (string)$xml->version; ?></td>
       <td nowrap="nowrap"><?php echo (string)$xml->author; ?></td>
-      <td nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'download', 'vqmod' => $vqmod), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/download.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_download', 'Download'); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>" /></a></td>
+      <td nowrap="nowrap"><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/download.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_download', 'Download'); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>" /></a></td>
     </tr>
 <?php
     }

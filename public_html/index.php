@@ -1,9 +1,9 @@
 <?php
   require_once('includes/app_header.inc.php');
   
-  if (!empty(route::$route) && is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . route::$route)) {
+  if (!empty(route::$route) && is_file(route::$route)) {
   
-    include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . route::$route);
+    include vqmod::modcheck(route::$route);
     
   } else {
   

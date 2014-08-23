@@ -8,5 +8,5 @@
     'cart_total' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$data['total']['value'] + cart::$data['total']['tax']) : currency::format(cart::$data['total']['value']),
   );
   
-  echo $box_cart->stitch('box_cart');
+  echo $box_cart->stitch('views/box_cart');
 ?>

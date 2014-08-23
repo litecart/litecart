@@ -13,7 +13,7 @@
         $box_categories->snippets['categories'] .= functions::draw_listing_category($category);
       }
       
-      echo $box_categories->stitch('box_categories');
+      echo $box_categories->stitch('views/box_categories');
     }
     cache::end_capture($box_categories_cache_id);
   }

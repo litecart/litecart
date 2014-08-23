@@ -15,7 +15,7 @@
         $box_campaign_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
       }
       
-      echo $box_campaign_products->stitch('box_campaign_products');
+      echo $box_campaign_products->stitch('views/box_campaign_products');
     }
     
     cache::end_capture($box_campaign_products_cache_id);

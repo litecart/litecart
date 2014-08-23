@@ -56,7 +56,7 @@
     
     $box_site_menu->snippets['menu'] .= '  </ul>' . PHP_EOL;
     
-    echo $box_site_menu->stitch('box_site_menu');
+    echo $box_site_menu->stitch('views/box_site_menu');
     
     cache::end_capture($box_site_menu_cache_id);
   }

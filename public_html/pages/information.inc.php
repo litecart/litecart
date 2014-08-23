@@ -31,5 +31,5 @@
     'content' => $page['content'],
   );
   
-  echo document::stitch('file', 'page_information', $snippets);
+  echo document::stitch('views/file', 'information', $snippets);
 ?>

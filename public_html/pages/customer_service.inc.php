@@ -37,11 +37,11 @@
   
   // Store map
     $box_store_map = new view();
-    echo $box_store_map->stitch('box_store_map');
+    echo $box_store_map->stitch('views/box_store_map');
   
   // Contact us
     $box_contact_us = new view();
-    echo $box_contact_us->stitch('box_contact_us');
+    echo $box_contact_us->stitch('views/box_contact_us');
     
   } else {
   
@@ -73,7 +73,7 @@
     );
     
     $box_information = new view();
-    echo $box_information->stitch('box_information');
+    echo $box_information->stitch('views/box_information');
   }
   
 ?>

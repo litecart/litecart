@@ -20,7 +20,7 @@
         $box_most_popular_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
       }
       
-      echo $box_most_popular_products->stitch('box_most_popular_products');
+      echo $box_most_popular_products->stitch('views/box_most_popular_products');
     }
     
     cache::end_capture($box_most_popular_products_cache_id);

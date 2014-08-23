@@ -8,5 +8,5 @@
     'email' => customer::$data['email'],
   );
   
-  echo $box_account->stitch('box_account');
+  echo $box_account->stitch('views/box_account');
  ?>

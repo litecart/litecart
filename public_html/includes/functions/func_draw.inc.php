@@ -15,7 +15,7 @@
       'short_description' => $category['short_description'],
     );
     
-    return $list_item->stitch('listing_category');
+    return $list_item->stitch('views/listing_category');
   }
   
   function draw_listing_product_column($product) {
@@ -53,7 +53,7 @@
       'preview_icon' => WS_DIR_IMAGES .'icons/16x16/preview.png',
     );
     
-    return $list_item->stitch('listing_product');
+    return $list_item->stitch('views/listing_product');
   }
   
   function draw_fancybox($selector='a.fancybox', $params=array()) {
@@ -198,7 +198,7 @@
       'active' => false,
     );
     
-    $html = $pagination->stitch('pagination');
+    $html = $pagination->stitch('views/pagination');
     
     return $html;
   }

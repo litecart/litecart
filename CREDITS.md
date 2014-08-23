@@ -82,7 +82,9 @@ VQMod by Qphoria - Special permitted use - https://code.google.com/p/vqmod/
 
 Inspired By
 -----------
-LiteCart was born out of thoughts of what was missing, what was too much, and/or what could have been different in other free e-commerce platforms.
+LiteCart was born out of thoughts of what was missing, what was too much, and what could have been different in other e-commerce platforms.
 
-* osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
 * OpenCart by Daniel Kerr - http://www.opencart.com
+* osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
+* Prestashop by PrestaShop, Inc. - http://www.prestashop.com
+* Magento CE by eBay Inc. - http://www.magento.com

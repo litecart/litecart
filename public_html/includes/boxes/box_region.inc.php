@@ -12,5 +12,5 @@
   
   $box_region = new view();
   
-  echo $box_region->stitch('box_region');
+  echo $box_region->stitch('views/box_region');
 ?>

@@ -22,7 +22,7 @@
       );
     }
     
-    echo $box_information_links->stitch('box_information_links');
+    echo $box_information_links->stitch('views/box_information_links');
     
     cache::end_capture($box_information_links_cache_id);
   }

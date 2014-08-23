@@ -17,8 +17,9 @@ $app_config = array(
     ),
   ),
   'docs' => array(
-    'vqmods' => 'vqmods.inc.php',
+    'download' => 'download.inc.php',
     'log' => 'log.inc.php',
+    'vqmods' => 'vqmods.inc.php',
   ),
 );
 

@@ -125,21 +125,27 @@
       }
     }
     
-    public static function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
-    }
-
-    public static function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
-    }
-    
-    public static function ilink($route=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      if ($route !== null) $route = WS_DIR_HTTP_HOME . $route;
+    public static function ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+      
+      if ($route === null) {
+        $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+      } else {
+        $route = WS_DIR_HTTP_HOME . $route;
+      }
+      
       return link::create_link($route, $new_params, $inherit_params, $skip_params, $language_code);
     }
 
-    public static function href_ilink($route=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+    public static function href_ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
       return htmlspecialchars(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
+    }
+    
+    public static function link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+      return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
+    }
+
+    public static function href_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
     }
   }
   

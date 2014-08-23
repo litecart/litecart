@@ -22,11 +22,11 @@
       
     // Add default routes
       $routes = array(
-        '#^(?:index\.php)?$#'                  => array('script' => 'routes/index.inc.php',              'params' => ''),
-        '#^ajax/(.*)(?:\.php)?$#'              => array('script' => 'routes/ajax/$1.inc.php',            'params' => ''),
-        '#^feeds/(.*)(?:\.php)?$#'             => array('script' => 'routes/feeds/$1.inc.php',           'params' => ''),
-        '#^([0-9|a-z|_]+)(?:\.php)?$#'         => array('script' => 'routes/$1.inc.php',                 'params' => ''),
-        // See includes/routes/* for more advanced routes
+        '#^(?:index\.php)?$#'                  => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'index.inc.php',              'params' => ''),
+        '#^ajax/(.*)(?:\.php)?$#'              => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'ajax/$1.inc.php',            'params' => ''),
+        '#^feeds/(.*)(?:\.php)?$#'             => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'feeds/$1.inc.php',           'params' => ''),
+        '#^([0-9|a-z|_]+)(?:\.php)?$#'         => array('script' => FS_DIR_HTTP_ROOT . WS_DIR_PAGES .'$1.inc.php',                 'params' => ''),
+        // See ~/includes/routes/ folder for more advanced routes
       );
       
       foreach ($routes as $pattern => $properties) {
@@ -81,10 +81,10 @@
         break;
       }
       
-      /*
     // Forward to rewritten URL (if necessary)
-      $requested_url = self::rewrite($_SERVER['REQUEST_URI']);
-      if (document::link($_SERVER['REQUEST_URI']) != $requested_url) {
+      $rewritten_url = self::rewrite(document::ilink(basename(route::$route, '.inc.php'), $_GET));
+      
+      if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
         
         $redirect = true;
         
@@ -102,13 +102,12 @@
         }
         
         if ($redirect) {
-          //error_log('Redirecting user from '. $_SERVER['REQUEST_URI'] .' to'. link::($_SERVER['REQUEST_URI']));
+          //error_log('Redirecting user from '. $_SERVER['REQUEST_URI'] .' to '. $rewritten_url);
           header('HTTP/1.1 301 Moved Permanently');
-          header('Location: '. $requested_url);
+          header('Location: '. $rewritten_url);
           exit;
         }
       }
-      */
     }
     
     public static function after_capture() {

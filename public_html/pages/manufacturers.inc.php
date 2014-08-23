@@ -3,7 +3,7 @@
   
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
   
-  document::$snippets['title'][] = language::translate('manufacturers.php:head_title', '');
+  document::$snippets['title'][] = language::translate('manufacturers.php:head_title', 'Manufacturers');
   document::$snippets['keywords'] = language::translate('manufacturers.php:meta_keywords', '');
   document::$snippets['description'] = language::translate('manufacturers.php:meta_description', '');
   
@@ -31,7 +31,7 @@
       );
     }
     
-    echo $page->stitch('box_manufacturers');
+    echo $page->stitch('views/box_manufacturers');
     
     cache::end_capture($box_manufacturers_cache_id);
   }

@@ -15,7 +15,7 @@
         $box_latest_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
       }
       
-      echo $box_latest_products->stitch('box_latest_products');
+      echo $box_latest_products->stitch('views/box_latest_products');
     }
     
     cache::end_capture($box_latest_products_cache_id);

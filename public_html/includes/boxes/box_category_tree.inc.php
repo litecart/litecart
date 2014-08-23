@@ -70,7 +70,7 @@
   
     $box_category_tree->snippets['categories'] = output_category_tree(0, 0, custom_catalog_trail(empty($_GET['category_id']) ? 0 : $_GET['category_id']));
 
-    echo $box_category_tree->stitch('box_category_tree');
+    echo $box_category_tree->stitch('views/box_category_tree');
     
     cache::end_capture($box_category_tree_cache_id);
   }
