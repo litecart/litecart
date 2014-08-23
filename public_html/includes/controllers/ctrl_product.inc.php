@@ -485,8 +485,13 @@
         "delete from ". DB_TABLE_PRODUCTS_PRICES ."
         where product_id = '". (int)$this->data['id'] ."';"
       );
+
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        where product_id = '". (int)$this->data['id'] ."';"
+      );
       
-      cache::clear_cache('product_'. (int)$this->data['id']);
+
       cache::clear_cache('products');
       
       $this->data['id'] = null;

@@ -296,14 +296,14 @@
             if ($product->options_stock[$key]['combination'] == self::$data['items'][$item_key]['option_stock_combination']) {
               if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
                 notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
-        return;
+                return;
               }
             }
           }
         } else if (($product->quantity - $quantity) < 0) {
-        notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
-        return;
-      }
+          notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+          return;
+        }
       }
     
       if ($quantity > 0) {

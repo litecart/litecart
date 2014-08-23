@@ -109,8 +109,8 @@
       if (isset(self::$currencies[settings::get('default_currency_code')])) return settings::get('default_currency_code');
       
     // Return first currency
-      $languages = array_keys(self::$languages);
-      return array_shift($languages);
+      $currencies = array_keys(self::$currencies);
+      return array_shift($currencies);
     }
     
     public static function calculate($value, $to, $from=null) {
