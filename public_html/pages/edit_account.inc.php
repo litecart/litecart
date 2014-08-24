@@ -70,6 +70,7 @@
         'phone',
         'mobile',
         'different_shipping_address',
+        'newsletter',
       );
       
       foreach ($fields as $field) {
@@ -121,5 +122,5 @@
   }
   
   $page = new view();
-  echo $page->stitch('views/box_create_account');
+  echo $page->stitch('views/box_edit_account');
 ?>

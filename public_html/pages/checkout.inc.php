@@ -191,10 +191,10 @@
     customer_form_checksum = $('form[name=customer_form]').serialize();
     if (customer_form_checksum != customer_saved_checksum) {
       stateCustomerChanged = true;
-      $("#box-checkout-account button[name='set_addresses']").removeAttr('disabled');
+      $("#box-checkout-customer button[name='set_addresses']").removeAttr('disabled');
     } else {
       stateCustomerChanged = false;
-      $("#box-checkout-account button[name='set_addresses']").attr('disabled', 'disabled');
+      $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
     }
   });
   
@@ -240,7 +240,7 @@
         $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(data) {
-        $("#box-checkout-account button[name='set_addresses']").attr('disabled', 'disabled');
+        $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
         $('#checkout-customer-wrapper').html(data);
         stateCustomerChanged = false;
         customer_saved_checksum = $('form[name=customer_form]').serialize();

@@ -63,7 +63,7 @@
     );
   }
   
-  if ($checkout_errors = $order->checkout_forbidden()) $box_checkout_summary->snippets['error'] = $checkout_errors[0];
+  if ($checkout_errors = $order->checkout_forbidden()) $box_checkout_summary->snippets['error'] = $checkout_errors;
   
   if (!empty($payment->data['selected'])) {
     $box_checkout_summary->snippets['selected_payment'] = array(

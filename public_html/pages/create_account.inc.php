@@ -56,6 +56,7 @@
         'zone_code',
         'phone',
         'mobile',
+        'newsletter',
       );
       
       foreach ($fields as $field) {

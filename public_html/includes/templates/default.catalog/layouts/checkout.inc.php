@@ -15,6 +15,11 @@
 <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
+<script>
+  if (/iphone|ipod|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(navigator.userAgent.toLowerCase())) {
+    $("meta[name='viewport']").attr("content", "width=480");
+  }
+</script>
 <style>
 <?php
   $settings = unserialize(settings::get('store_template_catalog_settings'));
@@ -29,7 +34,6 @@
 </style>
 </head>
 <body>
-
 
 <div id="header-wrapper" class="shadow">
   <div style="padding: 0px 10px;">

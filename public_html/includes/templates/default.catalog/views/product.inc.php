@@ -5,13 +5,10 @@
   </div>
   
   <div class="content">
-    <table>
-      <tr>
-        <td style="width: 320px; vertical-align: top;">
-          <div class="product-images-wrapper">
+    <div class="product-images-wrapper">
 
-            <div style="position: relative;">
-              <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product"><img src="<?php echo $image['thumbnail']; ?>" class="main-image zoomable shadow rounded-corners" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" /></a>
+      <div style="position: relative;">
+        <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product"><img src="<?php echo $image['thumbnail']; ?>" class="main-image zoomable shadow rounded-corners" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" /></a>
 <?php
   if ($sticker_onsale) {
     $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. $sticker_onsale .'" class="sticker" />';
@@ -19,75 +16,73 @@
     $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. $sticker_new .'" class="sticker" />';
   }
 ?>
-            </div>
+      </div>
 <?php
   if ($extra_images) {
     foreach ($extra_images as $image) {
-      echo '<div style="display: inline;"><a href="'. $image['original'] .'" class="fancybox" data-fancybox-group="product"><img src="'. $image['thumbnail'] .'" style="margin: 5px 5px 0px 0px;" class="extra-image zoomable shadow" title="'. htmlspecialchars($name) .'" /></a></div>';
+      echo '<div style="display: inline;"><a href="'. $image['original'] .'" class="fancybox" data-fancybox-group="product"><img src="'. $image['thumbnail'] .'" class="extra-image zoomable shadow" title="'. htmlspecialchars($name) .'" /></a></div>';
     }
   }
 ?>
-          </div>
-        </td>
-        
-        <td style="padding-left: 20px; vertical-align: top; width: 100%;">
-        
-          <?php if ($manufacturer_name) { ?>
-          <div class="manufacturer" style="font-size: 1.5em; margin-bottom: 10px;" itemscope itemtype="http://www.schema.org/Organisation">
-          <?php if ($manufacturer_image) { ?>
-            <a href="<?php echo htmlspecialchars($manufacturer_url); ?>"><img src="<?php echo htmlspecialchars($manufacturer_image); ?>" alt="<?php echo htmlspecialchars($manufacturer_name); ?>" title="<?php echo htmlspecialchars($manufacturer_name); ?>" itemprop="image" /></a>
-          <?php } else { ?>
-            <a href="<?php echo htmlspecialchars($manufacturer_url); ?>" itemprop="name"><?php echo $manufacturer_name; ?></a>
-          <?php } ?>
-          </div>
-          <?php } ?>
+    </div>
 
-          <div class="price-wrapper" style="margin-bottom: 10px;" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-            <?php if ($campaign_price) { ?>
-            <s class="regular-price"><?php echo $regular_price; ?></s> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
-            <?php } else { ?>
-            <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
-            <?php } ?>
-          </div>
-          
-          <div class="tax" style="margin-bottom: 10px;">
-          <?php if ($tax_rates) { ?>
-            <?php echo $tax_status; ?>: <?php echo implode('<br />', $tax_rates); ?>
-          <?php } else { ?>
-            <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
-          <?php } ?>
-          </div>
-          
-          <div style="margin-bottom: 10px;">
-          <?php if ($quantity > 0) { ?>
-            <div class="stock-available"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
-            <div class="stock-delivery"><?php echo $title_delivery_status; ?>: <span class="value"><?php $delivery_status_value;?></span></div>
-            <?php } else { ?>
-            <?php if ($sold_out_status_value) { ?>
-              <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $sold_out_status_value; ?></span></div>
-            <?php } else { ?>
-              <div class="stock-unavailable"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $title_sold_out; ?></span></div>
-            <?php } ?>
-          <?php } ?>
-          </div>
+    <div class="information">
+      <?php if ($manufacturer_name) { ?>
+      <div class="manufacturer" style="font-size: 1.5em; margin-bottom: 10px;" itemscope itemtype="http://www.schema.org/Organisation">
+      <?php if ($manufacturer_image) { ?>
+        <a href="<?php echo htmlspecialchars($manufacturer_url); ?>"><img src="<?php echo htmlspecialchars($manufacturer_image); ?>" alt="<?php echo htmlspecialchars($manufacturer_name); ?>" title="<?php echo htmlspecialchars($manufacturer_name); ?>" itemprop="image" /></a>
+      <?php } else { ?>
+        <a href="<?php echo htmlspecialchars($manufacturer_url); ?>" itemprop="name"><?php echo $manufacturer_name; ?></a>
+      <?php } ?>
+      </div>
+      <?php } ?>
+
+      <div class="price-wrapper" style="margin-bottom: 10px;" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <?php if ($campaign_price) { ?>
+        <s class="regular-price"><?php echo $regular_price; ?></s> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
+        <?php } else { ?>
+        <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
+        <?php } ?>
+      </div>
       
-          <?php if ($cheapest_shipping) { ?>
-          <div class="cheapest-shipping" style="margin-bottom: 10px;">
-            <?php echo $cheapest_shipping; ?>
-          </div>
-          <?php } ?>
+      <div class="tax" style="margin-bottom: 10px;">
+      <?php if ($tax_rates) { ?>
+        <?php echo $tax_status; ?>: <?php echo implode('<br />', $tax_rates); ?>
+      <?php } else { ?>
+        <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
+      <?php } ?>
+      </div>
       
-          <div class="buy_now" style="margin-bottom: 20px;">
-            <?php echo functions::form_draw_form_begin('buy_now_form'); ?>
-            <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
-            
-            <table>
+      <div style="margin-bottom: 10px;">
+      <?php if ($quantity > 0) { ?>
+        <div class="stock-available"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
+        <div class="stock-delivery"><?php echo $title_delivery_status; ?>: <span class="value"><?php $delivery_status_value;?></span></div>
+        <?php } else { ?>
+        <?php if ($sold_out_status_value) { ?>
+          <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $sold_out_status_value; ?></span></div>
+        <?php } else { ?>
+          <div class="stock-unavailable"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $title_sold_out; ?></span></div>
+        <?php } ?>
+      <?php } ?>
+      </div>
+  
+      <?php if ($cheapest_shipping) { ?>
+      <div class="cheapest-shipping" style="margin-bottom: 10px;">
+        <?php echo $cheapest_shipping; ?>
+      </div>
+      <?php } ?>
+  
+      <div class="buy_now" style="margin-bottom: 20px;">
+        <?php echo functions::form_draw_form_begin('buy_now_form'); ?>
+        <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
+        
+        <table>
 <?php
   if ($options) {
     foreach ($options as $option) {
     
       echo '  <tr>' . PHP_EOL
-         . '    <td class="options"><strong>'. $option['name'] .'</strong>'. (($option['required'] == false) ? ' <span class="required">*</span>' : '') .'<br />'
+         . '    <td class="options"><strong>'. $option['name'] .'</strong>'. (!empty($option['required']) ? ' <span class="required">*</span>' : '') .'<br />'
          .      ($option['description'] ? $option['description'] . '<br />' . PHP_EOL : '')
          .      $option['values'] . PHP_EOL
          . '    </td>' . PHP_EOL
@@ -95,10 +90,10 @@
     }
   }
 ?>
-              <?php if (!$catalog_only_mode) { ?>
-              <tr>
-                <td class="quantity"><strong><?php echo $title_quantity; ?></strong><br />
-                <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?> &nbsp; 
+          <?php if (!$catalog_only_mode) { ?>
+          <tr>
+            <td class="quantity"><strong><?php echo $title_quantity; ?></strong><br />
+            <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?> &nbsp; 
 <?php
     if ($quantity > 0 || $orderable) {
       echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit'); 
@@ -106,30 +101,28 @@
       echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit', 'disabled="disabled"'); 
     }
 ?>
-                </td>
-              </tr>
-              <?php } ?>
-            </table>
+            </td>
+          </tr>
+          <?php } ?>
+        </table>
 
-            <?php echo functions::form_draw_form_end(); ?>
-          </div>
-          
-          <div style="margin-bottom: 10px;" class="social-bookmarks">
-            <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
-            <a class="addthis_button_facebook"></a>
-            <a class="addthis_button_google_plusone_share"></a>
-            <a class="addthis_button_twitter"></a>
-            <a class="addthis_button_email"></a>
-            <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
-            </div>
-            <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
-            <!-- AddThis Button END -->
-          </div>
-        </td>
-      </tr>
-
-    </table>
+        <?php echo functions::form_draw_form_end(); ?>
+      </div>
+      
+      <div style="margin-bottom: 10px;" class="social-bookmarks">
+        <!-- AddThis Button BEGIN -->
+        <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+        <a class="addthis_button_facebook"></a>
+        <a class="addthis_button_google_plusone_share"></a>
+        <a class="addthis_button_twitter"></a>
+        <a class="addthis_button_email"></a>
+        <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
+        </div>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
+        <!-- AddThis Button END -->
+      </div>
+      
+    </div>
     
     <?php if ($description || $attributes) { ?>
     <div class="tabs" style="margin-top: 20px;">

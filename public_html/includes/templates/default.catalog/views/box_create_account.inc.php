@@ -37,7 +37,13 @@
           <td><?php echo language::translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_email_field('email', true); ?></td>
           <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
-            <?php echo functions::form_draw_text_field('phone', true); ?></td>
+            <?php echo functions::form_draw_phone_field('phone', true); ?></td>
+        </tr>
+        <tr>
+          <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
+            <label><?php echo functions::form_draw_checkbox('newsletter', '1', !(empty($_POST)) ? true : '1'); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
+          </td>
+          <td></td>
         </tr>
         <tr>
           <td><?php echo language::translate('title_desired_password', 'Desired Password'); ?> <span class="required">*</span><br />

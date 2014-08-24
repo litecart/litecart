@@ -72,7 +72,7 @@
     'sku' => $product->sku,
     'image' => array(
       'original' => !empty(array_values($product->images)[0]) ? WS_DIR_IMAGES . array_values($product->images)[0] : WS_DIR_IMAGES . 'no_image.png',
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty(array_values($product->images)[0]) ? array_values($product->images)[0] : 'no_image.png'), FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 310, 310, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty(array_values($product->images)[0]) ? array_values($product->images)[0] : 'no_image.png'), FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
     ),
     'extra_images' => array(),
     'sticker_onsale' => (!empty($product->campaign['price'])) ? language::translate('title_on_sale', 'On Sale') : '',
@@ -107,7 +107,7 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $page->snippets['extra_images'][] = array(
       'original' => WS_DIR_IMAGES . $image,
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 100, 133, 'CROP'),
+      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 180, 180, 'CROP'),
     );
   }
   

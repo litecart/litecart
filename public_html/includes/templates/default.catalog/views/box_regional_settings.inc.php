@@ -1,4 +1,4 @@
-<div id="box-select-region" class="box">
+<div id="box-regional-settings" class="box">
   <div class="heading">
     <h1<?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
   </div>

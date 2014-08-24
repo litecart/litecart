@@ -28,7 +28,7 @@
           <nav>
             <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
             <ul class="list-vertical">
-              <li><a href="<?php echo document::href_ilink('select_region'); ?>"><?php echo language::translate('title_select_region', 'Select Region'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
               <?php if (empty(customer::$data['id'])) { ?>
               <li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
               <li><a href="<?php echo document::href_ilink('login'); ?>"><?php echo language::translate('title_login', 'Login'); ?></a></li>

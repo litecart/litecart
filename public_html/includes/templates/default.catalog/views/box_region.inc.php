@@ -6,7 +6,7 @@
         <div class="currency" title="<?php echo currency::$selected['name']; ?>"><?php echo currency::$selected['code']; ?></div>
         <div class="country" title="<?php echo functions::reference_get_country_name(customer::$data['country_code']); ?>"><?php echo functions::reference_get_country_name(customer::$data['country_code']); ?></div>
       </td>
-      <td><a class="fancybox-region" href="<?php echo document::href_ilink('select_region'); ?>"><?php echo language::translate('title_change', 'Change'); ?></a></td>
+      <td><a class="fancybox-region" href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_change', 'Change'); ?></a></td>
     </tr>
   </table>
 </div>
