@@ -163,15 +163,15 @@
   }
   
   function form_draw_password_field($name, $value='', $parameters='', $hint='') {
-    if ($value === true) $value = (int)form_reinsert_value($name);
+    if ($value === true) $value = form_reinsert_value($name);
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
-  function form_draw_phone_field($name, $value='', $parameters='', $hint='') {
-    if ($value === true) $value = (int)form_reinsert_value($name);
+  function form_draw_phone_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
