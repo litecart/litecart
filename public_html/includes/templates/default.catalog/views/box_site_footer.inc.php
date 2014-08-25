@@ -28,6 +28,7 @@
           <nav>
             <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
             <ul class="list-vertical">
+              <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
               <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
               <?php if (empty(customer::$data['id'])) { ?>
               <li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
@@ -64,12 +65,12 @@
           <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
           <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
           <p><?php echo settings::get('store_phone'); ?><br />
-          <?php list($account, $domain) = explode('@', settings::get('store_email')); echo "<script>document.write('". $account ."' + '@' + '". $domain ."');</script>"; ?></p>
+            <?php list($account, $domain) = explode('@', settings::get('store_email')); echo "<script>document.write('". $account ."' + '@' + '". $domain ."');</script>"; ?></p>
         </td>
       </tr>
     </table>
   </footer>
   
-  <div id="copyright" class="twelve-eighty engraved-text">
+  <div id="copyright" class="twelve-eighty">
     <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
   </div>

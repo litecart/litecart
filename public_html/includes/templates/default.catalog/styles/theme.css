@@ -34,7 +34,7 @@ body {
 #logotype-wrapper {
   display: inline-block;
   position: absolute;
-  top: 15px;
+  top: 10px;
   left: 0px;
 }
 
@@ -107,20 +107,20 @@ body {
 
 #cart-wrapper {
   position: absolute;
-  bottom: 10px;
-  right: 0px;
+  bottom: 15px;
+  right: 20px;
   display: inline-block;
 }
 #cart {
   position: relative;
   white-space: nowrap;
 }
-#cart > a.image {
+#cart > a img {
   float: left;
   vertical-align: bottom;
-  margin-right: 5px;
-  width: 32px;
-  height: 32px;
+  margin: -10px 5px 0px 0px;
+  width: 48px;
+  height: 48px;
 }
 #cart > a.content {
   display: inline-block;
@@ -172,7 +172,6 @@ body {
 }
 
 #main .middle {
-
 }
 #main .middle > .left, #main .middle  > .content {
   display: table-cell;
@@ -242,7 +241,6 @@ body {
 }
 #footer * {
   color: #777;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
 }
 #footer a:hover {
   color: rgb(0, 136, 204);

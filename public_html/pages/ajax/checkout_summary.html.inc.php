@@ -37,7 +37,7 @@
     'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : '',
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => currency::format($order->data['payment_due'], false),
-    'errors' => '',
+    'error' => $order->checkout_forbidden(),
     'selected_payment' => array(),
   );
   
@@ -62,8 +62,6 @@
       'tax' => currency::format($row['tax'], false)
     );
   }
-  
-  if ($checkout_errors = $order->checkout_forbidden()) $box_checkout_summary->snippets['error'] = $checkout_errors;
   
   if (!empty($payment->data['selected'])) {
     $box_checkout_summary->snippets['selected_payment'] = array(

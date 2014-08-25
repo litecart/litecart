@@ -24,7 +24,7 @@
           <td><?php echo language::translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?></td>
           <td><?php echo language::translate('title_address2', 'Address 2'); ?><br />
-          <?php echo functions::form_draw_text_field('address2', true, 'required="required"'); ?></td>
+          <?php echo functions::form_draw_text_field('address2', true); ?></td>
         </tr>
         <tr>
           <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />

@@ -29,11 +29,6 @@ LiteCart contains work by the following listed:
 * (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
 * (mail) Icojam - Public Domain - http://www.icojam.com
 
-32x32 Icons
------------
-
-* (cart) DesignContest.com - CC Attribution 3.0 Unported - http://www.designcontest.com
-
 Language Icons
 --------------
 * Open Web Graphics - Creative Commons Attribution 3.0 Unported - http://www.openwebgraphics.com

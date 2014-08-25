@@ -18,7 +18,7 @@
       $box_information_links->snippets['pages'][] = array(
         'id' => $page['id'],
         'title' => $page['title'],
-        'href' => document::href_ilink('information', array('page_id' => $page['id'])),
+        'link' => document::ilink('information', array('page_id' => $page['id'])),
       );
     }
     

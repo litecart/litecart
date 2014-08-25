@@ -1,5 +1,5 @@
 <div id="cart">
-  <a href="<?php echo $href; ?>" class="image"><img src="<?php echo WS_DIR_IMAGES; ?>icons/32x32/cart.png" alt="" /></a>
+  <a href="<?php echo $href; ?>" class="image"><img src="{snippet:template_path}images/<?php echo !empty($num_items) ? 'cart_filled.png' : 'cart.png'; ?>" height="64" alt="" /></a>
   <a href="<?php echo $href; ?>" class="content">
     <strong><?php echo language::translate('title_cart', 'Cart'); ?>:</strong><br />
     <span class="quantity"><?php echo $num_items; ?></span> <?php echo language::translate('text_items', 'item(s)'); ?> - <span class="formatted_value"><?php echo $cart_total; ?></span>
@@ -22,6 +22,11 @@
       success: function(data) {
         $('#cart .quantity').html(data['quantity']);
         $('#cart .formatted_value').html(data['formatted_value']);
+        if (data['quantity'] > 0) {
+          $('#cart img').attr('src', '{snippet:template_path}images/cart_filled.png');
+        } else {
+          $('#cart img').attr('src', '{snippet:template_path}images/cart.png');
+        }
       },
       complete: function() {
         $('*').css('cursor', '');

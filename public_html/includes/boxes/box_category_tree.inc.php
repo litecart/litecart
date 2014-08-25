@@ -31,14 +31,7 @@
       
       $output = '<ul class="list-vertical">' . PHP_EOL;
       
-      $categories_query = database::query(
-        "select c.id, ci.name
-        from ". DB_TABLE_CATEGORIES ." c
-        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
-        where status
-        and parent_id = '". (int)$category_id ."'
-        order by c.priority asc, ci.name asc;"
-      );
+      $categories_query = functions::catalog_categories_query($category_id);
       
       while ($category = database::fetch($categories_query)) {
       
@@ -46,13 +39,7 @@
                  . '    <a href="'. document::href_ilink('category', array('category_id' => $category['id']), false) .'" '. ((!empty($_GET['category_id']) && $category['id'] == $_GET['category_id']) ? ' class="active"' : '') .'><img src="'. WS_DIR_IMAGES .'icons/16x16/'. ((@in_array($category['id'], $category_trail)) ? 'collapse.png' : 'expand.png') .'" width="16" height="16" alt="" style="vertical-align: middle;" /> '. $category['name'] .'</a>' . PHP_EOL;
         
         if (in_array($category['id'], $category_trail)) {
-          $sub_categories_query = database::query(
-            "select id
-            from ". DB_TABLE_CATEGORIES ." c
-            where status
-            and parent_id = '". (int)$category['id'] ."'
-            limit 1;"
-          );
+          $sub_categories_query = functions::catalog_categories_query($category['id']);
           if (database::num_rows($sub_categories_query) > 0) {
             $output .= output_category_tree($category['id'], $level+1, $category_trail);
           }

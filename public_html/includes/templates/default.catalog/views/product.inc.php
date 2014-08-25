@@ -204,6 +204,11 @@
             if (data['alert']) alert(data['alert']);
             $('#cart .quantity').html(data['quantity']);
             $('#cart .formatted_value').html(data['formatted_value']);
+            if (data['quantity'] > 0) {
+              $('#cart img').attr('src', '{snippet:template_path}images/cart_filled.png');
+            } else {
+              $('#cart img').attr('src', '{snippet:template_path}images/cart.png');
+            }
           },
           complete: function() {
             $('*').css('cursor', '');

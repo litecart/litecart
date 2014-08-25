@@ -27,7 +27,7 @@
       );
     }
     
-    echo $box_customer_service_links->stitch('views/box_information_links');
+    echo $box_customer_service_links->stitch('views/box_customer_service_links');
     
     cache::end_capture($box_customer_service_links_cache_id);
   }

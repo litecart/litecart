@@ -25,9 +25,15 @@
 #box-checkout-cart .viewport {
   width: 560px;
   overflow: hidden;
-  max-height: 200px;
+  max-height: 300px;
   padding: 5px;
 }
+@media (max-width: 640px) {
+  #box-checkout-cart .viewport {
+    width: 440px;
+  }
+}
+
 #box-checkout-cart .items {
   list-style: none;
   padding: 0px;
@@ -73,18 +79,31 @@
   box-shadow: inset 0 0 5px #888;
 }
 
-#box-checkout-account h2, #box-checkout-shipping h2, #box-checkout-payment h2, #box-checkout-summary h2 {
+#box-checkout-customer h2, #box-checkout-shipping h2, #box-checkout-payment h2, #box-checkout-summary h2 {
   font: 2em 'Open Sans', sans-serif;
   font-weight: normal;
   border-bottom: 2px solid #e5e5e5;
   margin-bottom: 10px;
   padding: 5px 0px;
 }
-#box-checkout-account h2:before, #box-checkout-shipping h2:before, #box-checkout-payment h2:before, #box-checkout-summary h2:before {
+#box-checkout-customer h2:before, #box-checkout-shipping h2:before, #box-checkout-payment h2:before, #box-checkout-summary h2:before {
   content: "\25bc";
   padding-right: 10px;
   opacity: 0.7;
   font-size: 16px;
+}
+
+#box-checkout-customer .billing-address {
+  display: inline-block;
+  float: left;
+  padding-right: 20px;
+}
+#box-checkout-customer .shipping-address {
+  display: inline-block;
+  float: left;
+}
+#box-checkout-customer .shipping-address h3 {
+  margin-top: 22px;
 }
 
 #shipping-options, #payment-options {
@@ -129,6 +148,16 @@
 @media (max-width: 800px) {
   #shipping-options .option, #payment-options .option {
     width: 30.2%;
+  }
+}
+@media (max-width: 640px) {
+  #shipping-options .option, #payment-options .option {
+    width: 30.2%;
+  }
+}
+@media (max-width: 480px) {
+  #shipping-options .option, #payment-options .option {
+    width: 46%;
   }
 }
 
@@ -208,4 +237,28 @@
   padding: 10px 20px;
   font-weight: normal;
   text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 640px) {
+  #box-checkout-summary th.sku, #box-checkout-summary th.unit-cost, #box-checkout-summary th.tax {
+    font-size: 1px;
+    width: auto;
+  }
+  #box-checkout-summary td.sku, #box-checkout-summary td.unit-cost, #box-checkout-summary td.tax {
+    font-size: 1px;
+  }
+}
+
+#box-checkout-summary .comments textarea {
+  float: left;
+  display: inline-block;
+  min-width: 450px;
+  max-width: 50%;
+  height: 50px;
+}
+
+#box-checkout-summary .confirm {
+  float: right;
+  display: inline-block;
+  text-align: right;
 }

@@ -1,15 +1,15 @@
-<div id="box-login" class="box">
-  <div class="heading"><h1><?php echo language::translate('title_login', 'Login'); ?></h1></div>
+<div id="box-account-login" class="box">
+  <div class="heading"><h3><?php echo language::translate('title_login', 'Login'); ?></h3></div>
   <div class="content">
-    <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
+    <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login')); ?>
     <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::ilink('')); ?>
       <table>
         <tr>
-          <td><?php echo language::translate('title_email_address', 'E-mail Address'); ?> <span class="required">*</span><br />
+          <td><?php echo language::translate('title_email_address', 'E-mail Address'); ?><br />
             <?php echo functions::form_draw_text_field('email', true, 'required="required"'); ?></td>
         </tr>
         <tr>
-          <td><?php echo language::translate('title_password', 'Password'); ?> <span class="required">*</span><br />
+          <td><?php echo language::translate('title_password', 'Password'); ?><br />
           <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?></td>
         </tr>
         <tr>
