@@ -11,9 +11,10 @@
       function site_menu_category_tree($parent_id=0, $depth=0, &$output) {
         
         $categories_query = database::query(
-          "select c.id, c.image, ci.name
+          "select c.id, c.image, if(ci.name, ci.name, alt_ci.name) as name
           from ". DB_TABLE_CATEGORIES ." c
-          left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
+          left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+          left join ". DB_TABLE_CATEGORIES_INFO ." alt_ci on (alt_ci.category_id = c.id and alt_ci.language_code = '". database::input(settings::get('store_language_code')) ."')
           where status
           ". (($depth == 0) ? "and find_in_set('menu', c.dock)" : "and parent_id = '". (int)$parent_id ."'") ."
           order by c.priority asc, ci.name asc;"

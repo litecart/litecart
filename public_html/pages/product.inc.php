@@ -59,8 +59,21 @@
   
   breadcrumbs::add($product->name[language::$selected['code']], document::ilink(null, array('product_id' => $product->id), array('category_id')));
   
+// Recently viewed products
+  if (isset(session::$data['recently_viewed_products'][$product->id])) {
+    unset(session::$data['recently_viewed_products'][$product->id]);
+  }
+  
+  session::$data['recently_viewed_products'][$product->id] = array(
+    'id' => $product->id,
+    'name' => $product->name[language::$selected['code']],
+    'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING'),
+    'link' => document::ilink('product', array('product_id' => $product->id)),
+  );
+  
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
+// Page
   $page = new view();
   
   $page->snippets = array(
@@ -74,9 +87,8 @@
       'original' => !empty(array_values($product->images)[0]) ? WS_DIR_IMAGES . array_values($product->images)[0] : WS_DIR_IMAGES . 'no_image.png',
       'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty(array_values($product->images)[0]) ? array_values($product->images)[0] : 'no_image.png'), FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
     ),
+    'sticker' => '',
     'extra_images' => array(),
-    'sticker_onsale' => (!empty($product->campaign['price'])) ? language::translate('title_on_sale', 'On Sale') : '',
-    'sticker_new' => ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) ? language::translate('title_new', 'New') : '',
     'manufacturer_id' => !empty($product->manufacturer['id']) ? $product->manufacturer['id'] : '',
     'manufacturer_name' => !empty($product->manufacturer['name']) ? $product->manufacturer['name'] : '',
     'manufacturer_image' => !empty($product->manufacturer['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) : '',
@@ -102,6 +114,12 @@
     'title_information' => language::translate('title_information', 'Information'),
     'title_details' => language::translate('title_details', 'Details'),
   );
+  
+  if (!empty($product->campaign['price'])) {
+    $page->snippets['sticker'] = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. language::translate('title_on_sale', 'On Sale') .'" class="sticker" />';
+  } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
+    $page->snippets['sticker'] = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. language::translate('title_new', 'New') .'" class="sticker" />';
+  }
   
 // Extra images
   foreach (array_slice(array_values($product->images), 1) as $image) {
@@ -254,12 +272,12 @@
       );
     }
   }
-
+  
   ob_start();
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_similar_products.inc.php');
   $page->snippets['box_similar_products'] = ob_get_clean();
-
-  ob_start();  
+  
+  ob_start();
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');
   $page->snippets['box_also_purchased_products'] = ob_get_clean();
   

@@ -42,9 +42,3 @@ h4, h5, h6{
   font-weight: normal;
   color: #333;
 }
-
-aside {
-  width: 200px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 1);
-}

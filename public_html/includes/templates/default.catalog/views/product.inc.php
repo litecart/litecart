@@ -9,13 +9,7 @@
 
       <div style="position: relative;">
         <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product"><img src="<?php echo $image['thumbnail']; ?>" class="main-image zoomable shadow rounded-corners" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" /></a>
-<?php
-  if ($sticker_onsale) {
-    $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/sale.png" width="48" height="48" alt="" title="'. $sticker_onsale .'" class="sticker" />';
-  } else if ($sticker_new) {
-    $sticker = '<img src="'. WS_DIR_IMAGES .'stickers/new.png" width="48" height="48" alt="" title="'. $sticker_new .'" class="sticker" />';
-  }
-?>
+        <?php echo $sticker; ?>
       </div>
 <?php
   if ($extra_images) {

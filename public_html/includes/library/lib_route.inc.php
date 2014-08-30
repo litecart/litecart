@@ -6,7 +6,6 @@
     private static $_links_cache_id = '';
     private static $_routes = array();
     public static $route = array();
-    public static $properties = '';
     public static $request = '';
     
     //public static function construct() {}
@@ -31,8 +30,8 @@
         // See ~/includes/routes/ folder for more advanced routes
       );
       
-      foreach ($routes as $pattern => $properties) {
-        self::$_routes[$pattern] = $properties;
+      foreach ($routes as $pattern => $route) {
+        self::$_routes[$pattern] = $route;
       }
       
     // Load external/dynamic routes
@@ -69,18 +68,18 @@
       if (preg_match('#^'. preg_quote(WS_DIR_ADMIN, '#') .'.*#', self::$request)) return;
       
     // Set target route for requested URL
-      foreach (self::$_routes as $matched_route => $properties) {
+      foreach (self::$_routes as $matched_pattern => $route) {
         
-        if (!preg_match($matched_route, self::$request)) continue;
+        if (!preg_match($matched_pattern, self::$request)) continue;
           
-        $properties['page'] = preg_replace($matched_route, $properties['page'], self::$request);
+        $route['page'] = preg_replace($matched_pattern, $route['page'], self::$request);
         
-        if (!empty($properties['params'])) {
-          parse_str(preg_replace($matched_route, $properties['params'], self::$request), $params);
+        if (!empty($route['params'])) {
+          parse_str(preg_replace($matched_pattern, $route['params'], self::$request), $params);
           $_GET = array_merge($_GET, $params);
         }
         
-        self::$route = $properties;
+        self::$route = $route;
         break;
       }
       
@@ -97,7 +96,7 @@
           if (!empty($_POST)) $redirect = false;
           
         // Don't forward if requested not to
-          if (empty(self::$properties['redirect'])) $redirect = false;
+          if (empty(self::$route['redirect'])) $redirect = false;
           
         // Don't forward if there are notices in stack
           if (!empty(notices::$data)) {

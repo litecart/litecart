@@ -129,6 +129,7 @@
       
       if ($route === null) {
         $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if ($inherit_params === null) $inherit_params = true;
       } else {
         $route = WS_DIR_HTTP_HOME . $route;
       }

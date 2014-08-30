@@ -49,23 +49,23 @@
       "select c.id
       from ". DB_TABLE_CATEGORIES ." c, ". DB_TABLE_CATEGORIES_INFO ." ci
       where c.status
-      and (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
+      and (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
       and (
         ci.name like '%". database::input($_GET['query']) ."%'
         or ci.description like '%". database::input($_GET['query']) ."%'
       );"
     );
     
-    $sql_where_categories = array();
+    $category_ids = array();
     while ($category = database::fetch($categories_info_query)) {
-      $sql_where_categories[] = "find_in_set('". (int)$category['id'] ."', p.categories)";
+      $category_ids[] = "find_in_set('". (int)$category['id'] ."', p.categories)";
     }
     
     $manufacturers_info_query = database::query(
       "select m.id
       from ". DB_TABLE_MANUFACTURERS ." m, ". DB_TABLE_MANUFACTURERS_INFO ." mi
       where m.status
-      and (mi.manufacturer_id = m.id and mi.language_code = '". language::$selected['code'] ."')
+      and (mi.manufacturer_id = m.id and mi.language_code = '". database::input(language::$selected['code']) ."')
       and (
         m.name like '%". database::input($_GET['query']) ."%'
         or mi.description like '%". database::input($_GET['query']) ."%'
@@ -79,17 +79,18 @@
     
     $products_query = database::query(
       "select p.id
-      from ". DB_TABLE_PRODUCTS ." p, ". DB_TABLE_PRODUCTS_INFO ." pi
+      from ". DB_TABLE_PRODUCTS ." p
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      left join ". DB_TABLE_PRODUCTS_INFO ." alt_pi on (alt_pi.product_id = p.id and alt_pi.language_code = '". database::input(settings::get('store_language_code')) ."')
       where p.status
-      and (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
       and (
         find_in_set('". database::input($_GET['query']) ."', p.keywords)
-        ". (!empty($sql_where_categories) ? "or " . implode(" or ", $sql_where_categories) : false) ."
+        ". (!empty($category_ids) ? "or " . implode(" or ", $category_ids) : false) ."
         ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in ('". implode("', '", $manufacturer_ids) . "')" : false) ."
         or p.code like '%". database::input($_GET['query']) ."%'
         or p.sku like '%". database::input($_GET['query']) ."%'
         or p.upc like '%". database::input($_GET['query']) ."%'
-        or pi.name like '%". database::input($_GET['query']) ."%'
+        or if(pi.name, pi.name, alt_pi.name) like '%". database::input($_GET['query']) ."%'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
       );"
