@@ -6,7 +6,7 @@
     private static $_type = 'mysql';
     
     public static function construct() {
-      if (function_exists('mysqli_connect')) self::$_type = 'mysqli';
+      if ($_type == 'mysql' && function_exists('mysqli_connect')) self::$_type = 'mysqli';
     }
     
     //public static function load_dependencies() {
@@ -39,13 +39,10 @@
   
     public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE) {
       
-    // Create link
       if (!isset(self::$_links[$link]) || (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link]))) {
       
-      // Set start timestamp for debug
         $execution_time_start = microtime(true);
       
-      // Connect
         if (self::$_type == 'mysqli') {
         
           if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
@@ -65,33 +62,28 @@
           mysql_select_db($database) or self::_error(false, mysql_errno(), mysql_error());
         }
         
-      // Set stop timestamp for debug
         $execution_time_stop = microtime(true);
-      
-      // Calculate duration time for debug
         $execution_time_duration = $execution_time_stop - $execution_time_start;
         
-      // Check if duration was way too long
         if ($execution_time_duration > 1) {
           error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.' . PHP_EOL, 0, FS_DIR_HTTP_ROOT . WS_DIR_DATA .'performance.log');
         }
         
-        stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+        if (class_exists('stats', false)) {
+          stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+        }
       }
       
       self::query("set character set ". DB_DATABASE_CHARSET);
       self::query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'");
       
-    // Make sure link was established
       if (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link])) {
         trigger_error('Error: Invalid database link', E_USER_ERROR);
       }
       
-    // Return connection link
       return self::$_links[$link];
     }
     
-  // Set input/output mysql charset
     public static function set_encoding($collation, $link='default') {
       
       if (empty($collation)) return false;
@@ -109,7 +101,6 @@
       return true;
     }
     
-  // Set input/output mysql charset
     public static function set_character($charset, $link='default') {
     
       $charset = strtolower($charset);
@@ -139,7 +130,7 @@
       );
       
       if (empty($charset_map[$charset])) {
-        trigger_error('Unknown MySQL charset for HTML charset '. $charset, E_USER_WARNING);
+        trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
         return false;
       }
       
@@ -153,7 +144,6 @@
       return true;
     }
     
-  // Close database connection
     public static function disconnect($link='') {
       
       if ($link != '') {
@@ -180,42 +170,33 @@
     
     public static function query($query, $link='default') {
       
-    // Establish a link if not previously made
       if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
       
-    // Set start timestamp for debug
       $execution_time_start = microtime(true);
       
-      //if (strtolower(substr($query, 0, 6)) == 'select') $query = '/*qc=on*/' . $query; // mysqlnd query cache plugin
-      
-    // Perform mysql query
       if (self::$_type == 'mysqli') {
         $result = mysqli_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]));
       } else {
         $result = mysql_query($query, self::$_links[$link]) or exit;
       }
       
-    // Set stop timestamp for debug
       $execution_time_stop = microtime(true);
-      
-    // Calculate duration time for debug
       $execution_time_duration = $execution_time_stop - $execution_time_start;
       
-    // Check if duration was way too long
       if ($execution_time_duration > 3) {
         error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 0, FS_DIR_HTTP_ROOT . WS_DIR_DATA .'performance.log');
       }
       
-      stats::set('database_queries', stats::get('database_queries') + 1);
-      stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+      if (class_exists('stats', false)) {
+        stats::set('database_queries', stats::get('database_queries') + 1);
+        stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+      }
       
-    // Return query resource
       return $result;
     }
     
     public function multi_query($query, $link='default') {
     
-    // Establish a link if not previously made
       if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
       
       if (self::$_type == 'mysqli') {
@@ -232,28 +213,26 @@
       } else {
         self::query($query, self::$_links[$link]); // don't pick up results - we're not supporting it
       }
+      
       return;
     }
     
     public static function fetch($result) {
     
-    // Set start timestamp for debug
       $execution_time_start = microtime(true);
       
-    // Perform mysql query
       if (self::$_type == 'mysqli') {
         $array = mysqli_fetch_assoc($result);
       } else {
         $array = mysql_fetch_assoc($result);
       }
       
-    // Set stop timestamp for debug
       $execution_time_stop = microtime(true);
-      
-    // Calculate duration time for debug
       $execution_time_duration = $execution_time_stop - $execution_time_start;
       
-      stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+      if (class_exists('stats', false)) {
+        stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+      }
       
       return $array;
     }
@@ -308,7 +287,6 @@
     
     public static function input($string, $allowable_tags=false, $link='default') {
       
-    // Return safe array
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
           $string[$key] = self::input($string[$key]);
@@ -316,18 +294,12 @@
         return $string;
       }
       
-    // Unescape input
-      $string = stripslashes($string);
-      
-    // Strip html tags
       if (is_bool($allowable_tags) === true && $allowable_tags !== true) {
         $string = strip_tags($string, $allowable_tags);
       }
       
-    // Establish a link if not previously made
-      if (!isset(self::$_links[$link])) self::connect();
+      if (!isset(self::$_links[$link])) self::connect($link);
       
-    // Return safe input string
       if (self::$_type == 'mysqli') {
         return mysqli_real_escape_string(self::$_links[$link], $string);
       } else {

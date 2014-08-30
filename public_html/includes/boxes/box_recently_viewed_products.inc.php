@@ -7,7 +7,7 @@
   
   $count = 0;
   foreach(array_reverse(session::$data['recently_viewed_products'], true) as $key => $array) {
-    if (++$count <= 10) {
+    if (++$count <= 4) {
       $box_recently_viewed_products->snippets['products'][$key] = $array;
     } else {
       unset(session::$data['recently_viewed_products'][$key]);

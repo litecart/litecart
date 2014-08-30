@@ -37,6 +37,7 @@
 ######################################################################
 
 // Database
+  define('DB_TYPE', '{DB_TYPE}');
   define('DB_SERVER', '{DB_SERVER}');
   define('DB_USERNAME', '{DB_USERNAME}');
   define('DB_PASSWORD', '{DB_PASSWORD}');

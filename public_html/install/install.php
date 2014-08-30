@@ -51,6 +51,7 @@
 
   echo '<p>Connecting to database... ';
   
+  define('DB_TYPE', $_REQUEST['db_type']);
   define('DB_SERVER', $_REQUEST['db_server']);
   define('DB_USERNAME', $_REQUEST['db_username']);
   define('DB_PASSWORD', $_REQUEST['db_password']);
@@ -110,6 +111,7 @@
   
   $map = array(
     '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
+    '{DB_TYPE}' => $_REQUEST['db_type'],
     '{DB_SERVER}' => $_REQUEST['db_server'],
     '{DB_USERNAME}' => $_REQUEST['db_username'],
     '{DB_PASSWORD}' => $_REQUEST['db_password'],

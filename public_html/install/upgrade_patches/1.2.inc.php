@@ -83,6 +83,12 @@
                  . "  define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');",
     ),
     array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
+      'search'  => "  define('DB_SERVER',",
+      'replace' => "  define('DB_TYPE', 'mysql');" . PHP_EOL
+                 . "  define('DB_SERVER',",
+    ),
+    array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
       'search'  => "ErrorDocument 403 {BASE_DIR}error_document.php?code=403",
       'replace' => "ErrorDocument 403 {BASE_DIR}index.php/error_document?code=403",
