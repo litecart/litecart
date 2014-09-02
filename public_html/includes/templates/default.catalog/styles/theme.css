@@ -163,7 +163,6 @@ body {
 #main .middle {
 }
 #main .middle > .left, #main .middle  > .content {
-  display: table-cell;
   vertical-align: top;
   /*border: 1px #f00 solid;*/
 }

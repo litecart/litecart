@@ -87,7 +87,7 @@
           <?php if (!$catalog_only_mode) { ?>
           <tr>
             <td class="quantity"><strong><?php echo $title_quantity; ?></strong><br />
-            <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?> &nbsp; 
+            <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, null, 'data-size="tiny"'); ?> &nbsp; 
 <?php
     if ($quantity > 0 || $orderable) {
       echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit'); 

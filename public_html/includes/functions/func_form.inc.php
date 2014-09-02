@@ -17,7 +17,7 @@
       
       foreach (explode('&', http_build_query($superglobal)) as $pair) {
         
-        list($key, $value) = explode('=', $pair);
+        @list($key, $value) = explode('=', $pair);
         $key = urldecode($key);
         $value = urldecode($value);
         

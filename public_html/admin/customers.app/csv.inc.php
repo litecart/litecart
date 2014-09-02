@@ -25,12 +25,23 @@
       
       foreach ($csv as $row) {
         
-        $customers_query = database::query(
-          "select id from ". DB_TABLE_CUSTOMERS ."
-          where email = '". database::input($row['email']) ."'
-          limit 1;"
-        );
-        $customer = database::fetch($customers_query);
+        if (!empty($row['id'])) {
+          $customers_query = database::query(
+            "select id from ". DB_TABLE_CUSTOMERS ."
+            where id = '". (int)$row['id'] ."'
+            limit 1;"
+          );
+          $customer = database::fetch($customers_query);
+        }
+        
+        if (empty($customer) && !empty($row['email']))
+          $customers_query = database::query(
+            "select id from ". DB_TABLE_CUSTOMERS ."
+            where email = '". database::input($row['email']) ."'
+            limit 1;"
+          );
+          $customer = database::fetch($customers_query);
+        }
         
         if (!empty($customer['id'])) {
           $customer = new ctrl_customer($customer['id']);

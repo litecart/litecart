@@ -6,7 +6,7 @@
     public $name = 'Paypal Standard';
     public $description = '';
     public $author = 'LiteCart Dev Team';
-    public $version = '1.0.4';
+    public $version = '1.0.5';
     public $website = 'https://www.paypal.com/cgi-bin/webscr?cmd=_help';
     public $priority = 0;
     
@@ -155,9 +155,14 @@
       
       $order->save(); // Save order to databse
       
+      if (empty($_REQUEST['tx'])) {
+        error_log('An invalid attempt to verify a Paypal transaction logged for IP '. $_SERVER['REMOTE_ADDR']);
+        return array('error' => 'Could not verify the Paypal transaction as no payment data was returned');
+      }
+      
       $post_fields = array(
         'cmd' => '_notify-synch',
-        'tx'  => $_GET['tx'],
+        'tx'  => $_REQUEST['tx'],
         'at'  => $this->settings['pdt_auth_token'],
       );
       
