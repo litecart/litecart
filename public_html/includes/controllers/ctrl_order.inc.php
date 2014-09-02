@@ -274,7 +274,7 @@
         );
         
         if (!empty($current_order_status['notify'])) {
-        
+          
         // Prepare e-mail body
           if (empty($current_order_status['email_message']) || trim(strip_tags($current_order_status['email_message'])) == '') {
             $email_body = $this->draw_printable_copy();
@@ -282,13 +282,13 @@
             $email_body = $this->inject_email_message($current_order_status['email_message']);
           }
         
-          functions::email_send(
-            '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
-            $this->data['customer']['email'],
-            sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
-            $email_body,
-            true
-          );
+          functions::email_send(array(
+            'sender' => settings::get('store_email'),
+            'recipients' => array($this->data['customer']['email']),
+            'subject' => sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
+            'message' => $email_body,
+            'html' => true,
+          ));
         }
       }
       

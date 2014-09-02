@@ -17,7 +17,14 @@
     
     if (empty(notices::$data['errors'])) {
       
-      if (functions::email_send($_POST['name'] .' <'. $_POST['email'] .'>', settings::get('store_email'), $_POST['subject'], $_POST['message'])) {
+      $result = functions::email_send(array(
+        'sender' => array('name' => $_POST['name'], 'email' => $_POST['email']),
+        'recipients' => array(settings::get('store_email')),
+        'subject' => $_POST['subject'],
+        'message' => $_POST['message'],
+      ));
+      
+      if ($result) {
         notices::add('success', language::translate('success_your_email_was_sent', 'Your e-mail has successfully been sent'));
       } else {
         notices::add('errors', language::translate('error_sending_email_for_unknown_reason', 'The e-mail could not be sent for an unknown reason'));

@@ -82,12 +82,12 @@
         $email_message = str_replace($needle, $replace, $email_message);
       }
       
-      functions::email_send(
-        settings::get('store_email'),
-        $_POST['email'],
-        language::translate('email_subject_customer_account_created', 'Customer Account Created'),
-        $email_message
-      );
+      functions::email_send(array(
+        'sender' => settings::get('store_email'),
+        'recipients' => array($_POST['email']),
+        'subject' => language::translate('email_subject_customer_account_created', 'Customer Account Created'),
+        'message' => $email_message,
+      ));
       
       notices::add('success', language::translate('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
       

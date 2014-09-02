@@ -229,12 +229,12 @@
       
       $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::ilink('')), language::translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
       
-      functions::email_send(
-        settings::get('store_email'),
-        $email,
-        language::translate('email_subject_new_password', 'New Password'),
-        $message
-      );
+      functions::email_send(array(
+        'sender' => settings::get('store_email'),
+        'recipients' => array($email),
+        'subject' => language::translate('email_subject_new_password', 'New Password'),
+        'message' => $message,
+      ));
       
       notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your e-mail address.'));
       header('Location: '. $_SERVER['REQUEST_URI']);
