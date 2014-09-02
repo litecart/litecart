@@ -301,7 +301,7 @@
         <?php if (!settings::get('catalog_only_mode')) { ?>
         <tr>
           <td class="quantity"><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong><br />
-          <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, 99, 'data-size="tiny"'); ?> &nbsp; 
+          <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, null, 'data-size="tiny"'); ?> &nbsp; 
 <?php
       if ($product->quantity > 0) {
         echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
