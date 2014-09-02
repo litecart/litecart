@@ -6,7 +6,7 @@
     private static $_type = 'mysql';
     
     public static function construct() {
-      if ($_type == 'mysql' && function_exists('mysqli_connect')) self::$_type = 'mysqli';
+      if (self::$_type == 'mysql' && function_exists('mysqli_connect')) self::$_type = 'mysqli';
     }
     
     //public static function load_dependencies() {

@@ -18,8 +18,7 @@
   </div>
   <div class="content">
     
-  <?php if ($_GET['page'] == 1) { ?>
-   
+    <?php if ($_GET['page'] == 1) { ?>
     <?php if ($description) { ?>
     <div class="description-wrapper">
       <p class="category-description"><?php echo $description; ?></p>
@@ -28,15 +27,14 @@
 
     <?php if ($subcategories) { ?>
     <ul class="listing-wrapper categories">
-      <!--snippet:subcategories-->
+      <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
     </ul>
     <?php } ?>
-    
-  <?php } ?>
+    <?php } ?>
     
     <?php if ($products) { ?>
     <ul class="listing-wrapper products">
-      <!--snippet:products-->
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
     </ul>
     <?php } ?>
     

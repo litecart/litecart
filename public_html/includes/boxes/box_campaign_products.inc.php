@@ -10,9 +10,9 @@
     
     if (database::num_rows($products_query)) {
       
-      $box_campaign_products->snippets['products'] = '';
+      $box_campaign_products->snippets['products'] = array();
       while ($listing_product = database::fetch($products_query)) {
-        $box_campaign_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
+        $box_campaign_products->snippets['products'][] = $listing_product;
       }
       
       echo $box_campaign_products->stitch('views/box_campaign_products');

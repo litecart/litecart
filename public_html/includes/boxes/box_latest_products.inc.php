@@ -9,10 +9,9 @@
     
       $box_latest_products = new view();
       
-      $box_latest_products->snippets['products'] = '';
-      
+      $box_latest_products->snippets['products'] = array();
       while ($listing_product = database::fetch($products_query)) {
-        $box_latest_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
+        $box_latest_products->snippets['products'][] = $listing_product;
       }
       
       echo $box_latest_products->stitch('views/box_latest_products');

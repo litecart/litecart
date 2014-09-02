@@ -273,13 +273,9 @@
     }
   }
   
-  ob_start();
+  echo $page->stitch('views/box_product');
+  
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_similar_products.inc.php');
-  $page->snippets['box_similar_products'] = ob_get_clean();
   
-  ob_start();
   include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');
-  $page->snippets['box_also_purchased_products'] = ob_get_clean();
-  
-  echo $page->stitch('views/product');
 ?>

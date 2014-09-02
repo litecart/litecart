@@ -49,15 +49,15 @@
         'price' => language::translate('title_price', 'Price'),
         'date' => language::translate('title_date', 'Date'),
       ),
-      'subcategories' => '',
-      'products' => '',
+      'subcategories' => array(),
+      'products' => array(),
     );
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
     if (database::num_rows($subcategories_query)) {
       while ($subcategory = database::fetch($subcategories_query)) {
-        $page->snippets['subcategories'] .= functions::draw_listing_category($subcategory);
+        $page->snippets['subcategories'][] = $subcategory;
       }
     }
     
@@ -88,10 +88,10 @@
       while ($listing_product = database::fetch($products_query)) {
         switch($category->list_style) {
           case 'rows':
-            $page->snippets['products'] .= functions::draw_listing_product($listing_product, 'row');
+            $page->snippets['products'][] = array_merge($listing_product, array('listing_type' => 'row'));
             break;
           case 'columns':
-            $page->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
+            $page->snippets['products'][] = array_merge($listing_product, array('listing_type' => 'column'));
             break;
         }
         if (++$page_items == $items_per_page) break;

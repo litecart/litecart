@@ -39,9 +39,9 @@
       
         $box_also_purchased_products = new view();
         
-        $box_also_purchased_products->snippets['products'] = '';
+        $box_also_purchased_products->snippets['products'] = array();
         while ($listing_product = database::fetch($products_query)) {
-          $box_also_purchased_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
+          $box_also_purchased_products->snippets['products'][] = $listing_product;
         }
         
         echo $box_also_purchased_products->stitch('views/box_also_purchased_products');

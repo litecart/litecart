@@ -60,7 +60,7 @@
       
       $page_items = 0;
       while ($listing_item = database::fetch($products_query)) {
-        $page->snippets['products'][] = functions::draw_listing_product($listing_item, 'column');
+        $page->snippets['products'][] = $listing_item;
         
         if (++$page_items == settings::get('items_per_page', 20)) break;
       }

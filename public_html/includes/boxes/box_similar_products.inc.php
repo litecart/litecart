@@ -37,10 +37,10 @@
     
     $box_similar_products = new view();
     
-    $box_similar_products->snippets['products'] = '';
+    $box_similar_products->snippets['products'] = array();
     while ($listing_product = database::fetch($products_query)) {
       if (empty($listing_product['occurrences'])) break;
-      $box_similar_products->snippets['products'] .= functions::draw_listing_product($listing_product, 'column');
+      $box_similar_products->snippets['products'][] = $listing_product;
     }
     
     echo $box_similar_products->stitch('views/box_similar_products');

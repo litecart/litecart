@@ -1,6 +1,6 @@
 <div id="cart">
-  <a href="<?php echo $href; ?>" class="image"><img src="{snippet:template_path}images/<?php echo !empty($num_items) ? 'cart_filled.png' : 'cart.png'; ?>" height="64" alt="" /></a>
-  <a href="<?php echo $href; ?>" class="content">
+  <a href="<?php echo htmlspecialchars($link); ?>" class="image"><img src="{snippet:template_path}images/<?php echo !empty($num_items) ? 'cart_filled.png' : 'cart.png'; ?>" height="64" alt="" /></a>
+  <a href="<?php echo htmlspecialchars($link); ?>" class="content">
     <strong><?php echo language::translate('title_cart', 'Cart'); ?>:</strong><br />
     <span class="quantity"><?php echo $num_items; ?></span> <?php echo language::translate('text_items', 'item(s)'); ?> - <span class="formatted_value"><?php echo $cart_total; ?></span>
   </a>

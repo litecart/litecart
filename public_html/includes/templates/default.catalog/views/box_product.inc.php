@@ -1,4 +1,4 @@
-<div class="box" id="box-product" itemscope itemtype="http://www.schema.org/Product">
+<div id="box-product" class="box" itemscope itemtype="http://www.schema.org/Product">
   <div class="heading" style="overflow: hidden;">
     <h1 itemprop="name"><?php echo $name; ?></h1>
     <?php if ($sku) echo '<div class="sku">'. $sku .'</div>'; ?>
@@ -212,7 +212,3 @@
     });
   });
 </script>
-
-<?php echo $box_similar_products; ?>
-
-<?php echo $box_also_purchased_products; ?>

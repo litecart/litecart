@@ -34,7 +34,7 @@
     
     <?php if ($products) { ?>
     <ul class="listing-wrapper products">
-      <?php foreach ($products as $product) echo $product; ?>
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
     </ul>
     <?php } ?>
     
