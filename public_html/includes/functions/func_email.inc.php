@@ -11,7 +11,7 @@
     $parameters['subject'] = !empty($parameters['subject']) ? str_replace(array("\r", "\n"), " ", $parameters['subject']) : '(No subject)';
     $parameters['message'] = !empty($parameters['message']) ? $parameters['message'] : '';
     
-    $parameters['formatted_sender'] = !empty($parameters['sender_name']) ? '"'. $parameters['sender_name'] .'" <'. $parameters['sender_email'] .'>' : $parameters['sender_email'];
+    $parameters['formatted_sender'] = !empty($parameters['sender']['name']) ? '"'. $parameters['sender']['name'] .'" <'. $parameters['sender']['email'] .'>' : $parameters['sender']['email'];
     
   // Generate a boundary string
     $mime_boundary = '==Multipart_Boundary_x'. md5(time()) .'x';
@@ -55,7 +55,7 @@
     foreach ($parameters['recipients'] as $recipient) {
       $recipient = filter_var($recipient, FILTER_SANITIZE_EMAIL);
       
-      if (!mail($to, $subject, $message, $headers)) {
+      if (!mail($recipient, $parameters['subject'], $parameters['message'], $headers)) {
         trigger_error("Failed sending e-mail to ". $recipient, E_USER_WARNING);
         $success = false;
       }
