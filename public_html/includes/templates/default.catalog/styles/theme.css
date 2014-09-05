@@ -97,7 +97,7 @@ body {
 #cart-wrapper {
   position: absolute;
   bottom: 15px;
-  right: 20px;
+  right: 0px;
   display: inline-block;
 }
 #cart {
@@ -161,7 +161,6 @@ body {
 }
 
 #main .middle {
-  display: table-row;
 }
 #main .middle > .left, #main .middle  > .content {
   display: table-cell;
@@ -259,9 +258,10 @@ body {
   #footer tr > .manufacturers {
     display: none;
   }
-  #footer tr > .account {
+  #footer tr > .information {
     display: none;
   }
+
 }
 
 #copyright p {

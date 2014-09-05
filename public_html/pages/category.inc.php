@@ -88,10 +88,13 @@
       while ($listing_product = database::fetch($products_query)) {
         switch($category->list_style) {
           case 'rows':
-            $page->snippets['products'][] = array_merge($listing_product, array('listing_type' => 'row'));
+            $listing_product['listing_type'] = 'row';
+            $page->snippets['products'][] = $listing_product;
             break;
+          default:
           case 'columns':
-            $page->snippets['products'][] = array_merge($listing_product, array('listing_type' => 'column'));
+            $listing_product['listing_type'] = 'column';
+            $page->snippets['products'][] = $listing_product;
             break;
         }
         if (++$page_items == $items_per_page) break;

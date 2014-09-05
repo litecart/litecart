@@ -13,54 +13,53 @@
   }
   require_once realpath(dirname(__FILE__)) . '/config.inc.php';
   
-// vQmod
-  require_once FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqmod.php';
-  vqmod::bootup(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, true);
+// Virtual Modifications System
+  require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'vmod.inc.php';
   
 // Compatibility
-  require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
+  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
   
 // Autoloader
   spl_autoload_register(function ($class) {
     switch($class) {
       case (substr($class, 0, 5) == 'ctrl_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'cm_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 5) == 'func_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $class . '.inc.php');
         break;
       case (substr($class, 0, 4) == 'job_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 4) == 'mod_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'oa_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'ot_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'os_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'pm_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 4) == 'ref_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'sm_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 4) == 'url_'):
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . $class . '.inc.php');
         break;
       default:
-        require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
         break;
     }
   });

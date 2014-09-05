@@ -45,6 +45,24 @@ form *[data-size=large] {
   width: 360px;
 }
 
+@media (max-width: 320px) {
+  form *[data-size=auto] {
+    width: auto;
+    max-width: 135px;
+  }
+  form *[data-size=tiny] {
+    width: 30px;
+  }
+  form *[data-size=small] {
+    width: 70px;
+  }
+  form *[data-size=medium] {
+    width: 135px;
+  }
+  form *[data-size=large] {
+    width: 290px;
+  }
+}
 form .required {
   color: #f00;
 }
