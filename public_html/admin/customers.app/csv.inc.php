@@ -34,7 +34,7 @@
           $customer = database::fetch($customers_query);
         }
         
-        if (empty($customer) && !empty($row['email'])) {
+        if (empty($customer) && !empty($row['email']))
           $customers_query = database::query(
             "select id from ". DB_TABLE_CUSTOMERS ."
             where email = '". database::input($row['email']) ."'
@@ -63,7 +63,6 @@
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
     }
-  
   }
   
   if (!empty($_POST['export'])) {
