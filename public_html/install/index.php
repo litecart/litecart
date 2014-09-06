@@ -305,14 +305,19 @@
       </ul>
     </li>
     <li>Apacahe 2 compatible HTTP daemon
+<?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
       <ul>
         <li>Allow, Deny</li>
         <li>Options -Indexes</li>
-        <li>mod_auth_basic (SHA)</li>
-        <li>mod_deflate</li>
-        <li>mod_headers</li>
-        <li>mod_rewrite</li>
-        <li>mod_redirect</li>
+        <li>Apache Modules
+          <ul>
+            <li>mod_auth_basic (SHA) <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_headers <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_redirect <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li>MySQL 5.5+ / MariaDB 5.5+</li>
