@@ -103,9 +103,9 @@
     </tr>
     <tr>
       <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
-      <?php echo functions::form_draw_text_field('phone', true); ?></td>
+      <?php echo functions::form_draw_phone_field('phone', true); ?></td>
       <td><?php echo language::translate('title_mobile_phone', 'Mobile Phone'); ?><br />
-      <?php echo functions::form_draw_text_field('mobile', true); ?></td>
+      <?php echo functions::form_draw_phone_field('mobile', true); ?></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />

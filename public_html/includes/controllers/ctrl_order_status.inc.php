@@ -81,7 +81,7 @@
         );
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('order_statuses');
     }
     
     public function delete() {
@@ -102,9 +102,9 @@
         limit 1;"
       );
       
-      $this->data['id'] = null;
+      cache::clear_cache('order_statuses');
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
   }
 

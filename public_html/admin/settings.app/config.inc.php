@@ -1,12 +1,12 @@
 <?php
 
-$app_config = array(
-  'name' => language::translate('title_settings', 'Settings'),
-  'default' => 'store_info',
-  'menu' => array(),
-  'icon' => 'icon.png',
-  'docs' => array(),
-);
+  $app_config = array(
+    'name' => language::translate('title_settings', 'Settings'),
+    'default' => 'store_info',
+    'menu' => array(),
+    'icon' => 'icon.png',
+    'docs' => array(),
+  );
 
   $settings_groups_query = database::query(
     "select * from ". DB_TABLE_SETTINGS_GROUPS ."

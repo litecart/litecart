@@ -103,7 +103,7 @@
           shipping_city = '". @database::input($this->data['shipping_address']['city']) ."',
           shipping_country_code = '". @database::input($this->data['shipping_address']['country_code']) ."',
           shipping_zone_code = '". @database::input($this->data['shipping_address']['zone_code']) ."',
-          newsletter = '". (!empty($this->data['newsletter']) ? 1 : 0) ."',
+          newsletter = '". (!empty($this->data['newsletter']) ? '1' : '0') ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -112,7 +112,7 @@
       $customer_modules = new mod_customer();
       $customer_modules->after_save($this);
       
-      cache::set_breakpoint();
+      cache::clear_cache('customers');
     }
     
     public function set_password($password) {
@@ -145,9 +145,9 @@
         limit 1;"
       );
       
-      $this->data['id'] = null;
+      cache::clear_cache('customers');
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
   }
 

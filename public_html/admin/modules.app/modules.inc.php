@@ -100,7 +100,7 @@
     $module_id = substr(basename($file), 0, -8);
     if (!in_array($module_id, $installed_modules)) {
       $num_module_rows++;
-      require_once($file);
+      require_once vqmod::modcheck($file);
       $module = new $module_id;
       
       if (!isset($rowclass) || $rowclass == 'even') {

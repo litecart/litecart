@@ -1,5 +1,4 @@
 <?php
-  
   $order_statuses = array();
   $orders_status_query = database::query(
     "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
@@ -51,6 +50,12 @@
   $customers = database::fetch($customers_query);
   $stats['num_customers'] = $customers['num_customers'];
   
+// Num products
+  $products_query = database::query(
+    "select count(id) as num_products from ". DB_TABLE_PRODUCTS .";"
+  );
+  $products = database::fetch($products_query);
+  $stats['num_products'] = $products['num_products'];
 ?>
 <div class="widget">
   <table width="100%" class="dataTable">
@@ -76,6 +81,10 @@
     <tr class="odd">
       <td nowrap="nowrap" align="left"><?php echo language::translate('title_number_of_customers', 'Number of Customers'); ?>:</td>
       <td nowrap="nowrap" align="right"><?php echo (int)$stats['num_customers']; ?></td>
+    </tr>
+    <tr class="even">
+      <td nowrap="nowrap" align="left"><?php echo language::translate('title_number_of_products', 'Number of Products'); ?>:</td>
+      <td nowrap="nowrap" align="right"><?php echo (int)$stats['num_products']; ?></td>
     </tr>
   </table>
 </div>

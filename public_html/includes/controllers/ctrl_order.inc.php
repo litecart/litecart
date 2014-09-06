@@ -274,7 +274,7 @@
         );
         
         if (!empty($current_order_status['notify'])) {
-        
+          
         // Prepare e-mail body
           if (empty($current_order_status['email_message']) || trim(strip_tags($current_order_status['email_message'])) == '') {
             $email_body = $this->draw_printable_copy();
@@ -282,13 +282,13 @@
             $email_body = $this->inject_email_message($current_order_status['email_message']);
           }
         
-          functions::email_send(
-            '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
-            $this->data['customer']['email'],
-            sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
-            $email_body,
-            true
-          );
+          functions::email_send(array(
+            'sender' => settings::get('store_email'),
+            'recipients' => array($this->data['customer']['email']),
+            'subject' => sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
+            'message' => $email_body,
+            'html' => true,
+          ));
         }
       }
       
@@ -656,7 +656,7 @@
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
-        '%order_copy_url' => document::link(WS_DIR_HTTP_HOME . 'printable_order_copy.php', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
       );
     
       $html = str_replace(array_keys($aliases), array_values($aliases), $html);
@@ -679,24 +679,20 @@
     
     public function draw_printable_copy() {
     
-      $order = $this->data;
+      $printable_order_copy = new view();
       
-      ob_start();
-      include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_order_copy.inc.php');
-      $output = ob_get_clean();
+      $printable_order_copy->snippets['order'] = $this->data;
       
-      return $output;
+      return $printable_order_copy->stitch('views/printable_order_copy');
     }
     
     public function draw_printable_packing_slip() {
     
-      $order = $this->data;
+      $printable_packing_slip = new view();
       
-      ob_start();
-      include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'printable_packing_slip.inc.php');
-      $output = ob_get_clean();
+      $printable_packing_slip->snippets['order'] = $this->data;
       
-      return $output;
+      return $printable_packing_slip->stitch('views/printable_packing_slip');
     }
   }
 

@@ -216,11 +216,15 @@ ul.listing-wrapper > li.product.column .image-wrapper img {
   max-width: 100%;
   max-height: 100%;
 }
+ul.listing-wrapper > li.product.row .image-wrapper img {
+  max-width: 150px;
+  max-height: 150px;
+}
 
 ul.listing-wrapper > li.product .sticker {
   position: absolute;
-  top: -10px;
-  left: -10px;
+  top: 0px;
+  left: 0px;
 }
 
 ul.listing-wrapper > li.product.column .name {
@@ -231,7 +235,7 @@ ul.listing-wrapper > li.product.column .name {
 ul.listing-wrapper > li.product.row .name {
   position: absolute;
   top: 20px;
-  left: 150px;
+  left: 180px;
   color: #333;
 }
 
@@ -244,14 +248,14 @@ ul.listing-wrapper > li.product.column .manufacturer {
 ul.listing-wrapper > li.product.row .manufacturer {
   position: absolute;
   top: 40px;
-  left: 150px;
+  left: 180px;
   color: #999;
 }
 
 ul.listing-wrapper > li.product.row .description {
   position: absolute;
   top: 70px;
-  left: 150px;
+  left: 180px;
   margin-right: 20px;
   color: #999;
 }
@@ -264,7 +268,9 @@ ul.listing-wrapper > li.product .price-wrapper {
   white-space: nowrap;
 }
 ul.listing-wrapper > li.product.row .price-wrapper {
-
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }
 
 @media (max-width: 400px) { /* HVGA 320x480 */

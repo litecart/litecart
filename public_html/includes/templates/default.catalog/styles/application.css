@@ -2,7 +2,7 @@
 @import url(//fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,latin-ext);
 
 body {
-  font: 12px 'Roboto', sans-serif;
+  font: 13px 'Roboto', sans-serif;
   color: #777;
 }
 
@@ -41,10 +41,4 @@ h4, h5, h6{
   font: 14px 'Open Sans', sans-serif;
   font-weight: normal;
   color: #333;
-}
-
-aside {
-  width: 200px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 1);
 }

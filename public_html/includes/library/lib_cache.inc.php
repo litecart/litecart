@@ -117,7 +117,17 @@
       }
     }
     
-    public static function set_breakpoint() {
+    public static function clear_cache($keyword=null) {
+      
+    // Clear files
+      if (!empty($_name)) {
+        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache*_'. $keyword .'_*');
+      } else {
+        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
+      }
+      if ($files) foreach ($files as $file) unlink($file);
+      
+    // Set breakpoint (for session cache)
       database::query(
         "update ". DB_TABLE_SETTINGS ."
         set value = '". date('Y-m-d H:i:s') ."'
@@ -126,52 +136,64 @@
       );
     }
     
-    public static function cache_id($name, $dependants=array()) {
+    public static function set_breakpoint() {
+      trigger_error('the method set_breakpoint() is deprecated, use instead clear_cache()', E_USER_DEPRECATED);
+      self::clear_cache();
+    }
+    
+    public static function cache_id($keyword, $dependants=array()) {
       
       if (!is_array($dependants)) $dependants = array($dependants);
       
-      $dependants_string = '';
+      $hash_string = $keyword;
+      
       foreach ($dependants as $dependant) {
         switch ($dependant) {
           case 'currency':
-            $dependants_string .= currency::$selected['code'];
+            $hash_string .= currency::$selected['code'];
             break;
           case 'customer':
-            $dependants_string .= serialize(customer::$data);
+            $hash_string .= serialize(customer::$data);
+            break;
+          case 'region':
+            $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
+            break;
+          case 'login':
+            $hash_string .= customer::$data['id'];
             break;
           case 'host':
-            $dependants_string .= $_SERVER['HTTP_HOST'];
+            $hash_string .= $_SERVER['HTTP_HOST'];
             break;
           case 'basename':
-            $dependants_string .= $_SERVER['PHP_SELF'];
+            $hash_string .= $_SERVER['PHP_SELF'];
             break;
           case 'get':
-            $dependants_string .= serialize($_GET);
+            $hash_string .= serialize($_GET);
             break;
           case 'post':
-            $dependants_string .= serialize($_POST);
+            $hash_string .= serialize($_POST);
             break;
           case 'uri':
-            $dependants_string .= $_SERVER['REQUEST_URI'];
+            $hash_string .= $_SERVER['REQUEST_URI'];
             break;
           case 'language':
-            $dependants_string .= language::$selected['code'];
+            $hash_string .= language::$selected['code'];
             break;
           case 'prices':
-            $dependants_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
-            $dependants_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
-            $dependants_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
+            $hash_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
+            $hash_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
+            $hash_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
             break;
           default:
             if (is_array($dependant)) {
-              $dependants_string .= $dependant;
+              $hash_string .= $dependant;
             }
+            $hash_string .= $dependant;
             break;
         }
-        $dependants_string .= $name;
       }
       
-      return $name .'_'. md5($name . $dependants_string);
+      return $keyword .'_'. md5($hash_string);
     }
     
     /* This option is not affected by $enabled since new data is always recorded */

@@ -52,12 +52,12 @@
   function catalog_categories_query($parent_id=0) {
     
     $categories_query = database::query(
-      "select c.id, c.image, ci.name, ci.short_description
-      from ". DB_TABLE_CATEGORIES ." c, ". DB_TABLE_CATEGORIES_INFO ." ci
+      "select c.id, c.image, if(ci.name, ci.name, alt_ci.name) as name, ci.short_description from ". DB_TABLE_CATEGORIES ." c
+      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+      left join ". DB_TABLE_CATEGORIES_INFO ." alt_ci on (alt_ci.category_id = c.id and alt_ci.language_code = '". database::input(settings::get('store_language_code')) ."')
       where c.status
       and parent_id = '". (int)$parent_id ."'
-      and (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
-      order by c.priority asc, ci.name asc;"
+      order by c.priority asc, name asc;"
     );
     
     return $categories_query;
@@ -80,7 +80,7 @@
     switch ($filter['sort']) {
       case 'name':
         $sql_local_sort = "";
-        $sql_global_sort = "order by pi.name asc";
+        $sql_global_sort = "order by name asc";
         break;
       case 'price':
         $sql_local_sort = "";
@@ -154,7 +154,7 @@
     $sql_campaign_price_column = "if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)";
     
     $query = "
-      select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
+      select p.*, if(pi.name, pi.name, alt_pi.name) as name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
         select id, manufacturer_id, categories, keywords, product_groups, image, tax_class_id, quantity, date_created from ". DB_TABLE_PRODUCTS ."
         where status
           and (id
@@ -171,7 +171,8 @@
         ". $sql_local_sort ."
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : "") ."
       ) p
-      join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.language_code = '". language::$selected['code'] ."' and pi.product_id = p.id and name != '')
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_PRODUCTS_INFO ." alt_pi on (alt_pi.product_id = p.id and alt_pi.language_code = '". database::input(settings::get('store_language_code')) ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
       left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
       left join (

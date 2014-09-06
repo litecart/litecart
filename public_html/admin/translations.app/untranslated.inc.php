@@ -31,6 +31,8 @@
       );
     }
     
+    cache::clear_cache('translations');
+    
     notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
     
     header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc']), true));
@@ -43,6 +45,8 @@
       where id = '". database::input($_POST['translation_id']) ."'
       limit 1;"
     );
+    
+    cache::clear_cache('translations');
     
     notices::add('success', language::translate('success_translated_deleted', 'Translation was successfully deleted'));
     

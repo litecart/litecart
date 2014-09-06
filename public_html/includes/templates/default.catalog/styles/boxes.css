@@ -23,7 +23,11 @@
 .box > .heading h3 {
   font: 20px 'Open Sans', sans-serif;
   font-weight: normal;
-  margin: 0px;
+  margin-bottom: 0.5em;
+}
+
+aside .box:first-child h3 {
+  margin-top: 0px;
 }
 
 .box > .content {
@@ -98,6 +102,20 @@
 }
 #box-category-tree li a.active {
   background: #f3f3f3;
+}
+
+#box-recently-viewed-products li {
+}
+#box-recently-viewed-products li {
+  margin: 3px;
+}
+#box-recently-viewed-products img {
+  max-width: 85px;
+  max-height: 85px;
+  border: 1px solid #eee;
+}
+#box-recently-viewed-products img:hover {
+  border-color: rgb(0, 136, 204);
 }
 
 #box-category .heading h1 {

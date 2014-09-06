@@ -8,7 +8,7 @@
       
       foreach (glob('*.app/') as $dir) {
         $code = rtrim($dir, '.app/');
-        require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
+        require vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
         $apps[$code] = array_merge(array('code' => $code, 'dir' => $dir), $app_config);
       }
       
@@ -30,7 +30,7 @@
       
       foreach (glob('*.widget/') as $dir) {
         $code = rtrim($dir, '.widget/');
-        require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
+        require vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
         $widgets[$code] = array_merge(array('code' => $code, 'dir' => $dir), $widget_config);
       }
       

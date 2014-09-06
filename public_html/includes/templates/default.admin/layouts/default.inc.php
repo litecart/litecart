@@ -28,7 +28,7 @@
           </div>
           <div class="header">
             <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/home.png'; ?>" width="24" height="24" alt="" title="<?php echo language::translate('title_Home', 'Home'); ?>" /></a>
-            <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/catalog.png'; ?>" width="24" height="24" alt="" title="<?php echo language::translate('title_catalog', 'Catalog'); ?>" /></a>
+            <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/catalog.png'; ?>" width="24" height="24" alt="" title="<?php echo language::translate('title_catalog', 'Catalog'); ?>" /></a>
             <?php if (settings::get('webmail_link', '')) { ?><a href="<?php echo settings::get('webmail_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/mail.png'; ?>" width="24" height="24" alt="" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>" /></a><?php } ?>
             <?php if (settings::get('database_admin_link', '')) { ?><a href="<?php echo settings::get('database_admin_link'); ?>" target="_blank"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/database.png'; ?>" width="24" height="24" alt="" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>" /></a><?php } ?>
             <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout.php'); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/24x24/exit.png'; ?>" width="24" height="24" alt="" title="<?php echo language::translate('text_logout', 'Logout'); ?>" /></a>

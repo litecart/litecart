@@ -48,10 +48,10 @@
     
     ######################################################################
     
-    public static function add($title, $link) {
+    public static function add($title, $link=null) {
       self::$data[] = array(
         'title' => $title,
-        'link' => $link,
+        'link' => ($link === null) ? $_SERVER['REQUEST_URI'] : $link,
       );
     }
   }

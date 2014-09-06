@@ -81,7 +81,7 @@
         }
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('geo_zones');
     }
     
     public function delete() {
@@ -97,9 +97,9 @@
         limit 1;"
       );
       
+      cache::clear_cache('geo_zones');
+
       $this->data['id'] = null;
-      
-      cache::set_breakpoint();
     }
   }
 

@@ -372,6 +372,14 @@
     <h3>MySQL</h3>
     <table>
       <tr>
+        <td><strong>Type</strong><br />
+          <select name="db_type">
+            <option value="mysql">MySQL</option>
+          </select>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
         <td><strong>Hostname</strong><br />
           <input name="db_server" type="text" value="localhost"  />
         </td>

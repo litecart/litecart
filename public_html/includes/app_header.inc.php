@@ -1,7 +1,7 @@
 <?php
   
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '1.1.2.1');
+  define('PLATFORM_VERSION', '1.2');
   
 // Start redirecting output to the output buffer
   ob_start();
@@ -11,55 +11,58 @@
     header('Location: ./install/');
     exit;
   }
-  require_once(realpath(dirname(__FILE__)) . '/config.inc.php');
+  require_once realpath(dirname(__FILE__)) . '/config.inc.php';
+  
+// Virtual Modifications System
+  require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'vmod.inc.php';
   
 // Compatibility
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
+  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
   
 // Autoloader
-  function __autoload($name) {
-    switch($name) {
-      case (substr($name, 0, 5) == 'ctrl_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $name . '.inc.php';
+  spl_autoload_register(function ($class) {
+    switch($class) {
+      case (substr($class, 0, 5) == 'ctrl_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . $class . '.inc.php');
         break;
-      case (substr($name, 0, 3) == 'cm_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $name . '.inc.php';
+      case (substr($class, 0, 3) == 'cm_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $class . '.inc.php');
         break;
-      case (substr($name, 0, 5) == 'func_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $name . '.inc.php';
+      case (substr($class, 0, 5) == 'func_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $class . '.inc.php');
         break;
-      case (substr($name, 0, 4) == 'job_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $name . '.inc.php';
+      case (substr($class, 0, 4) == 'job_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $class . '.inc.php');
         break;
-      case (substr($name, 0, 4) == 'mod_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $name . '.inc.php';
+      case (substr($class, 0, 4) == 'mod_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $class . '.inc.php');
         break;
-      case (substr($name, 0, 3) == 'oa_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $name . '.inc.php';
+      case (substr($class, 0, 3) == 'oa_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $class . '.inc.php');
         break;
-      case (substr($name, 0, 3) == 'ot_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $name . '.inc.php';
+      case (substr($class, 0, 3) == 'ot_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $class . '.inc.php');
         break;
-      case (substr($name, 0, 3) == 'os_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $name . '.inc.php';
+      case (substr($class, 0, 3) == 'os_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $class . '.inc.php');
         break;
-      case (substr($name, 0, 3) == 'pm_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $name . '.inc.php';
+      case (substr($class, 0, 3) == 'pm_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $class . '.inc.php');
         break;
-      case (substr($name, 0, 4) == 'ref_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . $name . '.inc.php';
+      case (substr($class, 0, 4) == 'ref_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . $class . '.inc.php');
         break;
-      case (substr($name, 0, 3) == 'sm_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $name . '.inc.php';
+      case (substr($class, 0, 3) == 'sm_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/' . $class . '.inc.php');
         break;
-      case (substr($name, 0, 4) == 'url_'):
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'seo_links/' . $name . '.inc.php';
+      case (substr($class, 0, 4) == 'url_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . $class . '.inc.php');
         break;
       default:
-        require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $name . '.inc.php';
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
         break;
     }
-  }
+  });
   
 // Set error handler
   function error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
@@ -86,18 +89,18 @@
         break;
     }
     
-    /*
-    $backtraces = debug_backtrace();
-    $backtraces = array_slice($backtraces, 2);
-    
-    if (!empty($backtraces)) {
-      foreach ($backtraces as $backtrace) {
-        if (empty($backtrace['file'])) continue;
-        $backtrace['file'] = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $backtrace['file']));
-        $output .= "<br />" . PHP_EOL . "  <- <b>{$backtrace['file']}</b> on line <b>{$backtrace['line']}</b> in <b>{$backtrace['function']}()</b>";
+    if (isset($_GET['debug'])) {
+      $backtraces = debug_backtrace();
+      $backtraces = array_slice($backtraces, 2);
+      
+      if (!empty($backtraces)) {
+        foreach ($backtraces as $backtrace) {
+          if (empty($backtrace['file'])) continue;
+          $backtrace['file'] = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $backtrace['file']));
+          $output .= "<br />" . PHP_EOL . "  <- <b>{$backtrace['file']}</b> on line <b>{$backtrace['line']}</b> in <b>{$backtrace['function']}()</b>";
+        }
       }
     }
-    */
     
     if (in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
       if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {
@@ -134,13 +137,5 @@
   system::run('startup');
   
 // Run operations before capture
-  system::run('before_capture');
-  
-// If page should be overriden
-  $override_file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/overrides/'. link::relpath(parse_url(link::get_base_link(), PHP_URL_PATH));
-  if (file_exists($override_file)) {
-    require_once($override_file);
-    exit;
-  }
-  
+  system::run('before_capture');  
 ?>

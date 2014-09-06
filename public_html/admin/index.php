@@ -63,7 +63,7 @@
 // App content
   if (!empty($_GET['app'])) {
     
-    require(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
+    require vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
     
     breadcrumbs::add($app_config['name'], $app_config['default']);
     
@@ -78,9 +78,9 @@
     
     if (!empty($_GET['doc'])) {
       if (empty($app_config['docs'][$_GET['doc']]) || !file_exists(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']])) trigger_error($_GET['app'] .'.app/'. $_GET['doc'] . ' is not a valid admin document', E_USER_ERROR);
-      include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
     } else {
-      include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
     }
     
 // Widgets
@@ -92,7 +92,7 @@
 <?php
     foreach (functions::admin_get_widgets() as $widget) {
       echo '    <li id="widget-'. basename($widget['dir'], '.widget') .'">' . PHP_EOL;
-      include(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $widget['dir'] . $widget['file']);
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $widget['dir'] . $widget['file']);
       echo '    </li>' . PHP_EOL;
     }
 ?>
@@ -101,5 +101,5 @@
 <?php
   }
   
-  require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

@@ -7,14 +7,19 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
 <link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
-<link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
 <!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie9.css" /><![endif]-->
 <!--[if lt IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie8.css" /><![endif]-->
 <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
+<script>
+  if (/iphone|ipod|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(navigator.userAgent.toLowerCase())) {
+    $("meta[name='viewport']").attr("content", "width=480");
+  }
+</script>
 <style>
 <?php
   $settings = unserialize(settings::get('store_template_catalog_settings'));
@@ -30,13 +35,12 @@
 </head>
 <body>
 
-
 <div id="header-wrapper" class="shadow">
   <div style="padding: 0px 10px;">
     <header id="header" class="twelve-eighty">
     
       <div id="logotype-wrapper">
-        <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
+        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
       </div>
       
       <div id="customer-service-wrapper">
@@ -52,7 +56,7 @@
   <div id="page">
     
     <div id="site-menu-wrapper">
-      <?php include (FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
+      <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
     </div>
     
     <div id="main-wrapper" class="twelve-eighty">

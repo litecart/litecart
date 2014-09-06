@@ -115,7 +115,7 @@
         limit 1;"
       );
       
-      cache::set_breakpoint();
+      cache::clear_cache('currencies');
     }
     
     public function delete() {
@@ -136,9 +136,9 @@
         limit 1;"
       );
       
+      cache::clear_cache('currencies');
+
       $this->data['id'] = null;
-      
-      cache::set_breakpoint();
     }
   }
 

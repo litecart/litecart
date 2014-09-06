@@ -35,7 +35,7 @@
         self::$_modules[$module] = new old_system($module);
       }
       
-      //trigger_error("\$system->$module is deprecated, use $module:: instead", E_USER_DEPRECATED);
+      //trigger_error("\$system->$module is deprecated, use $module::\$var or $module::method() instead", E_USER_DEPRECATED);
       
       return self::$_modules[$module];
     }
@@ -58,7 +58,7 @@
         return;
       }
       
-      require_once($file);
+      require_once vqmod::modcheck($file);
       
       if (method_exists($module, 'construct')) {
         forward_static_call(array($module, 'construct'));

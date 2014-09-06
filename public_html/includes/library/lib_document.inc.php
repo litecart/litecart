@@ -33,7 +33,7 @@
                                              . '</script>';
       
     // Set template
-      if (substr(link::relpath(link::get_base_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
+      if (substr(link::relpath(link::get_physical_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
         self::$template = settings::get('store_template_admin');
       } else {
         self::$template = settings::get('store_template_catalog');
@@ -50,6 +50,22 @@
     }
     
     public static function prepare_output() {
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php');
+      self::$snippets['site_links'] = ob_get_clean();
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php');
+      self::$snippets['region'] = ob_get_clean();
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php');
+      self::$snippets['cart'] = ob_get_clean();
+      
+      ob_start();
+      include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php');
+      self::$snippets['site_menu'] = ob_get_clean();
       
     // Prepare title
       if (!empty(self::$snippets['title'])) {
@@ -78,13 +94,16 @@
     // Get template settings
       self::$settings = unserialize(settings::get('store_template_catalog_settings'));
       
+      /*
     // Clean orphan snippets
       $search = array(
         '/\{snippet:[^\}]+\}/',
         '/<!--snippet:[^-->]+-->/',
+        '/\{\$[^\}]+\}/',
       );
       
       $GLOBALS['output'] = preg_replace($search, '', $GLOBALS['output']);
+    */
     }
     
     //public static function shutdown() {
@@ -106,31 +125,27 @@
       }
     }
     
-    public static function stitch(&$html) {
+    public static function ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
       
-      foreach (self::$snippets as $key => $replace) {
-      
-        if (is_array($replace)) $replace = implode(PHP_EOL, $replace);
-        
-        $search = array(
-          '{snippet:'.$key.'}',
-          '<!--snippet:'.$key.'-->',
-        );
-        $html = str_replace($search, $replace, $html, $replacements);
-
-        $html = str_replace($search, $replace, $html, $replacements);
-        
-        if ($replacements) unset(self::$snippets[$key]);
+      if ($route === null) {
+        $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if ($inherit_params === null) $inherit_params = true;
+      } else {
+        $route = WS_DIR_HTTP_HOME . $route;
       }
       
-      $html = preg_replace($search, '', $html);
+      return link::create_link($route, $new_params, $inherit_params, $skip_params, $language_code);
+    }
+
+    public static function href_ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
     }
     
-    public static function link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+    public static function link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
       return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
     }
 
-    public static function href_link($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+    public static function href_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
       return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
     }
   }

@@ -45,7 +45,7 @@
         limit 1;"
       );
       
-      cache::set_breakpoint();
+      cache::clear_cache('tax');
     }
     
     public function delete() {
@@ -58,7 +58,7 @@
       
       $this->data['id'] = null;
       
-      cache::set_breakpoint();
+      cache::clear_cache('tax');
     }
   }
 

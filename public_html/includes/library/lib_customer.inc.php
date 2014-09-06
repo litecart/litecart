@@ -19,6 +19,29 @@
         self::reset();
       }
       
+      if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
+        list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
+        
+        $customer_query = database::query(
+          "select * from ". DB_TABLE_CUSTOMERS ."
+          where email = '". database::input($email) ."'
+          limit 1;"
+        );
+        $customer = database::fetch($customer_query);
+        
+        $do_login = false;
+        if (!empty($customer)) {
+          $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+          if ($checksum == $key) $do_login = true;
+        }
+        
+        if ($do_login) {
+          self::load($customer['id']);
+        } else {
+          setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+        }
+      }
+      
       self::identify();
     }
     
@@ -31,7 +54,7 @@
           functions::draw_fancybox('', array(
             'centerOnScroll' => true,
             'hideOnContentClick' => true,
-            'href' => document::link(WS_DIR_HTTP_HOME . 'select_region.php', array('redirect' => $_SERVER['REQUEST_URI'])),
+            'href' => document::ilink('select_region', array('redirect' => $_SERVER['REQUEST_URI'])),
             //'modal' => true,
             'speedIn' => 600,
             'transitionIn' => 'fade',
@@ -166,7 +189,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::link(WS_DIR_HTTP_HOME));
+        header('Location: ' . document::ilink(''));
         exit;
       }
     }
@@ -204,14 +227,14 @@
         limit 1;"
       );
       
-      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::link(WS_DIR_HTTP_HOME)), language::translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
+      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::ilink('')), language::translate('email_body_password_reset', "We have set a new password for your account.\n\nLogin: %email\nPassword: %password\n\n%store_link"));
       
-      functions::email_send(
-        settings::get('store_email'),
-        $email,
-        language::translate('email_subject_new_password', 'New Password'),
-        $message
-      );
+      functions::email_send(array(
+        'sender' => settings::get('store_email'),
+        'recipients' => array($email),
+        'subject' => language::translate('email_subject_new_password', 'New Password'),
+        'message' => $message,
+      ));
       
       notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your e-mail address.'));
       header('Location: '. $_SERVER['REQUEST_URI']);
@@ -254,8 +277,10 @@
       }
     }
     
-    public static function login($email, $password, $redirect_url='') {
-    
+    public static function login($email, $password, $redirect_url='', $customer_remember_me=false) {
+      
+      setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      
       if (empty($email) || empty($password)) {
         notices::add('errors', language::translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
         return;
@@ -270,9 +295,14 @@
       $customer = database::fetch($customer_query);
       
       if (empty($customer)) {
-        sleep(10);
+        sleep(5);
         notices::add('errors', language::translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
         return;
+      }
+      
+      if (!empty($customer_remember_me)) {
+        $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
       }
       
       self::load($customer['id']);
@@ -281,7 +311,14 @@
       
       cart::load();
       
-      if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_HTTP_HOME);
+      if ($customer_remember_me) {
+        $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        setcookie('customer_remember_me', $user['username'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
+      } else {
+        setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      }
+      
+      if (empty($redirect_url)) $redirect_url = document::ilink('');
       
       notices::add('success', str_replace(array('%firstname', '%lastname'), array(self::$data['firstname'], self::$data['lastname']), language::translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
       header('Location: '. $redirect_url);
@@ -293,6 +330,8 @@
       cart::reset();
       
       session::regenerate_id();
+      
+      setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
       
       notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
       

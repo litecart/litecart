@@ -19,6 +19,7 @@
   define('WS_DIR_EXT',         WS_DIR_HTTP_HOME . 'ext/');
   define('WS_DIR_IMAGES',      WS_DIR_HTTP_HOME . 'images/');
   define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');
+  define('WS_DIR_PAGES',       WS_DIR_HTTP_HOME . 'pages/');
   
   define('WS_DIR_BOXES',       WS_DIR_INCLUDES  . 'boxes/');
   define('WS_DIR_CLASSES',     WS_DIR_INCLUDES  . 'classes/');
@@ -28,6 +29,7 @@
   define('WS_DIR_LIBRARY',     WS_DIR_INCLUDES  . 'library/');
   define('WS_DIR_MODULES',     WS_DIR_INCLUDES  . 'modules/');
   define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');
+  define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');
   define('WS_DIR_TEMPLATES',   WS_DIR_INCLUDES  . 'templates/');
   
 ######################################################################
@@ -35,6 +37,7 @@
 ######################################################################
 
 // Database
+  define('DB_TYPE', '{DB_TYPE}');
   define('DB_SERVER', '{DB_SERVER}');
   define('DB_USERNAME', '{DB_USERNAME}');
   define('DB_PASSWORD', '{DB_PASSWORD}');

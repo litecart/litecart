@@ -1,34 +1,40 @@
 <?php
 
-  function email_send($from, $recipients, $subject='(No subject)', $message, $html=false, $attachments=array()) {
+  function email_send($parameters) {
     
-    if (empty($from)) $from = settings::get('store_name') . ' <'. settings::get('store_email') .'>';
+    if (isset($parameters['sender']) && !is_array($parameters['sender'])) $parameters['sender'] = array('email' => settings::get('store_email'));
+    if (empty($parameters['sender']['email'])) $parameters['sender']['email'] = settings::get('store_email');
+    if (empty($parameters['sender']['name']) && $parameters['sender']['email'] == settings::get('store_email')) $parameters['sender']['name'] = settings::get('store_name');
     
-    $from = str_replace(array("\r", "\n"), " ", $from);
-    $subject = str_replace(array("\r", "\n"), " ", $subject);
+    $parameters['sender']['name'] = str_replace(array("\r", "\n"), " ", trim($parameters['sender']['name']));
+    $parameters['sender']['email'] = filter_var($parameters['sender']['email'], FILTER_SANITIZE_EMAIL);
+    $parameters['subject'] = !empty($parameters['subject']) ? str_replace(array("\r", "\n"), " ", $parameters['subject']) : '(No subject)';
+    $parameters['message'] = !empty($parameters['message']) ? $parameters['message'] : '';
     
-  // Generate a boundary string    
+    $parameters['formatted_sender'] = !empty($parameters['sender']['name']) ? '"'. $parameters['sender']['name'] .'" <'. $parameters['sender']['email'] .'>' : $parameters['sender']['email'];
+    
+  // Generate a boundary string
     $mime_boundary = '==Multipart_Boundary_x'. md5(time()) .'x';
-
-    $headers = 'From: '. $from . "\r\n"
-             . 'Reply-To: '. $from . "\r\n"
-             . 'Return-Path: '. $from . "\r\n"
+    
+    $headers = 'From: '. $parameters['formatted_sender'] . "\r\n"
+             . 'Reply-To: '. $parameters['formatted_sender'] . "\r\n"
+             . 'Return-Path: '. $parameters['formatted_sender'] . "\r\n"
              . 'MIME-Version: 1.0' . "\r\n"
-             . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary . '"' . "\r\n"
+             . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary .'"' . "\r\n"
              . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
-     
+    
   // Add a multipart boundary above the plain message
     $message = 'This is a multi-part message in MIME format.' . "\r\n\r\n"
               . '--' . $mime_boundary . "\r\n"
-              . 'Content-Type: '. (($html) ? 'text/html' : 'text/plain') .'; charset='. language::$selected['charset'] . "\r\n"
+              . 'Content-Type: '. (!empty($parameters['html']) ? 'text/html' : 'text/plain') .'; charset='. language::$selected['charset'] . "\r\n"
               . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
               //. 'This message was sent from computer '. gethostbyaddr($_SERVER['REMOTE_ADDR']) . ' at '. date('Y-m-d H:i') .'.'. "\r\n\r\n"
-              . $message . "\r\n\r\n";
+              . $parameters['message'] . "\r\n\r\n";
               
   // Are there are attachments?
-    if (!empty($attachments)) {
+    if (!empty($parameters['attachments'])) {
       
-      foreach ($attachments as $file) {
+      foreach ($parameters['attachments'] as $file) {
         $file = fopen($file, 'rb');
         $data = fread($file, filesize($file));
         fclose($file);
@@ -43,14 +49,14 @@
       }
     }
     
-    if (!is_array($recipients)) $recipients = array($recipients);
+    if (!is_array($parameters['recipients'])) $parameters['recipients'] = array($recipients);
 
     $success = true;
-    foreach ($recipients as $to) {
-      $to = filter_var($to, FILTER_SANITIZE_EMAIL);
+    foreach ($parameters['recipients'] as $recipient) {
+      $recipient = filter_var($recipient, FILTER_SANITIZE_EMAIL);
       
-      if (!mail($to, $subject, $message, $headers)) {
-        trigger_error("Failed sending e-mail to ". $to, E_USER_WARNING);
+      if (!mail($recipient, $parameters['subject'], $parameters['message'], $headers)) {
+        trigger_error("Failed sending e-mail to ". $recipient, E_USER_WARNING);
         $success = false;
       }
     }

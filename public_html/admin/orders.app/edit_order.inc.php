@@ -103,7 +103,7 @@
   <?php echo $system->functions->form_draw_form_begin('', 'get'); ?>
   <?php echo $system->functions->form_draw_hidden_field('app', $_GET['app']); ?>
   <?php echo $system->functions->form_draw_hidden_field('doc', $_GET['doc']); ?>
-  <?php echo $system->language->translate('title_order_id', 'Order ID') .': '. $system->functions->form_draw_number_field('order_id', !empty($_GET['order_id']) ? $_GET['order_id'] : '0', 'onclick="$(this).select();"'); ?>
+  <?php echo $system->language->translate('title_order_id', 'Order ID') .': '. $system->functions->form_draw_number_field('order_id', $_GET['order_id'], 'onclick="$(this).select();"'); ?>
   <?php echo $system->functions->form_draw_button('', $system->language->translate('title_go', 'Go'), 'submit'); ?>
   <?php echo $system->functions->form_draw_form_end(); ?>
   <script>

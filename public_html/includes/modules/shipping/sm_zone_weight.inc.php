@@ -2,13 +2,14 @@
 
   class sm_zone_weight {
     public $id = __CLASS__;
-    public $name = '';
+    public $name = 'Weight Based Shipping by Zone';
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
     public $website = 'http://www.litecart.net';
     
     public function __construct() {
+    
       $this->name = language::translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
     

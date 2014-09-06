@@ -29,11 +29,6 @@ LiteCart contains work by the following listed:
 * (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
 * (mail) Icojam - Public Domain - http://www.icojam.com
 
-32x32 Icons
------------
-
-* (cart) DesignContest.com - CC Attribution 3.0 Unported - http://www.designcontest.com
-
 Language Icons
 --------------
 * Open Web Graphics - Creative Commons Attribution 3.0 Unported - http://www.openwebgraphics.com
@@ -76,9 +71,15 @@ JavaScript
 * SCEditor by Sam Clarke - MIT license - http://www.sceditor.com/
 * jQuery Cookie Plugin by Klaus Hartl - MIT License - https://github.com/carhartl/jquery-cookie
 
+PHP
+---
+VQMod by Qphoria - Special permitted use - https://code.google.com/p/vqmod/
+
 Inspired By
 -----------
-LiteCart was born out of thoughts of what was missing, what was too much, and/or what could have been different in other free e-commerce platforms.
+LiteCart was born out of thoughts of what was missing, what was too much, and what could have been different in other e-commerce platforms.
 
-* osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
 * OpenCart by Daniel Kerr - http://www.opencart.com
+* osCommerce by Harald Ponce de Leon - http://www.oscommerce.com
+* Prestashop by PrestaShop, Inc. - http://www.prestashop.com
+* Magento CE by eBay Inc. - http://www.magento.com

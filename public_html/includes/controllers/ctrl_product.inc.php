@@ -457,7 +457,8 @@
         }
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('product_'.$this->data['id']);
+      cache::clear_cache('products');
     }
     
     public function delete() {
@@ -484,13 +485,16 @@
         "delete from ". DB_TABLE_PRODUCTS_PRICES ."
         where product_id = '". (int)$this->data['id'] ."';"
       );
-      
+
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
         where product_id = '". (int)$this->data['id'] ."';"
       );
       
-      cache::set_breakpoint();
+
+      cache::clear_cache('products');
+      
+      $this->data['id'] = null;
     }
     
     public function add_image($file, $filename='') {

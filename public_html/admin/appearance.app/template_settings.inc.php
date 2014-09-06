@@ -1,7 +1,7 @@
 <?php
   
 // Load template settings structure
-  include(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
+  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
   
 // Get settings from database
   $settings = unserialize(settings::get('store_template_catalog_settings'));

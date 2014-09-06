@@ -55,7 +55,8 @@
         limit 1;"
       );
       
-      cache::set_breakpoint();
+      cache::clear_cache('slider');
+      cache::clear_cache('slides');
     }
     
     public function save_image($file) {
@@ -94,9 +95,10 @@
       
       if (!empty($this->data['image']) && file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
       
-      $this->data['id'] = null;
+      cache::clear_cache('slider');
+      cache::clear_cache('slides');
       
-      cache::set_breakpoint();
+      $this->data['id'] = null;
     }
   }
 
