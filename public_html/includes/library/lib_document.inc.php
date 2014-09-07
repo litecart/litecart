@@ -53,22 +53,6 @@
     
     public static function prepare_output() {
       
-      ob_start();
-      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_links.inc.php');
-      self::$snippets['site_links'] = ob_get_clean();
-      
-      ob_start();
-      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'region.inc.php');
-      self::$snippets['region'] = ob_get_clean();
-      
-      ob_start();
-      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'cart.inc.php');
-      self::$snippets['cart'] = ob_get_clean();
-      
-      ob_start();
-      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php');
-      self::$snippets['site_menu'] = ob_get_clean();
-      
     // Prepare title
       if (!empty(self::$snippets['title'])) {
         if (!is_array(self::$snippets['title'])) self::$snippets['title'] = array(self::$snippets['title']);

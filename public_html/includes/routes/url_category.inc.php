@@ -15,16 +15,12 @@
       
       if (!isset($parsed_link['query']['category_id'])) return;
       
-      $category_query = database::query(
-        "select category_id, name from ". DB_TABLE_CATEGORIES_INFO ."
-        where category_id = '". (int)$parsed_link['query']['category_id'] ."'
-        and language_code = '". database::input($language_code) ."'
-        limit 1;"
-      );
-      $category = database::fetch($category_query);
-      if (empty($category)) return;
+      $category_trail = functions::catalog_category_trail($parsed_link['query']['category_id']);
       
-      $parsed_link['path'] = WS_DIR_HTTP_HOME . functions::general_path_friendly($category['name']) .'-c-'. $category['category_id'] .'/';
+      if (empty($category_trail)) return;
+      
+      $parsed_link['path'] = '';
+      foreach ($category_trail as $category_id => $category_name) $parsed_link['path'] .= functions::general_path_friendly($category_name) .'-c-'. $category_id .'/';
       
       unset($parsed_link['query']['category_id']);
       

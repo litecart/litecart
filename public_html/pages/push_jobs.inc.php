@@ -1,5 +1,4 @@
 <?php
-  define('SEO_REDIRECT', false);
   header('Content-type: text/plain; charset='. language::$selected['code']);
   
   if (strtotime(settings::get('jobs_last_run')) > strtotime('-'. settings::get('jobs_interval') .' minutes')) die('Already did my duty!');

@@ -16,9 +16,9 @@
         <td class="quantity" align="center" nowrap="nowrap"><?php echo $item['quantity']; ?></td>
         <td class="item" class="unit-cost" align="left" nowrap="nowrap"><?php echo $item['name']; ?></td>
         <td class="sku" align="left" nowrap="nowrap"><?php echo $item['sku']; ?></td>
-        <td class="unit-cost" align="right" nowrap="nowrap"><?php echo currency::format($item['price'] + $item['tax'], false); ?></td>
-        <td class="tax" align="right" nowrap="nowrap"><?php echo currency::format($item['tax'], false); ?></td>
-        <td class="sum" align="right" nowrap="nowrap"><?php echo currency::format(($item['price'] + $item['tax']) * $item['quantity'], false); ?></td>
+        <td class="unit-cost" align="right" nowrap="nowrap"><?php echo $item['price']; ?></td>
+        <td class="tax" align="right" nowrap="nowrap"><?php echo $item['tax']; ?></td>
+        <td class="sum" align="right" nowrap="nowrap"><?php echo $item['sum']; ?></td>
       </tr>
       <?php } ?>
       

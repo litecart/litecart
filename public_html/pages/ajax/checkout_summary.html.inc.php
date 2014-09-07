@@ -44,7 +44,6 @@
   
   foreach ($order->data['items'] as $item) {
     $box_checkout_summary->snippets['items'][] = array(
-      'items' => cart::$data['items'],
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
       'name' => $item['name'],
       'sku' => $item['sku'],

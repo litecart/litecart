@@ -9,9 +9,10 @@
     if (empty($category_id)) $category_id = 0;
     
     $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name
+      "select c.id, c.parent_id, if (ci.name, ci.name, alt_ci.name) as name
       from ". DB_TABLE_CATEGORIES ." c 
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
+      left join ". DB_TABLE_CATEGORIES_INFO ." alt_ci on (alt_ci.category_id = c.id and alt_ci.language_code = '". database::input(settings::get('store_language_code')) ."')
       where c.id = '". (int)$category_id ."'
       limit 1;"
     );

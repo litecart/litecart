@@ -93,7 +93,7 @@
     'manufacturer_image' => !empty($product->manufacturer['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) : '',
     'manufacturer_url' => !empty($product->manufacturer['id']) ? document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])) : '',
     'regular_price' => currency::format(tax::calculate($product->price, $product->tax_class_id)),
-    'campaign_price' => currency::format(tax::calculate($product->price, $product->tax_class_id)),
+    'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::calculate($product->campaign['price'], $product->tax_class_id)) : 0,
     'tax_status' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'tile_excluding_tax' => language::translate('title_excluding_tax', 'Excluding Tax'),
     'tax_rates' => array(),

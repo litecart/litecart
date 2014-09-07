@@ -43,7 +43,6 @@
   // On a thumbnail click - Change the container's width to the exact width of all the slides combined
     $('#box-checkout-cart .shortcut a').click(function(e,keepScroll) {
       e.preventDefault();
-      
 
       $('#box-checkout-cart .shortcut a').removeClass('act').addClass('inact');
       $(this).addClass('act');
@@ -52,22 +51,24 @@
       $('#box-checkout-cart .viewport .items').stop().animate({marginLeft:-positions[index]+'px'}, 400); // slide
       //$('#box-checkout-cart .viewport .items').stop().fadeOut('fast').animate({marginLeft: -positions[index]+'px'}, 0).fadeIn('fast'); // fade
       
-      if (!keepScroll) clearInterval(itvl);
+      if (!keepScroll) clearInterval(timer_cart_scroll);
     });
     
   // On page load, mark the first thumbnail as active
     $('#box-checkout-cart .shortcut a:first').addClass('act').siblings().addClass('inact');
     
   // Initiate the auto-advance timer
-    var itvl = setInterval(function(){
-      if (current == -1) return false;
-      $('#box-checkout-cart .shortcut a').eq(current%$('#box-checkout-cart .shortcut a').length).trigger('click',[true]);
-      current++;
-    }, 3000);
+    if (!timer_cart_scroll) {
+      var timer_cart_scroll = setInterval(function(){
+        if (current == -1) return false;
+        $('#box-checkout-cart .shortcut a').eq(current%$('#box-checkout-cart .shortcut a').length).trigger('click',[true]);
+        current++;
+      }, 3000);
+    }
     
   // Clear timer
     $('#box-checkout-cart').click(function(e,keepScroll) {
-      if (!keepScroll) clearInterval(itvl);
+      if (!keepScroll) clearInterval(timer_cart_scroll);
     });
   </script>
   <?php } ?>

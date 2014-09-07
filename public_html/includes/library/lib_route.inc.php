@@ -25,7 +25,7 @@
         '#^(?:index\.php)?$#'                  => array('page' => 'index',          'params' => '',  'redirect' => true),
         '#^ajax/(.*)(?:\.php)?$#'              => array('page' => 'ajax/$1',        'params' => '',  'redirect' => true),
         '#^feeds/(.*)(?:\.php)?$#'             => array('page' => 'feeds/$1',       'params' => '',  'redirect' => true),
-        '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false), // No redirect
+        '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false, 'post_security' => false),
         '#^([0-9|a-z|_]+)(?:\.php)?$#'         => array('page' => '$1',             'params' => '',  'redirect' => true),
         // See ~/includes/routes/ folder for more advanced routes
       );
@@ -57,10 +57,7 @@
           }
         }
       }
-    }
-    
-    public static function before_capture() {
-    
+      
     // Neutralize request path (removes logical prefixes)
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
       
@@ -114,6 +111,9 @@
         }
       }
     }
+    
+    public static function before_capture() {
+    }    
     
     public static function after_capture() {
       cache::set(self::$_links_cache_id, 'file', self::$_links_cache);

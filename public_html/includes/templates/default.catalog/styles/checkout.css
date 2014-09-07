@@ -1,3 +1,7 @@
+#checkout-cart-wrapper, #checkout-customer-wrapper, #checkout-shipping-wrapper, #checkout-payment-wrapper, #checkout-summary-wrapper {
+  clear: both;
+}
+
 #customer-service-wrapper {
   position: absolute;
   width: 300px;
@@ -42,7 +46,7 @@
 	float: left;
   text-align: left;
   width: 580px;
-}
+} 
 #box-checkout-cart .item a.image-wrapper {
   float: left;
   padding: 10px;

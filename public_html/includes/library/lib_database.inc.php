@@ -1,9 +1,8 @@
 <?php
 
   class database {
-    
     private static $_links = array();
-    private static $_type = 'mysql';
+    private static $_type = DB_TYPE;
     
     public static function construct() {
       if (self::$_type == 'mysql' && function_exists('mysqli_connect')) self::$_type = 'mysqli';

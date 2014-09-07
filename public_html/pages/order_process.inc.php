@@ -1,7 +1,4 @@
 <?php
-  define('REQUIRE_POST_TOKEN', false);
-  define('SEO_REDIRECT', false);
-  
   header('X-Robots-Tag: noindex');
   
   $shipping = new mod_shipping();

@@ -1,6 +1,4 @@
 <?php
-  define('REQUIRE_POST_TOKEN', false);
-  
   if (settings::get('catalog_only_mode')) return;
   
   document::$layout = 'checkout';

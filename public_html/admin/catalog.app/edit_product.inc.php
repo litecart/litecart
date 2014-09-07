@@ -823,7 +823,7 @@ foreach (currency::$currencies as $currency) {
             var valueField = this.name.replace(/group/, 'value');
             $('body').css('cursor', 'wait');
             $.ajax({
-              url: '<?php echo document::link(WS_DIR_AJAX .'option_values.json.php'); ?>?option_group_id=' + $(this).val(),
+              url: '<?php echo document::ilink('ajax/option_values.json'); ?>?option_group_id=' + $(this).val(),
               type: 'get',
               cache: true,
               async: true,
@@ -966,7 +966,7 @@ foreach (currency::$currencies as $currency) {
             var valueField = this.name.replace(/group/, 'value');
             $('body').css('cursor', 'wait');
             $.ajax({
-              url: '<?php echo document::link(WS_DIR_AJAX .'option_values.json.php'); ?>?option_group_id=' + $(this).val(),
+              url: '<?php echo document::ilink('ajax/option_values.json'); ?>?option_group_id=' + $(this).val(),
               type: 'get',
               cache: true,
               async: true,
