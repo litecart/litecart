@@ -91,6 +91,7 @@
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           charset = '". database::input($this->data['charset']) ."',
+          mysql_collation = '". database::input($this->data['mysql_collation']) ."',
           locale = '". database::input($this->data['locale']) ."',
           raw_date = '". database::input($this->data['raw_date']) ."',
           raw_time = '". database::input($this->data['raw_time']) ."',

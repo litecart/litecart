@@ -79,13 +79,12 @@
   $page->snippets = array(
     'product_id' => $product->id,
     'name' => $product->name[language::$selected['code']],
-    'description' => $product->description[language::$selected['code']],
-    'description' => empty($product->description[language::$selected['code']]) ? language::translate('text_no_product_description', 'There is no description for this product yet.') : '',
-    'attributes' => preg_split('/\R+/', $product->attributes[language::$selected['code']]),
+    'description' => !empty($product->description[language::$selected['code']]) ? $product->description[language::$selected['code']] : '<p><em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em></p>',
+    'attributes' => !empty($product->attributes[language::$selected['code']]) ? preg_split('/\R+/', $product->attributes[language::$selected['code']]) : array(),
     'sku' => $product->sku,
     'image' => array(
-      'original' => !empty(array_values($product->images)[0]) ? WS_DIR_IMAGES . array_values($product->images)[0] : WS_DIR_IMAGES . 'no_image.png',
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty(array_values($product->images)[0]) ? array_values($product->images)[0] : 'no_image.png'), FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
+      'original' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
+      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
     ),
     'sticker' => '',
     'extra_images' => array(),

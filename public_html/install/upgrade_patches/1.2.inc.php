@@ -1,6 +1,7 @@
 <?php
   
   $deleted_files = array(
+    FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/index.html',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/cart.json.php',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/checkout_cart.html.php',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/checkout_customer.html.php',
@@ -10,6 +11,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/get_address.json.php',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/option_values.json.php',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/zones.json.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds/index.html',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds/sitemap.xml.php',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/boxes/account.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/boxes/also_purchased_products.inc.php',
@@ -69,6 +71,9 @@
     }
   }
   
+  rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax.deleteme');
+  rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds.deleteme');
+  
   $modified_files = array(
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
@@ -106,7 +111,7 @@
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
       'search'  => "  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)/?$ category.php?category_id=$1&%{QUERY_STRING} [L]",
-      'replace' => "  RewriteRule ^.*$ index.php%{QUERY_STRING} [L]",
+      'replace' => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',

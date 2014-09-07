@@ -129,11 +129,7 @@
       
       <div class="content">
         <div class="tab" id="tab-information" itemprop="description">
-          <?php if ($attributes) { ?>
-            <?php echo $description; ?>
-          <?php } else { ?>
-            <p><em style="opacity: 0.65;"><?php echo $no_description; ?></em></p>
-          <?php } ?>
+          <?php echo $description; ?>
         </div>
         
         <?php if ($attributes) { ?>
