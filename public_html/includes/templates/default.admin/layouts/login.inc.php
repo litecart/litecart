@@ -2,7 +2,8 @@
 <html lang="{snippet:language}">
 <head>
 <title>{snippet:title}</title>
-<meta http-equiv="Content-Type" content="text/html; charset={snippet:charset}" />
+<meta charset="{snippet:charset}" />
+<meta name="robots" content="noindex, nofollow" />
 <link href="<!--snippet:template_path-->styles/loader.css" rel="stylesheet" media="print, screen" />
 <!--[if IE]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie.css" /><![endif]-->
 <!--[if IE 9]><link rel="stylesheet" href="<!--snippet:template_path-->styles/ie9.css" /><![endif]-->

@@ -6,7 +6,6 @@
 <meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
-<link rel="shortcut icon" href="<?php echo WS_DIR_HTTP_HOME; ?>favicon.ico">
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
 <link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
 <!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" /><![endif]-->
