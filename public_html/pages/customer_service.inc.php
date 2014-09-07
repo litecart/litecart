@@ -36,7 +36,7 @@
   
 // Information box
   ob_start();
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php');
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php');
   document::$snippets['column_left'] = ob_get_clean();
 
   if (empty($_GET['page_id'])) {

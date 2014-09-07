@@ -11,7 +11,7 @@
   
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   $manufacturer = new ref_manufacturer($_GET['manufacturer_id']);
   

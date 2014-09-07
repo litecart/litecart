@@ -58,7 +58,7 @@
         return;
       }
       
-      require_once vqmod::modcheck($file);
+      require_once vmod::check($file);
       
       if (method_exists($module, 'construct')) {
         forward_static_call(array($module, 'construct'));

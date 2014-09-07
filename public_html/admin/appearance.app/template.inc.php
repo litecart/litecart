@@ -17,7 +17,7 @@
         
 
       // Get template settings structure
-        include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . basename($_POST['template_catalog']) .'/config.inc.php');
+        include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . basename($_POST['template_catalog']) .'/config.inc.php');
         
       // Set template default settings
         $settings = array();

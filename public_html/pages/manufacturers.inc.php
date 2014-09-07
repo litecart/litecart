@@ -7,7 +7,7 @@
   document::$snippets['keywords'] = language::translate('manufacturers.php:meta_keywords', '');
   document::$snippets['description'] = language::translate('manufacturers.php:meta_description', '');
   
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   $box_manufacturers_cache_id = cache::cache_id('box_manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($box_manufacturers_cache_id, 'file')) {

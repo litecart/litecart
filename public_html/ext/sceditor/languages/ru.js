@@ -1,6 +1,6 @@
 (function ($) {
 	'use strict';
-	
+
 	$.sceditor.locale["ru"] = {
 		"Bold": "Жирный",
 		"Italic": "Курсив",
@@ -51,6 +51,7 @@
 		"Insert current time": "Текущее время",
 		"Print": "Распечатать",
 		"View source": "Показать код",
+		"Maximize": "Развернуть",
 		dateFormat: "day.month.year"
-	}
+	};
 })(jQuery);

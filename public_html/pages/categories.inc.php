@@ -5,7 +5,7 @@
   //document::$snippets['keywords'] = '';
   //document::$snippets['description'] = '';
   
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_categories.inc.php');
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_categories.inc.php');
 ?>

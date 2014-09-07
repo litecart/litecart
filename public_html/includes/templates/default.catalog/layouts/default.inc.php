@@ -64,12 +64,12 @@
       </div>
       
       <div id="region-wrapper">
-        <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
       </div>
       
       <?php if (!settings::get('catalog_only_mode')) { ?>
       <div id="cart-wrapper">
-        <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
       </div>
       <?php } ?>
       
@@ -81,7 +81,7 @@
   <div id="page">
     
     <div id="site-menu-wrapper">
-      <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
+      <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
     </div>
     
     <div id="main-wrapper" class="twelve-eighty">
@@ -108,7 +108,7 @@
 </div>
 
 <div id="footer-wrapper">
-  <?php include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
 </div>
 
 <a href="#" id="scroll-up">Scroll</a>

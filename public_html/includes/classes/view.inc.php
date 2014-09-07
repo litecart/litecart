@@ -51,7 +51,7 @@
       }
       
       ob_start();
-      include vqmod::modcheck($_file);
+      include vmod::check($_file);
       $html = ob_get_clean();
       
       return $html;

@@ -68,7 +68,7 @@ abstract class VQMod {
 	}
 
 	/**
-	 * VQMod::modCheck()
+	 * vmod::check()
 	 *
 	 * @param string $sourceFile path for file
 	 * @return string

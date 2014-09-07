@@ -5,7 +5,7 @@
   
   if (!empty(route::$route) && is_file($file)) {
     
-    include vqmod::modcheck($file);
+    include vmod::check($file);
      
   } else {
   
@@ -17,5 +17,5 @@
     echo '<p>Could not find a mathing reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>';
   }
   
-  require_once vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>

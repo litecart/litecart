@@ -1,7 +1,7 @@
 <?php
 // Information links
   ob_start();
-  include vqmod::modcheck(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php');
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php');
   document::$snippets['column_left'] = ob_get_clean();
   
 // Information page
