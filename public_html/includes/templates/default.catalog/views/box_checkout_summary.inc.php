@@ -61,7 +61,7 @@
         
         <?php if ($error) echo '<div class="warning">'. $error .'</div>' . PHP_EOL; ?>
 
-        <p><?php echo functions::form_draw_button('confirm_order', $selected_payment['confirm'], 'submit', !empty($error) ? 'disabled="disabled"' : ''); ?></p>
+        <p><?php echo functions::form_draw_button('confirm_order', $confirm, 'submit', !empty($error) ? 'disabled="disabled"' : ''); ?></p>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

@@ -294,23 +294,32 @@
         </li>
         <li>Extensions
           <ul>
-            <li>CURL <?php echo extension_loaded('curl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>EXIF <?php echo extension_loaded('exif') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>MBString <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>MySQL or MySQLi <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>GD or GD2 <?php echo (extension_loaded('gd') || extension_loaded('gd2')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>FreeType <?php echo function_exists('imagettftext') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>curl <?php echo extension_loaded('curl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>exif <?php echo extension_loaded('exif') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mysql / mysqli <?php echo (extension_loaded('mysql') || extension_loaded('mysqli')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>gd <?php echo extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
           </ul>
         </li>
       </ul>
     </li>
     <li>Apacahe 2 compatible HTTP daemon
+      <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
       <ul>
         <li>Allow, Deny</li>
         <li>Options -Indexes</li>
+        <li>Modules
+          <ul>
+            <li>mod_auth_basic (SHA) <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_headers <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_redirect <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
           </ul>
         </li>
-    <li>MySQL 5.5+ / MariaDB 5.5+</li>
+      </ul>
+    </li>
+    <li>MySQL 5.5+</li>
   </ul>
   
   <h2>Client Requirements</h2>
@@ -444,7 +453,7 @@
     <h3>Errors
       <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>"  />
     </h3>
-    <p>Errors will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
+    <p>Errros will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
     <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.<br />
     </p>
     <p><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>

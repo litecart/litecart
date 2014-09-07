@@ -39,6 +39,7 @@
     'payment_due' => currency::format($order->data['payment_due'], false),
     'error' => $order->checkout_forbidden(),
     'selected_payment' => array(),
+    'confirm' => !empty($payment->data['selected']['confirm']) ? $payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   );
   
   foreach ($order->data['items'] as $item) {
@@ -67,7 +68,6 @@
     $box_checkout_summary->snippets['selected_payment'] = array(
       'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $payment->data['selected']['title'],
-      'confirm' => !empty($payment->data['selected']['confirm']) ? $payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
     );
   }
   

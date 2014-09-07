@@ -29,8 +29,8 @@
     );
     $orders = database::fetch($orders_query);
     
-    $monthly_sales[date('Y-m', $timestamp)] = '[\''. strftime('%b %Y', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
-    $monthly_tax[date('Y-m', $timestamp)] = '[\''. strftime('%b %Y', $timestamp) .'\', '. (int)$orders['total_tax'] .']';
+    $monthly_sales[date('Y-m', $timestamp)] = '[\''. strftime('%b', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
+    $monthly_tax[date('Y-m', $timestamp)] = '[\''. strftime('%b', $timestamp) .'\', '. (int)$orders['total_tax'] .']';
   }
 ?>
   <div id="chart-sales-monthly" style="float: left; width: 50%; height: 150px;"></div>
@@ -92,8 +92,8 @@
     );
     $orders = database::fetch($orders_query);
     
-    $daily_sales[date('d', $timestamp)] = '[\''. date('d', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
-    $daily_tax[date('d', $timestamp)] = '[\''. date('d', $timestamp) .'\', '. (int)$orders['total_tax'] .']';
+    $daily_sales[date('d', $timestamp)] = '[\''. date('j', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
+    $daily_tax[date('d', $timestamp)] = '[\''. date('j', $timestamp) .'\', '. (int)$orders['total_tax'] .']';
   }
   
 ?>

@@ -21,6 +21,7 @@
   
   $installation_path = file_absolute_path(dirname(__FILE__) .'/..') .'/';
   
+  $_REQUEST['db_type'] = !empty($_REQUEST['db_type']) ? $_REQUEST['db_type'] : 'mysql';
   $_REQUEST['admin_folder'] = str_replace('\\', '/', $_REQUEST['admin_folder']);
   $_REQUEST['admin_folder'] = rtrim($_REQUEST['admin_folder'], '/') . '/';
   
@@ -51,7 +52,7 @@
 
   echo '<p>Connecting to database... ';
   
-  define('DB_TYPE', 'mysql');
+  define('DB_TYPE', $_REQUEST['db_type']);
   define('DB_SERVER', $_REQUEST['db_server']);
   define('DB_USERNAME', $_REQUEST['db_username']);
   define('DB_PASSWORD', $_REQUEST['db_password']);
