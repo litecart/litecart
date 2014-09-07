@@ -12,9 +12,7 @@
     
     //public static function load_dependencies() {}
     
-    //public static function initiate() {}
-    
-    public static function startup() {
+    public static function initiate() {
       
     // Load cached links (url rewrites)
       self::$_links_cache_id = cache::cache_id('links', array('language'));
@@ -57,6 +55,9 @@
           }
         }
       }
+    }
+    
+    public static function startup() {
       
     // Neutralize request path (removes logical prefixes)
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
