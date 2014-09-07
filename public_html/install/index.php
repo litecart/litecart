@@ -305,7 +305,7 @@
       </ul>
     </li>
     <li>Apacahe 2 compatible HTTP daemon
-<?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
+      <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
       <ul>
         <li>Allow, Deny</li>
         <li>Options -Indexes</li>
@@ -371,6 +371,7 @@
     </table>
     <h3>MySQL</h3>
     <table>
+      <!--
       <tr>
         <td><strong>Type</strong><br />
           <select name="db_type">
@@ -379,6 +380,7 @@
         </td>
         <td></td>
       </tr>
+      -->
       <tr>
         <td><strong>Hostname</strong><br />
           <input name="db_server" type="text" value="localhost"  />

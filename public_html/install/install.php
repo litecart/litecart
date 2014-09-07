@@ -51,7 +51,7 @@
 
   echo '<p>Connecting to database... ';
   
-  define('DB_TYPE', $_REQUEST['db_type']);
+  define('DB_TYPE', 'mysql');
   define('DB_SERVER', $_REQUEST['db_server']);
   define('DB_USERNAME', $_REQUEST['db_username']);
   define('DB_PASSWORD', $_REQUEST['db_password']);
