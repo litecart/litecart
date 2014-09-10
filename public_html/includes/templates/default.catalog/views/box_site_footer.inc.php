@@ -10,7 +10,7 @@
           <nav>
             <h4><?php echo language::translate('title_categories', 'Categories'); ?></h4>
             <ul class="list-vertical">
-              <?php foreach ($categories as $category) echo '<li><a href="'. $category['href'] .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
+              <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
             </ul>
           </nav>
         </td>
@@ -19,7 +19,7 @@
           <nav>
             <h4><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h4>
             <ul class="list-vertical">
-            <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. $manufacturer['href'] .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
+            <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
             </ul>
           </nav>
         </td>
@@ -57,7 +57,7 @@
           <nav>
             <h4><?php echo language::translate('title_information', 'Information'); ?></h4>
             <ul class="list-vertical">
-              <?php foreach ($pages as $page) echo '<li><a href="'. $page['href'] .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
+              <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
             </ul>
           </nav>
         </td>

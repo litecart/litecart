@@ -76,6 +76,14 @@
   
   $modified_files = array(
     array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htaccess',
+      'search'  => "# Denied content",
+      'replace' => "# Solve 401 rewrite and auth conflict on some machines" . PHP_EOL
+                .  "ErrorDocument 401 \"Access Forbidden\"" . PHP_EOL
+                .  PHP_EOL
+                .  "# Denied content",
+    ),
+    array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
       'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');",
       'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');" . PHP_EOL
@@ -95,18 +103,18 @@
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
-      'search'  => "ErrorDocument 403 {BASE_DIR}error_document.php?code=403",
-      'replace' => "ErrorDocument 403 {BASE_DIR}index.php/error_document?code=403",
+      'search'  => "ErrorDocument 403 ". WS_DIR_HTTP_HOME ."error_document.php?code=403",
+      'replace' => "ErrorDocument 403 ". WS_DIR_HTTP_HOME ."index.php/error_document?code=403",
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
-      'search'  => "ErrorDocument 404 {BASE_DIR}error_document.php?code=404",
-      'replace' => "ErrorDocument 404 {BASE_DIR}index.php/error_document?code=404",
+      'search'  => "ErrorDocument 404 ". WS_DIR_HTTP_HOME ."error_document.php?code=404",
+      'replace' => "ErrorDocument 404 ". WS_DIR_HTTP_HOME ."index.php/error_document?code=404",
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
-      'search'  => "ErrorDocument 410 {BASE_DIR}error_document.php?code=410",
-      'replace' => "ErrorDocument 410 {BASE_DIR}index.php/error_document?code=410",
+      'search'  => "ErrorDocument 410 ". WS_DIR_HTTP_HOME ."error_document.php?code=410",
+      'replace' => "ErrorDocument 410 ". WS_DIR_HTTP_HOME ."index.php/error_document?code=410",
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',

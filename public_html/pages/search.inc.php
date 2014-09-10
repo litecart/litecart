@@ -81,7 +81,6 @@
       "select p.id
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-      left join ". DB_TABLE_PRODUCTS_INFO ." alt_pi on (alt_pi.product_id = p.id and alt_pi.language_code = '". database::input(settings::get('store_language_code')) ."')
       where p.status
       and (
         find_in_set('". database::input($_GET['query']) ."', p.keywords)
@@ -90,7 +89,7 @@
         or p.code like '%". database::input($_GET['query']) ."%'
         or p.sku like '%". database::input($_GET['query']) ."%'
         or p.upc like '%". database::input($_GET['query']) ."%'
-        or if(pi.name, pi.name, alt_pi.name) like '%". database::input($_GET['query']) ."%'
+        or pi.name like '%". database::input($_GET['query']) ."%'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
       );"

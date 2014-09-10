@@ -36,7 +36,7 @@
       while ($category = database::fetch($categories_query)) {
       
         $output .= '  <li>' . PHP_EOL
-                 . '    <a href="'. document::href_ilink('category', array('category_id' => $category['id']), false) .'" '. ((!empty($_GET['category_id']) && $category['id'] == $_GET['category_id']) ? ' class="active"' : '') .'><img src="'. WS_DIR_IMAGES .'icons/16x16/'. ((@in_array($category['id'], $category_trail)) ? 'collapse.png' : 'expand.png') .'" width="16" height="16" alt="" style="vertical-align: middle;" /> '. $category['name'] .'</a>' . PHP_EOL;
+                 . '    <a href="'. document::href_ilink('category', array('category_id' => $category['id']), false) .'" '. ((!empty($_GET['category_id']) && $category['id'] == $_GET['category_id']) ? ' class="active"' : '') .'><img src="'. WS_DIR_IMAGES .'icons/16x16/'. ((@in_array($category['id'], $category_trail)) ? 'collapse.png' : 'expand.png') .'" width="16" height="16" alt="" style="vertical-align: middle; margin-right: 10px;" />'. $category['name'] .'</a>' . PHP_EOL;
         
         if (in_array($category['id'], $category_trail)) {
           $sub_categories_query = functions::catalog_categories_query($category['id']);
