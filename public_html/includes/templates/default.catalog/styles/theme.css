@@ -220,7 +220,6 @@ body {
 #footer table td {
   padding: 5px 20px;
   vertical-align: top;
-  width: 20%;
 }
 #footer table td:first-child{
   border-left: none;

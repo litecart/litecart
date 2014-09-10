@@ -13,7 +13,7 @@ input[type=date], input[type=datetime], input[type=email], input[type=month], in
   background-color: #fcfcfc;
 
   
-  font: normal 12px Roboto, Sans-serif;
+  font: normal 14px Roboto, Sans-serif;
   color: #000;
   
   vertical-align: baseline;
@@ -129,7 +129,7 @@ button, a.button, span.button, .button-set {
   color: #666;
   text-decoration: none;
   text-shadow: 0px 1px 1px white;
-  font: 400 12px Roboto, Sans-serif;
+  font: 400 14px Roboto, Sans-serif;
   
   white-space: nowrap;
   vertical-align: middle;

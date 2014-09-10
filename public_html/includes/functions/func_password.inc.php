@@ -35,10 +35,10 @@
   function password_checksum($login, $password) {
     if (!defined('PASSWORD_SALT')) trigger_error('There is no password salt defined.', E_USER_ERROR);
     if (strlen($password) < 2) {
-      return hash('sha256', $login . $password . PASSWORD_SALT);
+      return hash('sha256', strtolower($login) . $password . PASSWORD_SALT);
     } else {
       $password = @str_split($password, ceil(strlen($password)/2));
-      return hash('sha256', $login . $password[0] . PASSWORD_SALT . $password[1]);
+      return hash('sha256', strtolower($login) . $password[0] . PASSWORD_SALT . $password[1]);
     }
   }
 

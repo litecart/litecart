@@ -15,7 +15,7 @@
     
     $new_settings = array();
     foreach (array_keys($template_config) as $i) {
-      $new_settings[$template_config[$i]['key']] = isset($_POST[$template_config[$i]['key']]) ? $_POST[$template_config[$i]['key']] : $template_config[$i]['default_value'];
+      $new_settings[$template_config[$i]['key']] = isset($_POST[$template_config[$i]['key']]) ? $_POST[$template_config[$i]['key']] : $template_config[$i]['value'];
     }
     
     database::query(

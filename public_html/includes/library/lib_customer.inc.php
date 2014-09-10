@@ -288,7 +288,7 @@
       
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where email = '". database::input($email) ."'
+        where email like '". database::input($email) ."'
         and password = '". functions::password_checksum($email, $password) ."'
         limit 1;"
       );
@@ -301,8 +301,8 @@
       }
       
       if (!empty($customer_remember_me)) {
-        $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
+        $checksum = sha1(strtolower($customer['email']) . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        setcookie('customer_remember_me', strtolower($customer['email']) .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
       }
       
       self::load($customer['id']);

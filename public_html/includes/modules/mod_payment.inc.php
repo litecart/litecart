@@ -80,7 +80,6 @@
           notices::add('errors', $error);
         }
       }
-
       
       $this->data['selected'] = array(
         'id' => $module_id.':'.$option_id,

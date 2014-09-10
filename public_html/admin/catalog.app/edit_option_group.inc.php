@@ -119,6 +119,7 @@
           break;
         case "textarea":
           $("#option-values-textarea").show();
+          $("#option-values-textarea input").removeAttr("disabled");
           $("#option-values-textarea textarea").removeAttr("disabled");
           break;
       }
@@ -137,7 +138,7 @@
     if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) {
 ?>
       <tr>
-        <td align="left"><?php echo $_POST['values'][$key]['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo functions::form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
+        <td align="left"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo functions::form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
         <td align="left">
 <?php
       $use_br = false;

@@ -130,7 +130,7 @@
           where combination like '%". (int)$this->data['id'] ."-". (int)$option_value['id'] ."%';"
         );
         if (database::num_rows($products_options_stock_query) > 0) trigger_error('Cannot delete option value linked to products.', E_USER_ERROR);
-      
+        
         database::query(
           "delete from ". DB_TABLE_OPTION_VALUES ."
           where group_id = '". (int)$this->data['id'] ."'

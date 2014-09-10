@@ -11,11 +11,8 @@ td {
 
 table.dataTable {
   margin-bottom: 20px;
-  border: 1px solid #dfdfdf;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  border-radius: 5px;
+  border: 1px solid #ececec;
+
 }
 table.dataTable .header {
   text-shadow: 0px 1px 1px #fff;
@@ -26,7 +23,7 @@ table.dataTable .header {
 }
 table.dataTable th {
   padding: 10px 10px;
-  border-bottom: 1px solid #dfdfdf;
+  border-bottom: 1px solid #ececec;
 }
 table.dataTable td {
   padding: 5px 10px;
@@ -46,21 +43,21 @@ table.dataTable tr.footer {
 }
 table.dataTable tr.footer td {
   padding: 10px 10px;
-  border-top: 1px solid #dfdfdf;
+  border-top: 1px solid #ececec;
   color: #666;
 }
 
 table.dataTable .border-top {
-  border-top: 1px solid #dfdfdf;
+  border-top: 1px solid #ececec;
 }
 table.dataTable .border-left {
-  border-left: 1px solid #dfdfdf;
+  border-left: 1px solid #ececec;
 }
 table.dataTable .border-right {
-  border-right: 1px solid #dfdfdf;
+  border-right: 1px solid #ececec;
 }
 table.dataTable .border-bottom {
-  border-bottom: 1px solid #dfdfdf;
+  border-bottom: 1px solid #ececec;
 }
 
 table.dataTable table:not(.dataTable) {
