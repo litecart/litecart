@@ -3,7 +3,6 @@ LiteCart contains work by the following listed:
 
 16x16 Icons
 -----------
-
 * (add, remove) Alexandre Moore - LGPL - http://sa-ki.deviantart.com
 * (up, down) Ben Gillbanks - Creative Commons (Attribution 2.5 Generic) - http://prothemedesign.com/free-webdesign-tools/circular-icons
 * (box, cancel, home, save) Everaldo Coelho - LGPL - http://www.everaldo.com
@@ -20,13 +19,7 @@ LiteCart contains work by the following listed:
 
 24x24 Icons
 -----------
-
-* (catalog) Woothemes - Freeware - http://www.woothemes.com
-* (database) Midtone Design Studio - Freeware - http://www.midtonedesign.com
-* (exit) Abdylas Tynyshov - Creative Commons Attribution-Share Alike 3.0 United States License - http://userinterfaceicons.com
-* (help) Icojam - Free for commercial use - http://www.icojam.com
-* (home) Double-J Design - CC Attribution 3.0 - http://www.doublejdesign.co.uk
-* (mail) Icojam - Public Domain - http://www.icojam.com
+* (catalog, database, exit, help, home, mail) TiM International - Exclusively for LiteCart - http://www.tim-international.net
 
 Language Icons
 --------------
@@ -34,22 +27,7 @@ Language Icons
 
 Admin Module Icons
 ------------------
-* (appearance) Aha-Soft - Creative Commons (Attribution 3.0 Unported) - http://www.aha-soft.com/ 
-* (catalog) Everaldo Coelho - LGPL - http://www.iconarchive.com/artist/mazenl77.html
-* (countries) MazeNL77 - Freeware - http://www.fitzsimon.com.au
-* (currencies) Dmitry Costenco - Free for commercial use - http://www.aha-soft.com
-* (customers, pages) Everaldo Coelho - LGPL - http://www.everaldo.com/
-* (geo-zones) Bevelandemboss.net - Free for commercial use - http://bevelandemboss.net
-* (languages) Double-J designs - Free for commercial use - http://www.doublejdesign.co.uk
-* (modules) David Vignoni - LGPL - http://www.icon-king.com
-* (orders)  Elegant Themes - Freeware - http://www.elegantthemes.com
-* (pages) Everaldo Coelho  - LGPL - http://www.everaldo.com
-* (reports) Icojam - Free for commercial use - http://www.icojam.com
-* (slides) Wefunction - Freeware - http://www.wefunction.com
-* (settings) Jeremy Sallee - Freeware - http://lemex.deviantart.com
-* (tax) DesignContest - CC Attribution 3.0 - http://www.designcontest.com
-* (translations) Robin Weatherall - Freeware - http://www.boomgraphics.se
-* (users) Everaldo Coelho - LGPL - http://www.everaldo.com
+* (appearance, catalog, countries, currencies, customers, pages, geo-zones, languages, modules, orders, pages, reports, slides, settings, tax, translations, users) TiM International - Exclusively for LiteCart - http://www.tim-international.net
 
 Other Graphics
 --------------
