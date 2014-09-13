@@ -62,7 +62,7 @@
     echo 'Modify '. $file . '... ';
     if (!is_file($file)) return false;
     $contents = file_get_contents($file);
-    $contents = str_replace(array("\r\n", "\r", "\n"), PHP_EOL, $contents);
+    $contents = preg_replace('#\R#u', PHP_EOL, $contents);
     $contents = str_replace($search, $replace, $contents);
     return file_put_contents($file, $contents);
   }

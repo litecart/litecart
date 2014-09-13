@@ -16,7 +16,7 @@
           <td align="left"><label><?php echo functions::form_draw_checkbox('remember_me', '1', true); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
 	    </tr>
         <tr>
-          <td><span class="button-set"><?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?><?php echo functions::form_draw_button('lost_password', language::translate('title_lost_password', 'Lost Password')); ?></span></td>
+          <td><span class="button-set"><?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?><?php echo functions::form_draw_button('lost_password', language::translate('title_lost_password', 'Lost Password'), 'submit', 'style="font-size: 0.8em;"'); ?></span></td>
         </tr>
         <tr>
           <td><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a></td>
