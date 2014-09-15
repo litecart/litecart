@@ -310,7 +310,7 @@
         <li>Options -Indexes</li>
         <li>Modules
           <ul>
-            <li>mod_auth_basic (SHA) <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
             <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
             <li>mod_headers <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
             <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
@@ -370,32 +370,55 @@
     </table>
     <h3>MySQL</h3>
     <table>
-      <!--
       <tr>
         <td><strong>Type</strong><br />
-          <select name="db_type">
+          <select name="db_type" required="required">
             <option value="mysql">MySQL</option>
           </select>
         </td>
-        <td></td>
-      </tr>
-      -->
-      <tr>
         <td><strong>Hostname</strong><br />
-          <input name="db_server" type="text" value="localhost"  />
+          <input name="db_server" type="text" placeholder="localhost" />
         </td>
+      </tr>
+      <tr>
         <td><strong>Database</strong><br />
-        <input type="text" name="db_database" /></td>
+          <input type="text" name="db_database" required="required" /></td>
+        <td><strong>Collation</strong><br />
+          <select name="db_collation" required="required">
+            <option>utf8_general_ci</option>
+            <option>utf8_bin</option>
+            <option>utf8_unicode_ci</option>
+            <option>utf8_icelandic_ci</option>
+            <option>utf8_latvian_ci</option>
+            <option>utf8_romanian_ci</option>
+            <option>utf8_slovenian_ci</option>
+            <option>utf8_polish_ci</option>
+            <option>utf8_estonian_ci</option>
+            <option>utf8_spanish_ci</option>
+            <option>utf8_swedish_ci</option>
+            <option>utf8_turkish_ci</option>
+            <option>utf8_czech_ci</option>
+            <option>utf8_danish_ci</option>
+            <option>utf8_lithuanian_ci</option>
+            <option>utf8_slovak_ci</option>
+            <option>utf8_spanish2_ci</option>
+            <option>utf8_roman_ci</option>
+            <option>utf8_persian_ci</option>
+            <option>utf8_esperanto_ci</option>
+            <option>utf8_hungarian_ci</option>
+            <option>utf8_sinhala_ci</option>
+          </select>
+        </td>
       </tr>
       <tr>
         <td><strong>Username</strong><br />
-        <input type="text" name="db_username" /></td>
+          <input type="text" name="db_username" required="required" /></td>
         <td><strong>Password</strong><br />
-        <input type="password" name="db_password" /></td>
+          <input type="password" name="db_password" /></td>
       </tr>
       <tr>
         <td><strong>Table Prefix</strong><br />
-        <input name="db_table_prefix" type="text" value="lc_" style="width: 75px;" /></td>
+          <input name="db_table_prefix" type="text" value="lc_" style="width: 75px;" /></td>
         <td><strong>Demo Data</strong><br />
           <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled="disabled"' : ''; ?> /> Install demo data</label></td>
       </tr>
@@ -404,13 +427,13 @@
     <table>
       <tr>
         <td><strong>Store Name</strong><br />
-          <input name="store_name" type="text" value="My Store"  /></td>
+          <input name="store_name" type="text" value="My Store" required="required" /></td>
         <td><strong>Store E-mail</strong><br />
-          <input name="store_email" type="text" value="store@email.com" /></td>
+          <input name="store_email" type="text" value="store@email.com" required="required" /></td>
       </tr>
       <tr>
         <td colspan="2"><strong>Country</strong><br />
-          <select name="country_code">
+          <select name="country_code" required="required">
             <option value="">-- Select --</option>
             <?php foreach ($countries as $code => $name) echo '<option value="'. $code .'">'. $name .'</option>' . PHP_EOL; ?>
           </select>
@@ -418,7 +441,7 @@
       </tr>
       <tr>
         <td colspan="2"><strong>Time Zone</strong><br />
-          <select name="store_time_zone" >
+          <select name="store_time_zone" required="required">
 <?php
   $zones = timezone_identifiers_list();
        
@@ -440,14 +463,14 @@
     <table>
       <tr>
         <td><strong>Folder Name</strong><br />
-          <input name="admin_folder" type="text" value="admin"  /></td>
+          <input name="admin_folder" type="text" value="admin" required="required" /></td>
         <td>&nbsp;</td>
       </tr>
       <tr>
         <td><strong>Username</strong><br />
-          <input name="username" type="text" id="username" value="admin"  /></td>
+          <input name="username" type="text" id="username" value="admin" required="required" /></td>
         <td><strong>Password</strong><br />
-          <input name="password" type="text" id="password"  /></td>
+          <input name="password" type="text" id="password" required="required" /></td>
       </tr>
     </table>
     <h3>Errors

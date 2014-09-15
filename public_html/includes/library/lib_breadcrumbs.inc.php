@@ -24,20 +24,18 @@
     //}
     
     public static function prepare_output() {
-    
-      if (class_exists('breadcrumbs')) {
-        $breadcrumbs = '';
-        $separator = '';
-        foreach (self::$data as $breadcrumb) {
-          $breadcrumbs .= '<li>'. $separator .'<a href="'. $breadcrumb['link'] .'">'. $breadcrumb['title'] .'</a></li>';
-          $separator = ' &raquo; ';
-        }
-        document::$snippets['breadcrumbs'] = '<nav id="breadcrumbs">' . PHP_EOL
-                                           . '  <ul class="list-horizontal">' . PHP_EOL
-                                           . '    '. $breadcrumbs . PHP_EOL
-                                           . '  </ul>' . PHP_EOL
-                                           . '</nav>';
+      
+      $breadcrumbs = new view();
+      
+      $breadcrumbs->snippets['breadcrumbs'] = array();
+      foreach (self::$data as $breadcrumb) {
+        $breadcrumbs->snippets['breadcrumbs'][] = array(
+          'title' => $breadcrumb['title'],
+          'link' => $breadcrumb['link'],
+        );
       }
+      
+      document::$snippets['breadcrumbs'] = $breadcrumbs->stitch('views/breadcrumbs');
     }
     
     //public static function before_output() {

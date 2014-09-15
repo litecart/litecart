@@ -102,6 +102,11 @@
                  . "  define('DB_SERVER',",
     ),
     array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
+      'search'  => "  define('DB_DATABASE_CHARSET',",
+      'replace' => "  define('DB_CONNECTION_CHARSET',",
+    ),
+    array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
       'search'  => "ErrorDocument 403 ". WS_DIR_HTTP_HOME ."error_document.php?code=403",
       'replace' => "ErrorDocument 403 ". WS_DIR_HTTP_HOME ."index.php/error_document?code=403",

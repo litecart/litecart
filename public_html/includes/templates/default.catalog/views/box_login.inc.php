@@ -13,7 +13,7 @@
           <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?></td>
         </tr>
         <tr>
-          <td align="left"><label><?php echo functions::form_draw_checkbox('remember_me', '1', true); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
+          <td><label><?php echo functions::form_draw_checkbox('remember_me', '1', true); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
 	    </tr>
         <tr>
           <td><span class="button-set"><?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?><?php echo functions::form_draw_button('lost_password', language::translate('title_lost_password', 'Lost Password'), 'submit', 'style="font-size: 0.8em;"'); ?></span></td>

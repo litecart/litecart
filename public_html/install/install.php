@@ -22,6 +22,8 @@
   $installation_path = file_absolute_path(dirname(__FILE__) .'/..') .'/';
   
   $_REQUEST['db_type'] = !empty($_REQUEST['db_type']) ? $_REQUEST['db_type'] : 'mysql';
+  $_REQUEST['db_server'] = !empty($_REQUEST['db_server']) ? $_REQUEST['db_server'] : '127.0.0.1';
+  $_REQUEST['db_collation'] = !empty($_REQUEST['db_collation']) ? $_REQUEST['db_collation'] : 'utf8_unicode_ci';
   $_REQUEST['admin_folder'] = str_replace('\\', '/', $_REQUEST['admin_folder']);
   $_REQUEST['admin_folder'] = rtrim($_REQUEST['admin_folder'], '/') . '/';
   
@@ -64,7 +66,7 @@
   require('database.class.php');
   $database = new database(null);
   
-  echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+  echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
   
   ### Database > Check Version #############################
 
@@ -91,14 +93,14 @@
   $charset = $database->fetch($charset_query);
   
   if ($charset['default_character_set_name'] != 'utf8') {
-    echo($charset['default_character_set_name'] . ' <span class="warning">[Warning] The database default charset is not \'utf8\' and you might experience trouble with foreign characters.</span></p>');
+    echo($charset['default_character_set_name'] . ' <span class="warning">[Warning] The database default charset is not \'utf8\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</span></p>');
   } else {
     echo $charset['default_character_set_name'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     
     echo '<p>Checking MySQL database default collation... ';
     
-    if ($charset['default_collation_name'] != 'utf8_unicode_ci') {
-      echo($charset['default_collation_name'] . ' <span class="warning">[Warning] The database default collation is not \'utf8_unicode_ci\' and you might experience trouble with foreign characters.</span></p>');
+    if ($charset['default_collation_name'] != $_REQUEST['db_collation']) {
+      echo($charset['default_collation_name'] . ' <span class="warning">[Warning] The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</span></p>');
     } else {
       echo $charset['default_collation_name'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     }
@@ -157,7 +159,15 @@
   echo '<p>Writing database tables... ';
   
   $sql = file_get_contents('structure.sql');
-  $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+  
+  $map = array(
+    '`lc_' => '`'.DB_TABLE_PREFIX,
+    '{DATABASE_COLLATION}' => $_REQUEST['db_collation'],
+  );
+  
+  foreach ($map as $search => $replace) {
+    $sql = str_replace($search, $replace, $sql);
+  }
   
   $sql = explode('-- --------------------------------------------------------', $sql);
   

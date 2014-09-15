@@ -73,8 +73,8 @@
         }
       }
       
-      self::query("set character set ". DB_DATABASE_CHARSET);
-      self::query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'");
+      self::query("set names '". database::input(DB_CONNECTION_CHARSET) ."';", $link);
+      self::query("set SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'", $link);
       
       if (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link])) {
         trigger_error('Error: Invalid database link', E_USER_ERROR);
@@ -83,28 +83,13 @@
       return self::$_links[$link];
     }
     
-    public static function set_encoding($collation, $link='default') {
+    public static function set_encoding($charset, $collation=null, $link='default') {
       
-      if (empty($collation)) return false;
-    
-      $charset = substr($collation, 0, strpos($collation, '_'));
-    
-      if (self::$_type == 'mysqli') {
-        mysqli_set_charset(self::$_links[$link], $charset);
-      } else {
-        mysql_set_charset(self::$_links[$link], $charset);
-      }
+      if (empty($charset)) return false;
       
-      self::query("set collation_connection = ". self::input($collation) .";");
-      
-      return true;
-    }
-    
-    public static function set_character($charset, $link='default') {
-    
       $charset = strtolower($charset);
       
-      $charset_map = array(
+      $charset_to_mysql_character_set = array(
         'euc-kr' => 'euckr',
         'iso-8859-1' => 'latin1',
         'iso-8859-2' => 'latin2',
@@ -128,19 +113,24 @@
         'windows-1257' => 'cp1257',
       );
       
-      if (empty($charset_map[$charset])) {
+      if (empty($charset_to_mysql_character_set[$charset])) {
         trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
         return false;
       }
       
-      //self::query("set character set ". $charset_map[$charset]);
-      if (self::$_type == 'mysqli') {
-        mysqli_set_charset(self::$_links[$link], $charset_map[$charset]);
+      if (!empty($collation)) {
+        //$mysql_charset = substr($collation, 0, strpos($collation, '_')); // Extract charset from collation
+        self::query("set names '". database::input($charset_to_mysql_character_set[$charset]) ."' collate '". database::input($collation) ."';", $link);
       } else {
-        mysql_set_charset(self::$_links[$link], $charset_map[$charset]);
+        self::query("set names '". database::input($charset_to_mysql_character_set[$charset]) ."';", $link);
       }
       
       return true;
+    }
+    
+    public static function set_character($charset, $link='default') {
+      trigger_error(__CLASS__.'::set_character() is deprecated, use '. __CLASS__.'::set_encoding() instead', E_USER_WARNING);
+      return self::set_encoding($charset, null, $link);
     }
     
     public static function disconnect($link='') {

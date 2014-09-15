@@ -67,8 +67,7 @@
   session::$data['recently_viewed_products'][$product->id] = array(
     'id' => $product->id,
     'name' => $product->name[language::$selected['code']],
-    'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING'),
-    'link' => document::ilink('product', array('product_id' => $product->id)),
+    'image' => $product->image,
   );
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');

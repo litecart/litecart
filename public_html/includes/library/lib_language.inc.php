@@ -29,9 +29,7 @@
       self::set();
       
     // Set mysql charset and collation
-      if (!database::set_encoding(self::$selected['mysql_collation'])) {
-      database::set_character(self::$selected['charset']);
-      }
+      database::set_encoding(self::$selected['charset'], self::$selected['mysql_collation']);
       
     // Reinstate list of languages
       self::load();

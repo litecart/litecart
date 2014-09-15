@@ -65,6 +65,9 @@ ul.listing-wrapper > li.category .image-wrapper img {
 
 ul.listing-wrapper > li.category .footer {
   display: block;
+  
+  position: absolute;
+  bottom: 0;
 
   width: 100%;
   padding: 5px;
