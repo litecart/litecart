@@ -1,0 +1,1 @@
+ALTER TABLE `lc_languages` DROP mysql_collation;

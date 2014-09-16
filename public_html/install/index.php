@@ -385,8 +385,8 @@
           <input type="text" name="db_database" required="required" /></td>
         <td><strong>Collation</strong><br />
           <select name="db_collation" required="required">
-            <option>utf8_general_ci</option>
             <option>utf8_bin</option>
+            <option>utf8_general_ci</option>
             <option>utf8_unicode_ci</option>
             <option>utf8_icelandic_ci</option>
             <option>utf8_latvian_ci</option>

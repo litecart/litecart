@@ -23,7 +23,7 @@
   
   $_REQUEST['db_type'] = !empty($_REQUEST['db_type']) ? $_REQUEST['db_type'] : 'mysql';
   $_REQUEST['db_server'] = !empty($_REQUEST['db_server']) ? $_REQUEST['db_server'] : '127.0.0.1';
-  $_REQUEST['db_collation'] = !empty($_REQUEST['db_collation']) ? $_REQUEST['db_collation'] : 'utf8_unicode_ci';
+  $_REQUEST['db_collation'] = !empty($_REQUEST['db_collation']) ? $_REQUEST['db_collation'] : 'utf8_bin';
   $_REQUEST['admin_folder'] = str_replace('\\', '/', $_REQUEST['admin_folder']);
   $_REQUEST['admin_folder'] = rtrim($_REQUEST['admin_folder'], '/') . '/';
   

@@ -163,7 +163,6 @@ CREATE TABLE `lc_languages` (
   `name` varchar(32) NOT NULL,
   `locale` varchar(32) NOT NULL,
   `charset` varchar(16) NOT NULL,
-  `mysql_collation` varchar(32) NOT NULL,
   `raw_date` varchar(32) NOT NULL,
   `raw_time` varchar(32) NOT NULL,
   `raw_datetime` varchar(32) NOT NULL,
