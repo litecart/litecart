@@ -25,6 +25,8 @@
       
       foreach ($csv as $row) {
         
+        $customer = null;
+        
         if (!empty($row['id'])) {
           $customers_query = database::query(
             "select id from ". DB_TABLE_CUSTOMERS ."
@@ -37,13 +39,13 @@
         if (empty($customer) && !empty($row['email'])) {
           $customers_query = database::query(
             "select id from ". DB_TABLE_CUSTOMERS ."
-            where email = '". database::input($row['email']) ."'
+            where email like '". database::input($row['email']) ."'
             limit 1;"
           );
           $customer = database::fetch($customers_query);
         }
         
-        if (!empty($customer['id'])) {
+        if (!empty($customer)) {
           $customer = new ctrl_customer($customer['id']);
         } else {
           $customer = new ctrl_customer();

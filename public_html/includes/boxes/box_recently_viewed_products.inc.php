@@ -1,5 +1,7 @@
 <?php
   if (empty(session::$data['recently_viewed_products'])) return;
+
+  if (settings::get('box_recently_viewed_products_num_items') == 0) return;
   
   $box_recently_viewed_products = new view();
   
@@ -7,7 +9,7 @@
   
   $count = 0;
   foreach(array_reverse(session::$data['recently_viewed_products'], true) as $key => $array) {
-    if (++$count <= 4) {
+    if (++$count <= settings::get('box_recently_viewed_products_num_items')) {
       $box_recently_viewed_products->snippets['products'][$key] = array(
         'id' => $array['id'],
         'name' => $array['name'],

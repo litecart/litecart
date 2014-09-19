@@ -1,4 +1,6 @@
 <?php
+  if (settings::get('box_campaign_products_num_items') == 0) return;
+  
   functions::draw_fancybox('a.fancybox');
   
   $box_campaign_products_cache_id = cache::cache_id('box_campaign_products', array('language', 'currency', 'prices'));
@@ -6,7 +8,7 @@
     
     $box_campaign_products = new view();
     
-    $products_query = functions::catalog_products_query(array('campaign' => true, 'sort' => 'rand', 'limit' => 5));
+    $products_query = functions::catalog_products_query(array('campaign' => true, 'sort' => 'rand', 'limit' => settings::get('box_campaign_products_num_items')));
     
     if (database::num_rows($products_query)) {
       

@@ -34,8 +34,8 @@
 
   include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
-  $category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($category_cache_id, 'file')) {
+  $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
+  if (cache::capture($box_category_cache_id, 'file')) {
     
     $page = new view();
     
@@ -43,6 +43,7 @@
       'name' => $category->name[language::$selected['code']],
       'description' => $category->description[language::$selected['code']],
       'h1_title' => $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']],
+      'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 1024, 0, 'FIT_ONLY_BIGGER'),
       'sort_alternatives' => array(
         'popularity' => language::translate('title_popularity', 'Popularity'),
         'name' => language::translate('title_name', 'Name'),
@@ -106,7 +107,7 @@
     
     echo $page->stitch('views/box_category');
     
-    cache::end_capture($category_cache_id);
+    cache::end_capture($box_category_cache_id);
   }
   
 ?>

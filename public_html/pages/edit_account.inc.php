@@ -3,7 +3,7 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
-  if (empty(customer::$data['id'])) die('You must be logged in to access this page.');
+  customer::require_login();
   
   document::$snippets['title'][] = language::translate('title_edit_account', 'Edit Account');
   //document::$snippets['keywords'] = '';

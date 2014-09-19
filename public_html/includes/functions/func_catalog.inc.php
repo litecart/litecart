@@ -164,7 +164,7 @@
           ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
           ". (!empty($filter['purchased']) ? "$sql_andor purchases" : false) ."
         )
-        and (date_valid_from < '1971' or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+        and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (date_valid_to < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (isset($filter['exclude_products']) ? "and id not in ('". implode("', '", $filter['exclude_products']) ."')" : false) ."
         ". $sql_local_sort ."
@@ -176,7 +176,7 @@
       left join (
         select product_id, ". $sql_campaign_price_column ." as campaign_price
         from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-        where (start_date < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
+        where (start_date <= '". date('Y-m-d H:i:s') ."')
         and (end_date < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
         order by end_date asc
       ) pc on (pc.product_id = p.id)

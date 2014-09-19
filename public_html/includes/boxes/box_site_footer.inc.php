@@ -1,5 +1,5 @@
 <?php  
-  $box_site_footer_cache_id = cache::cache_id('box_category_tree', array('language', 'login', 'region'));
+  $box_site_footer_cache_id = cache::cache_id('box_site_footer', array('language', 'login', 'region'));
   if (cache::capture($box_site_footer_cache_id, 'file')) {
     
     $box_site_footer = new view();

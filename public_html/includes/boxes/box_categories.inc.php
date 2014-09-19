@@ -7,10 +7,12 @@
       
       $box_categories = new view();
       
-      $box_categories->snippets['categories'] = '';
+      $box_categories->snippets = array(
+        'categories' => array(),
+      );
       
       while ($category = database::fetch($categories_query)) {
-        $box_categories->snippets['categories'] .= functions::draw_listing_category($category);
+        $box_categories->snippets['categories'][] = $category;
       }
       
       echo $box_categories->stitch('views/box_categories');

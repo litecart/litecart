@@ -189,7 +189,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::ilink(''));
+        header('Location: ' . document::ilink('login'));
         exit;
       }
     }
@@ -289,7 +289,7 @@
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where email like '". database::input($email) ."'
-        and password = '". functions::password_checksum($email, $password) ."'
+        and /*password = ''*/ or password = '". functions::password_checksum($email, $password) ."'
         limit 1;"
       );
       $customer = database::fetch($customer_query);
@@ -298,6 +298,16 @@
         sleep(5);
         notices::add('errors', language::translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
         return;
+      }
+      
+      if (empty($customer['password'])) {
+        $customer['password'] = functions::password_checksum($email, $password);
+        $customer_query = database::query(
+          "update ". DB_TABLE_CUSTOMERS ."
+          set password = '". database::input($customer['password']) ."'
+          where email = '". database::input($email) ."'
+          limit 1;"
+        );
       }
       
       if (!empty($customer_remember_me)) {

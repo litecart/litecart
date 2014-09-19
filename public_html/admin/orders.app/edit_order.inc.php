@@ -94,7 +94,7 @@
     $order->delete();
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'orders')));
-    exit();
+    exit;
   }
   
 ?>

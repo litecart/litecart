@@ -124,12 +124,12 @@
         return;
       }
       
-      if (substr($product->date_valid_from, 0, 10) != '0000-00-00 00:00:00' && $product->date_valid_from > date('Y-m-d H:i:s')) {
+      if ($product->date_valid_from > date('Y-m-d H:i:s')) {
         if (!$silent) notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
         return;
       }
       
-      if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && $product->date_valid_to < date('Y-m-d H:i:s')) {
+      if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && substr($product->date_valid_to, 0, 4) > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
         if (!$silent) notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
         return;
       }
@@ -151,6 +151,7 @@
         'upc' =>  $product->upc,
         'taric' =>  $product->taric,
         'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
+        'extras' => 0,
         'tax_class_id' => $product->tax_class_id,
         'quantity' => (int)$quantity,
         'weight' => $product->weight,
@@ -183,7 +184,7 @@
                   $valid_values[] = $value['name'][language::$selected['code']];
                   if (in_array($value['name'][language::$selected['code']], $options[$product->options[$key]['name'][language::$selected['code']]])) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-                    $item['price'] += $value['price_adjust'];
+                    $item['extras'] += $value['price_adjust'];
                   }
                 }
                 
@@ -200,7 +201,7 @@
                 $values = array_values($product->options[$key]['values']);
                 $value = array_shift($values);
                 $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-                $item['price'] += $value['price_adjust'];
+                $item['extras'] += $value['price_adjust'];
                 break;
               
               case 'radio':
@@ -211,7 +212,7 @@
                   $valid_values[] = $value['name'][language::$selected['code']];
                   if ($value['name'][language::$selected['code']] == $options[$product->options[$key]['name'][language::$selected['code']]]) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-                    $item['price'] += $value['price_adjust'];
+                    $item['extras'] += $value['price_adjust'];
                   }
                 }
                 
@@ -225,6 +226,7 @@
           }
         }
       }
+      $item['price'] += $item['extras'];
       
       if (!empty($item['options'])) {
         foreach (array_keys($item['options']) as $key) {

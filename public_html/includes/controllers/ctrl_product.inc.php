@@ -519,7 +519,7 @@
       
       $priority = count($this->data['images'])+1;
       
-      if (!$image->resample(1024, 1024, 'FIT_ONLY_BIGGER')) return false;
+      if (!$image->resample(2048, 2048, 'FIT_ONLY_BIGGER')) return false;
       
       //$image->watermark(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'watermark.png', 'CENTER', 'MIDDLE'); // Watermark image
       
