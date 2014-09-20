@@ -61,12 +61,6 @@ body {
   padding: 5px 5px;
   vertical-align: middle;
 }
-#region > div:first-child {
-  padding-left: 10px;
-}
-#region > div:last-child {
-  padding-right: 5px;
-}
 #region .language {
   line-height: 1em;
 }

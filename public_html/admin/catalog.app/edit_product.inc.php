@@ -879,7 +879,7 @@ foreach (currency::$currencies as $currency) {
         <table id="table-options-stock" style="width: 100%;">
           <tr>
             <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_option', 'Option'); ?></th>
-            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_SKU', 'SKU'); ?></th>
+            <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_sku', 'SKU'); ?></th>
             <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_qty', 'Qty'); ?></th>
             <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_weight', 'Weight'); ?></th>
             <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>

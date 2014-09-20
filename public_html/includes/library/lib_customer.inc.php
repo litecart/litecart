@@ -96,6 +96,7 @@
         }
       }
       
+      /*
     // Set country from browser
       if (empty(self::$data['country_code'])) {
         if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -104,6 +105,7 @@
           }
         }
       }
+      */
 
     // Build list of supported countries
       $countries_query = database::query(
