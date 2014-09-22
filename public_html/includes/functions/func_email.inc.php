@@ -5,8 +5,8 @@
     if (empty($from_formatted)) $from_formatted = settings::get('store_name') . ' <'. settings::get('store_email') .'>';
     
   // Secure
-    $from_formatted = trim(str_replace(array("\r", "\n"), $from_formatted));
-    $subject = trim(str_replace(array("\r", "\n"), $subject));
+    $from_formatted = trim(str_replace(array("\r", "\n"), '', $from_formatted));
+    $subject = trim(str_replace(array("\r", "\n"), '', $subject));
     
   // Extract
     $from_name = trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $from_formatted)), '"');

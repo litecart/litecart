@@ -1,15 +1,28 @@
-<?php ob_start(); // Begin capture column left ?>
-<aside class="column-left box shadow rounded-corners">
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_search.inc.php'); ?>
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_filter.inc.php'); ?>
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturers_list.inc.php'); ?>
-</aside>
+<?php
+  $column_left = new view();
+  document::$snippets['column_left'] = $column_left->stitch('views/column_left');
+  
+  ob_start();
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_search.inc.php');
+  document::$snippets['box_search'] = ob_get_clean();
+  
+  ob_start();
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php');
+  document::$snippets['box_category_tree'] = ob_get_clean();
 
-<?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php'); ?>
+  ob_start();
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_filter.inc.php');
+  document::$snippets['box_filter'] = ob_get_clean();
 
-<aside class="column-left box shadow rounded-corners">
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_account.inc.php'); ?>
-</aside>
+  ob_start();
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturers_list.inc.php');
+  document::$snippets['box_manufacturers_list'] = ob_get_clean();
 
-<?php document::$snippets['column_left'] = ob_get_clean(); // End capture ?>
+  ob_start();
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php');
+  document::$snippets['box_recently_viewed_products'] = ob_get_clean();
+
+  ob_start();
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_account.inc.php');
+  document::$snippets['box_account'] = ob_get_clean();
+?>

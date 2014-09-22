@@ -88,6 +88,9 @@ aside .box:first-child h3 {
   font-size: 16px;
 }
 
+#box-category-tree li {
+  display: block;
+}
 #box-category-tree li a, #box-information li a {
   color: #888;
 }
@@ -95,12 +98,12 @@ aside .box:first-child h3 {
   color: rgb(0, 136, 204);
 }
 #box-category-tree li a {
-  display: block;
+  
 }
-#box-category-tree li a.active {
+#box-category-tree li.active > a {
   color: rgb(0, 136, 204);
 }
-#box-category-tree li a.active {
+#box-category-tree li.active > a {
   background: #f3f3f3;
 }
 
