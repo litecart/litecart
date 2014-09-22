@@ -282,13 +282,13 @@
             $email_body = $this->inject_email_message($current_order_status['email_message']);
           }
         
-          functions::email_send(array(
-            'sender' => settings::get('store_email'),
-            'recipients' => array($this->data['customer']['email']),
-            'subject' => sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
-            'message' => $email_body,
-            'html' => true,
-          ));
+          functions::email_send(
+            null,
+            $this->data['customer']['email'],
+            sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), $this->data['id'], $current_order_status['name']),
+            $email_body,
+            true
+          );
         }
       }
       
@@ -418,14 +418,14 @@
             "update ". DB_TABLE_ORDERS_ITEMS ." 
             set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
             option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
-            options = '". database::input(serialize($this->data['items'][$key]['options'])) ."',
+            options = '".  (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
             name = '". database::input($this->data['items'][$key]['name']) ."',
             sku = '". database::input($this->data['items'][$key]['sku']) ."',
             quantity = '". (float)$this->data['items'][$key]['quantity'] ."',
             price = '". (float)$this->data['items'][$key]['price'] ."',
             tax = '". (float)$this->data['items'][$key]['tax'] ."',
-            weight = '". (float)$this->data['items'][$key]['weight'] ."',
-            weight_class = '". database::input($this->data['items'][$key]['weight_class']) ."'
+            weight = '". (isset($this->data['items'][$key]['weight']) ? (float)$this->data['items'][$key]['weight'] : '') ."',
+            weight_class = '". (isset($this->data['items'][$key]['weight_class']) ? database::input($this->data['items'][$key]['weight_class']) : '') ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['items'][$key]['id'] ."'
             limit 1;"
@@ -575,8 +575,8 @@
         'price' => $item['price'],
         'tax' => $item['tax'],
         'quantity' => $item['quantity'],
-        'weight' => $item['weight'],
-        'weight_class' => $item['weight_class'],
+        'weight' => isset($item['weight']) ? $item['weight'] : '',
+        'weight_class' => isset($item['weight_class']) ? $item['weight_class'] : '',
       );
       
       $this->data['weight_total'] += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
@@ -669,7 +669,7 @@
       if (empty($email)) return;
     
       functions::email_send(
-        '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
+        null,
         $email,
         language::translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
         self::draw_printable_copy(),

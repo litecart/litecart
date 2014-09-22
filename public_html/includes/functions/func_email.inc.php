@@ -1,40 +1,47 @@
 <?php
 
-  function email_send($parameters) {
+  function email_send($from_formatted, $recipients, $subject, $message, $html=false, $attachments=array()) {
     
-    if (isset($parameters['sender']) && !is_array($parameters['sender'])) $parameters['sender'] = array('email' => settings::get('store_email'));
-    if (empty($parameters['sender']['email'])) $parameters['sender']['email'] = settings::get('store_email');
-    if (empty($parameters['sender']['name']) && $parameters['sender']['email'] == settings::get('store_email')) $parameters['sender']['name'] = settings::get('store_name');
+    if (empty($from_formatted)) $from_formatted = settings::get('store_name') . ' <'. settings::get('store_email') .'>';
     
-    $parameters['sender']['name'] = str_replace(array("\r", "\n"), " ", trim($parameters['sender']['name']));
-    $parameters['sender']['email'] = filter_var($parameters['sender']['email'], FILTER_SANITIZE_EMAIL);
-    $parameters['subject'] = !empty($parameters['subject']) ? str_replace(array("\r", "\n"), " ", $parameters['subject']) : '(No subject)';
-    $parameters['message'] = !empty($parameters['message']) ? $parameters['message'] : '';
+  // Secure
+    $from_formatted = trim(str_replace(array("\r", "\n"), $from_formatted));
+    $subject = trim(str_replace(array("\r", "\n"), $subject));
     
-    $parameters['formatted_sender'] = !empty($parameters['sender']['name']) ? '"'. $parameters['sender']['name'] .'" <'. $parameters['sender']['email'] .'>' : $parameters['sender']['email'];
+  // Extract
+    $from_name = trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $from_formatted)), '"');
+    $from_email = filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $from_formatted), FILTER_SANITIZE_EMAIL);
     
-  // Generate a boundary string
+  // Generate a boundary string    
     $mime_boundary = '==Multipart_Boundary_x'. md5(time()) .'x';
     
-    $headers = 'From: '. $parameters['formatted_sender'] . "\r\n"
-             . 'Reply-To: '. $parameters['formatted_sender'] . "\r\n"
-             . 'Return-Path: '. $parameters['formatted_sender'] . "\r\n"
-             . 'MIME-Version: 1.0' . "\r\n"
-             . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary .'"' . "\r\n"
-             . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
+    if (strtoupper(language::$selected['charset']) == 'UTF-8') {
+      $headers = 'From: '. (!empty($from_name) ? '=?utf-8?b?'. base64_encode($from_name) .'?= <'. $from_email .'>' : $from_email) . "\r\n"
+               . 'Reply-To: '. $from_email . "\r\n"
+               . 'Return-Path: '. $from_email . "\r\n"
+               . 'MIME-Version: 1.0' . "\r\n"
+               . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary . '"' . "\r\n"
+               . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
+    } else {
+      $headers = 'From: '. (!empty($from_name) ? $from_formatted : $from_email) . "\r\n"
+               . 'Reply-To: '. $from_email . "\r\n"
+               . 'Return-Path: '. $from_email . "\r\n"
+               . 'MIME-Version: 1.0' . "\r\n"
+               . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary . '"' . "\r\n"
+               . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
+    }
     
   // Add a multipart boundary above the plain message
     $message = 'This is a multi-part message in MIME format.' . "\r\n\r\n"
               . '--' . $mime_boundary . "\r\n"
-              . 'Content-Type: '. (!empty($parameters['html']) ? 'text/html' : 'text/plain') .'; charset='. language::$selected['charset'] . "\r\n"
+              . 'Content-Type: '. (($html) ? 'text/html' : 'text/plain') .'; charset='. language::$selected['charset'] . "\r\n"
               . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
-              //. 'This message was sent from computer '. gethostbyaddr($_SERVER['REMOTE_ADDR']) . ' at '. date('Y-m-d H:i') .'.'. "\r\n\r\n"
-              . $parameters['message'] . "\r\n\r\n";
-              
+              . $message . "\r\n\r\n";
+    
   // Are there are attachments?
-    if (!empty($parameters['attachments'])) {
+    if (!empty($attachments)) {
       
-      foreach ($parameters['attachments'] as $file) {
+      foreach ($attachments as $file) {
         $file = fopen($file, 'rb');
         $data = fread($file, filesize($file));
         fclose($file);
@@ -49,15 +56,23 @@
       }
     }
     
-    if (!is_array($parameters['recipients'])) $parameters['recipients'] = array($recipients);
-
+    if (!is_array($recipients)) $recipients = preg_split('#>\s?(,|;|\r\n)#', $recipients);
+    
     $success = true;
-    foreach ($parameters['recipients'] as $recipient) {
-      $recipient = filter_var($recipient, FILTER_SANITIZE_EMAIL);
+    foreach ($recipients as $to_formatted) {
+      $to_name = trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $to_formatted), '" \r\n');
+      $to_email = filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $to_formatted), FILTER_SANITIZE_EMAIL);
       
-      if (!mail($recipient, $parameters['subject'], $parameters['message'], $headers)) {
-        trigger_error("Failed sending e-mail to ". $recipient, E_USER_WARNING);
-        $success = false;
+      if (strtoupper(language::$selected['charset']) == 'UTF-8') {
+        if (!mail($to_email, '=?utf-8?b?'. base64_encode($subject) .'?=', $message, $headers)) {
+          trigger_error("Failed sending e-mail to ". $to_email, E_USER_WARNING);
+          $success = false;
+        }
+      } else {
+        if (!mail($to_email, $subject, $message, $headers)) {
+          trigger_error("Failed sending e-mail to ". $to_email, E_USER_WARNING);
+          $success = false;
+        }
       }
     }
     
