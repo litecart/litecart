@@ -1,5 +1,5 @@
 <?php
-  $box_customer_service_links_cache_id = cache::cache_id('box_customer_service_links', array('language'));
+  $box_customer_service_links_cache_id = cache::cache_id('box_customer_service_links', array('language', isset($_GET['page_id']) ? $_GET['page_id'] : ''));
   if (cache::capture($box_customer_service_links_cache_id, 'file')) {
     
     $box_customer_service_links = new view();
@@ -24,6 +24,7 @@
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::ilink('customer_service', array('page_id' => $page['id'])),
+        'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
       );
     }
     

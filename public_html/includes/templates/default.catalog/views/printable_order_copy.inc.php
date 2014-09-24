@@ -3,7 +3,7 @@
   <div id="header" style="margin-bottom: 10px;">
     <table cellspacing="0" cellpadding="0" style="width: 100%;">
       <tr>
-        <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 50px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
+        <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 50px; font-size: 32px;" src="<?php echo WS_DIR_IMAGES . 'logotype.png'; ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
         <td style="text-align: right;">
           <h1 style="margin: 0; font-size: 18px;"><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
           <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>

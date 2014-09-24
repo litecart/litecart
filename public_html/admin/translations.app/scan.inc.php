@@ -64,7 +64,7 @@
           database::query(
             "insert into ". DB_TABLE_TRANSLATIONS ."
             (code, text_en, pages, date_created)
-            values ('". database::input($code) ."', '". database::input($translation) ."', '". str_replace(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '', $file) ."', '". date('Y-m-d H:i:s') ."');"
+            values ('". database::input($code) ."', '". database::input($translation) ."', '". database::input(str_replace("\\", '/', str_replace(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '', $file))) ."', '". date('Y-m-d H:i:s') ."');"
           );
           echo  $code . ' [ADDED]<br/>' . PHP_EOL;
         } else if (empty($row['text_en']) && !empty($translation) && !empty($_POST['update'])) {

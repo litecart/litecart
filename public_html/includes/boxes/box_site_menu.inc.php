@@ -1,5 +1,5 @@
 <?php  
-  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language'));
+  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language', isset($_GET['category_id']) ? $_GET['category_id'] : 0, isset($_GET['page_id']) ? $_GET['page_id'] : 0));
   if (cache::capture($box_site_menu_cache_id, 'file')) {
     
     $box_site_menu = new view();
@@ -53,6 +53,17 @@
     }
     
     site_menu_category_tree(0, 0, $box_site_menu->snippets['menu']);
+    
+    $pages_query = database::query(
+      "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+      left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+      where status
+      and find_in_set('menu', dock)
+      order by p.priority, pi.title;"
+    );
+    while ($page = database::fetch($pages_query)) {
+      $box_site_menu->snippets['menu'] .= '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. document::href_ilink('information', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a>' . PHP_EOL;
+    }
     
     $box_site_menu->snippets['menu'] .= '  </ul>' . PHP_EOL;
     

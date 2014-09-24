@@ -202,6 +202,8 @@
         limit 0, 1;"
       );
       $primary_translation = database::fetch($primary_translation_query);
+      $primary_translation['pages'] = str_replace("'", '', $primary_translation['pages']);
+      $primary_translation['pages'] = implode(',', array_unique(explode(',', $primary_translation['pages'])));
       
     // Set translation
       if (!empty($primary_translation['text_'.$language_code])) {
@@ -245,28 +247,28 @@
       
       $backtrace = current(debug_backtrace());
       if (!empty($backtrace['file'])) {
-        $page = database::input(substr($backtrace['file'], strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME)));
+        $page = substr(str_replace("\\", '/', $backtrace['file']), strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
       } else {
-        $page = substr(__FILE__, strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
+        $page = substr(str_replace("\\", '/', __FILE__), strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
       }
       
       if (empty($primary_translation) && $default !== null) {
         database::query(
           "insert into ". DB_TABLE_TRANSLATIONS ."
           (code, pages, text_". database::input($default_language_code) .", date_created, date_updated)
-          values('". database::input($code) ."', '\'". str_replace(WS_DIR_HTTP_HOME, '', database::input($_SERVER['SCRIPT_NAME'])) ."\',', '". database::input($default) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+          values('". database::input($code) ."', '". database::input($page) ."', '". database::input($default) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
         );
         $primary_translation = array(
           'id' => database::insert_id(),
           'text_en' => $default,
-          'pages' => '\''.$page.'\'',
+          'pages' => $page,
         );
       }
       
       database::query(
         "update ". DB_TABLE_TRANSLATIONS ."
         set date_accessed = '". date('Y-m-d H:i:s') ."'
-        ". (!in_array($page, explode(',', trim($primary_translation['pages'],','))) ? ",pages = '". database::input(implode(',', array_merge(array($page), explode(',', $primary_translation['pages'])))) ."'" : false) ."
+        ". (!in_array($page, explode(',', $primary_translation['pages'])) ? ",pages = concat_ws(',', if(pages = '', NULL, pages), '". database::input($page) ."')" : "") ."
         where id = '". database::input($primary_translation['id']) ."';"
       );
       

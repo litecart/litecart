@@ -16,7 +16,7 @@ $app_config = array(
       'params' => array(),
     ),
     array(
-      'title' => language::translate('title_translations_by_page', 'Translations by page'),
+      'title' => language::translate('title_translations_by_page', 'Translations By Page'),
       'doc' => 'pages',
       'params' => array(),
     ),

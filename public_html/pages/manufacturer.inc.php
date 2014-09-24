@@ -36,15 +36,9 @@
     $page = new view();
     
     $page->snippets = array(
+      'title' => $manufacturer->h1_title[language::$selected['code']] ? $manufacturer->h1_title[language::$selected['code']] : $manufacturer->name,
       'name' => $manufacturer->name,
       'description' => $manufacturer->description[language::$selected['code']],
-      'h1_title' => $manufacturer->h1_title[language::$selected['code']] ? $manufacturer->h1_title[language::$selected['code']] : $manufacturer->name,
-      'sort_alternatives' => array(
-        'popularity' => language::translate('title_popularity', 'Popularity'),
-        'name' => language::translate('title_name', 'Name'),
-        'price' => language::translate('title_price', 'Price'),
-        'date' => language::translate('title_date', 'Date'),
-      ),
       'products' => array(),
       'pagination' => null,
     );

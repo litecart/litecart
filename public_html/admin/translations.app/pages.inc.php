@@ -98,7 +98,7 @@
 <?php
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
-    where pages like '%\'". $_GET['script'] ."\'%'
+    where pages like '%". $_GET['script'] ."%'
     order by code asc;"
   );
 

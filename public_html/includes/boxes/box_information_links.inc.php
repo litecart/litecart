@@ -1,5 +1,5 @@
 <?php
-  $box_information_links_cache_id = cache::cache_id('box_information_links', array('language'));
+  $box_information_links_cache_id = cache::cache_id('box_information_links', array('language', isset($_GET['page_id']) ? $_GET['page_id'] : ''));
   if (cache::capture($box_information_links_cache_id, 'file')) {
     
     $box_information_links = new view();
@@ -19,6 +19,7 @@
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),
+        'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
       );
     }
     
