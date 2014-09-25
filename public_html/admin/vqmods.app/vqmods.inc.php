@@ -52,7 +52,7 @@
     </tr>
 <?php
 
-  $vqmods = glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*');
+  $vqmods = glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE);
 
   if (!empty($vqmods)) {
     

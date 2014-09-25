@@ -2,13 +2,6 @@
   <div class="heading">
     <span class="filter" style="float: right;">
 <?php
-    $sort_alternatives = array(
-      'popularity' => language::translate('title_popularity', 'Popularity'),
-      'name' => language::translate('title_name', 'Name'),
-      'price' => language::translate('title_price', 'Price') ,
-      'date' => language::translate('title_date', 'Date'),
-    );
-    
     $separator = false;
     foreach ($sort_alternatives as $key => $value) {
       if ($separator) echo ' ';

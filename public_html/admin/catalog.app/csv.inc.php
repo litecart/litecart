@@ -33,7 +33,13 @@
       foreach ($csv as $row) {
         
       // Find category
-        if (!empty($row['code'])) {
+        if (!empty($row['id'])) {
+          $category_query = database::query(
+            "select id from ". DB_TABLE_CATEGORIES ."
+            where code = '". (int)$row['id'] ."'
+            limit 1;"
+          );
+        } elseif (!empty($row['code'])) {
           $category_query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
             where code = '". database::input($row['code']) ."'
@@ -116,6 +122,7 @@
         $parent_category = database::fetch($parent_category_query);
         
         $csv[] = array(
+          'id' => $category->id,
           'parent_code' => $parent_category['code'],
           'code' => $category->code,
           'name' => $category->name[$_POST['language_code']],

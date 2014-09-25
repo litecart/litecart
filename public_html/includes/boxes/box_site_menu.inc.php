@@ -4,11 +4,18 @@
     
     $box_site_menu = new view();
     
-    $box_site_menu->snippets['menu'] = '  <ul>' . PHP_EOL
-                                     . '    <li class="rounded-corners-left"><a href="'. document::ilink('') .'"><img src="{snippet:template_path}images/home.png" width="12" height="12" alt="'. htmlspecialchars(language::translate('title_home', 'Home')) .'" /></a></li>';
+    $box_site_menu->snippets['items'][] = array(
+      'type' => 'general',
+      'id' => 0,
+      'title' => '<img src="{snippet:template_path}images/home.png" width="12" height="12" alt="'. htmlspecialchars(language::translate('title_home', 'Home')) .'" />',
+      'link' => document::ilink(''),
+      'image' => null,
+      'active' => empty($_GET) ? true : false,
+      'subitems' => array(),
+    );
     
     if (!function_exists('site_menu_category_tree')) {
-      function site_menu_category_tree($parent_id=0, $depth=0, &$output) {
+      function custom_site_menu_category_tree($parent_id=0, $depth=0, &$output) {
         
         $categories_query = database::query(
           "select c.id, c.image, ci.name
@@ -19,14 +26,28 @@
           order by c.priority asc, ci.name asc;"
         );
         
-        if ($depth > 0 && database::num_rows($categories_query) > 0) $output .= str_repeat('  ', $depth) .'<ul>' . PHP_EOL;
-        
         while ($category = database::fetch($categories_query)) {
         
           if ($parent_id == 0) {
-            $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'">'. $category['name'] .'</a>' . PHP_EOL;
+            $output[$category['id']] = array(
+              'type' => 'category',
+              'id' => $category['id'],
+              'title' => $category['name'],
+              'link' => document::ilink('category', array('category_id' => $category['id'])),
+              'image' => null,
+              'active' => (isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? true : false,
+              'subitems' => array(),
+            );
           } else {
-            $output .= str_repeat('  ', $depth) .'  <li'. ((isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? ' class="active"' : '') .'><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'"><img src="'. functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP') .'" width="24" height="24" style="vertical-align: middle; margin-right: 10px;" alt="" />'. $category['name'] .'</a>' . PHP_EOL;
+            $output[$category['id']] = array(
+              'type' => 'category',
+              'id' => $category['id'],
+              'title' => $category['name'],
+              'link' => document::ilink('category', array('category_id' => $category['id'])),
+              'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP'),
+              'active' => (isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? true : false,
+              'subitems' => array(),
+            );
           }
           
           if ($depth < 1) { // Max depth
@@ -39,20 +60,16 @@
             );
             
             if (database::num_rows($subcategories_query) > 0) {
-              $output .= site_menu_category_tree($category['id'], $depth+1, $output);
+              custom_site_menu_category_tree($category['id'], $depth+1, $output[$category['id']]['subitems']);
             }
           }
-          
-          $output .= '</li>' . PHP_EOL;
         }
-        
-        if ($depth > 0 && database::num_rows($categories_query) > 0) $output .= str_repeat('  ', $depth) .'</ul>' . PHP_EOL;
         
         database::free($categories_query);
       }
     }
     
-    site_menu_category_tree(0, 0, $box_site_menu->snippets['menu']);
+    custom_site_menu_category_tree(0, 0, $box_site_menu->snippets['items']);
     
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p
@@ -62,10 +79,16 @@
       order by p.priority, pi.title;"
     );
     while ($page = database::fetch($pages_query)) {
-      $box_site_menu->snippets['menu'] .= '<li'. ((isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? ' class="active"' : '') .'><a href="'. document::href_ilink('information', array('page_id' => $page['id'])) .'">'. $page['title'] .'</a>' . PHP_EOL;
+      $box_site_menu->snippets['items'][] = array(
+        'type' => 'page',
+        'id' => $page['id'],
+        'title' => $page['name'],
+        'link' => document::ilink('information', array('page_id' => $page['id'])),
+        'image' => null,
+        'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
+        'subitems' => array(),
+      );
     }
-    
-    $box_site_menu->snippets['menu'] .= '  </ul>' . PHP_EOL;
     
     echo $box_site_menu->stitch('views/box_site_menu');
     
