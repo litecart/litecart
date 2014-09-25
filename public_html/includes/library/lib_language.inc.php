@@ -234,7 +234,7 @@
       }
       
     // Fallback on english translation
-      if (empty($translation) && !empty($primary_translation)) {
+      if (empty($translation) && !empty($primary_translation['text_en'])) {
         $translation = $primary_translation['text_en'];
       }
       
@@ -252,7 +252,7 @@
         $page = substr(str_replace("\\", '/', __FILE__), strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
       }
       
-      if (empty($primary_translation) && $default !== null) {
+      if (empty($primary_translation['id']) && $default !== null) {
         database::query(
           "insert into ". DB_TABLE_TRANSLATIONS ."
           (code, pages, text_". database::input($default_language_code) .", date_created, date_updated)
@@ -269,7 +269,7 @@
         "update ". DB_TABLE_TRANSLATIONS ."
         set date_accessed = '". date('Y-m-d H:i:s') ."'
         ". (!in_array($page, explode(',', $primary_translation['pages'])) ? ",pages = concat_ws(',', if(pages = '', NULL, pages), '". database::input($page) ."')" : "") ."
-        where id = '". database::input($primary_translation['id']) ."';"
+        where id = '". (int)$primary_translation['id'] ."';"
       );
       
       return self::$_cache['translations'][$language_code][$code];
