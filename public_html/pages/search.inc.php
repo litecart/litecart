@@ -39,7 +39,7 @@
 ?>
       </span>
       <?php if ($_GET['query']) { ?>
-    <h1 class="title"><?php echo sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), $_GET['query']); ?></h1>
+    <h1 class="title"><?php echo sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])); ?></h1>
     <?php } ?>
   </div>
   <div class="content">

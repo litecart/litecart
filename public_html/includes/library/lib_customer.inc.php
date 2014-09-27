@@ -291,7 +291,7 @@
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where email like '". database::input($email) ."'
-        and /*password = ''*/ or password = '". functions::password_checksum($email, $password) ."'
+        and password = '". functions::password_checksum($email, $password) ."' /*or password = ''*/ 
         limit 1;"
       );
       $customer = database::fetch($customer_query);
