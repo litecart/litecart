@@ -40,6 +40,7 @@
     $page = new view();
     
     $page->snippets = array(
+      'id' => $category->id,
       'name' => $category->name[language::$selected['code']],
       'description' => $category->description[language::$selected['code']],
       'h1_title' => $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']],
