@@ -192,7 +192,7 @@ abstract class VQMod {
 
 		self::$_modFileList = glob(self::path('vqmod/xml/', true) . '*.xml');
 
-		if (is_array(self::_modFileList)) {
+		if (is_array(self::$_modFileList)) {
 			foreach(self::$_modFileList as $file) {
 				if(file_exists($file)) {
 					$lastMod = filemtime($file);
