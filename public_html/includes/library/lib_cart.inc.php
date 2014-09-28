@@ -6,11 +6,11 @@
     public static $cache = array();
     public static $checksum;
     
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
     
     public static function load_dependencies() {
-    
+      
       if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
         self::$data = &session::$data['cart'];
         session::$data['cart'] = array(
@@ -47,8 +47,15 @@
       self::checksum();
     }
     
-    //public static function before_capture() {
-    //}
+    public static function before_capture() {
+    
+    // Refresh
+      if (count(currency::$currencies) > 1) {
+        foreach(array_keys(self::$data['items']) as $key) {
+          self::update($key, self::$data['items'][$key]['quantity']);
+        }
+      }
+    }
     
     //public static function after_capture() {
     //}
@@ -290,24 +297,33 @@
         return;
       }
       
-      $product = new ref_product(self::$data['items'][$item_key]['product_id']);
-      
-      if (empty($product->sold_out_status['orderable'])) {
-        if (!empty(self::$data['items'][$item_key]['option_stock_combination'])) {
-          foreach (array_keys($product->options_stock) as $key) {
-            if ($product->options_stock[$key]['combination'] == self::$data['items'][$item_key]['option_stock_combination']) {
-              if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
-                notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
-                return;
+      if (!empty(self::$data['items'][$item_key]['product_id'])) {
+        $product = new ref_product(self::$data['items'][$item_key]['product_id']);
+        
+      // Name
+        self::$data['items'][$item_key]['price'] = $product->name;
+        
+      // Currency price
+        self::$data['items'][$item_key]['price'] = $product->campaign['price'] ? $product->campaign['price'] : $product->price;
+        
+      // Stock
+        if (empty($product->sold_out_status['orderable'])) {
+          if (!empty(self::$data['items'][$item_key]['option_stock_combination'])) {
+            foreach (array_keys($product->options_stock) as $key) {
+              if ($product->options_stock[$key]['combination'] == self::$data['items'][$item_key]['option_stock_combination']) {
+                if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
+                  notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
+                  return;
+                }
               }
             }
+          } else if (($product->quantity - $quantity) < 0) {
+            notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+            return;
           }
-        } else if (($product->quantity - $quantity) < 0) {
-          notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
-          return;
         }
       }
-    
+      
       if ($quantity > 0) {
         self::$data['items'][$item_key]['quantity'] = (int)$quantity;
       } else {

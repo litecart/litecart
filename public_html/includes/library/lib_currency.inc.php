@@ -86,9 +86,8 @@
         return $_COOKIE['currency_code'];
       }
       
-      /*
     // Get country from browser
-      if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+      if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#^([a-z]{2}-[A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
           if (!empty($matches[1])) $country_code = $matches[1];
         }
@@ -105,7 +104,6 @@
           }
         }
       }
-      */
       
     // Return default currency
       if (isset(self::$currencies[settings::get('default_currency_code')])) return settings::get('default_currency_code');

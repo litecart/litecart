@@ -96,16 +96,14 @@
         }
       }
       
-      /*
-    // Set country from browser
+    // Get country from browser
       if (empty(self::$data['country_code'])) {
-        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#^([a-z]{2}-[A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
           if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
             if (!empty($matches[1])) self::$data['country_code'] = $matches[1];
           }
         }
       }
-      */
 
     // Build list of supported countries
       $countries_query = database::query(

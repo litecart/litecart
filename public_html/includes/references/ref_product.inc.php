@@ -34,9 +34,9 @@
       trigger_error('Setting data ('. $name .') is prohibited', E_USER_ERROR);
     }
     
-    private function load($type='') {
+    private function load($field='') {
       
-      switch($type) {
+      switch($field) {
       
         case 'name':
         case 'description':

@@ -137,7 +137,7 @@
     }
     
     public static function set_breakpoint() {
-      trigger_error('the method set_breakpoint() is deprecated, use instead clear_cache()', E_USER_DEPRECATED);
+      trigger_error('The method '.__CLASS__.'::set_breakpoint() is deprecated, use instead '.__CLASS__.'::clear_cache()', E_USER_DEPRECATED);
       self::clear_cache();
     }
     

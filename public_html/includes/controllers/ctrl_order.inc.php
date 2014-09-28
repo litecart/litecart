@@ -513,7 +513,8 @@
         }
       }
       
-      cache::set_breakpoint();
+      cache::clear_cache('order');
+      cache::clear_cache('product');
     }
     
     public function delete() {
