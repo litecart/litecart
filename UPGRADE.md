@@ -47,10 +47,19 @@
   
   New Files:
   
+    admin/languages.app/storage_encoding.inc.php
     admin/vqmods.app/config.inc.php
     admin/vqmods.app/download.inc.php
+    admin/vqmods.app/icon.png
+    admin/vqmods.app/index.html
     admin/vqmods.app/log.inc.php
     admin/vqmods.app/vqmods.inc.php
+    ext/sceditor/languages/.jshintrc
+    ext/sceditor/languages/it.js
+    ext/sceditor/languages/ja.js
+    ext/sceditor/languages/pt-PT.js
+    ext/sceditor/languages/tw.js
+    ext/sceditor/languages/uk.js
     includes/boxes/box_account.inc.php
     includes/boxes/box_also_purchased_products.inc.php
     includes/boxes/box_campaign_products.inc.php
@@ -64,23 +73,28 @@
     includes/boxes/box_manufacturer_logotypes.inc.php
     includes/boxes/box_manufacturers_list.inc.php
     includes/boxes/box_most_popular_products.inc.php
+    includes/boxes/box_recently_viewed_products.inc.php
     includes/boxes/box_region.inc.php
     includes/boxes/box_search.inc.php
     includes/boxes/box_similar_products.inc.php
     includes/boxes/box_site_footer.inc.php
-    includes/boxes/box_site_links.inc.php
     includes/boxes/box_site_menu.inc.php
     includes/boxes/box_slider.inc.php
     includes/classes/view.inc.php
+    includes/classes/vmod.inc.php
     includes/library/lib_route.inc.php
+    includes/routes/index.html
     includes/routes/url_category.inc.php
     includes/routes/url_customer_service.inc.php
+    includes/routes/url_index.inc.php
     includes/routes/url_information.inc.php
     includes/routes/url_manufacturer.inc.php
     includes/routes/url_product.inc.php
-    includes/routes/url_search.inc.php
-    includes/templates/default.admin/layouts/pagination.inc.php
+    includes/templates/default.catalog/fonts/index.html
+    includes/templates/default.catalog/images/cart.png
+    includes/templates/default.catalog/images/cart_filled.png
     includes/templates/default.catalog/views/box_account.inc.php
+    includes/templates/default.catalog/views/box_account_login.inc.php
     includes/templates/default.catalog/views/box_also_purchased_products.inc.php
     includes/templates/default.catalog/views/box_campaign_products.inc.php
     includes/templates/default.catalog/views/box_cart.inc.php
@@ -94,10 +108,11 @@
     includes/templates/default.catalog/views/box_checkout_summary.inc.php
     includes/templates/default.catalog/views/box_contact_us.inc.php
     includes/templates/default.catalog/views/box_create_account.inc.php
+    includes/templates/default.catalog/views/box_customer_service_links.inc.php
+    includes/templates/default.catalog/views/box_edit_account.inc.php
     includes/templates/default.catalog/views/box_filter.inc.php
+    includes/templates/default.catalog/views/box_information.inc.php
     includes/templates/default.catalog/views/box_information_links.inc.php
-    includes/templates/default.catalog/views/box_information_list.inc.php
-    includes/templates/default.catalog/views/box_infromation.inc.php
     includes/templates/default.catalog/views/box_latest_products.inc.php
     includes/templates/default.catalog/views/box_login.inc.php
     includes/templates/default.catalog/views/box_manufacturer.inc.php
@@ -107,20 +122,27 @@
     includes/templates/default.catalog/views/box_most_popular_products.inc.php
     includes/templates/default.catalog/views/box_order_history.inc.php
     includes/templates/default.catalog/views/box_order_success.inc.php
+    includes/templates/default.catalog/views/box_product.inc.php
+    includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
     includes/templates/default.catalog/views/box_region.inc.php
+    includes/templates/default.catalog/views/box_regional_settings.inc.php
     includes/templates/default.catalog/views/box_search.inc.php
-    includes/templates/default.catalog/views/box_select_region.inc.php
     includes/templates/default.catalog/views/box_similar_products.inc.php
     includes/templates/default.catalog/views/box_site_footer.inc.php
     includes/templates/default.catalog/views/box_site_menu.inc.php
     includes/templates/default.catalog/views/box_slider.inc.php
     includes/templates/default.catalog/views/box_store_map.inc.php
+    includes/templates/default.catalog/views/breadcrumbs.inc.php
+    includes/templates/default.catalog/views/column_left.inc.php
+    includes/templates/default.catalog/views/index.html
     includes/templates/default.catalog/views/index.inc.php
-    includes/templates/default.catalog/views/information.inc.php
     includes/templates/default.catalog/views/listing_category.inc.php
     includes/templates/default.catalog/views/listing_product.inc.php
     includes/templates/default.catalog/views/pagination.inc.php
-    includes/templates/default.catalog/views/product.inc.php
+    includes/templates/default.catalog/views/printable_order_copy.inc.php
+    includes/templates/default.catalog/views/printable_packing_slip.inc.php
+    install/upgrade_patches/1.2.inc.php
+    install/upgrade_patches/1.2.sql
     pages/ajax/cart.json.inc.php
     pages/ajax/checkout_cart.html.inc.php
     pages/ajax/checkout_customer.html.inc.php
@@ -128,8 +150,10 @@
     pages/ajax/checkout_shipping.html.inc.php
     pages/ajax/checkout_summary.html.inc.php
     pages/ajax/get_address.json.inc.php
+    pages/ajax/index.html
     pages/ajax/option_values.json.inc.php
     pages/ajax/zones.json.inc.php
+    pages/feeds/index.html
     pages/feeds/sitemap.xml.inc.php
     pages/categories.inc.php
     pages/category.inc.php
@@ -138,6 +162,7 @@
     pages/customer_service.inc.php
     pages/edit_account.inc.php
     pages/error_document.inc.php
+    pages/index.html
     pages/index.inc.php
     pages/information.inc.php
     pages/login.inc.php
@@ -150,8 +175,13 @@
     pages/printable_order_copy.inc.php
     pages/product.inc.php
     pages/push_jobs.inc.php
+    pages/regional_settings.inc.php
     pages/search.inc.php
-    pages/select_region.inc.php
+    vqmod/logs/index.html
+    vqmod/vqcache/index.html
+    vqmod/xml/index.html
+    vqmod/.htaccess
+    vqmod/readme.txt
     vqmod/vqmod.php
   
   Deleted Files:
