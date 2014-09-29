@@ -82,7 +82,7 @@
       $box_site_menu->snippets['items'][] = array(
         'type' => 'page',
         'id' => $page['id'],
-        'title' => $page['name'],
+        'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),
         'image' => null,
         'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,

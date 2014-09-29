@@ -356,7 +356,7 @@
   
 <?php
   if (file_exists('../includes/config.inc.php')) {
-    echo '<p style="color: #f00; font-weight: bold;">Attention: An existing installation has been detected. If you continue the existing installation will be overwritten. <a href="upgrade.php">Upgraders click here insted.</a></p>';
+    echo '<p style="color: #f00; font-weight: bold;">Attention: An existing installation has been detected. If you continue the existing installation will be overwritten. <a href="upgrade.php">Upgraders click here to for the upgrade tool.</a></p>';
   }
 ?>
   
@@ -473,13 +473,15 @@
           <input name="password" type="text" id="password" required="required" /></td>
       </tr>
     </table>
-    <h3>Errors
-      <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>"  />
-    </h3>
-    <p>Errros will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
-    <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.<br />
-    </p>
-    <p><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>
-    <p><input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" /></p>
+    <h3>Errors</h3>
+    <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+    
+    <p>Errors will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
+    <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.</p>
+    
+    <hr />
+    
+    <p style="text-align: center;"><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>
+    <p style="text-align: center;"><input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" /></p>
   </form>
 <?php require('includes/footer.inc.php'); ?>
