@@ -41,7 +41,7 @@
     
     if (empty($_REQUEST['from_version'])) die('You must select a version.');
     
-    require('database.class.php');
+    require('includes/database.class.php');
     $database = new database(null);
     
     foreach ($supported_versions as $version) {

@@ -16,26 +16,16 @@
       
       // Connect
         if ($this->_type == 'mysqli') {
-        
-          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            $this->_links[$link] = mysqli_connect('p:'.$server, $username, $password, $database) or exit;
-          } else {
-            $this->_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
-          }
+          $this->_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
           
         } else {
-        
-          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            $this->_links[$link] = mysql_pconnect($server, $username, $password, 65536) or exit;
-          } else {
-            $this->_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;
-          }
+          $this->_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;
           
           mysql_select_db($database) or $this->_error(false, mysql_errno(), mysql_error());
         }
       }
       
-      $this->query("set character set ". DB_DATABASE_CHARSET);
+      $this->query("set character set utf8");
       $this->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'");
       
     // Make sure link was established

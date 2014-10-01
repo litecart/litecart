@@ -63,7 +63,7 @@
   define('DB_DATABASE_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
   
-  require('database.class.php');
+  require('includes/database.class.php');
   $database = new database(null);
   
   echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -282,7 +282,7 @@
             . '<IfModule mod_auth_basic.c>' . PHP_EOL
             . '  AuthType Basic' . PHP_EOL
             . '  AuthName "Restricted Area"' . PHP_EOL
-            . '  AuthUserFile ' . $installation_path . $_REQUEST['admin_folder'] . '.htpasswd' . PHP_EOL
+            . '  AuthUserFile "' . $installation_path . $_REQUEST['admin_folder'] . '.htpasswd"' . PHP_EOL
             . '  Require valid-user' . PHP_EOL
             . '</IfModule>' . PHP_EOL;
   
