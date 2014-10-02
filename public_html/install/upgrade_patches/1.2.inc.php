@@ -71,8 +71,8 @@
     }
   }
   
-  rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax.deleteme');
-  rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds.deleteme');
+  file_rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax.deleteme');
+  file_rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds.deleteme');
   
   $modified_files = array(
     array(

@@ -28,7 +28,7 @@
   }
   
   if (!empty($_POST['upload'])) {
-    if (empty($_FILES['vqmod']) || !in_array($_FILES['vqmod']['type'], array('text/xml', 'application/xml'))) notices::add('errors', language::translate('error_must_provide_vqmod', 'You must provide a valid VQmod file'));
+    if (empty($_FILES['vqmod']) || !in_array($_FILES['vqmod']['type'], array('text/xml', 'application/xml'))) notices::add('errors', language::translate('error_must_provide_vqmod', 'You must provide a valid vQmod file'));
     
     if (empty(notices::$data['errors'])) {
       move_uploaded_file($_FILES['vqmod']['tmp_name'], FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. $_FILES['vqmod']['name']);
@@ -37,7 +37,7 @@
     }
   }
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_vqmods', 'VQMods'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_vqmods', 'vQmods'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('vqmods_form', 'post'); ?>
 
@@ -80,7 +80,7 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="6" align="left"><?php echo language::translate('title_vqmods', 'VQMods'); ?>: <?php echo count($vqmods); ?></td>
+      <td colspan="6" align="left"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
     </tr>
   </table>
 
@@ -105,6 +105,6 @@
   <?php echo functions::form_draw_form_end(); ?>
   
   <fieldset style="display: inline; border: 1px solid #ccc;">
-    <legend><?php echo language::translate('title_upload_new_vqmod', 'Upload a New VQMod'); ?> (*.xml)</legend>
+    <legend><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</legend>
     <?php echo functions::form_draw_form_begin('vqmod_form', 'post', '', true) . functions::form_draw_file_field('vqmod', 'accept="application/xml"') .' '. functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit') . functions::form_draw_form_end(); ?>
   </fieldset>

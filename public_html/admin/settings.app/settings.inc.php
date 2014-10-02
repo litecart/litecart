@@ -66,15 +66,17 @@
   </tr>
 <?php
 	} else {
-    if (substr($setting['function'], 0, 6) == 'toggle' && in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-      $setting['value'] = language::translate('title_true', 'True');
-    } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
-      $setting['value'] = '';
+    if (substr($setting['function'], 0, 6) == 'toggle') {
+      if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+        $setting['value'] = 'True';
+      } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
+        $setting['value'] = 'False';
+      }
     }
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td align="left" nowrap="nowrap"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
-    <td align="left"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128).'...' : $setting['value']); ?></td>
+    <td align="left"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128) . '...' : $setting['value']); ?></td>
     <td align="right" nowrap="nowrap"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php

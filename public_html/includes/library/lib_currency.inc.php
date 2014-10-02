@@ -134,7 +134,7 @@
       
       if (!isset(self::$currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_WARNING);
       
-      $value = $value * $currency_value;
+      $value = round($value * $currency_value, currency::$currencies[$code]['decimals']);
       
       if ($auto_decimals == false || $value - floor($value) > 0) {
         $decimals = (int)self::$currencies[$code]['decimals'];

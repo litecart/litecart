@@ -72,7 +72,7 @@
           database::query(
             "update ". DB_TABLE_ZONES_TO_GEO_ZONES ." 
             set country_code = '". database::input($zone['country_code']) ."',
-            zone_code = '". database::input($zone['zone_code']) ."',
+            zone_code = '". (isset($zone['zone_code']) ? database::input($zone['zone_code']) : '') ."',
             date_updated =  '". date('Y-m-d H:i:s') ."'
             where geo_zone_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$zone['id'] ."'

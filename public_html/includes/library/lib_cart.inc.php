@@ -304,7 +304,7 @@
         self::$data['items'][$item_key]['price'] = $product->name;
         
       // Currency price
-        self::$data['items'][$item_key]['price'] = $product->campaign['price'] ? $product->campaign['price'] : $product->price;
+        self::$data['items'][$item_key]['price'] = round($product->campaign['price'] ? $product->campaign['price'] : $product->price, currency::$selected['decimals']);
         
       // Stock
         if (empty($product->sold_out_status['orderable'])) {

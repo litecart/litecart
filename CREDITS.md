@@ -7,6 +7,7 @@ LiteCart contains work by the following listed:
 * (up, down) Ben Gillbanks - Creative Commons (Attribution 2.5 Generic) - http://prothemedesign.com/free-webdesign-tools/circular-icons
 * (box, cancel, home, save) Everaldo Coelho - LGPL - http://www.everaldo.com
 * (collapse, expand) FatCow Web Hosting - Creative Commons (Attribution 3.0 United States) - http://www.fatcow.com
+* (download) Yusuke Kamiyamane - Creative Commons (Attribution 3.0 Unported) - http://p.yusukekamiyamane.com/
 * (delete) Ed Merritt - Free for commercial use - http://www.edmerritt.com
 * (edit) Dellustrations - Free for commercial use - http://dellustrations.com/work_icons.html 
 * (folder-opened, folder-closed, label) Yusuke Kamiyamane - Creative Commons (Attribution 3.0 Unported) - http://p.yusukekamiyamane.com
