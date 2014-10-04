@@ -37,6 +37,10 @@
         chmod(dirname($target), 0777);
       }
       
+      if (!is_writable($target)) {
+        chmod($target, 0777);
+      }
+      
       $result = unlink($target);
       
       if (!empty($parent_permissions)) chmod(dirname($target), $parent_permissions);
@@ -59,14 +63,60 @@
     
     $target_permissions = null;
     if (!is_writable($target)) {
-      $parent_permissions = substr(sprintf('%o', fileperms(dirname($target))), -4);
-      chmod(dirname($target), 0777);
+      $parent_permissions = substr(sprintf('%o', fileperms($target)), -4);
+      chmod($target, 0777);
     }
     
     $result = rmdir($path);
     
     if (!empty($parent_permissions)) chmod(dirname($target), $parent_permissions);
     if (!empty($target_permissions)) chmod($target, $target_permissions);
+    
+    return $result;
+  }
+  
+// Function to modify file
+  function file_modify($file, $search, $replace) {
+    
+    echo 'Modify '. $file . '... ';
+    
+    if (!is_file($file)) return false;
+    
+    $target_permissions = null;
+    if (!is_writable($file)) {
+      $target_permissions = substr(sprintf('%o', fileperms($file)), -4);
+      chmod($file, 0777);
+    }
+    
+    $contents = file_get_contents($file);
+    $contents = preg_replace('#\R#u', PHP_EOL, $contents);
+    $contents = str_replace($search, $replace, $contents);
+    $result = file_put_contents($file, $contents);
+    
+    if (!empty($target_permissions)) chmod($file, $target_permissions);
+    
+    return $result;
+  }
+  
+// Function to rename file or folder
+  function file_rename($source, $target) {
+    
+    $source_parent_permissions = null;
+    if (!is_writable($source)) {
+      $source_parent_permissions = substr(sprintf('%o', fileperms(dirname($source))), -4);
+      chmod(dirname($source), 0777);
+    }
+    
+    $target_parent_permissions = null;
+    if (!is_writable($target)) {
+      $target_parent_permissions = substr(sprintf('%o', fileperms($target)), -4);
+      chmod($target, 0777);
+    }
+    
+    $result = rename($source, $target);
+    
+    if (!empty($source_parent_permissions)) chmod(dirname($source), $source_parent_permissions);
+    if (!empty($target_parent_permissions)) chmod($target, $target_parent_permissions);
     
     return $result;
   }
@@ -112,52 +162,6 @@
     }
     
     return empty($errors) ? true : false;
-  }
-  
-// Function to rename file or folder
-  function file_rename($source, $target) {
-    
-    $source_parent_permissions = null;
-    if (!is_writable($source)) {
-      $source_parent_permissions = substr(sprintf('%o', fileperms(dirname($source))), -4);
-      chmod(dirname($source), 0777);
-    }
-    
-    $target_parent_permissions = null;
-    if (!is_writable($target)) {
-      $target_parent_permissions = substr(sprintf('%o', fileperms(dirname($target))), -4);
-      chmod(dirname($target), 0777);
-    }
-    
-    $result = rename($source, $target);
-    
-    if (!empty($source_parent_permissions)) chmod(dirname($source), $source_parent_permissions);
-    if (!empty($target_parent_permissions)) chmod(dirname($target), $target_parent_permissions);
-    
-    return $result;
-  }
-  
-// Function to modify file
-  function file_modify($file, $search, $replace) {
-    
-    echo 'Modify '. $file . '... ';
-    
-    if (!is_file($file)) return false;
-    
-    $target_permissions = null;
-    if (!is_writable($file)) {
-      $target_permissions = substr(sprintf('%o', fileperms($file)), -4);
-      chmod($file, 0777);
-    }
-    
-    $contents = file_get_contents($file);
-    $contents = preg_replace('#\R#u', PHP_EOL, $contents);
-    $contents = str_replace($search, $replace, $contents);
-    $result = file_put_contents($file, $contents);
-    
-    if (!empty($target_permissions)) chmod($target, $target_permissions);
-    
-    return $result;
   }
 
 ?>
