@@ -87,6 +87,4 @@
 
 #box-product .information {
   display: inline-block;
-  white-space: nowrap;
-  /*min-width: 200px;*/
 }

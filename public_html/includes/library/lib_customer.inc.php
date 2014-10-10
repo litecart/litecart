@@ -213,7 +213,7 @@
       $customer = database::fetch($customer_query);
       
       if (empty($customer)) {
-        sleep(5);
+        sleep(rand(3, 10));
         notices::add('errors', language::translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
         return;
       }
@@ -322,8 +322,8 @@
       cart::load();
       
       if ($customer_remember_me) {
-        $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('customer_remember_me', $user['username'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
+        $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
       } else {
         setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
       }

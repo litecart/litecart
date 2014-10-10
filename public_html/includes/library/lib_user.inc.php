@@ -188,7 +188,7 @@
           notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), 15));
         }
         
-        sleep(10);
+        sleep(rand(3, 10));
         return;
       }
       

@@ -44,10 +44,10 @@
   <table width="100%" align="center" class="dataTable">
     <tr class="header">
       <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-      <th align="center"><?php echo language::translate('title_code', 'Code'); ?></th>
       <th align="left" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th align="left"><?php echo language::translate('title_code', 'Code'); ?></th>
       <th align="center"><?php echo language::translate('title_version', 'Version'); ?></th>
-      <th align="center"><?php echo language::translate('title_author', 'Author'); ?></th>
+      <th align="left"><?php echo language::translate('title_author', 'Author'); ?></th>
       <th>&nbsp;</th>
     </tr>
 <?php
@@ -69,8 +69,8 @@
 ?>
     <tr class="<?php echo $rowclass . ($enabled ? '' : ' semi-transparent'); ?>">
       <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. ($enabled ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
-      <td nowrap="nowrap"><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>
       <td nowrap="nowrap"><?php echo (string)$xml->id; ?></td>
+      <td nowrap="nowrap"><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>
       <td nowrap="nowrap"><?php echo (string)$xml->version; ?></td>
       <td nowrap="nowrap"><?php echo (string)$xml->author; ?></td>
       <td nowrap="nowrap"><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/download.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_download', 'Download'); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>" /></a></td>
