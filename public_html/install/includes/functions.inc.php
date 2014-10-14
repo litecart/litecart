@@ -53,7 +53,7 @@
       if (!file_delete($target .'/'. $file)) return false;
     }
     
-    echo 'Delete '. $target . '... ';
+    echo 'Delete '. $target . '<br />' . PHP_EOL;
     
     $parent_permissions = null;
     if (!is_writable($target)) {
@@ -78,7 +78,7 @@
 // Function to modify file
   function file_modify($file, $search, $replace) {
     
-    echo 'Modify '. $file . '... ';
+    echo 'Modify '. $file . '<br />' . PHP_EOL;
     
     if (!is_file($file)) return false;
     
@@ -141,7 +141,7 @@
       }
       
     } else if (!file_exists($target)) {
-      echo 'Write '. $target . '... ';
+      echo 'Write '. $target . '<br />' . PHP_EOL;
       
       $parent_permissions = null;
       if (!is_writable($target)) {

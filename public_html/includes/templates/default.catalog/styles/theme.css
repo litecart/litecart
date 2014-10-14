@@ -251,10 +251,9 @@ body {
   #footer tr > .manufacturers {
     display: none;
   }
-  #footer tr > .information {
+  #footer tr > .contact {
     display: none;
   }
-
 }
 
 #copyright p {

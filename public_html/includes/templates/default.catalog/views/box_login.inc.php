@@ -10,7 +10,7 @@
         </tr>
         <tr>
           <td><?php echo language::translate('title_password', 'Password'); ?> <span class="required">*</span><br />
-          <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?></td>
+          <?php echo functions::form_draw_password_field('password', ''); ?></td>
         </tr>
         <tr>
           <td><label><?php echo functions::form_draw_checkbox('remember_me', '1', true); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
