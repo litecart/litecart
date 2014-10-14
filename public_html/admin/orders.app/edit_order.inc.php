@@ -84,7 +84,7 @@
       $order->save();
       
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'orders')));
+      header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
       exit;
     }
   }
@@ -93,7 +93,7 @@
   if (isset($_POST['delete']) && $order) {
     $order->delete();
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'orders')));
+    header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
     exit;
   }
   
@@ -142,7 +142,7 @@
         <table>
           <tr>
             <td colspan="2"><?php echo language::translate('title_account', 'Account'); ?><br />
-              <?php echo functions::form_draw_customers_list('customer[id]', true); ?></td>
+              <?php echo functions::form_draw_customers_list('customer[id]', true); ?> <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?></td>
           </tr>
           <tr>
             <td><?php echo language::translate('title_company', 'Company'); ?><br />
@@ -183,6 +183,26 @@
         </table>
         
         <script>
+          $("button[name='get_address']").click(function() {
+            $.ajax({
+              url: '<?php echo document::link('', array('doc' => 'get_address.json'), array('app')); ?>',
+              type: 'post',
+              data: "customer_id=" + $("select[name='customer[id]']").val() + "&token=<?php echo form::session_post_token(); ?>",
+              cache: false,
+              async: true,
+              dataType: 'json',
+              error: function(jqXHR, textStatus, errorThrown) {
+                if (console) console.warn(errorThrown.message);
+              },
+              success: function(data) {
+                $.each(data, function(key, value) {
+                  if (console) console.log(key +": "+ value);
+                  if ($("input[name='customer["+key+"]']").length) $("input[name='customer["+key+"]']").val(data[key]);
+                });
+              },
+            });
+          });
+        
           $("select[name='customer[country_code]']").change(function(){
             $('body').css('cursor', 'wait');
             $.ajax({
