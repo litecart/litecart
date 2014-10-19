@@ -34,6 +34,12 @@
 
 ### LiteCart 1.1.2.1 to 1.2
   
+  (No MySQL Changes)
+  
+  (No New Or Deleted Files)
+
+### LiteCart 1.1.2.1 to 1.2
+  
   MySQL Changes:
   
     ALTER TABLE `lc_languages` DROP mysql_collation;
