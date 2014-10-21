@@ -47,7 +47,6 @@
         <tr>
           <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
             <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
-          </td>
           <td></td>
         </tr>
         <tr>
