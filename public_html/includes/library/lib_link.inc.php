@@ -99,10 +99,12 @@
       
     // Process catalog links
       if (empty($parsed_link['host']) || $parsed_link['host'] == preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) {
-        if (preg_match('#^('. WS_DIR_HTTP_HOME .'.*)#', $parsed_link['path'])) {
-          if (class_exists('route', false)) {
-            if ($rewritten_link = route::rewrite($link, $language_code)) {
-              $link = $rewritten_link;
+        if (!file_exists(FS_DIR_HTTP_ROOT . $parsed_link['path'])) {
+          if (preg_match('#^('. WS_DIR_HTTP_HOME .'.*)#', $parsed_link['path'])) {
+            if (class_exists('route', false)) {
+              if ($rewritten_link = route::rewrite($link, $language_code)) {
+                $link = $rewritten_link;
+              }
             }
           }
         }

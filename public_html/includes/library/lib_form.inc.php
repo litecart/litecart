@@ -37,7 +37,7 @@
     public static function before_capture() {
     
     // Check post token
-      if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || empty(REQUIRE_POST_TOKEN)) && (!isset(route::$route['post_security']) || route::$route['post_security'] !== false)) {
+      if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || !empty(REQUIRE_POST_TOKEN)) && (!isset(route::$route['post_security']) || route::$route['post_security'] !== false)) {
         if (!isset($_POST['token']) || $_POST['token'] != self::session_post_token()) {
           error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
           session::reset();
