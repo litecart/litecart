@@ -19,7 +19,7 @@
     </ul>
   </div>
   
-  <?php if ($items > 1) { ?>
+  <?php if (count($items) > 1) { ?>
   <ul class="shortcuts">
     <?php foreach ($items as $item) { ?>
     <li class="shortcut">

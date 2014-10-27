@@ -28,6 +28,8 @@
       for ($i=1; $i <= 3; $i++) {
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
         
+        $name = language::translate(__CLASS__.':title_option_name_zone_'.$i);
+        
         if (!functions::reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
         
         $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $weight);
@@ -35,7 +37,7 @@
         $options[] = array(
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
-          'name' => functions::reference_get_country_name($customer['country_code']),
+          'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['country_code']),
           'description' => weight::format($weight, 'kg'),
           'fields' => '',
           'cost' => $cost,
@@ -44,6 +46,8 @@
         );
       }
       
+      $name = language::translate(__CLASS__.':title_option_name_zone_x');
+      
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
           $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $weight);
@@ -51,7 +55,7 @@
           $options[] = array(
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
-            'name' => functions::reference_get_country_name($customer['country_code']),
+            'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['country_code']),
             'description' => weight::format($weight, 'kg'),
             'fields' => '',
             'cost' => $cost,
@@ -184,5 +188,5 @@
     
     public function uninstall() {}
   }
-    
+  
 ?>

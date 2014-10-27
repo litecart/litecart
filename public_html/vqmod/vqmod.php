@@ -195,7 +195,7 @@ abstract class VQMod {
 		if (is_array(self::$_modFileList)) {
 			foreach(self::$_modFileList as $file) {
 				if(file_exists($file)) {
-					$lastMod = filemtime($file);
+					$lastMod = @filemtime($file);
 					if($lastMod > self::$_lastModifiedTime){
 						self::$_lastModifiedTime = $lastMod;
 					}
@@ -203,7 +203,7 @@ abstract class VQMod {
 			}
 		}
     
-		$xml_folder_time = filemtime(self::path('vqmod/xml'));
+		$xml_folder_time = @filemtime(self::path('vqmod/xml'));
 		if($xml_folder_time > self::$_lastModifiedTime){
 			self::$_lastModifiedTime = $xml_folder_time;
 		}
@@ -211,7 +211,7 @@ abstract class VQMod {
 		$modCache = self::path(self::$modCache);
 		if(self::$_devMode || !file_exists($modCache)) {
 			self::$_lastModifiedTime = time();
-		} elseif(file_exists($modCache) && filemtime($modCache) >= self::$_lastModifiedTime) {
+		} elseif(file_exists($modCache) && @filemtime($modCache) >= self::$_lastModifiedTime) {
 			$mods = file_get_contents($modCache);
 			if(!empty($mods))
 			self::$_mods = unserialize($mods);
