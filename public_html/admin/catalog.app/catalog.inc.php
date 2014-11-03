@@ -135,7 +135,7 @@
   if (isset($_POST['unmount'])) {
     
     if (empty($_POST['categories']) && empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_category_or_product', 'You must select a category or product'));
-    if (empty($_GET['category_id'])) notices::add('errors', language::translate('error_no_be_nested_category', 'No nested in a category'));
+    if (empty($_GET['category_id'])) notices::add('errors', language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
     
     if (empty(notices::$data['errors'])) {
       

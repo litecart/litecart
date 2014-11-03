@@ -191,7 +191,6 @@
         categories = '". database::input(implode(',', $this->data['categories'])) ."',
         product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
         keywords = '". database::input(rtrim(trim($this->data['keywords']), ',')) ."',
-        ". ((isset($image_filename)) ? "image='". $image_filename ."'," : false) ."
         quantity = '". database::input($this->data['quantity']) ."',
         purchase_price = '". database::input($this->data['purchase_price']) ."',
         tax_class_id = '". database::input($this->data['tax_class_id']) ."',

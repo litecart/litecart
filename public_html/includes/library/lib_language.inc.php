@@ -252,25 +252,27 @@
         $page = substr(str_replace("\\", '/', __FILE__), strlen(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
       }
       
-      if (empty($primary_translation['id']) && $default !== null) {
+      if ($default !== null) {
+        if (empty($primary_translation['id'])) {
+          database::query(
+            "insert into ". DB_TABLE_TRANSLATIONS ."
+            (code, pages, text_". database::input($default_language_code) .", date_created, date_updated)
+            values('". database::input($code) ."', '". database::input($page) ."', '". database::input($default) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+          );
+          $primary_translation = array(
+            'id' => database::insert_id(),
+            'text_en' => $default,
+            'pages' => $page,
+          );
+        }
+        
         database::query(
-          "insert into ". DB_TABLE_TRANSLATIONS ."
-          (code, pages, text_". database::input($default_language_code) .", date_created, date_updated)
-          values('". database::input($code) ."', '". database::input($page) ."', '". database::input($default) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-        );
-        $primary_translation = array(
-          'id' => database::insert_id(),
-          'text_en' => $default,
-          'pages' => $page,
+          "update ". DB_TABLE_TRANSLATIONS ."
+          set date_accessed = '". date('Y-m-d H:i:s') ."'
+          ". (!in_array($page, explode(',', $primary_translation['pages'])) ? ",pages = concat_ws(',', if(pages = '', NULL, pages), '". database::input($page) ."')" : "") ."
+          where id = '". (int)$primary_translation['id'] ."';"
         );
       }
-      
-      database::query(
-        "update ". DB_TABLE_TRANSLATIONS ."
-        set date_accessed = '". date('Y-m-d H:i:s') ."'
-        ". (!in_array($page, explode(',', $primary_translation['pages'])) ? ",pages = concat_ws(',', if(pages = '', NULL, pages), '". database::input($page) ."')" : "") ."
-        where id = '". (int)$primary_translation['id'] ."';"
-      );
       
       return self::$_cache['translations'][$language_code][$code];
     }
