@@ -12,7 +12,7 @@
       
       if (!session_id()) {
         session_set_cookie_params(0, WS_DIR_HTTP_HOME);
-        session_start();
+        self::start();
       }
       
       self::$data = &$_SESSION[SESSION_UNIQUE_ID];
@@ -55,6 +55,24 @@
     //}
     
     ######################################################################
+    
+    public static function start() {
+      
+      $sn = session_name();
+      if (isset($_COOKIE[$sn])) {
+        $session_id = $_COOKIE[$sn];
+      } else if (isset($_GET[$sn])) {
+        $session_id = $_GET[$sn];
+      } else {
+        return session_start();
+      }
+
+     if (!preg_match('/^[a-zA-Z0-9,\-]{22,40}$/', $session_id)) {
+        return false;
+      }
+      
+      return session_start();
+    }
     
     public static function reset() {
       session_unset();

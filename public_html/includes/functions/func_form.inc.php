@@ -687,7 +687,7 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_products_list($name, $input=true, $multiple=false, $parameters) {
+  function form_draw_products_list($name, $input=true, $multiple=false, $parameters='') {
     
     $options = array();
     
@@ -701,7 +701,7 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_product_stock_options_list($product_id, $name, $input=true, $multiple=false, $parameters) {
+  function form_draw_product_stock_options_list($product_id, $name, $input=true, $multiple=false, $parameters='') {
     
     $options = array();
     
