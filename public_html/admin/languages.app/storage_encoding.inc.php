@@ -22,7 +22,7 @@
         $columns_query = database::query("select * from `information_schema`.`COLUMNS` where `TABLE_SCHEMA` = '". DB_DATABASE ."' and `TABLE_NAME` = '". database::input($table) ."' and COLLATION_NAME != '". database::input($_POST['collation']) ."';");
         while($column = database::fetch($columns_query)) {
           database::query(
-            "alter table `". DB_DATABASE ."`.`'. $table. '`
+            "alter table `". DB_DATABASE ."`.`". $table. "`
             modify `". $column['COLUMN_NAME'] ."`
             character set '". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."'
             collate '". database::input($_POST['collation']) ."';"

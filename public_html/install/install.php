@@ -193,7 +193,7 @@
   );
   
   foreach ($map as $search => $replace) {
-    $sql = str_replace($search, $replace, $sql);
+    $sql = str_replace($search, database::input($replace), $sql);
   }
   
   $sql = explode('-- --------------------------------------------------------', $sql);

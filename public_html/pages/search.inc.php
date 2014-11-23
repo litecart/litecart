@@ -85,7 +85,7 @@
       + if(pi.name like '%". database::input($_GET['query']) ."%', 2, 0)
       + if(pi.short_description like '%". database::input($_GET['query']) ."%', 1, 0)
       + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
-      + if(find_in_set('". implode("', ", $category_ids) ."', p.categories), 1, 0)
+      + if(find_in_set('". implode("', p.categories), 1, 0) + if(find_in_set('", $category_ids) ."', p.categories), 1, 0)
       + if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", database::input($manufacturer_ids)) ."'), 1, 0)
     ) as occurrences";
     
@@ -119,7 +119,7 @@
         or p.sku like '%". database::input($_GET['query']) ."%'
         or p.upc like '%". database::input($_GET['query']) ."%'
         or p.keywords like '%". database::input($_GET['query']) ."%'
-        ". (!empty($category_ids) ? "or find_in_set('". implode("', ", $category_ids) ."', p.categories)" : false) ."
+        ". (!empty($category_ids) ? "or find_in_set('". implode("', p.categories) or find_in_set('", $category_ids) ."', p.categories)" : false) ."
         ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in ('". implode("', '", $manufacturer_ids) ."')" : false) ."
         or pi.name like '%". database::input($_GET['query']) ."%'
         or pi.short_description like '%". database::input($_GET['query']) ."%'

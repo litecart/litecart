@@ -15,6 +15,7 @@
           </nav>
         </td>
         
+        <?php if ($manufacturers) { ?>
         <td class="manufacturers">
           <nav>
             <h4><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h4>
@@ -23,6 +24,7 @@
             </ul>
           </nav>
         </td>
+        <?php } ?>
         
         <td class="account">
           <nav>

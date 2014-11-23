@@ -3,7 +3,7 @@
   language::set(settings::get('store_language_code'));
   
   $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
-          . '<urlset xmlns="http://www.sitemaps.org/scheman/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . PHP_EOL;
+          . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . PHP_EOL;
   
   $categories_query = database::query(
     "select id, date_updated from ". DB_TABLE_CATEGORIES ."
@@ -11,7 +11,7 @@
     order by id;"
   );
   while ($category = database::fetch($categories_query)) {
-
+    
     $hreflangs = '';
     if (settings::get('seo_links_language_prefix')) {
       foreach (array_keys(language::$languages) as $language_code) {

@@ -87,7 +87,7 @@
         break;
       case 'date':
         $sql_local_sort = "order by date_created desc";
-        $sql_global_sort = "";
+        $sql_global_sort = "order by date_created desc";
         break;
       case 'occurrences':
         $sql_local_sort = "";
