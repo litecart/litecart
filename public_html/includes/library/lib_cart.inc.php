@@ -233,6 +233,7 @@
           }
         }
       }
+      
       $item['price'] += $item['extras'];
       
       if (!empty($item['options'])) {
@@ -301,10 +302,12 @@
         $product = new ref_product(self::$data['items'][$item_key]['product_id']);
         
       // Name
-        self::$data['items'][$item_key]['price'] = $product->name;
+        self::$data['items'][$item_key]['name'] = $product->name;
         
-      // Currency price
-        self::$data['items'][$item_key]['price'] = round($product->campaign['price'] ? $product->campaign['price'] : $product->price, currency::$selected['decimals']);
+      // Refresh Price
+        self::$data['items'][$item_key]['price'] = $product->campaign['price'] ? $product->campaign['price'] : $product->price;
+        self::$data['items'][$item_key]['price'] += self::$data['items'][$item_key]['extras'];
+        self::$data['items'][$item_key]['price'] = round(self::$data['items'][$item_key]['price'], currency::$selected['decimals']);
         
       // Stock
         if (empty($product->sold_out_status['orderable'])) {
