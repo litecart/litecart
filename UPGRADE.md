@@ -36,6 +36,17 @@
   
   (No MySQL Changes)
   
+New Files:
+  
+    admin/discussions.widget/config.inc.php
+    admin/discussions.widget/discussions.cache
+    admin/discussions.widget/discussions.inc.php
+    admin/discussions.widget/index.html
+
+### LiteCart 1.1.2.1 to 1.2
+  
+  (No MySQL Changes)
+  
   (No New Or Deleted Files)
 
 ### LiteCart 1.1.2.1 to 1.2

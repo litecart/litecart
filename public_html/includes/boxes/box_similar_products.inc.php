@@ -35,17 +35,18 @@
       'limit' => settings::get('box_similar_products_num_items'),
     ));
     
-    if (database::num_rows($products_query) == 0) return;
+    if (database::num_rows($products_query) > 0) {
     
-    $box_similar_products = new view();
-    
-    $box_similar_products->snippets['products'] = array();
-    while ($listing_product = database::fetch($products_query)) {
-      if (empty($listing_product['occurrences'])) break;
-      $box_similar_products->snippets['products'][] = $listing_product;
+      $box_similar_products = new view();
+      
+      $box_similar_products->snippets['products'] = array();
+      while ($listing_product = database::fetch($products_query)) {
+        if (empty($listing_product['occurrences'])) break;
+        $box_similar_products->snippets['products'][] = $listing_product;
+      }
+      
+      echo $box_similar_products->stitch('views/box_similar_products');
     }
-    
-    echo $box_similar_products->stitch('views/box_similar_products');
     
     cache::end_capture($box_similar_products_cache_id);
   }

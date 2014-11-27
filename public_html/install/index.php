@@ -395,7 +395,7 @@
             <option>utf8_polish_ci</option>
             <option>utf8_estonian_ci</option>
             <option>utf8_spanish_ci</option>
-            <option>utf8_swedish_ci</option>
+            <option selected="selected">utf8_swedish_ci</option>
             <option>utf8_turkish_ci</option>
             <option>utf8_czech_ci</option>
             <option>utf8_danish_ci</option>
