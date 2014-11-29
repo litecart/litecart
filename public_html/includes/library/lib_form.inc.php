@@ -41,6 +41,7 @@
         if (!isset($_POST['token']) || $_POST['token'] != self::session_post_token()) {
           error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
           session::reset();
+          sleep(5);
           header('HTTP/1.1 400 Bad Request');
           die('HTTP POST Error: The form submit token was issued for another session identity. Your request has therefore not been processed. Please try again.');
         }

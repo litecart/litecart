@@ -27,6 +27,7 @@
         if (!empty($_SERVER['HTTP_USER_AGENT']) && self::$data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) { // Decreased session security due to mobile networks
           error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .'] on '. $_SERVER['REQUEST_URI'] .'. Expected '. self::$data['last_ip'] .' ['. self::$data['last_agent'] .']');
           self::reset();
+          sleep(5);
           header('Location: ' . $_SERVER['REQUEST_URI']);
           exit;
         }
