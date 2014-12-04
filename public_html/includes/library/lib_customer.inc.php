@@ -310,11 +310,6 @@
         );
       }
       
-      if (!empty($customer_remember_me)) {
-        $checksum = sha1(strtolower($customer['email']) . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('customer_remember_me', strtolower($customer['email']) .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
-      }
-      
       self::load($customer['id']);
       
       session::regenerate_id();
