@@ -101,8 +101,8 @@
       default:
         //$sql_local_sort = "order by (p.purchases / p.views) desc";
         //$sql_local_sort = "order by (views / ((unix_timestamp() - unix_timestamp(date_created)) / 86400)) desc, date_created desc";
-        $sql_local_sort = "order by (views / timestampdiff(day, now(), from_unixtime(date_created))) desc";
-        $sql_global_sort = "";
+        $sql_local_sort = "";
+        $sql_global_sort = "order by (views / timestampdiff(day, now(), from_unixtime(date_created))) desc";
         break;
     }
     
@@ -154,7 +154,7 @@
     
     $query = "
       select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
-        select id, manufacturer_id, categories, keywords, product_groups, image, tax_class_id, quantity, date_created from ". DB_TABLE_PRODUCTS ."
+        select id, manufacturer_id, categories, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_created from ". DB_TABLE_PRODUCTS ."
         where status
           and (id
           ". (isset($filter['products']) ? "$sql_andor id in ('". implode("', '", $filter['products']) ."')" : false) ."
