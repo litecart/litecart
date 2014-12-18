@@ -65,6 +65,7 @@ CREATE TABLE `lc_countries` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `name` varchar(64) NOT NULL,
   `domestic_name` varchar(64) CHARACTER SET utf8 NOT NULL,
+  `iso_code_1` varchar(3) NOT NULL DEFAULT '',
   `iso_code_2` varchar(2) NOT NULL DEFAULT '',
   `iso_code_3` varchar(3) NOT NULL DEFAULT '',
   `address_format` text NOT NULL,
@@ -543,17 +544,6 @@ CREATE TABLE `lc_product_groups_values_info` (
   KEY `product_group_value_id` (`product_group_value_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_seo_links_cache` (
-  `uri` varchar(256) NOT NULL,
-  `seo_uri` varchar(256) NOT NULL,
-  `language_code` varchar(2) NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `date_created` datetime NOT NULL,
-  KEY `seo_uri` (`seo_uri`),
-  KEY `language_code` (`language_code`),
-  KEY `uri` (`uri`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
