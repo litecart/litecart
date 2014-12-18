@@ -17,20 +17,11 @@
       
       self::$data = &$_SESSION[SESSION_UNIQUE_ID];
       
-    // Check for session hijacking
       if (empty(self::$data['last_ip'])) self::$data['last_ip'] = $_SERVER['REMOTE_ADDR'];
       if (empty(self::$data['last_agent'])) self::$data['last_agent'] = !empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
       
-      if (self::$data['last_ip'] != $_SERVER['REMOTE_ADDR']) {
+      if (self::$data['last_ip'] != $_SERVER['REMOTE_ADDR'] || self::$data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) {
         self::regenerate_id();
-        
-        if (!empty($_SERVER['HTTP_USER_AGENT']) && self::$data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) { // Decreased session security due to mobile networks
-          error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .'] on '. $_SERVER['REQUEST_URI'] .'. Expected '. self::$data['last_ip'] .' ['. self::$data['last_agent'] .']');
-          self::reset();
-          sleep(5);
-          header('Location: ' . $_SERVER['REQUEST_URI']);
-          exit;
-        }
       }
     }
     

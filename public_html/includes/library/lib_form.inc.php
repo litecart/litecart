@@ -34,19 +34,8 @@
       }
     }
     
-    public static function before_capture() {
-    
-    // Check post token
-      if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || !REQUIRE_POST_TOKEN) && (!isset(route::$route['post_security']) || route::$route['post_security'] !== false)) {
-        if (!isset($_POST['token']) || $_POST['token'] != self::session_post_token()) {
-          error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
-          session::reset();
-          sleep(5);
-          header('HTTP/1.1 400 Bad Request');
-          die('HTTP POST Error: The form submit token was issued for another session identity. Your request has therefore not been processed. Please try again.');
-        }
-      }
-    }
+    //public static function before_capture() {
+    //}
     
     //public static function after_capture() {
     //}
