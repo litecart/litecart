@@ -8,10 +8,6 @@
   
     $products_query = functions::catalog_products_query(array('sort' => 'popularity', 'limit' => settings::get('box_most_popular_products_num_items')));
     
-    if (database::num_rows($products_query) == 0) {
-      $products_query = functions::catalog_products_query(array('sort' => 'popularity', 'limit' => settings::get('box_most_popular_products_num_items')));
-    }
-    
     if (database::num_rows($products_query)) {
     
       $box_most_popular_products = new view();
