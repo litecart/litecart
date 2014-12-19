@@ -10,9 +10,6 @@
     public $website = 'https://www.paypal.com/cgi-bin/webscr?cmd=_help';
     public $priority = 0;
     
-  /*
-   * Return selectable payment options for checkout
-   */
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
       
     // If not enabled
@@ -43,11 +40,10 @@
       return $method;
     }
     
-    public function pre_check() {
+    public function pre_check($order) {
     }
     
-    public function transfer() {
-      global $order;
+    public function transfer($order) {
       
       if (empty($this->settings['merchant_email'])) return;
       
@@ -57,7 +53,7 @@
         'upload'        => '1',
         'rm'            => '0',
         'business'      => $this->settings['merchant_email'],
-        'currency_code' => $order->data['currency_code'],
+        'currency_code' => !empty($this->settings['use_store_currency']) ? settings::get('store_currency_code') : $order->data['currency_code'],
         'cbt'           => language::translate('paypal:title_finalize_order', 'Finalize Order'),
         'return'        => document::link('order_process.php'),
         'cancel_return' => document::link('checkout.php'),
@@ -84,7 +80,7 @@
         }
       }
       
-    // Build cart containing discount - no tax specification
+    // Build cart containing discount - no tax specification supported
       if ($order_contains_discount) {
         
         foreach ($order->data['items'] as $item) {
@@ -158,7 +154,7 @@
       
       $errors = array();
       
-      $order->save(); // Save order to databse
+      $order->save(); // Save order to database
       
       if (empty($_REQUEST['tx'])) {
         error_log('An invalid attempt to verify a Paypal transaction logged for IP '. $_SERVER['REMOTE_ADDR']);
@@ -201,10 +197,15 @@
         }
       }
       
+      if (!empty($this->settings['use_store_currency'])) {
+        if ($txdata['mc_currency'] != settings::get('store_currency_code')) $errors[] = 'Payment currency ('. $txdata['mc_currency'] .') should have been '. settings::get('store_currency_code');
+      } else {
+        if ($txdata['mc_currency'] != $order->data['currency_code']) $errors[] = 'Payment currency ('. $txdata['mc_currency'] .') should have been '. $order->data['currency_code'];
+      }
+      
       if (empty($txdata)) $errors[] = language::translate(__CLASS__.':error_transaction_not_verified', 'Error: Payment transaction could not be verified by Paypal.');
       if ($txdata['payment_status'] != 'Completed') $errors[] = 'Payment status indicates not completed.';
       if (round($txdata['mc_gross']) != round($order_total)) $errors[] = 'Payment amount '. $txdata['mc_gross'] .' is not equal to order amount ('. $order_total .').';
-      if ($txdata['mc_currency'] != $order->data['currency_code']) $errors[] = 'Payment currency ('. $txdata['mc_currency'] .') should have been '. $order->data['currency_code'];
       if ($txdata['receiver_email'] != $this->settings['merchant_email']) $errors[] = 'Receipient ('. $txdata['receiver_email'] .') should be '. $this->settings['merchant_email'] .'.';
       
       if (!empty($errors)) {
@@ -220,10 +221,13 @@
     public function after_process() {
     }
     
-    public function callback() {
-    }
-    
     private function _format_raw($value, $currency_code, $currency_value) {
+      
+      if (!empty($this->settings['use_store_currency'])) {
+        $currency_code = settings::get('store_currency_code');
+        $currency_value = 1;        
+      }
+      
       return number_format($value * $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
     }
     
@@ -263,6 +267,13 @@
           'title' => language::translate(__CLASS__.':title_gateway', 'Gateway'),
           'description' => language::translate(__CLASS__.':description_gateway', 'Select your Paypal payment gateway.'),
           'function' => 'radio(\'Production\',\'Sandbox\')',
+        ),
+        array(
+          'key' => 'use_store_currency',
+          'default_value' => '0',
+          'title' => language::translate(__CLASS__.':title_use_store_currency', 'Use Store Currency'),
+          'description' => language::translate(__CLASS__.':description_force_store_currency', 'Use the store currency for all transactions.'),
+          'function' => 'toggle("y/n")',
         ),
         array(
           'key' => 'order_status_id_complete',
