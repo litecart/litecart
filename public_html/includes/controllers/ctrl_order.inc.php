@@ -64,7 +64,7 @@
           ),
         ),
         'shipping_option' => array(),
-        'payment_tracking_id' => '',
+        'shipping_tracking_id' => '',
         'payment_option' => array(),
         'payment_transaction_id' => '',
         'order_total' => array(),

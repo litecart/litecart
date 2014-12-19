@@ -127,26 +127,34 @@
       return self::calculate($value, $to, $from);
     }
     
-    public static function format($value, $auto_decimals=true, $raw=false, $code='', $currency_value=null) {
+    public static function format($value, $auto_decimals=true, $raw=false, $currency_code=null, $currency_value=null) {
       
-      if (empty($code)) $code = self::$selected['code'];
-      if ($currency_value === null) $currency_value = currency::$currencies[$code]['value'];
+      if ($raw) return self::format_raw($value, $currency_code, $currency_value);
       
-      if (!isset(self::$currencies[$code])) trigger_error('Currency ('. $code .') does not exist', E_USER_WARNING);
+      if (empty($currency_code)) $currency_code = self::$selected['code'];
+      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
+
+      if ($currency_value === null) $currency_value = currency::$currencies[$currency_code]['value'];
       
-      $value = round($value * $currency_value, currency::$currencies[$code]['decimals']);
+      $value = round($value * $currency_value, currency::$currencies[$currency_code]['decimals']);
       
       if ($auto_decimals == false || $value - floor($value) > 0) {
-        $decimals = (int)self::$currencies[$code]['decimals'];
+        $decimals = (int)self::$currencies[$currency_code]['decimals'];
       } else {
         $decimals = 0;
       }
       
-      if ($raw) {
-        return number_format($value, $decimals, '.', '');
-      } else {
-        return self::$currencies[$code]['prefix'] . number_format($value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$code]['suffix'];
-      }
+      return self::$currencies[$currency_code]['prefix'] . number_format($value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$currency_code]['suffix'];
+    }
+    
+    public function format_raw($value, $currency_code=null, $currency_value=null) {
+      
+      if (empty($currency_code)) $currency_code = self::$selected['code'];
+      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
+      
+      if ($currency_value === null) $currency_value = currency::$currencies[$currency_code]['value'];
+      
+      return number_format($value * $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
     }
   }
   

@@ -16,7 +16,11 @@ ErrorDocument 500 "Internal Server Error"
     SetEnv HTTP_MOD_REWRITE On
   </IfModule>
   
-  # Non-www to www
+  # Redirect from any alias domain to primary domain
+  #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
+  #RewriteRule ^(.*)$ http://www.mydomain.com/{BASE_DIR}$1 [R=301,L]
+  
+  # Redirect non-www to www
   #RewriteCond %{HTTP_HOST} !^www\.
   #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}{BASE_DIR}$1 [R=301,L]
   

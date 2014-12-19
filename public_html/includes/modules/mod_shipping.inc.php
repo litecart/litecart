@@ -114,6 +114,17 @@
       return $cheapest['module_id'].':'.$cheapest['option_id'];
     }
     
+    public function after_process($order) {
+      
+      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      
+      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      
+      if (!method_exists($this->modules[$module_id], 'after_process')) return;
+      
+      return $this->modules[$module_id]->after_process($order);
+    }
+    
     public function run($method_name, $module_id='') {
     
       if (empty($module_id)) {

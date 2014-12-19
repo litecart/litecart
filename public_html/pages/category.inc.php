@@ -104,6 +104,8 @@
       
     }
     
+    $page->snippets['num_products_page'] = count($page->snippets['products']);
+    $page->snippets['num_products_total'] = (int)database::num_rows($products_query);
     $page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
     
     echo $page->stitch('views/box_category');

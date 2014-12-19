@@ -1,7 +1,7 @@
 <?php
   
   class route {
-    private static $_classes = array();   
+    private static $_classes = array();
     private static $_links_cache = array();
     private static $_links_cache_id = '';
     private static $_routes = array();

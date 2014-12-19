@@ -101,8 +101,8 @@
   }
   
 // Run after process operations
-  $shipping->run('after_process');
-  $payment->run('after_process');
+  $shipping->after_process($order);
+  $payment->after_process($order);
   
   header('Location: '. document::ilink('order_success'));
   exit;
