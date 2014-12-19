@@ -57,6 +57,10 @@
   document::$snippets['keywords'] = $product->meta_keywords[language::$selected['code']] ? $product->meta_keywords[language::$selected['code']] : $product->keywords;
   document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']];
   
+  if (!empty($product->image)) {
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
+  }
+  
   breadcrumbs::add($product->name[language::$selected['code']], document::ilink(null, array('product_id' => $product->id), array('category_id')));
   
 // Recently viewed products
