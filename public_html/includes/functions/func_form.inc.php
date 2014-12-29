@@ -46,6 +46,14 @@
     return '<input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false) . (($hint) ? ' title="'. htmlspecialchars($hint) .'"' : false) .' />';
   }
   
+  function form_draw_color_field($name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
+  }
+  
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
     
@@ -111,7 +119,7 @@
     
     return '<input type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
-
+  
   function form_draw_file_field($name, $parameters='', $hint='') {
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="large"';
     
@@ -175,7 +183,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    return '<input type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" title="'. htmlspecialchars($hint) .'" pattern="^\+?[0-9]+$"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
@@ -185,6 +193,8 @@
   }
   
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
@@ -348,6 +358,8 @@
         return functions::form_draw_decimal_field($name, $input, 2);
       case 'int':
         return functions::form_draw_number_field($name, $input);
+      case 'color':
+        return functions::form_draw_color_field($name, $input);
       case 'currency':
         return functions::form_draw_currency_field(!empty($options[0]) ? $options[0] : null, $name, $input);
       case 'smallinput':

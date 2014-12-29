@@ -12,7 +12,7 @@
     $from_name = trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $from_formatted)), '"');
     $from_email = filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $from_formatted), FILTER_SANITIZE_EMAIL);
     
-  // Generate a boundary string    
+  // Generate a boundary string
     $mime_boundary = '==Multipart_Boundary_x'. md5(time()) .'x';
     
     if (strtoupper(language::$selected['charset']) == 'UTF-8') {
