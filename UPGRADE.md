@@ -32,10 +32,26 @@
   
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders. Especially if they contain modifications by third party add-ons.
 
-### LiteCart 1.2 to 1.2.2
+### LiteCart 1.2.1 to 1.2.2
   
   MySQL Changes:
-  
+    
+    DROP TABLE `lc_seo_links_cache`;
+    
+    DELETE FROM `lc_settings` where `key` = 'cache_clear_seo_links';
+    
+    UPDATE `lc_settings_groups` SET `priority` = '60' WHERE `key` = 'advanced';
+    
+    INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES ('security', 'Security', 'Site security and protection against threats', 70);
+    
+    INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
+    VALUES ('security', 'global', 'Session Hijacking Protection', 'Destroy sessions that were signed for a different IP address and user agent.', 'security_session_hijacking', '1', 'toggle("e/d")', '2', NOW(), NOW()),
+    ('security', 'global', 'Blacklist', 'Deny blacklisted clients access to the site.', 'security_blacklist', '1', 'toggle("e/d")', '1', NOW(), NOW()),
+    ('security', 'global', 'HTTP POST Protection', 'Prevent incoming HTTP POST data from external sites by checking for valid form tickets.', 'security_http_post', '1', 'toggle("e/d")', '3', NOW(), NOW()),
+    ('security', 'global', 'Bad Bot Trap', 'Catch bad behaving bots from crawling your website.', 'security_bot_trap', '0', 'toggle("e/d")', '4', NOW(), NOW()),
+    ('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and prevent access to the site.', 'security_xss', '1', 'toggle("e/d")', '5', NOW(), NOW()),
+    ('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '0', 'toggle()', '13', NOW(), NOW());
+    
     ALTER TABLE `lc_countries` ADD `iso_code_1` VARCHAR(3) NOT NULL AFTER `domestic_name`;
     UPDATE `lc_countries` SET iso_code_1 = '004' WHERE iso_code_2 = 'AF';
     UPDATE `lc_countries` SET iso_code_1 = '248' WHERE iso_code_2 = 'AX';
@@ -291,7 +307,7 @@
     UPDATE `lc_countries` SET iso_code_1 = '249' WHERE iso_code_2 = 'FX';
     UPDATE `lc_countries` SET iso_code_1 = '626' WHERE iso_code_2 = 'TP';
   
-### LiteCart 1.2 to 1.2.2
+### LiteCart 1.2 to 1.2.1
   
   (No MySQL Changes)
   
