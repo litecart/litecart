@@ -310,12 +310,11 @@
         <li>Options -Indexes</li>
         <li>Modules
           <ul>
-            <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo !in_array('mod_auth_basic', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo !in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_env <?php if (!empty($installed_apache_modules)) echo !in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_headers <?php if (!empty($installed_apache_modules)) echo !in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo !in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_redirect <?php if (!empty($installed_apache_modules)) echo !in_array('mod_redirect', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo in_array('mod_auth_basic', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
           </ul>
         </li>
       </ul>
