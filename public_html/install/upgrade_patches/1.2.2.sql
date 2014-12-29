@@ -11,7 +11,8 @@ VALUES ('security', 'global', 'Session Hijacking Protection', 'Destroy sessions 
 ('security', 'global', 'Blacklist', 'Deny blacklisted clients access to the site.', 'security_blacklist', '1', 'toggle("e/d")', '1', NOW(), NOW()),
 ('security', 'global', 'HTTP POST Protection', 'Prevent incoming HTTP POST data from external sites by checking for valid form tickets.', 'security_http_post', '1', 'toggle("e/d")', '3', NOW(), NOW()),
 ('security', 'global', 'Bad Bot Trap', 'Catch bad behaving bots from crawling your website.', 'security_bot_trap', '0', 'toggle("e/d")', '4', NOW(), NOW()),
-('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and prevent access to the site.', 'security_xss', '1', 'toggle("e/d")', '5', NOW(), NOW());
+('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and prevent access to the site.', 'security_xss', '1', 'toggle("e/d")', '5', NOW(), NOW()),
+('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '0', 'toggle()', '13', NOW(), NOW());
 -- --------------------------------------------------------
 ALTER TABLE `lc_countries` ADD `iso_code_1` VARCHAR(3) NOT NULL AFTER `domestic_name`;
 -- --------------------------------------------------------
