@@ -556,16 +556,6 @@
       $key_i = 1;
       while (isset($this->data['items']['new'.$key_i])) $key_i++;
       
-    // Round decimals
-      //$rounded_price = round(currency::calculate($item['price'], $this->data['currency_code']), currency::$currencies[$this->data['currency_code']]['decimals']);
-      //$item['price'] = currency::convert($rounded_price, $this->data['currency_code'], settings->get('store_currency_code'));
-      
-      if (!empty($item['tax_class_id'])) {
-        $item['tax'] = tax::get_tax($item['price'], $item['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
-      } else {
-        $item['tax'] = isset($item['tax']) ? $item['tax'] : 0;
-      }
-      
       $this->data['items']['new'.$key_i] = array(
         'id' => '',
         'product_id' => $item['product_id'],
@@ -590,16 +580,12 @@
       $key_i = 1;
       while (isset($this->data['order_total']['new'.$key_i])) $key_i++;
       
-    // Round decimals
-      //$rounded_value = round(currency::calculate($row['value'], $this->data['currency_code']), currency::$currencies[$this->data['currency_code']]['decimals']);
-      //$row['value'] = currency::convert($rounded_value, $this->data['currency_code'], settings::get('store_currency_code'));
-      
       $this->data['order_total']['new'.$key_i] = array(
         'id' => 0,
         'module_id' => $row['id'],
         'title' =>  $row['title'],
         'value' => $row['value'],
-        'tax' => !empty($row['tax_class_id']) ? tax::get_tax($row['value'], $row['tax_class_id'], $this->data['customer']['country_code'], $this->data['customer']['zone_code']) : $row['tax'],
+        'tax' => $row['tax'],
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       );
       

@@ -22,11 +22,8 @@
           
           // Round amounts
             if (settings::get('round_amounts')) {
-              $rounded_value = round(currency::calculate($row['value'], currency::$selected['code']), currency::$selected['decimals']);
-              $row['value'] = currency::convert($rounded_value, currency::$selected['code'], settings::get('store_currency_code'));
-              
-              $rounded_value = round(currency::calculate($row['tax'], currency::$selected['code']), currency::$selected['decimals']);
-              $row['tax'] = currency::convert($rounded_value, currency::$selected['code'], settings::get('store_currency_code'));
+              $row['value'] = currency::round($row['value'], $order->data['currency_code']);
+              $row['tax'] = currency::round($row['tax'], $order->data['currency_code']);
             }
             
             $order->add_ot_row(array(

@@ -147,7 +147,7 @@
       return self::$currencies[$currency_code]['prefix'] . number_format($value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$currency_code]['suffix'];
     }
     
-    public function format_raw($value, $currency_code=null, $currency_value=null) {
+    public static function format_raw($value, $currency_code=null, $currency_value=null) {
       
       if (empty($currency_code)) $currency_code = self::$selected['code'];
       if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
@@ -155,6 +155,19 @@
       if ($currency_value === null) $currency_value = currency::$currencies[$currency_code]['value'];
       
       return number_format($value * $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
+    }
+    
+  // Round a store currency amount in a remote currency
+    public static function round($value, $currency_code) {
+      
+      if (empty($currency_code)) $currency_code = self::$selected['code'];
+      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
+      
+      $value = self::convert($value, settings::get('store_currency_code'), $currency_code);
+      $value = round($value, self::$currencies[$currency_code]['decimals']);
+      $value = self::convert($value, settings::get('store_currency_code'), $currency_code);
+      
+      return $value;
     }
   }
   

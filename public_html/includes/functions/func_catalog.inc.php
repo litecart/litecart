@@ -87,7 +87,7 @@
         break;
       case 'date':
         $sql_local_sort = "order by date_created desc";
-        $sql_global_sort = "order by date_created desc";
+        $sql_global_sort = "order by p.date_created desc";
         break;
       case 'occurrences':
         $sql_local_sort = "";
@@ -100,9 +100,9 @@
       case 'popularity':
       default:
         //$sql_local_sort = "order by (p.purchases / p.views) desc";
-        //$sql_local_sort = "order by (views / ((unix_timestamp() - unix_timestamp(date_created)) / 86400)) desc, date_created desc";
+        //$sql_local_sort = "order by (views / ((unix_timestamp() - unix_timestamp(p.date_created)) / 86400)) desc, p.date_created desc";
         $sql_local_sort = "";
-        $sql_global_sort = "order by (views / timestampdiff(day, now(), from_unixtime(date_created))) desc";
+        $sql_global_sort = "order by (views / timestampdiff(day, now(), from_unixtime(p.date_created))) desc";
         break;
     }
     

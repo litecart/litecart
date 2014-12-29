@@ -307,7 +307,13 @@
       // Refresh Price
         self::$data['items'][$item_key]['price'] = $product->campaign['price'] ? $product->campaign['price'] : $product->price;
         self::$data['items'][$item_key]['price'] += self::$data['items'][$item_key]['extras'];
-        self::$data['items'][$item_key]['price'] = round(self::$data['items'][$item_key]['price'], currency::$selected['decimals']);
+        self::$data['items'][$item_key]['tax'] = tax::get_tax(self::$data['items'][$item_key]['price'], self::$data['items'][$item_key]['tax_class_id']);
+        
+        if (settings::get('round_amounts')) {
+          self::$data['items'][$item_key]['price'] = currency::round(self::$data['items'][$item_key]['price'], currency::$selected['code']);
+          self::$data['items'][$item_key]['tax'] = tax::get_tax(self::$data['items'][$item_key]['price'], self::$data['items'][$item_key]['tax_class_id']);
+          self::$data['items'][$item_key]['tax'] = currency::round(self::$data['items'][$item_key]['tax'], currency::$selected['code']);
+        }
         
       // Stock
         if (empty($product->sold_out_status['orderable'])) {
