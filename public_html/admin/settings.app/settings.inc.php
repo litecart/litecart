@@ -68,9 +68,9 @@
 	} else {
     if (substr($setting['function'], 0, 6) == 'toggle') {
       if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-        $setting['value'] = 'True';
+        $setting['value'] = language::translate('title_true', 'True');
       } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
-        $setting['value'] = 'False';
+        $setting['value'] = language::translate('title_false', 'False');
       }
     }
 ?>

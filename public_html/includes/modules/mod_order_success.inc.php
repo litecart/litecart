@@ -11,8 +11,7 @@
       $this->load();
     }
     
-    public function process() {
-      global $order;
+    public function process($order) {
       
       $output = '';
       

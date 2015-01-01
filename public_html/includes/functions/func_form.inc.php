@@ -699,6 +699,19 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
+  function form_draw_payment_modules_list($name, $input=true, $multiple=true, $parameters='') {
+    
+    $payment = new mod_payment();
+    
+    $options = array();
+    
+    foreach ($payment->modules as $module) {
+      $options[] = array($module->name, $module->id);
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
   function form_draw_products_list($name, $input=true, $multiple=false, $parameters='') {
     
     $options = array();
@@ -726,6 +739,19 @@
           $options[] = array($product->options_stock[$key]['name'][language::$selected['code']] .' ['. $product->options_stock[$key]['quantity'] .'] ', $product->id);
         }
       }
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
+  function form_draw_shipping_modules_list($name, $input=true, $multiple=true, $parameters='') {
+    
+    $shipping = new mod_shipping();
+    
+    $options = array();
+    
+    foreach ($shipping->modules as $module) {
+      $options[] = array($module->name, $module->id);
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
