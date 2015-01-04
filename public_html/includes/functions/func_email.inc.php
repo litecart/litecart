@@ -13,46 +13,42 @@
     $from_email = filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $from_formatted), FILTER_SANITIZE_EMAIL);
     
   // Generate a boundary string
-    $mime_boundary = '==Multipart_Boundary_x'. md5(time()) .'x';
+    $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
     
     if (strtoupper(language::$selected['charset']) == 'UTF-8') {
       $headers = 'From: '. (!empty($from_name) ? '=?utf-8?b?'. base64_encode($from_name) .'?= <'. $from_email .'>' : $from_email) . "\r\n"
                . 'Reply-To: '. $from_email . "\r\n"
                . 'Return-Path: '. $from_email . "\r\n"
                . 'MIME-Version: 1.0' . "\r\n"
-               . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary . '"' . "\r\n"
+               . 'Content-Type: multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n"
                . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
     } else {
       $headers = 'From: '. (!empty($from_name) ? $from_formatted : $from_email) . "\r\n"
                . 'Reply-To: '. $from_email . "\r\n"
                . 'Return-Path: '. $from_email . "\r\n"
                . 'MIME-Version: 1.0' . "\r\n"
-               . 'Content-Type: multipart/mixed; boundary="'. $mime_boundary . '"' . "\r\n"
+               . 'Content-Type: multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n"
                . 'X-Mailer: LiteCart PHP/' . phpversion() . "\r\n\r\n";
     }
     
   // Add a multipart boundary above the plain message
     $message = 'This is a multi-part message in MIME format.' . "\r\n\r\n"
-              . '--' . $mime_boundary . "\r\n"
+              . '--' . $multipart_boundary_string . "\r\n"
               . 'Content-Type: '. (($html) ? 'text/html' : 'text/plain') .'; charset='. language::$selected['charset'] . "\r\n"
               . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
               . $message . "\r\n\r\n";
     
-  // Are there are attachments?
+  // Add file attachments to the message
     if (!empty($attachments)) {
       
       foreach ($attachments as $file) {
-        $file = fopen($file, 'rb');
-        $data = fread($file, filesize($file));
-        fclose($file);
+        $data = file_get_contents($file);
        
-      // Add file attachment to the message
-        $message .= '--'. $mime_boundary . "\r\n"
-                 . 'Content-Type: '. @mime_content_type($file) .'; name="'. basename($file) .'"' . "\r\n"
+        $message .= '--'. $multipart_boundary_string . "\r\n"
+                 . 'Content-Type: application/octet-stream; name="'. basename($file) .'"' . "\r\n"
                  . 'Content-Disposition: attachment; filename="'. basename($file) . '"' . "\r\n"
                  . 'Content-Transfer-Encoding: base64' . "\r\n\r\n"
-                 . chunk_split(base64_encode($data)) . "\r\n\r\n"
-                 . '--'. $mime_boundary .'--' . "\r\n";
+                 . chunk_split(base64_encode($data)) . "\r\n\r\n";
       }
     }
     
