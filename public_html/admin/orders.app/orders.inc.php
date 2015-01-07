@@ -117,7 +117,7 @@
       echo '<li><fieldset>' . PHP_EOL
          . '  <legend>'. $order_action_options[$module_id]['name'] .'</legend>' . PHP_EOL;
       foreach (array_keys($order_action_options[$module_id]['options']) as $option_id) {
-        echo '<button name="order_action" value="'. $module_id.':'.$option_id .'">'. $order_action_options[$module_id]['options'][$option_id]['title'] .'</button>' . PHP_EOL;
+        echo '<button name="order_action" value="'. $module_id.':'.$option_id .'" type="submit" formtarget="'. (!empty($order_action_options[$module_id]['options'][$option_id]['target']) ? $order_action_options[$module_id]['options'][$option_id]['target'] : '_self') .'">'. $order_action_options[$module_id]['options'][$option_id]['title'] .'</button>' . PHP_EOL;
       }
       echo '</fieldset></li>' . PHP_EOL;
     }
