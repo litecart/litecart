@@ -68,33 +68,33 @@
   
   <table>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
         <?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?>
         <?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?>
       </td>
     </tr>
     <tr>
-        <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2)</strong><br />
+        <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2)</strong><br />
           <?php echo functions::form_draw_text_field('iso_code_2', true, 'data-size="tiny" required="required" pattern="[A-Z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>
-        <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3)</strong><br />
+        <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3)</strong><br />
           <?php echo functions::form_draw_text_field('iso_code_3', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_domestic_name', 'Domestic Name'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_domestic_name', 'Domestic Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('domestic_name', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong> <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo language::translate('title_reference', 'Reference')?></a><br />
+      <td><strong><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong> <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo language::translate('title_reference', 'Reference')?></a><br />
         <?php echo functions::form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
         <script>
           $("#address-format-hint").click(function() {
@@ -111,18 +111,18 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_postcode_required', 'Postcode Required'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_postcode_required', 'Postcode Required'); ?></strong><br />
         <?php echo functions::form_draw_radio_button('postcode_required', '1', isset($_POST['postcode_required']) ? $_POST['postcode_required'] : '1'); ?> <?php echo language::translate('title_yes', 'Yes'); ?>
         <?php echo functions::form_draw_radio_button('postcode_required', '0', isset($_POST['postcode_required']) ? $_POST['postcode_required'] : '1'); ?> <?php echo language::translate('title_no', 'No'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_currency_code', 'Currency Code'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_currency_code', 'Currency Code'); ?></strong><br />
         <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?></strong><br />
         <?php echo functions::form_draw_text_field('phone_code', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
@@ -131,30 +131,30 @@
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
   <table width="100%" class="dataTable" id="table-zones">
     <tr class="header">
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_code', 'Code'); ?></th>
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th align="center" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
+      <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th style="vertical-align: text-top"><?php echo language::translate('title_code', 'Code'); ?></th>
+      <th style="vertical-align: text-top"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th align="center" style="vertical-align: text-top">&nbsp;</th>
     </tr>
   <?php
       if (!empty($_POST['zones'])) {
         foreach (array_keys($_POST['zones']) as $key) {
   ?>
     <tr>
-      <td align="left"><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-      <td align="left"><?php echo functions::form_draw_hidden_field('zones['. $key .'][code]', true); ?><?php echo $_POST['zones'][$key]['code']; ?></td>
-      <td align="left"><?php echo functions::form_draw_hidden_field('zones['. $key .'][name]', true); ?><?php echo $_POST['zones'][$key]['name']; ?></td>
-      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
+      <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][code]', true); ?><?php echo $_POST['zones'][$key]['code']; ?></td>
+      <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][name]', true); ?><?php echo $_POST['zones'][$key]['name']; ?></td>
+      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
   <?php
         }
       }
   ?>
     <tr>
-      <td align="left">&nbsp;</td>
-      <td align="left"><?php echo functions::form_draw_text_field('zone[code]', ''); ?></td>
-      <td align="left"><?php echo functions::form_draw_text_field('zone[name]', ''); ?></td>
-      <td align="right"><?php echo functions::form_draw_button('add_zone', language::translate('title_add', 'Add'), 'button'); ?></td>
+      <td>&nbsp;</td>
+      <td><?php echo functions::form_draw_text_field('zone[code]', ''); ?></td>
+      <td><?php echo functions::form_draw_text_field('zone[name]', ''); ?></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_button('add_zone', language::translate('title_add', 'Add'), 'button'); ?></td>
     </tr>
   </table>
   
@@ -199,10 +199,10 @@
       if ($("select[name='country[code]']").find("option:selected").val() == "") return;
       new_zone_i++;
       var output = '    <tr>'
-                 + '      <td align="left"><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-                 + '      <td align="left"><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][code]', 'new_zone_code')); ?>new_zone_code</td>'
-                 + '      <td align="left"><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][name]', 'new_zone_name')); ?>new_zone_name</td>'
-                 + '      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
+                 + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][code]', 'new_zone_code')); ?>new_zone_code</td>'
+                 + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][name]', 'new_zone_name')); ?>new_zone_name</td>'
+                 + '      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       output = output.replace(/new_zone_code/g, $("input[name='zone[code]']").val());

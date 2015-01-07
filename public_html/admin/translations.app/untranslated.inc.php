@@ -60,9 +60,9 @@
 
   <table class="dataTable" width="100%">
     <tr class="header">
-      <th align="left"><?php echo functions::form_draw_languages_list('language_1', true, false, 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1=\' + $(this).val() + \'&language_2='. (isset($_GET['language_2']) ? $_GET['language_2'] : '') .'\'"'); ?></th>
-      <th align="left"><?php echo functions::form_draw_languages_list('language_2', true, false, 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1='. (isset($_GET['language_1']) ? $_GET['language_1'] : '') .'&language_2=\' + $(this).val()"'); ?></th>
-      <th align="left">&nbsp;</th>
+      <th><?php echo functions::form_draw_languages_list('language_1', true, false, 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1=\' + $(this).val() + \'&language_2='. (isset($_GET['language_2']) ? $_GET['language_2'] : '') .'\'"'); ?></th>
+      <th><?php echo functions::form_draw_languages_list('language_2', true, false, 'onchange="location=\'?app='. $_GET['app'] .'&doc='. $_GET['doc'] .'&language_1='. (isset($_GET['language_1']) ? $_GET['language_1'] : '') .'&language_2=\' + $(this).val()"'); ?></th>
+      <th>&nbsp;</th>
       <th>&nbsp;</th>
     </tr>
 <?php
@@ -99,10 +99,10 @@
     <tr class="<?php echo $rowclass; ?>">
       <td><?php if (!empty($_GET['language_1'])) echo functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$_GET['language_1'].']', $row['text_'.$_GET['language_1']], 'rows="2" tabindex="'. (1000+$i) .'" style="width: 230px"'); ?></td>
       <td><?php if (!empty($_GET['language_2'])) echo functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$_GET['language_2'].']', $row['text_'.$_GET['language_2']], 'rows="2" tabindex="'. (2000+$i) .'" style="width: 230px"'); ?></td>
-      <td nowrap="nowrap"><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
+      <td><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
         <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?>
       </td>
-      <td align="right"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_remove', 'Remove'); ?>" /></a></td>
+      <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php      
         if (++$page_items == $rows_per_page) break;

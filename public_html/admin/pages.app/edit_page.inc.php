@@ -60,11 +60,11 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
         <label><?php echo functions::form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_published', 'Published'); ?></label></td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_title', 'Title'); ?></strong><br />
 <?php
 $use_br = false;
@@ -77,7 +77,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_content', 'Content'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_content', 'Content'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -89,7 +89,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_head_title', 'Head Title'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_head_title', 'Head Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -101,7 +101,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_meta_description', 'Meta Description'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_meta_description', 'Meta Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -113,7 +113,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -125,14 +125,14 @@ foreach (array_keys(language::$languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_dock', 'Dock'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_dock', 'Dock'); ?></strong><br />
         <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo language::translate('text_dock_in_dock_menu', 'Dock in site menu'); ?></label><br />
         <label><?php echo functions::form_draw_checkbox('dock[]', 'customer_service', (isset($_POST['dock']) && in_array('customer_service', $_POST['dock'])) ? 'customer_service' : ''); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br />
         <label><?php echo functions::form_draw_checkbox('dock[]', 'information', (isset($_POST['dock']) && in_array('information', $_POST['dock'])) ? 'information' : '0'); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
         <?php echo functions::form_draw_number_field('priority', true); ?>
       </td>
     </tr>

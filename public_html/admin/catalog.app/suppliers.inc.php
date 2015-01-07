@@ -5,7 +5,7 @@
 <table class="dataTable" width="100%">
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th width="100%" align="left"><?php echo language::translate('title_name', 'Name'); ?></th>
+    <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
     <th>&nbsp;</th>
   </tr>
 <?php
@@ -32,7 +32,7 @@
     }
 ?>
   <tr class="footer">
-    <td colspan="3" align="left"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo database::num_rows($suppliers_query); ?></td>
+    <td colspan="3"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo database::num_rows($suppliers_query); ?></td>
   </tr>
 </table>
 

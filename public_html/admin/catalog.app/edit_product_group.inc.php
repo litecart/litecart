@@ -64,10 +64,10 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th align="left" style="vertical-align: text-top;" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th align="left" style="vertical-align: text-top; width: 100%;" nowrap="nowrap"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th align="center" style="vertical-align: text-top;" nowrap="nowrap"><?php echo empty($product_group->data['id']) ? '' : language::translate('title_products', 'Products'); ?></th>
-        <th align="center" style="vertical-align: text-top;" nowrap="nowrap">&nbsp;</th>
+        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top; width: 100%;"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th align="center" style="vertical-align: text-top;"><?php echo empty($product_group->data['id']) ? '' : language::translate('title_products', 'Products'); ?></th>
+        <th align="center" style="vertical-align: text-top;">&nbsp;</th>
       </tr>
 <?php
     if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) {
@@ -79,8 +79,8 @@
       $num_products = database::num_rows($products_query);
 ?>
       <tr>
-        <td align="left"><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
-        <td align="left">
+        <td><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
+        <td>
 <?php
       $use_br = false;
       foreach (array_keys(language::$languages) as $language_code) {
@@ -90,8 +90,8 @@
       }
 ?>
         </td>
-        <td align="center"><?php echo $num_products; ?></td>
-        <td align="right"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value"><img src="'. WS_DIR_IMAGES . 'icons/16x16/remove.png' .'" width="16" height="16" /></a>' : false; ?></td>
+        <td style="text-align: center;"><?php echo $num_products; ?></td>
+        <td style="text-align: right;"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value"><img src="'. WS_DIR_IMAGES . 'icons/16x16/remove.png' .'" width="16" height="16" /></a>' : false; ?></td>
       </tr>
   <?php
     }
@@ -115,10 +115,10 @@
         }
 ?>
         var output = '<tr>'
-                   + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
-                   + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
-                   + '  <td align="left" nowrap="nowrap">&nbsp;</td>'
-                   + '  <td align="right" nowrap="nowrap"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                   + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
+                   + '  <td><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
+                   + '  <td>&nbsp;</td>'
+                   + '  <td style="text-align: right;"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
                    + '</tr>';
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('tr').before(output);

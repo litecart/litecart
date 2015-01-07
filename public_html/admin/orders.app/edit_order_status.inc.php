@@ -58,7 +58,7 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
 <?php
   $use_br = false;
@@ -71,7 +71,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
 <?php
   $use_br = false;
   foreach (array_keys(language::$languages) as $language_code) {
@@ -83,7 +83,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_email_message', 'E-mail Message'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_email_message', 'E-mail Message'); ?></strong><br />
         <p><?php echo language::translate('description_order_status_email_message', 'Compose a message that will be used as e-mail body or leave blank to display the order copy.'); ?></p>
         <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>%order_id, %firstname, %lastname, %billing_address, %shipping_address, %order_copy_url</em></p>
 <?php
@@ -97,13 +97,13 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></td>
+      <td><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('text_notify_customer', 'Notify customer');?></td>
+      <td><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('text_notify_customer', 'Notify customer');?></td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
         <?php echo functions::form_draw_number_field('priority', true); ?>
       </td>
     </tr>

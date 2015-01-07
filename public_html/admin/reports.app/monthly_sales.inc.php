@@ -16,12 +16,12 @@
 
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_month', 'Month'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_shipping_fees', 'Shipping Fees'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_payment_fees', 'Payment Fees'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_total', 'Total'); ?></th>
+    <th width="100%"><?php echo language::translate('title_month', 'Month'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_shipping_fees', 'Shipping Fees'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_payment_fees', 'Payment Fees'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_total', 'Total'); ?></th>
   </tr>
 <?php
   $order_statuses = array();
@@ -95,12 +95,12 @@
     }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left"><?php echo strftime('%B, %Y', $timestamp); ?></td>
-    <td align="right" nowrap="nowrap"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
-    <td align="right" nowrap="nowrap"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
-    <td align="right" nowrap="nowrap"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
-    <td align="right" nowrap="nowrap"><?php echo currency::format($orders['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
-    <td align="right" nowrap="nowrap"><?php echo currency::format($orders['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
+    <td><?php echo strftime('%B, %Y', $timestamp); ?></td>
+    <td style="text-align: right;"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;"><?php echo currency::format($orders['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;"><?php echo currency::format($orders['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
   </tr>
 <?php
   }

@@ -115,33 +115,33 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
         <label><?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
         <label><?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?></label>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1)</strong><br />
+      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1)</strong><br />
         <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_charset', 'Charset'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_charset', 'Charset'); ?></strong><br />
         <?php echo functions::form_draw_text_field('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'placeholder="UTF-8" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_system_locale', 'System Locale'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_system_locale', 'System Locale'); ?></strong><br />
         <?php echo functions::form_draw_text_field('locale', true, 'placeholder="xx_XX.utf8" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_format', 'Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_date_format', 'Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
 <?php
   $options = array(
     array(strftime('%e %b %Y'), '%e %b %Y'),
@@ -152,7 +152,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_time_format', 'Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_time_format', 'Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
 <?php
   $options = array(
     array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
@@ -165,7 +165,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
 <?php
   $options = array(
     array('Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
@@ -184,7 +184,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
 <?php
   $options = array(
     array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
@@ -197,7 +197,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></strong><br />
 <?php
   $options = array(
     array(language::translate('char_dot', 'Dot'), '.'),
@@ -208,7 +208,7 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></strong><br />
 <?php
   $options = array(
     array(language::translate('char_comma', 'Comma'), ','),
@@ -220,17 +220,17 @@
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_force_currency_code', 'Force Currency Code'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_force_currency_code', 'Force Currency Code'); ?></strong><br />
         <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
         <?php echo functions::form_draw_number_field('priority', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <?php echo functions::form_draw_checkbox('set_default', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_default_language', 'Set as default language'); ?><br />
         <?php echo functions::form_draw_checkbox('set_store', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_store_language', 'Set as store language'); ?>
       </td>

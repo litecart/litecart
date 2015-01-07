@@ -8,8 +8,8 @@
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+    <th><?php echo language::translate('title_id', 'ID'); ?></th>
+    <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
     <th>&nbsp;</th>
   </tr>
 <?php
@@ -35,9 +35,9 @@
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $delivery_status['id'] .']', $delivery_status['id']); ?></td>
-    <td align="left"><?php echo $delivery_status['id']; ?></td>
-    <td align="left" nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>"><?php echo $delivery_status['name']; ?></a></td>
-    <td align="right"><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td><?php echo $delivery_status['id']; ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>"><?php echo $delivery_status['name']; ?></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -45,7 +45,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="5" align="left"><?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?>: <?php echo database::num_rows($delivery_status_query); ?></td>
+    <td colspan="5"><?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?>: <?php echo database::num_rows($delivery_status_query); ?></td>
   </tr>
 </table>
 

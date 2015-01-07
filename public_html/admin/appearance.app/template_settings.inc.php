@@ -39,8 +39,8 @@
 <?php echo functions::form_draw_form_begin('template_settings_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap" align="left" width="250"><?php echo language::translate('title_key', 'Key'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_value', 'Value'); ?></th>
+    <th width="250"><?php echo language::translate('title_key', 'Key'); ?></th>
+    <th><?php echo language::translate('title_value', 'Value'); ?></th>
     <th>&nbsp;</th>
   </tr>
 <?php
@@ -57,9 +57,9 @@
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" nowrap="nowrap"><u><?php echo $setting['title']; ?></u><br /><?php echo $setting['description']; ?></td>
-    <td align="left" valign="middle"><?php echo functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
-    <td align="right" valign="middle" nowrap="nowrap"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
+    <td><u><?php echo $setting['title']; ?></u><br /><?php echo $setting['description']; ?></td>
+    <td><?php echo functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
+    <td align="right"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
   </tr>
 <?php
     } else {
@@ -70,9 +70,9 @@
       }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" nowrap="nowrap"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
-    <td align="left"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128).'...' : $setting['value']); ?></td>
-    <td align="right" nowrap="nowrap"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
+    <td><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128).'...' : $setting['value']); ?></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       }
@@ -80,7 +80,7 @@
   } else {
 ?>
   <tr class="odd">
-    <td colspan="3" align="left" nowrap="nowrap"><?php echo language::translate('text_no_template_settings', 'There are no settings available for this template.'); ?></td>
+    <td colspan="3"><?php echo language::translate('text_no_template_settings', 'There are no settings available for this template.'); ?></td>
   </tr>
 <?php
 }

@@ -21,9 +21,9 @@
 
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_customer', 'Customer'); ?></th>
-    <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
+    <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
+    <th width="100%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
   </tr>
 <?php
   $order_statuses = array();
@@ -58,9 +58,9 @@
       }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" nowrap="nowrap"><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $customer['email']; ?></td>
-    <td align="center" nowrap="nowrap"><?php echo currency::format($customer['total_amount'], false, false, settings::get('store_currency_code')); ?></td>
+    <td><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+    <td><?php echo $customer['email']; ?></td>
+    <td style="text-align: center;"><?php echo currency::format($customer['total_amount'], false, false, settings::get('store_currency_code')); ?></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

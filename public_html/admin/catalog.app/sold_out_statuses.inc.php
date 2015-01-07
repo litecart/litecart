@@ -8,9 +8,9 @@
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_orderable', 'Orderable'); ?></th>
+    <th><?php echo language::translate('title_id', 'ID'); ?></th>
+    <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+    <th><?php echo language::translate('title_orderable', 'Orderable'); ?></th>
     <th>&nbsp;</th>
   </tr>
 <?php
@@ -37,10 +37,10 @@
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $sold_out_status['id'] .']', $sold_out_status['id']); ?></td>
-    <td align="left"><?php echo $sold_out_status['id']; ?></td>
-    <td align="left" nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
-    <td align="center" nowrap="nowrap"><?php echo !empty($sold_out_status['orderable']) ? 'x' : ''; ?></td>
-    <td align="right"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td><?php echo $sold_out_status['id']; ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
+    <td style="text-align: center;"><?php echo !empty($sold_out_status['orderable']) ? 'x' : ''; ?></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -48,7 +48,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="5" align="left"><?php echo language::translate('title_sold_out_statuses', 'Sold Out Statuses'); ?>: <?php echo database::num_rows($sold_out_status_query); ?></td>
+    <td colspan="5"><?php echo language::translate('title_sold_out_statuses', 'Sold Out Statuses'); ?>: <?php echo database::num_rows($sold_out_status_query); ?></td>
   </tr>
 </table>
 

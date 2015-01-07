@@ -63,49 +63,49 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
         <?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?>
         <?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_language', 'Language'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_language', 'Language'); ?></strong><br />
         <?php echo functions::form_draw_languages_list('language_code', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_caption', 'Caption'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_caption', 'Caption'); ?></strong><br />
         <?php echo functions::form_draw_textarea('caption', true, 'style="height: 125px;"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_link', 'Link'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_link', 'Link'); ?></strong><br />
         <?php echo functions::form_draw_url_field('link', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_image', 'Image'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_image', 'Image'); ?></strong><br />
         <?php echo functions::form_draw_file_field('image'); ?>
         <?php echo (!empty($slide->data['image'])) ? '<br />' . $slide->data['image'] : ''; ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></strong><br />
         <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></strong><br />
         <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
         <?php echo functions::form_draw_number_field('priority', true); ?>
       </td>
     </tr>

@@ -91,8 +91,8 @@
 <p><a href="<?php echo document::href_link('', array('action' => 'edit_all'), true, array('id')); ?>"><?php echo language::translate('text_edit_all_on_page', 'Edit all on page'); ?></a></p>
 <table align="center" width="100%" class="dataTable">
   <tr class="header">
-    <th align="left"><?php echo language::translate('title_code', 'Code');?></th>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo '<th nowrap="nowrap" align="left">'. language::$languages[$language_code]['name'] .'</th>'; ?>
+    <th><?php echo language::translate('title_code', 'Code');?></th>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo '<th>'. language::$languages[$language_code]['name'] .'</th>'; ?>
     <th>&nbsp;</th>
   </tr>
 <?php
@@ -122,18 +122,18 @@
     if (isset($_GET['action']) && ($_GET['action'] == 'edit_all' || ($_GET['action'] == 'edit' && isset($_GET['id']) && $_GET['id'] == $row['id']))) {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left"><?php echo $row['code']; ?><br />
+    <td><?php echo $row['code']; ?><br />
     <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></td>
     <?php foreach (array_keys(language::$languages) as $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px"') .'</td>'; ?>
-    <td align="right" valign="middle"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''.document::link('', array(), true, array('action', 'id')).'\'"'); ?></td>
+    <td align="right"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="location=\''.document::link('', array(), true, array('action', 'id')).'\'"'); ?></td>
   </tr>
 <?php
       } else {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left"><?php echo $row['code']; ?></td>
+    <td><?php echo $row['code']; ?></td>
     <?php foreach (array_keys(language::$languages) as $language_code) echo '<td>'. functions::form_draw_static_field('', (strlen($row['text_'.$language_code]) > 300) ? substr($row['text_'.$language_code], 0, 250).' ...' : $row['text_'.$language_code]) .'</td>'; ?>
-    <td align="right"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo language::translate('title_edit', 'Edit'); ?>" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo language::translate('text_remove', 'Remove'); ?>" /></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo language::translate('title_edit', 'Edit'); ?>" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo language::translate('text_remove', 'Remove'); ?>" /></a></td>
   </tr>
 <?php
       }

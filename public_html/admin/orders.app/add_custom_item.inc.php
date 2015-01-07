@@ -19,7 +19,7 @@
 ?>
 <script>
   var new_row = '  <tr class="item">'
-              + '    <td nowrap="nowrap" align="left">'
+              + '    <td>'
               + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][id]', ''); ?>'
               + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][product_id]', '0'); ?>'
               + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', ''); ?>'
@@ -27,12 +27,12 @@
               + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][name]', $_POST['name']); ?>'
               + '      <?php echo $_POST['name']; ?>'
               + '    </td>'
-              + '    <td nowrap="nowrap" align="center"><?php echo functions::form_draw_hidden_field('items[new_item_index][sku]', $_POST['sku']); ?><?php echo $_POST['sku']; ?></td>'
-              + '    <td nowrap="nowrap" align="center"><?php echo functions::form_draw_decimal_field('weight', $_POST['weight']); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('weight_class', $_POST['weight_class'])); ?></td>'
-              + '    <td nowrap="nowrap" align="center"><?php echo functions::form_draw_number_field('items[new_item_index][quantity]', $_POST['quantity']); ?></td>'
-              + '    <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][price]', $_POST['price']); ?></td>'
-              + '    <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][tax]', $_POST['tax']); ?></td>'
-              + '    <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+              + '    <td style="text-align: center;"><?php echo functions::form_draw_hidden_field('items[new_item_index][sku]', $_POST['sku']); ?><?php echo $_POST['sku']; ?></td>'
+              + '    <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('weight', $_POST['weight']); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('weight_class', $_POST['weight_class'])); ?></td>'
+              + '    <td style="text-align: center;"><?php echo functions::form_draw_number_field('items[new_item_index][quantity]', $_POST['quantity']); ?></td>'
+              + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][price]', $_POST['price']); ?></td>'
+              + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][tax]', $_POST['tax']); ?></td>'
+              + '    <td><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
               + '  </tr>';
   
   new_row = new_row.replace(/new_item_index/g, "new_<?php echo time(); ?>");

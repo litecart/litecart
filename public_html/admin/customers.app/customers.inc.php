@@ -8,12 +8,12 @@
 <?php echo functions::form_draw_form_begin('customers_form', 'post'); ?>
 <table width="100%" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap"><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_name', 'Name'); ?></th>
-    <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_company', 'Company'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-    <th nowrap="nowrap">&nbsp;</th>
+    <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+    <th><?php echo language::translate('title_id', 'ID'); ?></th>
+    <th><?php echo language::translate('title_name', 'Name'); ?></th>
+    <th width="100%"><?php echo language::translate('title_company', 'Company'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+    <th>&nbsp;</th>
   </tr>
 <?php
   $customers_query = database::query(
@@ -37,12 +37,12 @@
       }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td nowrap="nowrap"><?php echo functions::form_draw_checkbox('orders['.$customer['id'].']', $customer['id']); ?></td>
-    <td nowrap="nowrap" align="left"><?php echo $customer['id']; ?></td>
-    <td nowrap="nowrap" align="left"><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
-    <td nowrap="nowrap" align="left"><?php echo $customer['company']; ?></td>
-    <td nowrap="nowrap" align="right"><?php echo strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-    <td nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
+    <td><?php echo functions::form_draw_checkbox('orders['.$customer['id'].']', $customer['id']); ?></td>
+    <td><?php echo $customer['id']; ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
+    <td><?php echo $customer['company']; ?></td>
+    <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -50,7 +50,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="6" align="left"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
+    <td colspan="6"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
   </tr>
 </table>
 

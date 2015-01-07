@@ -8,13 +8,13 @@
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_tax_class', 'Tax Class'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_name', 'Name'); ?></th>
-    <th nowrap="nowrap" align="left" style="width: 100%;"><?php echo language::translate('title_description', 'Description'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_rate', 'Rate'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_type', 'Type'); ?></th>
+    <th><?php echo language::translate('title_id', 'ID'); ?></th>
+    <th><?php echo language::translate('title_tax_class', 'Tax Class'); ?></th>
+    <th><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></th>
+    <th><?php echo language::translate('title_name', 'Name'); ?></th>
+    <th style="width: 100%;"><?php echo language::translate('title_description', 'Description'); ?></th>
+    <th><?php echo language::translate('title_rate', 'Rate'); ?></th>
+    <th><?php echo language::translate('title_type', 'Type'); ?></th>
     <th>&nbsp;</th>
   </tr>
 <?php
@@ -42,14 +42,14 @@
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo functions::form_draw_checkbox('tax_rates['. $tax_rate['id'] .']', $tax_rate['id']); ?></td>
-    <td align="left"><?php echo $tax_rate['id']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $tax_rate['tax_class']; ?></td>
-    <td align="left" nowrap="nowrap"><?php echo $tax_rate['geo_zone']; ?></td>
-    <td align="left" nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>"><?php echo $tax_rate['name']; ?></a></td>
-    <td align="left" nowrap="nowrap"><?php echo $tax_rate['description']; ?></td>
-    <td align="left"><?php echo number_format($tax_rate['rate'], 2); ?></td>
-    <td align="left"><?php echo $tax_rate['type']; ?></td>
-    <td align="right"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td><?php echo $tax_rate['id']; ?></td>
+    <td><?php echo $tax_rate['tax_class']; ?></td>
+    <td><?php echo $tax_rate['geo_zone']; ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>"><?php echo $tax_rate['name']; ?></a></td>
+    <td><?php echo $tax_rate['description']; ?></td>
+    <td><?php echo number_format($tax_rate['rate'], 2); ?></td>
+    <td><?php echo $tax_rate['type']; ?></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -57,7 +57,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="9" align="left"><?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>: <?php echo database::num_rows($tax_rates_query); ?></td>
+    <td colspan="9"><?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>: <?php echo database::num_rows($tax_rates_query); ?></td>
   </tr>
 </table>
 

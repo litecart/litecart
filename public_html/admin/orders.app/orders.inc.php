@@ -48,15 +48,15 @@
 <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
 <table width="100%" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap"><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_country', 'Country'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-    <th nowrap="nowrap" align="left"><?php echo language::translate('title_date', 'Date'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-    <th nowrap="nowrap">&nbsp;</th>
+    <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+    <th><?php echo language::translate('title_id', 'ID'); ?></th>
+    <th width="100%"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+    <th><?php echo language::translate('title_country', 'Country'); ?></th>
+    <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+    <th><?php echo language::translate('title_date', 'Date'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
+    <th>&nbsp;</th>
   </tr>
 <?php
   $orders_query = database::query(
@@ -81,15 +81,15 @@
       }
 ?>
   <tr class="<?php echo $rowclass; ?>"<?php echo ($order['order_status_id'] == 0) ? ' style="opacity: 0.5;"' : false; ?>>
-    <td nowrap="nowrap"><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
-    <td nowrap="nowrap" align="left"><?php echo $order['id']; ?></td>
-    <td nowrap="nowrap" align="left"><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
-    <td nowrap="nowrap" align="left"><?php echo functions::reference_get_country_name($order['customer_country_code']); ?></td>
-    <td nowrap="nowrap" align="left"><?php echo $order['payment_option_name']; ?></td>
-    <td nowrap="nowrap" align="right"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-    <td nowrap="nowrap" align="right"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
-    <td nowrap="nowrap" align="center"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
-    <td nowrap="nowrap">
+    <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+    <td><?php echo $order['id']; ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
+    <td><?php echo functions::reference_get_country_name($order['customer_country_code']); ?></td>
+    <td><?php echo $order['payment_option_name']; ?></td>
+    <td style="text-align: right;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+    <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
+    <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
+    <td>
       <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/box.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a>
       <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/print.png'; ?>" width="16" height="16" border="0" align="absbottom" /></a>
       <a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id'], 'redirect' => $_SERVER['REQUEST_URI']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a>
@@ -101,7 +101,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="9" align="left"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+    <td colspan="9"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
   </tr>
 </table>
 

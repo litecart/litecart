@@ -72,7 +72,7 @@
       <td></td>
     </tr>
     <tr>
-      <td nowrap="nowrap"><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
+      <td><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
         <?php echo functions::form_draw_text_field('tax_id', true); ?></td>
       <td><?php echo language::translate('title_company', 'Company'); ?><br />
         <?php echo functions::form_draw_text_field('company', true); ?></td>

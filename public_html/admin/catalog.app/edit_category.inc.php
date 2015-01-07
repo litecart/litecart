@@ -91,11 +91,11 @@
       <div id="tab-general">
         <table>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
               <label><?php echo functions::form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_published', 'Published'); ?></label></td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap">
+            <td>
               <strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
 <?php
 $use_br = false;
@@ -108,22 +108,22 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_code', 'Code'); ?></strong><br />
               <?php echo functions::form_draw_text_field('code', true); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_parent_category', 'Parent Category'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_parent_category', 'Parent Category'); ?></strong><br />
               <?php echo functions::form_draw_categories_list('parent_id', true); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_dock', 'Dock'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_dock', 'Dock'); ?></strong><br />
               <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', isset($_POST['dock']) ? $_POST['dock'] : 'menu'); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in menu'); ?></label>
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_list_style', 'List Style'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_list_style', 'List Style'); ?></strong><br />
 <?php
   $options = array(
     array(language::translate('title_columns', 'Columns'), 'columns'),
@@ -134,26 +134,26 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_keywords', 'Keywords'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_keywords', 'Keywords'); ?></strong><br />
               <?php echo functions::form_draw_text_field('keywords', true, 'data-size="large"'); ?>
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></strong><br />
+            <td><strong><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></strong><br />
             <?php echo functions::form_draw_file_field('image', ''); ?><?php if (isset($category->data['image']) && $category->data['image'] != '') echo '<br />' . PHP_EOL . $category->data['image']; ?></td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
               <?php echo functions::form_draw_number_field('priority', true); ?>
             </td>
           </tr>
           <?php if (isset($category->data['id'])) { ?>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_updated', 'Date Updated'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_date_updated', 'Date Updated'); ?></strong><br />
               <?php echo strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_date_created', 'Date Created'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_date_created', 'Date Created'); ?></strong><br />
               <?php echo strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></td>
           </tr>
           <?php } ?>
@@ -163,7 +163,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       <div id="tab-information">
         <table>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_h1_title', 'H1 Title'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_h1_title', 'H1 Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -175,7 +175,7 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_short_description', 'Short Description'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_short_description', 'Short Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -186,7 +186,7 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -198,7 +198,7 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_head_title', 'Head Title'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_head_title', 'Head Title'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -210,7 +210,7 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_meta_description', 'Meta Description'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_meta_description', 'Meta Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -222,7 +222,7 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {

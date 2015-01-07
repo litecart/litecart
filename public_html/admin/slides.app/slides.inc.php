@@ -24,12 +24,12 @@
   <table width="100%" align="center" class="dataTable">
     <tr class="header">
       <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-      <th nowrap="nowrap" align="left"><?php echo language::translate('title_id', 'ID'); ?></th>
-      <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_language', 'Language'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_priority', 'Priority'); ?></th>
+      <th><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_language', 'Language'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_priority', 'Priority'); ?></th>
       <th>&nbsp;</th>
     </tr>
 <?php
@@ -54,14 +54,14 @@
     
 ?>
     <tr class="<?php echo $rowclass . ($slide['status'] ? false : ' semi-transparent'); ?>">
-      <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($slide['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
-      <td align="left"><?php echo $slide['id']; ?></td>
-      <td align="left"><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
-      <td align="left"><?php echo $slide['language_code']; ?></td>
-      <td align="center" nowrap="nowrap"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
-      <td align="center" nowrap="nowrap"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
-      <td align="center"><?php echo $slide['priority']; ?></td>
-      <td align="right"><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+      <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($slide['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+      <td><?php echo $slide['id']; ?></td>
+      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
+      <td><?php echo $slide['language_code']; ?></td>
+      <td style="text-align: center;"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
+      <td style="text-align: center;"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
+      <td style="text-align: center;"><?php echo $slide['priority']; ?></td>
+      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -69,7 +69,7 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="8" align="left"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo database::num_rows($slides_query); ?></td>
+      <td colspan="8"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo database::num_rows($slides_query); ?></td>
     </tr>
   </table>
 

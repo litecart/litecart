@@ -105,51 +105,51 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
         <label><?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
         <label><?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?></label>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217)</strong><br />
+      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217)</strong><br />
         <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217)</strong><br />
+      <td><strong><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217)</strong><br />
       <?php echo functions::form_draw_text_field('number', true, 'data-size="tiny" pattern="[0-9]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?> </a></td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_value', 'Value'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_value', 'Value'); ?></strong><br />
         <?php echo functions::form_draw_decimal_field('value', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_prefix', 'Prefix'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_prefix', 'Prefix'); ?></strong><br />
         <?php echo functions::form_draw_text_field('prefix', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_suffix', 'Suffix'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_suffix', 'Suffix'); ?></strong><br />
       <?php echo functions::form_draw_text_field('suffix', true, 'data-size="tiny"'); ?></td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_decimals', 'Decimals'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_decimals', 'Decimals'); ?></strong><br />
         <?php echo functions::form_draw_number_field('decimals', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
         <?php echo functions::form_draw_number_field('priority', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <?php echo functions::form_draw_checkbox('set_default', '1', (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_default_currency', 'Set as default currency'); ?><br />
         <?php echo functions::form_draw_checkbox('set_store', '1', (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_store_currency', 'Set as store currency'); ?>
       </td>

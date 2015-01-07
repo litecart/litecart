@@ -65,7 +65,7 @@
   foreach ($module->settings as $setting) {
 ?>
     <tr>
-      <td align="left"><strong><?php echo $setting['title']; ?></strong><?php echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
+      <td><strong><?php echo $setting['title']; ?></strong><?php echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
       <?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
     </tr>
 <?php 

@@ -5,10 +5,10 @@
 <table width="100%" class="dataTable">
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th align="center" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th align="left" nowrap="nowrap" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-    <th align="left" nowrap="nowrap"><?php echo language::translate('title_function', 'Function'); ?></th>
-    <th align="left" nowrap="nowrap">&nbsp;</th>
+    <th style="text-align: center;"><?php echo language::translate('title_id', 'ID'); ?></th>
+    <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+    <th><?php echo language::translate('title_function', 'Function'); ?></th>
+    <th>&nbsp;</th>
   </tr>
 <?php
   $option_groups_query = database::query(
@@ -25,16 +25,16 @@
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo functions::form_draw_checkbox('configuration_groups['. $option_group['id'] .']', $option_group['id']); ?></td>
-    <td align="center" nowrap="nowrap"><?php echo $option_group['id']; ?></td>
-    <td align="left" nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), array('app')); ?>"><?php echo $option_group['name']; ?></a></td>
-    <td align="left" nowrap="nowrap"><?php echo $option_group['function']; ?></td>
+    <td style="text-align: center;"><?php echo $option_group['id']; ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), array('app')); ?>"><?php echo $option_group['name']; ?></a></td>
+    <td><?php echo $option_group['function']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
   </tr>
 <?php
   }
 ?>
   <tr class="footer">
-    <td colspan="5" align="left"><?php echo language::translate('title_option_groups', 'Option Groups'); ?>: <?php echo database::num_rows($option_groups_query); ?></td>
+    <td colspan="5"><?php echo language::translate('title_option_groups', 'Option Groups'); ?>: <?php echo database::num_rows($option_groups_query); ?></td>
   </tr>
 </table>
 

@@ -197,8 +197,8 @@
   <table class="dataTable" width="100%">
     <tr class="header">
       <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-      <th align="left" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th align="center"></th>
+      <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th style="text-align: center;"></th>
       <th>&nbsp;</th>
     </tr>
 <?php
@@ -238,9 +238,9 @@
         }
 ?>
     <tr class="<?php echo $rowclass . (($product['status']) ? false : ' semi-transparent'); ?>">
-      <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png'); ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+      <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png'); ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
       <td><?php echo '<img src="'. (!empty($product['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
-      <td align="right" nowrap="nowrap"></td>
+      <td style="text-align: right;"></td>
       <td><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" align="absbottom" /></a></td>
     </tr>
 <?php
@@ -248,7 +248,7 @@
     }
 ?>
     <tr class="footer">
-      <td colspan="4" align="left"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+      <td colspan="4"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
     </tr>
 <?php
     
@@ -296,11 +296,11 @@
           $rowclass = 'even';
         }
         $output .= '<tr class="'. $rowclass . (($category['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($category['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL;
+                 . '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($category['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL;
         if (@in_array($category['id'], $category_trail)) {
-          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else {
-          $output .= '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
                  . '  <td><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
@@ -371,15 +371,15 @@
         }
         
         $output .= '<tr class="'. $rowclass . (($product['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td nowrap="nowrap"><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL;
+                 . '  <td><img src="'. WS_DIR_IMAGES .'icons/16x16/'. (!empty($product['status']) ? 'on.png' : 'off.png') .'" width="16" height="16" align="absbottom" /> '. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL;
         
         if ($display_images) {
-          $output .= '  <td align="left"><img src="'. (!empty($product['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. (!empty($product['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td align="left"><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+          $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
         
-        $output .= '  <td align="right" nowrap="nowrap"></td>' . PHP_EOL
+        $output .= '  <td style="text-align: right;"></td>' . PHP_EOL
                  . '  <td><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'"><img src="'. WS_DIR_IMAGES .'icons/16x16/edit.png" width="16" height="16" align="absbottom" /></a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
@@ -391,7 +391,7 @@
     echo admin_catalog_category_tree();
 ?>
     <tr class="footer">
-      <td colspan="4" align="left"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+      <td colspan="4"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
     </tr>
 <?php
   }

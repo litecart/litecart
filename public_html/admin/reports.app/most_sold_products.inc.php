@@ -23,8 +23,8 @@
 
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
-    <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
-    <th nowrap="nowrap" align="center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+    <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
   </tr>
 <?php
   $order_statuses = array();
@@ -60,8 +60,8 @@
       }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td align="left" nowrap="nowrap"><?php echo $order_item['name']; ?></td>
-    <td align="center" nowrap="nowrap"><?php echo $order_item['quantity']; ?></td>
+    <td><?php echo $order_item['name']; ?></td>
+    <td style="text-align: center;"><?php echo $order_item['quantity']; ?></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

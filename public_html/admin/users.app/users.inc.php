@@ -25,7 +25,7 @@
   <table width="100%" align="center" class="dataTable">
     <tr class="header">
       <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-      <th nowrap="nowrap" align="left" style="width: 100%;"><?php echo language::translate('title_username', 'Username'); ?></th>
+      <th style="width: 100%;"><?php echo language::translate('title_username', 'Username'); ?></th>
       <th>&nbsp;</th>
     </tr>
 <?php
@@ -48,9 +48,9 @@
       }
 ?>
     <tr class="<?php echo $rowclass; ?>"<?php echo empty($user['status']) ? ' style="color: #999;"' : ''; ?>>
-      <td align="left" nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($user['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
-      <td align="left" nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
-      <td align="right" nowrap="nowrap"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+      <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($user['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
+      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
+      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -58,7 +58,7 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="3" align="left"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo database::num_rows($users_query); ?></td>
+      <td colspan="3"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo database::num_rows($users_query); ?></td>
     </tr>
   </table>
 

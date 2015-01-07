@@ -147,7 +147,7 @@
           <tr>
             <td><?php echo language::translate('title_company', 'Company'); ?><br />
               <?php echo functions::form_draw_text_field('customer[company]', true); ?></td>
-            <td nowrap="nowrap"><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
+            <td><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />
               <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?></td>
           </tr>
           <tr>
@@ -238,12 +238,12 @@
         <table>
           <tr>
             <td><?php echo functions::form_draw_button('copy_billing_address', language::translate('title_copy_billing_address', 'Copy Billing Address'), 'button'); ?></td>
-            <td nowrap="nowrap"></td>
+            <td></td>
           </tr>
           <tr>
             <td><?php echo language::translate('title_company', 'Company'); ?><br />
               <?php echo functions::form_draw_text_field('customer[shipping_address][company]', true); ?></td>
-            <td nowrap="nowrap"></td>
+            <td></td>
           </tr>
           <tr>
             <td><?php echo language::translate('title_firstname', 'First Name'); ?><br />
@@ -352,19 +352,19 @@
   <h2><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
   <table id="order-items" class="dataTable" style="width: 100%;">
     <tr class="header">
-      <th nowrap="nowrap" align="left" style="width: 100%;"><?php echo language::translate('title_item', 'Item'); ?></th>
-      <th nowrap="nowrap" align="center" style="min-width: 50px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-      <th nowrap="nowrap" align="center" style="min-width: 50px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-      <th nowrap="nowrap" align="center" style="min-width: 50px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-      <th nowrap="nowrap" align="center" style="min-width: 50px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-      <th nowrap="nowrap" align="center" style="min-width: 50px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-      <th nowrap="nowrap">&nbsp;</th>
+      <th style="width: 100%;"><?php echo language::translate('title_item', 'Item'); ?></th>
+      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+      <th>&nbsp;</th>
     </tr>
 <?php
   foreach (array_keys($_POST['items']) as $key) {
 ?>
     <tr class="item">
-      <td nowrap="nowrap" align="left">
+      <td>
         <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?></div>
         <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
         <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
@@ -392,18 +392,18 @@
     }
 ?>
       </td>
-      <td nowrap="nowrap" align="left"><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
-      <td nowrap="nowrap" align="center"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true); ?></td>
-      <td nowrap="nowrap" align="center"><?php echo functions::form_draw_number_field('items['. $key .'][quantity]', true); ?></td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][price]', true); ?></td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][tax]', true); ?></td>
-      <td nowrap="nowrap"><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
+      <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true); ?></td>
+      <td style="text-align: center;"><?php echo functions::form_draw_number_field('items['. $key .'][quantity]', true); ?></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][price]', true); ?></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items['. $key .'][tax]', true); ?></td>
+      <td><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
   }
 ?>
     <tr class="footer">
-      <td nowrap="nowrap" align="left" colspan="7"><?php echo functions::form_draw_link_button('#', language::translate('title_add_product', 'Add Product'), 'id="add_product"', 'add'); ?> <?php echo functions::form_draw_link_button('#', language::translate('title_add_custom_item', 'Add Custom Item'), 'id="add_custom_item"', 'add'); ?></td>
+      <td colspan="7"><?php echo functions::form_draw_link_button('#', language::translate('title_add_product', 'Add Product'), 'id="add_product"', 'add'); ?> <?php echo functions::form_draw_link_button('#', language::translate('title_add_custom_item', 'Add Custom Item'), 'id="add_custom_item"', 'add'); ?></td>
     </tr>
   </table>
 
@@ -437,12 +437,12 @@
   <h2><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
   <table width="100%" class="dataTable">
     <tr class="header">
-      <th nowrap="nowrap" align="left">&nbsp;</th>
-      <th nowrap="nowrap" align="left"><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
-      <th nowrap="nowrap" align="right" width="100%"><?php echo language::translate('title_title', 'Title'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_value', 'Value'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-      <th nowrap="nowrap">&nbsp;</th>
+      <th>&nbsp;</th>
+      <th><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
+      <th align="right" width="100%"><?php echo language::translate('title_title', 'Title'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_value', 'Value'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+      <th>&nbsp;</th>
     </tr>
 <?php
   if (empty($_POST['order_total'])) {
@@ -460,30 +460,30 @@
       case 'ot_subtotal':
 ?>
     <tr>
-      <td nowrap="nowrap" align="right">&nbsp;</td>
-      <td nowrap="nowrap" align="right">
+      <td style="text-align: right;">&nbsp;</td>
+      <td style="text-align: right;">
         <?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true); ?>
         <?php echo functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small" readonly="readonly"'); ?>
       </td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][value]', true, 'style="width: 75px; text-align: right;"'); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled="disabled"', language::translate('title_calculate', 'Calculate')); ?></td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][tax]', true, 'style="width: 75px; text-align: right;"'); ?></td>
-      <td nowrap="nowrap">&nbsp;</td>
+      <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][value]', true, 'style="width: 75px; text-align: right;"'); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled="disabled"', language::translate('title_calculate', 'Calculate')); ?></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][tax]', true, 'style="width: 75px; text-align: right;"'); ?></td>
+      <td>&nbsp;</td>
     </tr>
 <?php
         break;
       default:
 ?>
     <tr>
-      <td nowrap="nowrap" align="right"><a href="#" class="add_ot_row"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a></td>
-      <td nowrap="nowrap" align="right">
+      <td style="text-align: right;"><a href="#" class="add_ot_row"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a></td>
+      <td style="text-align: right;">
         <?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true); ?>
         <?php echo functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small"'); ?>
       </td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][value]', true); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, '', language::translate('title_calculate', 'Calculate')); ?></td>
-      <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][tax]', true); ?></td>
-      <td nowrap="nowrap"><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][value]', true); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, '', language::translate('title_calculate', 'Calculate')); ?></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][tax]', true); ?></td>
+      <td><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
         break;
@@ -491,10 +491,10 @@
   }
 ?>
     <tr>
-      <td colspan="6" nowrap="nowrap" align="left"><a class="add_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
+      <td colspan="6"><a class="add_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
     </tr>
     <tr class="footer" style="font-size: 1.5em;">
-    <td colspan="6" nowrap="nowrap" align="right"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong id="order-total"><?php echo currency::format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?></strong></td>
+    <td colspan="6" style="text-align: right;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong id="order-total"><?php echo currency::format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?></strong></td>
     </tr>
   </table>
   <script>
@@ -503,12 +503,12 @@
       while ($("input[name='order_total["+new_ot_row_index+"][id]']").length) new_ot_row_index++;
       event.preventDefault();
       var output = '  <tr>'
-                 + '    <td nowrap="nowrap" align="right"><a href="#" class="add_ot_row"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
-                 + '    <td nowrap="nowrap" align="right"><?php echo functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"'); ?></td>'
-                 + '    <td nowrap="nowrap" align="right"><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"'); ?> :</td>'
-                 + '    <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true)); ?><?php echo functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate')); ?></td>'
-                 + '    <td nowrap="nowrap" align="right"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true)); ?></td>'
-                 + '    <td nowrap="nowrap"><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '    <td style="text-align: right;"><a href="#" class="add_ot_row"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"'); ?></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"'); ?> :</td>'
+                 + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true)); ?><?php echo functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate')); ?></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true)); ?></td>'
+                 + '    <td><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '  </tr>';
     output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
     $(this).closest("tr").before(output);
@@ -558,25 +558,25 @@
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
   <table class="dataTable" style="width: 100%;">
     <tr class="header">
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_date', 'Date'); ?></th>
-      <th nowrap="nowrap" align="left" style="width: 100%;"><?php echo language::translate('title_comment', 'Comment'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
-      <th nowrap="nowrap">&nbsp;</th>
+      <th style="text-align: center;"><?php echo language::translate('title_date', 'Date'); ?></th>
+      <th style="width: 100%;"><?php echo language::translate('title_comment', 'Comment'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
+      <th>&nbsp;</th>
     </tr>
 <?php
   foreach (array_keys($_POST['comments']) as $key) {
 ?>
     <tr>
-      <td nowrap="nowrap" align="left"><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
-      <td align="left"><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
-      <td nowrap="nowrap" align="left"><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
-      <td nowrap="nowrap"><a class="remove_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
+      <td><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
+      <td><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
+      <td><a class="remove_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
   }
 ?>
     <tr>
-      <td nowrap="nowrap" align="left" colspan="4"><a class="add_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
+      <td colspan="4"><a class="add_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
     </tr>
   </table>
   <script>
@@ -585,10 +585,10 @@
       while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
       event.preventDefault();
       var output = '  <tr>'
-                 + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?></td>'
-                 + '    <td align="left"><?php echo str_replace(PHP_EOL, '', functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
-                 + '    <td nowrap="nowrap" align="left"><?php echo str_replace(PHP_EOL, '', functions::form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', '', language::translate('title_hidden', 'Hidden'))); ?></td>'
-                 + '    <td nowrap="nowrap"><a class="remove_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?></td>'
+                 + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
+                 + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', '', language::translate('title_hidden', 'Hidden'))); ?></td>'
+                 + '    <td><a class="remove_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '  </tr>';
       output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
       $(this).closest("tr").before(output);

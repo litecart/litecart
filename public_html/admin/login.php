@@ -78,16 +78,16 @@ html, body, body > table {
               <div class="content">
                 <table>
                   <tr>
-                    <td align="right"><?php echo language::translate('title_username', 'Username'); ?></td>
-                    <td align="left"><?php echo functions::form_draw_text_field('username', true); ?></td>
+                    <td style="text-align: right;"><?php echo language::translate('title_username', 'Username'); ?></td>
+                    <td><?php echo functions::form_draw_text_field('username', true); ?></td>
                   </tr>
                   <tr>
-                    <td align="right"><?php echo language::translate('title_password', 'Password'); ?></td>
-                    <td align="left"><?php echo functions::form_draw_password_field('password', ''); ?></td>
+                    <td style="text-align: right;"><?php echo language::translate('title_password', 'Password'); ?></td>
+                    <td><?php echo functions::form_draw_password_field('password', ''); ?></td>
                   </tr>
                   <tr>
-                    <td align="right"></td>
-                    <td align="left"><label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
+                    <td style="text-align: right;"></td>
+                    <td><label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
                   </tr>
                 </table>
               </div>

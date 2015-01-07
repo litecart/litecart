@@ -54,7 +54,7 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
 <?php
 $use_br = false;
@@ -67,7 +67,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -78,7 +78,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><label><?php echo functions::form_draw_checkbox('orderable', '1', empty($_POST['orderable']) ? '' : '1'); ?> <?php echo language::translate('text_product_is_orderable', 'Product is orderable'); ?></label></td>
+      <td><label><?php echo functions::form_draw_checkbox('orderable', '1', empty($_POST['orderable']) ? '' : '1'); ?> <?php echo language::translate('text_product_is_orderable', 'Product is orderable'); ?></label></td>
     </tr>
   </table>
   

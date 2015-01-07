@@ -50,12 +50,12 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
         <?php echo functions::form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
         <?php echo functions::form_draw_text_field('description', true, 'data-size="large"'); ?>
       </td>
     </tr>
@@ -64,27 +64,27 @@
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
   <table width="100%" class="dataTable" id="table-zones">
     <tr class="header">
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_country', 'Country'); ?></th>
-      <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_zone', 'Zone'); ?></th>
-      <th align="center" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
+      <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th style="vertical-align: text-top"><?php echo language::translate('title_country', 'Country'); ?></th>
+      <th style="vertical-align: text-top"><?php echo language::translate('title_zone', 'Zone'); ?></th>
+      <th align="center" style="vertical-align: text-top">&nbsp;</th>
     </tr>
 <?php
     if (!empty($_POST['zones'])) {
       foreach (array_keys($_POST['zones']) as $key) {
 ?>
     <tr>
-      <td align="left"><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-      <td align="left"><?php echo functions::form_draw_countries_list('zones['. $key .'][country_code]', true); ?></td>
-      <td align="left"><?php echo functions::form_draw_zones_list($_POST['zones'][$key]['country_code'], 'zones['. $key .'][zone_code]', true, false, '', 'all'); ?></td>
-      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
+      <td><?php echo functions::form_draw_countries_list('zones['. $key .'][country_code]', true); ?></td>
+      <td><?php echo functions::form_draw_zones_list($_POST['zones'][$key]['country_code'], 'zones['. $key .'][zone_code]', true, false, '', 'all'); ?></td>
+      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
       }
     }
 ?>
     <tr>
-      <td align="left" colspan="4"><a href="#" id="add_zone"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/add.png'; ?>" width="16" height="16" /></a></td>
+      <td colspan="4"><a href="#" id="add_zone"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/add.png'; ?>" width="16" height="16" /></a></td>
     </tr>
   </table>
   
@@ -135,10 +135,10 @@
       if ($("select[name='country[code]']").find("option:selected").val() == "") return;
       new_zone_i++;
       var output = '    <tr>'
-                 + '      <td align="left"><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-                 + '      <td align="left"><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
-                 + '      <td align="left"><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
-                 + '      <td align="right"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
+                 + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
+                 + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
+                 + '      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       $("#table-zones tr:last").before(output);

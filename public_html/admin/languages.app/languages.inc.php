@@ -23,12 +23,12 @@
   <table width="100%" align="center" class="dataTable">
     <tr class="header">
       <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_id', 'ID'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_code', 'Code'); ?></th>
-      <th nowrap="nowrap" align="left" width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_default_language', 'Default Language'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
-      <th nowrap="nowrap" align="center"><?php echo language::translate('title_priority', 'Priority'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_code', 'Code'); ?></th>
+      <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_default_language', 'Default Language'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_priority', 'Priority'); ?></th>
       <th>&nbsp;</th>
     </tr>
 <?php
@@ -51,14 +51,14 @@
       }
 ?>
     <tr class="<?php echo $rowclass . ($language['status'] ? false : ' semi-transparent'); ?>">
-      <td nowrap="nowrap"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($language['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
-      <td align="left"><?php echo $language['id']; ?></td>
-      <td align="center"><?php echo $language['code']; ?></td>
-      <td align="left"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
-      <td align="center"><?php echo ($language['code'] == settings::get('default_language_code')) ? 'x' : ''; ?></td>
-      <td align="center"><?php echo ($language['code'] == settings::get('store_language_code')) ? 'x' : ''; ?></td>
-      <td align="right"><?php echo $language['priority']; ?></td>
-      <td align="right"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+      <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($language['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
+      <td><?php echo $language['id']; ?></td>
+      <td style="text-align: center;"><?php echo $language['code']; ?></td>
+      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
+      <td style="text-align: center;"><?php echo ($language['code'] == settings::get('default_language_code')) ? 'x' : ''; ?></td>
+      <td style="text-align: center;"><?php echo ($language['code'] == settings::get('store_language_code')) ? 'x' : ''; ?></td>
+      <td style="text-align: right;"><?php echo $language['priority']; ?></td>
+      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -66,7 +66,7 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="8" align="left"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo database::num_rows($languages_query); ?></td>
+      <td colspan="8"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo database::num_rows($languages_query); ?></td>
     </tr>
   </table>
 

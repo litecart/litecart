@@ -31,10 +31,10 @@
   
   <table>
     <tr>
-      <td align="left" nowrap="nowrap"><img src="<?php echo htmlspecialchars(functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 400, 200, 'FIT_ONLY_BIGGER')); ?>" /></td>
+      <td><img src="<?php echo htmlspecialchars(functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 400, 200, 'FIT_ONLY_BIGGER')); ?>" /></td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap"><strong><?php echo language::translate('title_image', 'Image'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_image', 'Image'); ?></strong><br />
       <?php echo functions::form_draw_file_field('image', ''); ?></td>
     </tr>
   </table>

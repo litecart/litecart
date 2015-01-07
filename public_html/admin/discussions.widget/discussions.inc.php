@@ -36,7 +36,7 @@
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
     <tr class="header">
-      <th colspan="4" align="left"><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></th>
+      <th colspan="4"><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></th>
     </tr>
     <tr>
 <?php

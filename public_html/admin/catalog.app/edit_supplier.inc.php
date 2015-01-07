@@ -62,31 +62,31 @@
 
   <table>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
           <?php echo functions::form_draw_text_field('name', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_description', 'description'); ?></strong><br />
           <?php echo functions::form_draw_textarea('description', true, 'data-size="large"'); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_email_address', 'E-mail Address'); ?></strong><br />
           <?php echo functions::form_draw_email_field('email', true, 'email', ''); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
           <?php echo functions::form_draw_text_field('phone', true); ?>
       </td>
     </tr>
     <tr>
-      <td align="left" nowrap="nowrap">
+      <td>
         <strong><?php echo language::translate('title_link', 'Link'); ?></strong><br />
           <?php echo functions::form_draw_text_field('link', true); ?>
       </td>

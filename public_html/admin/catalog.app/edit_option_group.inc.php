@@ -130,16 +130,16 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
-        <th align="center" style="vertical-align: text-top" nowrap="nowrap">&nbsp;</th>
+        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
+        <th align="center" style="vertical-align: text-top">&nbsp;</th>
       </tr>
 <?php
     if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) {
 ?>
       <tr>
-        <td align="left"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo functions::form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
-        <td align="left">
+        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo functions::form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
+        <td>
 <?php
       $use_br = false;
       foreach (array_keys(language::$languages) as $language_code) {
@@ -149,7 +149,7 @@
       }
 ?>
         </td>
-        <td align="right" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+        <td style="text-align: right;"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
       </tr>
 <?php
     }
@@ -173,9 +173,9 @@
     }
 ?>
         var output = '<tr>'
-                   + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('values[new_value_index][id]', '') . functions::form_draw_hidden_field('values[new_value_index][value]', '')); ?></td>'
-                   + '  <td align="left" nowrap="nowrap"><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
-                   + '  <td align="left" nowrap="nowrap"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                   + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('values[new_value_index][id]', '') . functions::form_draw_hidden_field('values[new_value_index][value]', '')); ?></td>'
+                   + '  <td><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
+                   + '  <td><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
                    + '</tr>';
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('tr').before(output);
@@ -203,8 +203,8 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
 <?php
@@ -216,8 +216,8 @@
     }
 ?>
       <tr>
-        <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-        <td align="left" nowrap="nowrap"><?php echo language::translate('title_range', 'Range'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true, 'data-size="medium"'); ?> (<?php echo language::translate('title_example', 'Example'); ?>: 100-400)</td>
+        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+        <td><?php echo language::translate('title_range', 'Range'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true, 'data-size="medium"'); ?> (<?php echo language::translate('title_example', 'Example'); ?>: 100-400)</td>
         <td></td>
       </tr>
     </table>
@@ -226,8 +226,8 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
 <?php
@@ -239,8 +239,8 @@
     }
 ?>
       <tr>
-        <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-        <td align="left" nowrap="nowrap"><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true); ?></td>
+        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+        <td><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true); ?></td>
         <td></td>
       </tr>
     </table>
@@ -249,8 +249,8 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th align="left" style="vertical-align: text-top" nowrap="nowrap" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
 <?php
@@ -262,8 +262,8 @@
     }
 ?>
       <tr>
-        <td align="left" nowrap="nowrap"><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-        <td align="left" nowrap="nowrap"><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_textarea('values['. $key .'][value]', true); ?></td>
+        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+        <td><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_textarea('values['. $key .'][value]', true); ?></td>
         <td></td>
       </tr>
     </table>
