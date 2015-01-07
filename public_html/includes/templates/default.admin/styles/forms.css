@@ -2,7 +2,11 @@ form {
   margin: 0px;
 }
 
-input[type=date], input[type=datetime], input[type=email], input[type=file], input[type=month], input[type=number], input[type=password], input[type=search], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
+form fieldset {
+  border: 1px #d1d1d1 solid;
+}
+ 
+input[type=color], input[type=date], input[type=datetime], input[type=email], input[type=file], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
   display: inline-block;
   margin: 3px 0;
   padding: 4px;
@@ -16,6 +20,10 @@ input[type=date], input[type=datetime], input[type=email], input[type=file], inp
   color: #333;
   
   vertical-align: baseline;
+}
+
+.input-wrapper *:focus {
+  outline: 0;
 }
 
 input[data-type=currency], input[data-type=decimal], input[data-type=number] {

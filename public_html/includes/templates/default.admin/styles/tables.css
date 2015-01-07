@@ -1,12 +1,12 @@
 table {
-  border-spacing: 0;
+  border-spacing: 0px;
   border-collapse: collapse;
 }
 th {
-  padding: 0;
+  padding: 0px;
 }
 td {
-  padding: 0;
+  padding: 0px;
 }
 
 table.dataTable {
@@ -24,9 +24,13 @@ table.dataTable .header {
 table.dataTable th {
   padding: 10px 10px;
   border-bottom: 1px solid #ececec;
+  text-align: center;
+  vertical-align: middle;
 }
 table.dataTable td {
   padding: 5px 10px;
+  text-align: center;
+  vertical-align: middle;
 }
 table.dataTable tr.odd {
   background-color: #fcfcfc;
