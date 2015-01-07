@@ -81,6 +81,15 @@
     
     public static function identify() {
       
+    // Return currency from URI query
+      if (!empty($_GET['currency']) || !empty($_GET['currency_code']) ) {
+        $code = !empty($_GET['currency']) ? $_GET['currency'] : $_GET['currency_code'];
+        if (isset(self::$currencies[$code])) return $code;
+      }
+      
+    // Return currency from session
+      if (isset(self::$selected['code']) && isset(self::$currencies[self::$selected['code']])) return self::$selected['code'];
+      
     // Set currency from cookie
       if (!empty($_COOKIE['currency_code']) && isset(self::$currencies[$_COOKIE['currency_code']])) {
         return $_COOKIE['currency_code'];
