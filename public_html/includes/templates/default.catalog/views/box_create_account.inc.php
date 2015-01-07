@@ -52,9 +52,6 @@
           <?php echo functions::form_draw_password_field('confirmed_password', ''); ?></td>
         </tr>
         <tr>
-          <td colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
           <td colspan="2"><?php echo functions::form_draw_button('create_account', language::translate('title_create_account', 'Create Account')); ?></td>
         </tr>
       </table>

@@ -119,7 +119,6 @@
       }
       
       if (!empty($collation)) {
-        //$mysql_charset = substr($collation, 0, strpos($collation, '_')); // Extract charset from collation
         self::query("set names '". database::input($charset_to_mysql_character_set[$charset]) ."' collate '". database::input($collation) ."';", $link);
       } else {
         self::query("set names '". database::input($charset_to_mysql_character_set[$charset]) ."';", $link);
