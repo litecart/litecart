@@ -437,7 +437,8 @@
         
         while ($category = database::fetch($categories_query)) {
         
-          $options[] = array($category['name'], $category['id'], 'style="background: url('. WS_DIR_IMAGES .'/icons/16x16/folder_closed.png) no-repeat '. ($level*16) .'px 0px; padding-left: '. (($level*16)+18) .'px; margin: 5px;"');
+          //$options[] = array($category['name'], $category['id'], 'style="background: url('. WS_DIR_IMAGES .'/icons/16x16/folder_closed.png) no-repeat '. ($level*16) .'px 0px; padding-left: '. (($level*16)+18) .'px; margin: 5px;"'); // HTML not supported in webkit browsers
+          $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $category['name'], $category['id']); // Non-HTML
         
           $sub_categories_query = database::query(
             "select id
