@@ -22,7 +22,7 @@
           from ". DB_TABLE_CATEGORIES ." c
           left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
           where status
-          ". (($depth == 0) ? "and find_in_set('menu', c.dock)" : "and parent_id = '". (int)$parent_id ."'") ."
+          ". (empty($parent_id) ? "and find_in_set('menu', c.dock)" : "and parent_id = '". (int)$parent_id ."'") ."
           order by c.priority asc, ci.name asc;"
         );
         
@@ -54,7 +54,7 @@
             $subcategories_query = database::query(
               "select id
               from ". DB_TABLE_CATEGORIES ." c
-              where status
+              where status = 1
               and parent_id = '". (int)$category['id'] ."'
               limit 1;"
             );

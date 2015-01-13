@@ -1,7 +1,7 @@
 <?php
   ignore_user_abort(true);
   set_time_limit(60*5);
-  header('X-Robots-Tag: noindex');
+  ob_end_clean();
   
   $jobs = new mod_jobs();
   

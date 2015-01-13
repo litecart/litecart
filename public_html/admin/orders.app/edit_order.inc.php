@@ -133,7 +133,7 @@
     </tr>
   </table>
 
-  <table class="dataTable">
+  <table id="customer" class="dataTable">
     <tr class="header">
       <th colspan="2"><?php echo language::translate('title_customer_information', 'Customer Information'); ?></th>
     </tr>
@@ -311,7 +311,7 @@
     </tr>
   </table>
   
-  <table class="dataTable">
+  <table id="order-info" class="dataTable">
     <tr>
       <td style="vertical-align: top;">
         <h3><?php echo language::translate('title_payment_information', 'Payment Information'); ?></h3>
@@ -435,7 +435,7 @@
   </script>
 
   <h2><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
-  <table width="100%" class="dataTable">
+  <table id="order-total" width="100%" class="dataTable">
     <tr class="header">
       <th>&nbsp;</th>
       <th><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
@@ -483,7 +483,7 @@
       <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][value]', true); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, '', language::translate('title_calculate', 'Calculate')); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total['. $key .'][tax]', true); ?></td>
-      <td><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td><a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
         break;
@@ -491,31 +491,31 @@
   }
 ?>
     <tr>
-      <td colspan="6"><a class="add_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
+      <td colspan="6"><a class="add" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
     </tr>
     <tr class="footer" style="font-size: 1.5em;">
-    <td colspan="6" style="text-align: right;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong id="order-total"><?php echo currency::format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?></strong></td>
+    <td colspan="6" style="text-align: right;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, false, $order->data['currency_code'], $order->data['currency_value']); ?></strong></td>
     </tr>
   </table>
   <script>
     var new_ot_row_index = 0;
-    $("body").on("click", "a.add_ot_row", function(event) {
+    $("body").on("click", "#order-total .add", function(event) {
       while ($("input[name='order_total["+new_ot_row_index+"][id]']").length) new_ot_row_index++;
       event.preventDefault();
       var output = '  <tr>'
-                 + '    <td style="text-align: right;"><a href="#" class="add_ot_row"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
+                 + '    <td style="text-align: right;"><a href="#" class="add"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>" /></a></td>'
                  + '    <td style="text-align: right;"><?php echo functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"'); ?></td>'
                  + '    <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"'); ?> :</td>'
                  + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true)); ?><?php echo functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate')); ?></td>'
                  + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true)); ?></td>'
-                 + '    <td><a class="remove_ot_row" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '    <td><a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
                  + '  </tr>';
     output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
     $(this).closest("tr").before(output);
     new_ot_row_index++;
     });
     
-    $("body").on("click", "a.remove_ot_row", function(event) {
+    $("body").on("click", "#order-total .remove", function(event) {
       event.preventDefault();
     $(this).closest("tr").remove();
     });
@@ -547,16 +547,16 @@
         }
       });
       order_total = Math.round(order_total * 1<?php echo str_repeat('0', currency::$currencies[$order->data['currency_code']]['decimals']); ?>) / 1<?php echo str_repeat('0', currency::$currencies[$order->data['currency_code']]['decimals']); ?>;
-      $("#order-total").text("<?php echo currency::$currencies[$order->data['currency_code']]['prefix']; ?>" + order_total + "<?php echo currency::$currencies[$order->data['currency_code']]['suffix']; ?>");
+      $("#order-total .total").text("<?php echo currency::$currencies[$order->data['currency_code']]['prefix']; ?>" + order_total + "<?php echo currency::$currencies[$order->data['currency_code']]['suffix']; ?>");
     }
     
-  $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], a.remove_item, a.remove_ot_row", function() {
+    $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], a.remove_item, a.remove_ot_row", function() {
       calculate_total();
     });
   </script>
-
+  
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-  <table class="dataTable" style="width: 100%;">
+  <table id="comments" class="dataTable" style="width: 100%;">
     <tr class="header">
       <th style="text-align: center;"><?php echo language::translate('title_date', 'Date'); ?></th>
       <th style="width: 100%;"><?php echo language::translate('title_comment', 'Comment'); ?></th>
@@ -570,18 +570,18 @@
       <td><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
       <td><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
       <td><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
-      <td><a class="remove_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td><a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
     </tr>
 <?php
   }
 ?>
     <tr>
-      <td colspan="4"><a class="add_comment" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
+      <td colspan="4"><a class="add" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" title="<?php echo language::translate('title_insert_', 'Insert'); ?>" /></a></td>
     </tr>
   </table>
   <script>
     var new_comment_index = 0;
-    $("a.add_comment").click(function(event) {
+    $("#comments .add").click(function(event) {
       while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
       event.preventDefault();
       var output = '  <tr>'
@@ -595,7 +595,7 @@
       new_comment_index++;
     });
     
-    $("body").on("click", "a.remove_comment", function(event) {
+    $("body").on("click", "#comments .remove", function(event) {
       event.preventDefault();
       $(this).closest("tr").remove();
     });
@@ -604,5 +604,5 @@
   <p><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
 
   <p align="right"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-
+  
 <?php echo functions::form_draw_form_end(); ?>

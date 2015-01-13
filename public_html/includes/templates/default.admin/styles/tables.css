@@ -24,13 +24,15 @@ table.dataTable .header {
 table.dataTable th {
   padding: 10px 10px;
   border-bottom: 1px solid #ececec;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
+  white-space: nowrap;
 }
 table.dataTable td {
   padding: 5px 10px;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
+  white-space: nowrap;
 }
 table.dataTable tr.odd {
   background-color: #fcfcfc;

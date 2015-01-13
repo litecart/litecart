@@ -52,6 +52,9 @@
     ('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and prevent access to the site.', 'security_xss', '1', 'toggle("e/d")', '5', NOW(), NOW()),
     ('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '0', 'toggle()', '13', NOW(), NOW());
     
+    ALTER TABLE `lc_delivery_statuses_info` CHANGE `name` `name` VARCHAR(64) NOT NULL;
+    ALTER TABLE `lc_sold_out_statuses_info` CHANGE `name` `name` VARCHAR(64) NOT NULL;
+    
     ALTER TABLE `lc_countries` ADD `iso_code_1` VARCHAR(3) NOT NULL AFTER `domestic_name`;
     UPDATE `lc_countries` SET iso_code_1 = '004' WHERE iso_code_2 = 'AF';
     UPDATE `lc_countries` SET iso_code_1 = '248' WHERE iso_code_2 = 'AX';
