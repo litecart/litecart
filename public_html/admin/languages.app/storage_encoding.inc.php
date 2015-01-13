@@ -10,24 +10,16 @@
     
     if (empty($_POST['tables'])) notices::$data['errors'][] = language::translate('error_must_select_tables', 'You must select at least one table');
     
+    $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
+    
     if (empty(notices::$data['errors'])) {
       
       if (!empty($_POST['set_database_default'])) {
-        database::query("alter database `". DB_DATABASE ."` default character set '". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."' collate = '". database::input($_POST['collation']) ."';");
+        database::query("alter database `". DB_DATABASE ."` default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate = ". database::input($_POST['collation']) .";");
       }
       
       foreach ($_POST['tables'] as $table) {
-        database::query("alter table `". DB_DATABASE ."`.`". $table ."` default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";");
-        
-        $columns_query = database::query("select * from `information_schema`.`COLUMNS` where `TABLE_SCHEMA` = '". DB_DATABASE ."' and `TABLE_NAME` = '". database::input($table) ."' and COLLATION_NAME != '". database::input($_POST['collation']) ."';");
-        while($column = database::fetch($columns_query)) {
-          database::query(
-            "alter table `". DB_DATABASE ."`.`". $table. "`
-            modify `". $column['COLUMN_NAME'] ."`
-            character set '". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."'
-            collate '". database::input($_POST['collation']) ."';"
-          );
-        }
+        database::query("alter table `". DB_DATABASE ."`.`". $table ."` convert to character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";");
       }
       
       notices::$data['success'][] = language::translate('success_changes_saved', 'Changes saved');
