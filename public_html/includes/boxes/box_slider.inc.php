@@ -9,7 +9,7 @@
     $slides_query = database::query(
       "select * from ". DB_TABLE_SLIDES ."
       where status
-      and language_code = '". database::input(language::$selected['code']) ."'
+      and (language_code = '' or language_code = '". database::input(language::$selected['code']) ."')
       and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
       and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
       order by priority asc;"

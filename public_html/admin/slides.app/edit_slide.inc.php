@@ -14,7 +14,6 @@
   if (!empty($_POST['save'])) {
     
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_enter_language_code', 'You must enter a language'));
     
     if (empty(notices::$data['errors'])) {
       
@@ -70,7 +69,7 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_language', 'Language'); ?></strong><br />
-        <?php echo functions::form_draw_languages_list('language_code', true); ?>
+        <?php echo functions::form_draw_languages_list('language_code', true); ?> <em><?php echo language::translate('text_leave_blank_for_all_languages', 'Leave blank for all languages'); ?></em>
       </td>
     </tr>
     <tr>
