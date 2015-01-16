@@ -452,7 +452,6 @@
           $options = array_merge($options, $sub_options);
         }
         
-        
         return $options;
       }
     }

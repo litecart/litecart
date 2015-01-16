@@ -25,7 +25,7 @@
     limit 1;"
   );
   
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => $_GET['product_id'])) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => $_GET['product_id']), false) .'" />';
   
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
   
@@ -83,6 +83,10 @@
     'product_id' => $product->id,
     'name' => $product->name[language::$selected['code']],
     'description' => !empty($product->description[language::$selected['code']]) ? $product->description[language::$selected['code']] : '<p><em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em></p>',
+    'head_title' => !empty($product->head_title[language::$selected['code']]) ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']],
+    'meta_description' => !empty($product->meta_description[language::$selected['code']]) ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']],
+    'meta_keywords' => !empty($product->meta_keywords[language::$selected['code']]) ? $product->meta_keywords[language::$selected['code']] : '',
+    'keywords' => $product->keywords,
     'attributes' => !empty($product->attributes[language::$selected['code']]) ? preg_split('/\R+/', $product->attributes[language::$selected['code']]) : array(),
     'sku' => $product->sku,
     'image' => array(

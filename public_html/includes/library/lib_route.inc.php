@@ -82,29 +82,28 @@
       }
       
     // Forward to rewritten URL (if necessary)
-      if (!empty(route::$route['page'])) {
+      if (!empty(self::$route['page'])) {
         
-        $rewritten_url = self::rewrite(document::ilink(route::$route['page'], $_GET));
+        $rewritten_url = self::rewrite(document::ilink(self::$route['page'], $_GET));
         
         if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
           
-          $redirect = true;
+          $do_redirect = true;
           
         // Don't forward if there is HTTP POST data
-          if (!empty($_POST)) $redirect = false;
+          if (!empty($_POST)) $do_redirect = false;
           
         // Don't forward if requested not to
-          if (empty(self::$route['redirect'])) $redirect = false;
+          if (isset(self::$route['redirect']) && self::$route['redirect'] == true) $do_redirect = false;
           
         // Don't forward if there are notices in stack
           if (!empty(notices::$data)) {
             foreach (notices::$data as $notices) {
-              if (!empty($notices)) $redirect = false;
+              if (!empty($notices)) $do_redirect = false;
             }
           }
           
-          if ($redirect) {
-            //error_log('Redirecting user from '. $_SERVER['REQUEST_URI'] .' to '. $rewritten_url);
+          if ($do_redirect) {
             header('HTTP/1.1 301 Moved Permanently');
             header('Location: '. $rewritten_url);
             exit;

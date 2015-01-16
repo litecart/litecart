@@ -135,7 +135,7 @@
     
     if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prefetch'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />'; // Mozilla
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prefetch'] = '<link rel="prefetch" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />'; // Mozilla
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />'; // Webkit
     
     $link = $_SERVER['REQUEST_URI'];
