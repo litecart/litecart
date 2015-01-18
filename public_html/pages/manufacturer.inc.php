@@ -7,7 +7,7 @@
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
   
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink(null, array(), array('manufacturer_id')) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $_GET['manufacturer_id']), false) .'" />';
   
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   

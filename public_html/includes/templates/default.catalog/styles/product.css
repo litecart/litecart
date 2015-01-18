@@ -10,6 +10,7 @@
   float: left;
   display: inline-block;
   margin: 0px 20px 20px 0px;
+  max-width: 305px;
 }
 #box-product .product-images-wrapper img.main-image {
   width: 300px;

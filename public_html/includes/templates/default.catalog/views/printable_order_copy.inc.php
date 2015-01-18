@@ -7,7 +7,7 @@
         <td style="text-align: right;">
           <h1 style="margin: 0; font-size: 18px;"><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
           <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
-          <div><?php echo date(language::$selected['raw_date']); ?></div>
+          <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>
         </td>
       </tr>
     </table>
