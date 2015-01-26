@@ -141,7 +141,7 @@
       
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          $category->load($category_id);
+          $category = new ctrl_category($category_id);
           if ($category->data['parent_id'] == $_GET['category_id']) {
             $category->data['parent_id'] = 0;
             $category->save();
