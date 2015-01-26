@@ -46,6 +46,10 @@
     
     ######################################################################
     
+    public static function reset() {
+      self::$data = array();
+    }
+    
     public static function add($title, $link=null) {
       self::$data[] = array(
         'title' => $title,

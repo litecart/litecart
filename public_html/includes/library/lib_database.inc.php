@@ -65,7 +65,7 @@
         $execution_time_duration = $execution_time_stop - $execution_time_start;
         
         if ($execution_time_duration > 1) {
-          error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.' . PHP_EOL, 0, FS_DIR_HTTP_ROOT . WS_DIR_DATA .'performance.log');
+          error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'performance.log');
         }
         
         if (class_exists('stats', false)) {
@@ -172,7 +172,7 @@
       $execution_time_duration = $execution_time_stop - $execution_time_start;
       
       if ($execution_time_duration > 3) {
-        error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 0, FS_DIR_HTTP_ROOT . WS_DIR_DATA .'performance.log');
+        error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'performance.log');
       }
       
       if (class_exists('stats', false)) {

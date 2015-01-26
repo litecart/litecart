@@ -36,6 +36,7 @@
     $page = new view();
     
     $page->snippets = array(
+      'id' => $manufacturer->id,
       'title' => $manufacturer->h1_title[language::$selected['code']] ? $manufacturer->h1_title[language::$selected['code']] : $manufacturer->name,
       'name' => $manufacturer->name,
       'description' => $manufacturer->description[language::$selected['code']],
