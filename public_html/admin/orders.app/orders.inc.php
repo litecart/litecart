@@ -15,7 +15,7 @@
     'overlayShow'   => true
   ));
   
-  if (!empty($_POST['order_action']) && !empty($_POST['orders'])) {
+  if (!empty($_POST['order_action'])) {
     if (!empty($_POST['orders'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
       $order_action = new mod_order_action();

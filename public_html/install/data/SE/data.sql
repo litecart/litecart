@@ -42,5 +42,5 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 -- --------------------------------------------------------
 INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `customer_type`, `tax_id_rule`, `date_updated`, `date_created`) VALUES
 (1, @TAX_ZONE_SE, 'percent', 'SE VAT 25%', '', 25.0000, 'both', 'both', NOW(), NOW()),
-(2, @TAX_ZONE_SE, 'percent', 'SE VAT 12%', '', 12.0000, 'both', 'both', NOW(), NOW()),
-(3, @TAX_ZONE_SE, 'percent', 'SE VAT 6%', '', 6.0000, 'both', 'both', NOW(), NOW());
+(2, @TAX_ZONE_SE, 'percent', 'SE VAT 6%', '', 6.0000, 'both', 'both', NOW(), NOW()),
+(3, @TAX_ZONE_SE, 'percent', 'SE VAT 12%', '', 12.0000, 'both', 'both', NOW(), NOW());

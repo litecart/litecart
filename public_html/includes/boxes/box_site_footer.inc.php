@@ -79,8 +79,6 @@
       );
     }
     
-    echo $box_site_footer->stitch('views/box_site_footer');
-    
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
