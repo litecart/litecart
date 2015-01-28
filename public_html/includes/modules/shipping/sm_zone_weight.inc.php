@@ -78,7 +78,7 @@
       
       if (empty($rate_table)) return 0;
       
-      $rate_table = explode(";" , $rate_table);
+      $rate_table = preg_split("(;|\|)" , $rate_table);
       foreach ($rate_table as $rate) {
         list($rate_weight, $rate_cost) = explode(':', $rate);
         if (!isset($cost) || $shipping_weight >= $rate_weight) {

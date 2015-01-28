@@ -153,6 +153,7 @@
       array(
         $product->id => array(
           'quantity' => 1,
+          'product_id' => $product->id,
           'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
           'tax_class_id' => $product->tax_class_id,
           'weight' => $product->weight,
