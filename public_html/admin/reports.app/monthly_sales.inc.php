@@ -97,8 +97,8 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo strftime('%B, %Y', $timestamp); ?></td>
     <td style="text-align: right;"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
-    <td style="text-align: right;"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;"><?php echo currency::format($orders['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;"><?php echo currency::format($orders['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
   </tr>
