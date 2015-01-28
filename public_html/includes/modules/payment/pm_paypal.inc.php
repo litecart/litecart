@@ -6,7 +6,7 @@
     public $name = 'Paypal Standard';
     public $description = '';
     public $author = 'LiteCart Dev Team';
-    public $version = '1.1';
+    public $version = '1.2';
     public $website = 'https://www.paypal.com/cgi-bin/webscr?cmd=_help';
     public $priority = 0;
     
@@ -46,6 +46,10 @@
     public function transfer($order) {
       
       if (empty($this->settings['merchant_email'])) return;
+      
+      if (!empty($this->settings['save_order_first'])) {
+        $order->save(); // Save order to database
+      }
       
       $fields = array(
         'cmd'           => '_cart',
@@ -273,6 +277,13 @@
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_use_store_currency', 'Use Store Currency'),
           'description' => language::translate(__CLASS__.':description_force_store_currency', 'Use the store currency for all transactions.'),
+          'function' => 'toggle("y/n")',
+        ),
+        array(
+          'key' => 'save_order',
+          'default_value' => '0',
+          'title' => language::translate(__CLASS__.':title_save_order_first', 'Save Order First'),
+          'description' => language::translate(__CLASS__.':description_save_order_first', 'Save the order to the database before sending the customer to the Paypal payment window.'),
           'function' => 'toggle("y/n")',
         ),
         array(
