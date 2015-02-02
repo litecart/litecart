@@ -1,4 +1,5 @@
 # Define some error documents
+ErrorDocument 401 "Access Forbidden"
 ErrorDocument 403 {BASE_DIR}error_document?code=403
 ErrorDocument 404 {BASE_DIR}error_document?code=404
 ErrorDocument 410 {BASE_DIR}error_document?code=410
@@ -68,3 +69,11 @@ ErrorDocument 500 "Internal Server Error"
     SetOutputFilter DEFLATE
   </FilesMatch>
 </IfModule>
+
+# Protect catalog using admin .htpasswd, handy for development platforms
+#<IfModule mod_auth.c>
+#  AuthType Basic
+#  AuthName "Restricted Area"
+#  AuthUserFile {ADMIN_DIR_FULL}.htpasswd
+#  Require valid-user
+#</IfModule>

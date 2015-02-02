@@ -59,9 +59,9 @@
         'business'      => $this->settings['merchant_email'],
         'currency_code' => !empty($this->settings['use_store_currency']) ? settings::get('store_currency_code') : $order->data['currency_code'],
         'cbt'           => language::translate('paypal:title_finalize_order', 'Finalize Order'),
-        'return'        => document::link('order_process.php'),
-        'cancel_return' => document::link('checkout.php'),
-        //'notify_url'    => document::link('callback.php', array('order_uid' => $order->data['uid'])), // We're not using IPN callbacks
+        'return'        => document::ilink('order_process'),
+        'cancel_return' => document::ilink('checkout'),
+        //'notify_url'    => document::ilink('callback', array('order_uid' => $order->data['uid'])), // We're not using IPN callbacks
         'charset'       => language::$selected['charset'],
         'custom'        => $order->data['uid'],
       );

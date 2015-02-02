@@ -245,7 +245,11 @@
   
   $base_dir = str_replace(file_absolute_path($_SERVER['DOCUMENT_ROOT']), '', $installation_path);
   
-  $htaccess = str_replace('{BASE_DIR}', $base_dir, $htaccess);
+  $htaccess = strtr($htaccess, array(
+    '{BASE_DIR}' => $base_dir,
+    '{ADMIN_DIR_FULL}' => $installation_path . $_REQUEST['admin_folder'],
+  ));
+  
   
   if (file_put_contents('../.htaccess', $htaccess)) {
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
