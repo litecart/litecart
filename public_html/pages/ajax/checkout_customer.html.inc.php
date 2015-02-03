@@ -6,7 +6,7 @@
   
   if (cart::$data['total']['items'] == 0) return;
   
-  if (empty($_POST['set_addresses'])) {
+  if (empty($_POST)) {
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
     }
