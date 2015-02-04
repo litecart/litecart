@@ -132,7 +132,7 @@
       <tr class="header">
         <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
         <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
-        <th align="center" style="vertical-align: text-top">&nbsp;</th>
+        <th style="vertical-align: text-top; text-align: center;">&nbsp;</th>
       </tr>
 <?php
     if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) {

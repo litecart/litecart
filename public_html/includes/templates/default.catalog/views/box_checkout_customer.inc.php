@@ -46,7 +46,7 @@
           <tr>
             <td><?php echo language::translate('title_password', 'Password'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?></td>
-            <td nowrap="nowrap"><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
+            <td><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?></td>
           </tr>
           <?php } ?>

@@ -78,7 +78,7 @@
     }
 ?>
         </td>
-        <td align="left"><?php echo $item['sku']; ?></td>
+        <td><?php echo $item['sku']; ?></td>
       <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
         <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
         <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>

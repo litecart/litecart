@@ -472,8 +472,8 @@ foreach (array_keys(language::$languages) as $language_code) {
         
         <table>
           <tr>
-            <th align="center" style="vertical-align: text-top"><?php echo language::translate('title_currency', 'Currency'); ?></th>
-            <th align="center" style="vertical-align: text-top"><?php echo language::translate('title_price', 'Price'); ?></th>
+            <th style="text-align: center; vertical-align: text-top;"><?php echo language::translate('title_currency', 'Currency'); ?></th>
+            <th style="text-align: center; vertical-align: text-top;"><?php echo language::translate('title_price', 'Price'); ?></th>
             <td style="text-align: center;"><?php echo language::translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</td>
           </tr>
           <tr>

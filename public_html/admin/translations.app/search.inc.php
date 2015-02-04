@@ -111,7 +111,7 @@
     }
 ?>
   </table>
-  <p align="right"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?></p>
+  <p style="text-align: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?></p>
 
 <?php echo functions::form_draw_form_end(); ?>
 

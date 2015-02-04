@@ -353,11 +353,11 @@
   <table id="order-items" class="dataTable" style="width: 100%;">
     <tr class="header">
       <th style="width: 100%;"><?php echo language::translate('title_item', 'Item'); ?></th>
-      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-      <th align="center" style="min-width: 50px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+      <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+      <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+      <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+      <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+      <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
       <th>&nbsp;</th>
     </tr>
 <?php
@@ -439,7 +439,7 @@
     <tr class="header">
       <th>&nbsp;</th>
       <th><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
-      <th align="right" width="100%"><?php echo language::translate('title_title', 'Title'); ?></th>
+      <th style="text-align: right;" width="100%"><?php echo language::translate('title_title', 'Title'); ?></th>
       <th style="text-align: center;"><?php echo language::translate('title_value', 'Value'); ?></th>
       <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
       <th>&nbsp;</th>
@@ -603,6 +603,6 @@
 
   <p><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
 
-  <p align="right"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+  <p style="text-align: right;"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
   
 <?php echo functions::form_draw_form_end(); ?>

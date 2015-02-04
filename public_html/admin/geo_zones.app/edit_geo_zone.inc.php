@@ -64,10 +64,10 @@
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
   <table width="100%" class="dataTable" id="table-zones">
     <tr class="header">
-      <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
-      <th style="vertical-align: text-top"><?php echo language::translate('title_country', 'Country'); ?></th>
-      <th style="vertical-align: text-top"><?php echo language::translate('title_zone', 'Zone'); ?></th>
-      <th align="center" style="vertical-align: text-top">&nbsp;</th>
+      <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th style="vertical-align: text-top;"><?php echo language::translate('title_country', 'Country'); ?></th>
+      <th style="vertical-align: text-top;"><?php echo language::translate('title_zone', 'Zone'); ?></th>
+      <th style="vertical-align: text-top; text-align: center;">&nbsp;</th>
     </tr>
 <?php
     if (!empty($_POST['zones'])) {

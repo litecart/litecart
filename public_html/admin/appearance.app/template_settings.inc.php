@@ -59,7 +59,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><u><?php echo $setting['title']; ?></u><br /><?php echo $setting['description']; ?></td>
     <td><?php echo functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
-    <td align="right"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
+    <td style="text-align: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
   </tr>
 <?php
     } else {

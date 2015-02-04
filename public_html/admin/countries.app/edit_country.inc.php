@@ -134,7 +134,7 @@
       <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
       <th style="vertical-align: text-top"><?php echo language::translate('title_code', 'Code'); ?></th>
       <th style="vertical-align: text-top"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th align="center" style="vertical-align: text-top">&nbsp;</th>
+      <th style="text-align: center; vertical-align: text-top;">&nbsp;</th>
     </tr>
   <?php
       if (!empty($_POST['zones'])) {

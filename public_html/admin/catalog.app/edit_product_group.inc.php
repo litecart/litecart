@@ -66,8 +66,8 @@
       <tr class="header">
         <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
         <th style="vertical-align: text-top; width: 100%;"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th align="center" style="vertical-align: text-top;"><?php echo empty($product_group->data['id']) ? '' : language::translate('title_products', 'Products'); ?></th>
-        <th align="center" style="vertical-align: text-top;">&nbsp;</th>
+        <th style="text-align: center; vertical-align: text-top;"><?php echo empty($product_group->data['id']) ? '' : language::translate('title_products', 'Products'); ?></th>
+        <th style="text-align: center; vertical-align: text-top;">&nbsp;</th>
       </tr>
 <?php
     if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) {
