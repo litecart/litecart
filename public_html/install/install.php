@@ -205,32 +205,12 @@
   
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   
-  ### Database > Tables > Demo Data ###################################
+  
+  ### Files > Default Data ####################################
   
   if (!empty($_REQUEST['demo_data'])) {
-    echo '<p>Writing demo data... ';
-    
-    $sql = file_get_contents('data/demo/data.sql');
-    
-    if (!empty($sql)) {
-      $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
-       
-      $sql = explode('-- --------------------------------------------------------', $sql);
-      
-      foreach ($sql as $query) {
-        $query = preg_replace('/--.*\s/', '', $query);
-        $database->query($query);
-      }
-    }
-    
-    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
-  }
-  
-  ### Files > Demo Data ###################################
-  
-  if (!empty($_REQUEST['demo_data'])) {
-    echo '<p>Copying demo files...';
-    if (file_xcopy('data/demo/public_html/', $installation_path)) {
+    echo '<p>Copying default files...';
+    if (file_xcopy('data/default/public_html/', $installation_path)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
@@ -385,6 +365,38 @@
     }
     
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+  
+  ### Database > Tables > Demo Data ###################################
+  
+  if (!empty($_REQUEST['demo_data'])) {
+    echo '<p>Writing demo data... ';
+    
+    $sql = file_get_contents('data/demo/data.sql');
+    
+    if (!empty($sql)) {
+      $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+       
+      $sql = explode('-- --------------------------------------------------------', $sql);
+      
+      foreach ($sql as $query) {
+        $query = preg_replace('/--.*\s/', '', $query);
+        $database->query($query);
+      }
+    }
+    
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+  
+  ### Files > Demo Data ###################################
+  
+  if (!empty($_REQUEST['demo_data'])) {
+    echo '<p>Copying demo files...';
+    if (file_xcopy('data/demo/public_html/', $installation_path)) {
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+    }
   }
   
   ### Set cache breakpoint ###################################
