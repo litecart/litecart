@@ -16,6 +16,7 @@
       break;
     default:
       header('HTTP/1.1 400 Bad Request');
+      break;
   }
   
   if (preg_match('#\.(jpg|png|gif)$#', route::$request)) {
@@ -23,7 +24,6 @@
     exit;
   }
   
-  exit;
   header('Location: '. document::ilink(''));
   exit;
 ?>

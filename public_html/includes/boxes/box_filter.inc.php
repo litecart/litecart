@@ -34,7 +34,7 @@
     }
     
   // Product Groups
-    $product_groups_query = database::query(
+    $products_query = database::query(
       "select distinct product_groups from ". DB_TABLE_PRODUCTS ."
       where status
       and product_groups != ''
@@ -44,7 +44,8 @@
       ;"
     );
     
-    while ($product = database::fetch($product_groups_query)) {
+    $product_groups = array();
+    while ($product = database::fetch($products_query)) {
       $sets = explode(',', $product['product_groups']);
       foreach ($sets as $set) {
         list($group_id, $value_id) = explode('-', $set);
@@ -52,17 +53,7 @@
       }
     }
     
-    $has_multiple_product_group_values = false;
     if (!empty($product_groups)) {
-      foreach ($product_groups as $group) {
-        if (count($group) > 1) {
-          $has_multiple_product_group_values = true;
-          break;
-        }
-      }
-    }
-    
-    if ($has_multiple_product_group_values) {
       
       $product_groups_query = database::query(
         "select product_group_id as id, name from ". DB_TABLE_PRODUCT_GROUPS_INFO ."

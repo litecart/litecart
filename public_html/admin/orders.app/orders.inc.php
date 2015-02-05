@@ -50,9 +50,11 @@
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th width="100%"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+    <th><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+    <th width="100%"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></th>
     <th><?php echo language::translate('title_country', 'Country'); ?></th>
     <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_amount', 'Amount'); ?></th>
     <th><?php echo language::translate('title_date', 'Date'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
@@ -84,8 +86,10 @@
     <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
     <td><?php echo $order['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
+    <td><?php echo $order['customer_tax_id']; ?></td>
     <td><?php echo functions::reference_get_country_name($order['customer_country_code']); ?></td>
     <td><?php echo $order['payment_option_name']; ?></td>
+    <td style="text-align: right;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
     <td style="text-align: right;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
     <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
@@ -101,7 +105,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="9"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+    <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
   </tr>
 </table>
 
