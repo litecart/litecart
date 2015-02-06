@@ -134,7 +134,7 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $page->snippets['extra_images'][] = array(
       'original' => WS_DIR_IMAGES . $image,
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 180, 180, 'CROP'),
+      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 180, 180, 'FIT_USE_WHITESPACING'),
     );
   }
   
