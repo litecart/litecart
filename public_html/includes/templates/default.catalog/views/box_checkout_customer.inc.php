@@ -104,8 +104,9 @@
 </div>
 
 <script>
-  $("#box-checkout-account input, #box-checkout-account select").change(function() {
+  $("#box-checkout-customer .billing-address input, #box-checkout-customer .billing-address select").change(function() {
     if ($(this).val() == '') return;
+    if (console) console.log('Getting customer address..');
     $.ajax({
       url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
@@ -122,7 +123,9 @@
         }
         $.each(data, function(key, value) {
           if (console) console.log(key +": "+ value);
-          if ($("#box-checkout-account *[name='"+key+"']").length && $("#box-checkout-account *[name='"+key+"']").val() == '') $("#box-checkout-account *[name='"+key+"']").val(data[key]);
+          if ($("#box-checkout-customer .billing-address *[name='"+key+"']").length && $("#box-checkout-customer .billing-address *[name='"+key+"']").val() == '') {
+            $("#box-checkout-customer .billing-address *[name='"+key+"']").val(value);
+          }
         });
       },
     });

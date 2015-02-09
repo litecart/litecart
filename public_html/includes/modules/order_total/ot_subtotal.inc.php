@@ -37,10 +37,6 @@
       return $output;
     }
     
-    public function before_process() {}
-    
-    public function after_process() {}
-    
     function settings() {
       return array(
         array(

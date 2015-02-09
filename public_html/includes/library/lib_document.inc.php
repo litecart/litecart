@@ -75,9 +75,6 @@
                                       . '</script>' . PHP_EOL;
       }
       
-    // Sort head tags
-      if (!empty(self::$snippets['head_tags'])) asort(self::$snippets['head_tags']);
-      
     // Prepare snippets
       foreach (array_keys(self::$snippets) as $snippet) {
         if (is_array(self::$snippets[$snippet])) self::$snippets[$snippet] = implode(PHP_EOL, self::$snippets[$snippet]);

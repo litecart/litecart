@@ -50,10 +50,8 @@
     public static function before_capture() {
     
     // Refresh
-      if (count(currency::$currencies) > 1) {
-        foreach(array_keys(self::$data['items']) as $key) {
-          self::update($key, self::$data['items'][$key]['quantity']);
-        }
+      foreach(array_keys(self::$data['items']) as $key) {
+        self::update($key, self::$data['items'][$key]['quantity']);
       }
     }
     
@@ -159,6 +157,7 @@
         'taric' =>  $product->taric,
         'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
         'extras' => 0,
+        'tax' => tax::get_tax($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
         'quantity' => (int)$quantity,
         'weight' => $product->weight,
@@ -292,7 +291,7 @@
     }
     
     public static function update($item_key, $quantity) {
-    
+      
       if (!isset(self::$data['items'][$item_key])) {
         notices::add('errors', 'The product does not exist in cart.');
         return;

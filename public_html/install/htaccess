@@ -50,7 +50,7 @@ ErrorDocument 500 "Internal Server Error"
 # Cacheable external content
 <IfModule mod_headers.c>
   <FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
-    Header set Cache-Control "max-age=864000, public, must-revalidate"
+    Header set Cache-Control "max-age=86400, public, must-revalidate"
     Header unset Last-Modified
   </FilesMatch>
 </IfModule>
@@ -58,7 +58,7 @@ ErrorDocument 500 "Internal Server Error"
 # Cacheable external content
 <IfModule mod_headers.c>
   <FilesMatch "\.(css)$">
-    Header set Cache-Control "max-age=3600, public, must-revalidate"
+    Header set Cache-Control "max-age=86400, public, must-revalidate"
     Header unset Last-Modified
   </FilesMatch>
 </IfModule>

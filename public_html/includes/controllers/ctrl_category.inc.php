@@ -155,13 +155,13 @@
       
       database::query(
         "delete from ". DB_TABLE_CATEGORIES ."
-        where id = '". $this->data['id'] ."'
+        where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
       
       database::query(
         "delete from ". DB_TABLE_CATEGORIES_INFO ."
-        where category_id = '". $this->data['id'] ."'
+        where category_id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
       
