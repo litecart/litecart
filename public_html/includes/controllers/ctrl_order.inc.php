@@ -266,28 +266,12 @@
       );
       $current_order_status = database::fetch($current_order_status_query);
       
-    // Send update notice e-mail
-      if (!empty($this->data['id']) && !empty($current_order_status) && $current_order_status['id'] != $previous_order_status['id']) {
-        $this->data['comments'][] = array(
-          'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $current_order_status['name']),
-          'hidden' => 1,
-        );
-        
-        if (!empty($current_order_status['notify'])) {
-          
-        // Prepare e-mail body
-          if (empty($current_order_status['email_message']) || trim(strip_tags($current_order_status['email_message'])) == '') {
-            $email_body = $this->draw_printable_copy();
-          } else {
-            $email_body = $this->inject_email_message($current_order_status['email_message']);
-          }
-        
-          functions::email_send(
-            null,
-            $this->data['customer']['email'],
-            sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), (int)$this->data['id'], (string)$current_order_status['name']),
-            $email_body,
-            true
+    // Log order status change as comment
+      if (isset($previous_order_status['id']) && isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id']) {
+        if (!empty($this->data['id'])) {
+          $this->data['comments'][] = array(
+            'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $current_order_status['name']),
+            'hidden' => 1,
           );
         }
       }
@@ -509,6 +493,28 @@
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['comments'][$key]['id'] ."'
             limit 1;"
+          );
+        }
+      }
+      
+      
+    // Send update notice e-mail
+      if (empty($previous_order_status['id']) || (isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id'])) {
+        if (!empty($current_order_status['notify'])) {
+          
+        // Prepare e-mail body
+          if (empty($current_order_status['email_message']) || trim(strip_tags($current_order_status['email_message'])) == '') {
+            $email_body = $this->draw_printable_copy();
+          } else {
+            $email_body = $this->inject_email_message($current_order_status['email_message']);
+          }
+          
+          functions::email_send(
+            null,
+            $this->data['customer']['email'],
+            sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), (int)$this->data['id'], (string)$current_order_status['name']),
+            $email_body,
+            true
           );
         }
       }
