@@ -107,7 +107,7 @@
       $values_query = database::query(
         "select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
         where product_group_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['values'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
       
       while ($value = database::fetch($values_query)) {
@@ -197,7 +197,7 @@
       $values_query = database::query(
         "select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
         where product_group_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['values'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
       
       while ($value = database::fetch($values_query)) {

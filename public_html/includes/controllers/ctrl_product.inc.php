@@ -165,15 +165,6 @@
         }
       }
       
-    // Extract first image
-      if (!empty($this->data['images'])){
-        $images = array_values($this->data['images']);
-        $image = array_shift($images);
-        $this->data['image'] = $image['filename'];
-      } else {
-        $this->data['image'];
-      }
-      
     // Cleanup empty elements in categories
       //$this->data['categories'] = array_filter($this->data['categories']);
       foreach(array_keys($this->data['categories']) as $key){
@@ -204,7 +195,6 @@
         dim_class = '". database::input($this->data['dim_class']) ."',
         weight = '". database::input($this->data['weight']) ."',
         weight_class = '". database::input($this->data['weight_class']) ."',
-        image = '". database::input($this->data['image']) ."',
         date_valid_from = ". (empty($this->data['date_valid_from']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
         date_valid_to = ". (empty($this->data['date_valid_to']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
         date_updated = '". date('Y-m-d H:i:s') ."'
@@ -280,7 +270,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
         where product_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['campaigns'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
       );
       
     // Update campaigns
@@ -317,7 +307,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS ."
         where product_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['options'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
       );
       
     // Update options
@@ -359,7 +349,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
         where product_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['options_stock'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
       );
       
     // Update stock options
@@ -414,7 +404,7 @@
       $products_images_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_IMAGES."
         where product_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['images'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
       while ($product_image = database::fetch($products_images_query)) {
         if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product_image['filename'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product_image['filename']);
@@ -439,12 +429,14 @@
             );
             $this->data['images'][$key]['id'] = database::insert_id();
           }
+          
           if (!empty($this->data['images'][$key]['new_filename']) && !is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['images'][$key]['new_filename'])) {
             functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['images'][$key]['filename']);
             functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['images'][$key]['new_filename']);
             rename(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['images'][$key]['filename'], FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['images'][$key]['new_filename']);
             $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
           }
+          
           database::query(
             "update ". DB_TABLE_PRODUCTS_IMAGES ."
             set filename = '". $this->data['images'][$key]['filename'] ."',
@@ -455,6 +447,22 @@
           );
         }
       }
+      
+    // Update product image
+      if (!empty($this->data['images'])){
+        $images = array_values($this->data['images']);
+        $image = array_shift($images);
+        $this->data['image'] = $image['filename'];
+      } else {
+        $this->data['image'];
+      }
+      
+      database::query(
+        "update ". DB_TABLE_PRODUCTS ." set
+        image = '". database::input($this->data['image']) ."'
+        where id='". (int)$this->data['id'] ."'
+        limit 1;"
+      );
       
       cache::clear_cache('product_'.$this->data['id']);
       cache::clear_cache('products');

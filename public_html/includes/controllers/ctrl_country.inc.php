@@ -59,7 +59,7 @@
       database::query(
         "delete from ". DB_TABLE_ZONES ."
         where country_code = '". database::input($this->data['iso_code_2']) ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['zones'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['zones'], 'id')) ."');"
       );
       
       if (!empty($this->data['zones'])) {

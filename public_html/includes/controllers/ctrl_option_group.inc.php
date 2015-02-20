@@ -120,7 +120,7 @@
       $option_values_query = database::query(
         "select id from ". DB_TABLE_OPTION_VALUES ."
         where group_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['values'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
       
       while ($option_value = database::fetch($option_values_query)) {
@@ -214,7 +214,7 @@
       $option_values_query = database::query(
         "select id from ". DB_TABLE_OPTION_VALUES ."
         where group_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", @array_keys($this->data['values'])) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
       
       while ($option_value = database::fetch($option_values_query)) {
