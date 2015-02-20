@@ -1,12 +1,12 @@
 <?php
   
-  if (isset($_GET['category_id'])) {
+  if (!empty($_GET['category_id'])) {
     $category = new ctrl_category($_GET['category_id']);
   } else {
     $category = new ctrl_category();
   }
   
-  if (!$_POST && isset($category)) {
+  if (!$_POST && !empty($category->data)) {
     foreach ($category->data as $key => $value) {
       $_POST[$key] = $value;
     }

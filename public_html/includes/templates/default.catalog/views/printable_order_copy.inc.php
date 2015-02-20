@@ -168,7 +168,7 @@
       </td>
         <?php if (settings::get('store_tax_id')) { ?>
       <td style="vertical-align: top;">
-        <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?>:<strong><br />
+        <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?>:</strong><br />
         <?php echo settings::get('store_tax_id'); ?>
       </td>
       <?php } ?>

@@ -183,7 +183,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    return '<input type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" title="'. htmlspecialchars($hint) .'" pattern="^\+?[0-9]+$"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" title="'. htmlspecialchars($hint) .'" pattern="^\+?[0-9 -]+$"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {
