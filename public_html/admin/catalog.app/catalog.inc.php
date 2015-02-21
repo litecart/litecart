@@ -356,7 +356,7 @@
         group by(p.id)
         order by pi.name asc;"
       );
-        
+
       $display_images = true;
       if (database::num_rows($products_query) > 100) {
         $display_images = false;
