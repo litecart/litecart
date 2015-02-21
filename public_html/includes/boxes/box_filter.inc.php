@@ -16,9 +16,10 @@
     if (empty($_GET['manufacturer_id'])) {
       $manufacturers_query = database::query(
         "select distinct m.id, m.name from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_MANUFACTURERS ." m on m.id = p.manufacturer_id
+        left join ". DB_TABLE_MANUFACTURERS ." m on m.id = p.manufacturer_id".
+        (!empty($_GET['category_id']) ? " left join " . DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on pc.product_id = p.id " : "")."
         where p.status
-        ". (!empty($_GET['category_id']) ? "and find_in_set('". (int)$_GET['category_id'] ."', categories)" : "") ."
+        ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
         ;"
       );
       if (database::num_rows($manufacturers_query) > 1) {
@@ -35,12 +36,13 @@
     
   // Product Groups
     $products_query = database::query(
-      "select distinct product_groups from ". DB_TABLE_PRODUCTS ."
-      where status
+      "select distinct product_groups from ". DB_TABLE_PRODUCTS .
+      (!empty($_GET['category_id']) ? " left join " . DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on pc.product_id = id " : "").
+      "where status
       and product_groups != ''
       ". (!empty($_GET['manufacturer_id']) ? "and manufacturer_id = '". (int)$_GET['manufacturer_id'] ."'" : "") ."
       ". (!empty($_GET['manufacturers']) ? "and (find_in_set('". implode("', manufacturer_id) or find_in_set('", database::input($_GET['manufacturers'])) ."', manufacturer_id))" : "") ."
-      ". (!empty($_GET['category_id']) ? "and find_in_set('". (int)$_GET['category_id'] ."', categories)" : "") ."
+      ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
       ;"
     );
     
