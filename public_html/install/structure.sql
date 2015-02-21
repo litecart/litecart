@@ -428,7 +428,7 @@ CREATE TABLE `lc_products` (
   KEY `product_groups` (`product_groups`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_products_categories` (
+CREATE TABLE `lc_products_to_categories` (
    `product_id` int(11) NOT NULL,
    `category_id` int(11) NOT NULL,
    PRIMARY KEY(`product_id`, `category_id`)

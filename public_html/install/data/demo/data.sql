@@ -55,7 +55,7 @@ INSERT INTO `lc_products` (`id`, `status`, `manufacturer_id`, `supplier_id`, `de
 (3, 1, 1, 0, 1, 2, 1, '', '', 'rd003', 'RD003', '', '', 30, 0.5000, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10.0000, 1, 'products/3-red-duck-1.png', 1, 0, '0000-00-00', '0000-00-00', NOW(), NOW()),
 (4, 1, 1, 0, 1, 2, 1, '', '', 'rd004', 'RD004', '', '', 30, 0.5000, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10.0000, 1, 'products/4-blue-duck-1.png', 1, 0, '0000-00-00', '0000-00-00', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_products_categories` (`product_id`, `category_id`) VALUES
+INSERT INTO `lc_products_to_categories` (`product_id`, `category_id`) VALUES
 (1, 1),
 (1, 2),
 (2, 1),
