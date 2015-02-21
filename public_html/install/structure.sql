@@ -417,7 +417,7 @@ CREATE TABLE `lc_products` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
-  KEY `categories` (`categories`),
+  KEY `default_category_id` (`default_category_id`),
   KEY `manufacturer_id` (`manufacturer_id`),
   KEY `keywords` (`keywords`),
   KEY `code` (`code`),
