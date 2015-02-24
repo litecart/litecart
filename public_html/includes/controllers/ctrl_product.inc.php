@@ -65,12 +65,9 @@
          where product_id = '". (int)$product_id ."';"
       );
 
-
       $this->data['categories'] = array();
-        while ($product_categories = database::fetch($category_query)){
-          foreach ($product_categories as $key => $value) {
-            array_push($this->data['categories'],$value );
-          }
+      while ($product_categories = database::fetch($category_query)){
+        $this->data['categories'][] = $category['id'];
       }
 
       $this->data['product_groups'] = explode(',', $this->data['product_groups']);
@@ -78,7 +75,7 @@
     // Info
       $products_info_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_INFO ."
-        where product_id = '". (int)$product_id ."';"
+         where product_id = '". (int)$product_id ."';"
       );
       while ($product_info = database::fetch($products_info_query)) {
         foreach ($product_info as $key => $value) {
