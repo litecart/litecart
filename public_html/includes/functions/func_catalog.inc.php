@@ -150,8 +150,7 @@
 
       $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
       $sql_campaign_price_column = "if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)";
-   if(count($filter['categories']) == 0  || array_values($filter['categories'])[0] == ""){
-
+   if(count($filter['categories']) == 0 || array_values($filter['categories'])[0] == ""){
       $query = "
         select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
           select id, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_created from ". DB_TABLE_PRODUCTS ."
@@ -188,11 +187,7 @@
         ". $sql_global_sort ."
         ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";
       ";
-    }
-    else {
-
-
-
+    }else {
         $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
         $sql_campaign_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pcg.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .",pp.`". database::input(settings::get('store_currency_code')) ."`)";
         $sql_final_price_column = "if(pcg.id IS NULL,
