@@ -66,8 +66,8 @@
       );
 
       $this->data['categories'] = array();
-      while ($product_categories = database::fetch($category_query)){
-        $this->data['categories'][] = $category['id'];
+      while ($category = database::fetch($category_query)){
+        $this->data['categories'][] = $category['category_id'];
       }
 
       $this->data['product_groups'] = explode(',', $this->data['product_groups']);
