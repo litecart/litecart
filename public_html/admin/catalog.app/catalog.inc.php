@@ -308,7 +308,7 @@
         
         if (in_array($category['id'], $category_trail)) {
           if (database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = '". (int)$category['id'] ."' limit 1;")) > 0
-           || database::fetch(database::query("select exists (select 1 from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."  where category_id =".(int)$category['id'].")"))[0]) {
+           || database::fetch(database::query("select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."  where category_id =".(int)$category['id']." limit 1;")) > 0) {
             $output .= admin_catalog_category_tree($category['id'], $depth+1);
             
             // Output products
