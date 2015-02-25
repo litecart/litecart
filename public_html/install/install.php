@@ -208,13 +208,11 @@
   
   ### Files > Default Data ####################################
   
-  if (!empty($_REQUEST['demo_data'])) {
-    echo '<p>Copying default files...';
-    if (file_xcopy('data/default/public_html/', $installation_path)) {
-      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-    } else {
-      echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
-    }
+  echo '<p>Copying default files...';
+  if (file_xcopy('data/default/public_html/', $installation_path)) {
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  } else {
+    echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
   }
   
   ### .htaccess mod rewrite ###################################
