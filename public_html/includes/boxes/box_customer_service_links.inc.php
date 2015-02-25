@@ -19,16 +19,19 @@
       and find_in_set('customer_service', dock)
       order by p.priority, pi.title;"
     );
-    while ($page = database::fetch($pages_query)) {
-      $box_customer_service_links->snippets['pages'][] = array(
-        'id' => $page['id'],
-        'title' => $page['title'],
-        'link' => document::ilink('customer_service', array('page_id' => $page['id'])),
-        'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
-      );
-    }
     
-    echo $box_customer_service_links->stitch('views/box_customer_service_links');
+    if (database::num_rows($pages_query)) {
+      while ($page = database::fetch($pages_query)) {
+        $box_customer_service_links->snippets['pages'][] = array(
+          'id' => $page['id'],
+          'title' => $page['title'],
+          'link' => document::ilink('customer_service', array('page_id' => $page['id'])),
+          'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
+        );
+      }
+      
+      echo $box_customer_service_links->stitch('views/box_customer_service_links');
+    }
     
     cache::end_capture($box_customer_service_links_cache_id);
   }

@@ -14,16 +14,18 @@
       order by p.priority, pi.title;"
     );
     
-    while ($page = database::fetch($pages_query)) {
-      $box_information_links->snippets['pages'][] = array(
-        'id' => $page['id'],
-        'title' => $page['title'],
-        'link' => document::ilink('information', array('page_id' => $page['id'])),
-        'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
-      );
+    if (database::num_rows($pages_query)) {
+      while ($page = database::fetch($pages_query)) {
+        $box_information_links->snippets['pages'][] = array(
+          'id' => $page['id'],
+          'title' => $page['title'],
+          'link' => document::ilink('information', array('page_id' => $page['id'])),
+          'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
+        );
+      }
+      
+      echo $box_information_links->stitch('views/box_information_links');
     }
-    
-    echo $box_information_links->stitch('views/box_information_links');
     
     cache::end_capture($box_information_links_cache_id);
   }

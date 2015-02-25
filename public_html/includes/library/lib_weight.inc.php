@@ -1,7 +1,6 @@
 <?php
 
   class weight {
-    public static $class = '';
     public static $classes = array();
     
     public static function construct() {
@@ -44,9 +43,8 @@
     //public static function initiate() {
     //}
     
-    public static function startup() {
-      self::$class = &customer::$data['weight_class'];
-    }
+    //public static function startup() {
+    //}
     
     //public static function before_capture() {
     //}
