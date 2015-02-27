@@ -318,9 +318,9 @@
     if ($value === true) $value = form_reinsert_value($name);
     
     document::$snippets['head_tags']['sceditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
-                                                         . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
-                                                         . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. language::$selected['code'] .'.js"></script>' . PHP_EOL
-                                                         . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
+                                                 . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
+                                                 . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. language::$selected['code'] .'.js"></script>' . PHP_EOL
+                                                 . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
     
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" data-size="auto" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
@@ -328,7 +328,7 @@
          . '    "plugins": "xhtml,format",' . PHP_EOL
          . '    "width": 1024,' . PHP_EOL
          . '    "resizeEnabled": true,' . PHP_EOL
-         . '    "style": "'. WS_DIR_EXT .'sceditor/jquery.sceditor.default.min.css",' . PHP_EOL
+         . '    "style": "{snippet:template_path}styles/loader.css",' . PHP_EOL
          . '    "locale": "'. htmlspecialchars(language::$selected['code']) .'",' . PHP_EOL
          . '    "emoticons": false,' . PHP_EOL
          . '    "toolbar": "format|font,size,bold,italic,underline,strike,subscript,superscript|left,center,right,justify|color,removeformat|bulletlist,orderedlist,table|code,quote|horizontalrule,image,email,link,unlink|youtube,date,time|ltr,rtl|print,maximize,source"' . PHP_EOL
