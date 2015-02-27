@@ -1,11 +1,11 @@
 /**
-* @author martec
+* @author brunoais
 * @license [MIT](http://www.opensource.org/licenses/mit-license.php)
 */
 (function ($) {
 	'use strict';
 
-	$.sceditor.locale['pt-BR'] = {
+	$.sceditor.locale['pt-PT'] = {
 		'Bold': 'Negrito',
 		'Italic': 'Itálico',
 		'Underline': 'Sublinhado',
@@ -13,19 +13,19 @@
 		'Subscript': 'Subscrito',
 		'Superscript': 'Sobrescrito ',
 		'Align left': 'Alinhar à esquerda',
-		'Center': 'Centralizar',
+		'Center': 'Centrar',
 		'Align right': 'Alinhar à direita',
 		'Justify': 'Justificar',
 		'Font Name': 'Nome da fonte',
 		'Font Size': 'Tamanho da fonte',
 		'Font Color': 'Cor da fonte',
 		'Remove Formatting': 'Remover a formatação',
-		'Cut': 'Recortar',
-		'Your browser does not allow the cut command. Please use the keyboard shortcut Ctrl/Cmd-X': 'Seu navegador não permite o comando recortar. Favor use o atalho Ctrl/Cmd-X',
+		'Cut': 'Cortar',
+		'Your browser does not allow the cut command. Please use the keyboard shortcut Ctrl/Cmd-X': 'Seu navegador não permite o comando cortar. Por favor use o atalho Ctrl/Cmd-X',
 		'Copy': 'Copiar',
-		'Your browser does not allow the copy command. Please use the keyboard shortcut Ctrl/Cmd-C': 'Seu navegador não permite o comando copiar. Favor use o atalho Ctrl/Cmd-C',
+		'Your browser does not allow the copy command. Please use the keyboard shortcut Ctrl/Cmd-C': 'Seu navegador não permite o comando copiar. Por favor  use o atalho Ctrl/Cmd-C',
 		'Paste': 'Colar',
-		'Your browser does not allow the paste command. Please use the keyboard shortcut Ctrl/Cmd-V': 'Seu navegador não permite o comando colar. Favor use o atalho Ctrl/Cmd-V',
+		'Your browser does not allow the paste command. Please use the keyboard shortcut Ctrl/Cmd-V': 'Seu navegador não permite o comando colar. Por favor  use o atalho Ctrl/Cmd-V',
 		'Paste your text inside the following box:': 'Cole o seu texto dentro da caixa de texto a seguir:',
 		'Paste Text': 'Colar o texto',
 		'Bullet list': 'Lista com marcadores',
@@ -53,15 +53,17 @@
 		'Insert current date': 'Inserir a data atual',
 		'Insert current time': 'Inserir a hora atual',
 		'Print': 'Imprimir',
-		'View source': 'Fonte',
+		'View source': 'Código fonte',
 		'Description (optional):': 'Descrição (opcional):',
-		'Enter the image URL:': 'Informe o endereço URL da imagem:',
-		'Enter the e-mail address:': 'Informe o endereço de e-mail:',
-		'Enter the displayed text:': 'Digite o texto exibido:',
-		'Enter URL:': 'Informe o endereço URL:',
-		'Enter the YouTube video URL or ID:': 'Informe o endereço URL ou ID do YouTube:',
+		'Enter the image URL:': 'Introduza o endereço URL da imagem:',
+		'Enter the e-mail address:': 'Introduza o endereço de e-mail:',
+		'Enter the displayed text:': 'Indique o texto exibido:',
+		'Enter URL:': 'Introduza o endereço URL:',
+		'Enter the YouTube video URL or ID:': 'Introduza o endereço URL ou o ID do video do YouTube:',
 		'Insert a Quote': 'Inserir uma citação',
-		'Invalid YouTube video': 'Vídeo do TouTube inválido',
-		dateFormat: 'day-month-year'
+		dateFormat: 'day/month/year'
 	};
+
+	// Set as the default Portuguese locale
+	$.sceditor.locale['pt'] = $.sceditor.locale['pt-PT'];
 })(jQuery);
