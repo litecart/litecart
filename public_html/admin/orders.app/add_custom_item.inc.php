@@ -1,50 +1,13 @@
 <?php
   document::$layout = 'printable';
-
-  $order = new ctrl_order($_GET['order_id']);
 ?>
+
 <script>
   $(document).ready(function() {
     parent.$('#fancybox-content').height($('body').height() + parseInt(parent.$('#fancybox-content').css('border-top-width')) + parseInt(parent.$('#fancybox-content').css('border-bottom-width')));
     parent.$.fancybox.center();
   });
 </script>
-
-<?php
-  if (!empty($_POST['add'])) {
-    
-    if (!empty(notices::$data['errors'])) {
-      die(array_shift(notices::$data['errors']));
-    }
-?>
-<script>
-  var new_row = '  <tr class="item">'
-              + '    <td>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][id]', ''); ?>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][product_id]', '0'); ?>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', ''); ?>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][options]', ''); ?>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][name]', $_POST['name']); ?>'
-              + '      <?php echo $_POST['name']; ?>'
-              + '    </td>'
-              + '    <td style="text-align: center;"><?php echo functions::form_draw_hidden_field('items[new_item_index][sku]', $_POST['sku']); ?><?php echo $_POST['sku']; ?></td>'
-              + '    <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('weight', $_POST['weight']); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('weight_class', $_POST['weight_class'])); ?></td>'
-              + '    <td style="text-align: center;"><?php echo functions::form_draw_number_field('items[new_item_index][quantity]', $_POST['quantity']); ?></td>'
-              + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][price]', $_POST['price']); ?></td>'
-              + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][tax]', $_POST['tax']); ?></td>'
-              + '    <td><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
-              + '  </tr>';
-  
-  new_row = new_row.replace(/new_item_index/g, "new_<?php echo time(); ?>");
-  
-  $("#order-items .footer", window.parent.document).before(new_row);
-  parent.calculate_total();
-  parent.$.fancybox.close();
-</script>
-
-<?php
-  } else {
-?>
 
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></h1>
 
@@ -61,11 +24,11 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_price', 'Price'); ?></strong></td>
-      <td><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'price', true); ?></td>
+      <td><?php echo functions::form_draw_currency_field($_GET['currency_code'], 'price', true); ?></td>
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_tax', 'Tax'); ?></strong></td>
-      <td><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'tax', true); ?></td>
+      <td><?php echo functions::form_draw_currency_field($_GET['currency_code'], 'tax', true); ?></td>
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_weight', 'weight'); ?></strong></td>
@@ -79,7 +42,27 @@
 
   <p><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="parent.$.fancybox.close();"', 'cancel'); ?></p>
 
-<?php
-    echo functions::form_draw_form_end();
-  }
-?>
+<?php echo functions::form_draw_form_end(); ?>
+
+<script>
+  $("button[name='add']").click(function(e){
+    e.preventDefault();
+    
+    var item = {
+      id: '',
+      product_id: $("input[name='product_id']").val(),
+      option_stock_combination: null,
+      options: null,
+      name: $("input[name='name']").val(),
+      sku: $("input[name='sku']").val(),
+      weight: $("input[name='weight']").val(),
+      weight_class: $("select[name='weight_class'] option:selected").val(),
+      quantity: $("input[name='quantity']").val(),
+      price: $("input[name='price']").val()
+      tax: $("input[name='tax']").val()
+    };
+    
+    parent.<?php echo preg_replace('#([^a-zA-Z_])#', '', $_GET['return_method']); ?>(item);
+    parent.$.fancybox.close();
+  });
+</script>

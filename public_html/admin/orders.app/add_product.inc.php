@@ -1,22 +1,17 @@
 <?php
   document::$layout = 'printable';
-
-  $order = new ctrl_order($_GET['order_id']);
   
-  if (!empty($_GET['product_id'])) $product = new ref_product($_GET['product_id'], $order->data['currency_code']);
-?>
-<script>
-  $(document).ready(function() {
-    parent.$('#fancybox-content').height($('body').height() + parseInt(parent.$('#fancybox-content').css('border-top-width')) + parseInt(parent.$('#fancybox-content').css('border-bottom-width')));
-    parent.$.fancybox.center();
-  });
-</script>
-
-<?php
-  if (!empty($_POST['add'])) {
+  if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('store_currency_code');
+  if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
+  
+  if (!empty($_POST['product_id'])) {
     
-    $price = !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price;
-    $weight = $product->weight;
+    $product = new ref_product($_POST['product_id'], $_GET['currency_code']);
+    
+    $price = !empty($product->campaign['price']) ? $product->campaign['price'] * $_GET['currency_value'] : $product->price * $_GET['currency_value'];
+    $tax = tax::get_tax($price * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);
+    $weight = weight::convert($product->weight, $product->weight_class, settings::get('store_weight_class'));
+    $weight_class = settings::get('store_weight_class');
     $sku = $product->sku;
     
     $_POST['options'] = !empty($_POST['options']) ? array_filter($_POST['options']) : array();
@@ -26,29 +21,27 @@
       foreach (array_keys($product->options) as $key) {
         
         if ($product->options[$key]['required'] != 0) {
-          if (empty($_POST['options'][$product->options[$key]['name'][language::$selected['code']]])) {
-            notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][language::$selected['code']] .')');
-            return;
+          if (empty($_POST['options'][$product->options[$key]['name'][$_GET['language_code']]])) {
+            notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][$_GET['language_code']] .')');
           }
         }
         
-        if (!empty($_POST['options'][$product->options[$key]['name'][language::$selected['code']]])) {
+        if (!empty($_POST['options'][$product->options[$key]['name'][$_GET['language_code']]])) {
           switch ($product->options[$key]['function']) {
             case 'checkbox':
-            
               $valid_values = array();
               foreach ($product->options[$key]['values'] as $value) {
-                $valid_values[] = $value['name'][language::$selected['code']];
-                if (in_array($value['name'][language::$selected['code']], $_POST['options'][$product->options[$key]['name'][language::$selected['code']]])) {
+                $valid_values[] = $value['name'][$_GET['language_code']];
+                if (in_array($value['name'][$_GET['language_code']], $_POST['options'][$product->options[$key]['name'][$_GET['language_code']]])) {
                   $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-                  $price += $value['price_adjust'];
+                  $price += $value['price_adjust'] * $_GET['currency_value'];
+                  $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);;
                 }
               }
               
-              foreach ($_POST['options'][$product->options[$key]['name'][language::$selected['code']]] as $current_value) {
+              foreach ($_POST['options'][$product->options[$key]['name'][$_GET['language_code']]] as $current_value) {
                 if (!in_array($current_value, $valid_values)) {
                   notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
-                  return;
                 }
               }
               break;
@@ -58,7 +51,8 @@
               $values = array_values($product->options[$key]['values']);
               $value = array_shift($values);
               $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-              $price += $value['price_adjust'];
+              $price += $value['price_adjust'] * $_GET['currency_value'];
+              $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);;
               break;
             
             case 'radio':
@@ -66,18 +60,17 @@
             
               $valid_values = array();
               foreach ($product->options[$key]['values'] as $value) {
-                $valid_values[] = $value['name'][language::$selected['code']];
-                if ($value['name'][language::$selected['code']] == $_POST['options'][$product->options[$key]['name'][language::$selected['code']]]) {
+                $valid_values[] = $value['name'][$_GET['language_code']];
+                if ($value['name'][$_GET['language_code']] == $_POST['options'][$product->options[$key]['name'][$_GET['language_code']]]) {
                   $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-                  $price += $value['price_adjust'];
+                  $price += $value['price_adjust'] * $_GET['currency_value'];
+                  $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);;
                 }
               }
               
-              if (!in_array($_POST['options'][$product->options[$key]['name'][language::$selected['code']]], $valid_values)) {
+              if (!in_array($_POST['options'][$product->options[$key]['name'][$_GET['language_code']]], $valid_values)) {
                 notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
-                return;
               }
-              
               break;
           }
         }
@@ -85,6 +78,7 @@
     }
     
   // Match options with options stock
+    $option_stock_combination = '';
     if (count($product->options_stock) > 0) {
       foreach ($product->options_stock as $option_stock) {
       
@@ -110,76 +104,34 @@
     }
     
     if (!empty(notices::$data['errors'])) {
-      die(array_shift(notices::$data['errors']));
+      notices::$data['errors'] = array(array_shift(notices::$data['errors']));
     }
+  }
 ?>
 <script>
-  var new_row = '  <tr class="item">'
-              + '    <td>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][id]', ''); ?>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][product_id]', $product->id); ?>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', !empty($option_stock_combination) ? $option_stock_combination : ''); ?>'
-              + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][name]', $product->name[language::$selected['code']]); ?>'
-              + '      <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $product->id)); ?>" target="_blank"><?php echo $product->name[language::$selected['code']]; ?></a>'
-<?php
-    if (!empty($_POST['options'])) {
-      echo '              + \'      <br />\'' . PHP_EOL
-         . '              + \'      <table cellpadding="0">\'' . PHP_EOL;
-      foreach (array_keys($_POST['options']) as $field) {
-        echo '              + \'        <tr>\'' . PHP_EOL;
-          echo '              + \'          <td style="padding-left: 10px;">'. $field .'</td>\'' . PHP_EOL
-           . '              + \'          <td>';
-        if (is_array($_POST['options'][$field])) {
-          foreach (array_keys($_POST['options'][$field]) as $key) {
-            echo functions::form_draw_text_field('items[new_item_index][options]['.$field.']['. $_POST['options'][$field][$key] .']', true, !empty($option_stock_combination) ? 'readonly="readonly"' : '');
-          }
-        } else {
-          echo functions::form_draw_text_field('items[new_item_index][options]['.$field.']', $_POST['options'][$field], !empty($option_stock_combination) ? 'readonly="readonly"' : '');
-        }
-        echo '</td>\'' . PHP_EOL
-           . '              + \'        </tr>\'' . PHP_EOL;
-      }
-      echo '              + \'    </table>\'' . PHP_EOL;
-    }
-?>
-              + '    </td>'
-              + '    <td style="text-align: center;"><?php echo functions::form_draw_hidden_field('items[new_item_index][sku]', $sku); ?><?php echo !empty($sku) ? $sku : $product->sku; ?></td>'
-              + '    <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('weight', $weight); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('weight_class', $product->weight_class)); ?></td>'
-              + '    <td style="text-align: center;"><?php echo functions::form_draw_number_field('items[new_item_index][quantity]', $_POST['quantity']); ?></td>'
-              + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][price]', $price * $order->data['currency_value']); ?></td>'
-              + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($order->data['currency_code'], 'items[new_item_index][tax]', tax::get_tax($price, $product->tax_class_id, $order->data['customer']['country_code'], $order->data['customer']['zone_code']) * $order->data['currency_value']); ?></td>'
-              + '    <td><a class="remove_item" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
-              + '  </tr>';
-  
-  new_row = new_row.replace(/new_item_index/g, "new_<?php echo time(); ?>");
-  
-  $("#order-items .footer", window.parent.document).before(new_row);
-  parent.calculate_total();
-  parent.$.fancybox.close();
+  $(document).ready(function() {
+    parent.$('#fancybox-content').height($('body').height() + parseInt(parent.$('#fancybox-content').css('border-top-width')) + parseInt(parent.$('#fancybox-content').css('border-bottom-width')));
+    parent.$.fancybox.center();
+  });
 </script>
-
-<?php
-  } else {
-?>
-
 
 <h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_add_product', 'Add Product'); ?></h1>
 
-<?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="location=\''. str_replace('pid', '\'+ $(this).val() +\'', document::link('', array('product_id' => 'pid'), true)) .'\'"'); ?>
+<?php echo functions::form_draw_form_begin('form_add_product', 'post'); ?>
 
-<?php
-  if (!empty($product)) {
-    echo '<hr />' . PHP_EOL
-       . functions::form_draw_form_begin('form_add_product', 'post');
-?>
+  <?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="$(this).closest(\'form\').submit();"'); ?>
 
+  <?php if (!empty($product)) { ?>
+  
+  <hr />
+  
   <?php if (!empty($product->options_stock)) {?>
   <div style="float: right; display: inline-block; border: 1px dashed #ccc; padding: 10px;">
     <h3 style="margin-top: 0px;"><?php echo language::translate('title_options_stock', 'Options Stock'); ?></h3>
     <table>
       <?php foreach (array_keys($product->options_stock) as $key) { ?>
       <tr>
-        <td><strong><?php echo $product->options_stock[$key]['name'][language::$selected['code']]; ?></strong></td>
+        <td><strong><?php echo $product->options_stock[$key]['name'][$_GET['language_code']]; ?></strong></td>
         <td><?php echo $product->options_stock[$key]['quantity']; ?></td>
       </tr>
       <?php } ?>
@@ -187,64 +139,47 @@
   </div>
   <?php } ?>
   
-  <h2><?php echo $product->name[language::$selected['code']]; ?></h2>
+  <h2><?php echo functions::form_draw_hidden_field('name', $product->name[$_GET['language_code']]); ?><?php echo $product->name[$_GET['language_code']]; ?></h2>
   
   <table>
     <tr>
-      <td><strong><?php echo language::translate('title_price', 'Price'); ?></strong></td>
-      <td><?php echo !empty($product->campaign['price']) ? '<s>'.$product->price.'</s> '. currency::format($product->campaign['price'], true, false, $order->data['currency_code'], $order->data['currency_value']) : currency::format($product->price, true, false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_tax', 'Tax'); ?></strong></td>
-      <td><?php echo !empty($product->campaign['price']) ? '<s>'. currency::format(tax::get_tax($product->price, $product->tax_class_id, $order->data['customer']['country_code'], $order->data['customer']['zone_code']), true, false, $order->data['currency_code'], $order->data['currency_value']) .'</s> ' . currency::format(tax::get_tax($product->campaign['price'], $product->tax_class_id, $order->data['customer']['country_code'], $order->data['customer']['zone_code']), true, false, $order->data['currency_code'], $order->data['currency_value']) : currency::format(tax::get_tax($product->price, $product->tax_class_id, $order->data['customer']['country_code'], $order->data['customer']['zone_code']), true, false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_stock_count', 'Stock Count'); ?></strong></td>
+      <td><strong><?php echo language::translate('title_in_stock', 'In Stock'); ?></strong></td>
       <td><?php echo $product->quantity; ?></td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_weight', 'Weight'); ?></strong></td>
-      <td><?php echo weight::format($product->weight, $product->weight_class); ?></td>
+      <td><strong><?php echo language::translate('title_price', 'Price'); ?></strong></td>
+      <td>
+        <?php echo functions::form_draw_hidden_field('price', $price * $_GET['currency_value']); ?>
+        <?php echo !empty($product->campaign['price']) ? '<s>'. currency::format($product->price, true, false, $_GET['currency_code'], $_GET['currency_value']) .'</s>' : null; ?>
+        <?php echo currency::format(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, true, false, $_GET['currency_code'], $_GET['currency_value']); ?>
+      </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong></td>
-      <td><?php echo functions::form_draw_number_field('quantity', !empty($_POST['quantity']) ? true : '1'); ?></td>
+      <td><strong><?php echo language::translate('title_tax', 'Tax'); ?></strong></td>
+      <td>
+        <?php echo functions::form_draw_hidden_field('tax', $tax); ?>
+        <?php echo !empty($product->campaign['price']) ? '<s>'. currency::format(tax::get_tax($product->price, $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']), true, false, $_GET['currency_code'], $_GET['currency_value']) .'</s>' : null; ?>
+        <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']), true, false, $_GET['currency_code'], $_GET['currency_value']); ?>
+      </td>
     </tr>
 <?php
-      if (count($product->options) > 0) {
+    if (count($product->options) > 0) {
+      
+      foreach ($product->options as $group) {
+      
+        echo '  <tr>' . PHP_EOL
+           . '    <td valign="top"><strong>'. $group['name'][$_GET['language_code']] .'</strong>'. (empty($group['required']) == false ? ' <span class="required">*</span>' : '') .'<br />'
+           . (!empty($group['description'][$_GET['language_code']]) ? $group['description'][$_GET['language_code']] . '</td>' . PHP_EOL : '')
+           . '    <td>';
         
-        foreach ($product->options as $group) {
+        switch ($group['function']) {
         
-          echo '  <tr>' . PHP_EOL
-             . '    <td><strong>'. $group['name'][language::$selected['code']] .'</strong>'. (empty($group['required']) == false ? ' <span class="required">*</span>' : '') .'<br />'
-             . (!empty($group['description'][language::$selected['code']]) ? $group['description'][language::$selected['code']] . '</td>' . PHP_EOL : '')
-             . '    <td>';
-          
-          switch ($group['function']) {
-          
-            case 'checkbox':
-              $use_br = false;
-              
-              foreach (array_keys($group['values']) as $value_id) {
-                if ($use_br) echo '<br />';
-                
-                $price_adjust_text = '';
-                if ($group['values'][$value_id]['price_adjust']) {
-                  $price_adjust_text = currency::format($group['values'][$value_id]['price_adjust']);
-                  if ($group['values'][$value_id]['price_adjust'] > 0) {
-                    $price_adjust_text = ' +'.$price_adjust_text;
-                  }
-                }
-                
-                echo '<label>' . functions::form_draw_checkbox('options['.$group['name'][language::$selected['code']].'][]', $group['values'][$value_id]['name'][language::$selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL;
-                $use_br = true;
-              }
-              break;
-              
-            case 'input':
-              $keys = array_keys($group['values']);
-              $value_id = array_shift($keys);
+          case 'checkbox':
+            $use_br = false;
             
+            foreach (array_keys($group['values']) as $value_id) {
+              if ($use_br) echo '<br />';
+              
               $price_adjust_text = '';
               if ($group['values'][$value_id]['price_adjust']) {
                 $price_adjust_text = currency::format($group['values'][$value_id]['price_adjust']);
@@ -253,72 +188,154 @@
                 }
               }
               
-              echo functions::form_draw_text_field('options['.$group['name'][language::$selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text . PHP_EOL;
-              break;
-              
-            case 'radio':
+              echo '<label>' . functions::form_draw_checkbox('options['.$group['name'][$_GET['language_code']].'][]', $group['values'][$value_id]['name'][$_GET['language_code']], true, 'data-group="'. htmlspecialchars($group['name'][$_GET['language_code']]) .'"'. (!empty($group['required']) ? ' required="required"' : '')) .' '. $group['values'][$value_id]['name'][$_GET['language_code']] . $price_adjust_text . '</label>' . PHP_EOL;
+              $use_br = true;
+            }
+            break;
             
-              $use_br = false;
-              foreach (array_keys($group['values']) as $value_id) {
-                if ($use_br) echo '<br />';
-                
-                $price_adjust_text = '';
-                if ($group['values'][$value_id]['price_adjust']) {
-                  $price_adjust_text = currency::format($group['values'][$value_id]['price_adjust']);
-                  if ($group['values'][$value_id]['price_adjust'] > 0) {
-                    $price_adjust_text = ' +'.$price_adjust_text;
-                  }
-                }
-                
-                echo '<label>' . functions::form_draw_radio_button('options['.$group['name'][language::$selected['code']].']', $group['values'][$value_id]['name'][language::$selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL;
-                $use_br = true;
+          case 'input':
+            $keys = array_keys($group['values']);
+            $value_id = array_shift($keys);
+          
+            $price_adjust_text = '';
+            if ($group['values'][$value_id]['price_adjust']) {
+              $price_adjust_text = currency::format($group['values'][$value_id]['price_adjust']);
+              if ($group['values'][$value_id]['price_adjust'] > 0) {
+                $price_adjust_text = ' +'.$price_adjust_text;
               }
-              break;
+            }
+            
+            echo functions::form_draw_text_field('options['.$group['name'][$_GET['language_code']].']', true, 'data-group="'. htmlspecialchars($group['name'][$_GET['language_code']]) .'"'. (!empty($group['required']) ? ' required="required"' : '')) . $price_adjust_text . PHP_EOL;
+            break;
+            
+          case 'radio':
+          
+            $use_br = false;
+            foreach (array_keys($group['values']) as $value_id) {
+              if ($use_br) echo '<br />';
               
-            case 'select':
-              
-              $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
-              foreach (array_keys($group['values']) as $value_id) {
-              
-                $price_adjust_text = '';
-                if ($group['values'][$value_id]['price_adjust']) {
-                  $price_adjust_text = currency::format($group['values'][$value_id]['price_adjust']);
-                  if ($group['values'][$value_id]['price_adjust'] > 0) {
-                    $price_adjust_text = ' +'.$price_adjust_text;
-                  }
-                }
-
-                $options[] = array($group['values'][$value_id]['name'][language::$selected['code']] . $price_adjust_text, $group['values'][$value_id]['name'][language::$selected['code']]);
-              }
-              echo functions::form_draw_select_field('options['.$group['name'][language::$selected['code']].']', $options, true, false, false, !empty($group['required']) ? 'required="required"' : '');
-              break;
-              
-            case 'textarea':
-              
-              $value_id = array_shift(array_keys($group['values']));
               $price_adjust_text = '';
-              if (!empty($group['values'][$value_id]['price_adjust'])) {
-                $price_adjust_text = '';
+              if ($group['values'][$value_id]['price_adjust']) {
+                $price_adjust_text = currency::format($group['values'][$value_id]['price_adjust']);
                 if ($group['values'][$value_id]['price_adjust'] > 0) {
-                  $price_adjust_text = ' <br />+'. currency::format($group['values'][$value_id]['price_adjust']);
+                  $price_adjust_text = ' +'.$price_adjust_text;
+                }
+              }
+              
+              echo '<label>' . functions::form_draw_radio_button('options['.$group['name'][$_GET['language_code']].']', $group['values'][$value_id]['name'][$_GET['language_code']], true, 'data-group="'. htmlspecialchars($group['name'][$_GET['language_code']]) .'"'. (!empty($group['required']) ? ' required="required"' : '')) .' '. $group['values'][$value_id]['name'][$_GET['language_code']] . $price_adjust_text . '</label>' . PHP_EOL;
+              $use_br = true;
+            }
+            break;
+            
+          case 'select':
+            
+            $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+            foreach (array_keys($group['values']) as $value_id) {
+            
+              $price_adjust_text = '';
+              if ($group['values'][$value_id]['price_adjust']) {
+                $price_adjust_text = currency::format($group['values'][$value_id]['price_adjust']);
+                if ($group['values'][$value_id]['price_adjust'] > 0) {
+                  $price_adjust_text = ' +'.$price_adjust_text;
                 }
               }
 
-              echo functions::form_draw_textarea('options['.$group['name'][language::$selected['code']].']', true, !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
-              break;
-          }
-        }
-        
-        echo '    </td>' . PHP_EOL
-           . '  </tr>' . PHP_EOL;
-      }
-?>
-  </table>
+              $options[] = array($group['values'][$value_id]['name'][$_GET['language_code']] . $price_adjust_text, $group['values'][$value_id]['name'][$_GET['language_code']]);
+            }
+            echo functions::form_draw_select_field('options['.$group['name'][$_GET['language_code']].']', $options, true, false, 'data-group="'. htmlspecialchars($group['name'][$_GET['language_code']]) .'"'. (!empty($group['required']) ? ' required="required"' : ''));
+            break;
+            
+          case 'textarea':
+            
+            $value_id = array_shift(array_keys($group['values']));
+            $price_adjust_text = '';
+            if (!empty($group['values'][$value_id]['price_adjust'])) {
+              $price_adjust_text = '';
+              if ($group['values'][$value_id]['price_adjust'] > 0) {
+                $price_adjust_text = ' <br />+'. currency::format($group['values'][$value_id]['price_adjust']);
+              }
+            }
 
+            echo functions::form_draw_textarea('options['.$group['name'][$_GET['language_code']].']', true, 'data-group="'. htmlspecialchars($group['name'][$_GET['language_code']]) .'"'. (!empty($group['required']) ? ' required="required"' : '')) . $price_adjust_text. PHP_EOL;
+            break;
+        }
+      }
+      
+      echo '    </td>' . PHP_EOL
+         . '  </tr>' . PHP_EOL;
+    }
+    
+    echo functions::form_draw_hidden_field('option_stock_combination', $option_stock_combination);
+?>
+    <tr>
+      <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong></td>
+      <td><?php echo functions::form_draw_hidden_field('sku', $sku); ?><?php echo $sku; ?></td>
+    </tr>
+    <tr>
+      <td><strong><?php echo language::translate('title_weight', 'Weight'); ?></strong></td>
+      <td><?php echo functions::form_draw_hidden_field('weight', $weight) . functions::form_draw_hidden_field('weight_class', $weight_class); ?><?php echo $weight .' '. $product->weight_class; ?></td>
+    </tr>
+    <tr>
+      <td><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong></td>
+      <td><?php echo functions::form_draw_number_field('quantity', !empty($_POST['quantity']) ? true : '1'); ?></td>
+    </tr>
+  </table>
+  
+  <script>
+    $("input[name^='options['], select[name^='options[']").change(function(){
+      $(this).closest('form').submit();
+    });
+  </script>
+  
   <p><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="parent.$.fancybox.close();"', 'cancel'); ?></p>
 
-<?php
-      echo functions::form_draw_form_end();
-    }
-  }
-?>
+<?php } ?>
+
+<?php echo functions::form_draw_form_end(); ?>
+
+<script>
+  $("button[name='add']").click(function(e){
+    e.preventDefault();
+    
+    var item = {
+      id: '',
+      product_id: $("select[name='product_id']").val(),
+      option_stock_combination: $("input[name='option_stock_combination']").val(),
+      options: {},
+      name: $("input[name='name']").val(),
+      sku: $("input[name='sku']").val(),
+      weight: $("input[name='weight']").val(),
+      weight_class: $("input[name='weight_class']").val(),
+      quantity: $("input[name='quantity']").val(),
+      price: $("input[name='price']").val(),
+      tax: $("input[name='tax']").val()
+    };
+    
+    $("input[name^='options['][type='radio']").each(function(){
+      if ($(this).is(':checked')) {
+        var key = $(this).data('group');
+        item.options[key] = $(this).val();
+      }
+    });
+    
+    $("input[name^='options['][type='text'], textarea[name^='options['], select[name^='options[']").each(function(){
+      if ($(this).val()) {
+        var key = $(this).data('group');
+        item.options[key] = $(this).val();
+      }
+    });
+    
+    var option_i = 0;
+    $("input[name^='options['][type='checkbox']").each(function(){
+      if ($(this).is(':checked')) {
+        var key = $(this).data('group');
+        if (!item.options[key]) item.options[key] = [];
+        item.options[key][option_i] = $(this).val();
+        option_i++;
+      }
+    });
+    
+    parent.<?php echo preg_replace('#([^a-zA-Z_])#', '', $_GET['return_method']); ?>(item);
+    parent.$.fancybox.close();
+  });
+</script>
