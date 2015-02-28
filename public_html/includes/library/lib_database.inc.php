@@ -36,7 +36,7 @@
     
     ######################################################################
   
-    public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE) {
+    public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset=DB_CONNECTION_CHARSET) {
       
       if (!isset(self::$_links[$link]) || (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link]))) {
       
@@ -73,7 +73,7 @@
         }
       }
       
-      self::query("set names '". database::input(DB_CONNECTION_CHARSET) ."';", $link);
+      self::query("set names '". database::input($charset) ."';", $link);
       self::query("set SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO'", $link);
       
       if (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link])) {
@@ -132,24 +132,25 @@
       return self::set_encoding($charset, null, $link);
     }
     
-    public static function disconnect($link='') {
+    public static function disconnect($link=null) {
       
-      if ($link != '') {
+      if (!empty($link)) {
         $links = array(self::$_links[$link]);
       } else {
         $links = self::$_links;
       }
       
       $errors = false;
-      foreach ($links as $link) {
+      foreach (array_keys($links) as $link) {
         if (!is_resource($link)) {
           $errors = true;
         } else {
           if (self::$_type == 'mysqli') {
-            mysqli_close($link);
+            mysqli_close(self::$_links[$link]);
           } else {
-            mysql_close($link);
+            mysql_close(self::$_links[$link]);
           }
+          unset(self::$_links[$link]);
         }
       }
       
@@ -266,6 +267,9 @@
     }
     
     public static function info($link='default') {
+      
+      if (!isset(self::$_links[$link])) self::connect($link);
+      
       if (self::$_type == 'mysqli') {
         return mysqli_info(self::$_links[$link]);
       } else {
