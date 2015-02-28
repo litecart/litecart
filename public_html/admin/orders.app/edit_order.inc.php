@@ -21,6 +21,7 @@
     foreach ($order->data as $key => $value) {
       $_POST[$key] = $value;
     }
+    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
   }
   
 // Save data to database
@@ -46,6 +47,9 @@
       }
       
       $fields = array(
+        'language_code',
+        'currency_code',
+        'currency_value',
         'items',
         'order_total',
         'order_status_id',
@@ -468,7 +472,7 @@
         }
         echo '      </table>' . PHP_EOL;
       } else {
-        echo functions::form_draw_text_field('items['.$key.'][options]['.$field.']['.$k.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '');
+        echo functions::form_draw_hidden_field('items['.$key.'][options]', '');
       }
 ?>
       </td>

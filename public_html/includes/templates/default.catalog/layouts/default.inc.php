@@ -2,7 +2,7 @@
 // Cookie acceptance - By EU law
   if (empty($_COOKIE['cookies_accepted'])) {
     if (!isset(document::$snippets['bottom'])) document::$snippets['bottom'] = '';
-    document::$snippets['bottom'] =  '<div id="cookies-acceptance-wrapper">' . PHP_EOL
+    document::$snippets['bottom'] .= '<div id="cookies-acceptance-wrapper">' . PHP_EOL
                                    . '  <div id="cookies-acceptance" class="twelve-eighty">' . PHP_EOL
                                    . '    ' . language::translate('terms_cookies_acceptance', 'We rely on cookies to provide our services. By using our services, you agree to our use of cookies.') .' '. functions::form_draw_button('accept_cookies', language::translate('title_ok', 'OK'), 'button') . PHP_EOL
                                    . '  </div>' . PHP_EOL
@@ -13,8 +13,7 @@
                                    . '    $("#cookies-acceptance-wrapper").fadeOut();' . PHP_EOL
                                    . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
                                    . '  });' . PHP_EOL
-                                   . '</script>'
-                                   . document::$snippets['bottom'];
+                                   . '</script>';
   }
 ?>
 <!DOCTYPE html>
