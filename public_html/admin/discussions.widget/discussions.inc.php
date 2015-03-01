@@ -9,8 +9,8 @@
   
   $url = document::link('http://forums.litecart.net/feed/rss/');
   
-  $rss = $functions::http_fetch($url);
-  $rss = $simplexml_load_string($rss);
+  $rss = @functions::http_fetch($url);
+  $rss = @simplexml_load_string($rss);
   
   if (!empty($rss->channel->item)) {
     
