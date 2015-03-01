@@ -43,7 +43,7 @@
       $response_header = '';
       $response_body = '';
       $start = microtime(true);
-      $timeout = 30;
+      $timeout = 20;
       
       while (!feof($fp)) {
         if ((microtime(true) - $start) > $timeout) break;
@@ -103,7 +103,7 @@
       curl_setopt($ch, CURLOPT_POST, $post_fields ? true : false);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields ? http_build_query($post_fields) : false);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, $asynchronous ? false : true);
-      curl_setopt($ch, CURLOPT_TIMEOUT, $asynchronous ? 1 : 30);
+      curl_setopt($ch, CURLOPT_TIMEOUT, $asynchronous ? 1 : 20);
       
       switch ($return) {
         case 'both':

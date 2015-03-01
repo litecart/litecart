@@ -9,29 +9,28 @@
   
   $url = document::link('http://forums.litecart.net/feed/rss/');
   
-  $rss = functions::http_fetch($url);
+  $rss = $functions::http_fetch($url);
+  $rss = $simplexml_load_string($rss);
   
-  $rss = simplexml_load_string($rss);
-  
-  if (empty($rss->channel->item)) return;
-  
-  $columns = array();
-  
-  $col = 0;
-  $count = 0;
-  $total = 0;
-  foreach ($rss->channel->item as $item) {
-    if (!isset($count) || $count == 3) {
-      $count = 0;
-      $col++;
+  if (!empty($rss->channel->item)) {
+    
+    $columns = array();
+    
+    $col = 0;
+    $count = 0;
+    $total = 0;
+    foreach ($rss->channel->item as $item) {
+      if (!isset($count) || $count == 3) {
+        $count = 0;
+        $col++;
+      }
+      $columns[$col][] = $item;
+      $count++;
+      $total++;
+      if ($total == 12) break;
     }
-    $columns[$col][] = $item;
-    $count++;
-    $total++;
-    if ($total == 12) break;
-  }
-  
-  ob_start();
+    
+    ob_start();
 ?>
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
@@ -40,15 +39,15 @@
     </tr>
     <tr>
 <?php
-  foreach ($columns as $column) {
-    echo '<td style="vertical-align: top;">' . PHP_EOL
-       . '  <table style="width: 100%;">' . PHP_EOL;
-    foreach ($column as $item) {
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
+    foreach ($columns as $column) {
+      echo '<td style="vertical-align: top;">' . PHP_EOL
+         . '  <table style="width: 100%;">' . PHP_EOL;
+      foreach ($column as $item) {
+        if (!isset($rowclass) || $rowclass == 'even') {
+          $rowclass = 'odd';
+        } else {
+          $rowclass = 'even';
+        }
 ?>
         <tr>
           <td><a href="<?php echo (string)$item->link; ?>" target="_blank"><?php echo (string)$item->title; ?></a><br/>
@@ -56,15 +55,17 @@
           </td>
         </tr>
 <?php
+      }
+      echo '  </table>' . PHP_EOL
+         . '</td>' . PHP_EOL;
     }
-    echo '  </table>' . PHP_EOL
-       . '</td>' . PHP_EOL;
-  }
 ?>
     </tr>
   </table>
 </div>
 <?php
+  }
+  
   $buffer = ob_get_clean();
   
   file_put_contents($cache_file, $buffer);
