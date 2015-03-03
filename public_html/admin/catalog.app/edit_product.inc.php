@@ -161,7 +161,7 @@ foreach (array_keys(language::$languages) as $language_code) {
     if ($category_id == 0) {
       $output .= '<tr>' . PHP_EOL
                . '  <td>'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false) .'</td>' . PHP_EOL
-               . '  <td width="100%"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> '. language::translate('title_root', '[Root]') .'</td>' . PHP_EOL
+               . '  <td id = "category_id_'. $category_id .'" width="100%"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_opened.png" width="16" height="16" align="absbottom" /> '. language::translate('title_root', '[Root]') .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
     }
     
@@ -177,7 +177,7 @@ foreach (array_keys(language::$languages) as $language_code) {
     while ($category = database::fetch($categories_query)) {
       $output .= '<tr>' . PHP_EOL
                . '  <td>'. functions::form_draw_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
-               . '  <td style="padding-left: '. ($depth*16) .'px;"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" /> '. $category['name'] .'</td>' . PHP_EOL
+               . '  <td id = "category_id_'. $category['id'] .'" style="padding-left: '. ($depth*16) .'px;"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" /> '. $category['name'] .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
                
       if (database::num_rows(database::query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
@@ -947,10 +947,24 @@ foreach (currency::$currencies as $currency) {
           </tr>
         </table>
         <script>
+          $("input[name='categories[]']").click(function() {
+            var $this = $(this);
+            if ($this.is(':checked')) {
+              $("#default_category_id").append("<option value='"+ $this.val() +"'>"+ $("#category_id_" +$this.val()).text() +"</option>");
+              console.log("check");
+
+            } else {
+              // remove value from defualt category
+              $("#default_category_id option[value='"+ $this.val() +"']").remove();
+
+              console.log("uncheck");
+            }
+          });
           $("#table-options-stock").on("click", ".remove", function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
+           
           
           $("#table-options-stock").on("click", ".move-up, .move-down", function(event) {
             event.preventDefault();
