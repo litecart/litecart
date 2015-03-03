@@ -38,6 +38,7 @@
         'supplier_id',
         'delivery_status_id',
         'sold_out_status_id',
+        'default_category_id',
         'categories',
         'product_groups',
         'status',
@@ -195,6 +196,24 @@ foreach (array_keys(language::$languages) as $language_code) {
               </div>
             </td>
           </tr>
+          <tr>
+            <td><strong><?php echo language::translate('title_category_defualt', 'Default Category'); ?></strong>
+              <br />
+              <select name="default_category_id" id="default_category_id" title="" data-size="medium">
+                <?php
+                  foreach($product->data['categories'] as $category){
+                    $catename_query =  database::query("SELECT name FROM  ".DB_TABLE_CATEGORIES_INFO." WHERE category_id =". $category ." 
+                                          AND language_code =  '".  language::$selected['code'] ."' LIMIT 1");
+                      while ($category_result = database::fetch($catename_query)) {
+                        $option_value =  '<option value="'.$category.'">'.$category_result['name'] .'</option>';
+                       }
+                       echo $option_value;
+                    }
+                   ?>
+               </select>
+             </td>
+           </tr>
+          <tr>
           <tr>
             <td><strong><?php echo language::translate('title_product_groups', 'Product Groups'); ?></strong><br />
             <div style="width: 360px; max-height: 240px; overflow-y: auto;" class="input-wrapper">
