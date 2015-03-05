@@ -1,5 +1,4 @@
-File Format
------------
+# 1. File Extensions
 
 The filename of the files must be all lowercases characters and contain
 no more than 31 characters to be Apple/Mac compatible. Word separation by underscore.
@@ -14,12 +13,12 @@ Included files should be named:
 
 	scriptname.inc.php
 
-Character Encoding
-------------------
+
+# 2. Character Encoding
+
 Foreign characters should not be present in the source code. If such do, the script must be compatible with UTF-8 w/o BOM character set.
 
-Indentation
------------
+# 3. Indentation
 
 Indentation of logic should be 2 whitespace characters.
 
@@ -40,8 +39,13 @@ Indentation of comments is subtracted one level:
     // This is a comment
       echo 'Hello World!';
 
-Beginning & Ending PHP Logic
------------------------------
+
+# 4. Line Breaks
+
+  Maximum one empty line for separating logic.
+
+
+# 5. Beginning & Ending PHP Logic
 
 When starting PHP logic, the tag should be written as "<?php", not in the
 short form of "<?".
@@ -50,10 +54,14 @@ A valid example:
 
 	<?php echo "Hello World!"; ?>
 
-Variable Scope
---------------
+Wrong
 
-Do not ever use register_globals as we use superglobals instead.
+    <?=$greeting?>
+
+
+# 6. Variable Scope
+
+Do not ever use register_globals as we use superglobals.
 
 	$_GET['variable']
 	$_POST['variable']
@@ -61,8 +69,7 @@ Do not ever use register_globals as we use superglobals instead.
 	$_SESSION['variable']
 
 
-No Variable Duplication
------------------------
+# 7. No Variable Duplication
 
 Unless there is a certain need to duplicate variables, no variable duplication should be used:
 
@@ -76,8 +83,8 @@ Correct:
   	$_POST['name'] = trim($_POST['name']);
 
 
-Variable Naming
----------------
+# 8. Variable Naming
+
 Don't make up shortenings. Always use full words unless they are annoyingly long. Don't mix languages, use english only for code and comments. Don't mix lower and upper cases.
 
 Incorrect:
@@ -93,8 +100,7 @@ Correct:
 	  $customer['address']
 
 
-Displaying Strings
-------------------
+# 9. Displaying Strings
 
 Strings or values should be displayed as:
 
@@ -107,21 +113,24 @@ The following variants should be avoided:
 	<?=$variable;?>
 
 
-Singe-Quotes vs. Double-Quotes
-------------------------------
+# 10. Singe-Quotes vs. Double-Quotes
 
 Single quote characters should be used for displaying strings unless it's inconvenient.
 
 For example:
 
-	echo '<a href="http://www.site.com">Hello World</a>';
+    echo 'Hello World';
+	
+    echo '<a href="http://www.site.com">Hello World</a>';
+
+	echo "Hello y'all";
 
 	echo "Hello $name\r\n";
 
-	query("select * from Table where id = 'string'");
+	database::query("select * from Table where id = 'string'");
 
-Outputting Line Breaks
-----------------------
+
+# 11. Outputting Line Breaks
 
 Use the PHP_EOL constant for outputting line breaks.
 
@@ -130,14 +139,12 @@ Right:
 	echo 'Hello World!' . PHP_EOL
        . 'This is a new row';
 
-
 Wrong
 
 	echo "Hello World!\r\nThis is a new row";
 
 
-Class Variables & Methods
----------------
+# 12. Class Variables & Methods
 
   private $_data;
   public $data;
@@ -149,8 +156,7 @@ Class Variables & Methods
 	}
 
 
-Database Queries
-----------------
+# 13. Database Queries
 
 Database queries should be structured as:
 
@@ -164,8 +170,7 @@ Database queries should be structured as:
 Unlike displaying strings, double quote characters are wrapped around the sql query.
 
 
-Function Output
----------------
+# 14. Function Output
 
 General functions shall always return data, not output to browser via echo.
 
@@ -182,8 +187,7 @@ and not:
 	}
 
 
-Expressions
---------------------
+# 15. Expressions
 
 Do not use yoda expressions.
 
@@ -195,8 +199,8 @@ Correct:
 
 	if (condition == true) {
 
-Form Data Checking
-------------------
+
+# 16. Form Data Checking
 
 To see if a variable exists, use the following structure:
 
@@ -207,8 +211,7 @@ Don't just assume it exists:
 	if ($_POST['variable'])
 
 
-Repetitive Statements
----------------------
+# 17. Repetitive Statements
 
 While loops should be written as:
 
@@ -235,7 +238,42 @@ for-loops should be written as foreach:
 	}
 
 
-Error level
------------
+# 18. MySQL Syntax
+
+  MySQL code should be line breaked, indented, and presented in lowercases.
+
+    $category_query = database::query(
+      "select * from ". DB_TABLE_CATEGORIES ."
+      where status = 1;"
+    );
+
+
+# 19. Error level
 
 	All code must comply with PHP error level E_STRICT.
+
+
+# 20. HTML 5
+
+  HTML code must be compliant with HTML 5.
+
+  Parameter encapsulator is " not '
+
+  Right
+
+    <img src="" />
+
+  Wrong
+
+    <img src='' />
+
+
+# 19. CSS
+
+	All style definitions must be compliant with CSS 3.
+
+
+# 21. JavaScript -> jQuery
+
+   For any use of javascript use the jQuery framework.
+

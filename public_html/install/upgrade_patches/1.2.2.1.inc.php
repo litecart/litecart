@@ -1,7 +1,7 @@
 <?php
   $modified_files = array(
     array(
-      'file'    => FS_DIR_HTTP_ROOT . '.htaccess',
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
       'search'  => "864000",
       'replace' => "86400",
     ),
