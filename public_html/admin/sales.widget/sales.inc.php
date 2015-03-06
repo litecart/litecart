@@ -22,7 +22,7 @@
   for ($timestamp = strtotime('-1 years'); date('Y-m', $timestamp) <= date('Y-m'); $timestamp = strtotime('+1 month', $timestamp)) {
     
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales, sum(tax_total) as total_tax from ". DB_TABLE_ORDERS ."
+      "select sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp))) ."'
       and date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('t', $timestamp), date('Y', $timestamp))) ."';"
@@ -30,7 +30,6 @@
     $orders = database::fetch($orders_query);
     
     $monthly_sales[date('Y-m', $timestamp)] = '[\''. strftime('%b %Y', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
-    $monthly_tax[date('Y-m', $timestamp)] = '[\''. strftime('%b %Y', $timestamp) .'\', '. (int)$orders['total_tax'] .']';
   }
   
 ?>

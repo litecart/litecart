@@ -62,7 +62,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($country->data['id'])) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo (!empty($country->data['id'])) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
   
@@ -144,7 +144,7 @@
       <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
       <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][code]', true); ?><?php echo $_POST['zones'][$key]['code']; ?></td>
       <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][name]', true); ?><?php echo $_POST['zones'][$key]['name']; ?></td>
-      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>
     </tr>
   <?php
         }
@@ -202,7 +202,7 @@
                  + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                  + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][code]', 'new_zone_code')); ?>new_zone_code</td>'
                  + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][name]', 'new_zone_name')); ?>new_zone_name</td>'
-                 + '      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       output = output.replace(/new_zone_code/g, $("input[name='zone[code]']").val());

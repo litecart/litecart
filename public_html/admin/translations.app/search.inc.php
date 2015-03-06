@@ -53,7 +53,7 @@
   <?php echo functions::form_draw_form_end(); ?>
 </div>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
@@ -97,7 +97,7 @@
         <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?>
       </td>
       <?php foreach (array_keys(language::$languages) as $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="width: 200px" tabindex="'. language::$languages[$language_code]['id'].str_pad($page_items, 4, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
-      <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo language::translate('text_remove', 'Remove'); ?>" /></a></td>
+      <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>
     </tr>
 <?php      
         if (++$page_items == settings::get('data_table_rows_per_page')) break;

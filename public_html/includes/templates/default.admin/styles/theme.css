@@ -28,6 +28,12 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
   text-align: center;
   padding: 10px;
   padding-top: 0;
+  color: #aaa;
+  font-size: 16px;
+}
+#sidebar .header a {
+  color: inherit;
+  margin: 0px 3px;
 }
 #sidebar .footer {
   padding: 10px;
@@ -68,16 +74,22 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
 #apps li {
   padding: 0px;
   border-bottom: 1px #dfdfdf solid;
+  font-weight: normal;
 }
 #apps li a {
   display: block;
-  
-  padding: 5px 0px;
-  
+  padding: 5px 5px;
+  font-size: 1em;
+  font-weight: normal;
   text-decoration: none;
-  color: #444;
+  color: #000;
+}
+#apps li a .fa-stack {
+ font-size: 1em;
+}
+#apps li a .name {
+  font-weight: 500;
   text-shadow: 1px 1px 0px #fff;
-  font-weight: bold;
 }
 #apps li.selected > a {
   color: #f00;
@@ -102,6 +114,12 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
 #apps ul li a {
   font-weight: normal;
   padding: 5px 10px;
+}
+
+h1 .icon-wrapper {
+  font-size: 18px;
+  vertical-align: text-bottom;
+  font-weight: normal;
 }
 
 #platform {

@@ -3,7 +3,7 @@
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_customer'), true), language::translate('title_add_new_customer', 'Add New Customer'), '', 'add'); ?></div>
 <div style="float: right; padding-right: 10px;"><?php echo functions::form_draw_form_begin('search_form', 'get', '', false, 'onsubmit="return false;"') . functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"') . functions::form_draw_form_end(); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_customers', 'Customers'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_customers', 'Customers'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('customers_form', 'post'); ?>
 <table width="100%" class="dataTable">
@@ -42,7 +42,7 @@
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
     <td><?php echo $customer['company']; ?></td>
     <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

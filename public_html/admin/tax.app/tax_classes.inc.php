@@ -2,7 +2,7 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_tax_class'), true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_tax_classs', 'Tax Classes'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_tax_classs', 'Tax Classes'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('tax_classs_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
@@ -39,7 +39,7 @@
     <td><?php echo $tax_class['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>"><?php echo $tax_class['name']; ?></a></td>
     <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

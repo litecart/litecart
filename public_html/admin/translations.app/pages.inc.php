@@ -55,7 +55,7 @@
   }
 ?>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_translations_by_page', 'Translations by Page'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_translations_by_page', 'Translations by Page'); ?></h1>
 <?php
   $pages_query = database::query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
   $pages = array();
@@ -133,7 +133,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo $row['code']; ?></td>
     <?php foreach (array_keys(language::$languages) as $language_code) echo '<td>'. functions::form_draw_static_field('', (strlen($row['text_'.$language_code]) > 300) ? substr($row['text_'.$language_code], 0, 250).' ...' : $row['text_'.$language_code]) .'</td>'; ?>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" border="0" title="<?php echo language::translate('title_edit', 'Edit'); ?>" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" alt="<?php echo language::translate('text_remove', 'Remove'); ?>" /></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'], 'script' => $_GET['script'], 'action' => 'edit', 'id' => $row['id'], 'page' => $_GET['page'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a> <a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>
   </tr>
 <?php
       }

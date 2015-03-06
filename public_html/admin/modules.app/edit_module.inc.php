@@ -50,7 +50,7 @@
     if (!$installed) notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
   }
 ?>
-<h1 style="margin-top: 0;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
+<h1 style="margin-top: 0;"><?php echo $app_icon; ?><?php echo $installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
 
 <h2 style="margin-top: 0;"><?php echo $module->name; ?></h2>
 

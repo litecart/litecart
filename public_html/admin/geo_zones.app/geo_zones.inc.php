@@ -2,7 +2,7 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_geo_zone'), true, array('geo_zone_id')), language::translate('title_add_new_geo_zone', 'Add New Geo Zone'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_geo_zones', 'Geo Zones'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_geo_zones', 'Geo Zones'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('geo_zones_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
@@ -38,7 +38,7 @@
     <td><?php echo $geo_zone['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>"><?php echo $geo_zone['name']; ?></a></td>
     <td><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ." where geo_zone_id = '". (int)$geo_zone['id'] ."'")); ?></td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

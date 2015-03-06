@@ -16,7 +16,7 @@
       </div>
     </a>
     <?php if ($image) { ?>
-    <a href="<?php echo htmlspecialchars($image); ?>" class="fancybox" data-fancybox-group="product-listing" title="<?php echo htmlspecialchars($name); ?>"><img src="<?php echo htmlspecialchars($preview_icon); ?>" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>
+    <a href="<?php echo htmlspecialchars($image); ?>" class="fancybox zoomable" data-fancybox-group="product-listing" title="<?php echo htmlspecialchars($name); ?>" style="position: absolute; top: 15px; right: 15px; color: inherit;"><?php echo functions::draw_fontawesome_icon('search', ''); ?></a>
     <?php } ?>
   </li>
 <?php } else if ($listing_type == 'row') { ?>
@@ -38,7 +38,7 @@
       </div>
     </a>
     <?php if ($image) { ?>
-    <a href="<?php echo htmlspecialchars($image); ?>" class="fancybox" data-fancybox-group="product-listing" title="<?php echo htmlspecialchars($name); ?>"><img src="<?php echo htmlspecialchars($preview_icon); ?>" alt="" width="16" height="16" class="zoomable" style="position: absolute; top: 15px; right: 15px;" /></a>
+    <a href="<?php echo htmlspecialchars($image); ?>" class="fancybox zoomable" data-fancybox-group="product-listing" title="<?php echo htmlspecialchars($name); ?>" style="position: absolute; top: 15px; right: 15px; color: inherit;"><?php echo functions::draw_fontawesome_icon('search', 'style="color: inherit;"'); ?></a>
     <?php } ?>
   </li>
 <?php } else trigger_error('Unknown product listing type definition ('. $listing_type .')', E_USER_WARNING); ?>

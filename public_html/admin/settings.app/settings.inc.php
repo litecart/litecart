@@ -26,7 +26,7 @@
     if ($_GET['doc'] == $group['key']) $setting_group = $group;
   }
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_settings', 'Settings'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_settings', 'Settings'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('settings_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
@@ -77,7 +77,7 @@
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
     <td><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128) . '...' : $setting['value']); ?></td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
     }

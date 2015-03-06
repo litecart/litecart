@@ -137,9 +137,8 @@
     public static function identify() {
       
     // Return language from URI query
-      if (!empty($_GET['language']) || !empty($_GET['language_code']) ) {
-        $code = !empty($_GET['language']) ? $_GET['language'] : $_GET['language_code'];
-        if (isset(self::$languages[$code])) return $code;
+      if (!empty($_GET['language'])) {
+        if (isset(self::$languages[$_GET['language']])) return $_GET['language'];
       }
       
     // Return language from URI path

@@ -47,7 +47,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_product_group', 'post'); ?>
 
@@ -91,13 +91,13 @@
 ?>
         </td>
         <td style="text-align: center;"><?php echo $num_products; ?></td>
-        <td style="text-align: right;"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value"><img src="'. WS_DIR_IMAGES . 'icons/16x16/remove.png' .'" width="16" height="16" /></a>' : false; ?></td>
+        <td style="text-align: right;"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value" title="'. language::translate('title_remove', 'Remove') .'"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a>' : false; ?></td>
       </tr>
   <?php
     }
   ?>
       <tr>
-        <td colspan="4"><a id="add-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo language::translate('title_add_group', 'Add Group Value'); ?></a></td>
+        <td colspan="4"><a id="add-group-value" href="#"><?php echo functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group', 'Add Group Value'); ?></a></td>
       </tr>  
     </table>
     <script>
@@ -118,7 +118,7 @@
                    + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
                    + '  <td><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
                    + '  <td>&nbsp;</td>'
-                   + '  <td style="text-align: right;"><a id="remove-group-value" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                   + '  <td style="text-align: right;"><a id="remove-group-value" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
                    + '</tr>';
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('tr').before(output);

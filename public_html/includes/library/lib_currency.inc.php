@@ -82,9 +82,8 @@
     public static function identify() {
       
     // Return currency from URI query
-      if (!empty($_GET['currency']) || !empty($_GET['currency_code']) ) {
-        $code = !empty($_GET['currency']) ? $_GET['currency'] : $_GET['currency_code'];
-        if (isset(self::$currencies[$code])) return $code;
+      if (!empty($_GET['currency'])) {
+        if (isset(self::$currencies[$_GET['currency']])) return $_GET['currency'];
       }
       
     // Return currency from session

@@ -37,7 +37,7 @@
     }
   }
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_vqmods', 'vQmods'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_vqmods', 'vQmods'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('vqmods_form', 'post'); ?>
 
@@ -68,12 +68,12 @@
       }
 ?>
     <tr class="<?php echo $rowclass . ($enabled ? '' : ' semi-transparent'); ?>">
-      <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. ($enabled ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
+      <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
       <td><?php echo (string)$xml->id; ?></td>
       <td><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>
       <td><?php echo (string)$xml->version; ?></td>
       <td><?php echo (string)$xml->author; ?></td>
-      <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/download.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_download', 'Download'); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>" /></a></td>
+      <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fontawesome_icon('download', '', 'fa-lg'); ?></a></td>
     </tr>
 <?php
     }

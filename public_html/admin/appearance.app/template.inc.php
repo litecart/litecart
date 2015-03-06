@@ -60,14 +60,14 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_template', 'Template'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_template', 'Template'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('template_form', 'post'); ?>
 
   <table>
     <tr>
       <td><?php echo language::translate('title_catalog_template', 'Catalog Template'); ?><br />
-        <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app')); ?>"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/settings.png'; ?>" width="16" height="16" alt="<?php language::translate('title_settings', 'Settings'); ?>" /></a></td>
+        <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app')); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fontawesome_icon('wrench', '', 'fa-lg'); ?></a></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_admin_template', 'Admin Template'); ?><br />

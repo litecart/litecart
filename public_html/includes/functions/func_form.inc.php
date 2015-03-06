@@ -37,7 +37,33 @@
   }
   
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
-    return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $value .'</button>';
+  
+    if (!empty($icon)) {
+      switch($icon) {
+        case 'add':
+          $icon = functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"');
+          break;
+        case 'cancel':
+          $icon = functions::draw_fontawesome_icon('times');
+          break;
+        case 'delete':
+          $icon = functions::draw_fontawesome_icon('trash-o');
+          break;
+        case 'on':
+          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #99cc66;"');
+          break;
+        case 'off':
+          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #ff6666;"');
+          break;
+        case 'save':
+          $icon = functions::draw_fontawesome_icon('floppy-o');
+          break;
+        default:
+          $icon = functions::draw_fontawesome_icon($icon);
+      }
+    }
+  
+    return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $value .'</button>';
   }
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {
@@ -145,7 +171,32 @@
   }
   
   function form_draw_link_button($url, $title, $parameters='', $icon='') {
-    return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? '<img src="'. WS_DIR_IMAGES .'icons/16x16/'. $icon .'.png" /> ' : false) . $title .'</a>';
+    if (!empty($icon)) {
+      switch($icon) {
+        case 'add':
+          $icon = functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"');
+          break;
+        case 'cancel':
+          $icon = functions::draw_fontawesome_icon('times');
+          break;
+        case 'delete':
+          $icon = functions::draw_fontawesome_icon('trash-o');
+          break;
+        case 'on':
+          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #99cc66;"');
+          break;
+        case 'off':
+          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #ff6666;"');
+          break;
+        case 'save':
+          $icon = functions::draw_fontawesome_icon('floppy-o');
+          break;
+        default:
+          $icon = functions::draw_fontawesome_icon($icon);
+      }
+    }
+    
+    return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : false) . $title .'</a>';
   }
   
   function form_draw_month_field($name, $value=true, $parameters='', $hint='') {
@@ -425,7 +476,7 @@
         
         $options = array();
         
-        if ($parent_id == '0') $options[] = array(language::translate('option_root', '[Root]'), '0', 'style="background: url('. WS_DIR_IMAGES .'/icons/16x16/folder_closed.png) no-repeat 0px 0px; padding-left: '. 18 .'px; margin: 5px;"');
+        if ($parent_id == '0') $options[] = array(language::translate('option_root', '[Root]'), '0');
         
         $categories_query = database::query(
           "select c.id, ci.name
@@ -437,7 +488,6 @@
         
         while ($category = database::fetch($categories_query)) {
         
-          //$options[] = array($category['name'], $category['id'], 'style="background: url('. WS_DIR_IMAGES .'/icons/16x16/folder_closed.png) no-repeat '. ($level*16) .'px 0px; padding-left: '. (($level*16)+18) .'px; margin: 5px;"'); // HTML not supported in webkit browsers
           $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $category['name'], $category['id']); // Non-HTML
         
           $sub_categories_query = database::query(

@@ -48,7 +48,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo (!empty($tax_class->data['id'])) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo (!empty($tax_class->data['id'])) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
 

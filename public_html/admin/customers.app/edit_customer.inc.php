@@ -61,7 +61,7 @@
   }
  
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer Profile') : language::translate('title_add_new_customer_profile', 'Add New Customer Profile'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer Profile') : language::translate('title_add_new_customer_profile', 'Add New Customer Profile'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('customer_form', 'post'); ?>
 

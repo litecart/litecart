@@ -1,14 +1,17 @@
 <?php
 
-$app_config = array(
-  'name' => language::translate('title_pages', 'Pages'),
-  'default' => 'pages',
-  'icon' => 'icon.png',
-  'menu' => array(),
-  'docs' => array(
-    'pages' => 'pages.inc.php',
-    'edit_page' => 'edit_page.inc.php',
-  ),
-);
+  $app_config = array(
+    'name' => language::translate('title_pages', 'Pages'),
+    'default' => 'pages',
+    'theme' => array(
+      'color' => '#bec6b4',
+      'icon' => 'file-text',
+    ),
+    'menu' => array(),
+    'docs' => array(
+      'pages' => 'pages.inc.php',
+      'edit_page' => 'edit_page.inc.php',
+    ),
+  );
 
 ?>

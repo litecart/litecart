@@ -17,7 +17,7 @@
   }
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_country'), true), language::translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_countries', 'Countries'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_countries', 'Countries'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('countries_form', 'post'); ?>
 
@@ -52,12 +52,12 @@
       }
 ?>
     <tr class="<?php echo $rowclass; ?>"<?php echo $country['status'] ? false : ' style="color: #999;"'; ?>>
-      <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($country['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
+      <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. (!empty($country['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
       <td><?php echo $country['id']; ?></td>
       <td><?php echo $country['iso_code_2']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><?php echo $country['name']; ?></a></td>
       <td><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES ." where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

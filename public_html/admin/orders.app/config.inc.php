@@ -3,7 +3,10 @@
   $app_config = array(
     'name' => language::translate('title_orders', 'Orders'),
     'default' => 'orders',
-    'icon' => 'icon.png',
+    'theme' => array(
+      'color' => '#b2db64',
+      'icon' => 'shopping-cart',
+    ),
     'menu' => array(
       array(
         'title' => language::translate('title_orders', 'Orders'),

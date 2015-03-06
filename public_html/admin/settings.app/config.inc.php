@@ -3,8 +3,11 @@
   $app_config = array(
     'name' => language::translate('title_settings', 'Settings'),
     'default' => 'store_info',
+    'theme' => array(
+      'color' => '#a3a3a3',
+      'icon' => 'cogs',
+    ),
     'menu' => array(),
-    'icon' => 'icon.png',
     'docs' => array(),
   );
 

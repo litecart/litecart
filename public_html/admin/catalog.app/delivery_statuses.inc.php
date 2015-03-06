@@ -2,7 +2,7 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_delivery_status'), true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('delivery_statuses_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
@@ -37,7 +37,7 @@
     <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $delivery_status['id'] .']', $delivery_status['id']); ?></td>
     <td><?php echo $delivery_status['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>"><?php echo $delivery_status['name']; ?></a></td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

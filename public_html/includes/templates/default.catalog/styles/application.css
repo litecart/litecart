@@ -9,9 +9,6 @@ body {
 a img {
   border: 0px;
 }
-img.zoomable {
-  cursor: url(../cursors/magnify.cur), pointer;
-}
 
 a:link, a:visited {
   color: rgb(0, 136, 204);

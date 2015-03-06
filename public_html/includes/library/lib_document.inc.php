@@ -33,6 +33,8 @@
                                              . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.11.2.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
+                                             
+    document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
       
     // Set template
       if (substr(link::relpath(link::get_physical_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {

@@ -16,7 +16,7 @@
   }
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_language'), true), language::translate('title_add_new_language', 'Add New Language'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_languages', 'Languages'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_languages', 'Languages'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('languages_form', 'post'); ?>
 
@@ -51,14 +51,14 @@
       }
 ?>
     <tr class="<?php echo $rowclass . ($language['status'] ? false : ' semi-transparent'); ?>">
-      <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($language['status']) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
+      <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. (!empty($language['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
       <td><?php echo $language['id']; ?></td>
       <td style="text-align: center;"><?php echo $language['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
       <td style="text-align: center;"><?php echo ($language['code'] == settings::get('default_language_code')) ? 'x' : ''; ?></td>
       <td style="text-align: center;"><?php echo ($language['code'] == settings::get('store_language_code')) ? 'x' : ''; ?></td>
       <td style="text-align: right;"><?php echo $language['priority']; ?></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/edit.png'; ?>" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

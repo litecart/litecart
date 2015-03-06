@@ -54,7 +54,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo $title; ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo $title; ?></h1>
 <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
@@ -79,7 +79,7 @@
       }
 ?>
   <tr class="<?php echo $rowclass . (!empty($module->status) ? false : ' semi-transparent'); ?>">
-    <td><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/'. (!empty($module->status) ? 'on.png' : 'off.png') ?>" width="16" height="16" align="absbottom" /> <?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
+    <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
     <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
     <td style="text-align: center;"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
@@ -90,7 +90,7 @@
     <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td><?php echo $module->id; ?></td>
     <td style="text-align: center;"><?php echo $module->priority; ?></td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/edit.png" width="16" height="16" alt="<?php echo language::translate('title_edit', 'Edit'); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>" /></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
     }
@@ -117,7 +117,7 @@
     <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td><?php echo $module->id; ?></td>
     <td style="text-align: center;">-</td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" alt="<?php echo language::translate('title_install', 'Install'); ?>" title="<?php echo language::translate('title_install', 'Install'); ?>" /> <?php echo language::translate('title_install', 'Install'); ?></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
   </tr>
 <?php
     }

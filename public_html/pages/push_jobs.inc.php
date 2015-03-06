@@ -21,4 +21,6 @@
   } else {
     echo $jobs->process();
   }
+  
+  exit;
 ?>

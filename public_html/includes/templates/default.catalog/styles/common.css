@@ -114,3 +114,7 @@ ul.list-horizontal li {
   padding: 2px;
   list-style: none;
 }
+
+a.zoomable {
+  cursor: url(../cursors/magnify.cur), pointer;
+}

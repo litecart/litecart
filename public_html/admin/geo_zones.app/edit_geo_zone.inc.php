@@ -44,7 +44,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_geo_zone', 'post'); ?>
 
@@ -77,14 +77,14 @@
       <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
       <td><?php echo functions::form_draw_countries_list('zones['. $key .'][country_code]', true); ?></td>
       <td><?php echo functions::form_draw_zones_list($_POST['zones'][$key]['country_code'], 'zones['. $key .'][zone_code]', true, false, '', 'all'); ?></td>
-      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>
+      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>
     </tr>
 <?php
       }
     }
 ?>
     <tr>
-      <td colspan="4"><a href="#" id="add_zone"><img src="<?php echo WS_DIR_IMAGES . 'icons/16x16/add.png'; ?>" width="16" height="16" /></a></td>
+      <td colspan="4"><a href="#" id="add_zone" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"'); ?></a></td>
     </tr>
   </table>
   
@@ -138,7 +138,7 @@
                  + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                  + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
                  + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
-                 + '      <td style="text-align: right;"><a id="remove-zone" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg') .'</a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       $("#table-zones tr:last").before(output);

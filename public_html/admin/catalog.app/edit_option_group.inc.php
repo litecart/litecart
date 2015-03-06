@@ -51,7 +51,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_option_group', 'post'); ?>
 
@@ -149,13 +149,13 @@
       }
 ?>
         </td>
-        <td style="text-align: right;"><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_down', 'Move down'); ?>" /></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?>><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" /></a></td>
+        <td style="text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fontawesome_icon('arrow-circle-up', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fontawesome_icon('arrow-circle-down', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?> title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>
       </tr>
 <?php
     }
 ?>
       <tr>
-        <td colspan="3"><a class="add" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/add.png" width="16" height="16" /> <?php echo language::translate('title_add_value', 'Add Value'); ?></a></td>
+        <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_value', 'Add Value'); ?></a></td>
       </tr>  
     </table>
     <script>
@@ -175,7 +175,7 @@
         var output = '<tr>'
                    + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('values[new_value_index][id]', '') . functions::form_draw_hidden_field('values[new_value_index][value]', '')); ?></td>'
                    + '  <td><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
-                   + '  <td><a class="move-up" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/up.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_up', 'Move up'); ?>" /></a> <a class="move-down" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/down.png" width="16" height="16" border="0" alt="<?php echo language::translate('text_move_down', 'Move down'); ?>" /></a> <a class="remove" href="#"><img src="<?php echo WS_DIR_IMAGES; ?>icons/16x16/remove.png" width="16" height="16" title="<?php echo language::translate('title_remove', 'Remove'); ?>" /></a></td>'
+                   + '  <td><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fontawesome_icon('arrow-circle-up', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fontawesome_icon('arrow-circle-down', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
                    + '</tr>';
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('tr').before(output);

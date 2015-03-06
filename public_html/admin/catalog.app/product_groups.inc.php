@@ -1,5 +1,5 @@
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc'=> 'edit_product_group'), array('app')), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_product_groups', 'Product Groups'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_product_groups', 'Product Groups'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('product_groups_form', 'post'); ?>
 <table width="100%" class="dataTable">
@@ -28,7 +28,7 @@
     <td style="text-align: center;"><?php echo $product_group['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_product_group', 'product_group_id' =>$product_group['id']), array('app')); ?>"><?php echo $product_group['name']; ?></a></td>
     <td style="text-align: center;"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." where product_group_id = '". (int)$product_group['id'] ."';")); ?></td>
-    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_product_group', 'product_group_id' => $product_group['id']), true); ?>"><img src="<?php echo WS_DIR_IMAGES .'icons/16x16/edit.png'; ?>" width="16" height="16" align="absbottom" /></a></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_product_group', 'product_group_id' => $product_group['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
   }

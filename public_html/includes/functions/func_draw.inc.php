@@ -1,5 +1,9 @@
 <?php
 
+  function draw_fontawesome_icon($name, $params=null, $class=null) {
+    return '<i class="fa fa-'. $name . (!empty($class) ? ' ' . $class : '') .'"'. (!empty($params) ? ' ' . $params : '') .'></i>';
+  }
+
   function draw_img($image, $width, $height, $title, $params) {
     return '<img src="'. $image .'" width="'. $width .'" height="'. $height .'" border="0"'. ($params ? ' '.$params : '') .'/>';
   }
@@ -50,7 +54,6 @@
       'short_description' => $product['short_description'],
       'price' => currency::format(tax::calculate($product['price'], $product['tax_class_id'])),
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::calculate($product['campaign_price'], $product['tax_class_id'])) : null,
-      'preview_icon' => WS_DIR_IMAGES .'icons/16x16/preview.png',
     );
     //var_dump($listing_product->stitch('views/listing_product'));
     return $listing_product->stitch('views/listing_product');

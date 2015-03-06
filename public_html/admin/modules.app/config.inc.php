@@ -1,8 +1,12 @@
 <?php
+
   $app_config = array(
     'name' => language::translate('title_modules', 'Modules'),
     'default' => 'shipping',
-    'icon' => 'icon.png',
+    'theme' => array(
+      'color' => '#c78dc8',
+      'icon' => 'cube',
+    ),
     'menu' => array(
       array(
         'title' => language::translate('title_customer', 'Customer'),
@@ -51,4 +55,5 @@
       'run_job' => 'run_job.inc.php',
     ),
   );
+
 ?>
