@@ -68,8 +68,7 @@ aside .box:first-child h3 {
 }
 #box-search .content input {
   display: inline-block;
-  width: 100%;
-  text-indent: 16px;
+  max-width: 100%;
 }
 
 #box-campaigns h3, #box-latest-products h3, #box-most-popular h3, #box-similar-products h3, #box-also-purchased-products h3 {

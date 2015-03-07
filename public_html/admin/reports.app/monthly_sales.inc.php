@@ -33,7 +33,7 @@
   <?php echo functions::form_draw_form_end(); ?>
 </div>
 
-<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></h1>
 
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
