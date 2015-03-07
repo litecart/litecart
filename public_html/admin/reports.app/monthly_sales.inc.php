@@ -1,3 +1,24 @@
+<?php 
+  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) : null;
+  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) : date('Y-m-d H:i:s');
+  
+  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
+  
+  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
+  $date_first_order = $date_first_order['min(date_created)'];
+  if (empty($date_first_order)) $date_first_order = date('Y-m-d 00:00:00');
+  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
+  
+  if ($_GET['date_from'] > date('Y-m-d H:i:s')) $_GET['date_from'] = date('Y-m-d H:i:s');
+  if ($_GET['date_to'] > date('Y-m-d H:i:s')) $_GET['date_to'] = date('Y-m-d H:i:s');
+?>
+
+<style>
+.border-left {
+  border-left: 1px #999 dashed;
+}
+</style>
+
 <div style="float: right; display: inline;">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app'); ?>
@@ -12,16 +33,16 @@
   <?php echo functions::form_draw_form_end(); ?>
 </div>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></h1>
 
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th width="100%"><?php echo language::translate('title_month', 'Month'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_shipping_fees', 'Shipping Fees'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_payment_fees', 'Payment Fees'); ?></th>
+    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></th>
+    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_shipping_fees', 'Shipping Fees'); ?></th>
+    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_payment_fees', 'Payment Fees'); ?></th>
+    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_total', 'Total'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_total', 'Total'); ?></th>
   </tr>
 <?php
   $order_statuses = array();
@@ -32,61 +53,37 @@
     $order_statuses[] = (int)$order_status['id'];
   }
   
-  $timestamp_from = !empty($_GET['date_from']) ? mktime(23, 59, 59, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from']))) : null;
-  $timestamp_to = !empty($_GET['date_to']) ? mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to']))) : time();
+  $timestamp_from = mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), 1, date('Y', strtotime($_GET['date_from'])));
+  $timestamp_to = mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('t', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])));
   
-  $row = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
-  if (empty($row['min(date_created)'])) $row['min(date_created)'] = date('Y-m-01 00:00:00');
+  for ($timestamp = mktime(0, 0, 0, date('m', strtotime($_GET['date_to'])), date(1, strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to']))); $timestamp >= $timestamp_from; $timestamp = strtotime('-1 month', $timestamp)) {
   
-  $timestamp_from = ($timestamp_from < strtotime($row['min(date_created)'])) ? strtotime($row['min(date_created)']) : $timestamp_from;
-  
-  for ($timestamp = $timestamp_to; $timestamp >= $timestamp_from; $timestamp = strtotime('-1 month', $timestamp)) {
     $orders_query = database::query(
       "select
-        sum(payment_due) as total_sales,
-        sum(tax_total) as total_tax
-      from ". DB_TABLE_ORDERS ."
-      where order_status_id in ('". implode("', '", $order_statuses) ."')
-      and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp), 0, date('Y', $timestamp))) ."'
-      and date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('t', $timestamp), date('Y', $timestamp))) ."';"
+        sum(o.payment_due) - sum(o.tax_total) as total_sales,
+        sum(o.tax_total) as total_tax,
+        sum(otst.value) as total_subtotal,
+        sum(otsf.value) as total_shipping_fees,
+        sum(otpf.value) as total_payment_fees
+      from ". DB_TABLE_ORDERS ." o
+      left join (
+        select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
+        where module_id = 'ot_subtotal'
+      ) otst on (o.id = otst.order_id)
+      left join (
+        select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
+        where module_id = 'ot_shipping_fee'
+      ) otsf on (o.id = otsf.order_id)
+      left join (
+        select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
+        where module_id = 'ot_payment_fee'
+      ) otpf on (o.id = otpf.order_id)
+      where o.order_status_id in ('". implode("', '", $order_statuses) ."')
+      and o.date_created >= '". date('Y-m-1 00:00:00', $timestamp) ."'
+      and o.date_created <= '". date('Y-m-t 23:59:59', $timestamp) ."';"
     );
+    
     $orders = database::fetch($orders_query);
-    
-    $orders_total_query = database::query(
-      "select sum(ot.value) as total_value
-      from ". DB_TABLE_ORDERS ." o
-      left join ". DB_TABLE_ORDERS_TOTALS ." ot on (ot.order_id = o.id)
-      where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-      and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp), 0, date('Y', $timestamp))) ."'
-      and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('t', $timestamp), date('Y', $timestamp))) ."'
-      and ot.module_id = 'ot_subtotal';"
-    );
-    $orders_total = database::fetch($orders_total_query);
-    $orders['total_subtotal'] = $orders_total['total_value'];
-    
-    $orders_total_query = database::query(
-      "select sum(ot.value) as total_value
-      from ". DB_TABLE_ORDERS ." o
-      left join ". DB_TABLE_ORDERS_TOTALS ." ot on (ot.order_id = o.id)
-      where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-      and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp), 0, date('Y', $timestamp))) ."'
-      and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('t', $timestamp), date('Y', $timestamp))) ."'
-      and ot.module_id = 'ot_shipping_fee';"
-    );
-    $orders_total = database::fetch($orders_total_query);
-    $orders['total_shipping_fees'] = $orders_total['total_value'];
-    
-    $orders_total_query = database::query(
-      "select sum(ot.value) as total_value
-      from ". DB_TABLE_ORDERS ." o
-      left join ". DB_TABLE_ORDERS_TOTALS ." ot on (ot.order_id = o.id)
-      where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-      and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp), 0, date('Y', $timestamp))) ."'
-      and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('t', $timestamp), date('Y', $timestamp))) ."'
-      and ot.module_id = 'ot_payment_fee';"
-    );
-    $orders_total = database::fetch($orders_total_query);
-    $orders['total_payment_fees'] = $orders_total['total_value'];
     
     if (!isset($rowclass) || $rowclass == 'even') {
       $rowclass = 'odd';
@@ -95,12 +92,30 @@
     }
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td><?php echo strftime('%B, %Y', $timestamp); ?></td>
-    <td style="text-align: right;"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
-    <td style="text-align: right;"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
-    <td style="text-align: right;"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td><?php echo ucfirst(strftime('%B, %Y', $timestamp)); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><strong><?php echo currency::format($orders['total_sales'], false, false, settings::get('store_currency_code')); ?></strong></td>
     <td style="text-align: right;"><?php echo currency::format($orders['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
-    <td style="text-align: right;"><?php echo currency::format($orders['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
+  </tr>
+<?php
+    if (!isset($total)) $total = array();
+    foreach (array_keys($orders) as $key) {
+      if (!isset($total[$key])) $total[$key] = $orders[$key];
+      else $total[$key] += $orders[$key];
+    }
+  }
+  
+  if (!empty($total)) {
+?>
+  <tr class="footer">
+    <td style="text-align: right;"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($total['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($total['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($total['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><strong><?php echo currency::format($total['total_sales'], false, false, settings::get('store_currency_code')); ?></strong></td>
+    <td style="text-align: right;"><?php echo currency::format($total['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
   </tr>
 <?php
   }

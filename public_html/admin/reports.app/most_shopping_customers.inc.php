@@ -17,7 +17,7 @@
 </div>
 
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?></h1>
+<h1 style="margin-top: 0px;"><img src="<?php echo WS_DIR_ADMIN . $_GET['app'] .'.app/icon.png'; ?>" width="32" height="32" style="vertical-align: middle; margin-right: 10px;" /><?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?></h1>
 
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
@@ -40,8 +40,7 @@
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : "") ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : "") ."
     group by if(o.customer_id, o.customer_id, o.customer_email)
-    order by total_amount desc
-    limit 50;"
+    order by total_amount desc;"
   );
   
   if (database::num_rows($customers_query) > 0) {
