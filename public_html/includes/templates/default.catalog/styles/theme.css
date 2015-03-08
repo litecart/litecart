@@ -45,16 +45,24 @@ body {
   top: 25px;
   width: 400px;
   margin: 0px -200px;
+  text-align: center;
 }
 #region {
+  display: inline-block;
   font-size: 0.95em;
   color: #777;
-  display: table;
+  
+  padding: 5px 10px;
+  
   border-collapse: collapse;
-  margin: 0px auto;
-  border: 1px #ccc solid;
-  background: #eee;
-  padding: 0px;
+  
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+
+  background: #f0f0f0;
+  -webkit-box-shadow: inset 0px 1px 2px #bbb;
+  -moz-box-shadow: inset 0px 1px 2px #bbb;
+  box-shadow: inset 0px 1px 2px #bbb;
 }
 #region > div {
   display: inline-block;
@@ -62,7 +70,6 @@ body {
   vertical-align: middle;
 }
 #region .language {
-  line-height: 1em;
 }
 #region .currency {
   padding: 0px;
@@ -70,17 +77,17 @@ body {
 }
 #region .currency span {
   padding: 1px 5px;
-  border: 1px solid #d1d1d1;
-  background: #fff;
+  border-top: 1px solid #d1d1d1;
+  border-left: 1px solid #d1d1d1;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  background: #e3ece0;
 }
 #region .country {
   cursor: default;
 }
 #region .change {
-  border-left: 1px #ccc solid;
-  
-  cursor: default;
-  background: #fff;
+  padding-left: 0px;
 }
 @media (max-width: 640px) { /* WVGA 480x800 and lower */
   #region-wrapper {

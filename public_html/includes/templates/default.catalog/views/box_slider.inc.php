@@ -50,6 +50,12 @@
   font-size: 1.5em;
   opacity: 0.5;
 }
+
+@media (max-width: 640px) { /* WVGA 480x800 and lower */
+  .rslides li .caption {
+    font-size: 1em;
+  }
+}
 </style>
 
 <div id="slider-wrapper" class="shadow">
