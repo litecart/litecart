@@ -33,13 +33,6 @@ aside .box:first-child h3 {
   clear: both;
 }
 
-#slider-wrapper {
-  position: relative;
-  margin-bottom: 20px;
-  padding: 0px;
-  background: #fff;
-}
-
 #box-logotypes {
   margin-bottom: 20px;
 }

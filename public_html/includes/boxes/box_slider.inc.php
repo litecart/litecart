@@ -1,7 +1,6 @@
 <?php
-  document::$snippets['head_tags']['nivo-slider'] = '<script src="'. WS_DIR_EXT .'nivo-slider/jquery.nivo.slider.pack.js"></script>' . PHP_EOL
-                                                  . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/nivo-slider.css" media="screen" />' . PHP_EOL
-                                                  . '<link rel="stylesheet" href="'. WS_DIR_EXT .'nivo-slider/themes/default/default.css" media="screen" />';
+  document::$snippets['head_tags']['nivo-slider'] = '<script src="'. WS_DIR_EXT .'responsiveslider/responsiveslides.min.js"></script>' . PHP_EOL
+                                                  . '<link rel="stylesheet" href="'. WS_DIR_EXT .'responsiveslider/responsiveslides.css" media="screen" />' . PHP_EOL;
   
   $box_slider_cache_id = cache::cache_id('box_slider', array('language'));
   if (cache::capture($box_slider_cache_id, 'file')) {
