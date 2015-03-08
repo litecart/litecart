@@ -6,6 +6,7 @@
 
 .tabs .index {
   margin: 0px;
+  margin-left: 5px;
   padding: 0px 5px;
   vertical-align: text-bottom;
 }
@@ -20,13 +21,7 @@
   display: block;
   padding: 5px 10px;
   
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
-  background-image: linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -o-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -moz-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -webkit-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -ms-linear-gradient(bottom, #ececec 9%, #f9f9f9 55%);
-  background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.09, #ececec), color-stop(0.55, #f9f9f9));
+  background: #ececec;
   
   border: 1px solid #ccc;
   border-bottom: none;
@@ -37,7 +32,7 @@
   
   color: #999;
   text-decoration: none;
-  text-shadow: 0px 1px 1px white;
+
 }
 .tabs .index li a:hover {
 }
@@ -50,7 +45,7 @@
 
 .tabs .content {
   clear: both;
-  padding: 10px;
+  padding: 20px;
   background: #fff;
   border: 1px solid #d1d1d1;
   -moz-border-radius: 5px;

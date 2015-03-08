@@ -6,7 +6,7 @@
   }
   
   if (empty($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
+  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $_GET['category_id']), false) .'" />';
   
@@ -35,7 +35,7 @@
   include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($box_category_cache_id, 'file')) {
+  if (cache::capture($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
     
     $page = new view();
     
@@ -50,9 +50,9 @@
       'subcategories' => array(),
       'products' => array(),
       'sort_alternatives' => array(
-        'popularity' => language::translate('title_popularity', 'Popularity'),
         'name' => language::translate('title_name', 'Name'),
         'price' => language::translate('title_price', 'Price'),
+        'popularity' => language::translate('title_popularity', 'Popularity'),
         'date' => language::translate('title_date', 'Date'),
       ),
     );

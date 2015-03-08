@@ -50,8 +50,7 @@
   font-size: 13px; /* Recover from inline spacing */
 	padding: 10px 15px;
 	text-decoration: none;
-  color: #777;
-  text-shadow: 1px 1px #fff;
+  color: #666;
 }
 #site-menu li.active > a {
   color: rgb(0, 136, 204);

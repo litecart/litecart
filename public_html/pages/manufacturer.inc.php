@@ -5,7 +5,7 @@
   }
   
   if (empty($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'popularity';
+  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $_GET['manufacturer_id']), false) .'" />';
   
@@ -31,7 +31,7 @@
   document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : $manufacturer->short_description[language::$selected['code']];
 
   $manufacturer_cache_id = cache::cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($manufacturer_cache_id, 'file')) {
+  if (cache::capture($manufacturer_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
   
     $page = new view();
     
@@ -42,9 +42,9 @@
       'description' => $manufacturer->description[language::$selected['code']],
       'products' => array(),
       'sort_alternatives' => array(
-        'popularity' => language::translate('title_popularity', 'Popularity'),
         'name' => language::translate('title_name', 'Name'),
         'price' => language::translate('title_price', 'Price'),
+        'popularity' => language::translate('title_popularity', 'Popularity'),
         'date' => language::translate('title_date', 'Date'),
       ),
       'pagination' => null,
