@@ -122,7 +122,7 @@
       
       $item_key = md5(serialize(array($product_id, $options)));
       
-      $product = new ref_product($product_id);
+      $product = catalog::product($product_id);
       
       if ($product->status == 0) {
         if (!$silent) notices::add('errors', language::translate('text_product_not_available_for_purchase', 'The product is not available for purchase'));
@@ -298,7 +298,7 @@
       }
       
       if (!empty(self::$data['items'][$item_key]['product_id'])) {
-        $product = new ref_product(self::$data['items'][$item_key]['product_id']);
+        $product =catalog::product(self::$data['items'][$item_key]['product_id']);
         
       // Name
         self::$data['items'][$item_key]['name'] = $product->name;

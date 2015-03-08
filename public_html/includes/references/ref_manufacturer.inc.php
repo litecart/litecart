@@ -5,8 +5,6 @@
     private $_data = array();
     
     function __construct($manufacturer_id) {
-    
-      if (empty($manufacturer_id)) trigger_error('Missing manufacturer id', E_USER_WARNING);
       
       $this->_cache_id = cache::cache_id('manufacturer_'.(int)$manufacturer_id);
       

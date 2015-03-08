@@ -6,7 +6,7 @@
   
   if (!empty($_POST['product_id'])) {
     
-    $product = new ref_product($_POST['product_id'], $_GET['currency_code']);
+    $product = catalog::product($_POST['product_id'], $_GET['currency_code']);
     
     $price = !empty($product->campaign['price']) ? $product->campaign['price'] * $_GET['currency_value'] : $product->price * $_GET['currency_value'];
     $tax = tax::get_tax($price * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);

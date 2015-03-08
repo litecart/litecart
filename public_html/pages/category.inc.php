@@ -12,7 +12,7 @@
   
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   
-  $category = new ref_category($_GET['category_id']);
+  $category = catalog::category($_GET['category_id']);
   
   if (empty($category->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));

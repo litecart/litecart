@@ -112,7 +112,7 @@
       
       $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
       while ($category = database::fetch($categories_query)) {
-        $category = new ref_category($category['id']);
+        $category = catalog::category($category['id']);
         
         $parent_category_query = database::query(
           "select * from ". DB_TABLE_CATEGORIES ."
@@ -364,7 +364,7 @@
         order by pi.name;"
       );
       while ($product = database::fetch($products_query)) {
-        $product = new ref_product($product['id']);
+        $product =catalog::product($product['id']);
         
         $category_codes = array();
         foreach ($product->categories as $category_id) {

@@ -13,7 +13,7 @@
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
-  $manufacturer = new ref_manufacturer($_GET['manufacturer_id']);
+  $manufacturer = catalog::manufacturer($_GET['manufacturer_id']);
   
   if (empty($manufacturer->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));

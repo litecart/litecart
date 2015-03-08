@@ -6,8 +6,6 @@
     
     function __construct($category_id) {
       
-      if (empty($category_id)) trigger_error('Missing category id', E_USER_WARNING);
-      
       $this->_cache_id = cache::cache_id('category_'.(int)$category_id);
       
       $cache = cache::get($this->_cache_id, 'file');
@@ -66,43 +64,34 @@
           );
           
           while ($row = database::fetch($query)) {
-            foreach ($fields as $key) $this->_data[$key][$row['language_code']] = $row[$key];
+            foreach ($fields as $key) {
+              if (isset($row[$key])) $this->_data[$key][$row['language_code']] = $row[$key];
+            }
           }
           
         // Fix missing translations
           foreach ($fields as $key) {
             foreach (array_keys(language::$languages) as $language_code) {
-              if (empty($this->_data[$key][$language_code])) $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
+              if (empty($this->_data[$key][$language_code])) {
+                if (isset($this->_data[$key][settings::get('default_language_code')])) $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
+              }
             }
           }
           
           break;
           
-        case 'products_alphabetical':
+        case 'products':
         
-          $this->_data['products_alphabetical'] = array();
+          $this->_data['products'] = array();
           
           $query = database::query(
-            "select p.id, p.image, p.tax_class_id, pi.name, pp.". database::input(currency::$selected['code']) ." as price, pc_tmp.campaign_price, m.name as manufacturer_name
-            from ". DB_TABLE_PRODUCTS ." p
-            join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and language_code = '". database::input(language::$selected['code']) ."')
-            join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
-            join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
-            left outer join (
-              select pc.product_id, pc.". database::input(currency::$selected['code']) ." as campaign_price
-              from ". DB_TABLE_PRODUCTS_CAMPAIGNS ." pc
-              where (pc.start_date = '0000-00-00 00:00:00' or pc.start_date <= '". date('Y-m-d H:i:s') ."')
-              and (pc.end_date = '0000-00-00 00:00:00' or pc.end_date >= '". date('Y-m-d H:i:s') ."')
-              order by pc.end_date asc
-              limit 1
-            ) pc_tmp on (pc_tmp.product_id = p.id)
-            where p.status
-            and find_in_set ('". (int)$this->_data['id'] ."', p.categories)
-            order by pi.name asc;"
+            "select id from ". DB_TABLE_PRODUCTS ."
+            where status
+            and find_in_set ('". (int)$this->_data['id'] ."', categories);"
           );
           
           while ($row = database::fetch($query)) {
-            $this->_data['products_alphabetical'][$row['id']] = $row;
+            $this->_data['products'][$row['id']] = catalog::product($row);
           }
           
           break;
@@ -117,7 +106,9 @@
           );
           
           while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) $this->_data['subcategories'][] = $row['id'];
+            foreach ($row as $key => $value) {
+              $this->_data['subcategories'][$row['id']] = $row['id'];
+            }
           }
           
           break;

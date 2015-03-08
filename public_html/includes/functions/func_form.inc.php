@@ -783,7 +783,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
     if (!empty($product_id)) {
-      $product = new ref_product($product_id);
+      $product = catalog::product($product_id);
       if (count($product->options_stock) > 0) {
         foreach (array_keys($product->options_stock) as $key) {
           $options[] = array($product->options_stock[$key]['name'][language::$selected['code']] .' ['. $product->options_stock[$key]['quantity'] .'] ', $product->id);

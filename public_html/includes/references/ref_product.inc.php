@@ -6,10 +6,8 @@
     private $_currency_code;
     
     function __construct($product_id, $currency_code=null) {
-    
-      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
       
-      if (empty($product_id)) trigger_error('Missing product id', E_USER_ERROR);
+      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
       
       $this->_data['id'] = (int)$product_id;
     }

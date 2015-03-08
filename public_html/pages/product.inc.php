@@ -1,6 +1,6 @@
 <?php
   if (!empty($_GET['product_id'])) {
-    $product = new ref_product($_GET['product_id']);
+    $product = catalog::product($_GET['product_id']);
   }
   
   if (empty($product->id) || empty($product->status)) {

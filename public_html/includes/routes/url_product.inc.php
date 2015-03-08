@@ -16,7 +16,7 @@
       
       if (!isset($parsed_link['query']['product_id'])) return false;
       
-      $product = new ref_product($parsed_link['query']['product_id'], $language_code);
+      $product = catalog::product($parsed_link['query']['product_id']);
       
       if (!$product->id) return $parsed_link;
       
