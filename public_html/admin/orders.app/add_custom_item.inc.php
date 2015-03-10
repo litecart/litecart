@@ -36,7 +36,7 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong></td>
-      <td><?php echo functions::form_draw_number_field('quantity', !empty($_POST['quantity']) ? true : '1'); ?></td>
+      <td><?php echo functions::form_draw_decimal_field('quantity', !empty($_POST['quantity']) ? true : '1', 2); ?></td>
     </tr>
   </table>
 

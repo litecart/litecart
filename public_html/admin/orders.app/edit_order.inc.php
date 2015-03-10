@@ -478,7 +478,7 @@
       </td>
       <td><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
       <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true); ?></td>
-      <td style="text-align: center;"><?php echo functions::form_draw_number_field('items['. $key .'][quantity]', true); ?></td>
+      <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
       <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>
@@ -510,7 +510,7 @@
                  + '    </td>'
                  + '    <td style="text-align: center;"><?php echo functions::form_draw_hidden_field('items[new_item_index][sku]', ''); ?>'+ item.sku +'</td>'
                  + '    <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items[new_item_index][weight]', ''); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '')); ?></td>'
-                 + '    <td style="text-align: center;"><?php echo functions::form_draw_number_field('items[new_item_index][quantity]', ''); ?></td>'
+                 + '    <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2); ?></td>'
                  + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', ''); ?></td>'
                  + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', ''); ?></td>'
                  + '    <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
