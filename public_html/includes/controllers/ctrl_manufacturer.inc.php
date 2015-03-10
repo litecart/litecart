@@ -141,8 +141,7 @@
       
       database::query(
         "delete from ". DB_TABLE_MANUFACTURERS_INFO ."
-        where manufacturer_id = '". $this->data['id'] ."'
-        limit 1;"
+        where manufacturer_id = '". $this->data['id'] ."';"
       );
       
       cache::clear_cache('manufacturers');

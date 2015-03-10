@@ -97,8 +97,7 @@
       
       database::query(
         "delete from ". DB_TABLE_PAGES ."
-        where id = '". (int)$this->data['id'] ."'
-        limit 1;"
+        where id = '". (int)$this->data['id'] ."';"
       );
       
       $this->data['id'] = null;

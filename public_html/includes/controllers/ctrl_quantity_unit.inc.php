@@ -96,8 +96,7 @@
       
       database::query(
         "delete from ". DB_TABLE_QUANTITY_UNITS ."
-        where id = '". (int)$this->data['id'] ."'
-        limit 1;"
+        where id = '". (int)$this->data['id'] ."';"
       );
       
       cache::clear_cache('quantity_units');

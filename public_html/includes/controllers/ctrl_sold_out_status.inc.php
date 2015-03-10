@@ -95,8 +95,7 @@
       
       database::query(
         "delete from ". DB_TABLE_SOLD_OUT_STATUSES ."
-        where id = '". (int)$this->data['id'] ."'
-        limit 1;"
+        where id = '". (int)$this->data['id'] ."';"
       );
       
       $this->data['id'] = null;

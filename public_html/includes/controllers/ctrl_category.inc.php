@@ -161,8 +161,7 @@
       
       database::query(
         "delete from ". DB_TABLE_CATEGORIES_INFO ."
-        where category_id = '". (int)$this->data['id'] ."'
-        limit 1;"
+        where category_id = '". (int)$this->data['id'] ."';"
       );
       
       cache::clear_cache('category_tree');
