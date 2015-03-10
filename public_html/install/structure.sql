@@ -400,6 +400,7 @@ CREATE TABLE `lc_products` (
   `upc` varchar(12) NOT NULL,
   `taric` varchar(16) NOT NULL,
   `quantity` int(11) NOT NULL,
+  `quantity_unit_id` INT(1) NOT NULL,
   `weight` decimal(10,4) NOT NULL,
   `weight_class` varchar(2) NOT NULL,
   `dim_x` decimal(10,4) NOT NULL,
@@ -544,6 +545,26 @@ CREATE TABLE `lc_product_groups_values_info` (
   KEY `product_group_value_id` (`product_group_value_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `decimals` tinyint(1) NOT NULL,
+  `priority` tinyint(2) NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quantity_unit_id` int(11) NOT NULL,
+  `language_code` varchar(2) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `description` VARCHAR(512),
+  PRIMARY KEY (`id`),
+  KEY `quantity_unit_id` (`quantity_unit_id`),
+  KEY `language_code` (`language_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

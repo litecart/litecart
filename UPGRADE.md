@@ -32,6 +32,46 @@
   
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders. Especially if they contain modifications by third party add-ons.
 
+### LiteCart 1.2.2.1 to 1.3
+  
+  MySQL Changes:
+  
+    CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `decimals` tinyint(1) NOT NULL,
+      `priority` tinyint(2) NOT NULL,
+      `date_updated` datetime NOT NULL,
+      `date_created` datetime NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    
+    CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `quantity_unit_id` int(11) NOT NULL,
+      `language_code` varchar(2) NOT NULL,
+      `name` varchar(32) NOT NULL,
+      `description` VARCHAR(512),
+      PRIMARY KEY (`id`),
+      KEY `quantity_unit_id` (`quantity_unit_id`),
+      KEY `language_code` (`language_code`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    
+    INSERT INTO `lc_quantity_units` (`id`, `priority`, `date_updated`, `date_created`) VALUES
+    (1, 0, NOW(), NOW());
+    
+    INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
+    (1, 0, 0, NOW(), NOW());
+    
+    ALTER TABLE `lc_products` ADD `quantity_unit_id` TINYINT(1) NOT NULL AFTER  `quantity`;
+    
+    UPDATE `lc_products` set quantity_unit_id = 1 WHERE quantity_unit_id = 0;
+
+### LiteCart 1.2.2 to 1.2.2.1
+
+  (No MySQL Changes)
+  
+  (No New or Deleted Files)
+
 ### LiteCart 1.2.1 to 1.2.2
   
   MySQL Changes:

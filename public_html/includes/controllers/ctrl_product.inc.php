@@ -183,6 +183,7 @@
         product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
         keywords = '". database::input(rtrim(trim($this->data['keywords']), ',')) ."',
         quantity = '". database::input($this->data['quantity']) ."',
+        quantity_unit_id = '". (int)$this->data['quantity_unit_id'] ."',
         purchase_price = '". database::input($this->data['purchase_price']) ."',
         tax_class_id = '". database::input($this->data['tax_class_id']) ."',
         code = '". database::input($this->data['code']) ."',

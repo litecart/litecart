@@ -109,6 +109,8 @@
     'tax_rates' => array(),
     'title_quantity' => language::translate('title_quantity', 'Quantity'),
     'quantity' => $product->quantity,
+    'quantity_unit_name' => $product->quantity_unit['name'][language::$selected['code']],
+    'quantity_unit_decimals' => $product->quantity_unit['decimals'],
     'title_stock_status' => language::translate('title_stock_status', 'Stock Status'),
     'stock_status_value' => (settings::get('display_stock_count')) ? sprintf(language::translate('text_d_pieces', '%d pieces'), $product->quantity) : language::translate('title_in_stock', 'In Stock'),
     'title_delivery_status' => language::translate('title_delivery_status', 'Delivery Status'),

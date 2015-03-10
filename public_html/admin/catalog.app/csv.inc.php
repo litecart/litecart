@@ -364,7 +364,7 @@
         order by pi.name;"
       );
       while ($product = database::fetch($products_query)) {
-        $product =catalog::product($product['id']);
+        $product = catalog::product($product['id']);
         
         $category_codes = array();
         foreach ($product->categories as $category_id) {

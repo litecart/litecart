@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($delivery_status_query);
-      if (empty($this->data)) trigger_error('Could not find delivery_status ('. $delivery_status_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find delivery status ID ('. $delivery_status_id .') in database.', E_USER_ERROR);
       
       $delivery_status_info_query = database::query(
         "select name, description, language_code from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
@@ -83,7 +83,7 @@
     public function delete() {
     
       if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where delivery_status_id = '". (int)$this->data['id'] ."' limit 1;"))) {
-        trigger_error('Cannot delete the sold out status because there are products using it', E_USER_ERROR);
+        trigger_error('Cannot delete the delivery status because there are products using it', E_USER_ERROR);
         return;
       }
       

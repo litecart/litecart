@@ -17,8 +17,10 @@
       
       self::$data = &$_SESSION[SESSION_UNIQUE_ID];
       
+      if (!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
+      
       if (empty(self::$data['last_ip'])) self::$data['last_ip'] = $_SERVER['REMOTE_ADDR'];
-      if (empty(self::$data['last_agent'])) self::$data['last_agent'] = !empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+      if (empty(self::$data['last_agent'])) self::$data['last_agent'] = $_SERVER['HTTP_USER_AGENT'];
       
       if (self::$data['last_ip'] != $_SERVER['REMOTE_ADDR'] || self::$data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) {
         self::regenerate_id();

@@ -44,6 +44,7 @@
         'date_valid_from',
         'date_valid_to',
         'quantity',
+        'quantity_unit_id',
         'purchase_price',
         'prices',
         'campaigns',
@@ -242,6 +243,9 @@ foreach (array_keys(language::$languages) as $language_code) {
                 <tr>
                   <td><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong><br />
                     <?php echo functions::form_draw_number_field('quantity', true); ?>
+                  </td>
+                  <td><strong><?php echo language::translate('title_quantity Unit', 'Quantity Unit'); ?></strong><br />
+                    <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
                   </td>
                   <td><strong><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></strong><br />
                     <?php echo functions::form_draw_delivery_status_list('delivery_status_id', true); ?>

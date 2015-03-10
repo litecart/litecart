@@ -433,8 +433,8 @@
                     $this->_data['product_groups'][$group_id]['name'][$language_code] = $this->_data['product_groups'][$group_id]['name'][settings::get('default_language_code')];
                   } else {
                     $this->_data['product_groups'][$group_id]['name'][$language_code] = '[untitled]';
+                  }
                 }
-              }
               }
               
               $query = database::query(
@@ -458,6 +458,26 @@
             }
           }
             }
+          }
+          
+          break;
+          
+        case 'quantity_unit':
+        
+          $quantity_unit_query = database::query(
+            "select id, decimals from ". DB_TABLE_QUANTITY_UNITS ."
+            where id = ". (int)$this->quantity_unit_id ."
+            limit 1;"
+          );
+          
+          $this->_data['quantity_unit'] = database::fetch($quantity_unit_query);
+          
+          $query = database::query(
+            "select name, language_code from ". DB_TABLE_QUANTITY_UNITS_INFO ."
+            where quantity_unit_id = '". (int)$this->quantity_unit_id ."';"
+          );
+          while ($info = database::fetch($query)) {
+            $this->_data['quantity_unit']['name'][$info['language_code']] = $info['name'];
           }
           
           break;

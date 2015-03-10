@@ -19,12 +19,13 @@
       'product_id' => $item['product_id'],
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
       'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 160, 'FIT_USE_WHITESPACING'),
-      'name' => $item['name'][language::$selected['code']],
+      'name' => $item['name'],
       'sku' => $item['sku'],
       'options' => array(),
       'price' => $item['price'],
       'tax_class_id' => $item['tax_class_id'],
-      'quantity' => $item['quantity'],
+      'quantity' => (float)$item['quantity'],
+      'quantity_unit' => $item['quantity_unit'],
     );
     if (!empty($item['options'])) {
       foreach ($item['options'] as $k => $v) {

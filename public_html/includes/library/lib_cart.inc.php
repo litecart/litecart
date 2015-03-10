@@ -28,7 +28,7 @@
     public static function startup() {
     
       if (!empty($_POST['add_cart_product'])) {
-        self::add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        self::add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? (float)$_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['remove_cart_item'])) {
@@ -36,7 +36,7 @@
       }
       
       if (!empty($_POST['update_cart_item'])) {
-        self::update($_POST['key'], (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        self::update($_POST['key'], (isset($_POST['quantity']) ? (float)$_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['clear_cart_items'])) {
@@ -51,7 +51,7 @@
     
     // Refresh
       foreach(array_keys(self::$data['items']) as $key) {
-        self::update($key, self::$data['items'][$key]['quantity']);
+        self::update($key, (float)self::$data['items'][$key]['quantity']);
       }
     }
     
@@ -77,11 +77,11 @@
       
       if (empty($cart_data)) return;
       
-      foreach ($cart_data as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
+      foreach ($cart_data as $item) self::add_product($item['product_id'], $item['options'], (float)$item['quantity'], true);
       
       if (!empty($_COOKIE['cart']['items'])) {
         $cart_data = unserialize($_COOKIE['cart']['items']);
-        foreach ($_COOKIE['cart']['items'] as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
+        foreach ($_COOKIE['cart']['items'] as $item) self::add_product($item['product_id'], $item['options'], (float)$item['quantity'], true);
       }
     }
     
@@ -96,7 +96,7 @@
         $cart_data[$item_key] = array(
           'product_id' => self::$data['items'][$key]['product_id'],
           'options' => self::$data['items'][$key]['options'],
-          'quantity' => self::$data['items'][$key]['quantity'],
+          'quantity' => (float)self::$data['items'][$key]['quantity'],
         );
       }
       
@@ -150,7 +150,7 @@
         'options' => $options,
         'option_stock_combination' => '',
         'image' => $product->image,
-        'name' => $product->name,
+        'name' => $product->name[language::$selected['code']],
         'code' => $product->code,
         'sku' =>  $product->sku,
         'upc' =>  $product->upc,
@@ -159,7 +159,11 @@
         'extras' => 0,
         'tax' => tax::get_tax($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
-        'quantity' => (int)$quantity,
+        'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
+        'quantity_unit' => array(
+          'name' => $product->quantity_unit['name'][language::$selected['code']],
+          'decimals' => $product->quantity_unit['decimals'],
+        ),
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,
         'dim_x' => $product->dim_x,
@@ -298,10 +302,13 @@
       }
       
       if (!empty(self::$data['items'][$item_key]['product_id'])) {
-        $product =catalog::product(self::$data['items'][$item_key]['product_id']);
+        $product = catalog::product(self::$data['items'][$item_key]['product_id']);
         
       // Name
-        self::$data['items'][$item_key]['name'] = $product->name;
+        self::$data['items'][$item_key]['name'] = $product->name[language::$selected['code']];
+        
+      // Quantity Unit
+        self::$data['items'][$item_key]['quantity_unit']['name'] = $product->quantity_unit['name'][language::$selected['code']];
         
       // Refresh Price
         self::$data['items'][$item_key]['price'] = $product->campaign['price'] ? $product->campaign['price'] : $product->price;
@@ -333,7 +340,7 @@
       }
       
       if ($quantity > 0) {
-        self::$data['items'][$item_key]['quantity'] = (int)$quantity;
+        self::$data['items'][$item_key]['quantity'] = (float)$quantity;
       } else {
         self::remove($item_key);
       }
@@ -372,27 +379,23 @@
       $total_tax = 0;
       $total_items = 0;
       $total_weight = 0;
-      $total_physical = 0;
-      $total_virtual = 0;
       
       foreach (self::$data['items'] as $item) {
-        $total_value += $item['price'] * $item['quantity'];
-        $total_tax += tax::get_tax($item['price'], $item['tax_class_id']) * $item['quantity'];
-        $total_items += $item['quantity'];
-        //if ($item['type'] == 'physical') {
-        //  $total_weight += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
-          $total_physical += $item['quantity'];
-        //} else if ($item['type'] == 'virtual') {
-        //  $total_virtual += $item['quantity'];
-        //}
+        $item_quantity = $item['quantity'];
+        
+        if (!empty($item['quantity_unit']['decimals'])) {
+          $item_quantity = 1;
+        }
+        
+        $total_value += $item['price'] * $item_quantity;
+        $total_tax += tax::get_tax($item['price'], $item['tax_class_id']) * $item_quantity;
+        $total_items += $item_quantity;
       }
       
       self::$data['total'] = array(
         'value' => $total_value,
         'tax' => $total_tax,
         'items' => $total_items,
-        'physical' => $total_physical,
-        'virtual' => $total_virtual,
         'weight' => $total_weight,
       );
     }

@@ -277,6 +277,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('defaults', 'global', 'Default Zone', 'The default zone selected if not set otherwise.', 'default_zone_code', '', 'zones()', 13, NOW(), NOW()),
 ('defaults', 'local', 'Default Tax Class', 'Default tax class that will be preset when creating new products.', 'default_tax_class_id', '1', 'tax_classes()', 14, NOW(), NOW()),
 ('defaults', 'global', 'Default Display Prices Including Tax', 'Displays prices in including tax by default.', 'default_display_prices_including_tax', '1', 'toggle()', 15, NOW(), NOW()),
+('defaults', 'global', 'Default Quantity Unit', 'Default quantity unit that will be preset when creating new products.', 'default_quantity_unit_id', '1', 'quantity_units()', 15, NOW(), NOW()),
 ('general', 'global', 'Set Currency by Language', 'Chain select currency when changing language.', 'set_currency_by_language', '1', 'toggle()', 15, NOW(), NOW()),
 ('general', 'local', 'Contact Form CAPTCHA', 'Prevents spam by enabling CAPTCHA in the contact form.', 'contact_form_captcha_enabled', '1', 'toggle()', 16, NOW(), NOW()),
 ('general', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 17, NOW(), NOW()),
@@ -337,3 +338,9 @@ INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, 
 (3, 3, 'en', 'Processing', ''),
 (4, 4, 'en', 'Completed', ''),
 (5, 5, 'en', 'Cancelled', '');
+-- --------------------------------------------------------
+INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 0, 0, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', 'pcs', '');

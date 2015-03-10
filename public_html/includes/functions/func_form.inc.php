@@ -88,7 +88,7 @@
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
     
     document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                        . '    $("body").on("keyup", "input[data-type=\'currency\']", function(){' . PHP_EOL
+                                                                        . '    $("body").on("change", "input[data-type=\'currency\']", function(){' . PHP_EOL
                                                                         . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
                                                                         . '    });' . PHP_EOL
                                                                         . '  });';
@@ -125,17 +125,19 @@
   }
   
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='', $hint='') {
-    if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
+    if ($value === true) $value = form_reinsert_value($name);
+    
+    $value = number_format($value, $decimals, '.', '');
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
     
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                       . '    $("body").on("keyup", "input[data-type=\'decimal\']", function(){' . PHP_EOL
+                                                                       . '    $("body").on("change", "input[data-type=\'decimal\']", function(){' . PHP_EOL
                                                                        . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
                                                                        . '    });' . PHP_EOL
                                                                        . '  });';
     
-    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. $value .'" data-type="decimal" title="'. htmlspecialchars($hint) .'" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_email_field($name, $value=true, $parameters='', $hint='') {
@@ -441,6 +443,8 @@
         return functions::form_draw_length_classes_list($name, $input);
       case 'product':
         return functions::form_draw_products_list($name, $input);
+      case 'quantity_units':
+        return functions::form_draw_quantity_units_list($name, $input);
       case 'order_status':
         return functions::form_draw_order_status_list($name, $input);
       case 'radio':
@@ -794,6 +798,31 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
+  function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {
+    
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    if ($input == '') $input = settings::get('default_quantity_unit_id');
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
+    
+    $quantity_units_query = database::query(
+      "select qu.id, qui.name from ". DB_TABLE_QUANTITY_UNITS ." qu
+      left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qui.quantity_unit_id = qu.id and language_code = '". language::$selected['code'] ."')
+      order by qu.priority, qui.name asc;"
+    );
+    
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    
+    while ($quantity_unit = database::fetch($quantity_units_query)) {
+      $options[] = array($quantity_unit['name'], $quantity_unit['id']);
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
   function form_draw_shipping_modules_list($name, $input=true, $multiple=true, $parameters='') {
     
     $shipping = new mod_shipping();
@@ -830,7 +859,7 @@
     
     $suppliers_query = database::query(
       "select id, name from ". DB_TABLE_SUPPLIERS ."
-      order by name asc;"
+      order by name;"
     );
     
     $options = array();

@@ -87,13 +87,18 @@
           <?php if (!$catalog_only_mode) { ?>
           <tr>
             <td class="quantity"><strong><?php echo $title_quantity; ?></strong><br />
-            <?php echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? $_POST['quantity'] : 1, 1, null, 'data-size="tiny"'); ?> &nbsp; 
 <?php
-    if ($quantity > 0 || $orderable) {
-      echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit'); 
-    } else {
-      echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit', 'disabled="disabled"'); 
-    }
+  if (!empty($quantity_unit_decimals)) {
+    echo functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null, 'data-size="small"') .' '. $quantity_unit_name .' &nbsp; ';
+   } else {
+    echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1, null, 'data-size="tiny"') .' '. $quantity_unit_name .' &nbsp; ';
+  }
+
+  if ($quantity > 0 || $orderable) {
+    echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit'); 
+  } else {
+    echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit', 'disabled="disabled"'); 
+  }
 ?>
             </td>
           </tr>
@@ -188,7 +193,8 @@
             jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
           },
           error: function(jqXHR, textStatus, errorThrown) {
-            alert('Error');
+            //alert("Error\n"+ jqXHR.responseText);
+            alert("Error");
           },
           success: function(data) {
             if (data['alert']) alert(data['alert']);

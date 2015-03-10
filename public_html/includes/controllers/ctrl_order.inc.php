@@ -369,7 +369,7 @@
             if (!empty($this->data['items'][$key]['product_id'])) {
               database::query(
                 "update ". DB_TABLE_PRODUCTS ."
-                set purchases = purchases + ". (int)$this->data['items'][$key]['quantity'] ."
+                set purchases = purchases + ". (float)$this->data['items'][$key]['quantity'] ."
                 where id = ". (int)$this->data['items'][$key]['product_id'] ."
                 limit 1;"
               );
@@ -561,7 +561,7 @@
         'product_id' => $item['product_id'],
         'options' => $item['options'],
         'option_stock_combination' => $item['option_stock_combination'],
-        'name' => $item['name'][language::$selected['code']],
+        'name' => $item['name'],
         'sku' => $item['sku'],
         'price' => $item['price'],
         'tax' => $item['tax'],

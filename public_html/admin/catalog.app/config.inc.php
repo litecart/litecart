@@ -44,6 +44,11 @@
         'params' => array(),
       ),
       array(
+        'title' => language::translate('title_quantity_units', 'Quantity Units'),
+        'doc' => 'quantity_units',
+        'params' => array(),
+      ),
+      array(
         'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
         'doc' => 'csv',
         'params' => array(),
@@ -65,6 +70,8 @@
       'edit_delivery_status' => 'edit_delivery_status.inc.php',
       'sold_out_statuses' => 'sold_out_statuses.inc.php',
       'edit_sold_out_status' => 'edit_sold_out_status.inc.php',
+      'quantity_units' => 'quantity_units.inc.php',
+      'edit_quantity_unit' => 'edit_quantity_unit.inc.php',
       'csv' => 'csv.inc.php',
     ),
   );
