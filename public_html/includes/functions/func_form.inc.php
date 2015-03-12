@@ -93,7 +93,7 @@
                                                                         . '    });' . PHP_EOL
                                                                         . '  });';
     
-    return '<span class="input-wrapper">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
+    return '<span class="input-wrapper">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='', $hint='') {
@@ -127,7 +127,7 @@
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='', $hint='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    $value = number_format($value, $decimals, '.', '');
+    $value = number_format((float)$value, (int)$decimals, '.', '');
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
     
@@ -236,7 +236,7 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    return '<input type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" title="'. htmlspecialchars($hint) .'" pattern="^\+?[0-9 -]+$"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" title="'. htmlspecialchars($hint) .'" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='', $hint='') {

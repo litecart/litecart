@@ -131,9 +131,9 @@
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
   <table width="100%" class="dataTable" id="table-zones">
     <tr class="header">
-      <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
-      <th style="vertical-align: text-top"><?php echo language::translate('title_code', 'Code'); ?></th>
-      <th style="vertical-align: text-top"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th style="vertical-align: text-top;"><?php echo language::translate('title_code', 'Code'); ?></th>
+      <th style="vertical-align: text-top;"><?php echo language::translate('title_name', 'Name'); ?></th>
       <th style="text-align: center; vertical-align: text-top;">&nbsp;</th>
     </tr>
   <?php

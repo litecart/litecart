@@ -1,5 +1,5 @@
 <?php  
-  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language', isset($_GET['category_id']) ? $_GET['category_id'] : 0, isset($_GET['page_id']) ? $_GET['page_id'] : 0));
+  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language'));
   if (cache::capture($box_site_menu_cache_id, 'file')) {
     
     $box_site_menu = new view();
@@ -10,7 +10,6 @@
       'title' => functions::draw_fontawesome_icon('home', 'title="'. htmlspecialchars(language::translate('title_home', 'Home')) .'"', 'fa-lg'),
       'link' => document::ilink(''),
       'image' => null,
-      'active' => empty($_GET) ? true : false,
       'subitems' => array(),
     );
     
@@ -35,7 +34,6 @@
               'title' => $category['name'],
               'link' => document::ilink('category', array('category_id' => $category['id'])),
               'image' => null,
-              'active' => (isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? true : false,
               'subitems' => array(),
             );
           } else {
@@ -45,7 +43,6 @@
               'title' => $category['name'],
               'link' => document::ilink('category', array('category_id' => $category['id'])),
               'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP'),
-              'active' => (isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? true : false,
               'subitems' => array(),
             );
           }
@@ -85,7 +82,6 @@
         'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),
         'image' => null,
-        'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
         'subitems' => array(),
       );
     }

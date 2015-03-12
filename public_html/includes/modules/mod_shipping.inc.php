@@ -116,7 +116,7 @@
     
     public function after_process($order) {
       
-      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      if (empty($this->data['selected'])) trigger_error('Error: No shipping option selected', E_USER_WARNING);
       
       list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
       

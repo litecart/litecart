@@ -130,8 +130,8 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
+        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
         <th style="vertical-align: text-top; text-align: center;">&nbsp;</th>
       </tr>
 <?php
@@ -203,8 +203,8 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
 <?php
@@ -226,8 +226,8 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
 <?php
@@ -249,8 +249,8 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table width="100%" class="dataTable">
       <tr class="header">
-        <th style="vertical-align: text-top"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
 <?php

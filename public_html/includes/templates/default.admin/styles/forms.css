@@ -22,6 +22,10 @@ input[type=color], input[type=date], input[type=datetime], input[type=email], in
   vertical-align: baseline;
 }
 
+.input-wrapper {
+  white-space: nowrap;
+}
+
 .input-wrapper *:focus {
   outline: 0;
 }
@@ -108,11 +112,6 @@ button, a.button, span.button, .button-set {
   -webkit-filter: none;
   filter: none;
   
-  /*
-  -webkit-box-shadow: 0px 1px 1px #ccc, inset 0px 0px 1px #fff;
-  -moz-box-shadow: 0px 1px 1px #ccc, inset 0px 0px 1px #fff;
-  box-shadow: inset 0px 1px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
-  */
   color: #333;
   text-decoration: none;
   font: normal 13px/20px 'Noto Sans';
@@ -121,10 +120,6 @@ button, a.button, span.button, .button-set {
   vertical-align: middle;
   
   cursor: pointer;
-  
-  
-
-
 }
 
 button[type=submit] {
@@ -188,10 +183,10 @@ button img, a.button img, span.button img {
 form > table:not(.dataTable) {
   margin: 0px;
 }
-form table:not(.dataTable) td {
+form table:not(.dataTable) th, form table:not(.dataTable) td {
   padding: 5px 0px;
 }
-form table:not(.dataTable) td + td {
+form table:not(.dataTable) th + th, form table:not(.dataTable) td + td {
   padding-left: 10px;
 }
 
