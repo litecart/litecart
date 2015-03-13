@@ -28,7 +28,7 @@
     public static function startup() {
     
       if (!empty($_POST['add_cart_product'])) {
-        self::add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? (float)$_POST['quantity'] : 1));
+        self::add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['remove_cart_item'])) {
@@ -36,7 +36,7 @@
       }
       
       if (!empty($_POST['update_cart_item'])) {
-        self::update($_POST['key'], (isset($_POST['quantity']) ? (float)$_POST['quantity'] : 1));
+        self::update($_POST['key'], (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['clear_cart_items'])) {
@@ -51,7 +51,7 @@
     
     // Refresh
       foreach(array_keys(self::$data['items']) as $key) {
-        self::update($key, (float)self::$data['items'][$key]['quantity']);
+        self::update($key, self::$data['items'][$key]['quantity']);
       }
     }
     
@@ -77,11 +77,11 @@
       
       if (empty($cart_data)) return;
       
-      foreach ($cart_data as $item) self::add_product($item['product_id'], $item['options'], (float)$item['quantity'], true);
+      foreach ($cart_data as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
       
       if (!empty($_COOKIE['cart']['items'])) {
         $cart_data = unserialize($_COOKIE['cart']['items']);
-        foreach ($_COOKIE['cart']['items'] as $item) self::add_product($item['product_id'], $item['options'], (float)$item['quantity'], true);
+        foreach ($_COOKIE['cart']['items'] as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
       }
     }
     
@@ -96,7 +96,7 @@
         $cart_data[$item_key] = array(
           'product_id' => self::$data['items'][$key]['product_id'],
           'options' => self::$data['items'][$key]['options'],
-          'quantity' => (float)self::$data['items'][$key]['quantity'],
+          'quantity' => self::$data['items'][$key]['quantity'],
         );
       }
       
@@ -346,7 +346,7 @@
       }
       
       if ($quantity > 0) {
-        self::$data['items'][$item_key]['quantity'] = (float)$quantity;
+        self::$data['items'][$item_key]['quantity'] = $quantity;
       } else {
         self::remove($item_key);
       }

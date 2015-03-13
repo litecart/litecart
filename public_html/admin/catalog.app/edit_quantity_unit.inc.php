@@ -23,6 +23,7 @@
       $fields = array(
         'decimals',
         'separate',
+        'priority',
         'name',
         'description',
       );
@@ -49,7 +50,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('quantity_unit_form', 'post'); ?>
 
@@ -85,6 +86,11 @@ foreach (array_keys(language::$languages) as $language_code) {
     </tr>
     <tr>
       <td><label><?php echo functions::form_draw_checkbox('separate', '1', true); ?> <?php echo language::translate('text_separate_added_cart_items', 'Separate added cart items'); ?></label></td>
+    </tr>
+    <tr>
+      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
+        <?php echo functions::form_draw_number_field('priority', true, 'data-size="tiny"'); ?>
+      </td>
     </tr>
   </table>
   

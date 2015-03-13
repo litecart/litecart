@@ -50,8 +50,10 @@
       <div style="margin-bottom: 10px;">
       <?php if ($quantity > 0) { ?>
         <div class="stock-available"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
+        <?php if ($sold_out_status_value) { ?>
         <div class="stock-delivery"><?php echo $title_delivery_status; ?>: <span class="value"><?php echo $delivery_status_value;?></span></div>
-        <?php } else { ?>
+        <?php } ?>
+      <?php } else { ?>
         <?php if ($sold_out_status_value) { ?>
           <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $sold_out_status_value; ?></span></div>
         <?php } else { ?>

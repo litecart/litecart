@@ -63,6 +63,9 @@
     INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
     (1, 0, 0, NOW(), NOW());
     
+    INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+    ('defaults', 'global', 'Default Quantity Unit', 'Default quantity unit that will be preset when creating new products.', 'default_quantity_unit_id', '1', 'quantity_units()', 15, NOW(), NOW());
+    
     ALTER TABLE `lc_products` ADD `quantity_unit_id` TINYINT(1) NOT NULL AFTER  `quantity`;
     
     UPDATE `lc_products` set quantity_unit_id = 1 WHERE quantity_unit_id = 0;

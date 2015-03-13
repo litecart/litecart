@@ -112,7 +112,7 @@
     'quantity_unit_name' => $product->quantity_unit['name'][language::$selected['code']],
     'quantity_unit_decimals' => $product->quantity_unit['decimals'],
     'title_stock_status' => language::translate('title_stock_status', 'Stock Status'),
-    'stock_status_value' => (settings::get('display_stock_count')) ? sprintf(language::translate('text_d_pieces', '%d pieces'), $product->quantity) : language::translate('title_in_stock', 'In Stock'),
+    'stock_status_value' => (settings::get('display_stock_count')) ? $product->quantity .' '. $product->quantity_unit['name'][language::$selected['code']] : language::translate('title_in_stock', 'In Stock'),
     'title_delivery_status' => language::translate('title_delivery_status', 'Delivery Status'),
     'delivery_status_value' => !empty($product->delivery_status['name'][language::$selected['code']]) ? $product->delivery_status['name'][language::$selected['code']] : '',
     'sold_out_status_value' => !empty($product->sold_out_status['name'][language::$selected['code']]) ? $product->sold_out_status['name'][language::$selected['code']] : '',
