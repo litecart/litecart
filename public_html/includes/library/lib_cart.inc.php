@@ -163,6 +163,7 @@
         'quantity_unit' => array(
           'name' => $product->quantity_unit['name'][language::$selected['code']],
           'decimals' => $product->quantity_unit['decimals'],
+          'separate' => $product->quantity_unit['separate'],
         ),
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,
@@ -171,6 +172,10 @@
         'dim_z' => $product->dim_z,
         'dim_class' => $product->dim_class,
       );
+      
+      if (!empty($product->quantity_unit['separate'])) {
+        $item_key = uniqid();
+      }
       
       $options = array_filter($options);
       $selected_options = array();
@@ -309,6 +314,7 @@
         
       // Quantity Unit
         self::$data['items'][$item_key]['quantity_unit']['name'] = $product->quantity_unit['name'][language::$selected['code']];
+        $quantity = round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP);
         
       // Refresh Price
         self::$data['items'][$item_key]['price'] = $product->campaign['price'] ? $product->campaign['price'] : $product->price;
@@ -381,15 +387,15 @@
       $total_weight = 0;
       
       foreach (self::$data['items'] as $item) {
-        $item_quantity = $item['quantity'];
+        $num_items = $item['quantity'];
         
         if (!empty($item['quantity_unit']['decimals'])) {
-          $item_quantity = 1;
+          $num_items = 1;
         }
         
-        $total_value += $item['price'] * $item_quantity;
-        $total_tax += tax::get_tax($item['price'], $item['tax_class_id']) * $item_quantity;
-        $total_items += $item_quantity;
+        $total_value += $item['price'] * $item['quantity'];
+        $total_tax += tax::get_tax($item['price'], $item['tax_class_id']) * $item['quantity'];
+        $total_items += $num_items;
       }
       
       self::$data['total'] = array(

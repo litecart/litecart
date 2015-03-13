@@ -18,8 +18,11 @@
     
     if (!notices::get('errors')) {
     
+      if (empty($_POST['separate'])) $_POST['separate'] = 0;
+      
       $fields = array(
         'decimals',
+        'separate',
         'name',
         'description',
       );
@@ -79,6 +82,9 @@ foreach (array_keys(language::$languages) as $language_code) {
       <td><strong><?php echo language::translate('title_decimals', 'Decimals'); ?></strong><br />
         <?php echo functions::form_draw_number_field('decimals', true, 'data-size="tiny"'); ?>
       </td>
+    </tr>
+    <tr>
+      <td><label><?php echo functions::form_draw_checkbox('separate', '1', true); ?> <?php echo language::translate('text_separate_added_cart_items', 'Separate added cart items'); ?></label></td>
     </tr>
   </table>
   

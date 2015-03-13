@@ -465,7 +465,7 @@
         case 'quantity_unit':
         
           $quantity_unit_query = database::query(
-            "select id, decimals from ". DB_TABLE_QUANTITY_UNITS ."
+            "select id, decimals, separate from ". DB_TABLE_QUANTITY_UNITS ."
             where id = ". (int)$this->quantity_unit_id ."
             limit 1;"
           );

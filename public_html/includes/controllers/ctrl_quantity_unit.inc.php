@@ -42,6 +42,7 @@
       database::query(
         "update ". DB_TABLE_QUANTITY_UNITS ."
         set decimals = '". (int)$this->data['decimals'] ."',
+            separate = '". (int)$this->data['separate'] ."',
             priority = '". (int)$this->data['priority'] ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
@@ -96,7 +97,8 @@
       
       database::query(
         "delete from ". DB_TABLE_QUANTITY_UNITS ."
-        where id = '". (int)$this->data['id'] ."';"
+        where id = '". (int)$this->data['id'] ."'
+        limit 1;"
       );
       
       cache::clear_cache('quantity_units');

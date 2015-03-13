@@ -549,6 +549,7 @@ CREATE TABLE `lc_product_groups_values_info` (
 CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `decimals` tinyint(1) NOT NULL,
+  `separate` tinyint(1) NOT NULL,
   `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
