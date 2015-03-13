@@ -11,13 +11,12 @@
       $this->load();
     }
     
-    public function process() {
-      global $order;
+    public function process($order) {
       
       if (empty($this->modules)) return;
       
       foreach ($this->modules as $module_id => $module) {
-        if ($rows = $module->process()) {
+        if ($rows = $module->process($order)) {
           foreach ($rows as $row) {
           
           // Round amounts

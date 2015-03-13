@@ -27,7 +27,7 @@
   }
   
   $order->data['order_total'] = array();
-  $order_total->process();
+  $order_total->process($order);
   
   $box_checkout_summary = new view();
   
