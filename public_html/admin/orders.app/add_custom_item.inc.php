@@ -58,7 +58,7 @@
       weight: $("input[name='weight']").val(),
       weight_class: $("select[name='weight_class'] option:selected").val(),
       quantity: $("input[name='quantity']").val(),
-      price: $("input[name='price']").val()
+      price: $("input[name='price']").val(),
       tax: $("input[name='tax']").val()
     };
     

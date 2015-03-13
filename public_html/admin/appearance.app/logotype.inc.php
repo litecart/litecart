@@ -17,11 +17,13 @@
       
       $image->resample(1024, 1024, 'FIT_ONLY_BIGGER');
       
-      $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, 'png');
-      
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
-      exit;
+      if ($image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, 'png')) {
+        notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+        header('Location: '. document::link());
+        exit;
+      } else {
+        notices::add('errors', language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
+      }
     }
   }
 ?>

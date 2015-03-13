@@ -7,14 +7,6 @@
   
   breadcrumbs::add(language::translate('title_admin_panel', 'Admin Panel'), WS_DIR_ADMIN);
   
-  if (empty($_SERVER['REDIRECT_REMOTE_USER']) && empty($_SERVER['REMOTE_USER'])) {
-    notices::add('warnings', language::translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
-  }
-  
-  if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
-    notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
-  }
-  
 // Build apps list menu
   $apps_list = '<div id="apps-wrapper">' . PHP_EOL
              . '  <ul id="apps" class="list-vertical">';
@@ -116,8 +108,16 @@
       include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
     }
     
-// Widgets
+// Start page
   } else {
+  
+  if (empty($_SERVER['REDIRECT_REMOTE_USER']) && empty($_SERVER['REMOTE_USER'])) {
+    notices::add('warnings', language::translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
+  }
+  
+  if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
+    notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
+  }
 ?>
 
 <div id="widgets-wrapper">
