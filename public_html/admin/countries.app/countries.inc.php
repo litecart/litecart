@@ -1,6 +1,4 @@
 <?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
   
     if (!empty($_POST['countries'])) {
@@ -31,7 +29,6 @@
       <th>&nbsp;</th>
     </tr>
 <?php
-
   $countries_query = database::query(
     "select * from ". DB_TABLE_COUNTRIES ."
     order by status desc, name asc;"
@@ -39,10 +36,6 @@
 
   if (database::num_rows($countries_query) > 0) {
     
-  // Jump to data for current page
-    if ($_GET['page'] > 1) database::seek($countries_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
-    $page_items = 0;
     while ($country = database::fetch($countries_query)) {
     
       if (!isset($rowclass) || $rowclass == 'even') {
@@ -60,7 +53,6 @@
       <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
     </tr>
 <?php
-      if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }
 ?>
@@ -89,8 +81,4 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
-// Display page links
-  echo functions::draw_pagination(ceil(database::num_rows($countries_query)/settings::get('data_table_rows_per_page')));
-  
 ?>

@@ -1,6 +1,4 @@
 <?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
   
     if (!empty($_POST['currencies'])) {
@@ -71,7 +69,6 @@
       <th>&nbsp;</th>
     </tr>
 <?php
-
   $currencies_query = database::query(
     "select * from ". DB_TABLE_CURRENCIES ."
     order by status desc, priority, name;"
@@ -79,9 +76,6 @@
 
   if (database::num_rows($currencies_query) > 0) {
     
-    if ($_GET['page'] > 1) database::seek($currencies_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
-    $page_items = 0;
     while ($currency = database::fetch($currencies_query)) {
     
       if (!isset($rowclass) || $rowclass == 'even') {
@@ -89,7 +83,6 @@
       } else {
         $rowclass = 'even';
       }
-    
 ?>
     <tr class="<?php echo $rowclass . ($currency['status'] ? false : ' semi-transparent'); ?>">
       <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. (!empty($currency['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
@@ -105,7 +98,6 @@
       <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
     </tr>
 <?php
-      if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }
 ?>
@@ -134,8 +126,4 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
-// Display page links
-  echo functions::draw_pagination(ceil(database::num_rows($currencies_query)/settings::get('data_table_rows_per_page')));
-  
 ?>

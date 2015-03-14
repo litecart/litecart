@@ -1,6 +1,3 @@
-<?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
-?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_tax_class'), true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></div>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_tax_classs', 'Tax Classes'); ?></h1>
 
@@ -14,7 +11,6 @@
     <th>&nbsp;</th>
   </tr>
 <?php
-
   $tax_classses_query = database::query(
     "select * from ". DB_TABLE_TAX_CLASSES ."
     order by name asc;"
@@ -22,10 +18,6 @@
 
   if (database::num_rows($tax_classses_query) > 0) {
     
-  // Jump to data for current page
-    if ($_GET['page'] > 1) database::seek($tax_classses_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
-    $page_items = 0;
     while ($tax_class = database::fetch($tax_classses_query)) {
     
       if (!isset($rowclass) || $rowclass == 'even') {
@@ -42,7 +34,6 @@
     <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php
-      if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }
 ?>
@@ -69,8 +60,4 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
-// Display page links
-  echo functions::draw_pagination(ceil(database::num_rows($tax_classses_query)/settings::get('data_table_rows_per_page')));
-  
 ?>
