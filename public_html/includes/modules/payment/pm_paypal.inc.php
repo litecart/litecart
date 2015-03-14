@@ -160,6 +160,11 @@
       
       $order->save(); // Save order to database
       
+      if (empty($this->settings['pdt_auth_token'])) {
+        trigger_error('Could not verify Paypal payment as no PDT token configured', E_USER_WARNING);
+        return;
+      }
+      
       if (empty($_REQUEST['tx'])) {
         error_log('An invalid attempt to verify a Paypal transaction logged for IP '. $_SERVER['REMOTE_ADDR']);
         return array('error' => 'Could not verify the Paypal transaction as no payment data was returned');
