@@ -43,6 +43,8 @@
       
       if (!in_array($this->_module->id, explode(';', settings::get($this->type.'_modules')))) {
         $this->install();
+      } else {
+        $this->update();
       }
       
       $save_array = array();
@@ -87,6 +89,15 @@
       
       if (method_exists($this->_module, 'install')) {
         $this->_module->install();
+      }
+      
+      cache::clear_cache('modules');
+    }
+    
+    public function update() {
+      
+      if (method_exists($this->_module, 'update')) {
+        $this->_module->update();
       }
       
       cache::clear_cache('modules');
