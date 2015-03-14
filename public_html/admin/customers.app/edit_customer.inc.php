@@ -59,9 +59,44 @@
     header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
     exit;
   }
+  
+  if (!empty($customer->data['id'])) {
+    $order_statuses = array();
+    $orders_status_query = database::query(
+      "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
+    );
+    while ($order_status = database::fetch($orders_status_query)) {
+      $order_statuses[] = (int)$order_status['id'];
+    }
+    
+    $orders_query = database::query(
+      "select count(o.id) as total_count, sum(oi.total_sales) as total_sales
+      from ". DB_TABLE_ORDERS ." o
+      left join (
+        select order_id, sum(price * quantity) as total_sales from ". DB_TABLE_ORDERS_ITEMS ."
+        group by order_id
+      ) oi on (oi.order_id = o.id)
+      where o.order_status_id in ('". implode("', '", $order_statuses) ."')
+      and (o.customer_id = '". (int)$customer->data['id'] ."' or o.customer_email = '". database::input($customer->data['email']) ."');"
+    );
+    $orders = database::fetch($orders_query);
+  }
  
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer Profile') : language::translate('title_add_new_customer_profile', 'Add New Customer Profile'); ?></h1>
+
+<?php if (!empty($customer->data['id'])) { ?>
+  <table class="dataTable">
+    <tr>
+      <td><?php echo language::translate('title_orders', 'Orders'); ?><br />
+        <?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
+      </td>
+      <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?><br />
+        <?php echo currency::format(!empty($orders['total_sales']) ? $orders['total_sales'] : 0, false, false, settings::get('store_currency_code')); ?>
+      </td>
+    </tr>
+  </table>
+<?php } ?>
 
 <?php echo functions::form_draw_form_begin('customer_form', 'post'); ?>
 
