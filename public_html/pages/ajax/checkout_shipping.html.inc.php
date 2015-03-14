@@ -4,8 +4,6 @@
     document::$layout = 'ajax';
   }
   
-  if (empty(cart::$data['total']['physical'])) return;
-  
   $shipping = new mod_shipping();
   
   if (empty(customer::$data['country_code'])) return;

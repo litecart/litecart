@@ -53,7 +53,10 @@
   margin-right: 20px;
   background-color: #fff;
 }
-  
+#box-checkout-cart a.image-wrapper img {
+  max-width: 160px;
+}
+
 #box-checkout-cart .shortcuts {
   list-style: none;
   padding: 10px;

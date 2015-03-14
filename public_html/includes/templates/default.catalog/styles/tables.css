@@ -11,6 +11,7 @@ td {
 
 table.dataTable {
   margin-bottom: 20px;
+  background: #fff;
   border: 1px solid #dfdfdf;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
