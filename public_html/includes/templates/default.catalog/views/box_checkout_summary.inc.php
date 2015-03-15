@@ -57,8 +57,6 @@
       </div>
       
       <div class="confirm">
-        <?php if ($selected_payment) echo '<p>'. $selected_payment['icon'] ? '<img src="'. $selected_payment['icon'] .'" alt="'. htmlspecialchars($selected_payment['title']) .'" />' : '<strong>'. $selected_payment['title'] .'</strong></p>'; ?>
-        
         <?php if ($error) echo '<div class="warning">'. $error .'</div>' . PHP_EOL; ?>
 
         <p><?php echo functions::form_draw_button('confirm_order', $confirm, 'submit', !empty($error) ? 'disabled="disabled"' : ''); ?></p>

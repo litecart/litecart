@@ -676,7 +676,7 @@
       $("#order-total .total").text("<?php echo currency::$currencies[$_POST['currency_code']]['prefix']; ?>" + order_total + "<?php echo currency::$currencies[$_POST['currency_code']]['suffix']; ?>");
     }
     
-    $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], a.remove_item, a.remove_ot_row", function() {
+    $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], #order-items a.remove, #order-total a.remove", function() {
       calculate_total();
     });
   </script>
