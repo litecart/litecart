@@ -177,7 +177,7 @@ foreach (array_keys(language::$languages) as $language_code) {
     while ($category = database::fetch($categories_query)) {
       $output .= '<tr>' . PHP_EOL
                . '  <td>'. functions::form_draw_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
-               . '  <td id = "category_id_'. $category['id'] .'" style="padding-left: '. ($depth*16) .'px;"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" /> '. $category['name'] .'</td>' . PHP_EOL
+               . '  <td id = "category-id-'. $category['id'] .'" style="padding-left: '. ($depth*16) .'px;"><img src="'. WS_DIR_IMAGES .'icons/16x16/folder_closed.png" width="16" height="16" align="absbottom" /> '. $category['name'] .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
                
       if (database::num_rows(database::query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
@@ -199,13 +199,13 @@ foreach (array_keys(language::$languages) as $language_code) {
           <tr>
             <td><strong><?php echo language::translate('title_default_category', 'Default Category'); ?></strong>
               <br />
-              <select name="default_category_id" id="default-category-id" title="" data-size="medium">
+              <select name="default_category_id" title="" data-size="medium">
                 <?php
                   foreach($product->data['categories'] as $category_id){
                     $category_name_query =  database::query("select name from  ".DB_TABLE_CATEGORIES_INFO." where category_id =". $category_id ." 
                                                              and language_code =  '".  language::$selected['code'] ."' limit 1");
                       while ($category = database::fetch($category_name_query)) {
-                        $option_value =  '<option value="'.$category_id.'">'.$category['name'] .'</option>';
+                        $option_value =  '<option value="'.$category_id.'"' .((int)$category_id == (int)$product->data['default_category_id'] ? 'selected' : ''). '>'.$category['name'] .'</option>';
                        }
                        echo $option_value;
                     }
@@ -289,6 +289,14 @@ foreach (array_keys(language::$languages) as $language_code) {
 ?>
               </table>
               <script>
+                $("input[name='categories[]']").click(function() {
+                  if ($(this).is(':checked')) {
+                    $("select[name='default_category_id']").append("<option value='"+ $(this).val() +"'>"+ $("#category-id-" +$(this).val()).text() +"</option>"); 
+                  } else {
+                    $("select[name='default_category_id'] option[value='"+ $(this).val() +"']").remove();            
+                  }
+                });
+
                 $("#table-images").on("click", ".move-up, .move-down", function(event) {
                   event.preventDefault();
                   var row = $(this).closest("tr");
@@ -947,14 +955,6 @@ foreach (currency::$currencies as $currency) {
           </tr>
         </table>
         <script>
-          $("input[name='categories[]']").click(function() {
-          
-            if ($(this).is(':checked')) {
-              $("#default-category-id").append("<option value='"+ $(this).val() +"'>"+ $("#category-id-" +$(this).val()).text() +"</option>"); 
-            } else {
-              $("#default-category-id option[value='"+ $(this).val() +"']").remove();            
-            }
-          });
 
           $("#table-options-stock").on("click", ".remove", function(event) {
             event.preventDefault();
