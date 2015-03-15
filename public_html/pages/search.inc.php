@@ -85,7 +85,7 @@
       + if(pi.name like '%". database::input($_GET['query']) ."%', 2, 0)
       + if(pi.short_description like '%". database::input($_GET['query']) ."%', 1, 0)
       + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
-      + if(find_in_set('". implode("', p.categories), 1, 0) + if(find_in_set('", $category_ids) ."', p.categories), 1, 0)
+      + if(find_in_set('". implode("', '", $category_ids)."', (select group_concat(pc.category_id) from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." pc where pc.product_id = p.id)), 1, 0)
       + if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", database::input($manufacturer_ids)) ."'), 1, 0)
     ) as occurrences";
     
@@ -93,10 +93,10 @@
     $sql_campaign_price_column = "if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)";
     
     $query = 
-      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price, " . $sql_select_occurrences ."
+      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name,  ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price, " . $sql_select_occurrences ."
       
       from (
-        select id, code, upc, sku, manufacturer_id, categories, keywords, product_groups, image, tax_class_id, quantity, views, date_created
+        select id, code, upc, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, date_created
         from ". DB_TABLE_PRODUCTS ."
         where status
         and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -119,7 +119,7 @@
         or p.sku like '%". database::input($_GET['query']) ."%'
         or p.upc like '%". database::input($_GET['query']) ."%'
         or p.keywords like '%". database::input($_GET['query']) ."%'
-        ". (!empty($category_ids) ? "or find_in_set('". implode("', p.categories) or find_in_set('", $category_ids) ."', p.categories)" : false) ."
+        ". (!empty($category_ids) ? "or find_in_set('". implode("', '", $category_ids) ."', (select GROUP_CONCAT(pc.category_id) FROM ".DB_TABLE_PRODUCTS_TO_CATEGORIES." pc WHERE pc.product_id = p.id ))" : false) ."
         ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in ('". implode("', '", $manufacturer_ids) ."')" : false) ."
         or pi.name like '%". database::input($_GET['query']) ."%'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
@@ -127,7 +127,7 @@
       )
       order by %sql_sort;
     ";
-    
+   
     switch($_GET['sort']) {
       case 'name':
         $query = str_replace("%sql_sort", "name asc", $query);

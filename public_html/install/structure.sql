@@ -392,7 +392,7 @@ CREATE TABLE `lc_products` (
   `supplier_id` int(11) NOT NULL,
   `delivery_status_id` int(11) NOT NULL,
   `sold_out_status_id` int(11) NOT NULL,
-  `categories` varchar(64) NOT NULL,
+  `default_category_id` int(11) NOT NULL,
   `product_groups` varchar(128) NOT NULL,
   `keywords` varchar(256) NOT NULL,
   `code` varchar(64) NOT NULL,
@@ -418,7 +418,7 @@ CREATE TABLE `lc_products` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
-  KEY `categories` (`categories`),
+  KEY `default_category_id` (`default_category_id`),
   KEY `manufacturer_id` (`manufacturer_id`),
   KEY `keywords` (`keywords`),
   KEY `code` (`code`),
@@ -427,6 +427,12 @@ CREATE TABLE `lc_products` (
   KEY `purchases` (`purchases`),
   KEY `views` (`views`),
   KEY `product_groups` (`product_groups`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_products_to_categories` (
+   `product_id` int(11) NOT NULL,
+   `category_id` int(11) NOT NULL,
+   PRIMARY KEY(`product_id`, `category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_campaigns` (

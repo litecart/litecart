@@ -307,9 +307,9 @@
                  . '</tr>' . PHP_EOL;
         
         if (in_array($category['id'], $category_trail)) {
-        
+          
           if (database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = '". (int)$category['id'] ."' limit 1;")) > 0
-           || database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where find_in_set ('". (int)$category['id'] ."', categories) limit 1;")) > 0) {
+           || database::fetch(database::query("select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." where category_id = ".(int)$category['id']." limit 1;")) > 0) {
             $output .= admin_catalog_category_tree($category['id'], $depth+1);
             
             // Output products
@@ -348,14 +348,16 @@
       global $rowclass, $num_product_rows;
       
       $output = '';
-      
+
       $products_query = database::query(
-        "select p.id, p.status, p.image, pi.name from ". DB_TABLE_PRODUCTS ." p
+        "select c.*, p.id, p.status, p.image, pi.name from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." c
+        left join  ". DB_TABLE_PRODUCTS ." p on ( p.id = c.product_id)
         left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
-        where (find_in_set('". (int)$category_id ."', p.categories) ". (($category_id == 0) ? "or p.categories = ''" : "") .")
+        where c.category_id = ". (int)$category_id ."
+        group by p.id
         order by pi.name asc;"
       );
-      
+
       $display_images = true;
       if (database::num_rows($products_query) > 100) {
         $display_images = false;

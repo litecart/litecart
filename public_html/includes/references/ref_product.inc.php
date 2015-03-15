@@ -522,8 +522,11 @@
         default:
           
           $query = database::query(
-            "select * from ". DB_TABLE_PRODUCTS ."
+            "select p.*, group_concat(pc.category_id) as categories
+            from ". DB_TABLE_PRODUCTS ." p
+            left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on (pc.product_id = ". (int)$this->_data['id'] .")
             where id = '". (int)$this->_data['id'] ."'
+            group by p.id
             limit 1;"
           );
           $row = database::fetch($query);

@@ -60,13 +60,24 @@
         $this->data[$key] = $value;
       }
       
-      $this->data['categories'] = explode(',', $this->data['categories']);
+    // Categories
+      $this->data['categories'] = array();
+      
+      $categories_query = database::query(
+        "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+         where product_id = '". (int)$product_id ."';"
+      );
+      
+      while ($category = database::fetch($categories_query)){
+        $this->data['categories'][] = $category['category_id'];
+      }
+      
       $this->data['product_groups'] = explode(',', $this->data['product_groups']);
       
     // Info
       $products_info_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_INFO ."
-        where product_id = '". (int)$product_id ."';"
+         where product_id = '". (int)$product_id ."';"
       );
       while ($product_info = database::fetch($products_info_query)) {
         foreach ($product_info as $key => $value) {
@@ -179,7 +190,7 @@
         supplier_id = '". (int)$this->data['supplier_id'] ."',
         delivery_status_id = '". (int)$this->data['delivery_status_id'] ."',
         sold_out_status_id = '". (int)$this->data['sold_out_status_id'] ."',
-        categories = '". database::input(implode(',', $this->data['categories'])) ."',
+        default_category_id = '". (int)$this->data['default_category_id']."',
         product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
         keywords = '". database::input(rtrim(trim($this->data['keywords']), ',')) ."',
         quantity = '". database::input($this->data['quantity']) ."',
@@ -202,7 +213,21 @@
         where id='". (int)$this->data['id'] ."'
         limit 1;"
       );
-      
+     //Categories
+     //First delete all old
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+         where product_id = '". (int)$this->data['id'] ."';"
+      );
+     //Add all new
+      foreach($this->data['categories'] as $category_id){
+        database::query(
+          "insert into ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+          (product_id, category_id)
+           values ('". (int)$this->data['id'] ."', '". $category_id ."');"
+        );
+      }
+
       foreach (array_keys(language::$languages) as $language_code) {
         
         $products_info_query = database::query(
@@ -489,7 +514,10 @@
         "delete from ". DB_TABLE_PRODUCTS_INFO ."
         where product_id = '". (int)$this->data['id'] ."';"
       );
-      
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+         where product_id = '". (int)$this->data['id'] ."';"
+      );
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_PRICES ."
         where product_id = '". (int)$this->data['id'] ."';"

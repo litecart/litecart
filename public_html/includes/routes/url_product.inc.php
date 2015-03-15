@@ -20,9 +20,13 @@
       
       if (!$product->id) return $parsed_link;
       
-      $parsed_link['path'] = '';
+      $parsed_link['path'] = '';      
+
+      if (!empty($product->default_category_id)) {
+        $parsed_link['query']['category_id'] = $product->default_category_id;
+      }
       
-      if (!empty($parsed_link['query']['category_id']) && !empty($product->categories)) {
+      if (!empty($parsed_link['query']['category_id']) && !empty($product->default_category_id)) {
         $category_trail = functions::catalog_category_trail($parsed_link['query']['category_id']);
         
         if (!empty($category_trail)) {
