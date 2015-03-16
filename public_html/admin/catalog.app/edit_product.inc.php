@@ -155,7 +155,7 @@ foreach (array_keys(language::$languages) as $language_code) {
             <div style="width: 360px; max-height: 240px; overflow-y: auto;" class="input-wrapper">
               <table>
 <?php
-  function custom_catalog_tree($category_id=0, $depth=1) {
+  function custom_catalog_tree($category_id=0, $depth=1, $count=0) {
     
     $output = '';
     
@@ -175,16 +175,15 @@ foreach (array_keys(language::$languages) as $language_code) {
       order by c.priority asc, ci.name asc;"
     );
     
-    $i=0;
     while ($category = database::fetch($categories_query)) {
-      $i++;
+      $count++;
       $output .= '<tr>' . PHP_EOL
-               . '  <td>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $i .'"') .'</td>' . PHP_EOL
+               . '  <td>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .'</td>' . PHP_EOL
                . '  <td>'. functions::draw_fontawesome_icon('folder', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"', 'fa-lg') .' '. $category['name'] .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
                
       if (database::num_rows(database::query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
-        $output .= custom_catalog_tree($category['id'], $depth+1);
+        $output .= custom_catalog_tree($category['id'], $depth+1, $count);
       }
     }
     
@@ -223,11 +222,13 @@ foreach (array_keys(language::$languages) as $language_code) {
     } else {
       $("select[name='default_category_id'] option[value='"+ $(this).val() +"']").remove();            
     }
+    var default_category = $("select[name='default_category_id'] option:selected").val();
     $("select[name='default_category_id']").html($("select[name='default_category_id'] option").sort(function(a,b){
         a = $("input[name='categories[]'][value='"+ a.value +"']").data('priority');
         b = $("input[name='categories[]'][value='"+ b.value +"']").data('priority');
         return a-b;
     }));
+    $("select[name='default_category_id'] option[value='"+ default_category +"']").attr('selected', 'selected');
   });
 </script>
              </td>
