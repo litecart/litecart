@@ -69,6 +69,83 @@
     ALTER TABLE `lc_products` ADD `quantity_unit_id` TINYINT(1) NOT NULL AFTER  `quantity`;
     
     UPDATE `lc_products` set quantity_unit_id = 1 WHERE quantity_unit_id = 0;
+    
+  Deleted Files:
+    
+    admin/appearance.app/icon.png
+    admin/catalog.app/icon.png
+    admin/countries.app/icon.png
+    admin/currencies.app/icon.png
+    admin/customers.app/icon.png
+    admin/geo_zones.app/icon.png
+    admin/languages.app/icon.png
+    admin/modules.app/icon.png
+    admin/orders.app/icon.png
+    admin/pages.app/icon.png
+    admin/reports.app/icon.png
+    admin/settings.app/icon.png
+    admin/slides.app/icon.png
+    admin/tax.app/icon.png
+    admin/translations.app/icon.png
+    admin/users.app/icon.png
+    admin/vqmods.app/icon.png
+    ext/fancybox/jquery.fancybox-1.3.4.js
+    ext/nivo-slider/themes/default/arrows.png
+    ext/nivo-slider/themes/default/bullets.png
+    ext/nivo-slider/themes/default/default.css
+    ext/nivo-slider/themes/default/loading.gif
+    ext/nivo-slider/jquery.nivo.slider.pack.js
+    ext/nivo-slider/license.txt
+    ext/nivo-slider/nivo-slider.css
+    images/icons/16x16/add.png
+    images/icons/16x16/box.png
+    images/icons/16x16/calendar.png
+    images/icons/16x16/cancel.png
+    images/icons/16x16/collapse.png
+    images/icons/16x16/delete.png
+    images/icons/16x16/down.png
+    images/icons/16x16/download.png
+    images/icons/16x16/edit.png
+    images/icons/16x16/expand.png
+    images/icons/16x16/folder_closed.png
+    images/icons/16x16/folder_opened.png
+    images/icons/16x16/home.png
+    images/icons/16x16/index.html
+    images/icons/16x16/label.png
+    images/icons/16x16/loading.gif
+    images/icons/16x16/off.png
+    images/icons/16x16/on.png
+    images/icons/16x16/preview.png
+    images/icons/16x16/print.png
+    images/icons/16x16/remove.png
+    images/icons/16x16/save.png
+    images/icons/16x16/settings.png
+    images/icons/16x16/up.png
+    images/icons/24x24/catalog.png
+    images/icons/24x24/database.png
+    images/icons/24x24/exit.png
+    images/icons/24x24/help.png
+    images/icons/24x24/home.png
+    images/icons/24x24/index.html
+    images/icons/24x24/mail.png
+  
+  New Files:
+  
+    admin/catalog.app/edit_quantity_unit.inc.php
+    admin/catalog.app/quantity_units.inc.php
+    ext/fontawesome/css/font-awesome.min.css
+    ext/fontawesome/fonts/fontawesome-webfont.eot
+    ext/fontawesome/fonts/fontawesome-webfont.svg
+    ext/fontawesome/fonts/fontawesome-webfont.ttf
+    ext/fontawesome/fonts/fontawesome-webfont.woff
+    ext/fontawesome/fonts/fontawesome-webfont.woff2
+    ext/fontawesome/fonts/FontAwesome.otf
+    ext/responsiveslider/README.md
+    ext/responsiveslider/responsiveslides.css
+    ext/responsiveslider/responsiveslides.min.js
+    includes/controllers/ctrl_quantity_unit.inc.php
+    includes/library/lib_catalog.inc.php
+    includes/templates/default.admin/images/loader.png
 
 ### LiteCart 1.2.2 to 1.2.2.1
 

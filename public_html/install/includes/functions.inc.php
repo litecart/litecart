@@ -67,7 +67,7 @@
       @chmod($target, 0777);
     }
     
-    $result = rmdir($path);
+    $result = rmdir($target);
     
     if (!empty($parent_permissions)) @chmod(dirname($target), $parent_permissions);
     if (!empty($target_permissions)) @chmod($target, $target_permissions);

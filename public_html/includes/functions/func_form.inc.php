@@ -492,7 +492,7 @@
         
         while ($category = database::fetch($categories_query)) {
         
-          $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $category['name'], $category['id']); // Non-HTML
+          $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $category['name'], $category['id']);
         
           $sub_categories_query = database::query(
             "select id

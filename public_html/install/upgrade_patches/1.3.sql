@@ -1,4 +1,6 @@
-﻿ALTER TABLE `lc_products` ADD `default_category_id` INT(11) NOT NULL AFTER `sold_out_status_id`;
+﻿ALTER TABLE `lc_products` ADD `default_category_id` int(11) NOT NULL AFTER `sold_out_status_id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products` DROP INDEX `categories`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products` ADD KEY `default_category_id` (`default_category_id`);
 -- --------------------------------------------------------
