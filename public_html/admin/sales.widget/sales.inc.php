@@ -19,7 +19,7 @@
 <?php
   $monthly_sales = array();
   $monthly_tax = array();
-  for ($timestamp = strtotime('-1 years'); date('Y-m', $timestamp) <= date('Y-m'); $timestamp = strtotime('+1 month', $timestamp)) {
+  for ($timestamp = strtotime('-11 months'); date('Y-m', $timestamp) <= date('Y-m'); $timestamp = strtotime('+1 month', $timestamp)) {
     
     $orders_query = database::query(
       "select sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
@@ -29,7 +29,7 @@
     );
     $orders = database::fetch($orders_query);
     
-    $monthly_sales[date('Y-m', $timestamp)] = '[\''. strftime('%b %Y', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
+    $monthly_sales[date('Y-m', $timestamp)] = '[\''. strftime('%b', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
   }
   
 ?>
@@ -80,7 +80,6 @@
 
 <?php
   $daily_sales = array();
-  $daily_tax = array();
   for ($timestamp = strtotime('-30 days'); date('Y-m-d', $timestamp) <= date('Y-m-d'); $timestamp = strtotime('+1 day', $timestamp)) {
     
     $orders_query = database::query(
@@ -99,7 +98,6 @@
   <div id="chart-sales-daily" style="float: right; width: 50%; height: 150px;"></div>
   <script>
     var bar1 = [<?php echo implode(',', $daily_sales); ?>];
-    var bar2 = [<?php echo implode(',', $daily_tax); ?>];
     var plot1 = $.jqplot('chart-sales-daily', [bar1], {
       title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_days', '%s days'), '30'); ?>)',
       grid:{

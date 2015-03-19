@@ -62,7 +62,7 @@
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, 'data-size="small"');
+  echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, 'data-size="tiny"');
   $use_br = true;
 }
 ?>
