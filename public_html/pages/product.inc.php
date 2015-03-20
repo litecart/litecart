@@ -99,10 +99,10 @@
     'manufacturer_name' => !empty($product->manufacturer['name']) ? $product->manufacturer['name'] : '',
     'manufacturer_image' => !empty($product->manufacturer['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) : '',
     'manufacturer_url' => !empty($product->manufacturer['id']) ? document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])) : '',
-    'regular_price' => currency::format(tax::calculate($product->price, $product->tax_class_id)),
-    'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::calculate($product->campaign['price'], $product->tax_class_id)) : 0,
-    'regular_price_value' => tax::calculate($product->price, $product->tax_class_id),
-    'campaign_price_value' => !empty($product->campaign['price']) ? tax::calculate($product->campaign['price'], $product->tax_class_id) : 0,
+    'regular_price' => currency::format(tax::get_price($product->price, $product->tax_class_id)),
+    'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::get_price($product->campaign['price'], $product->tax_class_id)) : 0,
+    'regular_price_value' => tax::get_price($product->price, $product->tax_class_id),
+    'campaign_price_value' => !empty($product->campaign['price']) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : 0,
     'tax_class_id' => $product->tax_class_id,
     'tax_status' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'tile_excluding_tax' => language::translate('title_excluding_tax', 'Excluding Tax'),
@@ -176,7 +176,7 @@
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
       $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
       $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-      $page->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::calculate($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+      $page->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
     }
   }
   
@@ -194,7 +194,7 @@
             
             $price_adjust_text = '';
             if ($group['values'][$value_id]['price_adjust']) {
-              $price_adjust_text = currency::format(tax::calculate($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
+              $price_adjust_text = currency::format(tax::get_price($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
               if ($group['values'][$value_id]['price_adjust'] > 0) {
                 $price_adjust_text = ' +'.$price_adjust_text;
               }
@@ -212,7 +212,7 @@
         
           $price_adjust_text = '';
           if ($group['values'][$value_id]['price_adjust']) {
-            $price_adjust_text = currency::format(tax::calculate($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
+            $price_adjust_text = currency::format(tax::get_price($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
             if ($group['values'][$value_id]['price_adjust'] > 0) {
               $price_adjust_text = ' +'.$price_adjust_text;
             }
@@ -229,7 +229,7 @@
             
             $price_adjust_text = '';
             if ($group['values'][$value_id]['price_adjust']) {
-              $price_adjust_text = currency::format(tax::calculate($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
+              $price_adjust_text = currency::format(tax::get_price($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
               if ($group['values'][$value_id]['price_adjust'] > 0) {
                 $price_adjust_text = ' +'.$price_adjust_text;
               }
@@ -247,7 +247,7 @@
           
             $price_adjust_text = '';
             if ($group['values'][$value_id]['price_adjust']) {
-              $price_adjust_text = currency::format(tax::calculate($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
+              $price_adjust_text = currency::format(tax::get_price($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
               if ($group['values'][$value_id]['price_adjust'] > 0) {
                 $price_adjust_text = ' +'.$price_adjust_text;
               }
@@ -268,7 +268,7 @@
           if (!empty($group['values'][$value_id]['price_adjust'])) {
             $price_adjust_text = '';
             if ($group['values'][$value_id]['price_adjust'] > 0) {
-              $price_adjust_text = ' <br />+'. currency::format(tax::calculate($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
+              $price_adjust_text = ' <br />+'. currency::format(tax::get_price($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
             }
           }
 

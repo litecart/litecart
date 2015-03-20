@@ -9,7 +9,7 @@
     $product = catalog::product($_POST['product_id'], $_GET['currency_code']);
     
     $price = !empty($product->campaign['price']) ? $product->campaign['price'] * $_GET['currency_value'] : $product->price * $_GET['currency_value'];
-    $tax = tax::get_tax($price * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);
+    $tax = tax::get_tax($price * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']);
     $weight = weight::convert($product->weight, $product->weight_class, settings::get('store_weight_class'));
     $weight_class = settings::get('store_weight_class');
     $sku = $product->sku;
@@ -35,7 +35,7 @@
                 if (in_array($value['name'][$_GET['language_code']], $_POST['options'][$product->options[$key]['name'][$_GET['language_code']]])) {
                   $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                   $price += $value['price_adjust'] * $_GET['currency_value'];
-                  $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);;
+                  $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']);;
                 }
               }
               
@@ -52,7 +52,7 @@
               $value = array_shift($values);
               $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
               $price += $value['price_adjust'] * $_GET['currency_value'];
-              $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);;
+              $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']);
               break;
             
             case 'radio':
@@ -64,7 +64,7 @@
                 if ($value['name'][$_GET['language_code']] == $_POST['options'][$product->options[$key]['name'][$_GET['language_code']]]) {
                   $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                   $price += $value['price_adjust'] * $_GET['currency_value'];
-                  $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']);;
+                  $tax += tax::get_tax($value['price_adjust'] * $_GET['currency_value'], $product->tax_class_id, $_GET['customer']);
                 }
               }
               
@@ -158,8 +158,8 @@
       <td><strong><?php echo language::translate('title_tax', 'Tax'); ?></strong></td>
       <td>
         <?php echo functions::form_draw_hidden_field('tax', $tax); ?>
-        <?php echo !empty($product->campaign['price']) ? '<s>'. currency::format(tax::get_tax($product->price, $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']), true, false, $_GET['currency_code'], $_GET['currency_value']) .'</s>' : null; ?>
-        <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']['country_code'], $_GET['customer']['zone_code']), true, false, $_GET['currency_code'], $_GET['currency_value']); ?>
+        <?php echo !empty($product->campaign['price']) ? '<s>'. currency::format(tax::get_tax($product->price, $product->tax_class_id, $_GET['customer']), true, false, $_GET['currency_code'], $_GET['currency_value']) .'</s>' : null; ?>
+        <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']), true, false, $_GET['currency_code'], $_GET['currency_value']); ?>
       </td>
     </tr>
 <?php

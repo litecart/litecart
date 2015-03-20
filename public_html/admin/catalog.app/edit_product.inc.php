@@ -546,7 +546,7 @@ foreach (currency::$currencies as $currency) {
   );
   while ($tax_class = database::fetch($tax_classes_query)) {
     echo '              case "'. $tax_class['id'] . '":'. PHP_EOL
-       . '                return '. tax::get_tax(100, $tax_class['id'], settings::get('store_country_code'), settings::get('store_zone_code')) .';' . PHP_EOL;
+       . '                return '. tax::get_tax(100, $tax_class['id'], 'store')) .';' . PHP_EOL;
   }
 ?>
               default:

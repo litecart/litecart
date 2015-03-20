@@ -52,9 +52,9 @@
       'sticker' => $sticker,
       'manufacturer_name' => $product['manufacturer_name'],
       'short_description' => $product['short_description'],
-      'price' => currency::format(tax::calculate($product['price'], $product['tax_class_id'])),
+      'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
       'quantity' => $product['quantity'],
-      'campaign_price' => $product['campaign_price'] ? currency::format(tax::calculate($product['campaign_price'], $product['tax_class_id'])) : null,
+      'campaign_price' => $product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
     );
     //var_dump($listing_product->stitch('views/listing_product'));
     return $listing_product->stitch('views/listing_product');

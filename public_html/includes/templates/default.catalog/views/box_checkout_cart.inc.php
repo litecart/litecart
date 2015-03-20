@@ -9,7 +9,7 @@
             <p style="margin-top: 0px;"><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><strong><?php echo $item['name']; ?></strong></a>
             <?php echo $item['sku'] ? '<br /><span style="color: #999; font-size: 10px;">['. language::translate('title_sku', 'SKU') .': '. $item['sku'] .']</span>' : ''; ?></p>
             <?php if (!empty($item['options'])) echo '<p>'. implode('<br />', $item['options']) .'</p>' . PHP_EOL; ?>
-            <p><?php echo currency::format(tax::calculate($item['price'], $item['tax_class_id'])); ?></p>
+            <p><?php echo currency::format(tax::get_price($item['price'], $item['tax_class_id'])); ?></p>
             <p><?php echo language::translate('title_quantity', 'Quantity'); ?>: <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('quantity', $item['quantity'], $item['quantity_unit']['decimals'], 0) : functions::form_draw_number_field('quantity', $item['quantity'], 0); ?> <?php echo $item['quantity_unit']['name']; ?> &nbsp; <?php echo functions::form_draw_button('update_cart_item', language::translate('text_update', 'Update'), 'submit'); ?></p>
             <p><?php echo functions::form_draw_button('remove_cart_item', language::translate('text_remove', 'Remove'), 'submit'); ?></p>
           </div>

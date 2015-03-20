@@ -26,7 +26,7 @@
       $output[] = array(
         'title' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
         'value' => $payment->data['selected']['cost'],
-        'tax' => tax::get_tax($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], $order->data['customer']['country_code'], $order->data['customer']['zone_code']),
+        'tax' => tax::get_tax($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], $order->data['customer']),
         'calculate' => true,
       );
       
