@@ -147,11 +147,11 @@
       }
       $sql_where_prices = "$sql_andor (". ltrim($sql_where_prices, " or ") .")";
     }
-
-      $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
-      $sql_campaign_price_column = "if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)";
-  
-   if (count($filter['categories']) == 0 || array_values($filter['categories'])[0] == '') {  
+    
+    $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
+    $sql_campaign_price_column = "if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)";
+    
+   if (count($filter['categories']) == 0 || array_values($filter['categories'])[0] == '') {
       $query = "
         select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
           select id, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_created from ". DB_TABLE_PRODUCTS ."
@@ -202,12 +202,11 @@
         $query .= "
         from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." pc
         left join ". DB_TABLE_PRODUCTS ." p on (pc.product_id = p.id)
-        left join ". DB_TABLE_PRODUCTS_INFO ."  pi on (pi.product_id = p.id and pi.language_code = 'en')
+        left join ". DB_TABLE_PRODUCTS_INFO ."  pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
         left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
         left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
-        left join ". DB_TABLE_PRODUCTS_CAMPAIGNS ." pcg on(pcg.product_id = p.id) and ((pcg.start_date <= NOW() and pcg.end_date >= NOW()) or (UNIX_TIMESTAMP(pcg.start_date) = 0 and UNIX_TIMESTAMP(pcg.end_date) = 0))";
-
-        $query .= " where (p.id
+        left join ". DB_TABLE_PRODUCTS_CAMPAIGNS ." pcg on(pcg.product_id = p.id) and ((pcg.start_date <= NOW() and pcg.end_date >= NOW()) or (UNIX_TIMESTAMP(pcg.start_date) = 0 and UNIX_TIMESTAMP(pcg.end_date) = 0))
+        where (p.id
           ". (isset($filter['sql_where']) ? "$sql_andor (". $filter['sql_where'] .")" : false) ."
           ". (isset($filter['product_name']) ? "$sql_andor pi.name like '%". database::input($filter['product_name']) ."%'" : false) ."
           ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : false) ."
