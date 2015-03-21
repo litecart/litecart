@@ -84,7 +84,7 @@
     // Forward to rewritten URL (if necessary)
       if (!empty(self::$route['page'])) {
         
-        $rewritten_url = self::rewrite(document::ilink(self::$route['page'], $_GET));
+        $rewritten_url = document::ilink(self::$route['page'], $_GET);
         
         if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
           
@@ -94,7 +94,7 @@
           if (!empty($_POST)) $do_redirect = false;
           
         // Don't forward if requested not to
-          if (isset(self::$route['redirect']) && self::$route['redirect'] == true) $do_redirect = false;
+          if (isset(self::$route['redirect']) && self::$route['redirect'] != true) $do_redirect = false;
           
         // Don't forward if there are notices in stack
           if (!empty(notices::$data)) {
@@ -104,7 +104,12 @@
           }
           
           if ($do_redirect) {
-            header('HTTP/1.1 301 Moved Permanently');
+            if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_HTTP_HOME) {
+              header('HTTP/1.1 302 Moved Temporarily');
+            } else {
+              header('HTTP/1.1 301 Moved Permanently');
+            }
+            
             header('Location: '. $rewritten_url);
             exit;
           }
@@ -184,7 +189,8 @@
           
           if (!empty($rewritten_parsed_link)) {
             $parsed_link = $rewritten_parsed_link;
-            $parsed_link['path'] = self::strip_url_logic($parsed_link['path']);
+            //$parsed_link['path'] = self::strip_url_logic($parsed_link['path']);
+            $parsed_link['path'] = $parsed_link['path'];
           }
         }
       }

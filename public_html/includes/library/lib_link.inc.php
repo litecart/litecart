@@ -70,7 +70,7 @@
       while (strpos($parsed_link['path'], '//')) $parsed_link['path'] = str_replace('//', '/', $parsed_link['path']);
       
     // Remove index file from links
-      $parsed_link['path'] = preg_replace('#/(index\.(asp|html|php))$#', '', $parsed_link['path']);
+      $parsed_link['path'] = preg_replace('#/(index\.php)$#', '', $parsed_link['path']);
       
     // Set params that are inherited from the current page
       if ($inherit_params === true) {
@@ -99,8 +99,8 @@
       
     // Process catalog links
       if (empty($parsed_link['host']) || $parsed_link['host'] == preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) {
-        if (!file_exists(FS_DIR_HTTP_ROOT . $parsed_link['path'])) {
-          if (preg_match('#^('. WS_DIR_HTTP_HOME .'.*)#', $parsed_link['path'])) {
+        if ($parsed_link['path'] == WS_DIR_HTTP_HOME || !file_exists(FS_DIR_HTTP_ROOT . $parsed_link['path'])) {
+          if (preg_match('#^'. WS_DIR_HTTP_HOME .'#', $parsed_link['path'])) {
             if (class_exists('route', false)) {
               if ($rewritten_link = route::rewrite($link, $language_code)) {
                 $link = $rewritten_link;
@@ -208,7 +208,7 @@
       return $parts;
     }
     
-    public static function implode_link(array$parts) {
+    public static function implode_link($parts) {
       
       if (empty($parts['host'])) {
         $parts['scheme'] = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
