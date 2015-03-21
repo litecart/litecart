@@ -435,6 +435,8 @@
         return functions::form_draw_countries_list($name, $input);
       case 'currencies':
         return functions::form_draw_currencies_list($name, $input);
+      case 'delivery_statuses':
+        return functions::form_draw_delivery_statuses_list($name, $input);
       case 'geo_zones':
         return functions::form_draw_geo_zones_list($name, $input);
       case 'languages':
@@ -460,6 +462,8 @@
         return functions::form_draw_templates_list($name, $input);
       case 'toggle':
         return functions::form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
+      case 'sold_out_statuses':
+        return functions::form_draw_sold_out_statuses_list($name, $input);
       case 'tax_classes':
         return functions::form_draw_tax_classes_list($name, $input);
       case 'weight_classes':
@@ -580,6 +584,10 @@
   }
   
   function form_draw_delivery_status_list($name, $input=true, $multiple=false, $parameters='') {
+    
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_delivery_status_id');
     
     $query = database::query(
       "select ds.id, dsi.name from ". DB_TABLE_DELIVERY_STATUSES ." ds
@@ -838,6 +846,10 @@
   
   function form_draw_sold_out_status_list($name, $input=true, $multiple=false, $parameters='') {
     
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_sold_out_status_id');
+    
     $query = database::query(
       "select sos.id, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
       left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
@@ -913,7 +925,7 @@
     
     if ($input === true) $input = form_reinsert_value($name);
     
-    if ($input == '') $input = settings::get('default_tax_class_id');
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
     
     $tax_classes_query = database::query(
       "select * from ". DB_TABLE_TAX_CLASSES ."
