@@ -1,44 +1,9 @@
 <?php
-
-// Set up compatibility for old $system object;
-  class old_system {
-    private $_module;
-    
-    public function __construct($module) {
-      $this->_module = $module;
-    }
-    
-    public function &__get($variable) {
-      $class = ($this->_module);
-      return $class::$$variable;
-    }
-    
-    public function __set($variable, $value) {
-      $class = ($this->_module);
-      $class::$$variable = &$value;
-    }
-    
-    public function __call($method, $arguments) {
-      return forward_static_call_array(array($this->_module, $method), $arguments);
-    }
-  }
   
 // Set up the system object 
   class system {
     private static $_loaded_modules = array();
     private static $_modules;
-    
-  // Compatibility with $system->module;
-    public function __get($module) {
-    
-      if (empty(self::$_modules[$module])) {
-        self::$_modules[$module] = new old_system($module);
-      }
-      
-      //trigger_error("\$system->$module is deprecated, use $module::\$var or $module::method() instead", E_USER_DEPRECATED);
-      
-      return self::$_modules[$module];
-    }
     
   // Autoload library modules
     public static function init() {

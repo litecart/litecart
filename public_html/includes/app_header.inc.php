@@ -123,9 +123,6 @@
 // Set up the system object 
   system::init();
   
-// Create compatibility with old library::$method()
-  $system = new system();
-  
 // Load dependencies
   system::run('load_dependencies');
   
