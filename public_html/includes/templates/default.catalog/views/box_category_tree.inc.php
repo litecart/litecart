@@ -6,7 +6,7 @@
         function custom_draw_category_tree($categories, $indent=0) {
           echo '<ul class="list-vertical">' . PHP_EOL;
           foreach ($categories as $category) {
-            echo '  <li class="category-'. $category['id'] . (!empty($category['active']) ? ' active' : '') .'" style="margin-left: '. ($indent*5) .'px;" >'. functions::draw_fontawesome_icon(!empty($category['opened']) ? 'minus-square' : 'plus-square') .' <a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a>';
+            echo '  <li class="category-'. $category['id'] . (!empty($category['active']) ? ' active' : '') .'">'. functions::draw_fontawesome_icon(!empty($category['opened']) ? 'minus-square' : 'plus-square') .' <a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a>';
             if (!empty($category['subcategories'])) {
               echo PHP_EOL . custom_draw_category_tree($category['subcategories'], $indent+1);
             }

@@ -95,7 +95,7 @@ ul.list-vertical {
 }
 ul.list-vertical li {
   margin: 0px;
-  padding: 2px;
+  padding: 2px 0px;
   list-style: none;
 }
 ul.list-vertical ul {

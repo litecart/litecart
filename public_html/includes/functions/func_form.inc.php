@@ -527,7 +527,7 @@
     
     if ($input === true) $input = form_reinsert_value($name);
     
-    if ($input == '') $input = settings::get('default_country_code');
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_country_code');
     
     $countries_query = database::query(
       "select * from ". DB_TABLE_COUNTRIES ."
@@ -651,7 +651,7 @@
     
     if ($input === true) $input = form_reinsert_value($name);
     
-    if ($input == '') $input = settings::get('store_length_class');
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_class');
     
     $options = array();
     
@@ -810,7 +810,7 @@
     
     if ($input === true) $input = form_reinsert_value($name);
     
-    if ($input == '') $input = settings::get('default_quantity_unit_id');
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_quantity_unit_id');
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
     
@@ -947,7 +947,7 @@
     
     if ($input === true) $input = form_reinsert_value($name);
     
-    if ($input == '') $input = settings::get('store_weight_class');
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_class');
     
     $options = array();
     

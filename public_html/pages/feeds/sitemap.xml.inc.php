@@ -5,6 +5,22 @@
   $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
           . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . PHP_EOL;
   
+  $hreflangs = '';
+  if (settings::get('seo_links_language_prefix')) {
+    foreach (array_keys(language::$languages) as $language_code) {
+      if ($language_code == settings::get('store_language_code')) continue;
+      $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('', array(), false, array(), $language_code) .'" />' . PHP_EOL;
+    }
+  }
+  
+  $output .= '  <url>' . PHP_EOL
+             . '    <loc>'. document::ilink('', array(), false, array(), settings::get('store_language_code')) .'</loc>' . PHP_EOL
+             . $hreflangs
+             . '    <lastmod>'. date('Y-m-d') .'</lastmod>' . PHP_EOL
+             . '    <changefreq>daily</changefreq>' . PHP_EOL
+             . '    <priority>1.0</priority>' . PHP_EOL
+             . '  </url>' . PHP_EOL;
+  
   $categories_query = database::query(
     "select id, date_updated from ". DB_TABLE_CATEGORIES ."
     where status

@@ -34,21 +34,24 @@ input[data-type=currency], input[data-type=decimal], input[data-type=number] {
   text-align: right;
 }
 
-form *[data-size=auto] {
-  width: auto;
-  max-width: 170px;
-}
-form *[data-size=tiny] {
-  width: 40px;
-}
-form *[data-size=small] {
-  width: 80px;
-}
-form *[data-size=medium] {
-  width: 170px;
-}
 form *[data-size=large] {
   width: 360px;
+}
+form *[data-size=medium] {
+  width: 164px;
+}
+form *[data-size=small] {
+  width: 98px;
+}
+form *[data-size=tiny] {
+  width: 65px;
+}
+form *[data-size=micro] {
+  width: 46px;
+}
+form *[data-size=auto] {
+  width: auto;
+  max-width: 164px;
 }
 
 form .required {
