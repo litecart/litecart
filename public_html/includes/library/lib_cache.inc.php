@@ -21,17 +21,36 @@
       if (!isset(session::$data['cache'])) session::$data['cache'] = array();
       self::$_data = &session::$data['cache'];
       
+      if (isset(self::$_data['cache_clear'])) unset(self::$_data['cache_clear']);
+      if (isset(self::$_data['cache_clear_thumbnails'])) unset(self::$_data['cache_clear_thumbnails']);
+      
+      if (settings::get('cache_clear')) {
+        self::clear_cache();
+        
+        database::query(
+          "update ". DB_TABLE_SETTINGS ."
+          set value = ''
+          where `key` = 'cache_clear'
+          limit 1;"
+        );
+        
+        notices::add('success', 'Cache cleared');
+      }
+      
       if (settings::get('cache_clear_thumbnails')) {
         $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '*');
+        
         if (!empty($files)) foreach($files as $file) {
           if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
         }
+        
         database::query(
           "update ". DB_TABLE_SETTINGS ."
           set value = ''
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
         );
+        
         notices::add('success', 'Image thumbnails cache cleared');
       }
     }
@@ -69,7 +88,14 @@
           $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$cache_id;
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return null;
-            return unserialize(file_get_contents($cache_file));
+            
+            $data = @json_decode(file_get_contents($cache_file), true);
+            
+            if (strtolower(language::$selected['charset']) != 'utf-8') {
+              mb_convert_variables(language::$selected['charset'], 'UTF-8', $data);
+            }
+            
+            return $data;
           }
           return null;
         
@@ -99,8 +125,12 @@
       
         case 'file':
           $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $cache_id;
-          file_put_contents($cache_file, serialize($data));
-          return true;
+            
+          if (strtolower(language::$selected['charset']) != 'utf-8') {
+            mb_convert_variables('UTF-8', language::$selected['charset'], $data);
+          }
+          
+          return @file_put_contents($cache_file, json_encode($data));
         
         case 'session':
           self::$_data[$cache_id] = array(
@@ -125,6 +155,7 @@
       } else {
         $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
       }
+      
       if ($files) foreach ($files as $file) unlink($file);
       
     // Set breakpoint (for session cache)

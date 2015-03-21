@@ -74,6 +74,9 @@
     VALUES ('default', 'global', 'Default Sold Out Status', 'Default delivery status that will be preset when creating new products.', 'default_sold_out_status_id', '1', 'sold_out_statuses()', 17, NOW(), NOW()),
     ('default', 'global', 'Default Delivery Status', 'Default sold out status that will be preset when creating new products.', 'default_delivery_status_id', '1', 'delivery_statuses()', 18, NOW(), NOW());
     
+    INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
+    VALUES ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '1', 'toggle()', 11, NOW(), NOW());
+  
   Deleted Files:
     
     admin/appearance.app/icon.png
