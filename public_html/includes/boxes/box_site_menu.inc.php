@@ -7,7 +7,7 @@
     $box_site_menu->snippets['items'][] = array(
       'type' => 'general',
       'id' => 0,
-      'title' => functions::draw_fontawesome_icon('home', 'title="'. htmlspecialchars(language::translate('title_home', 'Home')) .'"', 'fa-lg'),
+      'title' => functions::draw_fontawesome_icon('home', 'title="'. htmlspecialchars(language::translate('title_home', 'Home')) .'"'),
       'link' => document::ilink(''),
       'image' => null,
       //'active' => empty($_GET) ? true : false,

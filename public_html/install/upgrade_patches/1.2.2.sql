@@ -8,11 +8,11 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
 VALUES ('security', 'global', 'Session Hijacking Protection', 'Destroy sessions that were signed for a different IP address and user agent.', 'security_session_hijacking', '1', 'toggle("e/d")', '2', NOW(), NOW()),
-('security', 'global', 'Blacklist', 'Deny blacklisted clients access to the site.', 'security_blacklist', '1', 'toggle("e/d")', '1', NOW(), NOW()),
-('security', 'global', 'HTTP POST Protection', 'Prevent incoming HTTP POST data from external sites by checking for valid form tickets.', 'security_http_post', '1', 'toggle("e/d")', '3', NOW(), NOW()),
-('security', 'global', 'Bad Bot Trap', 'Catch bad behaving bots from crawling your website.', 'security_bot_trap', '0', 'toggle("e/d")', '4', NOW(), NOW()),
-('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and prevent access to the site.', 'security_xss', '1', 'toggle("e/d")', '5', NOW(), NOW()),
-('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '0', 'toggle()', '13', NOW(), NOW());
+('security', 'global', 'Blacklist', 'Deny blacklisted clients access to the site.', 'security_blacklist', '1', 'toggle("e/d")', 10, NOW(), NOW()),
+('security', 'global', 'HTTP POST Protection', 'Prevent incoming HTTP POST data from external sites by checking for valid form tickets.', 'security_http_post', '1', 'toggle("e/d")', 11, NOW(), NOW()),
+('security', 'global', 'Bad Bot Trap', 'Catch bad behaving bots from crawling your website.', 'security_bot_trap', '0', 'toggle("e/d")', 12, NOW(), NOW()),
+('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and prevent access to the site.', 'security_xss', '1', 'toggle("e/d")', 13, NOW(), NOW()),
+('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '0', 'toggle()', 13, NOW(), NOW());
 -- --------------------------------------------------------
 ALTER TABLE `lc_delivery_statuses_info` CHANGE `name` `name` VARCHAR(64) NOT NULL;
 -- --------------------------------------------------------
