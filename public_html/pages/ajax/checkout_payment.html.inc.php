@@ -2,6 +2,7 @@
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
+    header('X-Robots-Tag: noindex');
   }
   
   if (cart::$data['total']['items'] == 0) return;
