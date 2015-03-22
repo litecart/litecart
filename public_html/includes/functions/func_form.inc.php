@@ -655,7 +655,7 @@
     
     $options = array();
     
-    foreach ($GLOBALS['system']->length->classes as $class) {
+    foreach (length::$classes as $class) {
       $options[] = array($class['unit']);
     }
     
@@ -951,7 +951,7 @@
     
     $options = array();
     
-    foreach ($GLOBALS['system']->weight->classes as $class) {
+    foreach (weight::$classes as $class) {
       $options[] = array($class['unit']);
     }
     

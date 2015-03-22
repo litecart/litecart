@@ -1,7 +1,6 @@
 <?php
 
   class pm_paypal {
-    private $system;
     public $id = __CLASS__;
     public $name = 'Paypal Standard';
     public $description = '';

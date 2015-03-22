@@ -35,7 +35,7 @@
         continue;
       }
       
-      $GLOBALS['system']->database->query(
+      database::query(
         "update ". DB_TABLE_CURRENCIES ."
         set value = '". (float)$value ."'
         where code = '". database::input($currency_code) ."'
