@@ -43,7 +43,7 @@
       return get_price($value, $tax_class_id, $calculate, $customer);
     }
     
-    public static function get_price($value, $tax_class_id, $calculate=null, $customer) {
+    public static function get_price($value, $tax_class_id, $calculate=null, $customer=null) {
       if ($calculate === null) $calculate = !empty(customer::$data['display_prices_including_tax']) ? true : false;
       
       if ($calculate) {
@@ -110,6 +110,8 @@
       
       $tax_rates = array();
       
+      if ($customer === null) $customer = 'customer';
+      
     // Presets
       if (is_string($customer)) {
         if (strtolower($customer) == 'store') {
@@ -132,6 +134,7 @@
       }
       
       if ($customer['country_code'] === null) {
+        trigger_error('No country_code for tax passed', E_USER_WARNING);
         $customer['country_code'] = (!empty(customer::$data['country_code'])) ? customer::$data['country_code'] : settings::get('default_country_code');
         if ($customer['zone_code'] === null) {
           $customer['zone_code'] = (!empty(customer::$data['zone_code'])) ? customer::$data['zone_code'] : settings::get('default_zone_code');
@@ -153,8 +156,8 @@
         left join ". DB_TABLE_GEO_ZONES . " gz on (gz.id = tr.geo_zone_id)
         left join ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz on (z2gz.geo_zone_id = tr.geo_zone_id)
         where tr.tax_class_id = '" . (int)$tax_class_id . "'
-        and z2gz.country_code = '" . database::input($country_code) . "'
-        and (z2gz.zone_code = '' or z2gz.zone_code = '". database::input($zone_code) ."');"
+        and z2gz.country_code = '" . database::input($customer['country_code']) . "'
+        and (z2gz.zone_code = '' or z2gz.zone_code = '". database::input($customer['zone_code']) ."');"
       );
       
       while ($row=database::fetch($tax_rates_query)) {
