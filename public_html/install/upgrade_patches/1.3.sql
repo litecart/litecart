@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('defaults', 'global', 'Default Quantity Unit', 'Default quantity unit that will be preset when creating new products.', 'default_quantity_unit_id', '1', 'quantity_units()', 16, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_quantity_units` (`id`, `decimals`, `separated`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_quantity_units` (`id`, `decimals`, `separate`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 0, 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`, `name`) VALUES
