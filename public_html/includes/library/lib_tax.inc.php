@@ -111,7 +111,7 @@
       $tax_rates = array();
       
     // Presets
-      if (is_string($customer) {
+      if (is_string($customer)) {
         if (strtolower($customer) == 'store') {
           $customer = array(
             'tax_id' => null,
