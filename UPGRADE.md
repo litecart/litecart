@@ -57,8 +57,8 @@
       KEY `language_code` (`language_code`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
     
-    INSERT INTO `lc_quantity_units` (`id`, `priority`, `date_updated`, `date_created`) VALUES
-    (1, 0, NOW(), NOW());
+    INSERT INTO `lc_quantity_units` (`id`, `decimals`, `separated`, `priority`, `date_updated`, `date_created`) VALUES
+    (1, 0, 0, 0, NOW(), NOW());
     
     INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`, `name`) VALUES
     (1, 1, 'en', 'pcs');
