@@ -427,28 +427,42 @@
         return functions::form_draw_textarea($name, $input, 'rows="5" data-size="large"');
       case 'bigtext':
         return functions::form_draw_textarea($name, $input, 'rows="10" data-size="large"');
+      case 'category':
       case 'categories':
         return functions::form_draw_categories_list($name, $input);
+      case 'customer':
       case 'customers':
         return functions::form_draw_customers_list($name, $input);
+      case 'country':
       case 'countries':
         return functions::form_draw_countries_list($name, $input);
+      case 'currency':
       case 'currencies':
         return functions::form_draw_currencies_list($name, $input);
+      case 'delivery_status':
       case 'delivery_statuses':
         return functions::form_draw_delivery_statuses_list($name, $input);
+      case 'geo_zone':
       case 'geo_zones':
         return functions::form_draw_geo_zones_list($name, $input);
+      case 'language':
       case 'languages':
         return functions::form_draw_languages_list($name, $input);
+      case 'length_class':
       case 'length_classes':
         return functions::form_draw_length_classes_list($name, $input);
       case 'product':
+      case 'products':
         return functions::form_draw_products_list($name, $input);
+      case 'quantity_unit':
       case 'quantity_units':
         return functions::form_draw_quantity_units_list($name, $input);
       case 'order_status':
+      case 'order_statuses':
         return functions::form_draw_order_status_list($name, $input);
+      case 'page':
+      case 'pages':
+        return functions::form_draw_pages_list($name, $input);
       case 'radio':
         $output = '';
         for ($i=0; $i<count($options); $i++) $output .= ' <label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label>';
@@ -456,18 +470,24 @@
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
         return functions::form_draw_select_field($name, $options, $input, false);
+      case 'timezone':
       case 'timezones':
         return functions::form_draw_timezones_list($name, $input);
+      case 'template':
       case 'templates':
         return functions::form_draw_templates_list($name, $input);
       case 'toggle':
         return functions::form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
+      case 'sold_out_status':
       case 'sold_out_statuses':
         return functions::form_draw_sold_out_statuses_list($name, $input);
+      case 'tax_class':
       case 'tax_classes':
         return functions::form_draw_tax_classes_list($name, $input);
+      case 'weight_class':
       case 'weight_classes':
         return functions::form_draw_weight_classes_list($name, $input);
+      case 'zone':
       case 'zones':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
@@ -748,6 +768,28 @@
       "select os.id, osi.name from ". DB_TABLE_ORDER_STATUSES ." os
       left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
       order by priority, name;"
+    );
+    
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    
+    while ($row = database::fetch($query)) {
+      $options[] = array($row['name'], $row['id']);
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
+  function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
+    
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    $query = database::query(
+      "select p.id, pi.name from ". DB_TABLE_PAGES ." p
+      left join ". DB_TABLE_PAGES_INFO ." pi on (pi.delivery_status_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      where p.status
+      order by p.priority, pi.name asc;"
     );
     
     $options = array();
