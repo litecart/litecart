@@ -61,12 +61,24 @@
     <th>&nbsp;</th>
   </tr>
 <?php
+  if (!empty($_GET['query'])) {
+    $sql_find = array(
+      "o.id = '". database::input($_GET['query']) ."'",
+      "o.uid = '". database::input($_GET['query']) ."'",
+      "o.customer_email like '%". database::input($_GET['query']) ."%'",
+      "o.customer_firstname like '%". database::input($_GET['query']) ."%'",
+      "o.customer_lastname like '%". database::input($_GET['query']) ."%'",
+      "o.payment_transaction_id like '%". database::input($_GET['query']) ."%'",
+      "o.shipping_tracking_id like '%". database::input($_GET['query']) ."%'",
+    );
+  }
+  
   $orders_query = database::query(
     "select o.*, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
-    ". ((!empty($_GET['query'])) ? "and (o.id = '". database::input($_GET['query']) ."' or o.uid = '". database::input($_GET['query']) ."' or o.customer_email like '%". database::input($_GET['query']) ."%' or o.customer_firstname like '%". database::input($_GET['query']) ."%' or o.customer_lastname like '%". database::input($_GET['query']) ."%')" : "") ."
     ". ((!empty($_GET['order_status_id'])) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
+    ". ((!empty($sql_find)) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by o.date_created desc;"
   );
   
