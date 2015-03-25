@@ -89,7 +89,7 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_rate', 'Rate'); ?></strong><br />
-        <?php echo functions::form_draw_decimal_field('rate', true); ?> <?php echo functions::form_draw_select_field('type', array(array('percent'), array('fixed')), true); ?>
+        <?php echo functions::form_draw_decimal_field('rate', true, 4); ?> <?php echo functions::form_draw_select_field('type', array(array('percent'), array('fixed')), true); ?>
       </td>
     </tr>
     <tr>

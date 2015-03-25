@@ -11,6 +11,7 @@
   if (empty($customer)) exit;
   
   $json = array(
+    'tax_id' => !empty($customer['tax_id']) ? $customer['tax_id'] : '',
     'company' => !empty($customer['company']) ? $customer['company'] : '',
     'firstname' => !empty($customer['firstname']) ? $customer['firstname'] : '',
     'lastname' => !empty($customer['lastname']) ? $customer['lastname'] : '',

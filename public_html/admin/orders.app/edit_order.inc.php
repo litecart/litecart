@@ -695,7 +695,7 @@
 ?>
     <tr>
       <td><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
-      <td><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
+      <td style="white-space: normal;"><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
       <td><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
       <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>
     </tr>
@@ -714,7 +714,7 @@
       event.preventDefault();
       var output = '  <tr>'
                  + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?></td>'
-                 + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
+                 + '    <td style="white-space: normal;"><?php echo str_replace(PHP_EOL, '', functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
                  + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', '', language::translate('title_hidden', 'Hidden'))); ?></td>'
                  + '    <td><a class="remove_comment" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
                  + '  </tr>';
