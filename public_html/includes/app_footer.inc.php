@@ -28,7 +28,6 @@
   
 // Run after processes
   system::run('shutdown');
-  exit;
   
 // Execute background jobs
   if (strtotime(settings::get('jobs_last_run')) < strtotime('-'. (settings::get('jobs_interval')+1) .' minutes')) {
