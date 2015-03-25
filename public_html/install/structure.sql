@@ -161,6 +161,7 @@ CREATE TABLE `lc_languages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL,
   `code` varchar(2) NOT NULL,
+  `code2` varchar(3) NOT NULL,
   `name` varchar(32) NOT NULL,
   `locale` varchar(32) NOT NULL,
   `charset` varchar(16) NOT NULL,

@@ -89,6 +89,7 @@
         set
           status = '". (int)$this->data['status'] ."',
           code = '". database::input($this->data['code']) ."',
+          code2 = '". database::input($this->data['code2']) ."',
           name = '". database::input($this->data['name']) ."',
           charset = '". database::input($this->data['charset']) ."',
           locale = '". database::input($this->data['locale']) ."',

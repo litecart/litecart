@@ -49,6 +49,7 @@
       $fields = array(
         'status',
         'code',
+        'code2',
         'name',
         'charset',
         'locale',
@@ -123,6 +124,11 @@
     <tr>
       <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1)</strong><br />
         <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a>
+      </td>
+    </tr>
+    <tr>
+      <td><strong><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2)</strong><br />
+        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a>
       </td>
     </tr>
     <tr>

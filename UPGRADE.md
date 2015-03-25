@@ -76,6 +76,10 @@
     
     INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
     VALUES ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '1', 'toggle()', 11, NOW(), NOW());
+    
+    ALTER TABLE `lc_languages` ADD `code2` VARCHAR(3) NOT NULL AFTER `code`;
+    
+    UPDATE `lc_languages` set code2 = 'eng' WHERE code = 'en' LIMIT 1;
   
   Deleted Files:
     
