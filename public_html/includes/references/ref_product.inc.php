@@ -480,6 +480,11 @@
             $this->_data['quantity_unit']['name'][$info['language_code']] = $info['name'];
           }
           
+          foreach (array_keys(language::$languages) as $language_code) {
+            if (isset($this->_data['quantity_unit']['name'][$language_code])) continue;
+            $this->_data['quantity_unit']['name'][$language_code] = isset($this->_data['quantity_unit']['name'][settings::get('store_language_code')]) ? $this->_data['quantity_unit']['name'][settings::get('store_language_code')] : '';
+          }
+          
           break;
           
         case 'sold_out_status':

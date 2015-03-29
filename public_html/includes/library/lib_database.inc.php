@@ -127,11 +127,6 @@
       return true;
     }
     
-    public static function set_character($charset, $link='default') {
-      trigger_error(__CLASS__.'::set_character() is deprecated, use '. __CLASS__.'::set_encoding() instead', E_USER_WARNING);
-      return self::set_encoding($charset, null, $link);
-    }
-    
     public static function disconnect($link=null) {
       
       if (!empty($link)) {

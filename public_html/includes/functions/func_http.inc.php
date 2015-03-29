@@ -1,12 +1,5 @@
 <?php
 
-  if (!function_exists('http_request')) {
-    function http_request($url, $post_fields=false, $headers=false, $asynchronous=false, $follow_redirects=true, $return='body') {
-      trigger_error('http_request() is deprecated due to name collision with pecl_http package. Use http_fetch() instead.', E_USER_DEPRECATED);
-      return functions::http_fetch($url, $post_fields, $headers, $asynchronous, $follow_redirects, $return);
-    }
-  }
-
   function http_fetch($url, $post_fields=false, $headers=false, $asynchronous=false, $follow_redirects=true, $return='body') {
     
     if (ini_get('allow_url_fopen')) {
