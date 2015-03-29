@@ -2,7 +2,7 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_tax_rate'), true), language::translate('title_add_new_tax_rate', 'Add New Tax Rate'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_tax_rates', 'Tax Rates'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_tax_rates', 'Tax Rates'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('tax_rates_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">

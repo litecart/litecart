@@ -18,7 +18,7 @@
 ?>
 
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer')), language::translate('title_add_new_manufacturer', 'Add New Manufacturer'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('manufacturers_form', 'post'); ?>
 

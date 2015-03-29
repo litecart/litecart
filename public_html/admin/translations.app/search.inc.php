@@ -53,7 +53,7 @@
   <?php echo functions::form_draw_form_end(); ?>
 </div>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 

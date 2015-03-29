@@ -16,7 +16,7 @@
   }
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_language'), true), language::translate('title_add_new_language', 'Add New Language'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_languages', 'Languages'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_languages', 'Languages'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('languages_form', 'post'); ?>
 

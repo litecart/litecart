@@ -56,7 +56,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo (empty($supplier->data['id'])) ? language::translate('title_add_new_supplier', 'Add New Supplier') : language::translate('title_edit_supplier', 'Edit Supplier'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($supplier->data['id'])) ? language::translate('title_add_new_supplier', 'Add New Supplier') : language::translate('title_edit_supplier', 'Edit Supplier'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
 

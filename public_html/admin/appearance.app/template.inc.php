@@ -2,7 +2,6 @@
   
   if (!empty($_POST['save'])) {
   
-  
     if (empty(notices::$data['errors'])) {
     
       if ($_POST['template_catalog'] != settings::get('store_template_catalog')) {
@@ -60,7 +59,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_template', 'Template'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_template', 'Template'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('template_form', 'post'); ?>
 

@@ -8,7 +8,6 @@
       $html = $this->_process_view($file, $snippets);
     }
     
-    
     public function stitch($view=null) {
       
       if ($view !== null) {

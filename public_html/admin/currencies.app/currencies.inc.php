@@ -50,7 +50,7 @@
 ?>
 <div style="float: right;"><?php echo functions::form_draw_form_begin() . functions::form_draw_button('update_rates', language::translate('title_update_rates', 'Update Rates'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'down') . functions::form_draw_form_end(); ?></div>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_currency'), true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_currencies', 'Currencies'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_currencies', 'Currencies'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('currencies_form', 'post'); ?>
 

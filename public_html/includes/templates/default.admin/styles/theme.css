@@ -51,31 +51,31 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
   color: #666;
 }
 
-#widgets {
+#box-widgets {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-#widgets > li{
+#box-widgets > li{
   margin-bottom: 20px;
 }
-#widgets > li > .widget {
+#box-widgets > li > .widget {
   margin: 5px;
 }
 
-#apps {
+#box-apps-menu {
   margin: 0 5px;
   
   padding: 0;
   
   border-top: 1px #dfdfdf solid;
 }
-#apps li {
+#box-apps-menu li {
   padding: 0px;
   border-bottom: 1px #dfdfdf solid;
   font-weight: normal;
 }
-#apps li a {
+#box-apps-menu li a {
   display: block;
   padding: 5px 5px;
   font-size: 1em;
@@ -83,34 +83,34 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
   text-decoration: none;
   color: #000;
 }
-#apps li a .fa-stack {
+#box-apps-menu li a .fa-stack {
  font-size: 1em;
 }
-#apps li a .name {
+#box-apps-menu li a .name {
   font-weight: 500;
   text-shadow: 1px 1px 0px #fff;
 }
-#apps li.selected > a {
+#box-apps-menu li.selected > a {
   color: #f00;
 }
-#apps li a:hover {
+#box-apps-menu li a:hover {
   background: rgba(255,255,255,0.8);
 }
-#apps li img {
+#box-apps-menu li img {
   margin: 2px 5px;
 }
-#apps ul {
+#box-apps-menu ul {
   padding: 0;
   margin-left: 28px;
   margin-bottom: 10px;
   border: none;
 }
-#apps ul li {
+#box-apps-menu ul li {
   border: none;
   margin-bottom: 2px 0px;
   list-style: circle outside;
 }
-#apps ul li a {
+#box-apps-menu ul li a {
   font-weight: normal;
   padding: 5px 10px;
 }

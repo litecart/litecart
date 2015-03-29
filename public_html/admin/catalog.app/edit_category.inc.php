@@ -71,7 +71,7 @@
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo (empty($category->data['id'])) ? language::translate('title_add_new_category', 'Add New Category') : language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']]; ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($category->data['id'])) ? language::translate('title_add_new_category', 'Add New Category') : language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']]; ?></h1>
 
 <?php
   if (!empty($category->data['image'])) {

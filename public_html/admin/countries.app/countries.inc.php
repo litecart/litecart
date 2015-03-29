@@ -15,7 +15,7 @@
   }
 ?>
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_country'), true), language::translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_countries', 'Countries'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_countries', 'Countries'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('countries_form', 'post'); ?>
 

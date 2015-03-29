@@ -46,7 +46,7 @@ catch(e){window.attachEvent("onload", $buo_f)}
           
           <!--snippet:dashboard-->
           
-          <!--snippet:apps-->
+          <!--snippet:box_apps_menu-->
           
           <div class="footer">
             <div class="languages" style="text-align: center; margin-bottom: 10px 0 20px 0;">

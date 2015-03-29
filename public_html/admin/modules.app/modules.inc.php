@@ -54,7 +54,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo $title; ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo $title; ?></h1>
 <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
   <tr class="header">

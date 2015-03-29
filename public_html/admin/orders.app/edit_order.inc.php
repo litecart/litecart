@@ -130,7 +130,7 @@
 </div>
 <?php } ?>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_order', 'post'); ?>
 
@@ -263,7 +263,7 @@
             $.ajax({
               url: '<?php echo document::link('', array('doc' => 'get_address.json'), array('app')); ?>',
               type: 'post',
-              data: "customer_id=" + $("select[name='customer[id]']").val() + "&token=<?php echo form::session_post_token(); ?>",
+              data: "customer_id=" + $("*[name='customer[id]']").val() + "&token=<?php echo form::session_post_token(); ?>",
               cache: false,
               async: true,
               dataType: 'json',

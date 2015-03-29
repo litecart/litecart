@@ -63,7 +63,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo (!empty($user->data['username'])) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($user->data['username'])) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post'); ?>
 

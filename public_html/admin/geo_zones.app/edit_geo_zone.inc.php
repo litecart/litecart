@@ -44,7 +44,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_geo_zone', 'post'); ?>
 

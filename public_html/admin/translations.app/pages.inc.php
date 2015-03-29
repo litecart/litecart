@@ -55,7 +55,7 @@
   }
 ?>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_translations_by_page', 'Translations by Page'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_translations_by_page', 'Translations by Page'); ?></h1>
 <?php
   $pages_query = database::query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
   $pages = array();

@@ -8,6 +8,6 @@
   }
 ?>
 <div style="float: right;"><?php echo functions::form_draw_form_begin() . functions::form_draw_button('clear', language::translate('title_clear_log', 'Clear Log'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"') . functions::form_draw_form_end(); ?></div>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_log', 'Log'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_log', 'Log'); ?></h1>
 
 <pre><?php  if (is_file($log_file)) echo file_get_contents($log_file); ?></pre>

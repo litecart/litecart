@@ -73,7 +73,7 @@
 
 ?>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo (empty($manufacturer->data['id'])) ? language::translate('title_add_new_manufacturer', 'Add New Manufacturer') : language::translate('title_edit_manufacturer', 'Edit Manufacturer'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($manufacturer->data['id'])) ? language::translate('title_add_new_manufacturer', 'Add New Manufacturer') : language::translate('title_edit_manufacturer', 'Edit Manufacturer'); ?></h1>
 
 <?php
   if (!empty($manufacturer->data['image'])) {

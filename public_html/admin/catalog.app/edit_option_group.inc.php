@@ -51,7 +51,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_option_group', 'post'); ?>
 

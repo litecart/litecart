@@ -1,4 +1,4 @@
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?></h1>
 <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
   <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
   <p><label><?php echo functions::form_draw_checkbox('update', '1'); ?> <?php echo language::translate('text_update_empty_translations', 'Update empty translations if applicable'); ?></label></p>

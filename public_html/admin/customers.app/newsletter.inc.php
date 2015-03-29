@@ -23,7 +23,7 @@
 }
 </style>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_newsletter', 'Newsletter'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_newsletter', 'Newsletter'); ?></h1>
 
 <h2><?php echo language::translate('title_list_of_subscribers', 'List of Subscribers'); ?></h2>
 

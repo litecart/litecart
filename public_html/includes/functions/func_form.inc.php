@@ -592,6 +592,10 @@
       order by lastname, firstname;"
     );
     
+    if (database::num_rows($customers_query) > 1000 && empty($multiple)) {
+      return functions::form_draw_text_field($name, $input, $parameters);
+    }
+    
     $options = array();
     
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');

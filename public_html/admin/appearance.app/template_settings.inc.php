@@ -34,7 +34,7 @@
   }
   
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_template_settings', 'Template Settings'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('template_settings_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">

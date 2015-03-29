@@ -26,7 +26,7 @@
     if ($_GET['doc'] == $group['key']) $setting_group = $group;
   }
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?><?php echo language::translate('title_settings', 'Settings'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('settings_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
