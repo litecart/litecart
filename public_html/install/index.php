@@ -331,7 +331,7 @@
   <h2>Writables</h2>
     <ul>
 <?php
-  $files = array(
+  $paths = array(
     'admin/.htaccess',
     'admin/.htpasswd',
     'cache/',
@@ -340,13 +340,13 @@
     'includes/config.inc.php',
     '.htaccess',
   );
-  foreach($files as $file) {
-    if (file_exists($file) && is_writable('../' . $file)) {
-      echo '      <li>~/'. $file .' <span class="ok">[OK]</span></li>' . PHP_EOL;
-    } else if (is_writable('../' . pathinfo($file, PATHINFO_DIRNAME))) {
-      echo '      <li>~/'. $file .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+  foreach($paths as $path) {
+    if (file_exists($path) && is_writable('../' . $path)) {
+      echo '      <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+    } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
+      echo '      <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '      <li>~/'. $file .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+      echo '      <li>~/'. $path .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
   }
 ?>
