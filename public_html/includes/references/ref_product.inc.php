@@ -464,20 +464,30 @@
           
         case 'quantity_unit':
         
+          $this->_data['quantity_unit'] = array(
+            'id' => null,
+            'decimals' => 0,
+            'separate' => false,
+            'name' => array(),
+          );
+        
           $quantity_unit_query = database::query(
             "select id, decimals, separate from ". DB_TABLE_QUANTITY_UNITS ."
             where id = ". (int)$this->quantity_unit_id ."
             limit 1;"
           );
           
-          $this->_data['quantity_unit'] = database::fetch($quantity_unit_query);
+          if (database::num_rows($quantity_unit_query)) {
           
-          $query = database::query(
-            "select name, language_code from ". DB_TABLE_QUANTITY_UNITS_INFO ."
-            where quantity_unit_id = '". (int)$this->quantity_unit_id ."';"
-          );
-          while ($info = database::fetch($query)) {
-            $this->_data['quantity_unit']['name'][$info['language_code']] = $info['name'];
+            $this->_data['quantity_unit'] = database::fetch($quantity_unit_query);
+            
+            $query = database::query(
+              "select name, language_code from ". DB_TABLE_QUANTITY_UNITS_INFO ."
+              where quantity_unit_id = '". (int)$this->quantity_unit_id ."';"
+            );
+            while ($info = database::fetch($query)) {
+              $this->_data['quantity_unit']['name'][$info['language_code']] = $info['name'];
+            }
           }
           
           foreach (array_keys(language::$languages) as $language_code) {
