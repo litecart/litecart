@@ -3,11 +3,6 @@
     public $snippets = array();
     public $html = '';
     
-    public function load($view) {
-      $file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/'. $view .'.inc.php';
-      $html = $this->_process_view($file, $snippets);
-    }
-    
     public function stitch($view=null) {
       
       if ($view !== null) {

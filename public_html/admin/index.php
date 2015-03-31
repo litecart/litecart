@@ -98,8 +98,8 @@
                                         . '    }' . PHP_EOL
                                         . '  });';
     
-    $page = new view();
-    $page->snippets = array(
+    $_page = new view();
+    $_page->snippets = array(
       'app' => $_GET['app'],
       'doc' => $_GET['doc'],
       'theme' => array(
@@ -110,8 +110,8 @@
     );
     
     $app_icon = '<span class="fa-stack fa-lg icon-wrapper">' . PHP_EOL
-              . '  ' . functions::draw_fontawesome_icon('circle', 'style="color: '. $page->snippets['theme']['color'] .';"', 'fa-stack-2x icon-background') . PHP_EOL
-              . '  ' . functions::draw_fontawesome_icon($page->snippets['theme']['icon'], 'style="color: #fff;"', 'fa-stack-1x icon') . PHP_EOL
+              . '  ' . functions::draw_fontawesome_icon('circle', 'style="color: '. $_page->snippets['theme']['color'] .';"', 'fa-stack-2x icon-background') . PHP_EOL
+              . '  ' . functions::draw_fontawesome_icon($_page->snippets['theme']['icon'], 'style="color: #fff;"', 'fa-stack-1x icon') . PHP_EOL
               . '</span>';
     
     ob_start();
@@ -121,9 +121,9 @@
     } else {
       include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
     }
-    $page->snippets['doc'] = ob_get_clean();
+    $_page->snippets['doc'] = ob_get_clean();
     
-    echo $page->stitch('views/doc');
+    echo $_page->stitch('views/doc');
   }
   
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

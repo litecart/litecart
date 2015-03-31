@@ -138,11 +138,6 @@
 
   <table class="dataTable">
     <tr>
-      <?php if (!empty($order->data['id'])) { ?>
-      <td><?php echo language::translate('title_language', 'Language'); ?><br />
-        <?php echo functions::form_draw_hidden_field('language_code', true); ?><?php echo $_POST['language_code']; ?>
-      </td>
-      <?php } else { ?>
       <td><?php echo language::translate('title_language', 'Language'); ?><br />
         <?php echo functions::form_draw_hidden_field('language_code', true); ?>
         <ul id="languages" class="list-horizontal">
@@ -164,17 +159,11 @@
           });
         </script>
       </td>
-      <?php } ?>
     </tr>
   </table>
   
   <table class="dataTable">
     <tr>
-      <?php if (!empty($order->data['id'])) { ?>
-      <td><?php echo language::translate('title_currency', 'Currency'); ?><br />
-        <?php echo functions::form_draw_hidden_field('currency_code', true); ?><?php echo functions::form_draw_hidden_field('currency_value', true); ?><?php echo $_POST['currency_code']; ?>
-      </td>
-      <?php } else { ?>
       <td><?php echo language::translate('title_currency', 'Currency'); ?><br />
         <?php echo functions::form_draw_hidden_field('currency_code', true); ?><?php echo functions::form_draw_hidden_field('currency_value', true); ?>
         <ul id="currencies" class="list-horizontal">
@@ -197,15 +186,9 @@
           });
         </script>
       </td>
-      <?php } ?>
       <td><?php echo language::translate('title_currency_value', 'Currency Value'); ?><br />
         1 <?php echo settings::get('store_currency_code'); ?> = <?php echo number_format($_POST['currency_value'], 3, language::$selected['decimal_point'], language::$selected['thousands_sep']); ?> <?php echo $_POST['currency_code']; ?>
       </td>
-      <?php if (!empty($order->data['id'])) { ?>
-      <td><?php echo language::translate('title_order_total', 'Order Total'); ?><br />
-        <?php echo currency::format($order->data['payment_due'], false, false, settings::get('store_currency_code'), 1); ?> = <?php echo currency::format($order->data['payment_due'], false, false, $_POST['currency_code'], $_POST['currency_value']); ?>
-      </td>
-      <?php } ?>
     </tr>
   </table>
 
