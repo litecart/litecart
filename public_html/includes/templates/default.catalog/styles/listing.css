@@ -234,6 +234,7 @@ ul.listing-wrapper > li.product.column .name {
   white-space: nowrap;
   overflow: hidden;
   color: #333;
+  text-overflow: ellipsis;
 }
 ul.listing-wrapper > li.product.row .name {
   position: absolute;
@@ -247,6 +248,7 @@ ul.listing-wrapper > li.product.column .manufacturer {
   font-size: 0.9em;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 ul.listing-wrapper > li.product.row .manufacturer {
   position: absolute;

@@ -2,15 +2,17 @@
 
 ## Instructions
 
+  Note: Add-ons are version specific and might cause your upgraded platform to malfunction. Make sure all your add-ons are up to date.
+  
   1. Backup your files and database!!
   
-  2. Replace the old set set of files with the new ones. If you haven't patched your platform with add-ons and modifications that might be incompatible you can drop the new files on top of the old.
+  2. Note your current platform version.
   
-  3. Point your browser to http://www.yoursite.com/path/to/install/upgrade.php and follow the instructions on the page.
+  3. Upload the contents of the folder public_html/* to the corresponding path of your installation replacing the old files. Any modified files will be overwritten!
   
-  4. Make sure everything went fine and delete the install/ folder.
+  4. Point your browser to http://www.yoursite.com/path/to/install/upgrade.php and follow the instructions on the page.
   
-  Note: Add-ons are version specific and you might cause your upgraded platform to malfunction. Make sure your add-ons are up to date.
+  5. Make sure everything went fine and delete the install/ folder.
   
   If you need help, turn to our forums at http://forums.litecart.net.
   

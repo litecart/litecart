@@ -52,6 +52,13 @@ table.dataTable tr.footer td {
   color: #666;
 }
 
+table.dataTable tr.semi-transparent {
+  opacity: 1;
+}
+table.dataTable tr.semi-transparent > * {
+  opacity: 0.25;
+}
+
 table.dataTable .border-top {
   border-top: 1px solid #ececec;
 }

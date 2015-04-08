@@ -9,7 +9,6 @@
     public $website = 'http://www.litecart.net';
     
     public function __construct() {
-    
       $this->name = language::translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
     
@@ -89,13 +88,11 @@
       return $cost;
     }
     
-    public function before_select() {}
-    
-    public function before_process() {}
+    public function select() {}
     
     public function after_process() {}
     
-    function settings() {
+    public function settings() {
       return array(
         array(
           'key' => 'status',
@@ -157,14 +154,14 @@
           'key' => 'weight_rate_table_3',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 3: '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
-          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (I.e. 5:8.95;10:15.95;..)'),
+          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'input()',
         ),
         array(
           'key' => 'weight_rate_table_x',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
-          'description' => language::translate(__CLASS__.'description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (I.e. 5:8.95;10:15.95;..)'),
+          'description' => language::translate(__CLASS__.'description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'input()',
         ),
         array(

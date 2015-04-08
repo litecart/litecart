@@ -83,19 +83,19 @@ aside .box:first-child h3 {
   display: block;
 }
 #box-category-tree li a, #box-information li a {
-  color: #888;
+  color: inherit;
 }
 #box-category-tree a:hover, #box-information a:hover {
   color: rgb(0, 136, 204);
-}
-#box-category-tree li a {
-  
 }
 #box-category-tree li.active > a {
   color: rgb(0, 136, 204);
 }
 #box-category-tree li.active > a {
   background: #f3f3f3;
+}
+#box-category-tree li ul {
+  margin-left: 8px;
 }
 
 #box-recently-viewed-products li {

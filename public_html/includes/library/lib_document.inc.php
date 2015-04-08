@@ -17,10 +17,14 @@
     //public static function initiate() {
     //}
     
-    //public static function startup() {
-    //}
+    public static function startup() {
     
-    public static function before_capture() {
+    // Set template
+      if (substr(link::relpath(link::get_physical_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
+        self::$template = settings::get('store_template_admin');
+      } else {
+        self::$template = settings::get('store_template_catalog');
+      }
     
     // Set before-snippets
       self::$snippets['title'] = array(settings::get('store_name'));
@@ -34,14 +38,7 @@
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
                                              
-    document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
-      
-    // Set template
-      if (substr(link::relpath(link::get_physical_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
-        self::$template = settings::get('store_template_admin');
-      } else {
-        self::$template = settings::get('store_template_catalog');
-      }
+      document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
       
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
         self::$snippets['head_tags']['hreflang'] = '';
@@ -52,6 +49,9 @@
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
     }
+    
+    //public static function before_capture() {
+    //}
     
     public static function after_capture() {
     
