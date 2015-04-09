@@ -23,6 +23,8 @@
     
     foreach ($iterator as $file) {
       if (pathinfo($file, PATHINFO_EXTENSION) != 'php') continue;
+      //if (strpos(pathinfo($file, PATHINFO_FILENAME), 'vq2') !== false) continue;
+      
       $found_files++;
       $contents = file_get_contents($file);
       
