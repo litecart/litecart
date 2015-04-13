@@ -15,27 +15,6 @@
                                    . '  });' . PHP_EOL
                                    . '</script>';
   }
-  
-// Regional Settings Screeen
-  if (settings::get('regional_settings_screen_enabled')) {
-    if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
-      
-      functions::draw_fancybox('', array(
-        'centerOnScroll' => true,
-        'hideOnContentClick' => false,
-        'href' => document::ilink('regional_settings', array('redirect' => $_SERVER['REQUEST_URI'])),
-        'modal' => true,
-        'speedIn' => 600,
-        'transitionIn' => 'fade',
-        'transitionOut' => 'fade',
-        'type' => 'ajax',
-        'scrolling' => 'false',
-      ));
-      
-      session::$data['skip_regional_settings_screen'] = true;
-      setcookie('skip_regional_settings_screen', 'true', time() + (60*60*24*10), WS_DIR_HTTP_HOME);
-    }
-  }
 ?>
 <!DOCTYPE html>
 <html lang="{snippet:language}">
