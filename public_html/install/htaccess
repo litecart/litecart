@@ -27,6 +27,7 @@ ErrorDocument 500 "Internal Server Error"
   
   # Force HTTPS - Remember to clear the link cache
   #RewriteCond %{HTTPS} off
+  #RewriteCond %{REQUEST_METHOD} !=POST
   #RewriteRule ^(.*)$ https://%{HTTP_HOST}{BASE_DIR}$1 [R=301,L]
   
   # Web path to catalog root

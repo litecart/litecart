@@ -48,20 +48,22 @@
     public static function before_capture() {
     
     // Set regional data
-      if (settings::get('regional_settings_screen_enabled')) {
-        if (empty(customer::$data['id']) && empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
-          
-          functions::draw_fancybox('', array(
-            'centerOnScroll' => true,
-            'hideOnContentClick' => true,
-            'href' => document::ilink('select_region', array('redirect' => $_SERVER['REQUEST_URI'])),
-            //'modal' => true,
-            'speedIn' => 600,
-            'transitionIn' => 'fade',
-            'transitionOut' => 'fade',
-            'type' => 'ajax',
-            'scrolling' => 'false',
-          ));
+      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+        if (settings::get('regional_settings_screen_enabled')) {
+          if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
+            
+            functions::draw_fancybox('', array(
+              'centerOnScroll' => true,
+              'hideOnContentClick' => true,
+              'href' => document::ilink('regional_settings', array('redirect' => $_SERVER['REQUEST_URI'])),
+              //'modal' => true,
+              'speedIn' => 600,
+              'transitionIn' => 'fade',
+              'transitionOut' => 'fade',
+              'type' => 'ajax',
+              'scrolling' => 'false',
+            ));
+          }
         }
       }
     }
@@ -74,10 +76,12 @@
     
     public static function before_output() {
       
-      if (settings::get('regional_settings_screen_enabled')) {
-        if (empty(session::$data['skip_set_region_data']) && empty($_COOKIE['skip_set_region_data'])) {
-          session::$data['skip_set_region_data'] = true;
-          setcookie('skip_set_region_data', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+        if (settings::get('regional_settings_screen_enabled')) {
+          if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
+            session::$data['skip_regional_settings_screen'] = true;
+            setcookie('skip_regional_settings_screen', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+          }
         }
       }
     }

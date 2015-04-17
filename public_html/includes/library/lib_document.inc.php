@@ -8,8 +8,8 @@
     public static $snippets = array();
     public static $settings = array();
     
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
     
     //public static function load_dependencies() {
     //}
@@ -18,14 +18,16 @@
     //}
     
     public static function startup() {
-    
+      
+      header('X-Powered-By: ' PLATFORM_NAME .' '. PLATFORM_VERSION);
+      
     // Set template
-      if (substr(link::relpath(link::get_physical_link()), 0, strlen(WS_DIR_ADMIN)) == WS_DIR_ADMIN) {
+      if (preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
         self::$template = settings::get('store_template_admin');
       } else {
         self::$template = settings::get('store_template_catalog');
       }
-    
+      
     // Set before-snippets
       self::$snippets['title'] = array(settings::get('store_name'));
       
@@ -37,9 +39,10 @@
                                              . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.11.2.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
                                              . '</script>';
-                                             
+      
       document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
       
+    // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
         self::$snippets['head_tags']['hreflang'] = '';
         foreach (array_keys(language::$languages) as $language_code) {
