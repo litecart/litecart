@@ -17,8 +17,7 @@
   
   if (empty($manufacturer->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
-    header('HTTP/1.1 404 Not Found');
-    header('Location: '. document::ilink('manufacturers'));
+    header('Location: '. document::ilink('manufacturers'), true, 404);
     exit;
   }
   

@@ -6,8 +6,8 @@
     include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . route::$route['page'] .'.inc.php');
     
   } else {
-  
-    header('HTTP/1.1 404 Not Found');
+    
+    header('HTTP/1.1 404 Not Found', true, 404);
     
     if (preg_match('#\.(jpg|png|gif)$#', route::$request)) exit;
     

@@ -1,5 +1,4 @@
 <?php
-  
   if (empty($_GET['category_id'])) {
     header('Location: '. document::ilink('categories'));
     exit;
@@ -16,8 +15,7 @@
   
   if (empty($category->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
-    header('HTTP/1.1 404 Not Found');
-    header('Location: '. document::ilink('categories'));
+    header('Location: '. document::ilink('categories'), true, 404);
     exit;
   }
   
@@ -31,7 +29,7 @@
   document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
   
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
-
+  
   include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
@@ -56,7 +54,7 @@
         'date' => language::translate('title_date', 'Date'),
       ),
     );
-
+    
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
     if (database::num_rows($subcategories_query)) {

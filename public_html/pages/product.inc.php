@@ -5,8 +5,7 @@
   
   if (empty($product->id) || empty($product->status)) {
     notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
-    header('HTTP/1.1 404 File Not Found');
-    header('Location: '. document::ilink(''));
+    header('Location: '. document::ilink(''), true, 404);
     exit;
   }
   

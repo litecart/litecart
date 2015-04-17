@@ -91,7 +91,7 @@
           $do_redirect = true;
           
         // Don't forward if there is HTTP POST data
-          if (!empty($_POST)) $do_redirect = false;
+          if (file_get_contents('php://input') != '') $do_redirect = false;
           
         // Don't forward if requested not to
           if (isset(self::$route['redirect']) && self::$route['redirect'] != true) $do_redirect = false;
@@ -105,12 +105,10 @@
           
           if ($do_redirect) {
             if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_HTTP_HOME) {
-              header('HTTP/1.1 302 Moved Temporarily');
+              header('Location: '. $rewritten_url, true, 302);
             } else {
-              header('HTTP/1.1 301 Moved Permanently');
+              header('Location: '. $rewritten_url, true, 301);
             }
-            
-            header('Location: '. $rewritten_url);
             exit;
           }
         }
