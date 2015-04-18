@@ -14,8 +14,16 @@
   $page = database::fetch($pages_query);
   
   if (empty($page['status'])) {
-    notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
-    header('Location: '. document::ilink(''), true, 404);
+    notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));
+    http_response_code(410);
+    header('Refresh: 0; url='. document::ilink(''));
+    exit;
+  }
+  
+  if (empty($page['status'])) {
+    notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
+    http_response_code(404);
+    header('Refresh: 0; url='. document::ilink(''));
     exit;
   }
   

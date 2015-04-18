@@ -12,7 +12,7 @@
       notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));
       break;
     default:
-      notices::add('errors', language::translate('error_400_bad_request', 'The server cannot or will not process the request due to something that is perceived to be a client error.'));
+      notices::add('errors', language::translate('error_400_bad_request', 'The server cannot or will not process the request due to a client error.'));
       break;
   }
   
@@ -21,6 +21,7 @@
     exit;
   }
   
-  header('Location: '. document::ilink(''), true, $_GET['code']);
+  http_response_code($_GET['code']);
+  header('Refresh: 0; url='. document::ilink(''));
   exit;
 ?>
