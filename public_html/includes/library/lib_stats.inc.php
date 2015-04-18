@@ -48,14 +48,15 @@
       
     // Add stats to snippet
       document::$snippets['stats'] = '<p><strong>System Statistics:</strong></p>' . PHP_EOL
-                                           . '<p>'. language::translate('title_page_parse_time', 'Page Parse Time') .': ' . number_format(self::get('page_parse_time'), 6, '.', ' ') . ' s<br />' . PHP_EOL
-                                           . '  '. language::translate('title_page_capture_time', 'Page Capture Time') .': ' . number_format(self::get('page_capture_time'), 6, '.', ' ') . ' s<br />' . PHP_EOL
-                                           . '  '. language::translate('title_included_files', 'Included Files') .': ' . count(get_included_files()) . '<br />' . PHP_EOL
-                                           . '  '. language::translate('title_memory_limit', 'Memory Limit') .': ' . ini_get('memory_limit') . '<br />' . PHP_EOL
-                                           . '  '. language::translate('title_memory_peak', 'Memory Peak') .': ' . number_format(self::get('memory_peak_usage'), 2, '.', ' ') . ' MB<br />' . PHP_EOL
-                                           . '  '. language::translate('title_database_queries', 'Database Queries') .': ' . number_format(self::get('database_queries'), 0, '.', ' ') . ' queries<br />' . PHP_EOL
-                                           . '  '. language::translate('title_database_parse_time', 'Database Parse Time') .': ' . number_format(self::get('database_execution_time'), 6, '.', ' ') . ' s (' . number_format(self::get('database_execution_time')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)<br />' . PHP_EOL
-                                           . '</p>';
+                                   . '<ul>' . PHP_EOL
+                                   . '  <li>'. language::translate('title_page_parse_time', 'Page Parse Time') .': ' . number_format(self::get('page_parse_time'), 3, '.', ' ') . ' s</li>' . PHP_EOL
+                                   . '  <li>'. language::translate('title_page_capture_time', 'Page Capture Time') .': ' . number_format(self::get('page_capture_time'), 3, '.', ' ') . ' s</li>' . PHP_EOL
+                                   . '  <li>'. language::translate('title_included_files', 'Included Files') .': ' . count(get_included_files()) . '</li>' . PHP_EOL
+                                   . '  <li>'. language::translate('title_memory_peak', 'Memory Peak') .': ' . number_format(self::get('memory_peak_usage'), 2, '.', ' ') . ' MB</li>' . PHP_EOL
+                                   . '  <li>'. language::translate('title_memory_limit', 'Memory Limit') .': ' . ini_get('memory_limit') . '</li>' . PHP_EOL
+                                   . '  <li>'. language::translate('title_database_queries', 'Database Queries') .': ' . number_format(self::get('database_queries'), 0, '.', ' ') . '</li>' . PHP_EOL
+                                   . '  <li>'. language::translate('title_database_parse_time', 'Database Parse Time') .': ' . number_format(self::get('database_execution_time'), 3, '.', ' ') . ' s (' . number_format(self::get('database_execution_time')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)</li>' . PHP_EOL
+                                   . '</ul>';
     }
     
     //public static function before_output() {

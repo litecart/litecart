@@ -19,7 +19,7 @@
     
     public static function startup() {
       
-      header('X-Powered-By: ' PLATFORM_NAME .' '. PLATFORM_VERSION);
+      header('X-Powered-By: '. PLATFORM_NAME);
       
     // Set template
       if (preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
