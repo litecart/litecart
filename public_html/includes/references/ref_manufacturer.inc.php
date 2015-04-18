@@ -1,16 +1,19 @@
 <?php
   
   class ref_manufacturer {
+    
+    private $_id;
     private $_cache_id;
     private $_data = array();
     
     function __construct($manufacturer_id) {
       
+      $this->_id = (int)$category_id;
       $this->_cache_id = cache::cache_id('manufacturer_'.(int)$manufacturer_id);
       
-      $cache = cache::get($this->_cache_id, 'file');
-      
-      $this->_data = array_merge(array('id' => (int)$manufacturer_id), $cache ? $cache : array());
+      if ($cache = cache::get($this->_cache_id, 'file')) {
+        $this->_data = $cache;
+      }
     }
     
     public function __get($name) {
@@ -48,7 +51,7 @@
           
           $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
-            where manufacturer_id = '". (int)$this->_data['id'] ."'
+            where manufacturer_id = '". (int)$this->_id ."'
             and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
           );
           
@@ -80,13 +83,13 @@
           
           $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS ."
-            where id = '". (int)$this->_data['id'] ."'
+            where id = '". (int)$this->_id ."'
             limit 1;"
           );
           
           $row = database::fetch($query);
           
-          if (database::num_rows($query) == 0) trigger_error('Invalid manufacturer id ('. $this->_data['id'] .')', E_USER_ERROR);
+          if (database::num_rows($query) == 0) return;
           
           foreach ($row as $key => $value) $this->_data[$key] = $value;
           

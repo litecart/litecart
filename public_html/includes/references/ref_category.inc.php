@@ -1,16 +1,19 @@
 <?php
   
   class ref_category {
+    
+    private $_id;
     private $_cache_id;
     private $_data = array();
     
     function __construct($category_id) {
       
+      $this->_id = (int)$category_id;
       $this->_cache_id = cache::cache_id('category_'.(int)$category_id);
       
-      $cache = cache::get($this->_cache_id, 'file');
-      
-      $this->_data = array_merge(array('id' => (int)$category_id), $cache ? $cache : array());
+      if ($cache = cache::get($this->_cache_id, 'file')) {
+        $this->_data = $cache;
+      }
     }
     
     public function __get($name) {
@@ -49,7 +52,7 @@
           
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES_INFO ."
-            where category_id = '". (int)$this->_data['id'] ."'
+            where category_id = '". (int)$this->_id ."'
             and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
           );
           
@@ -87,7 +90,7 @@
           $query = database::query(
             "select id from ". DB_TABLE_PRODUCTS ."
             where status
-            and find_in_set ('". (int)$this->_data['id'] ."', categories);"
+            and find_in_set ('". (int)$this->_id ."', categories);"
           );
           
           while ($row = database::fetch($query)) {
@@ -102,7 +105,7 @@
           
           $query = database::query(
             "select id, name from ". DB_TABLE_CATEGORIES ."
-            where parent_id = '". (int)$this->_data['id'] ."';"
+            where parent_id = '". (int)$this->_id ."';"
           );
           
           while ($row = database::fetch($query)) {
@@ -119,13 +122,13 @@
           
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES ."
-            where id = '". (int)$this->_data['id'] ."'
+            where id = '". (int)$this->_id ."'
             limit 1;"
           );
           
           $row = database::fetch($query);
           
-          if (database::num_rows($query) == 0) trigger_error('Invalid category id ('. $this->_data['id'] .')', E_USER_ERROR);
+          if (database::num_rows($query) == 0) return;
           
           foreach ($row as $key => $value) $this->_data[$key] = $value;
           

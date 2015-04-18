@@ -2,14 +2,15 @@
   
   class ref_product {
     
-    private $_data = array();
+    private $_id;
     private $_currency_code;
+    private $_data = array();
     
     function __construct($product_id, $currency_code=null) {
       
-      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
+      $this->_id = (int)$product_id;
       
-      $this->_data['id'] = (int)$product_id;
+      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
     }
     
     public function __get($name) {
@@ -46,7 +47,7 @@
           
           $query = database::query(
             "select language_code, name, description, short_description, attributes, head_title, meta_description, meta_keywords from ". DB_TABLE_PRODUCTS_INFO ."
-            where product_id = '". (int)$this->_data['id'] ."'
+            where product_id = '". (int)$this->_id ."'
             and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
           );
           
@@ -82,7 +83,7 @@
           
           $products_campaigns_query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-            where product_id = '". (int)$this->_data['id'] ."'
+            where product_id = '". (int)$this->_id ."'
             and (start_date = '0000-00-00 00:00:00' or start_date <= '". date('Y-m-d H:i:s') ."')
             and (end_date = '0000-00-00 00:00:00' or end_date >= '". date('Y-m-d H:i:s') ."')
             order by end_date asc
@@ -166,7 +167,7 @@
           
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_IMAGES."
-            where product_id = '". (int)$this->_data['id'] ."'
+            where product_id = '". (int)$this->_id ."'
             order by priority asc, id asc;"
           );
           while ($row = database::fetch($query)) {
@@ -194,7 +195,7 @@
           
           $products_options_query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_OPTIONS ."
-            where product_id = '". (int)$this->_data['id'] ."'
+            where product_id = '". (int)$this->_id ."'
             order by priority;"
           );
           
@@ -322,7 +323,7 @@
           
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-            where product_id = '". (int)$this->_data['id'] ."'
+            where product_id = '". (int)$this->_id ."'
             ". (!empty($option_id) ? "and id = '". (int)$option_id ."'" : '') ."
             order by priority asc;"
           );
@@ -395,7 +396,7 @@
           
           $products_prices_query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_PRICES ."
-            where product_id = '". (int)$this->_data['id'] ."'
+            where product_id = '". (int)$this->_id ."'
             limit 1;"
           );
           $product_price = database::fetch($products_prices_query);
@@ -539,8 +540,8 @@
           $query = database::query(
             "select p.*, group_concat(pc.category_id) as categories
             from ". DB_TABLE_PRODUCTS ." p
-            left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on (pc.product_id = ". (int)$this->_data['id'] .")
-            where id = '". (int)$this->_data['id'] ."'
+            left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on (pc.product_id = ". (int)$this->_id .")
+            where id = '". (int)$this->_id ."'
             group by p.id
             limit 1;"
           );
