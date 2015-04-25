@@ -3,11 +3,6 @@
   class database {
     
     private $_links = array();
-    private $_type = 'mysql';
-    
-    public function __construct() {
-      if (function_exists('mysqli_connect')) $this->_type = 'mysqli';
-    }
     
     public function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE) {
       
@@ -15,11 +10,11 @@
       if (!isset($this->_links[$link]) || (!is_resource($this->_links[$link]) && !is_object($this->_links[$link]))) {
       
       // Connect
-        if ($this->_type == 'mysqli') {
-          $this->_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
+        if (function_exists('mysqli_connect')) {
+          $this->_links[$link] = mysqli_connect($server, $username, $password, $database) or die('Could not connect to database: '. mysqli_error($this->_links[$link]));
           
         } else {
-          $this->_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;
+          $this->_links[$link] = mysql_connect($server, $username, $password) or die('Could not connect to database: '. mysql_error($this->_links[$link]));
           
           mysql_select_db($database) or $this->_error(false, mysql_errno(), mysql_error());
         }
@@ -90,7 +85,7 @@
         if (!is_resource($link)) {
           $errors = true;
         } else {
-          if ($this->_type == 'mysqli') {
+          if (function_exists('mysqli_close')) {
             mysqli_close($link);
           } else {
             mysql_close($link);
@@ -113,7 +108,7 @@
       //if (strtolower(substr($query, 0, 6)) == 'select') $query = '/*qc=on*/' . $query; // mysqlnd query cache plugin
       
     // Perform mysql query
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_query')) {
         $result = mysqli_query($this->_links[$link], $query) or $this->_error($query, mysqli_errno($this->_links[$link]), mysqli_error($this->_links[$link]));
       } else {
         $result = mysql_query($query, $this->_links[$link]) or exit;
@@ -126,7 +121,7 @@
     public function fetch($result) {
     
     // Perform mysql query
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_fetch_assoc')) {
         $array = mysqli_fetch_assoc($result);
       } else {
         $array = mysql_fetch_assoc($result);
@@ -136,7 +131,7 @@
     }
     
     public function seek($result, $offset) {
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_data_seek')) {
         return mysqli_data_seek($result, $offset);
       } else {
         return mysql_data_seek($result, $offset);
@@ -144,7 +139,7 @@
     }
     
     public function num_rows($result) {
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_num_rows')) {
         return mysqli_num_rows($result);
       } else {
         return mysql_num_rows($result);
@@ -152,7 +147,7 @@
     }
 
     public function free($result) {
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_free_result')) {
         return mysqli_free_result($result);
       } else {
         return mysql_free_result($result);
@@ -160,7 +155,7 @@
     }
     
     public function insert_id($link='default') {
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_insert_id')) {
         return mysqli_insert_id($this->_links[$link]);
       } else {
         return mysql_insert_id($this->_links[$link]);
@@ -168,7 +163,7 @@
     }
     
     public function affected_rows($link='default') {
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_affected_rows')) {
         return mysqli_affected_rows($this->_links[$link]);
       } else {
         return mysql_affected_rows($this->_links[$link]);
@@ -176,7 +171,7 @@
     }
     
     public function info($link='default') {
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_info')) {
         return mysqli_info($this->_links[$link]);
       } else {
         return mysql_info($this->_links[$link]);
@@ -205,7 +200,7 @@
       if (!isset($this->_links[$link])) $this->connect();
       
     // Return safe input string
-      if ($this->_type == 'mysqli') {
+      if (function_exists('mysqli_real_escape_string')) {
         return mysqli_real_escape_string($this->_links[$link], $string);
       } else {
         return mysql_real_escape_string($string, $this->_links[$link]);

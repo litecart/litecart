@@ -186,6 +186,9 @@
           case 'customer':
             $hash_string .= serialize(customer::$data);
             break;
+          case 'domain':
+            $hash_string .= $_SERVER['HTTP_HOST'];
+            break;
           case 'region':
             $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
             break;

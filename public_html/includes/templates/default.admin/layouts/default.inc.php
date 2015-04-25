@@ -32,7 +32,7 @@ catch(e){window.attachEvent("onload", $buo_f)}
     <div id="content-wrapper">
     <table style="width: 100%;">
       <tr>
-        <td id="sidebar" style="vertical-align: top;">
+        <td id="sidebar" style="vertical-align: top; width: 230px;">
           <div class="logotype">
             <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 70, 'FIT_ONLY_BIGGER'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
           </div>

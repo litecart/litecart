@@ -60,12 +60,16 @@
       return $this->data['options'];
     }
     
-    public function select($module_id, $option_id) {
+    public function select($module_id, $option_id, $userdata=null) {
       
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
         $this->data['selected'] = array();
         notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
         return;
+      }
+      
+      if (!empty($userdata)) {
+        $this->data['userdata'][$module_id] = $userdata;
       }
       
       $this->data['selected'] = array(
@@ -125,7 +129,7 @@
       return $this->modules[$module_id]->after_process($order);
     }
     
-    public function run($method_name, $module_id='') {
+    public function run($method_name, $module_id=null) {
     
       if (empty($module_id)) {
         if (empty($this->data['selected']['id'])) return;
@@ -133,7 +137,7 @@
       }
       
       if (method_exists($this->modules[$module_id], $method_name)) {
-        return $this->modules[$module_id]->$method_name();
+        return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
       }
     }
   }

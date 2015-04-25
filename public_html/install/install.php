@@ -63,7 +63,7 @@
   define('DB_DATABASE_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
   
-  require('includes/database.class.php');
+  require_once('includes/database.class.php');
   $database = new database(null);
   
   echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;

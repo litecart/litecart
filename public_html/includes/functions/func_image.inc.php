@@ -30,7 +30,7 @@
       $source_webpath = str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($source)));
       
     // Set filename
-      switch ($method) {
+      switch (strtoupper($method)) {
         case 'CROP':
           $filename = sha1($source_webpath) . (($watermark) ? '_wm' : '_') . $target_width .'x'. $target_height .'_c.'. pathinfo($source, PATHINFO_EXTENSION);
           break;

@@ -151,7 +151,7 @@
       return $this->modules[$module_id]->after_process($order);
     }
     
-    public function run($method_name, $module_id='') {
+    public function run($method_name, $module_id=null) {
     
       if (empty($module_id)) {
         if (empty($this->data['selected']['id'])) return;
@@ -159,7 +159,7 @@
       }
       
       if (method_exists($this->modules[$module_id], $method_name)) {
-        return $this->modules[$module_id]->$method_name();
+        return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
       }
     }
   }

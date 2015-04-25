@@ -5,16 +5,19 @@
     header('X-Robots-Tag: noindex');
   }
   
-  $shipping = new mod_shipping();
+  if (cart::$data['total']['items'] == 0) return;
   
   if (empty(customer::$data['country_code'])) return;
   
+  $shipping = new mod_shipping();
+  
   if (!empty($_POST['set_shipping'])) {
     list($module_id, $option_id) = explode(':', $_POST['selected_shipping']);
-    if ($error = $shipping->run('before_select', $module_id)) {
-      notices::add('errors', $error);
+    $result = $shipping->run('before_select', $module_id, $option_id, $_POST);
+    if (!empty($result) && (is_string($result) || !empty($result['error']))) {
+      notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
-      $shipping->select($module_id, $option_id);
+      $shipping->select($module_id, $option_id, $_POST);
     }
     header('Location: '. ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') ? $_SERVER['REQUEST_URI'] : document::ilink('checkout')));
     exit;

@@ -7,13 +7,18 @@
   
   if (cart::$data['total']['items'] == 0) return;
   
-  $payment = new mod_payment();
-  
   if (empty(customer::$data['country_code'])) return;
+  
+  $payment = new mod_payment();
   
   if (!empty($_POST['set_payment'])) {
     list($module_id, $option_id) = explode(':', $_POST['selected_payment']);
-    $payment->select($module_id, $option_id, $_POST);
+    $result = $payment->run('before_select', $module_id, $option_id, $_POST);
+    if (!empty($result) && (is_string($result) || !empty($result['error']))) {
+      notices::add('errors', is_string($result) ? $result : $result['error']);
+    } else {
+      $payment->select($module_id, $option_id, $_POST);
+    }
     header('Location: '. ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') ? $_SERVER['REQUEST_URI'] : document::ilink('checkout')));
     exit;
   }

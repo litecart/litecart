@@ -19,10 +19,12 @@ ErrorDocument 500 "Internal Server Error"
   
   # Redirect from any alias domain to primary domain
   #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
+  #RewriteCond %{REQUEST_METHOD} !=POST
   #RewriteRule ^(.*)$ http://www.mydomain.com/{BASE_DIR}$1 [R=301,L]
   
   # Redirect non-www to www
   #RewriteCond %{HTTP_HOST} !^www\.
+  #RewriteCond %{REQUEST_METHOD} !=POST
   #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}{BASE_DIR}$1 [R=301,L]
   
   # Force HTTPS - Remember to clear the link cache

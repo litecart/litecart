@@ -39,7 +39,7 @@
     
     public function run($method_name, $module_id) {
       if (method_exists($this->modules[$module_id], $method_name)) {
-        return $this->modules[$module_id]->$method_name();
+        return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
       }
     }
   }
