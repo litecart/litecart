@@ -9,6 +9,7 @@
   <tr class="header">
     <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
     <th><?php echo language::translate('title_id', 'ID'); ?></th>
+    <th><?php echo language::translate('title_icon', 'Icon'); ?></th>
     <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
     <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
     <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
@@ -18,7 +19,7 @@
 <?php
 
   $orders_status_query = database::query(
-    "select os.id, os.is_sale, os.notify, osi.name, os.priority from ". DB_TABLE_ORDER_STATUSES ." os
+    "select os.*, osi.name, os.priority from ". DB_TABLE_ORDER_STATUSES ." os
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and language_code = '". language::$selected['code'] ."')
     order by os.priority, osi.name asc;"
   );
@@ -30,16 +31,19 @@
     
     $page_items = 0;
     while ($order_status = database::fetch($orders_status_query)) {
-    
       if (!isset($rowclass) || $rowclass == 'even') {
         $rowclass = 'odd';
       } else {
         $rowclass = 'even';
       }
+      
+      if (empty($order_status['icon'])) $order_status['icon'] = 'circle-thin';
+      if (empty($order_status['color'])) $order_status['color'] = '#cccccc';
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
     <td><?php echo $order_status['id']; ?></td>
+    <td><?php echo functions::draw_fontawesome_icon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>"><?php echo $order_status['name']; ?></a></td>
     <td style="text-align: center;"><?php echo empty($order_status['is_sale']) ? '' : 'x'; ?></td>
     <td style="text-align: center;"><?php echo empty($order_status['notify']) ? '' : 'x'; ?></td>
@@ -52,7 +56,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="7"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo database::num_rows($orders_status_query); ?></td>
+    <td colspan="8"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo database::num_rows($orders_status_query); ?></td>
   </tr>
 </table>
 

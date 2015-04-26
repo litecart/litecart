@@ -74,7 +74,8 @@
   }
   
   $orders_query = database::query(
-    "select o.*, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
+    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
+    left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
     ". ((!empty($_GET['order_status_id'])) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
@@ -93,9 +94,17 @@
       } else {
         $rowclass = 'even';
       }
+      
+      if (empty($order['order_status_id'])) {
+        $order['order_status_icon'] = 'minus';
+        $order['order_status_color'] = '#cccccc';
+      }
+      
+      if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'circle-thin';
+      if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
   <tr class="<?php echo $rowclass; ?><?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : ''; ?>">
-    <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+    <td><?php echo functions::draw_fontawesome_icon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
     <td><?php echo $order['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
     <td><?php echo $order['customer_tax_id']; ?></td>

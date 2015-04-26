@@ -46,6 +46,8 @@
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'slides.app/icon.png',
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'tax.app/icon.png',
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'translations.app/icon.png',
+    FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'translations.app/pages.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'translations.app/untranslated.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'users.app/icon.png',
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'vqmods.app/icon.png',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.js',

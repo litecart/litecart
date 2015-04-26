@@ -14,16 +14,6 @@
         'params' => array(),
       ),
       array(
-        'title' => language::translate('title_untranslated', 'Untranslated'),
-        'doc' => 'untranslated',
-        'params' => array(),
-      ),
-      array(
-        'title' => language::translate('title_translations_by_page', 'Translations By Page'),
-        'doc' => 'pages',
-        'params' => array(),
-      ),
-      array(
         'title' => language::translate('title_scan_files', 'Scan Files'),
         'doc' => 'scan',
         'params' => array(),
@@ -36,8 +26,6 @@
     ),
     'docs' => array(
       'search' => 'search.inc.php',
-      'untranslated' => 'untranslated.inc.php',
-      'pages' => 'pages.inc.php',
       'scan' => 'scan.inc.php',
       'csv' => 'csv.inc.php',
     ),

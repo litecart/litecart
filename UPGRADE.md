@@ -82,6 +82,8 @@
     ALTER TABLE `lc_languages` ADD `code2` VARCHAR(3) NOT NULL AFTER `code`;
     
     UPDATE `lc_languages` set code2 = 'eng' WHERE code = 'en' LIMIT 1;
+    
+    ALTER TABLE `lc_order_statuses` ADD `icon` VARCHAR(16) NOT NULL AFTER `id`, ADD `color` VARCHAR(16) NOT NULL AFTER `icon`;
   
   Deleted Files:
     
@@ -100,6 +102,8 @@
     admin/slides.app/icon.png
     admin/tax.app/icon.png
     admin/translations.app/icon.png
+    admin/translations.app/pages.inc.php
+    admin/translations.app/untranslated.inc.php
     admin/users.app/icon.png
     admin/vqmods.app/icon.png
     ext/fancybox/jquery.fancybox-1.3.4.js

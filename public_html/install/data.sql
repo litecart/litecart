@@ -328,18 +328,18 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', '', '', 'order_total_module_ot_subtotal', 'a:1:{s:10:"sort_order";s:1:"1";}', '', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 0, 1, NOW(), NOW()),
-(2, 1, 2, NOW(), NOW()),
-(3, 1, 3, NOW(), NOW()),
-(4, 1, 4, NOW(), NOW()),
-(5, 0, 5, NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'chain-broken', '#c0c0c0', 0, 1, NOW(), NOW()),
+(2, 'clock-o', '#d7d96f', 1, 2, NOW(), NOW()),
+(3, 'cog', '#ffa851', 1, 3, NOW(), NOW()),
+(4, 'truck', '#99cc66', 1, 4, NOW(), NOW()),
+(5, 'times', '#ff6666', 0, 5, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Awaiting payment', ''),
 (2, 2, 'en', 'Pending', ''),
 (3, 3, 'en', 'Processing', ''),
-(4, 4, 'en', 'Completed', ''),
+(4, 4, 'en', 'Dispatched', ''),
 (5, 5, 'en', 'Cancelled', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES

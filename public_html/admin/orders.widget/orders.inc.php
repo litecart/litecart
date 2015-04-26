@@ -15,6 +15,7 @@
 <div class="widget">
   <table width="100%" class="dataTable">
     <tr class="header">
+      <th></th>
       <th><?php echo language::translate('title_id', 'ID'); ?></th>
       <th width="100%"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
       <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
@@ -24,7 +25,8 @@
     </tr>
 <?php
   $orders_query = database::query(
-    "select o.*, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
+    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
+    left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.order_status_id
     order by o.date_created desc
@@ -39,8 +41,12 @@
       } else {
         $rowclass = 'even';
       }
+      
+      if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'circle-thin';
+      if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
     <tr class="<?php echo $rowclass; ?>"<?php echo ($order['order_status_id'] == 0) ? ' style="color: #999;"' : false; ?>>
+      <td><?php echo functions::draw_fontawesome_icon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
       <td><?php echo $order['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
       <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
