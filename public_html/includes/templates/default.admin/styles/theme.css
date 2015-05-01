@@ -100,8 +100,8 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
   margin: 2px 5px;
 }
 #box-apps-menu ul {
-  padding: 0;
-  margin-left: 28px;
+  padding-left: 15px;
+  margin-left: 18px;
   margin-bottom: 10px;
   border: none;
 }
@@ -112,7 +112,7 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
 }
 #box-apps-menu ul li a {
   font-weight: normal;
-  padding: 5px 10px;
+  padding: 3px 3px;
 }
 
 h1 .icon-wrapper {

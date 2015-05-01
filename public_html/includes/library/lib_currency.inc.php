@@ -131,7 +131,10 @@
       return $value / self::$currencies[$from]['value'] * self::$currencies[$to]['value'];
     }
     
-    public static function convert($value, $from=null, $to) {
+    public static function convert($value, $from, $to=null) {
+      
+      if (empty($to)) $to = settings::get('store_currency_code');
+      
       return self::calculate($value, $to, $from);
     }
     
