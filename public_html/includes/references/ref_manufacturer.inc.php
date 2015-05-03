@@ -8,7 +8,7 @@
     
     function __construct($manufacturer_id) {
       
-      $this->_id = (int)$category_id;
+      $this->_id = (int)$manufacturer_id;
       $this->_cache_id = cache::cache_id('manufacturer_'.(int)$manufacturer_id);
       
       if ($cache = cache::get($this->_cache_id, 'file')) {

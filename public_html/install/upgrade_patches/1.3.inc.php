@@ -83,6 +83,9 @@
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'icons/24x24/home.png',
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'icons/24x24/index.html',
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'icons/24x24/mail.png',
+    FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'includes/templates/default.catalog/images/home.png',
+    FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'includes/templates/default.catalog/images/scroll_up.png',
+    FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'includes/templates/default.catalog/images/search.png',
   );
   
   foreach ($deleted_files as $pattern) {

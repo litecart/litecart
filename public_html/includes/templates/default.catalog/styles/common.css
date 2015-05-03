@@ -5,66 +5,27 @@
 }
 
 .hover-light:hover {
-  -moz-box-shadow: 0px 0px 3px #0088cc !important;
-  -webkit-box-shadow: 0px 0px 3px #0088cc !important;
   box-shadow: 0px 0px 3px #0088cc !important;
-}
-
-.box-gradient1 {
-  background: #f2f2f2; /* Old browsers */
-  /* IE9 SVG, needs conditional override of 'filter' to 'none' */
-  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjY2JSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkZmRmZGYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-  background: -moz-linear-gradient(top,  #f2f2f2 0%, #f2f2f2 66%, #dfdfdf 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f2f2), color-stop(66%,#f2f2f2), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #f2f2f2 0%,#f2f2f2 66%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #f2f2f2 0%,#f2f2f2 66%,#dfdfdf 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #f2f2f2 0%,#f2f2f2 66%,#dfdfdf 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #f2f2f2 0%,#f2f2f2 66%,#dfdfdf 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-8 */
-  border-bottom: 1px solid rgb(235, 235, 235);
 }
 
 .rounded-corners {
   border-radius: 4px 4px 4px 4px;
-  -moz-border-radius: 4px 4px 4px 4px;
-  -webkit-border-radius: 4px;
-  -webkit-border-radius: 4px;
 }
 
 .rounded-corners-top {
   border-radius: 4px 4px 0px 0px;
-  -khtml-border-radius: 4px 4px 0px 0px;
-  -moz-border-radius: 4px 4px 0px 0px;
-  -o-border-radius: 4px 4px 0px 0px;
-  -webkit-border-top-left-radius: 4px;
-  -webkit-border-top-right-radius: 4px;
 }
 
 .rounded-corners-bottom {
   border-radius: 0px 0px 4px 4px;
-  -khtml-border-radius: 0px 0px 4px 4px;
-  -moz-border-radius: 0px 0px 4px 4px;
-  -o-border-radius: 0px 0px 4px 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
 }
 
 .rounded-corners-left {
   border-radius: 4px 0px 0px 4px;
-  -khtml-border-radius: 4px 0px 0px 4px;
-  -moz-border-radius: 4px 0px 0px 4px;
-  -o-border-radius: 4px 0px 0px 4px;
-  -webkit-border-top-left-radius: 4px;
-  -webkit-border-bottom-left-radius: 4px;
 }
 
 .rounded-corners-right {
   border-radius: 0px 4px 4px 0px;
-  -khtml-border-radius: 0px 4px 4px 0px;
-  -moz-border-radius: 0px 4px 4px 0px;
-  -o-border-radius: 0px 4px 4px 0px;
-  -webkit-border-top-right-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
 }
 
 .semi-transparent {
@@ -77,12 +38,10 @@
 
 .inner-shadow-top {
   box-shadow: inset 0px 4px 4px -4px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: inset 0px 4px 4px -4px rgba(0, 0, 0, 0.3); 
 }
 
 .inner-shadow {
   box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3); 
 }
 
 .engraved-text {

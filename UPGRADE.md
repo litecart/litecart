@@ -145,6 +145,9 @@
     images/icons/24x24/home.png
     images/icons/24x24/index.html
     images/icons/24x24/mail.png
+    includes/templates/default.catalog/images/home.png
+    includes/templates/default.catalog/images/scroll_up.png
+    includes/templates/default.catalog/images/search.png
   
   New Files:
   

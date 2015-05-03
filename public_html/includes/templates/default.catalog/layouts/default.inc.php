@@ -113,7 +113,10 @@
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
 </div>
 
-<a href="#" id="scroll-up">Scroll</a>
+<a id="scroll-up" href="#">
+  <?php echo functions::draw_fontawesome_icon('chevron-circle-up', 'style="color: #000;"', 'fa-3x'); ?>
+</a>
+
 <script>
   $(window).scroll(function(){
     if ($(this).scrollTop() > 100) {

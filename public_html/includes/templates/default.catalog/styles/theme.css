@@ -270,16 +270,14 @@ body {
   text-align: center;
 }
 
-#scroll-up{
-  width: 40px;
-  height: 40px;
-  opacity: 0.3;
+#scroll-up {
   position: fixed;
-  bottom: 5%;
-  right: 5%;
-  display: none;
-  text-indent: -9999px;
-  background: url('../images/scroll_up.png') no-repeat;
+  bottom: 30px;
+  right: 30px;
+  display: none;  
+  opacity: 0.3;
+  width: 48px;
+  height: 48px;
 }
 
 aside.column-left {
