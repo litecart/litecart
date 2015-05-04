@@ -607,7 +607,7 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_delivery_status_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {
     
     if ($input === true) $input = form_reinsert_value($name);
     
@@ -890,7 +890,7 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_sold_out_status_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_sold_out_statuses_list($name, $input=true, $multiple=false, $parameters='') {
     
     if ($input === true) $input = form_reinsert_value($name);
     

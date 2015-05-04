@@ -60,7 +60,7 @@
     if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
   <tr class="<?php echo $rowclass; ?>">
-    <td><u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br /><?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description'], ''); ?></td>
+    <td><u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br /><?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?></td>
     <td><?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], 'value', $setting['value']); ?></td>
     <td style="text-align: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
   </tr>
@@ -76,7 +76,7 @@
 ?>
   <tr class="<?php echo $rowclass; ?>">
     <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
-    <td><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128) . '...' : $setting['value']); ?></td>
+    <td><span title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128) . '...' : $setting['value']); ?></span></td>
     <td style="text-align: right;"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
   </tr>
 <?php

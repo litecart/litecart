@@ -248,6 +248,26 @@ INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decim
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
+INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'chain-broken', '#c0c0c0', 0, 1, NOW(), NOW()),
+(2, 'clock-o', '#d7d96f', 1, 2, NOW(), NOW()),
+(3, 'cog', '#ffa851', 1, 3, NOW(), NOW()),
+(4, 'truck', '#99cc66', 1, 4, NOW(), NOW()),
+(5, 'times', '#ff6666', 0, 5, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', 'Awaiting payment', ''),
+(2, 2, 'en', 'Pending', ''),
+(3, 3, 'en', 'Processing', ''),
+(4, 4, 'en', 'Dispatched', ''),
+(5, 5, 'en', 'Cancelled', '');
+-- --------------------------------------------------------
+INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 0, 0, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', 'pcs', '');
+-- --------------------------------------------------------
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('store_info', 'Store Info', 'Store information', 10),
 ('defaults', 'Defaults', 'Store default settings', 20),
@@ -269,17 +289,17 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('store_info', 'local', 'Store Language', 'The spoken language of your organization.', 'store_language_code', 'en', 'languages()', 18, NOW(), NOW()),
 ('store_info', 'global', 'Store Currency', 'The currency of which all prices conform to.', 'store_currency_code', 'USD', 'currencies()', 19, NOW(), NOW()),
 ('store_info', 'global', 'Store Zone', 'The zone of your store.', 'store_zone_code', '', 'zones()', 20, NOW(), NOW()),
-('store_info', 'global', 'Store Weight Class', 'The preselected weight class.', 'store_weight_class', 'kg', 'weight_classes()', 21, NOW(), NOW()),
-('store_info', 'global', 'Store Length Class', 'The preselected length class.', 'store_length_class', 'cm', 'length_classes()', 22, NOW(), NOW()),
+('store_info', 'global', 'Store Weight Class', 'The prefered weight class.', 'store_weight_class', 'kg', 'weight_classes()', 21, NOW(), NOW()),
+('store_info', 'global', 'Store Length Class', 'The prefered length class.', 'store_length_class', 'cm', 'length_classes()', 22, NOW(), NOW()),
 ('defaults', 'global', 'Default Language', 'The default language selected, if failed to identify.', 'default_language_code', 'en', 'languages()', 10, NOW(), NOW()),
-('defaults', 'global', 'Default Currency', 'The default currency selected.', 'default_currency_code', 'USD', 'currencies()', 11, NOW(), NOW()),
+('defaults', 'global', 'Default Currency', 'The default currency selected, if failed to identify.', 'default_currency_code', 'USD', 'currencies()', 11, NOW(), NOW()),
 ('defaults', 'global', 'Default Country', 'The default country selected if not set otherwise.', 'default_country_code', '{STORE_COUNTRY_CODE}', 'countries()', 12, NOW(), NOW()),
 ('defaults', 'global', 'Default Zone', 'The default zone selected if not set otherwise.', 'default_zone_code', '', 'zones()', 13, NOW(), NOW()),
 ('defaults', 'local', 'Default Tax Class', 'Default tax class that will be preset when creating new products.', 'default_tax_class_id', '1', 'tax_classes()', 14, NOW(), NOW()),
-('defaults', 'global', 'Default Display Prices Including Tax', 'Displays prices in including tax by default.', 'default_display_prices_including_tax', '1', 'toggle()', 15, NOW(), NOW()),
+('defaults', 'global', 'Default Display Prices Including Tax', 'Displays prices including tax by default.', 'default_display_prices_including_tax', '1', 'toggle()', 15, NOW(), NOW()),
 ('defaults', 'global', 'Default Quantity Unit', 'Default quantity unit that will be preset when creating new products.', 'default_quantity_unit_id', '1', 'quantity_units()', 16, NOW(), NOW()),
-('default', 'global', 'Default Sold Out Status', 'Default delivery status that will be preset when creating new products.', 'default_sold_out_status_id', '1', 'sold_out_statuses()', 17, NOW(), NOW()),
-('default', 'global', 'Default Delivery Status', 'Default sold out status that will be preset when creating new products.', 'default_delivery_status_id', '1', 'delivery_statuses()', 18, NOW(), NOW()),
+('defaults', 'global', 'Default Sold Out Status', 'Default sold out status that will be preset when creating new products.', 'default_sold_out_status_id', '1', 'sold_out_statuses()', 17, NOW(), NOW()),
+('defaults', 'global', 'Default Delivery Status', 'Default delivery status that will be preset when creating new products.', 'default_delivery_status_id', '1', 'delivery_statuses()', 18, NOW(), NOW()),
 ('general', 'global', 'Set Currency by Language', 'Chain select currency when changing language.', 'set_currency_by_language', '1', 'toggle()', 10, NOW(), NOW()),
 ('general', 'local', 'Contact Form CAPTCHA', 'Prevents spam by enabling CAPTCHA in the contact form.', 'contact_form_captcha_enabled', '1', 'toggle()', 11, NOW(), NOW()),
 ('general', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 12, NOW(), NOW()),
@@ -287,7 +307,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Data Table Rows', 'The number of data table rows per page.', 'data_table_rows_per_page', '25', 'input()', 11, NOW(), NOW()),
 ('listings', 'local', 'Display Stock Count', 'Show the available amounts of products in stock.', 'display_stock_count', '1', 'toggle()', 12, NOW(), NOW()),
 ('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping cost on product page.', 'display_cheapest_shipping', '1', 'toggle()', 13, NOW(), NOW()),
-('listings', 'local', 'Max Age for New Products', 'Display the new sticker for products younger than the give age. I.e. 1 month or 14 days', 'new_products_max_age', '1 month', 'input()', 14, NOW(), NOW()),
+('listings', 'local', 'Max Age for New Products', 'Display the new sticker for products younger than the give age. E.g. 1 month or 14 days', 'new_products_max_age', '1 month', 'input()', 14, NOW(), NOW()),
 ('listings', 'local', 'Similar Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_similar_products_num_items', '10', 'int()', 15, NOW(), NOW()),
 ('listings', 'local', 'Recently Viewed Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_recently_viewed_products_num_items', '4', 'int()', 16, NOW(), NOW()),
 ('listings', 'local', 'Latest Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_latest_products_num_items', '10', 'int()', 17, NOW(), NOW()),
@@ -310,9 +330,9 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('advanced', 'global', 'SEO Links Enabled', 'Enabling this requires .htaccess and mod_rewrite rules.', 'seo_links_enabled', '1', 'toggle()', 20, NOW(), NOW()),
 ('security', 'global', 'Blacklist', 'Deny blacklisted clients access to the site.', 'security_blacklist', '0', 'toggle("e/d")', 10, NOW(), NOW()),
 ('security', 'global', 'Session Hijacking Protection', 'Destroy sessions that were signed for a different IP address and user agent.', 'security_session_hijacking', '0', 'toggle("e/d")', 11, NOW(), NOW()),
-('security', 'global', 'HTTP POST Protection', 'Prevent incoming HTTP POST data from external sites by checking for valid form tickets.', 'security_http_post', '0', 'toggle("e/d")', 12, NOW(), NOW()),
-('security', 'global', 'Bad Bot Trap', 'Catch bad behaving bots from crawling your website.', 'security_bot_trap', '0', 'toggle("e/d")', 13, NOW(), NOW()),
-('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and prevent access to the site.', 'security_xss', '0', 'toggle("e/d")', 14, NOW(), NOW()),
+('security', 'global', 'HTTP POST Protection', 'Deny incoming HTTP POST data from external sites by checking for valid form tickets.', 'security_http_post', '0', 'toggle("e/d")', 12, NOW(), NOW()),
+('security', 'global', 'Bad Bot Trap', 'Catch bad behaving bots from crawling your website by setting up a trap.', 'security_bot_trap', '0', 'toggle("e/d")', 13, NOW(), NOW()),
+('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and deny access to the site.', 'security_xss', '0', 'toggle("e/d")', 14, NOW(), NOW()),
 ('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'templates("catalog")', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'templates("admin")', 0, NOW(), NOW()),
 ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', 0, NOW(), NOW()),
@@ -328,22 +348,10 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', '', '', 'order_total_module_ot_subtotal', 'a:1:{s:10:"sort_order";s:1:"1";}', '', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'chain-broken', '#c0c0c0', 0, 1, NOW(), NOW()),
-(2, 'clock-o', '#d7d96f', 1, 2, NOW(), NOW()),
-(3, 'cog', '#ffa851', 1, 3, NOW(), NOW()),
-(4, 'truck', '#99cc66', 1, 4, NOW(), NOW()),
-(5, 'times', '#ff6666', 0, 5, NOW(), NOW());
+INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
+(1, 1, NOW(), NOW()),
+(2, 0, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Awaiting payment', ''),
-(2, 2, 'en', 'Pending', ''),
-(3, 3, 'en', 'Processing', ''),
-(4, 4, 'en', 'Dispatched', ''),
-(5, 5, 'en', 'Cancelled', '');
--- --------------------------------------------------------
-INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 0, 0, NOW(), NOW());
--- --------------------------------------------------------
-INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'pcs', '');
+INSERT INTO `lc_sold_out_statuses_info` (`id`, `sold_out_status_id`, `language_code`, `name`) VALUES
+(1, 1, 'en', 'Temporary Sold Out'),
+(2, 2, 'en', 'Sold Out');

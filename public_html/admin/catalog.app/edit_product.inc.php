@@ -286,10 +286,10 @@ foreach (array_keys(language::$languages) as $language_code) {
                     <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
                   </td>
                   <td><strong><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></strong><br />
-                    <?php echo functions::form_draw_delivery_status_list('delivery_status_id', true); ?>
+                    <?php echo functions::form_draw_delivery_statuses_list('delivery_status_id', true); ?>
                   </td>
                   <td><strong><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></strong><br />
-                    <?php echo functions::form_draw_sold_out_status_list('sold_out_status_id', true); ?>
+                    <?php echo functions::form_draw_sold_out_statuses_list('sold_out_status_id', true); ?>
                   </td>
                 </tr>
               </table>
