@@ -347,11 +347,3 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', '', '', 'order_total_module_ot_shipping_fee', 'a:1:{s:10:"sort_order";s:2:"10";}', '', 0, NOW(), NOW()),
 ('', 'local', '', '', 'order_total_module_ot_subtotal', 'a:1:{s:10:"sort_order";s:1:"1";}', '', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
--- --------------------------------------------------------
-INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
-(1, 1, NOW(), NOW()),
-(2, 0, NOW(), NOW());
--- --------------------------------------------------------
-INSERT INTO `lc_sold_out_statuses_info` (`id`, `sold_out_status_id`, `language_code`, `name`) VALUES
-(1, 1, 'en', 'Temporary Sold Out'),
-(2, 2, 'en', 'Sold Out');
