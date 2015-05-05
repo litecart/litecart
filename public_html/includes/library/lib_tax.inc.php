@@ -40,7 +40,7 @@
         'zone_code' => $zone_code,
       );
       
-      return get_price($value, $tax_class_id, $calculate, $customer);
+      return self::get_price($value, $tax_class_id, $calculate, $customer);
     }
     
     public static function get_price($value, $tax_class_id, $calculate=null, $customer=null) {
