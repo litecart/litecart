@@ -21,29 +21,32 @@
              . '    <priority>1.0</priority>' . PHP_EOL
              . '  </url>' . PHP_EOL;
   
-  $categories_query = database::query(
-    "select id, date_updated from ". DB_TABLE_CATEGORIES ."
-    where status
-    order by id;"
-  );
-  while ($category = database::fetch($categories_query)) {
+  function custom_output_categories($parent_id=0, &$output) {
+    $categories_query = functions::catalog_categories_query($parent_id);
     
-    $hreflangs = '';
-    if (settings::get('seo_links_language_prefix')) {
-      foreach (array_keys(language::$languages) as $language_code) {
-        if ($language_code == settings::get('store_language_code')) continue;
-        $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('category', array('category_id' => $category['id']), false, array(), $language_code) .'" />' . PHP_EOL;
+    while ($category = database::fetch($categories_query)) {
+      
+      $hreflangs = '';
+      if (settings::get('seo_links_language_prefix')) {
+        foreach (array_keys(language::$languages) as $language_code) {
+          if ($language_code == settings::get('store_language_code')) continue;
+          $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('category', array('category_id' => $category['id']), false, array(), $language_code) .'" />' . PHP_EOL;
+        }
       }
+      
+      $output .= '  <url>' . PHP_EOL
+               . '    <loc>'. document::ilink('category', array('category_id' => $category['id'])) .'</loc>' . PHP_EOL
+               . $hreflangs
+               . '    <lastmod>'. date('Y-m-d', strtotime($category['date_updated'])) .'</lastmod>' . PHP_EOL
+               . '    <changefreq>weekly</changefreq>' . PHP_EOL
+               . '    <priority>1.0</priority>' . PHP_EOL
+               . '  </url>' . PHP_EOL;
+               
+      custom_output_categories($category['id'], $output);
     }
-    
-    $output .= '  <url>' . PHP_EOL
-             . '    <loc>'. document::ilink('category', array('category_id' => $category['id'])) .'</loc>' . PHP_EOL
-             . $hreflangs
-             . '    <lastmod>'. date('Y-m-d', strtotime($category['date_updated'])) .'</lastmod>' . PHP_EOL
-             . '    <changefreq>weekly</changefreq>' . PHP_EOL
-             . '    <priority>1.0</priority>' . PHP_EOL
-             . '  </url>' . PHP_EOL;
   }
+  
+  custom_output_categories(0, $output);
   
   $products_query = database::query(
     "select id, date_updated from ". DB_TABLE_PRODUCTS ."

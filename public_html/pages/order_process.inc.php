@@ -9,17 +9,19 @@
   
   if (isset($_POST['confirm_order'])) {
     
-    if (count($shipping->options()) > 0) {
+    if (!empty($shipping->modules) && count($shipping->options()) > 0) {
       if (empty($shipping->data['selected'])) {
         notices::add('errors', language::translate('error_no_shipping_method_selected', 'No shipping method selected'));
-        trigger_error('No shipping selected', E_USER_ERROR);
+        header('Location: '. document::ilink('checkout'));
+        exit;
       }
     }
     
-    if (count($payment->options()) > 0) {
+    if (!empty($payment->modules) && count($payment->options()) > 0) {
       if (empty($payment->data['selected'])) {
         notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
-        trigger_error('No payment selected', E_USER_ERROR);
+        header('Location: '. document::ilink('checkout'));
+        exit;
       }
     
       if ($payment_error = $payment->pre_check($order)) {

@@ -47,7 +47,7 @@
       <?php } ?>
       </div>
       
-      <div style="margin-bottom: 10px;">
+      <div class="stock-status" style="margin-bottom: 10px;">
       <?php if ($quantity > 0) { ?>
         <div class="stock-available"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
         <?php if ($sold_out_status_value) { ?>

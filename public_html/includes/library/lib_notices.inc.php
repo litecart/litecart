@@ -29,7 +29,7 @@
       
       foreach(array('debugs', 'errors', 'notices', 'warnings', 'success') as $notice_type) {
         if (!empty(notices::$data[$notice_type])) {
-          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', notices::$data[$notice_type]) . '</div>' . PHP_EOL;
+          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', array_unique(notices::$data[$notice_type])) . '</div>' . PHP_EOL;
         }
       }
       

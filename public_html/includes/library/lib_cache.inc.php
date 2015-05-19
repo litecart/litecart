@@ -238,9 +238,7 @@
       $_data = self::get($cache_id, $type, $max_age);
       
       if (!empty($_data)) {
-        echo '<!-- Begin: Cache \''. $cache_id .'\' -->' . PHP_EOL
-           . $_data . PHP_EOL
-           . '<!-- End: Cache \''. $cache_id .'\' -->' . PHP_EOL;
+        echo $_data;
         return false;
       }
       

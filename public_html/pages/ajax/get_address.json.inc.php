@@ -12,6 +12,7 @@
   if (!empty($result['error'])) die('{}');
   
   $json = array(
+    'tax_id' => isset($result['tax_id']) ? $result['tax_id'] : '',
     'company' => isset($result['company']) ? $result['company'] : '',
     'firstname' => isset($result['firstname']) ? $result['firstname'] : '',
     'lastname' => isset($result['lastname']) ? $result['lastname'] : '',
