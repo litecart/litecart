@@ -52,7 +52,7 @@
   function catalog_categories_query($parent_id=0) {
     
     $categories_query = database::query(
-      "select c.id, c.image, ci.name, ci.short_description from ". DB_TABLE_CATEGORIES ." c
+      "select c.id, c.image, ci.name, ci.short_description, c.date_updated from ". DB_TABLE_CATEGORIES ." c
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
       where c.status
       and c.parent_id = '". (int)$parent_id ."'
@@ -82,25 +82,29 @@
     
     switch ($filter['sort']) {
       case 'name':
-        $sql_global_sort = "order by name asc";
+        $sql_inner_sort = "";
+        $sql_outer_sort = "order by name asc";
         break;
       case 'price':
-        $sql_global_sort = "order by final_price asc";
+        $sql_inner_sort = "";
+        $sql_outer_sort = "order by final_price asc";
         break;
       case 'date':
-        $sql_global_sort = "order by p.date_created desc";
+        $sql_inner_sort = "order by p.date_created desc";
+        $sql_outer_sort = "";
         break;
       case 'occurrences':
-        $sql_global_sort = "order by occurrences desc";
+        $sql_inner_sort = "";
+        $sql_outer_sort = "order by occurrences desc";
         break;
       case 'rand':
-        $sql_global_sort = "order by rand()";
+        $sql_inner_sort = "";
+        $sql_outer_sort = "order by rand()";
         break;
       case 'popularity':
       default:
-        //$sql_local_sort = "order by (p.purchases / p.views) desc";
-        //$sql_local_sort = "order by (views / ((unix_timestamp() - unix_timestamp(p.date_created)) / 86400)) desc, p.date_created desc";
-        $sql_global_sort = "order by (views / timestampdiff(day, now(), from_unixtime(p.date_created))) desc";
+        $sql_inner_sort = "order by (p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+        $sql_outer_sort = "order by (p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
         break;
     }
     
@@ -168,6 +172,7 @@
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (isset($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : false) ."
         group by ptc.product_id
+        ". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? $sql_inner_sort : '') ."
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : "") ."
       ) p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
@@ -186,7 +191,7 @@
         ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : false) ."
         ". (!empty($sql_where_prices) ? $sql_where_prices : false) ."
       )
-      ". $sql_global_sort ."
+      ". $sql_outer_sort ."
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";
     ";
     
