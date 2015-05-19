@@ -15,6 +15,7 @@ html, body, body > table {
   margin: auto;
   text-align: center;
   padding: 0px;
+  box-shadow: 0px 0px 60px rgba(0,0,0,0.25)
 }
 #box-login .header {
   padding: 10px;
@@ -89,10 +90,10 @@ html, body, body > table {
       <div id="box-login-wrapper">
         <!--snippet:notices-->
       
-          <div id="box-login" class="box shadow rounded-corners">
+          <div id="box-login" class="box rounded-corners">
             
             <div class="header">
-              <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
+              <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 100px;" alt="<?php echo settings::get('store_name'); ?>" /></a>
             </div>
             
             <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>

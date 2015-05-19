@@ -33,11 +33,25 @@
     ~/images
   
   WinMerge is a powerful free tool to discover differences between two different sets of files and folders. Especially if they contain modifications by third party add-ons.
+  
+  Also check if any data needs processing by viewing the upgrade path at ~/install/upgrade_patches/{version}.inc.php
 
 ### LiteCart 1.2.2.1 to 1.3
   
   MySQL Changes:
   
+    CREATE TABLE IF NOT EXISTS `lc_products_to_categories` (
+       `product_id` int(11) NOT NULL,
+       `category_id` int(11) NOT NULL,
+       PRIMARY KEY(`product_id`, `category_id`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+    
+    ALTER TABLE `lc_products` ADD `default_category_id` int(11) NOT NULL AFTER `sold_out_status_id`;
+    
+    ALTER TABLE `lc_products` DROP INDEX `categories`;
+    
+    ALTER TABLE `lc_products` ADD KEY `default_category_id` (`default_category_id`);
+    
     CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
       `decimals` tinyint(1) NOT NULL,
