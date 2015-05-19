@@ -107,7 +107,7 @@
         'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'plus',
         'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
       ),
-      'help_link' => document::link('http://wiki.litecart.net/', array('title' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : ''))),
+      'help_link' => document::link('http://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : ''))),
     );
     
     $app_icon = '<span class="fa-stack fa-lg icon-wrapper">' . PHP_EOL
