@@ -57,7 +57,7 @@
             'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['country_code']),
             'description' => weight::format($weight, $this->settings['weight_class']),
             'fields' => '',
-            'cost' => $cost,
+            'cost' => $cost + $this->settings['handling_fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
           );
         } else {
@@ -163,6 +163,13 @@
           'title' => language::translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
           'description' => language::translate(__CLASS__.'description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'input()',
+        ),
+        array(
+          'key' => 'handling_fee',
+          'default_value' => '0',
+          'title' => language::translate(__CLASS__.':title_handling_fee', 'Handling Fee'),
+          'description' => language::translate(__CLASS__.':description_handling_fee', 'Enter your handling fee for the shipment.'),
+          'function' => 'float()',
         ),
         array(
           'key' => 'tax_class_id',
