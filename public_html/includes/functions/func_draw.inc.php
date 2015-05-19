@@ -15,7 +15,7 @@
     $list_item->snippets = array(
       'name' => $category['name'],
       'link' => document::ilink('category', array('category_id' => $category['id'])),
-      'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 340, 180, 'CROP'),
+      'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 340, 180, 'CROP'),
       'short_description' => $category['short_description'],
     );
     
@@ -48,7 +48,7 @@
       'name' => $product['name'],
       'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id')),
       'image' => $product['image'] ? WS_DIR_IMAGES . $product['image'] : '',
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 640, 640, 'FIT_USE_WHITESPACING'),
       'sticker' => $sticker,
       'manufacturer_name' => $product['manufacturer_name'],
       'short_description' => $product['short_description'],

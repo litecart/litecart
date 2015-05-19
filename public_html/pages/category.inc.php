@@ -22,7 +22,7 @@
   
   if (empty($category->status)) {
     notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
-    http_response_code(410);
+    http_response_code(404);
     header('Refresh: 0; url='. document::ilink('categories'));
     exit;
   }
@@ -52,7 +52,7 @@
       'h1_title' => $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']],
       'head_title' => $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']],
       'meta_description' => $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']],
-      'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 1024, 0, 'FIT_ONLY_BIGGER'),
+      'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->image, 1024, 0, 'FIT_ONLY_BIGGER'),
       'subcategories' => array(),
       'products' => array(),
       'sort_alternatives' => array(

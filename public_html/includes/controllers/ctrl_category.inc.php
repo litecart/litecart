@@ -126,8 +126,8 @@
       if (empty($this->data['id'])) return;
       
       $products_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS ."
-        where find_in_set('". (int)$this->data['id'] ."', categories)
+        "select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+        where category_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
       

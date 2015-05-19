@@ -98,13 +98,13 @@
     'sku' => $product->sku,
     'image' => array(
       'original' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 640, 640, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), 640, 640, 'FIT_USE_WHITESPACING'),
     ),
     'sticker' => '',
     'extra_images' => array(),
     'manufacturer_id' => !empty($product->manufacturer['id']) ? $product->manufacturer['id'] : '',
     'manufacturer_name' => !empty($product->manufacturer['name']) ? $product->manufacturer['name'] : '',
-    'manufacturer_image' => !empty($product->manufacturer['image']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 200, 60) : '',
+    'manufacturer_image' => !empty($product->manufacturer['image']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 200, 60) : '',
     'manufacturer_url' => !empty($product->manufacturer['id']) ? document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])) : '',
     'regular_price' => currency::format(tax::get_price($product->price, $product->tax_class_id)),
     'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::get_price($product->campaign['price'], $product->tax_class_id)) : 0,
@@ -143,7 +143,7 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $page->snippets['extra_images'][] = array(
       'original' => WS_DIR_IMAGES . $image,
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 180, 180, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, 180, 180, 'FIT_USE_WHITESPACING'),
     );
   }
   

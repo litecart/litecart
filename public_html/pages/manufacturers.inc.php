@@ -26,7 +26,7 @@
       $page->snippets['manufacturers'][] = array(
         'id' => $manufacturer['id'],
         'name' => $manufacturer['name'],
-        'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 220, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+        'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 220, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
       );
     }

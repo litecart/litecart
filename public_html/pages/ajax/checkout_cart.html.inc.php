@@ -19,7 +19,7 @@
       'id' => $item['id'],
       'product_id' => $item['product_id'],
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
-      'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 320, 320, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], 320, 320, 'FIT_USE_WHITESPACING'),
       'name' => $item['name'],
       'sku' => $item['sku'],
       'options' => array(),

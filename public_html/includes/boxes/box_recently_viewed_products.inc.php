@@ -13,7 +13,7 @@
       $box_recently_viewed_products->snippets['products'][$key] = array(
         'id' => $array['id'],
         'name' => $array['name'],
-        'thumbnail' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $array['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 150, 150, 'FIT_USE_WHITESPACING'),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $array['image'], 150, 150, 'FIT_USE_WHITESPACING'),
         'link' => document::ilink('product', array('product_id' => $array['id'])),
       );
     } else {

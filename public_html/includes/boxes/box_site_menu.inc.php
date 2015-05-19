@@ -44,7 +44,7 @@
               'id' => $category['id'],
               'title' => $category['name'],
               'link' => document::ilink('category', array('category_id' => $category['id'])),
-              'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 24, 24, 'CROP'),
+              'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 24, 24, 'CROP'),
               //'active' => (isset($_GET['category_id']) && $_GET['category_id'] == $category['id']) ? true : false,
               'subitems' => array(),
             );

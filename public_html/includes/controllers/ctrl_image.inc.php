@@ -1,36 +1,33 @@
 <?php
 
-  //! The original imagecopyresampled function is broken. This is a fixed version of it. 
-  /*!
-   *  \param dst_im Destination image
-   *  \param src_im Source image
-   *  \param dstX X coordinate of the top left corner of the destination area
-   *  \param dstY Y coordinate of the top left corner of the destination area
-   *  \param srcX X coordinate of the top left corner of the source area
-   *  \param srcY Y coordinate of the top left corner of the source area
-   *  \param dstW Width of the destination area
-   *  \param dstH Height of the destination area
-   *  \param srcW Width of the source area
-   *  \param srcH Height of the source area
-   */
-    function ImageCopyResampledFixed(&$dst_im, &$src_im, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
-    // ImageCopyResampled does not take srcX and srcY into considaration, this is a bug. This fixes this. 
-      $iSrcWidth = ImageSX($src_im);
-      $iSrcHeight = ImageSY($src_im);
-      $imgCropped = ImageCreateTrueColor($iSrcWidth-$srcX, $iSrcHeight-$srcY);
-      ImageAlphaBlending($imgCropped, true);
-      //ImageSaveAlpha($imgCropped, true);
-      ImageFill($imgCropped, 0, 0, ImageColorAllocateAlpha($imgCropped, 255, 255, 255, 127));
-      ImageCopy($imgCropped, $src_im, 0, 0, $srcX, $srcY, $iSrcWidth-$srcX, $iSrcHeight-$srcY);
-      ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
-      ImageDestroy($imgCropped);
-    }
+//! The original imagecopyresampled function is broken. This is a fixed version of it. 
+/*!
+ *  \param dst_im Destination image
+ *  \param src_im Source image
+ *  \param dstX X coordinate of the top left corner of the destination area
+ *  \param dstY Y coordinate of the top left corner of the destination area
+ *  \param srcX X coordinate of the top left corner of the source area
+ *  \param srcY Y coordinate of the top left corner of the source area
+ *  \param dstW Width of the destination area
+ *  \param dstH Height of the destination area
+ *  \param srcW Width of the source area
+ *  \param srcH Height of the source area
+ */
+  function ImageCopyResampledFixed(&$dst_im, &$src_im, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
+  // ImageCopyResampled does not take srcX and srcY into considaration, this is a bug. This fixes this. 
+    $iSrcWidth = ImageSX($src_im);
+    $iSrcHeight = ImageSY($src_im);
+    $imgCropped = ImageCreateTrueColor($iSrcWidth-$srcX, $iSrcHeight-$srcY);
+    ImageAlphaBlending($imgCropped, true);
+    //ImageSaveAlpha($imgCropped, true);
+    ImageFill($imgCropped, 0, 0, ImageColorAllocateAlpha($imgCropped, 255, 255, 255, 127));
+    ImageCopy($imgCropped, $src_im, 0, 0, $srcX, $srcY, $iSrcWidth-$srcX, $iSrcHeight-$srcY);
+    ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
+    ImageDestroy($imgCropped);
+  }
   
-####################################################################################
-#  THE CLASS  ######################################################################
-####################################################################################
-#
-
+########################################################################
+  
   class ctrl_image {
     public $gdo;
     private $_src;

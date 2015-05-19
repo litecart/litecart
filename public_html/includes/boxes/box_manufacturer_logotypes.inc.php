@@ -20,7 +20,7 @@
         $box_manufacturer_logotypes->snippets['logotypes'][] = array(
           'title' => $manufacturer['name'],
           'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
-          'image' => functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 0, 30, 'FIT'),
+          'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 30, 'FIT'),
         );
       }
 

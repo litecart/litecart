@@ -39,7 +39,7 @@
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => currency::format($order->data['payment_due'], false),
     'error' => $order->checkout_forbidden(),
-    'selected_payment' => array(),
+    'selected_payment' => null,
     'confirm' => !empty($payment->data['selected']['confirm']) ? $payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   );
   
@@ -48,7 +48,7 @@
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
       'name' => $item['name'],
       'sku' => $item['sku'],
-      'options' => array(),
+      'options' => $item['options'],
       'price' => !empty(customer::$data['display_prices_including_tax']) ? currency::format($item['price'] + $item['tax'], false) : currency::format($item['price'], false),
       'tax' => currency::format($item['tax'], false),
       'sum' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(($item['price'] + $item['tax']) * $item['quantity'], false) : currency::format($item['price'] * $item['quantity'], false),
@@ -66,7 +66,7 @@
   
   if (!empty($payment->data['selected'])) {
     $box_checkout_summary->snippets['selected_payment'] = array(
-      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon']) ? functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $payment->data['selected']['title'],
     );
   }
