@@ -401,8 +401,8 @@
           );
           $product_price = database::fetch($products_prices_query);
           
-          if ($product_price[$this->_currency_code] > 0) {
-            $this->_data['price'] = currency::convert($product_price[currency::$selected['code']], $this->_currency_code, settings::get('store_currency_code'));
+          if ($product_price[$this->_currency_code] != 0) {
+            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
           } else {
             $this->_data['price'] = $product_price[settings::get('store_currency_code')];
           }
@@ -528,8 +528,8 @@
                   $this->_data['sold_out_status'][$key][$language_code] = $this->_data['sold_out_status'][$key][settings::get('default_language_code')];
                 } else {
                   $this->_data['sold_out_status'][$key][$language_code] = '[untitled]';
-            }
-          }
+                }
+              }
             }
           }
           

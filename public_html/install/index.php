@@ -294,11 +294,10 @@
         </li>
         <li>Extensions
           <ul>
-            <li>curl <?php echo extension_loaded('curl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>exif <?php echo extension_loaded('exif') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>curl <?php echo extension_loaded('curl') ? '<span class="ok">[OK]</span>' : '<span class="warning">[Missing] Some features might not work as expected</span>'; ?></li>
             <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
             <li>mysqli <?php echo extension_loaded('mysqli') ? '<span class="ok">[OK]</span>' : (extension_loaded('mysql') ? '<span class="warning">[Warning] Obsolete extension mysql, install mysqli instead</span>' : '<span class="error">[Missing]</span>'); ?></li>
-            <li>gd <?php echo extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+            <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
           </ul>
         </li>
       </ul>

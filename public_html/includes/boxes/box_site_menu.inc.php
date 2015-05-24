@@ -14,7 +14,7 @@
       'subitems' => array(),
     );
     
-    if (!function_exists('site_menu_category_tree')) {
+    if (!function_exists('custom_site_menu_category_tree')) {
       function custom_site_menu_category_tree($parent_id=0, $depth=0, &$output) {
         
         $categories_query = database::query(

@@ -90,13 +90,12 @@
     ) as occurrences";
     
     $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
-    $sql_campaign_price_column = "if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)";
     
     $query = 
-      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name,  ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price, " . $sql_select_occurrences ."
+      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price, " . $sql_select_occurrences ."
       
       from (
-        select id, code, upc, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, date_created
+        select id, code, upc, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
         from ". DB_TABLE_PRODUCTS ."
         where status
         and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -107,7 +106,7 @@
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
       left join ". DB_TABLE_PRODUCTS_PRICES ." pp on (pp.product_id = p.id)
       left join (
-        select product_id, ". $sql_campaign_price_column ." as campaign_price
+        select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
         from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
         where (start_date <= '". date('Y-m-d H:i:s') ."')
         and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
@@ -146,7 +145,7 @@
         break;
       case 'popularity':
       default:
-        $query = str_replace("%sql_sort", "(p.views / timestampdiff(day, now(), from_unixtime(p.date_created))) desc", $query);
+        $query = str_replace("%sql_sort", "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc", $query);
         $sql_global_sort = "";
         break;
     }
