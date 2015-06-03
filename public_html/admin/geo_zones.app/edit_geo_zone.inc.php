@@ -138,7 +138,7 @@
                  + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                  + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
                  + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
-                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg') .'</a></td>'
+                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       $("#table-zones tr:last").before(output);
