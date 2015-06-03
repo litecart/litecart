@@ -895,8 +895,8 @@ foreach (currency::$currencies as $currency) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td><a class="add" href="#" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"'); ?></a><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
-                       + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_option_groups_list('options[new_option_i][group_id]', '')); ?></td>'
-                       + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
+                       + '  <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_option_groups_list('options[new_option_i][group_id]', '')); ?></td>'
+                       + '  <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
                        + '  <td style="text-align: center;"><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('options[new_option_i][price_operator]', array('+','*'), '+', false, 'data-size="auto"')); ?></td>'
                        + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field(settings::get('store_currency_code'), 'options[new_option_i]['. settings::get('store_currency_code') .']', 0)); ?></td>'
 <?php
@@ -991,8 +991,8 @@ foreach (currency::$currencies as $currency) {
           $("#table-option-combo").on("click", ".add", function(event) {
             event.preventDefault();
             var output = '<tr>'
-                       + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
-                       + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>'
+                       + '  <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
+                       + '  <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>'
                        + '  <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
                        + '</tr>';
             output = output.replace(/option_index/g, 'new_' + option_index);
