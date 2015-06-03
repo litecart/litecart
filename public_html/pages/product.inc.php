@@ -98,7 +98,8 @@
     'sku' => $product->sku,
     'image' => array(
       'original' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), 640, 640, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), 640, 640, 'FIT_USE_WHITESPACING'),
     ),
     'sticker' => '',
     'extra_images' => array(),

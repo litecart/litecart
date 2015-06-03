@@ -8,7 +8,7 @@
     <div class="product-images-wrapper">
 
       <div style="position: relative;">
-        <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product"><img src="<?php echo $image['thumbnail']; ?>" class="main-image zoomable shadow rounded-corners" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" /></a>
+        <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product"><img src="<?php echo $image['original']; ?>" srcset="<?php echo $image['thumbnail']; ?> 1x, <?php echo $image['thumbnail_2x']; ?> 2x" class="main-image zoomable shadow rounded-corners" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" /></a>
         <?php echo $sticker; ?>
       </div>
 <?php
