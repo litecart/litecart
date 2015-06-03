@@ -1,6 +1,6 @@
 <div id="page" style="min-width: 560px; max-width: 640px; margin: 0px auto;">
   
-  <div id="header" style="margin-bottom: 10px;">
+  <header id="header" style="margin-bottom: 10px;">
     <table cellspacing="0" cellpadding="0" style="width: 100%;">
       <tr>
         <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 50px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
@@ -11,7 +11,7 @@
         </td>
       </tr>
     </table>
-  </div>
+  </header>
 
   <div id="body">
     <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc;">
@@ -150,29 +150,30 @@
 ?>
   </div>
 
-  <table id="footer" cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
-    <tr>
-      <td style="vertical-align: top;">
-        <strong><?php echo language::translate('title_address', 'Address'); ?>:</strong><br />
-        <?php echo nl2br(settings::get('store_postal_address')); ?>
-      </td>
-      <?php if (settings::get('store_phone')) { ?>
-      <td style="vertical-align: top;">
-        <strong><?php echo language::translate('title_phone', 'Phone'); ?>:</strong><br />
-          <?php echo settings::get('store_phone'); ?><br />
-      </td>
-      <?php } ?>
-      <td style="vertical-align: top;">     
-        <strong><?php echo language::translate('title_email', 'E-mail'); ?>:</strong><br />
-          <?php echo settings::get('store_email'); ?>
-      </td>
-        <?php if (settings::get('store_tax_id')) { ?>
-      <td style="vertical-align: top;">
-        <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?>:</strong><br />
-        <?php echo settings::get('store_tax_id'); ?>
-      </td>
-      <?php } ?>
-    </tr>
-  </table>
-  
+  <footer id="footer">
+    <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
+      <tr>
+        <td style="vertical-align: top;">
+          <strong><?php echo language::translate('title_address', 'Address'); ?>:</strong><br />
+          <?php echo nl2br(settings::get('store_postal_address')); ?>
+        </td>
+        <?php if (settings::get('store_phone')) { ?>
+        <td style="vertical-align: top;">
+          <strong><?php echo language::translate('title_phone', 'Phone'); ?>:</strong><br />
+            <?php echo settings::get('store_phone'); ?><br />
+        </td>
+        <?php } ?>
+        <td style="vertical-align: top;">     
+          <strong><?php echo language::translate('title_email', 'E-mail'); ?>:</strong><br />
+            <?php echo settings::get('store_email'); ?>
+        </td>
+          <?php if (settings::get('store_tax_id')) { ?>
+        <td style="vertical-align: top;">
+          <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?>:</strong><br />
+          <?php echo settings::get('store_tax_id'); ?>
+        </td>
+        <?php } ?>
+      </tr>
+    </table>
+  </footer>
 </div>

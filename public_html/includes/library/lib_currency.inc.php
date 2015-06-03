@@ -12,27 +12,27 @@
     // Bind selected to session
       if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) session::$data['currency'] = array();
       self::$selected = &session::$data['currency'];
-      
-      self::load();
-      
-    // Set currency, if not set
-      if (empty(self::$selected) || empty(self::$currencies[self::$selected['code']]['status'])) self::set();
     }
     
-    public static function startup() {
-    
-    // Reload currencies if not UTF-8
-      if (strtoupper(language::$selected['charset']) != 'UTF-8') {
-        self::load();
-        self::set(self::$selected['code']);
-      }
+    public static function initiate() {
       
+    // Load currencies
+      self::load();
+      
+    // Set upon HTTP POST request
       if (!empty($_POST['set_currency'])) {
+        trigger_error('set_currency via HTTP POST is deprecated, use &language=xx instead', E_USER_DEPRECATED);
         self::set($_POST['set_currency']);
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;
       }
+      
+    // Identify/set currency
+      self::set();
     }
+    
+    //public static function startup() {
+    //}
     
     //public static function before_capture() {
     //}

@@ -20,6 +20,7 @@
       
     // Set upon HTTP POST request
       if (!empty($_POST['set_language'])) {
+        trigger_error('set_language via HTTP POST is deprecated, use &language=xx instead', E_USER_DEPRECATED);
         self::set($_POST['set_language']);
         header('Location: '. document::link());
         exit;
@@ -28,12 +29,11 @@
     // Identify/set language
       self::set();
       
-    // Set mysql charset and collation
-      database::set_encoding(self::$selected['charset']);
-      
-    // Reinstate list of languages
-      self::load();
-      self::set(self::$selected['code']);
+    // Reload languages if not UTF-8
+      if (strtoupper(self::$selected['charset']) != 'UTF-8') {
+        self::load();
+        self::set(self::$selected['code']);
+      }
     }
     
     //public static function initiate() {
@@ -125,6 +125,9 @@
       if (!setlocale(LC_TIME, explode(',', self::$selected['locale']))) {
         trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['code'], E_USER_WARNING);
       }
+      
+    // Set mysql charset and collation
+      database::set_encoding(self::$selected['charset']);
       
     // Chain select currency
       if (!empty(self::$selected['currency_code'])) {

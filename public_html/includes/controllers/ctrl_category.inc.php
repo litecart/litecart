@@ -184,7 +184,7 @@
       $image = new ctrl_image($file);
       
     // 456-12345_Fancy-title.jpg
-      $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('default_language_code')]) .'.'. $image->type();
+      $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')]) .'.'. $image->type();
       
       if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
       

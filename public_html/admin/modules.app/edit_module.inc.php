@@ -77,4 +77,4 @@
   
 <?php echo functions::form_draw_form_end(); ?>
 
-<p><a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id, 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a></p>
+<p><a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a></p>

@@ -8,6 +8,16 @@
     }
     
     public static function load_dependencies() {
+      if (empty(session::$data['notices'])) {
+        session::$data['notices'] = array(
+          'errors' => array(),
+          'warnings' => array(),
+          'notices' => array(),
+          'success' => array(),
+          'debugs' => array(),
+        );
+      }
+      
       self::$data = &session::$data['notices'];
     }
     

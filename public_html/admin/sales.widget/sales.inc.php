@@ -80,7 +80,7 @@
 
 <?php
   $daily_sales = array();
-  for ($timestamp = strtotime('-30 days'); date('Y-m-d', $timestamp) <= date('Y-m-d'); $timestamp = strtotime('+1 day', $timestamp)) {
+  for ($timestamp = strtotime('-29 days'); date('Y-m-d', $timestamp) <= date('Y-m-d'); $timestamp = strtotime('+1 day', $timestamp)) {
     
     $orders_query = database::query(
       "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax from ". DB_TABLE_ORDERS ."

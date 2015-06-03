@@ -35,6 +35,12 @@
     margin: -20mm;
   }
   
+  #page {
+    min-height: 100%;
+    position: relative;
+    page-break-after: always;
+  }
+  
   h1 {
     margin-top: 0px;
   }
@@ -50,13 +56,12 @@
   }
   
   .page-break  {
-    page-break-before: always;
+    page-break-before: always; 
   }
 }
 
 @media screen {
   #header {
-  
   }
   
   body {

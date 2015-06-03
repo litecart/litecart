@@ -60,7 +60,7 @@
         }
 ?>
         <tr>
-          <td><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo (string)$item->link; ?>" target="_blank"><?php echo (string)$item->title; ?></a><br/>
+          <td><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
             <span style="color: #666;"><?php echo (string)$item->description; ?></span>
           </td>
         </tr>
