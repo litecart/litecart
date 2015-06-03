@@ -26,7 +26,7 @@
       
       if (empty($page)) return false;
       
-      $parsed_link['path'] = functions::general_path_friendly($page['title']) .'-i-'. $page['page_id'];
+      $parsed_link['path'] = functions::general_path_friendly($page['title'], $language_code) .'-i-'. $page['page_id'];
       
       unset($parsed_link['query']['page_id']);
       

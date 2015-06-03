@@ -24,7 +24,7 @@
       $manufacturer = database::fetch($manufacturer_query);
       if (empty($manufacturer)) return;
       
-      $parsed_link['path'] = functions::general_path_friendly($manufacturer['name']) .'-m-'. $manufacturer['id'] .'/';
+      $parsed_link['path'] = functions::general_path_friendly($manufacturer['name'], $language_code) .'-m-'. $manufacturer['id'] .'/';
       
       unset($parsed_link['query']['manufacturer_id']);
       

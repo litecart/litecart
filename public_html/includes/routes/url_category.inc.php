@@ -20,7 +20,7 @@
       if (empty($category_trail)) return;
       
       $parsed_link['path'] = '';
-      foreach ($category_trail as $category_id => $category_name) $parsed_link['path'] .= functions::general_path_friendly($category_name) .'-c-'. $category_id .'/';
+      foreach ($category_trail as $category_id => $category_name) $parsed_link['path'] .= functions::general_path_friendly($category_name, $language_code) .'-c-'. $category_id .'/';
       
       unset($parsed_link['query']['category_id']);
       

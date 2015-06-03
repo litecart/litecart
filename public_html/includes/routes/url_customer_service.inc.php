@@ -24,7 +24,7 @@
         $page = database::fetch($page_query);
         
         if (!empty($page)) {
-          $parsed_link['path'] = functions::general_path_friendly($page['title']) .'-s-'. $page['page_id'];
+          $parsed_link['path'] = functions::general_path_friendly($page['title'], $language_code) .'-s-'. $page['page_id'];
         } else {
           $parsed_link['path'] = 'untitled-s-'. $page['page_id'];
         }
@@ -32,7 +32,7 @@
       } else {
       
         $title = language::translate('title_customer_service', 'Customer Service', $language_code);
-        $parsed_link['path'] = functions::general_path_friendly($title) .'-s-0';
+        $parsed_link['path'] = functions::general_path_friendly($title, $language_code) .'-s-0';
       }
       
       if (isset($parsed_link['query']['page_id'])) unset($parsed_link['query']['page_id']);
