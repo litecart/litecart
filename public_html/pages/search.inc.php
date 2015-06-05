@@ -45,22 +45,6 @@
   <div class="content">
     <ul class="listing-wrapper">
 <?php
-    $categories_info_query = database::query(
-      "select c.id
-      from ". DB_TABLE_CATEGORIES ." c, ". DB_TABLE_CATEGORIES_INFO ." ci
-      where c.status
-      and (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-      and (
-        ci.name like '%". database::input($_GET['query']) ."%'
-        or ci.description like '%". database::input($_GET['query']) ."%'
-      );"
-    );
-    
-    $category_ids = array();
-    while ($category = database::fetch($categories_info_query)) {
-      $category_ids[] = (int)$category['id'];
-    }
-    
     $manufacturers_info_query = database::query(
       "select m.id
       from ". DB_TABLE_MANUFACTURERS ." m, ". DB_TABLE_MANUFACTURERS_INFO ." mi
@@ -81,12 +65,11 @@
       + if(p.upc like '%". database::input($_GET['query']) ."%', 3, 0)
       + if(p.sku like '%". database::input($_GET['query']) ."%', 3, 0)
       + if(p.code like '%". database::input($_GET['query']) ."%', 3, 0)
-      + if(p.keywords like '%". database::input($_GET['query']) ."%', 2, 0)
-      + if(pi.name like '%". database::input($_GET['query']) ."%', 2, 0)
+      + if(p.keywords like '%". database::input($_GET['query']) ."%', 3, 0)
+      + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
       + if(pi.short_description like '%". database::input($_GET['query']) ."%', 1, 0)
       + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
-      + if(find_in_set('". implode("', '", $category_ids)."', (select group_concat(pc.category_id) from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." pc where pc.product_id = p.id)), 1, 0)
-      + if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", database::input($manufacturer_ids)) ."'), 1, 0)
+      + if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", database::input($manufacturer_ids)) ."'), 2, 0)
     ) as occurrences";
     
     $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
@@ -112,18 +95,17 @@
         and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
         order by end_date asc
       ) pc on (pc.product_id = p.id)
-      
       where (
         p.code like '%". database::input($_GET['query']) ."%'
         or p.sku like '%". database::input($_GET['query']) ."%'
         or p.upc like '%". database::input($_GET['query']) ."%'
         or p.keywords like '%". database::input($_GET['query']) ."%'
-        ". (!empty($category_ids) ? "or find_in_set('". implode("', '", $category_ids) ."', (select GROUP_CONCAT(pc.category_id) FROM ".DB_TABLE_PRODUCTS_TO_CATEGORIES." pc WHERE pc.product_id = p.id ))" : false) ."
-        ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in ('". implode("', '", $manufacturer_ids) ."')" : false) ."
+        ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in (". implode(", ", $manufacturer_ids) .")" : false) ."
         or pi.name like '%". database::input($_GET['query']) ."%'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
       )
+      
       order by %sql_sort;
     ";
    
