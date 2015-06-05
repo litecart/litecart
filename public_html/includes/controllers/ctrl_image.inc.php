@@ -1,18 +1,18 @@
 <?php
 
-//! The original imagecopyresampled function is broken. This is a fixed version of it. 
-/*!
- *  \param dst_im Destination image
- *  \param src_im Source image
- *  \param dstX X coordinate of the top left corner of the destination area
- *  \param dstY Y coordinate of the top left corner of the destination area
- *  \param srcX X coordinate of the top left corner of the source area
- *  \param srcY Y coordinate of the top left corner of the source area
- *  \param dstW Width of the destination area
- *  \param dstH Height of the destination area
- *  \param srcW Width of the source area
- *  \param srcH Height of the source area
- */
+  //! The original imagecopyresampled function is broken. This is a fixed version of it. 
+  /*!
+   *  \param dst_im Destination image
+   *  \param src_im Source image
+   *  \param dstX X coordinate of the top left corner of the destination area
+   *  \param dstY Y coordinate of the top left corner of the destination area
+   *  \param srcX X coordinate of the top left corner of the source area
+   *  \param srcY Y coordinate of the top left corner of the source area
+   *  \param dstW Width of the destination area
+   *  \param dstH Height of the destination area
+   *  \param srcW Width of the source area
+   *  \param srcH Height of the source area
+   */
   if (!function_exists('ImageCopyResampledFixed')) {
     function ImageCopyResampledFixed(&$dst_im, &$src_im, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
       $iSrcWidth = ImageSX($src_im);
@@ -21,8 +21,9 @@
       ImageAlphaBlending($imgCropped, true);
       ImageFill($imgCropped, 0, 0, ImageColorAllocateAlpha($imgCropped, 255, 255, 255, 127));
       ImageCopy($imgCropped, $src_im, 0, 0, $srcX, $srcY, $iSrcWidth-$srcX, $iSrcHeight-$srcY);
-      ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
+      $result = ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
       ImageDestroy($imgCropped);
+      return $result;
     }
   }
   
@@ -40,21 +41,26 @@
       
       if (!empty($force_library)) {
         $this->_library = $force_library;
+      } else if (extension_loaded('imagick')) {
+        $this->_library = 'imagick';
+      } else if (extension_loaded('gd')) {
+        $this->_library = 'gd';
       } else {
-        switch(true) {
-          case (extension_loaded('imagick')):
-            $this->_library = 'imagick';
-            break;
-          default:
-            $this->_library = 'gd';
-            break;
-        }
+        trigger_error('No image processing library available', E_USER_ERROR);
       }
       
-      if (!empty($file)) $this->_src = $file;
+      if (!empty($file)) $this->set($file);
     }
     
-    public function load($file='') {
+    public function set($file) {
+      $this->_src = $file;
+      $this->_image = null;
+      $this->_width = null;
+      $this->_height = null;
+      $this->_type = null;
+    }
+    
+    public function load($file=null) {
       
       if (!empty($file)) $this->_src = $file;
       
@@ -63,40 +69,37 @@
         return false;
       }
       
-      $this->_type = null;
-      $this->_width = null;
-      $this->_height = null;
-      
       switch($this->_library) {
         case 'imagick':
-          
           try {
             $this->_image = new imagick($this->_src);
             return true;
           } catch (Exception $e) {
-            trigger_error('Failed reading image ('.$this->_src.'): '. $e->getMessage(), E_USER_WARNING);
+            trigger_error($e->getMessage() .' ('.$this->_src.')', E_USER_WARNING);
             return false;
           }
           
         case 'gd':
-        
           switch(strtolower(pathinfo($this->_src, PATHINFO_EXTENSION))) {
             case 'gif':
               $this->_type = 'gif';
               $this->_image = ImageCreateFromGIF($this->_src);
               break;
+              
             case 'jpg':
             case 'jpeg':
               $this->_type = 'jpg';
               $this->_image = ImageCreateFromJPEG($this->_src);
               break;
+              
             case 'png':
               $this->_type = 'png';
               $this->_image = ImageCreateFromPNG($this->_src);
               break;
+              
             default:
               $contents = functions::http_fetch($this->_src);
-              $this->load_from_string($image);
+              $this->load_from_string(file_get_contents($file));
               break;
           }
           
@@ -106,7 +109,7 @@
       }
     }
     
-    function load_from_string($binary, $type='png') {
+    public function load_from_string($binary, $type='png') {
       
       $this->_type = $type;
       $this->_width = null;
@@ -119,12 +122,12 @@
           try {
             return $this->_image->readImageBlob($binary);
           } catch (Exception $e) {
-            trigger_error('Failed reading image ('.$this->_src.'): '. $e->getMessage(), E_USER_WARNING);
+            trigger_error($e->getMessage() . ' ('.$this->_src.')', E_USER_WARNING);
             return false;
           }
           
         case 'gd':
-      
+          
           $this->_type = $type;
           $this->_image = ImageCreateFromString($binary);
           
@@ -141,12 +144,12 @@
         return false;
       }
       
-    // Calculate source's dimensional ratio
-      $source_ratio = $this->width() / $this->height();
-      
     // Convert percentage dimensions to pixels
       if (strpos($width, '%')) $width = $this->width() * str_replace('%', '', $width) / 100;
       if (strpos($height, '%')) $height = $this->height() * str_replace('%', '', $height) / 100;
+      
+    // Calculate source proportion
+      $source_ratio = $this->width() / $this->height();
       
     // Complete missing target dimensions
       if ($width == 0) $width = round($height * $source_ratio);
@@ -155,7 +158,7 @@
       switch($this->_library) {
         
         case 'imagick':
-        
+          
           if (empty($this->_image)) $this->load();
           
           if (empty($this->_image)) {
@@ -164,40 +167,54 @@
           }
           
           try {
-            $this->_image->setimagebackgroundcolor('rgba(255,255,255,0)');
+            $this->_image->setImageBackgroundColor('rgba(255,255,255,0)');
             
             switch(strtoupper($clipping)) {
               case 'FIT':
-                //$result = $this->_image->scaleImage($width, $height, true); // Fit, no whitespacing
-                //return $this->_image->adaptiveResizeImage($width, $height, true); // Fit, no whitespacing
-                return $this->_image->thumbnailImage($width, $height, true); // Fit, No whitespacing
-                break;
-              case 'FIT_USE_WHITESPACING':
-                return $this->_image->thumbnailImage($width, $height, true, true); // Fill
-                break;
+                //$result = $this->_image->scaleImage($width, $height, true);
+                //return $this->_image->adaptiveResizeImage($width, $height, true);
+                return $this->_image->thumbnailImage($width, $height, true);
+                
               case 'FIT_ONLY_BIGGER':
-                break;
+                if ($this->width() <= $width && $this->height() <= $height) return true;
+                return $this->_image->thumbnailImage($width, $height, true);
+                
+              case 'FIT_USE_WHITESPACING':
+                return $this->_image->thumbnailImage($width, $height, true, true);
+                
               case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
-                break;
+                if ($this->width() <= $width && $this->height() <= $height) {
+                  $_newimage = new imagick();
+                  $_newimage->newImage($width, $height, 'rgba(255,255,255,0)');
+                  $offset_x = round(($width - $this->width()) / 2);
+                  $offset_y = round(($height - $this->height()) / 2);
+                  $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
+                  $this->_image = $_newimage;
+                  return $result;
+                }
+                
+                return $this->_image->thumbnailImage($width, $height, true, true);
+                
               case 'CROP':
-                return $this->_image->cropThumbnailImage($width, $height); // Crop
-                break;
+                return $this->_image->cropThumbnailImage($width, $height);
+                
               case 'CROP_ONLY_BIGGER':
-                break;
+                if ($this->width() <= $width && $this->height() <= $height) return true;
+                return $this->_image->cropThumbnailImage($width, $height);
+                
               case 'STRETCH':
                 //return $this->_image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1); // Stretch
                 //return $this->_image->adaptiveResizeImage($width, $height, false); // Stretch
                 return $this->_image->thumbnailImage($width, $height, false); // Stretch
+                
+            default:
+              trigger_error("Unknown clipping method ($clipping)", E_USER_WARNING);
+              return false;
             }
-            //var_dump($this->_image->getImageWidth(), $this->_image->getImageHeight());
-            //$this->_image->setImageResolution(72,72);
-            //var_dump($this->_image->getImageWidth(), $this->_image->getImageHeight());exit;
-            //$result = $this->_image->resampleImage($width, $height, \Imagick::FILTER_LANCZOS, 1); // * DPI goes crazy
-            
           } catch (Exception $e) {
-            trigger_error('Failed reading image ('.$this->_src.'): '. $e->getMessage());
+          trigger_error($e->getMessage() ." {$width}x{$height} ($this->_src)", E_USER_WARNING);
+            return false;
           }
-          return false;
           
         case 'gd':
           
@@ -218,7 +235,7 @@
               $destination_width = $width;
               $destination_height = $height;
               
-              if ($clipping == 'CROP_ONLY_BIGGER') {
+              if (strtoupper($clipping) == 'CROP_ONLY_BIGGER') {
                 if ($this->width() < $destination_width) {
                   $destination_width = $this->width();
                 }
@@ -228,41 +245,41 @@
               }
               
             // Create output image container
-              $oResized = ImageCreateTrueColor($destination_width, $destination_height);
+              $_resized = ImageCreateTrueColor($destination_width, $destination_height);
               
             // Calculate destination dimensional ratio
               $destination_ratio = $destination_width / $destination_height;
               
-              ImageAlphaBlending($oResized, false);
-              ImageSaveAlpha($oResized, true);
+              ImageAlphaBlending($_resized, false);
+              ImageSaveAlpha($_resized, true);
               
-              ImageFill($oResized, 0, 0, ImageColorAllocateAlpha($oResized, 255, 255, 255, 127));
+              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, 255, 255, 255, 127));
               
             // Perform resample
               if (($this->width() / $destination_width) > ($this->height() / $destination_height)) {
-                ImageCopyResampledFixed($oResized, $this->_image, 0, 0, ($this->width() - $destination_width * $this->height() / $destination_height) / 2, 0, $destination_width, $destination_height, $this->height() * $destination_ratio, $this->height());
+                ImageCopyResampledFixed($_resized, $this->_image, 0, 0, ($this->width() - $destination_width * $this->height() / $destination_height) / 2, 0, $destination_width, $destination_height, $this->height() * $destination_ratio, $this->height());
               } else {
-                ImageCopyResampledFixed($oResized, $this->_image, 0, 0, 0, ($this->height() - $destination_height * $this->width() / $destination_width) / 2, $destination_width, $destination_height, $this->width(), $this->width() / $destination_ratio);
+                ImageCopyResampledFixed($_resized, $this->_image, 0, 0, 0, ($this->height() - $destination_height * $this->width() / $destination_width) / 2, $destination_width, $destination_height, $this->width(), $this->width() / $destination_ratio);
               }
               
               break;
             
             case 'STRETCH':
-            
+              
             // Calculate dimensions
               $destination_width = ($width == 0) ? $this->width() : $width;
               $destination_height = ($height == 0) ? $this->height() : $height;
               
             // Create output image container
-              $oResized = ImageCreateTrueColor($destination_width, $destination_height);
+              $_resized = ImageCreateTrueColor($destination_width, $destination_height);
               
-              ImageAlphaBlending($oResized, false);
-              ImageSaveAlpha($oResized, true);
+              ImageAlphaBlending($_resized, false);
+              ImageSaveAlpha($_resized, true);
               
-              ImageFill($oResized, 0, 0, ImageColorAllocateAlpha($oResized, 255, 255, 255, 127));
+              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, 255, 255, 255, 127));
               
             // Perform resample
-              ImageCopyResampledFixed($oResized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
+              ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());
               
               break;
               
@@ -279,7 +296,7 @@
                 $destination_width = round($destination_height * $source_ratio);
               }
               
-              if ($clipping == 'FIT_ONLY_BIGGER' || $clipping == 'FIT_ONLY_BIGGER_USE_WHITESPACING') {
+              if (in_array(strtoupper($clipping), array('FIT_ONLY_BIGGER', 'FIT_ONLY_BIGGER_USE_WHITESPACING'))) {
                 if ($destination_width > $destination_height) {
                   if ($destination_width > $this->width()) {
                     $destination_width = $this->width();
@@ -293,35 +310,35 @@
                 }
               }
               
-              if ($clipping == 'FIT_USE_WHITESPACING' || $clipping == 'FIT_ONLY_BIGGER_USE_WHITESPACING') {
-              
-              // Create output image container
-                $oResized = ImageCreateTrueColor($width, $height);
+              if (in_array(strtoupper($clipping), array('FIT_USE_WHITESPACING', 'FIT_ONLY_BIGGER_USE_WHITESPACING'))) {
                 
-                ImageAlphaBlending($oResized, false);
-                ImageSaveAlpha($oResized, true);
+              // Create output image container
+                $_resized = ImageCreateTrueColor($width, $height);
+                
+                ImageAlphaBlending($_resized, false);
+                ImageSaveAlpha($_resized, true);
                 
               // Fill with whitespace color
-                ImageFill($oResized, 0, 0, ImageColorAllocateAlpha($oResized, 255, 255, 255, 127));
+                ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, 255, 255, 255, 127));
                 
               // Make whitespace color transparent
-                //ImageColorTransparent($oResized, ImageColorAllocate($oResized, 255, 255, 255));
+                //ImageColorTransparent($_resized, ImageColorAllocate($_resized, 255, 255, 255));
                 
               // Perform resample
-                ImageCopyResampled($oResized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
+                ImageCopyResampled($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
                 
               } else {
-              
+                
               // Create output image container
-                $oResized = ImageCreateTrueColor($destination_width, $destination_height);
+                $_resized = ImageCreateTrueColor($destination_width, $destination_height);
                 
-                ImageAlphaBlending($oResized, false);
-                ImageSaveAlpha($oResized, true);
+                ImageAlphaBlending($_resized, false);
+                ImageSaveAlpha($_resized, true);
                 
-                ImageFill($oResized, 0, 0, ImageColorAllocateAlpha($oResized, 255, 255, 255, 127));
+                ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, 255, 255, 255, 127));
                 
               // Perform resample
-                ImageCopyResampledFixed($oResized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
+                ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
               }
               
               break;
@@ -334,8 +351,8 @@
           $this->_width = $destination_width;
           $this->_height = $destination_height;
           
-          $this->_image = $oResized;
           ImageDestroy($this->_image);
+          $this->_image = $_resized;
           
           return true;
       }
@@ -454,7 +471,7 @@
           try {
             return $this->_image->trimImage(0);
           } catch (Exception $e) {
-            trigger_error('Failed reading image ('.$this->_src.'): '. $e->getMessage());
+            trigger_error($e->getMessage() . ' ('.$this->_src.')', E_USER_WARNING);
           }
           
         case 'gd':
@@ -696,7 +713,7 @@
           }
           
           switch(strtolower($type)) {
-            case "gif":
+            case 'gif':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
               ImageFill($_background, 0, 0, ImageColorAllocate($_background, 255, 255, 255, 0));
@@ -707,7 +724,9 @@
               ImageDestroy($this->_image);
               ImageDestroy($_background);
               return $result;
-            case "jpg":
+              
+            case 'jpeg':
+            case 'jpg':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
               ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, 255, 255, 255, 0));
@@ -717,12 +736,15 @@
               ImageDestroy($this->_image);
               ImageDestroy($_background);
               return $result;
-            case "png":
+              
+            case 'png':
               ImageSaveAlpha($this->_image, true);
               $result = ImagePNG($this->_image, $destination);
               ImageDestroy($this->_image);
               return $result;
+              
             default:
+              trigger_error('Unknown output format', E_USER_WARNING);
               ImageDestroy($this->_image);
               return false;
           }
@@ -733,12 +755,20 @@
       
       switch($this->_library) {
         case 'imagick':
+          
+          if (empty($this->_image)) $this->load();
+          
+          if (empty($this->_image)) {
+            trigger_error('Not a valid image object', E_USER_WARNING);
+            return false;
+          }
+          
           try {
             $this->_image->setImageFormat($type);
             $this->_image->setImageCompressionQuality($quality);
             return $this->_image->getImageBlob();
           } catch (Exception $e) {
-            trigger_error('Failed outputting image ('. $this->_src .'): '. $e->getMessage(), E_USER_WARNING);
+            trigger_error($e->getMessage() . " ($this->_src)", E_USER_WARNING);
             return false;
           }
           
@@ -751,18 +781,40 @@
             return false;
           }
           
-          switch($type) {
-            case "gif":
-              header('Content-type: image/gif');
-              return ImageGIF($this->_image, false);
-            case "jpg":
-              header('Content-type: image/jpeg');
-              return ImageJPEG($this->_image, false, $quality);
-            case "png":
-              header('Content-type: image/png');
-              return ImagePNG($this->_image, false);
+          switch(strtolower($type)) {
+            case 'gif':
+              $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
+              ImageAlphaBlending($_background, true);
+              ImageFill($_background, 0, 0, ImageColorAllocate($_background, 255, 255, 255, 0));
+              ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
+              ImageAlphaBlending($_background, false);
+              imagetruecolortopalette($_background, false, 255);
+              $result = ImageGIF($_background, false);
+              ImageDestroy($this->_image);
+              ImageDestroy($_background);
+              return $result;
+              
+            case 'jpeg':
+            case 'jpg':
+              $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
+              ImageAlphaBlending($_background, true);
+              ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, 255, 255, 255, 0));
+              ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
+              ImageAlphaBlending($_background, false);
+              $result = ImageJPEG($_background, false, $quality);
+              ImageDestroy($this->_image);
+              ImageDestroy($_background);
+              return $result;
+              
+            case 'png':
+              ImageSaveAlpha($this->_image, true);
+              $result = ImagePNG($this->_image, false);
+              ImageDestroy($this->_image);
+              return $result;
+              
             default:
-              trigger_error('Uknown output format', E_USER_WARNING);
+              trigger_error('Unknown output format', E_USER_WARNING);
+              ImageDestroy($this->_image);
               return false;
           }
       }
@@ -772,9 +824,10 @@
       
       if (!empty($this->_width)) return $this->_width;
       
-      if (empty($this->_image)) {
+      if (empty($this->_image) && extension_loaded('gd')) {
         list($this->_width, $this->_height) = getimagesize($this->_src);
-        return $this->_height;
+        
+        return $this->_width;
       }
       
       switch($this->_library) {
@@ -813,7 +866,7 @@
       
       if (!empty($this->_height)) return $this->_height;
       
-      if (empty($this->_image)) {
+      if (empty($this->_image) && extension_loaded('gd')) {
         list($this->_width, $this->_height) = getimagesize($this->_src);
         return $this->_height;
       }

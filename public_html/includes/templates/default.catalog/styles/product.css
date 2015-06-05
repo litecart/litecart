@@ -6,19 +6,23 @@
   margin-bottom: 20px;
 }
 
-#box-product .product-images-wrapper {
+#box-product .images-wrapper {
   float: left;
   display: inline-block;
   margin: 0px 20px 20px 0px;
   max-width: 305px;
 }
-#box-product .product-images-wrapper img.main-image {
-  width: 300px;
+#box-product .main-image-wrapper img {
+  max-width: 300px;
   margin: 0px;
 }
-#box-product .product-images-wrapper img.extra-image {
+#box-product .images-wrapper img.extra-image {
   width: 96px;
   margin: 5px 5px 0px 0px;
+}
+
+#box-product .main-image-wrapper {
+  position: relative;
 }
 
 @media (max-width: 640px) {

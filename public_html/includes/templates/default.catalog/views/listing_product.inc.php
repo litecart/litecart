@@ -2,7 +2,7 @@
   <li class="product column shadow hover-light">
     <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
       <div class="image-wrapper">
-        <img class="image" src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" />
+        <img class="image" src="<?php echo htmlspecialchars($thumbnail); ?>" srcset="<?php echo htmlspecialchars($thumbnail); ?> 1x, <?php echo htmlspecialchars($thumbnail_2x); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
         <?php echo $sticker; ?>
       </div>
       <div class="name"><?php echo $name; ?></div>
@@ -23,7 +23,7 @@
   <li class="product row shadow hover-light">
     <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
       <div class="image-wrapper">
-        <img class="image" src="<?php echo htmlspecialchars($thumbnail); ?>" alt="<?php echo htmlspecialchars($name); ?>" />
+        <img class="image" src="<?php echo htmlspecialchars($thumbnail); ?>" srcset="<?php echo htmlspecialchars($thumbnail); ?> 1x, <?php echo htmlspecialchars($thumbnail_2x); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
         <?php echo $sticker; ?>
       </div>
       <div class="name"><?php echo $name; ?></div>

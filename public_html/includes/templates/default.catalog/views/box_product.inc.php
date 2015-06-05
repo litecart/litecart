@@ -5,21 +5,21 @@
   </div>
   
   <div class="content">
-    <div class="product-images-wrapper">
+    <div class="images-wrapper">
 
-      <div style="position: relative;">
+      <figure class="image-wrapper">
         <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product"><img src="<?php echo $image['original']; ?>" srcset="<?php echo $image['thumbnail']; ?> 1x, <?php echo $image['thumbnail_2x']; ?> 2x" class="main-image zoomable shadow rounded-corners" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" /></a>
         <?php echo $sticker; ?>
-      </div>
+      </figure>
 <?php
   if ($extra_images) {
     foreach ($extra_images as $image) {
-      echo '<div style="display: inline;"><a href="'. $image['original'] .'" class="fancybox" data-fancybox-group="product"><img src="'. $image['thumbnail'] .'" class="extra-image zoomable shadow" title="'. htmlspecialchars($name) .'" /></a></div>';
+      echo '<a href="'. $image['original'] .'" class="fancybox" data-fancybox-group="product"><img src="'. $image['thumbnail'] .'" class="extra-image zoomable shadow" title="'. htmlspecialchars($name) .'" /></a>';
     }
   }
 ?>
     </div>
-
+    
     <div class="information">
       <?php if ($manufacturer_name) { ?>
       <div class="manufacturer" style="font-size: 1.5em; margin-bottom: 10px;" itemscope itemtype="http://www.schema.org/Organisation">
@@ -30,7 +30,7 @@
       <?php } ?>
       </div>
       <?php } ?>
-
+      
       <div class="price-wrapper" style="margin-bottom: 10px;" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <?php if ($campaign_price) { ?>
         <s class="regular-price"><?php echo $regular_price; ?></s> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
@@ -61,13 +61,13 @@
         <?php } ?>
       <?php } ?>
       </div>
-  
+      
       <?php if ($cheapest_shipping) { ?>
       <div class="cheapest-shipping" style="margin-bottom: 10px;">
         <?php echo $cheapest_shipping; ?>
       </div>
       <?php } ?>
-  
+      
       <div class="buy_now" style="margin-bottom: 20px;">
         <?php echo functions::form_draw_form_begin('buy_now_form'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
