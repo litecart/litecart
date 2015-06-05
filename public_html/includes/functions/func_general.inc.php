@@ -6,7 +6,7 @@
     
     $text = mb_convert_encoding($text, 'UTF-8'); // Convert to UTF-8
     $text = strip_tags($text);  // Remove HTML tags
-    $text = html_entity_decode($text, ENT_QUOTES, 'UF-8');  // Decode special characters
+    $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');  // Decode special characters
     
     $foreign_characters = array (
       'de' => array ( /* German */
