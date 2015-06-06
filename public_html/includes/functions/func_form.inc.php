@@ -262,7 +262,7 @@
   }
   
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='', $hint='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters, $hint) .'</span>';
+    return '<span class="input-wrapper" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters, $hint) .'</span>';
   }
   
   function form_draw_search_field($name, $value=true, $parameters='', $hint='') {
@@ -379,7 +379,7 @@
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
          . '    "plugins": "xhtml,format",' . PHP_EOL
-         . '    "width": 1024,' . PHP_EOL
+         . '    "width": "100%",' . PHP_EOL
          . '    "resizeEnabled": true,' . PHP_EOL
          . '    "style": "{snippet:template_path}styles/loader.css",' . PHP_EOL
          . '    "locale": "'. htmlspecialchars(language::$selected['code']) .'",' . PHP_EOL
