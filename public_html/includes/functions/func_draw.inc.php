@@ -15,7 +15,11 @@
     $list_item->snippets = array(
       'name' => $category['name'],
       'link' => document::ilink('category', array('category_id' => $category['id'])),
-      'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 340, 180, 'CROP'),
+      'image' => array(
+        'original' => WS_DIR_IMAGES . $category['image'],
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 320, 180, 'CROP'),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 640, 360, 'CROP'),
+      ),
       'short_description' => $category['short_description'],
     );
     

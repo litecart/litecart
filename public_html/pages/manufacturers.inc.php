@@ -26,7 +26,11 @@
       $page->snippets['manufacturers'][] = array(
         'id' => $manufacturer['id'],
         'name' => $manufacturer['name'],
-        'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 220, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+        'image' => array(
+          'original' => WS_DIR_IMAGES . $manufacturer['image'],
+          'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 320, 100, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 640, 200, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+        ),
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
       );
     }
