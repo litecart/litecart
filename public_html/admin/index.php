@@ -102,7 +102,7 @@
     $_page = new view();
     $_page->snippets = array(
       'app' => $_GET['app'],
-      'doc' => $_GET['doc'],
+      'doc' => !empty($_GET['doc']) ? $_GET['doc'] : $app_config['default'],
       'theme' => array(
         'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'plus',
         'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
