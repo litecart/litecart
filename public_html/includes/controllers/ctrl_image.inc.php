@@ -716,7 +716,7 @@
             case 'gif':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocate($_background, 255, 255, 255, 0));
+              ImageFill($_background, 0, 0, ImageColorAllocate($_background, 255, 255, 255));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);
@@ -785,7 +785,7 @@
             case 'gif':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocate($_background, 255, 255, 255, 0));
+              ImageFill($_background, 0, 0, ImageColorAllocate($_background, 255, 255, 255));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);

@@ -12,7 +12,7 @@
   $box_manufacturers_cache_id = cache::cache_id('box_manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($box_manufacturers_cache_id, 'file')) {
     
-    $page = new view();
+    $box_manufacturers = new view();
     
     $manufacturers_query = database::query(
       "select m.id, m.name, m.image, mi.short_description, mi.link
@@ -22,8 +22,10 @@
       order by name;"
     );
     
+    $box_manufacturers->snippets['manufacturers'] = array();
+    
     while($manufacturer = database::fetch($manufacturers_query)) {
-      $page->snippets['manufacturers'][] = array(
+      $box_manufacturers->snippets['manufacturers'][] = array(
         'id' => $manufacturer['id'],
         'name' => $manufacturer['name'],
         'image' => array(
@@ -35,7 +37,7 @@
       );
     }
     
-    echo $page->stitch('views/box_manufacturers');
+    echo $box_manufacturers->stitch('views/box_manufacturers');
     
     cache::end_capture($box_manufacturers_cache_id);
   }
