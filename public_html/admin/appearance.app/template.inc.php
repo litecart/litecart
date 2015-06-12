@@ -1,7 +1,10 @@
 <?php
   
   if (!empty($_POST['save'])) {
-  
+    
+    if (!preg_match('#(\.catalog)$#', $_POST['template_catalog'])) notices::add('errors', language::translate('error_invalid_catalog_template', 'Not a valid catalog template'));
+    if (!preg_match('#(\.admin)$#', $_POST['template_admin'])) notices::add('errors', language::translate('error_invalid_admin_template', 'Not a valid admin template'));
+    
     if (empty(notices::$data['errors'])) {
     
       if ($_POST['template_catalog'] != settings::get('store_template_catalog')) {
