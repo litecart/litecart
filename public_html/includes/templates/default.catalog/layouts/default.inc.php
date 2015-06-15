@@ -115,7 +115,7 @@
 </div>
 
 <a id="scroll-up" href="#">
-  <?php echo functions::draw_fontawesome_icon('chevron-circle-up', 'style="color: #000;"', 'fa-3x'); ?>
+  <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
 <script>

@@ -102,11 +102,11 @@ html, body, body > table {
                 <table>
                   <tr>
                     <td style="text-align: right;"><?php echo language::translate('title_username', 'Username'); ?></td>
-                    <td><span class="input-wrapper"><?php echo functions::draw_fontawesome_icon('user'); ?> <?php echo functions::form_draw_text_field('username', true); ?></span></td>
+                    <td><span class="input-wrapper"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo functions::form_draw_text_field('username', true); ?></span></td>
                   </tr>
                   <tr>
                     <td style="text-align: right;"><?php echo language::translate('title_password', 'Password'); ?></td>
-                    <td><span class="input-wrapper"><?php echo functions::draw_fontawesome_icon('key'); ?> <?php echo functions::form_draw_password_field('password', ''); ?></span></td>
+                    <td><span class="input-wrapper"><?php echo functions::draw_fonticon('fa-key'); ?> <?php echo functions::form_draw_password_field('password', ''); ?></span></td>
                   </tr>
                   <tr>
                     <td></td>

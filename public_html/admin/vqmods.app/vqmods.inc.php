@@ -68,12 +68,12 @@
       }
 ?>
     <tr class="<?php echo $rowclass . ($enabled ? '' : ' semi-transparent'); ?>">
-      <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
       <td><?php echo (string)$xml->id; ?></td>
       <td><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>
       <td><?php echo (string)$xml->version; ?></td>
       <td><?php echo (string)$xml->author; ?></td>
-      <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fontawesome_icon('download', '', 'fa-lg'); ?></a></td>
+      <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download', '', 'fa-lg'); ?></a></td>
     </tr>
 <?php
     }

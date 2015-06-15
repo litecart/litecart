@@ -28,7 +28,7 @@
     <td style="text-align: center;"><?php echo $product_group['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_product_group', 'product_group_id' =>$product_group['id']), array('app')); ?>"><?php echo $product_group['name']; ?></a></td>
     <td style="text-align: center;"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." where product_group_id = '". (int)$product_group['id'] ."';")); ?></td>
-    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_product_group', 'product_group_id' => $product_group['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_product_group', 'product_group_id' => $product_group['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
   </tr>
 <?php
   }

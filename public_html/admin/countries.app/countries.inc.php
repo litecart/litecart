@@ -45,12 +45,12 @@
       }
 ?>
     <tr class="<?php echo $rowclass; ?>"<?php echo $country['status'] ? false : ' style="color: #999;"'; ?>>
-      <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. (!empty($country['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($country['status']) ? '#99cc66' : '#ff6666') .'";'); ?> <?php echo functions::form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
       <td><?php echo $country['id']; ?></td>
       <td><?php echo $country['iso_code_2']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><?php echo $country['name']; ?></a></td>
       <td><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES ." where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
+      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php
     }

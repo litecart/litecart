@@ -5,6 +5,27 @@
           . ((strtolower($method) == 'post') ? form_draw_hidden_field('token', form::session_post_token()) . PHP_EOL : '');
   }
   
+  function form_draw_protected_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters=false) {
+    
+    document::$snippets['head_tags'][] = '<script>' . PHP_EOL
+                                       . '  $(document).ready(function(){' . PHP_EOL
+                                       . '    $("form[name=\''. $name .'\']").on("change keyup keydown", ":input", function(){' . PHP_EOL
+                                       . '      $(this).addClass("unsaved");' . PHP_EOL
+                                       . '    });' . PHP_EOL
+                                       . '    $("form").submit(function() {' . PHP_EOL
+                                       . '      $(this).find(".changed-input").each(function(){' . PHP_EOL
+                                       . '        $(this).removeClass("unsaved");' . PHP_EOL
+                                       . '      });' . PHP_EOL
+                                       . '    });' . PHP_EOL
+                                       . '    $(window).on("beforeunload", function(){' . PHP_EOL
+                                       . '      if ($(".unsaved").length) return "'. htmlspecialchars(language::translate('warning_unsaved_changes', 'There are unsaved changes, do you wish to continue?')) .'";' . PHP_EOL
+                                       . '    });' . PHP_EOL
+                                       . '  });' . PHP_EOL
+                                       . '</script>' . PHP_EOL;
+    
+    return form_draw_form_begin($name, $method, $action, $multipart, $parameters);
+  }
+  
   function form_draw_form_end() {
     return '</form>' . PHP_EOL;
   }
@@ -41,25 +62,25 @@
     if (!empty($icon)) {
       switch($icon) {
         case 'add':
-          $icon = functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"');
+          $icon = functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"');
           break;
         case 'cancel':
-          $icon = functions::draw_fontawesome_icon('times');
+          $icon = functions::draw_fonticon('fa-times');
           break;
         case 'delete':
-          $icon = functions::draw_fontawesome_icon('trash-o');
+          $icon = functions::draw_fonticon('fa-trash-o');
           break;
         case 'on':
-          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #99cc66;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #99cc66;"');
           break;
         case 'off':
-          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #ff6666;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6666;"');
           break;
         case 'save':
-          $icon = functions::draw_fontawesome_icon('floppy-o');
+          $icon = functions::draw_fonticon('fa-floppy-o');
           break;
         default:
-          $icon = functions::draw_fontawesome_icon($icon);
+          $icon = functions::draw_fonticon($icon);
       }
     }
   
@@ -176,25 +197,25 @@
     if (!empty($icon)) {
       switch($icon) {
         case 'add':
-          $icon = functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"');
+          $icon = functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"');
           break;
         case 'cancel':
-          $icon = functions::draw_fontawesome_icon('times');
+          $icon = functions::draw_fonticon('fa-times');
           break;
         case 'delete':
-          $icon = functions::draw_fontawesome_icon('trash-o');
+          $icon = functions::draw_fonticon('fa-trash-o');
           break;
         case 'on':
-          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #99cc66;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #99cc66;"');
           break;
         case 'off':
-          $icon = functions::draw_fontawesome_icon('circle', 'style="font-size: 0.75em; color: #ff6666;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6666;"');
           break;
         case 'save':
-          $icon = functions::draw_fontawesome_icon('floppy-o');
+          $icon = functions::draw_fonticon('fa-floppy-o');
           break;
         default:
-          $icon = functions::draw_fontawesome_icon($icon);
+          $icon = functions::draw_fonticon($icon);
       }
     }
     
@@ -318,14 +339,6 @@
     return '<input type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
-  function form_draw_time_field($name, $value=true, $parameters='', $hint='') {
-    if ($value === true) $value = form_reinsert_value($name);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
-    return '<input type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
-  }
-  
   function form_draw_toggle($name, $input=true, $type='e/d') {
     if ($input === true) $input = form_reinsert_value($name);
     
@@ -356,6 +369,14 @@
     }
     
     return '<label><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label> <label><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>';
+  }
+  
+  function form_draw_time_field($name, $value=true, $parameters='', $hint='') {
+    if ($value === true) $value = form_reinsert_value($name);
+    
+    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    
+    return '<input type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_url_field($name, $value=true, $parameters='', $hint='') {

@@ -1,7 +1,20 @@
 <?php
 
   function draw_fontawesome_icon($name, $params=null, $class=null) {
-    return '<i class="fa fa-'. $name . (!empty($class) ? ' ' . $class : '') .'"'. (!empty($params) ? ' ' . $params : '') .'></i>';
+    //trigger_error('draw_fontawesome_icon() is deprecated. Use instead draw_fonticon()', E_USER_DEPRECATED);
+    return functions::draw_fonticon('fa-'.$name . ($class ? ' ' . $class), $params);
+  }
+  
+  function draw_fonticon($class, $params=null) {
+    
+    switch(true) {
+      case (substr($class, 0, 3) == 'fa-'):
+        return return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : '') .'></i>';
+        
+      default:
+        trigger_error('Unknown font icon', E_USER_WARNING);
+        return; 
+    }
   }
 
   function draw_img($image, $width, $height, $title, $params) {

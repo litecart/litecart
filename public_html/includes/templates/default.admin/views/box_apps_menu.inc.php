@@ -4,8 +4,8 @@
       <li id="app-<?php $app['code']; ?>"<?php echo $app['active'] ? ' class="selected"' : ''; ?>>
         <a href="<?php echo htmlspecialchars($app['link']); ?>">
         <span class="fa-stack fa-lg icon-wrapper">
-          <?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. $app['theme']['color'] .';"', 'fa-stack-2x icon-background'); ?>
-          <?php echo functions::draw_fontawesome_icon($app['theme']['icon'], 'style="color: #fff;"', 'fa-stack-1x icon'); ?>
+          <?php echo functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $app['theme']['color'] .';"'); ?>
+          <?php echo functions::draw_fonticon($app['theme']['icon'], 'style="color: #fff;"', 'fa-stack-1x icon'); ?>
         </span>
         <span class="name"><?php echo $app['name']; ?></span>
       </a>

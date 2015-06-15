@@ -79,7 +79,7 @@
       }
 ?>
   <tr class="<?php echo $rowclass . (!empty($module->status) ? false : ' semi-transparent'); ?>">
-    <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
+    <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
     <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
     <td style="text-align: center;"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
@@ -90,7 +90,7 @@
     <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td><?php echo $module->id; ?></td>
     <td style="text-align: center;"><?php echo $module->priority; ?></td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
   </tr>
 <?php
     }
@@ -117,7 +117,7 @@
     <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
     <td><?php echo $module->id; ?></td>
     <td style="text-align: center;">-</td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
+    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
   </tr>
 <?php
     }

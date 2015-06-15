@@ -91,13 +91,13 @@
 ?>
         </td>
         <td style="text-align: center;"><?php echo $num_products; ?></td>
-        <td style="text-align: right;"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg') .'</a>' : false; ?></td>
+        <td style="text-align: right;"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"') .'</a>' : false; ?></td>
       </tr>
   <?php
     }
   ?>
       <tr>
-        <td colspan="4"><a id="add-group-value" href="#"><?php echo functions::draw_fontawesome_icon('plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group', 'Add Group Value'); ?></a></td>
+        <td colspan="4"><a id="add-group-value" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group', 'Add Group Value'); ?></a></td>
       </tr>  
     </table>
     <script>
@@ -118,7 +118,7 @@
                    + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
                    + '  <td><?php echo str_replace(PHP_EOL, '', $name_fields); ?></td>'
                    + '  <td>&nbsp;</td>'
-                   + '  <td style="text-align: right;"><a id="remove-group-value" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fontawesome_icon('times-circle', 'style="color: #cc3333;"', 'fa-lg'); ?></a></td>'
+                   + '  <td style="text-align: right;"><a id="remove-group-value" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                    + '</tr>';
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('tr').before(output);

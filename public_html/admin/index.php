@@ -111,8 +111,8 @@
     );
     
     $app_icon = '<span class="fa-stack fa-lg icon-wrapper">' . PHP_EOL
-              . '  ' . functions::draw_fontawesome_icon('circle', 'style="color: '. $_page->snippets['theme']['color'] .';"', 'fa-stack-2x icon-background') . PHP_EOL
-              . '  ' . functions::draw_fontawesome_icon($_page->snippets['theme']['icon'], 'style="color: #fff;"', 'fa-stack-1x icon') . PHP_EOL
+              . '  ' . functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $_page->snippets['theme']['color'] .';"') . PHP_EOL
+              . '  ' . functions::draw_fonticon('fa-'.$_page->snippets['theme']['icon'] .' fa-stack-1x icon', 'style="color: #fff;"') . PHP_EOL
               . '</span>';
     
     ob_start();

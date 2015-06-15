@@ -78,7 +78,7 @@
     timeout: 5000,    // Integer: Time between slide transitions, in milliseconds
     pause: true,       // Boolean: Pause on hover, true or false
     nav: true,
-    prevText: '<?php echo functions::draw_fontawesome_icon('chevron-left'); ?>',
-    nextText: '<?php echo functions::draw_fontawesome_icon('chevron-right'); ?>'
+    prevText: '<?php echo functions::draw_fonticon('fa-chevron-left'); ?>',
+    nextText: '<?php echo functions::draw_fonticon('fa-chevron-right'); ?>'
   });
 </script>
