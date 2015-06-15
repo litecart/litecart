@@ -69,7 +69,7 @@
   <table>
     <tr>
       <td><?php echo language::translate('title_catalog_template', 'Catalog Template'); ?><br />
-        <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app')); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fontawesome_icon('wrench', '', 'fa-lg'); ?></a></td>
+        <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app')); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench', '', 'fa-lg'); ?></a></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_admin_template', 'Admin Template'); ?><br />

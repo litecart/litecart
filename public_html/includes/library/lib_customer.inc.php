@@ -91,7 +91,7 @@
     
     ######################################################################
     
-        public static function identify() {
+    public static function identify() {
       
     // Build list of supported countries
       $countries_query = database::query(

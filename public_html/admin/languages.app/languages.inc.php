@@ -51,14 +51,14 @@
       }
 ?>
     <tr class="<?php echo $rowclass . ($language['status'] ? false : ' semi-transparent'); ?>">
-      <td><?php echo functions::draw_fontawesome_icon('circle', 'style="color: '. (!empty($language['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($language['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
       <td><?php echo $language['id']; ?></td>
       <td style="text-align: center;"><?php echo $language['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
       <td style="text-align: center;"><?php echo ($language['code'] == settings::get('default_language_code')) ? 'x' : ''; ?></td>
       <td style="text-align: center;"><?php echo ($language['code'] == settings::get('store_language_code')) ? 'x' : ''; ?></td>
       <td style="text-align: right;"><?php echo $language['priority']; ?></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fontawesome_icon('pencil'); ?></a></td>
+      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
