@@ -5,7 +5,7 @@
     header('X-Robots-Tag: noindex');
   }
   
-  if (cart::$data['total']['items'] == 0) return;
+  if (empty(cart::$items)) return;
   
   if (empty($_POST)) {
     foreach (customer::$data as $key => $value) {

@@ -7,7 +7,7 @@
   
   $errors = array();
   
-  if (empty(cart::$data['items'])) return;
+  if (empty(cart::$items)) return;
   
   if (!isset($shipping)) $shipping = new mod_shipping();
   

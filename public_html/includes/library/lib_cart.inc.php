@@ -3,8 +3,9 @@
   class cart {
     
     public static $data = array();
-    public static $cache = array();
-    public static $checksum;
+    public static $items = array();
+    public static $total = array();
+    public static $checksum = null;
     
     //public static function construct() {
     //}
@@ -12,21 +13,35 @@
     public static function load_dependencies() {
       
       if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
-        self::$data = &session::$data['cart'];
         session::$data['cart'] = array(
-          'items' => array(),
-          'comments' => array(),
+          'uid' => null,
         );
       }
       
       self::$data = &session::$data['cart'];
+      
+    // Recover a previous cart uid if possible
+      if (empty(self::$data['uid'])) {
+        if (!empty($_COOKIE['cart']['uid'])) {
+          self::$data['uid'] = $_COOKIE['cart']['uid'];
+        } else {
+          self::$data['uid'] = uniqid();
+        }
+      }
+      
+    // Update cart cookie
+      if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
+        setcookie('cart[uid]', self::$data['uid'], strtotime('+1 years'), WS_DIR_HTTP_HOME);
+      }
     }
     
     //public static function initiate() {
     //}
     
     public static function startup() {
-    
+      
+      self::load();
+      
       if (!empty($_POST['add_cart_product'])) {
         self::add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
@@ -40,19 +55,11 @@
       }
       
       if (!empty($_POST['clear_cart_items'])) {
-        self::reset();
+        self::clear();
       }
-      
-      self::_calculate_total();
-      self::checksum();
     }
     
     public static function before_capture() {
-    
-    // Refresh
-      foreach(array_keys(self::$data['items']) as $key) {
-        self::update($key, self::$data['items'][$key]['quantity']);
-      }
     }
     
     //public static function after_capture() {
@@ -69,47 +76,48 @@
     
     ######################################################################
     
-    public static function load() {
-      if (empty(customer::$data['id'])) return;
+    public static function reset() {
+    
+      self::$items = array();
       
-      $cart_cache_id = cache::cache_id('cart_'.customer::$data['id']);
-      $cart_data = cache::get($cart_cache_id, 'file', 60*60*24*365);
-      
-      if (empty($cart_data)) return;
-      
-      foreach ($cart_data as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
-      
-      if (!empty($_COOKIE['cart']['items'])) {
-        $cart_data = unserialize($_COOKIE['cart']['items']);
-        foreach ($_COOKIE['cart']['items'] as $item) self::add_product($item['product_id'], $item['options'], $item['quantity'], true);
-      }
+      self::_calculate_total();
+      self::checksum();
     }
     
-    public static function save() {
+    public static function clear() {
       
-      $cart_data = array();
+      self::reset();
       
-      foreach (array_keys(self::$data['items']) as $key) {
-        
-        $item_key = md5(serialize(array(self::$data['items'][$key]['product_id'], self::$data['items'][$key]['options'])));
-        
-        $cart_data[$item_key] = array(
-          'product_id' => self::$data['items'][$key]['product_id'],
-          'options' => self::$data['items'][$key]['options'],
-          'quantity' => self::$data['items'][$key]['quantity'],
+      database::query(
+        "delete from ". DB_TABLE_CART_ITEMS ."
+        where cart_uid = '". database::input(self::$data['uid']) ."';"
+      );
+    }
+    
+    public static function load() {
+      
+      self::reset();
+      
+      if (!empty(customer::$data['id'])) {
+        database::query(
+          "update ". DB_TABLE_CART_ITEMS ."
+          set cart_uid = '". database::input(self::$data['uid']) ."'
+          where customer_id = ".(int)customer::$data['id'] .";"
+        );
+        database::query(
+          "update ". DB_TABLE_CART_ITEMS ."
+          set customer_id = ".(int)customer::$data['id'] ."
+          where cart_uid = '". database::input(self::$data['uid']) ."';"
         );
       }
       
-      setcookie('cart', '', mktime(0, 0, 0, 1, 1, 2000));
+      $cart_items_query = database::query(
+        "select * from ". DB_TABLE_CART_ITEMS ."
+        where cart_uid = '". database::input(self::$data['uid']) ."';"
+      );
       
-      if (!empty(customer::$data['id'])) {
-        
-        $cache_id = cache::cache_id('cart_'.customer::$data['id']);
-        cache::set($cache_id, 'file', $cart_data);
-        
-      } else {
-      
-        setcookie('cart_items', serialize($cart_data), time() + (60*60*24*365));
+      while ($item = database::fetch($cart_items_query)) {
+        self::add_product($item['product_id'], unserialize($item['options']), $item['quantity'], true);
       }
     }
     
@@ -134,13 +142,13 @@
         return;
       }
       
-      if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && substr($product->date_valid_to, 0, 4) > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
+      if ($product->date_valid_to > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
         if (!$silent) notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
         return;
       }
       
       if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-        if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+        if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.') .' ('. $product->quantity .')');
         return;
       }
       
@@ -263,7 +271,7 @@
           
           if ($option_match) {
             if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-              if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.'));
+              if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.') . ' ('. $option_stock['quantity'] .')');
               return;
             }
             
@@ -280,17 +288,30 @@
         }
       }
       
-      if (isset(self::$data['items'][$item_key])) {
+      if (settings::get('round_amounts')) {
+        $item['price'] = currency::round($item['price'], currency::$selected['code']);
+        $item['tax'] = tax::get_tax($item['price'], $item['tax_class_id']);
+        $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
+      }
+      
+      if (isset(self::$items[$item_key])) {
         
-        self::update($item_key, self::$data['items'][$item_key]['quantity'] + $quantity);
+        self::update($item_key, self::$items[$item_key]['quantity'] + $quantity, $silent);
         
       } else {
         
-        self::$data['items'][$item_key] = $item;
+        self::$items[$item_key] = $item;
+        
+        if (!$silent) {
+          database::query(
+            "insert into ". DB_TABLE_CART_ITEMS ."
+            (customer_id, cart_uid, `key`, product_id, options, quantity, date_updated, date_created)
+            values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", '". database::input(serialize($item['options'])) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+          );
+        }
         
         self::_calculate_total();
         self::checksum();
-        self::save();
       }
       
       if (!$silent) {
@@ -299,84 +320,76 @@
       }
     }
     
-    public static function update($item_key, $quantity) {
+    public static function update($item_key, $quantity, $silent=false) {
       
-      if (!isset(self::$data['items'][$item_key])) {
+      if (!isset(self::$items[$item_key])) {
         notices::add('errors', 'The product does not exist in cart.');
         return;
       }
       
-      if (!empty(self::$data['items'][$item_key]['product_id'])) {
-        $product = catalog::product(self::$data['items'][$item_key]['product_id']);
-        
-      // Name
-        self::$data['items'][$item_key]['name'] = $product->name[language::$selected['code']];
-        
-      // Quantity Unit
-        self::$data['items'][$item_key]['quantity_unit']['name'] = $product->quantity_unit['name'][language::$selected['code']];
-        $quantity = round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP);
-        
-      // Refresh Price
-        self::$data['items'][$item_key]['price'] = $product->campaign['price'] ? $product->campaign['price'] : $product->price;
-        self::$data['items'][$item_key]['price'] += self::$data['items'][$item_key]['extras'];
-        self::$data['items'][$item_key]['tax'] = tax::get_tax(self::$data['items'][$item_key]['price'], self::$data['items'][$item_key]['tax_class_id']);
-        
-        if (settings::get('round_amounts')) {
-          self::$data['items'][$item_key]['price'] = currency::round(self::$data['items'][$item_key]['price'], currency::$selected['code']);
-          self::$data['items'][$item_key]['tax'] = tax::get_tax(self::$data['items'][$item_key]['price'], self::$data['items'][$item_key]['tax_class_id']);
-          self::$data['items'][$item_key]['tax'] = currency::round(self::$data['items'][$item_key]['tax'], currency::$selected['code']);
-        }
+      if (!empty(self::$items[$item_key]['product_id'])) {
+        $product = catalog::product(self::$items[$item_key]['product_id']);
         
       // Stock
         if (empty($product->sold_out_status['orderable'])) {
-          if (!empty(self::$data['items'][$item_key]['option_stock_combination'])) {
+          if (!empty(self::$items[$item_key]['option_stock_combination'])) {
             foreach (array_keys($product->options_stock) as $key) {
-              if ($product->options_stock[$key]['combination'] == self::$data['items'][$item_key]['option_stock_combination']) {
+              if ($product->options_stock[$key]['combination'] == self::$items[$item_key]['option_stock_combination']) {
                 if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
-                  notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
+                  if (!$silent) notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
                   return;
                 }
               }
             }
           } else if (($product->quantity - $quantity) < 0) {
-            notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+            if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
             return;
           }
         }
       }
       
-      if ($quantity > 0) {
-        self::$data['items'][$item_key]['quantity'] = $quantity;
-      } else {
+      if ($quantity <= 0) {
         self::remove($item_key);
+        return;
+      }
+      
+      if (self::$items[$item_key]['quantity'] != $quantity) {
+        self::$items[$item_key]['quantity'] = $quantity;
+        
+        if (!$silent) {
+          database::query(
+            "update ". DB_TABLE_CART_ITEMS ."
+            set quantity = ". (float)self::$items[$item_key]['quantity'] .",
+            date_updated = '". date('Y-m-d H:i:s') ."'
+            where cart_uid = '". database::input(self::$data['uid']) ."'
+            and `key` = '". database::input($item_key) ."'
+            limit 1;"
+          );
+        }
       }
       
       self::_calculate_total();
       self::checksum();
-      self::save();
     }
-
+    
     public static function remove($item_key) {
     
-      if (isset(self::$data['items'][$item_key])) {
-        unset(self::$data['items'][$item_key]);
+      if (isset(self::$items[$item_key])) {
+        unset(self::$items[$item_key]);
       }
+      
+      database::query(
+        "delete from ". DB_TABLE_CART_ITEMS ."
+        where `key` = '". database::input($item_key) ."'
+        and cart_uid = '". database::input(self::$data['uid']) ."'
+        limit 1;"
+      );
       
       self::_calculate_total();
       self::checksum();
-      self::save();
       
       header('Location: '. document::ilink());
       exit;
-    }
-
-    public static function reset() {
-    
-      self::$data['items'] = array();
-      
-      self::_calculate_total();
-      self::checksum();
-      self::save();
     }
     
     private static function _calculate_total() {
@@ -386,7 +399,7 @@
       $total_items = 0;
       $total_weight = 0;
       
-      foreach (self::$data['items'] as $item) {
+      foreach (self::$items as $item) {
         $num_items = $item['quantity'];
         
         if (!empty($item['quantity_unit']['decimals'])) {
@@ -398,7 +411,7 @@
         $total_items += $num_items;
       }
       
-      self::$data['total'] = array(
+      self::$total = array(
         'value' => $total_value,
         'tax' => $total_tax,
         'items' => $total_items,
@@ -407,7 +420,7 @@
     }
     
     public static function checksum() {
-      self::$data['checksum'] = sha1(serialize(array_merge(self::$data['items'], language::$selected)));
+      self::$data['checksum'] = sha1(serialize(array_merge(self::$items, language::$selected)));
     }
   }
   

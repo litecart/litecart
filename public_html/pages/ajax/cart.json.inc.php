@@ -2,9 +2,9 @@
   header('Content-type: application/json; charset='. language::$selected['charset']);
   
   $json = array(
-    'quantity' => cart::$data['total']['items'],
-    'value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$data['total']['value'] + cart::$data['total']['tax'] : cart::$data['total']['value'],
-    'formatted_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$data['total']['value'] + cart::$data['total']['tax']) : currency::format(cart::$data['total']['value']),
+    'quantity' => cart::$total['items'],
+    'value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['value'] + cart::$total['tax'] : cart::$total['value'],
+    'formatted_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format(cart::$total['value']),
   );
   
   if (!empty(notices::$data['warnings'])) {

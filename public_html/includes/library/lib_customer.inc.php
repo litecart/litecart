@@ -38,7 +38,7 @@
         if ($do_login) {
           self::load($customer['id']);
         } else {
-          setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+          setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
         }
       }
       
@@ -46,7 +46,7 @@
     }
     
     public static function before_capture() {
-    
+      
     // Set regional data
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
         if (settings::get('regional_settings_screen_enabled')) {
@@ -80,7 +80,7 @@
         if (settings::get('regional_settings_screen_enabled')) {
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
-            setcookie('skip_regional_settings_screen', true, time() + (60*60*24*10), WS_DIR_HTTP_HOME);
+            setcookie('skip_regional_settings_screen', true, strtotime('+30 days'), WS_DIR_HTTP_HOME);
           }
         }
       }
@@ -295,7 +295,7 @@
     
     public static function login($email, $password, $redirect_url='', $customer_remember_me=false) {
       
-      setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       
       if (empty($email) || empty($password)) {
         notices::add('errors', language::translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
@@ -330,13 +330,11 @@
       
       session::regenerate_id();
       
-      cart::load();
-      
       if ($customer_remember_me) {
         $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
       } else {
-        setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+        setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       }
       
       if (empty($redirect_url)) $redirect_url = document::ilink('');
@@ -348,11 +346,15 @@
     
     public static function logout($redirect_url='') {
       self::reset();
+      
       cart::reset();
+      session::$data['cart']['uid'] = null;
+      
+      setcookie('cart[uid]', '', 1, WS_DIR_HTTP_HOME);
+      setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       
       session::regenerate_id();
-      
-      setcookie('customer_remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      session::stop();
       
       notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
       

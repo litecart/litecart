@@ -16,13 +16,16 @@ CREATE TABLE `lc_addresses` (
 CREATE TABLE `lc_cart_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
+  `cart_uid` VARCHAR(13) NOT NULL,
+  `key` varchar(32) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `option_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `options` varchar(2048) NOT NULL,
+  `quantity` decimal(11, 4) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `customer_id` (`customer_id`)
+  KEY `customer_id` (`customer_id`),
+  KEY `cart_uid` (`cart_uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories` (
@@ -30,8 +33,8 @@ CREATE TABLE `lc_categories` (
   `parent_id` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `code` varchar(64) NOT NULL,
-  `list_style` VARCHAR(32) NOT NULL,
-  `dock` VARCHAR(32) NOT NULL,
+  `list_style` varchar(32) NOT NULL,
+  `dock` varchar(32) NOT NULL,
   `keywords` varchar(256) NOT NULL,
   `image` varchar(256) NOT NULL,
   `priority` tinyint(2) NOT NULL,
@@ -402,7 +405,7 @@ CREATE TABLE `lc_products` (
   `sku` varchar(64) NOT NULL,
   `upc` varchar(12) NOT NULL,
   `taric` varchar(16) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `quantity` decimal(11,4) NOT NULL,
   `quantity_unit_id` INT(1) NOT NULL,
   `weight` decimal(10,4) NOT NULL,
   `weight_class` varchar(2) NOT NULL,
@@ -532,7 +535,7 @@ CREATE TABLE `lc_products_options_stock` (
   `dim_y` decimal(11,4) NOT NULL,
   `dim_z` decimal(11,4) NOT NULL,
   `dim_class` varchar(2) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `quantity` decimal(11,4) NOT NULL,
   `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,

@@ -103,7 +103,7 @@
         );
       }
       
-      foreach (cart::$data['items'] as $item) {
+      foreach (cart::$items as $item) {
         self::add_item($item);
       }
       

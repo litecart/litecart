@@ -5,7 +5,7 @@
     header('X-Robots-Tag: noindex');
   }
   
-  if (cart::$data['total']['items'] == 0) {
+  if (empty(cart::$items)) {
     echo '<p><em>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</em></p>' . PHP_EOL
        . '<p><a href="'. document::href_ilink('') .'">&lt;&lt; '. language::translate('title_back', 'Back') .'</a></p>';
     return;
@@ -14,7 +14,7 @@
   $box_checkout_cart = new view();
   
   $box_checkout_cart->snippets['items'] = array();
-  foreach (cart::$data['items'] as $key => $item) {
+  foreach (cart::$items as $key => $item) {
     $box_checkout_cart->snippets['items'][$key] = array(
       'id' => $item['id'],
       'product_id' => $item['product_id'],

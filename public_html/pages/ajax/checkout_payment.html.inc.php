@@ -5,7 +5,7 @@
     header('X-Robots-Tag: noindex');
   }
   
-  if (cart::$data['total']['items'] == 0) return;
+  if (empty(cart::$items)) return;
   
   if (empty(customer::$data['country_code'])) return;
   

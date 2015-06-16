@@ -97,8 +97,8 @@
 // Save order
   $order->save();
   
-// Reset cart
-  cart::reset();
+// Clean up cart
+  cart::clean();
   
 // Send e-mails
   $order->email_order_copy($order->data['customer']['email']);

@@ -14,7 +14,7 @@
           if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) session::$data['shipping'] = array();
           $this->data = &session::$data['shipping'];
           
-          foreach (cart::$data['items'] as $key => $item) {
+          foreach (cart::$items as $key => $item) {
             $this->items[$key] = $item;
           }
           
@@ -31,9 +31,9 @@
     
     public function options($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
       
-      if ($items === null) $items = cart::$data['items'];
-      if ($subtotal === null) $subtotal = cart::$data['total']['value'];
-      if ($tax === null) $tax = cart::$data['total']['tax'];
+      if ($items === null) $items = cart::$items;
+      if ($subtotal === null) $subtotal = cart::$total['value'];
+      if ($tax === null) $tax = cart::$total['tax'];
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
       
