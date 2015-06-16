@@ -5,7 +5,7 @@
     'default' => 'languages',
     'theme' => array(
       'color' => '#4b79a5',
-      'icon' => 'comments',
+      'icon' => 'fa-comments',
     ),
     'menu' => array(
       array(

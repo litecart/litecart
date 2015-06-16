@@ -249,11 +249,11 @@ INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charse
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'chain-broken', '#c0c0c0', 0, 1, NOW(), NOW()),
-(2, 'clock-o', '#d7d96f', 1, 2, NOW(), NOW()),
-(3, 'cog', '#ffa851', 1, 3, NOW(), NOW()),
-(4, 'truck', '#99cc66', 1, 4, NOW(), NOW()),
-(5, 'times', '#ff6666', 0, 5, NOW(), NOW());
+(1, 'fa-chain-broken', '#c0c0c0', 0, 1, NOW(), NOW()),
+(2, 'fa-clock-o', '#d7d96f', 1, 2, NOW(), NOW()),
+(3, 'fa-cog', '#ffa851', 1, 3, NOW(), NOW()),
+(4, 'fa-truck', '#99cc66', 1, 4, NOW(), NOW()),
+(5, 'fa-times', '#ff6666', 0, 5, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Awaiting payment', ''),

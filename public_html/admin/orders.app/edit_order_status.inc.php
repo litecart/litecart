@@ -86,7 +86,7 @@
     </tr>
     <tr>
       <td><?php echo language::translate('title_icon', 'Icon');?><br />
-      <?php echo functions::form_draw_text_field('icon', !empty($_POST['color']) ? true : 'circle-thin', 'placeholder="circle-thin"'); ?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a></td>
+      <?php echo functions::form_draw_text_field('icon', !empty($_POST['color']) ? true : 'fa-circle-thin', 'placeholder="fa-circle-thin"'); ?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_color', 'Color');?><br />

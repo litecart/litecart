@@ -40,6 +40,11 @@
     
     public static function startup() {
       
+      database::query(
+        "delete from ". DB_TABLE_CART_ITEMS ."
+        where date_created < '". date('Y-m-d H:i:s', strtotime('-1 years')) ."';"
+      );
+      
       self::load();
       
       if (!empty($_POST['add_cart_product'])) {

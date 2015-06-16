@@ -96,11 +96,11 @@
       }
       
       if (empty($order['order_status_id'])) {
-        $order['order_status_icon'] = 'minus';
+        $order['order_status_icon'] = 'fa-minus';
         $order['order_status_color'] = '#cccccc';
       }
       
-      if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'circle-thin';
+      if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
   <tr class="<?php echo $rowclass; ?><?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : ''; ?>">

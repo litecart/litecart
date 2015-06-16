@@ -2,17 +2,17 @@
 
   function draw_fontawesome_icon($name, $params=null, $class=null) {
     //trigger_error('draw_fontawesome_icon() is deprecated. Use instead draw_fonticon()', E_USER_DEPRECATED);
-    return functions::draw_fonticon('fa-'.$name . ($class ? ' ' . $class), $params);
+    return functions::draw_fonticon('fa-'.$name . ($class ? ' ' . $class : null), $params);
   }
   
   function draw_fonticon($class, $params=null) {
     
     switch(true) {
       case (substr($class, 0, 3) == 'fa-'):
-        return return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : '') .'></i>';
+        return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
         
       default:
-        trigger_error('Unknown font icon', E_USER_WARNING);
+        trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);
         return; 
     }
   }

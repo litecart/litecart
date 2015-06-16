@@ -5,7 +5,7 @@
     'default' => 'shipping',
     'theme' => array(
       'color' => '#c78dc8',
-      'icon' => 'cube',
+      'icon' => 'fa-cube',
     ),
     'menu' => array(
       array(

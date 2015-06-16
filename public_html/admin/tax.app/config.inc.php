@@ -5,7 +5,7 @@
     'default' => 'tax_classes',
     'theme' => array(
       'color' => '#ccd2af',
-      'icon' => 'university',
+      'icon' => 'fa-university',
     ),
     'menu' => array(
       array(

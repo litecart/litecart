@@ -5,7 +5,7 @@
     'default' => 'slides',
     'theme' => array(
       'color' => '#b89dd9',
-      'icon' => 'picture-o',
+      'icon' => 'fa-picture-o',
     ),
     'menu' => array(
     ),

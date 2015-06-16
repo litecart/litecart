@@ -5,7 +5,7 @@
     'default' => 'catalog',
     'theme' => array(
       'color' => '#d0cc4f',
-      'icon' => 'th',
+      'icon' => 'fa-th',
     ),
     'menu' => array(
       array(

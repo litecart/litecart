@@ -5,7 +5,7 @@
     'default' => 'monthly_sales',
     'theme' => array(
       'color' => '#b79d82',
-      'icon' => 'pie-chart',
+      'icon' => 'fa-pie-chart',
     ),
     'menu' => array(
       array(

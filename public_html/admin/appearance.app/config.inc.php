@@ -5,7 +5,7 @@
     'default' => 'template',
     'theme' => array(
       'color' => '#ff387c',
-      'icon' => 'adjust',
+      'icon' => 'fa-adjust',
     ),
     'menu' => array(
       array(

@@ -5,7 +5,7 @@
     'default' => 'users',
     'theme' => array(
       'color' => '#f8af5a',
-      'icon' => 'star',
+      'icon' => 'fa-star',
     ),
     'menu' => array(),
     'docs' => array(

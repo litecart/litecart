@@ -5,7 +5,7 @@
     'default' => 'store_info',
     'theme' => array(
       'color' => '#a3a3a3',
-      'icon' => 'cogs',
+      'icon' => 'fa-cogs',
     ),
     'menu' => array(),
     'docs' => array(),

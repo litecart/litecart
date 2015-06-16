@@ -104,15 +104,15 @@
       'app' => $_GET['app'],
       'doc' => !empty($_GET['doc']) ? $_GET['doc'] : $app_config['default'],
       'theme' => array(
-        'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'plus',
+        'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
         'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
       ),
       'help_link' => document::link('http://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : ''))),
     );
     
-    $app_icon = '<span class="fa-stack fa-lg icon-wrapper">' . PHP_EOL
+    $app_icon = '<span class="fa-stack icon-wrapper">' . PHP_EOL
               . '  ' . functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $_page->snippets['theme']['color'] .';"') . PHP_EOL
-              . '  ' . functions::draw_fonticon('fa-'.$_page->snippets['theme']['icon'] .' fa-stack-1x icon', 'style="color: #fff;"') . PHP_EOL
+              . '  ' . functions::draw_fonticon($_page->snippets['theme']['icon'] .' fa-stack-1x icon', 'style="color: #fff;"') . PHP_EOL
               . '</span>';
     
     ob_start();

@@ -5,7 +5,7 @@
     'default' => 'orders',
     'theme' => array(
       'color' => '#b2db64',
-      'icon' => 'shopping-cart',
+      'icon' => 'fa-shopping-cart',
     ),
     'menu' => array(
       array(

@@ -5,7 +5,7 @@
     'default' => 'customers',
     'theme' => array(
       'color' => '#5ab687',
-      'icon' => 'user',
+      'icon' => 'fa-user',
     ),
     'menu' => array(
       array(

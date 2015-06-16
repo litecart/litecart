@@ -5,7 +5,7 @@
     'default' => 'vqmods',
     'theme' => array(
       'color' => '#a6dad7',
-      'icon' => 'plug',
+      'icon' => 'fa-plug',
     ),
     'menu' => array(
       array(

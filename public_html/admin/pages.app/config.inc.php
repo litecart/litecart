@@ -5,7 +5,7 @@
     'default' => 'pages',
     'theme' => array(
       'color' => '#bec6b4',
-      'icon' => 'file-text',
+      'icon' => 'fa-file-text',
     ),
     'menu' => array(),
     'docs' => array(

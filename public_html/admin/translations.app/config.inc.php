@@ -5,7 +5,7 @@
     'default' => 'search',
     'theme' => array(
       'color' => '#cd9e9e',
-      'icon' => 'book',
+      'icon' => 'fa-book',
     ),
     'menu' => array(
       array(

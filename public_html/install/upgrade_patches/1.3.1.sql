@@ -8,3 +8,13 @@ ALTER TABLE `lc_cart_items` ADD INDEX `cart_uid` (`cart_uid`);
 ALTER TABLE `lc_products` CHANGE `quantity` `quantity` DECIMAL(11, 4) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_options_stock` CHANGE `quantity` `quantity` DECIMAL(11, 4) NOT NULL;
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-chain-broken' where icon = 'chain-broken';
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-clock-o' where icon = 'clock-o';
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-cog' where icon = 'cog';
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-truck' where icon = 'truck';
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-times' where icon = 'times';
