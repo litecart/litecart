@@ -162,7 +162,7 @@ foreach (array_keys(language::$languages) as $language_code) {
     if ($category_id == 0) {
       $output .= '<tr>' . PHP_EOL
                . '  <td>'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', '[Root]')) .'" data-priority="0"') .'</td>' . PHP_EOL
-               . '  <td width="100%" id = "category-id-'. $category_id .'">'. functions::draw_fonticon('fa-folder fa-lg') .' '. language::translate('title_root', '[Root]', 'style="color: #cccc66;') .'</td>' . PHP_EOL
+               . '  <td width="100%" id = "category-id-'. $category_id .'">'. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', '[Root]') .'" style="color: #cccc66;"') .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
     }
     
@@ -305,7 +305,7 @@ foreach (array_keys(language::$languages) as $language_code) {
     <tr>
       <td><?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], 100, 75); ?>" align="left" style="margin: 5px;" /></td>
       <td><?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename'], 'data-size="large"'); ?></td>
-      <td><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('times-circle fa-lg', 'style="color: #cc3333;'); ?></a></td>
+      <td><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
     </tr>
 <?php
   }
@@ -710,7 +710,7 @@ foreach (currency::$currencies as $currency) {
           </tr>
           <?php } ?>
           <tr>
-            <td colspan="5"><a id="add-campaign" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;'); ?></a></td>
+            <td colspan="5"><a id="add-campaign" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
           </tr>
         </table>
         
@@ -831,7 +831,7 @@ foreach (currency::$currencies as $currency) {
 <?php
       }
 ?>
-            <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+            <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
           </tr>
 <?php
     }
@@ -907,7 +907,7 @@ foreach (currency::$currencies as $currency) {
 <?php
   }
 ?>
-                       + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+                       + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                        + '</tr>';
             output = output.replace(/new_option_i/g, 'new_' + new_option_i);
             $(this).closest('tr').before(output);
@@ -939,7 +939,7 @@ foreach (currency::$currencies as $currency) {
             <td><?php echo functions::form_draw_number_field('options_stock['.$key.'][quantity]', true); ?></td>
             <td style="white-space: nowrap;"><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true); ?> <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true); ?></td>
             <td style="white-space: nowrap;"><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true); ?> x <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true); ?> x <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true); ?> <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?></td>
-            <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+            <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
           </tr>
 <?php
     }
@@ -1066,7 +1066,7 @@ foreach (currency::$currencies as $currency) {
                        + '  <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_number_field('options_stock[new_option_stock_i][quantity]', '0')); ?></td>'
                        + '  <td style="white-space: nowrap;"><?php echo str_replace(PHP_EOL, '', functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00') .' '. functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
                        + '  <td style="white-space: nowrap;"><?php echo str_replace(PHP_EOL, '', functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00') .' '. functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
-                       + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down', 'style="color: #3399cc;"', 'fa-lg'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+                       + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                        + '</tr>';
             while ($("input[name='options_stock[new_"+new_option_stock_i+"]']").length) new_option_stock_i++;
             output = output.replace(/new_option_stock_i/g, 'new_' + new_option_stock_i);

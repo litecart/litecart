@@ -189,7 +189,8 @@
       }
       
       if (empty($language_code) || empty(language::$languages[$language_code])) {
-        trigger_error('Unknown language code for translation '. $code, E_USER_ERROR);
+        trigger_error('Unknown language code for translation ('. $language_code .')', E_USER_WARNING);
+        return;
       }
       
     // Return from cache

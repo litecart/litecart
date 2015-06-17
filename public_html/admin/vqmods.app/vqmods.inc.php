@@ -73,7 +73,7 @@
       <td><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>
       <td><?php echo (string)$xml->version; ?></td>
       <td><?php echo (string)$xml->author; ?></td>
-      <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download', '', 'fa-lg'); ?></a></td>
+      <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => basename($vqmod)), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download fa-lg'); ?></a></td>
     </tr>
 <?php
     }
