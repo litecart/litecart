@@ -86,6 +86,8 @@
         break;
     }
     
+    //$image->trim();
+    
     if (!$image->resample($width, $height, strtoupper($clipping))) return;
     
     if (!$image->write($target . $filename, $target_extension, $quality)) return;

@@ -45,6 +45,7 @@
         where date_created < '". date('Y-m-d H:i:s', strtotime('-1 years')) ."';"
       );
       
+    // Load/Refresh
       self::load();
       
       if (!empty($_POST['add_cart_product'])) {
@@ -153,8 +154,12 @@
       }
       
       if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-        if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.') .' ('. $product->quantity .')');
-        return;
+        if (!$silent) {
+          notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.') .' ('. round($product->quantity, $product->quantity_unit['decimals']) .')');
+          return;
+        } else {
+          $quantity = $product->quantity;
+        }
       }
       
       $item = array(
@@ -276,8 +281,12 @@
           
           if ($option_match) {
             if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-              if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.') . ' ('. $option_stock['quantity'] .')');
-              return;
+              if (!$silent) {
+                notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.') . ' ('. round($option_stock['quantity'], $product->quantity_unit['decimals']) .')');
+                return;
+              } else {
+                $quantity = $option_stock['quantity'];
+              }
             }
             
             $item['option_stock_combination'] = $option_stock['combination'];
@@ -341,13 +350,13 @@
             foreach (array_keys($product->options_stock) as $key) {
               if ($product->options_stock[$key]['combination'] == self::$items[$item_key]['option_stock_combination']) {
                 if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
-                  if (!$silent) notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.'));
+                  if (!$silent) notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.') . ' ('. round($product->options_stock[$key]['quantity'], $product->quantity_unit['decimals']) .')');
                   return;
                 }
               }
             }
           } else if (($product->quantity - $quantity) < 0) {
-            if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.'));
+            if (!$silent) notices::add('errors', language::translate('text_not_enough_products_in_stock', 'There are not enough products in stock.') . ' ('. round($product->quantity, $product->quantity_unit['decimals']) .')');
             return;
           }
         }

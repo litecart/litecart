@@ -7,14 +7,16 @@
   <div class="content">
     <div class="images-wrapper">
 
-      <figure class="image-wrapper">
-        <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product"><img src="<?php echo $image['original']; ?>" srcset="<?php echo $image['thumbnail']; ?> 1x, <?php echo $image['thumbnail_2x']; ?> 2x" class="main-image zoomable shadow rounded-corners" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" /></a>
+      <div class="main-image zoomable shadow">
+        <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product">
+          <img src="<?php echo $image['original']; ?>" srcset="<?php echo $image['thumbnail']; ?> 1x, <?php echo $image['thumbnail_2x']; ?> 2x" class="main-image" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" />
+        </a>
         <?php echo $sticker; ?>
-      </figure>
+      </div>
 <?php
   if ($extra_images) {
     foreach ($extra_images as $image) {
-      echo '<a href="'. $image['original'] .'" class="fancybox" data-fancybox-group="product"><img src="'. $image['thumbnail'] .'" class="extra-image zoomable shadow" title="'. htmlspecialchars($name) .'" /></a>';
+      echo '<a href="'. $image['original'] .'" class="fancybox extra-image zoomable shadow" data-fancybox-group="product"><img src="'. $image['thumbnail'] .'" title="'. htmlspecialchars($name) .'" /></a>';
     }
   }
 ?>
