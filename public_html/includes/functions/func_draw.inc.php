@@ -5,11 +5,14 @@
     return functions::draw_fonticon('fa-'.$name . ($class ? ' ' . $class : null), $params);
   }
   
-  function draw_fonticon($class, $params=null) {
+  function draw_fonticon($classes, $params=null) {
     
     switch(true) {
+      case (substr($class, 0, 3) == 'fa '):
+        return '<i class="'. $classes .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        
       case (substr($class, 0, 3) == 'fa-'):
-        return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        return '<i class="fa '. $classes .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
         
       default:
         trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);
