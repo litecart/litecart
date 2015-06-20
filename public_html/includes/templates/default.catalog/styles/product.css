@@ -13,6 +13,7 @@
   max-width: 305px;
 }
 #box-product .main-image {
+  overflow: hidden;
   position: relative;
   max-width: 300px;
   background: #fff;
@@ -42,10 +43,25 @@
   margin: 0px;
 }
 
-#box-product .sticker {
+#box-product  .sticker {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 1.25em;
+  left: -1.75em;
+  width: 75px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+  padding: 0.25em;
+  transform: rotate(-45deg);
+  color: #fff;
+  text-shadow: 0px 0px 3px #000;
+}
+#box-product  .sticker.new {
+  background: rgba(191, 176, 121, 0.9);
+}
+#box-product  .sticker.sale {
+  background: rgba(191, 121, 121, 0.9);
 }
 
 #box-product .price-wrapper {

@@ -142,6 +142,9 @@ ul.listing-wrapper > li.manufacturer .title {
 }
 
 /* Product */
+ul.listing-wrapper > li.product {
+  overflow: hidden;
+}
 ul.listing-wrapper > li.product.column {
   position: relative;
   display: inline-block;
@@ -226,8 +229,23 @@ ul.listing-wrapper > li.product.row .image-wrapper img {
 
 ul.listing-wrapper > li.product .sticker {
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 1.25em;
+  left: -1.75em;
+  width: 75px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+  padding: 0.25em;
+  transform: rotate(-45deg);
+  color: #fff;
+  text-shadow: 0px 0px 3px #000;
+}
+ul.listing-wrapper > li.product .sticker.new {
+  background: rgba(191, 176, 121, 0.9);
+}
+ul.listing-wrapper > li.product .sticker.sale {
+  background: rgba(191, 121, 121, 0.9);
 }
 
 ul.listing-wrapper > li.product.column .name {
