@@ -321,6 +321,7 @@
           }
         }
         
+      // Set categories
         if (isset($row['category_codes'])) {
           
           $product->data['categories'] = array();

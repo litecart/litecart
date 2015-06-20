@@ -33,7 +33,7 @@
     ######################################################################
     
     public static function calculate($value, $tax_class_id, $calculate=null, $country_code=null, $zone_code=null) {
-      trigger_error('The method calculate() has been deprecated, use instead get_price()', E_USER_DEPRECATED);
+      trigger_error('The method calculate() is deprecated, use instead get_price()', E_USER_DEPRECATED);
       
       $customer = array(
         'country_code' => $country_code,

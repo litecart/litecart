@@ -4,6 +4,8 @@
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'occurrences';
   
+  $_GET['query'] = trim($_GET['query']);
+  
   document::$snippets['title'][] = empty($_GET['query']) ? language::translate('title_search_results', 'Search Results') : sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), $_GET['query']);
   //document::$snippets['keywords'] = '';
   //document::$snippets['description'] = '';

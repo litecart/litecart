@@ -16,10 +16,6 @@
         return; 
     }
   }
-
-  function draw_img($image, $width, $height, $title, $params) {
-    return '<img src="'. $image .'" width="'. $width .'" height="'. $height .'" border="0"'. ($params ? ' '.$params : '') .'/>';
-  }
   
   function draw_listing_category($category) {
     
@@ -37,16 +33,6 @@
     );
     
     return $list_item->stitch('views/listing_category');
-  }
-  
-  function draw_listing_product_column($product) {
-    trigger_error('The function draw_listing_product_column() is deprecated, use instead draw_listing_product()', E_USER_DEPRECATED);
-    return functions::draw_listing_product($product, 'column');
-  }
-  
-  function draw_listing_product_row($product) {
-    trigger_error('The function draw_listing_product_row() is deprecated, use instead draw_listing_product()', E_USER_DEPRECATED);
-    return functions::draw_listing_product($product, 'row');
   }
   
   function draw_listing_product($product, $listing_type='column') {
@@ -74,7 +60,7 @@
       'quantity' => $product['quantity'],
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
     );
-    //var_dump($listing_product->stitch('views/listing_product'));
+    
     return $listing_product->stitch('views/listing_product');
   }
   
@@ -148,10 +134,8 @@
   function draw_pagination($pages) {
     
     $pages = ceil($pages);
-  
+    
     if ($pages < 2) return false;
-    
-    
     
     if (empty($_GET['page']) && $_GET['page'] < 2) $_GET['page'] = 1;
     

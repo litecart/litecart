@@ -271,7 +271,7 @@
     // Match options with options stock
       if (count($product->options_stock) > 0) {
         foreach ($product->options_stock as $option_stock) {
-        
+          
           $option_match = true;
           foreach (explode(',', $option_stock['combination']) as $pair) {
             if (!in_array($pair, $selected_options)) {
