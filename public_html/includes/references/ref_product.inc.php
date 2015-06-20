@@ -42,11 +42,10 @@
         case 'short_description':
         case 'head_title':
         case 'meta_description':
-        case 'meta_keywords':
         case 'attributes':
           
           $query = database::query(
-            "select language_code, name, description, short_description, attributes, head_title, meta_description, meta_keywords from ". DB_TABLE_PRODUCTS_INFO ."
+            "select language_code, name, description, short_description, attributes, head_title, meta_description from ". DB_TABLE_PRODUCTS_INFO ."
             where product_id = '". (int)$this->_id ."'
             and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
           );
@@ -64,7 +63,7 @@
                 $this->_data['name'][$language_code] = '[untitled]';
               }
             }
-            foreach (array('description', 'short_description', 'attributes', 'head_title', 'meta_description', 'meta_keywords') as $key) {
+            foreach (array('description', 'short_description', 'attributes', 'head_title', 'meta_description') as $key) {
               if (empty($this->_data[$key][$language_code])) {
                 if (!empty($this->_data[$key][settings::get('default_language_code')])) {
                   $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];

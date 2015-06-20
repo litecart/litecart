@@ -5,8 +5,6 @@
   breadcrumbs::add(language::translate('title_create_account', 'Create Account'));
   
   document::$snippets['title'][] = language::translate('title_create_account', 'Create Account');
-  //document::$snippets['keywords'] = '';
-  //document::$snippets['description'] = '';
   
   if (!$_POST) {
     foreach (customer::$data as $key => $value) {

@@ -12,8 +12,6 @@
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
   document::$snippets['title'][] = language::translate('title_order_success', 'Order Success');
-  //document::$snippets['keywords'] = '';
-  //document::$snippets['description'] = '';
   
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout'));
   breadcrumbs::add(language::translate('title_order_success', 'Order Success'));

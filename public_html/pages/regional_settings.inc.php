@@ -9,8 +9,6 @@
   }
   
   document::$snippets['title'][] = language::translate('select_region:head_title', 'Regional Settings');
-  document::$snippets['keywords'] = language::translate('select_region:meta_keywords', '');
-  document::$snippets['description'] = language::translate('select_region:meta_description', '');
   
   if (isset($_POST['save'])) {
     

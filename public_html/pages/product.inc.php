@@ -59,9 +59,7 @@
     breadcrumbs::add(functions::reference_get_manufacturer_name($product->manufacturer['id']), document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])));
   }
   
-  //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = $product->head_title[language::$selected['code']] ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']];
-  document::$snippets['keywords'] = $product->meta_keywords[language::$selected['code']] ? $product->meta_keywords[language::$selected['code']] : $product->keywords;
   document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']];
   
   if (!empty($product->image)) {
@@ -92,7 +90,6 @@
     'description' => !empty($product->description[language::$selected['code']]) ? $product->description[language::$selected['code']] : '<p><em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em></p>',
     'head_title' => !empty($product->head_title[language::$selected['code']]) ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']],
     'meta_description' => !empty($product->meta_description[language::$selected['code']]) ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']],
-    'meta_keywords' => !empty($product->meta_keywords[language::$selected['code']]) ? $product->meta_keywords[language::$selected['code']] : '',
     'keywords' => $product->keywords,
     'attributes' => !empty($product->attributes[language::$selected['code']]) ? preg_split('/\R+/', $product->attributes[language::$selected['code']]) : array(),
     'sku' => $product->sku,

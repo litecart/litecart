@@ -34,7 +34,6 @@
   
   //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;
-  document::$snippets['keywords'] = $manufacturer->meta_keywords[language::$selected['code']] ? $manufacturer->meta_keywords[language::$selected['code']] : $manufacturer->keywords;
   document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : $manufacturer->short_description[language::$selected['code']];
 
   $manufacturer_cache_id = cache::cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));

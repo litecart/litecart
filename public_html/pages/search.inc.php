@@ -7,8 +7,6 @@
   $_GET['query'] = trim($_GET['query']);
   
   document::$snippets['title'][] = empty($_GET['query']) ? language::translate('title_search_results', 'Search Results') : sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), $_GET['query']);
-  //document::$snippets['keywords'] = '';
-  //document::$snippets['description'] = '';
   
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'));
   

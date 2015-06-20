@@ -263,7 +263,7 @@
         
       // Set product info data
         if (!empty($row['language_code'])) {
-          foreach (array('name', 'short_description', 'description', 'attributes', 'head_title', 'meta_description', 'meta_keywords') as $field) {
+          foreach (array('name', 'short_description', 'description', 'attributes', 'head_title', 'meta_description') as $field) {
             if (isset($row[$field])) {
               $product->data[$field][$row['language_code']] = $row[$field];
             }
@@ -395,7 +395,6 @@
           'attributes' => $product->attributes[$_POST['language_code']],
           'head_title' => $product->head_title[$_POST['language_code']],
           'meta_description' => $product->meta_description[$_POST['language_code']],
-          'meta_keywords' => $product->meta_keywords[$_POST['language_code']],
           'images' => implode(';', $product->images),
           'purchase_price' => $product->purchase_price,
           'price' => $product->price,

@@ -21,7 +21,6 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<meta name="keywords" content="{snippet:keywords}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=1024">
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />

@@ -45,7 +45,6 @@
         case 'short_description':
         case 'head_title':
         case 'meta_description':
-        case 'meta_keywords':
         case 'h1_title':
           
           $this->_data['info'] = array();
@@ -62,7 +61,6 @@
             'short_description',
             'head_title',
             'meta_description',
-            'meta_keywords',
             'h1_title',
           );
           

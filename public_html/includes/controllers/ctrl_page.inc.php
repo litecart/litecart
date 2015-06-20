@@ -20,7 +20,7 @@
       $this->data['dock'] = explode(',', $this->data['dock']);
       
       $page_info_query = database::query(
-        "select title, content, head_title, meta_description, meta_keywords, language_code from ". DB_TABLE_PAGES_INFO ."
+        "select title, content, head_title, meta_description, language_code from ". DB_TABLE_PAGES_INFO ."
         where page_id = '". (int)$this->data['id'] ."';"
       );
       while ($page_info = database::fetch($page_info_query)) {
@@ -76,8 +76,7 @@
             title = '". database::input($this->data['title'][$language_code]) ."',
             content = '". database::input($this->data['content'][$language_code], true) ."',
             head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-            meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
-            meta_keywords = '". database::input($this->data['meta_keywords'][$language_code]) ."'
+            meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
           where id = '". (int)$page_info['id'] ."'
           and page_id = '". (int)$this->data['id'] ."'
           and language_code = '". $language_code ."'

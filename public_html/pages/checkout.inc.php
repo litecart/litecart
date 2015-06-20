@@ -9,8 +9,6 @@
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
   
   document::$snippets['title'][] = language::translate('title_checkout', 'Checkout');
-  //document::$snippets['keywords'] = '';
-  //document::$snippets['description'] = '';
 ?>
 
 <div id="checkout-cart-wrapper">

@@ -6,8 +6,6 @@
   customer::require_login();
   
   document::$snippets['title'][] = language::translate('title_edit_account', 'Edit Account');
-  //document::$snippets['keywords'] = '';
-  //document::$snippets['description'] = '';
   
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'), 'edit_account.php');

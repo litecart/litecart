@@ -4,7 +4,6 @@
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
   
   document::$snippets['title'][] = language::translate('manufacturers.php:head_title', 'Manufacturers');
-  document::$snippets['keywords'] = language::translate('manufacturers.php:meta_keywords', '');
   document::$snippets['description'] = language::translate('manufacturers.php:meta_description', '');
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');

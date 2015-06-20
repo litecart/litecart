@@ -39,7 +39,6 @@
         'head_title',
         'h1_title',
         'meta_description',
-        'meta_keywords',
         'link',
       );
       
@@ -181,18 +180,6 @@ $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
   if ($use_br) echo '<br />';
   echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"');
-  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo language::translate('title_meta_keywords', 'Meta Keywords'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'meta_keywords['. $language_code .']', true, 'data-size="large"');
   $use_br = true;
 }
 ?>

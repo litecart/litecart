@@ -57,7 +57,6 @@ CREATE TABLE `lc_categories_info` (
   `head_title` varchar(128) NOT NULL,
   `h1_title` varchar(128) NOT NULL,
   `meta_description` varchar(256) NOT NULL,
-  `meta_keywords` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   KEY `language_code` (`language_code`)
@@ -207,7 +206,6 @@ CREATE TABLE `lc_manufacturers_info` (
   `h1_title` varchar(128) NOT NULL,
   `head_title` varchar(128) NOT NULL,
   `meta_description` varchar(256) NOT NULL,
-  `meta_keywords` varchar(256) NOT NULL,
   `link` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `manufacturer_id` (`manufacturer_id`),
@@ -385,7 +383,6 @@ CREATE TABLE `lc_pages_info` (
   `content` text NOT NULL,
   `head_title` varchar(128) NOT NULL,
   `meta_description` varchar(256) NOT NULL,
-  `meta_keywords` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`),
   KEY `language_code` (`language_code`)
@@ -502,7 +499,6 @@ CREATE TABLE `lc_products_info` (
   `description` text NOT NULL,
   `head_title` varchar(128) NOT NULL,
   `meta_description` varchar(256) NOT NULL,
-  `meta_keywords` varchar(256) NOT NULL,
   `attributes` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),

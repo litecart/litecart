@@ -8,8 +8,6 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
   
   document::$snippets['title'][] = language::translate('title_order_history', 'Order History');
-  //document::$snippets['keywords'] = '';
-  //document::$snippets['description'] = '';
 
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_order_history', 'Order History'));

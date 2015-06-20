@@ -6,7 +6,7 @@
   
 // Information page
   $pages_query = database::query(
-    "select p.id, p.status, pi.title, pi.content, pi.head_title, pi.meta_keywords, pi.meta_description from ". DB_TABLE_PAGES ." p
+    "select p.id, p.status, pi.title, pi.content, pi.head_title, pi.meta_description from ". DB_TABLE_PAGES ." p
     left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
     where p.id = '". (int)$_GET['page_id'] ."'
     limit 1;"
@@ -28,7 +28,6 @@
   }
   
   document::$snippets['title'][] = !empty($page['head_title']) ? $page['head_title'] : $page['title'];
-  document::$snippets['keywords'] = !empty($page['meta_keywords']) ? $page['meta_keywords'] : '';
   document::$snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
   
   breadcrumbs::add($page['title'], document::ilink(null, array(), true));
