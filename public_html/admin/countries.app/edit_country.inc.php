@@ -179,7 +179,7 @@
           $('select[name=\'zone[code]\']').html('');
           if ($('select[name=\'zone[code]\']').attr('disabled')) $('select[name=\'zone[code]\']').removeAttr('disabled');
           if (data) {
-            $('select[name=\'zone[code]\']').append('<option value="">-- '+ '<?php echo language::translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
+            $('select[name=\'zone[code]\']').append('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
             $.each(data, function(i, zone) {
               $('select[name=\'zone[code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
             });
@@ -199,10 +199,10 @@
       if ($("select[name='country[code]']").find("option:selected").val() == "") return;
       new_zone_i++;
       var output = '    <tr>'
-                 + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-                 + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][code]', 'new_zone_code')); ?>new_zone_code</td>'
-                 + '      <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('zones[new_zone_i][name]', 'new_zone_name')); ?>new_zone_name</td>'
-                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+                 + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
+                 + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][code]', 'new_zone_code')); ?>new_zone_code</td>'
+                 + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][name]', 'new_zone_name')); ?>new_zone_name</td>'
+                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       output = output.replace(/new_zone_code/g, $("input[name='zone[code]']").val());

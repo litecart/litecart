@@ -485,18 +485,18 @@
       
       var output = '  <tr class="item">'
                  + '    <td>' + item.name
-                 + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][id]', ''); ?>'
-                 + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][product_id]', ''); ?>'
-                 + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', ''); ?>'
-                 + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][options]', ''); ?>'
-                 + '      <?php echo functions::form_draw_hidden_field('items[new_item_index][name]', ''); ?>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', '')); ?>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][options]', '')); ?>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
                  + '    </td>'
-                 + '    <td style="text-align: center;"><?php echo functions::form_draw_hidden_field('items[new_item_index][sku]', ''); ?>'+ item.sku +'</td>'
-                 + '    <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items[new_item_index][weight]', ''); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '')); ?></td>'
-                 + '    <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', ''); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', ''); ?></td>'
-                 + '    <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+                 + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'+ item.sku +'</td>'
+                 + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][weight]', '')); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '')); ?></td>'
+                 + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
+                 + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                  + '  </tr>';
       output = output.replace(/new_item_index/g, 'new_' + new_item_index);
       $("#order-items .footer").before(output);
@@ -612,12 +612,12 @@
       while ($("input[name='order_total["+new_ot_row_index+"][id]']").length) new_ot_row_index++;
       event.preventDefault();
       var output = '  <tr>'
-                 + '    <td style="text-align: right;"><a href="#" class="add" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', ''); ?><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"'); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"'); ?> :</td>'
-                 + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true)); ?><?php echo functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate')); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true)); ?></td>'
-                 + '    <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+                 + '    <td style="text-align: right;"><a href="#" class="add" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"')); ?></a></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"')); ?></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"')); ?> :</td>'
+                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true))); ?><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate'))); ?></td>'
+                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true))); ?></td>'
+                 + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                  + '  </tr>';
     output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
     $(this).closest("tr").before(output);
@@ -696,10 +696,10 @@
       while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
       event.preventDefault();
       var output = '  <tr>'
-                 + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?></td>'
-                 + '    <td style="white-space: normal;"><?php echo str_replace(PHP_EOL, '', functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
-                 + '    <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', '', language::translate('title_hidden', 'Hidden'))); ?></td>'
-                 + '    <td><a class="remove_comment" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+                 + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?></td>'
+                 + '    <td style="white-space: normal;"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
+                 + '    <td><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', '', language::translate('title_hidden', 'Hidden'))); ?></td>'
+                 + '    <td><a class="remove_comment" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                  + '  </tr>';
       output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
       $(this).closest("tr").before(output);

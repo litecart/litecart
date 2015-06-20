@@ -90,7 +90,7 @@
   
   <script>
     $("select[name$='[zone_code]'][disabled]").each(function() {
-      $(this).html('<option value="">-- '+ '<?php echo language::translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
+      $(this).html('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
     });
   
     $("body").on("click", "#remove-zone", function(event) {
@@ -113,13 +113,13 @@
         success: function(data) {
           $(zone_field).html('');
           if (data) {
-            $(zone_field).append('<option value="">-- '+ '<?php echo language::translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
+            $(zone_field).append('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
             $.each(data, function(i, zone) {
               $(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
             });
             $(zone_field).removeAttr('disabled');
           } else {
-            $(zone_field).append('<option value="">-- '+ '<?php echo language::translate('title_all_zones', 'All Zones'); ?>' +' --</option>');
+            $(zone_field).append('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
             $(zone_field).attr('disabled', 'disabled');
           }
         },
@@ -135,10 +135,10 @@
       if ($("select[name='country[code]']").find("option:selected").val() == "") return;
       new_zone_i++;
       var output = '    <tr>'
-                 + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-                 + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
-                 + '      <td><?php echo str_replace(array("'", PHP_EOL), array("\\'", ''), functions::form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
-                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+                 + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
+                 + '      <td><?php echo functions::general_escape_js(functions::form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
+                 + '      <td><?php echo functions::general_escape_js(functions::form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
+                 + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                  + '    </tr>';
       output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
       $("#table-zones tr:last").before(output);
