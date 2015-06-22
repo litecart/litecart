@@ -98,14 +98,11 @@
               break;
               
             default:
-              $contents = functions::http_fetch($this->_src);
-              $this->load_from_string(file_get_contents($file));
+              $this->load_from_string(file_get_contents($this->_src));
               break;
           }
           
-          if (!is_resource($this->_image)) return false;
-          
-          return true;
+          return is_resource($this->_image) ? true : false;
       }
     }
     

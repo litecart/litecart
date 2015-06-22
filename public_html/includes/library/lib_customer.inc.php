@@ -10,11 +10,7 @@
       self::$data = &session::$data['customer'];
     }
     
-    //public static function initiate() {
-    //}
-    
-    public static function startup() {
-      
+    public static function initiate() {
       if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
         self::reset();
       }
@@ -44,6 +40,9 @@
       
       self::identify();
     }
+    
+    //public static function startup() {
+    //}
     
     public static function before_capture() {
       

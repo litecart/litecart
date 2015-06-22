@@ -9,6 +9,14 @@ ALTER TABLE `lc_products` CHANGE `quantity` `quantity` DECIMAL(11, 4) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_options_stock` CHANGE `quantity` `quantity` DECIMAL(11, 4) NOT NULL;
 -- --------------------------------------------------------
+ALTER TABLE `lc_products_info` DROP COLUMN `meta_keywords`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_categories_info` DROP COLUMN `meta_keywords`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_manufacturers_info` DROP COLUMN `meta_keywords`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_pages_info` DROP COLUMN `meta_keywords`;
+-- --------------------------------------------------------
 UPDATE `lc_order_statuses` SET icon = 'fa-chain-broken' where icon = 'chain-broken';
 -- --------------------------------------------------------
 UPDATE `lc_order_statuses` SET icon = 'fa-clock-o' where icon = 'clock-o';
@@ -18,11 +26,3 @@ UPDATE `lc_order_statuses` SET icon = 'fa-cog' where icon = 'cog';
 UPDATE `lc_order_statuses` SET icon = 'fa-truck' where icon = 'truck';
 -- --------------------------------------------------------
 UPDATE `lc_order_statuses` SET icon = 'fa-times' where icon = 'times';
--- --------------------------------------------------------
-ALTER TABLE `lc_products_info` DROP COLUMN `meta_keywords`;
--- --------------------------------------------------------
-ALTER TABLE `lc_categories_info` DROP COLUMN `meta_keywords`;
--- --------------------------------------------------------
-ALTER TABLE `lc_manufacturers_info` DROP COLUMN `meta_keywords`;
--- --------------------------------------------------------
-ALTER TABLE `lc_pages_info` DROP COLUMN `meta_keywords`;

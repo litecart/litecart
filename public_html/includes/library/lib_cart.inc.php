@@ -35,15 +35,15 @@
       }
     }
     
-    //public static function initiate() {
-    //}
-    
-    public static function startup() {
+    public static function initiate() {
       
       database::query(
         "delete from ". DB_TABLE_CART_ITEMS ."
         where date_created < '". date('Y-m-d H:i:s', strtotime('-1 years')) ."';"
       );
+    }
+    
+    public static function startup() {
       
     // Load/Refresh
       self::load();
@@ -65,8 +65,8 @@
       }
     }
     
-    public static function before_capture() {
-    }
+    //public static function before_capture() {
+    //}
     
     //public static function after_capture() {
     //}
