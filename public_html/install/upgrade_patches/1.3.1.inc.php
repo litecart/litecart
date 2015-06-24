@@ -9,6 +9,8 @@
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'default.admin/styles/ie.css',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'default.admin/styles/ie8.css',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'default.admin/styles/ie9.css',
+    FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturers_list.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'default.catalog/views/box_manufacturers_list.inc.php',
   );
   
   foreach ($deleted_files as $pattern) {

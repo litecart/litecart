@@ -15,10 +15,6 @@
   document::$snippets['box_filter'] = ob_get_clean();
 
   ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturers_list.inc.php');
-  document::$snippets['box_manufacturers_list'] = ob_get_clean();
-
-  ob_start();
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php');
   document::$snippets['box_recently_viewed_products'] = ob_get_clean();
 
