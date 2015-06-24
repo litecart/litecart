@@ -93,7 +93,10 @@
   </div>
 </div>
 
-<a href="#" id="scroll-up">Scroll</a>
+<a id="scroll-up" href="#">
+  <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
+</a>
+
 <script>
   $(window).scroll(function(){
     if ($(this).scrollTop() > 100) {
