@@ -338,7 +338,6 @@
     'images/',
     'includes/config.inc.php',
     'vqmod/xml/',
-    'vqmod/logs/',
     'vqmod/vqcache/',
     'vqmod/',
     '.htaccess',
