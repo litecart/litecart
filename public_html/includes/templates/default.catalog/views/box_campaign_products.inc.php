@@ -1,5 +1,5 @@
-<div class="box" id="box-campaigns">
-  <div class="heading"><h3><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h3></div>
+<div id="box-campaigns" class="box">
+  <h3 class="title"><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h3>
   <div class="content">
     <?php if ($products) { ?>
     <ul class="listing-wrapper products">

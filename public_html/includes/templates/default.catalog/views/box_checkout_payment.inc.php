@@ -1,5 +1,5 @@
-<div class="box" id="box-checkout-payment">
-  <div class="heading"><h2><?php echo language::translate('title_payment', 'Payment'); ?></h2></div>
+<div id="box-checkout-payment" class="box">
+  <h2 class="title"><?php echo language::translate('title_payment', 'Payment'); ?></h2>
   <div class="content listing-wrapper">
     <ul id="payment-options" class="list-horizontal">
 <?php

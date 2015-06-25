@@ -1,6 +1,6 @@
 <aside class="column-left shadow rounded-corners">
   <div id="box-information-links" class="box">
-    <div class="heading"><h3><?php echo language::translate('title_information', 'Information'); ?></h3></div>
+    <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
     <div class="content">
       <nav>
         <ul class="list-vertical">

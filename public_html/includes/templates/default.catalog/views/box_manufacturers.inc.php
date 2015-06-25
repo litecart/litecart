@@ -1,7 +1,5 @@
 <div id="box-manufacturers" class="box">
-  <div class="heading">
-    <h1><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h1>
-  </div>
+  <h1 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h1>
   <div class="content">
     <ul class="listing-wrapper" class="manufacturers">
       <?php foreach($manufacturers as $manufacturer) { ?>

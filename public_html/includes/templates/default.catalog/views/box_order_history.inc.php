@@ -1,7 +1,5 @@
 <div id="box-order-history" class="box">
-  <div class="heading">
-    <h1><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
-  </div>
+  <h1 class="title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
   <div class="content">
     <table width="100%" class="dataTable">
       <tr class="header">

@@ -1,6 +1,6 @@
-<div class="box" id="box-checkout-summary">
-  <div class="heading"><h2><?php echo language::translate('title_order_summary', 'Order Summary'); ?></h2></div>
-  <div class="content" id="order_confirmation-wrapper">
+<div id="box-checkout-summary" class="box">
+  <h2 class="title"><?php echo language::translate('title_order_summary', 'Order Summary'); ?></h2>
+  <div id="order_confirmation-wrapper" class="content">
     <table class="dataTable rounded-corners" style="width: 100%;">
       <tr class="header">
         <th class="quantity" width="50"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>

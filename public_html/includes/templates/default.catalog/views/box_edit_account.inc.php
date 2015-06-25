@@ -1,5 +1,5 @@
-<div class="box" id="create-account">
-  <div class="heading"><h1><?php echo language::translate('title_edit_account', 'Edit Account'); ?></h1></div>
+<div id="create-account" class="box">
+  <h1 class="title"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></h1>
   <div class="content">
     <?php echo functions::form_draw_form_begin('customer_form', 'post'); ?>
       <table>

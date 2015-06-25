@@ -1,6 +1,5 @@
 <div id="box-manufacturer" class="box">
-  <div class="heading">
-    <span class="filter" style="float: right;">
+  <nav class="filter" style="float: right;">
 <?php
     $separator = false;
     foreach ($sort_alternatives as $key => $value) {
@@ -13,9 +12,9 @@
       $separator = true;
     }
 ?>
-    </span>
-    <h1><?php echo $title; ?></h1>
-  </div>
+  </nav>
+  
+  <h1 class="title"><?php echo $title; ?></h1>
   
   <div class="content">
   

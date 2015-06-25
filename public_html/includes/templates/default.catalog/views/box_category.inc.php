@@ -1,6 +1,5 @@
-<div class="box" id="box-category">
-  <div class="heading">
-    <nav class="filter" style="float: right;">
+<div id="box-category" class="box">
+  <nav class="filter" style="float: right;">
 <?php
     $separator = false;
     foreach ($sort_alternatives as $key => $value) {
@@ -13,9 +12,10 @@
       $separator = true;
     }
 ?>
-      </nav>
-    <h1><?php echo $h1_title; ?></h1>
-  </div>
+  </nav>
+  
+  <h1 class="title"><?php echo $h1_title; ?></h1>
+  
   <div class="content">
     
     <?php if ($_GET['page'] == 1) { ?>

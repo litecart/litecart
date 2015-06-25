@@ -1,5 +1,5 @@
-<div class="box" id="box-contact-us">
-  <div class="heading"><h1><?php echo language::translate('title_contact_us', 'Contact Us'); ?></h1></div>
+<div id="box-contact-us" class="box">
+  <h1 class="title"><?php echo language::translate('title_contact_us', 'Contact Us'); ?></h1>
   <div class="content">
     <?php echo functions::form_draw_form_begin('contact_form', 'post'); ?>
     <table>

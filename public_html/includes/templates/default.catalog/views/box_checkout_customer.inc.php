@@ -1,5 +1,5 @@
-<div class="box" id="box-checkout-customer">
-  <div class="heading"><h2><?php echo language::translate('title_customer_information', 'Customer Information'); ?></h2></div>
+<div id="box-checkout-customer" class="box">
+  <h2 class="title"><?php echo language::translate('title_customer_information', 'Customer Information'); ?></h2>
   <div class="content">
     <?php echo functions::form_draw_form_begin('customer_form', 'post'); ?>
       <div class="billing-address">

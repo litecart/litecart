@@ -1,6 +1,6 @@
 <div id="box-product" class="box" itemscope itemtype="http://www.schema.org/Product">
-  <div class="heading" style="overflow: hidden;">
-    <h1 itemprop="name"><?php echo $name; ?></h1>
+  <div style="overflow: hidden;">
+    <h1 class="title" itemprop="name"><?php echo $name; ?></h1>
     <?php if ($sku) echo '<div class="sku">'. $sku .'</div>'; ?>
   </div>
   
@@ -137,12 +137,12 @@
       </ul>
       
       <div class="content">
-        <div class="tab" id="tab-information" itemprop="description">
+        <div id="tab-information" class="tab" itemprop="description">
           <?php echo $description; ?>
         </div>
         
         <?php if ($attributes) { ?>
-        <div class="tab" id="tab-details">
+        <div id="tab-details" class="tab">
           <table>
 <?php
   for ($i=0; $i<count($attributes); $i++) {

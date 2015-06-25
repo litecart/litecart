@@ -1,32 +1,6 @@
 .box {
   clear: both;
-  max-width: 100%;
-  margin: 0px 0px 20px 0px;
-}
-
-.box > .heading {
-  padding: 0px;
-  /*overflow: hidden;*/
-}
-
-.box > .heading h1 {
-  margin-top: 0px;
-}
-
-.box > .heading h2 {
-  font: 23px 'Open Sans', sans-serif;
-  font-weight: normal;
-  margin: 0px;
-}
-
-.box > .heading h3 {
-  font: 20px 'Open Sans', sans-serif;
-  font-weight: normal;
-  margin-bottom: 0.5em;
-}
-
-aside .box:first-child h3 {
-  margin-top: 0px;
+  margin-bottom: 20px;
 }
 
 .box > .content {

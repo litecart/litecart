@@ -172,15 +172,15 @@ body {
 #main .middle  > .content {
   width: 100%;
 }
-#main .middle  > .left > * {
-  margin-right: 20px;
+#main .middle  > .left {
+  padding-right: 20px;
 }
 
 @media (max-width: 640px) {
   #main .middle > .left {
     display: block;
     vertical-align: top;
-    margin-right: 0px;
+    padding-right: 0px;
   }
   #main .middle > .left > * {
     display: block;
@@ -194,6 +194,57 @@ body {
   #main .middle > .content {
     display: block;
     vertical-align: top;
+  }
+}
+
+#navigation .columns {
+  display: table;
+  width: 100%;
+}
+#navigation .column {
+  display: table-cell;
+}
+#navigation .toggle {
+  display: none;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+#navigation .toggle > label {
+  cursor: pointer;
+}
+#navigation .search {
+  width: 100%;
+}
+#navigation .search form {
+  display: inline;
+}
+#navigation .search .input-wrapper {
+  display: block;
+  white-space: nowrap;
+}
+#navigation .search .input-wrapper input[name=query] {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .column-left {
+    width: auto;
+  }
+  #navigation {
+    border: none;
+    background: #ececec;
+    padding: 10px 15px;
+  }
+  #navigation .toggle {
+    display: inline-block;
+  }
+  #navigation .search .input-wrapper input[name=query] {
+  }
+  #navigation > .content {
+    display: none;
+  }
+  #navigation > input#toggle-menu:checked + .content {
+    display: block;
   }
 }
 
