@@ -256,7 +256,7 @@
         }
         
       // Set new product data
-        foreach (array('status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'weight', 'weight_class', 'purchase_price', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
+        foreach (array('categories', 'manufacturer_id', 'status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'weight', 'weight_class', 'purchase_price', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
           if (isset($row[$field])) $product->data[$field] = $row[$field];
         }
         
@@ -296,56 +296,6 @@
           $product->data['images'] = $product_images;
         }
         
-      // Set manufacturer
-        if (!empty($row['manufacturer_name'])) {
-          $manufacturer_query = database::query(
-            "select id from ". DB_TABLE_MANUFACTURERS ."
-            where name = '". database::input($row['manufacturer_name']) ."'
-            limit 1;"
-          );
-          $manufacturer = database::fetch($manufacturer_query);
-        
-          if (empty($manufacturer)) {
-          
-            echo "Inserting new manufacturer {$row['manufacturer_name']}\r\n";
-            $manufacturer = new ctrl_manufacturer();
-            $manufacturer->data['status'] = 1;
-            
-            foreach (array_keys(language::$languages) as $language_code) {
-              $manufacturer->data['name'] = $row['manufacturer_name'];
-            }
-            
-            $manufacturer->save();
-            
-          } else {
-          
-            if ($product->data['manufacturer_id'] != $manufacturer['id']) {
-              $product->data['manufacturer_id'] = $manufacturer['id'];
-            }
-          }
-        }
-        
-      // Set categories
-        if (isset($row['category_codes'])) {
-          
-          $product->data['categories'] = array();
-          
-          foreach (explode(',', $row['category_codes']) as $category_code) {
-            $category_code = trim($category_code);
-            $category_query = database::query(
-              "select id from ". DB_TABLE_CATEGORIES ."
-              where code = '". database::input($category_code) ."'
-              limit 1;"
-            );
-            $category = database::fetch($category_query);
-            if (!empty($category)) {
-              $product->data['categories'][] = $category['id'];
-            } else {
-              echo " - Category code $category_code not found for product on line $line.\r\n";
-            }
-          }
-        }
-        
         $product->save();
       }
       
@@ -371,21 +321,10 @@
       while ($product = database::fetch($products_query)) {
         $product = catalog::product($product['id']);
         
-        $category_codes = array();
-        foreach ($product->categories as $category_id) {
-          $category_query = database::query(
-            "select code from ". DB_TABLE_CATEGORIES ."
-            where id = '". (int)$category_id ."'
-            limit 1;"
-          );
-          $category = database::fetch($category_query);
-          $category_codes[] = $category['code'];
-        }
-        
         $csv[] = array(
           'id' => $product->id,
-          'category_codes' => implode(',', $category_codes),
-          'manufacturer_name' => $product->manufacturer['name'],
+          'categories' => implode(',', array_keys($product->categories)),
+          'manufacturer_id' => $product->manufacturer['id'],
           'status' => $product->status,
           'code' => $product->code,
           'sku' => $product->sku,
