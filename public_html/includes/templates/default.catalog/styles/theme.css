@@ -97,7 +97,7 @@ body {
 
 #cart-wrapper {
   position: absolute;
-  bottom: 15px;
+  bottom: 10px;
   right: 0px;
   display: inline-block;
 }
@@ -108,7 +108,7 @@ body {
 #cart > a img {
   float: left;
   vertical-align: bottom;
-  margin: -10px 5px 0px 0px;
+  margin: -5px 5px 0px 0px;
   width: 48px;
   height: 48px;
 }
