@@ -210,8 +210,8 @@
           
           if (!empty($options[$product->options[$key]['name'][language::$selected['code']]])) {
             switch ($product->options[$key]['function']) {
-              case 'checkbox':
               
+              case 'checkbox':
                 $valid_values = array();
                 foreach ($product->options[$key]['values'] as $value) {
                   $valid_values[] = $value['name'][language::$selected['code']];
@@ -304,7 +304,6 @@
       
       if (settings::get('round_amounts')) {
         $item['price'] = currency::round($item['price'], currency::$selected['code']);
-        $item['tax'] = tax::get_tax($item['price'], $item['tax_class_id']);
         $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
       }
       
