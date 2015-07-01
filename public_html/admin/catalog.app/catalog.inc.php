@@ -239,7 +239,7 @@
 ?>
     <tr class="<?php echo $rowclass . (($product['status']) ? false : ' semi-transparent'); ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
-      <td><?php echo '<img src="'. (!empty($product['image']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
+      <td><?php echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
       <td style="text-align: right;"></td>
       <td><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
@@ -376,7 +376,7 @@
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"') .' '. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL;
         
         if ($display_images) {
-          $output .= '  <td><img src="'. (!empty($product['image']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
           $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }

@@ -1,22 +1,20 @@
 <div id="box-product" class="box" itemscope itemtype="http://www.schema.org/Product">
-  <div style="overflow: hidden;">
-    <h1 class="title" itemprop="name"><?php echo $name; ?></h1>
+  <div style="margin-bottom: 20px;">
+    <h1 class="title" style="margin-bottom: 0px;" itemprop="name"><?php echo $name; ?></h1>
     <?php if ($sku) echo '<div class="sku">'. $sku .'</div>'; ?>
   </div>
   
   <div class="content">
     <div class="images-wrapper">
 
-      <div class="main-image zoomable shadow">
-        <a href="<?php echo $image['original']; ?>" class="fancybox" data-fancybox-group="product">
-          <img src="<?php echo $image['original']; ?>" srcset="<?php echo $image['thumbnail']; ?> 1x, <?php echo $image['thumbnail_2x']; ?> 2x" class="main-image" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" />
-        </a>
+      <a class="main-image fancybox zoomable shadow" href="<?php echo $image['original']; ?>" data-fancybox-group="product">
+        <img class="image" src="<?php echo $image['original']; ?>" srcset="<?php echo $image['thumbnail']; ?> 1x, <?php echo $image['thumbnail_2x']; ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" />
         <?php echo $sticker; ?>
-      </div>
+      </a>
 <?php
   if ($extra_images) {
     foreach ($extra_images as $image) {
-      echo '<a href="'. $image['original'] .'" class="fancybox extra-image zoomable shadow" data-fancybox-group="product"><img src="'. $image['thumbnail'] .'" title="'. htmlspecialchars($name) .'" /></a>';
+      echo '<a class="extra-image fancybox zoomable shadow" href="'. $image['original'] .'" data-fancybox-group="product"><img class="image" src="'. $image['thumbnail'] .'" title="'. htmlspecialchars($name) .'" /></a>';
     }
   }
 ?>

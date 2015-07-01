@@ -15,7 +15,10 @@
       if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
       functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
       
-      $image->resample(1024, 1024, 'FIT_ONLY_BIGGER');
+      if (settings::get('image_downsample_size')) {
+        list($width, $height) = explode(',', settings::get('image_downsample_size'));
+        $image->resample($width, $height, 'FIT_ONLY_BIGGER');
+      }
       
       if ($image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, 'png')) {
         notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -33,7 +36,7 @@
   
   <table>
     <tr>
-      <td><img src="<?php echo htmlspecialchars(functions::image_resample(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', FS_DIR_HTTP_ROOT . WS_DIR_CACHE, 500, 250, 'FIT_ONLY_BIGGER')); ?>" /></td>
+      <td><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 250, 'FIT_ONLY_BIGGER'); ?>" /></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_new_image', 'New Image'); ?><br />

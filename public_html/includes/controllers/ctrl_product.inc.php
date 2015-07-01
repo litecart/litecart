@@ -558,9 +558,10 @@
       
       $priority = count($this->data['images'])+1;
       
-      if (!$image->resample(2048, 2048, 'FIT_ONLY_BIGGER')) return false;
-      
-      //$image->watermark(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'watermark.png', 'CENTER', 'MIDDLE'); // Watermark image
+      if (settings::get('image_downsample_size')) {
+        list($width, $height) = explode(',', settings::get('image_downsample_size'));
+        $image->resample($width, $height, 'FIT_ONLY_BIGGER');
+      }
       
       if (!$image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, '', 90)) return false;
       

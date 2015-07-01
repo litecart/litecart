@@ -167,7 +167,10 @@
       
       functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
       
-      $image->resample(1024, 1024, 'FIT_ONLY_BIGGER');
+      if (settings::get('image_downsample_size')) {
+        list($width, $height) = explode(',', settings::get('image_downsample_size'));
+        $image->resample($width, $height, 'FIT_ONLY_BIGGER');
+      }
       
       $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, '', 90);
       

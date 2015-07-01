@@ -1,11 +1,3 @@
-#box-product .heading h1 {
-  margin-bottom: 0px;
-}
-
-#box-product .heading {
-  margin-bottom: 20px;
-}
-
 #box-product .images-wrapper {
   float: left;
   display: inline-block;
@@ -13,16 +5,14 @@
   max-width: 305px;
 }
 #box-product .main-image {
+  display: block;
   overflow: hidden;
   position: relative;
-  max-width: 300px;
   background: #fff;
   text-align: center;
+  max-width: 300px;
 }
-#box-product .main-image a {
-  display: block;
-}
-#box-product .main-image img {
+#box-product .main-image .image {
   max-width: 100%;
   margin: 0px;
 }

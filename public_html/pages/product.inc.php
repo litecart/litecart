@@ -82,9 +82,11 @@
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
 // Page
-  $page = new view();
+  $box_product = new view();
   
-  $page->snippets = array(
+  list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
+  
+  $box_product->snippets = array(
     'product_id' => $product->id,
     'name' => $product->name[language::$selected['code']],
     'description' => !empty($product->description[language::$selected['code']]) ? $product->description[language::$selected['code']] : '<p><em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em></p>',
@@ -95,8 +97,12 @@
     'sku' => $product->sku,
     'image' => array(
       'original' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . (!empty($product->images) ? @array_shift(array_values($product->images)) : 'no_image.png'), 640, 640, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width, $height, settings::get('product_image_clipping')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width*2, $height*2, settings::get('product_image_clipping')),
+      'viewport' => array(
+        'width' => $width,
+        'height' => $height,
+      ),
     ),
     'sticker' => '',
     'extra_images' => array(),
@@ -131,25 +137,36 @@
     'title_details' => language::translate('title_details', 'Details'),
   );
   
-  if (!empty($product->campaign['price'])) {
-    $page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
-  } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
-    $page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
+// Watermark Main Image
+  if (settings::get('product_image_watermark')) {
+    $box_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $box_product->snippets['image']['original'], array('watermark' => true));
   }
   
-// Extra images
+// Extra Images 
+  list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
-    $page->snippets['extra_images'][] = array(
+    $box_product->snippets['extra_images'][] = array(
       'original' => WS_DIR_IMAGES . $image,
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, 160, 160, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, 'CROP', false),
+      'viewport' => array(
+        'width' => $width,
+        'height' => $height,
+      ),
     );
+  }
+  
+// Stickers
+  if (!empty($product->campaign['price'])) {
+    $box_product->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
+  } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
+    $box_product->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }
   
 // Tax
   $tax_rates = tax::get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id);
   if (!empty($tax_rates)) {
     foreach ($tax_rates as $tax_rate) {
-      $page->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
+      $box_product->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
     }
   }
   
@@ -181,7 +198,7 @@
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
       $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
       $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-      $page->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+      $box_product->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
     }
   }
   
@@ -281,7 +298,7 @@
           break;
       }
       
-      $page->snippets['options'][] = array(
+      $box_product->snippets['options'][] = array(
         'name' => $group['name'][language::$selected['code']],
         'description' => $group['description'][language::$selected['code']],
         'required' => !empty($group['required']) ? 1 : 0,
@@ -290,7 +307,7 @@
     }
   }
   
-  echo $page->stitch('views/box_product');
+  echo $box_product->stitch('views/box_product');
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');
   
