@@ -120,7 +120,7 @@ body {
   vertical-align: middle;
 }
 @media (max-width: 640px) { /* WVGA 480x800 and lower */
-  #cart > a.content {
+  #cart > a.content, #cart > a.link {
     display: none;
   }
 }

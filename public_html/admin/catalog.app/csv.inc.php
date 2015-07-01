@@ -30,7 +30,9 @@
       
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
       
+      $line = 0;
       foreach ($csv as $row) {
+        $line++;
         
       // Find category
         if (!empty($row['id'])) {
@@ -190,7 +192,9 @@
       
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
       
+      $line = 0;
       foreach ($csv as $row) {
+        $line++;
         
       // Find product
         if (!empty($row['id'])) {

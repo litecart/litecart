@@ -31,6 +31,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('images', 'local', 'Thumbnail Quality', 'The JPEG quality for thumbnail images (0-100). Default: 65', 'image_thumbnail_quality', '65', 'int()', '41', NOW(), NOW()),
 ('images', 'local', 'Whitespace Color', 'Set the color of any generated whitespace to the given RGB value. Default: 255,255,255', 'image_whitespace_color', '255,255,255', 'smallinput()', '42', NOW(), NOW());
 -- --------------------------------------------------------
-ALTER TABLE `lc_settings_gruops` ADD UNIQUE (`key`);
+ALTER TABLE `lc_settings_groups` ADD UNIQUE (`key`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings` ADD UNIQUE (`key`);

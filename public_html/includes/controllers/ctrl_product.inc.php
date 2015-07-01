@@ -216,23 +216,20 @@
         where id='". (int)$this->data['id'] ."'
         limit 1;"
       );
-     //Categories
-     //First delete all old
+      
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
          where product_id = '". (int)$this->data['id'] ."';"
       );
-     //Add all new
-      foreach($this->data['categories'] as $category_id){
+      foreach ($this->data['categories'] as $category_id){
         database::query(
           "insert into ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
           (product_id, category_id)
-           values ('". (int)$this->data['id'] ."', '". $category_id ."');"
+          values ('". (int)$this->data['id'] ."', '". (int)$category_id ."');"
         );
       }
 
       foreach (array_keys(language::$languages) as $language_code) {
-        
         $products_info_query = database::query(
           "select * from ". DB_TABLE_PRODUCTS_INFO ."
           where product_id = '". (int)$this->data['id'] ."'

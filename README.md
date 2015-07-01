@@ -13,7 +13,7 @@ Installation Instructions
 
 2. Point your web browser to the subfolder install/:
 
-    I.e. http://www.mysite.com/path/to/install
+    E.g. http://www.mysite.com/path/to/install
     
 Good luck!
 

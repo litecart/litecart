@@ -4,7 +4,7 @@
     <strong><?php echo language::translate('title_cart', 'Cart'); ?>:</strong><br />
     <span class="quantity"><?php echo $num_items; ?></span> <?php echo language::translate('text_items', 'item(s)'); ?> - <span class="formatted_value"><?php echo $cart_total; ?></span>
   </a><br />
-  <a href="<?php echo htmlspecialchars($link); ?>" class="link"><?php echo language::translate('title_checkout', 'Checkout'); ?> »</a>
+  <a href="<?php echo htmlspecialchars($link); ?>" class="link"><?php echo language::translate('title_checkout', 'Checkout'); ?> &raquo;</a>
 </div>
 <script>
   function updateCart() {
