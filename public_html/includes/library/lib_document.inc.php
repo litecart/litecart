@@ -73,6 +73,13 @@
         self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
       }
       
+    // Prepare styles
+      if (isset(self::$snippets['styles'])) {
+        self::$snippets['styles'] = '<style>' . PHP_EOL
+                                  . implode(PHP_EOL . PHP_EOL, self::$snippets['styles']) . PHP_EOL
+                                  . '</style>' . PHP_EOL;
+      }
+      
     // Prepare javascript
       if (isset(self::$snippets['javascript'])) {
         self::$snippets['javascript'] = '<script>' . PHP_EOL

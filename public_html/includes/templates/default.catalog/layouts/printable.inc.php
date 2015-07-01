@@ -10,6 +10,7 @@
 <!--[if lt IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie8.css" /><![endif]-->
 <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <!--snippet:head_tags-->
+<!--snippet:styles-->
 <!--snippet:javascript-->
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <script>
