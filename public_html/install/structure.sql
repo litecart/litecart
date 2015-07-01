@@ -588,7 +588,7 @@ CREATE TABLE `lc_settings` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `key` (`key`),
+  UNIQUE KEY `key` (`key`),
   KEY `setting_group_key` (`setting_group_key`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
@@ -598,7 +598,8 @@ CREATE TABLE `lc_settings_groups` (
   `name` varchar(64) NOT NULL,
   `description` varchar(256) NOT NULL,
   `priority` tinyint(2) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key` (`key`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_slides` (
