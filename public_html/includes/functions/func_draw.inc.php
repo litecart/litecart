@@ -78,6 +78,11 @@
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
     );
     
+  // Watermark Original Image
+    if (settings::get('product_image_watermark')) {
+      $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $listing_product->snippets['image']['original'], array('watermark' => true));
+    }
+    
     return $listing_product->stitch('views/listing_product');
   }
   
