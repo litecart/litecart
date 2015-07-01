@@ -1,5 +1,58 @@
 <?php
   
+  if (!empty($_POST['export_categories'])) {
+    
+    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
+    
+    if (empty(notices::$data['errors'])) {
+      
+      ob_clean();
+      
+      $csv = array();
+      
+      $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
+      while ($category = database::fetch($categories_query)) {
+        $category = catalog::category($category['id']);
+        
+        $csv[] = array(
+          'id' => $category->id,
+          'parent_id' => $category->parent_id,
+          'code' => $category->code,
+          'name' => $category->name[$_POST['language_code']],
+          'short_description' => $category->short_description[$_POST['language_code']],
+          'description' => $category->description[$_POST['language_code']],
+          'keywords' => $category->keywords,
+          'image' => $category->image,
+          'status' => $category->status,
+          'priority' => $category->priority,
+          'language_code' => $_POST['language_code'],
+        );
+      }
+      
+      if ($_POST['output'] == 'screen') {
+        header('Content-type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
+      }
+      
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+          break;
+        case 'Max':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+          break;
+        case 'Win':
+        default:
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+          break;
+      }
+      
+      exit;
+    }
+  }
+  
   if (!empty($_POST['import_categories'])) {
     
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
@@ -38,7 +91,7 @@
         if (!empty($row['id'])) {
           $category_query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
-            where code = '". (int)$row['id'] ."'
+            where id = '". (int)$row['id'] ."'
             limit 1;"
           );
         } elseif (!empty($row['code'])) {
@@ -70,29 +123,13 @@
         }
         
       // Set new category data
-        foreach (array('status', 'code', 'image', 'parent_id') as $field) {
+        foreach (array('parent_id', 'status', 'code', 'keywords', 'image') as $field) {
           if (isset($row[$field])) $category->data[$field] = $row[$field];
         }
         
       // Set category info data
-        foreach (array('name', 'short_description', 'description', 'keywords') as $field) {
+        foreach (array('name', 'short_description', 'description') as $field) {
           if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
-        }
-        
-      // Set parent category
-        if (!empty($row['parent_code'])) {
-          $parent_category_query = database::query(
-            "select id from ". DB_TABLE_CATEGORIES ."
-            where code = '". database::input($row['parent_code']) ."'
-            limit 1;"
-          );
-          $parent_category = database::fetch($parent_category_query);
-          
-          if (!empty($parent_category)) {
-            $category->data['parent_id'] = $parent_category['id'];
-          } else {
-            echo " - Could not link category to parent. Parent not found.\r\n";
-          }
         }
         
         $category->save();
@@ -102,47 +139,62 @@
     }
   }
   
-  if (!empty($_POST['export_categories'])) {
+  if (!empty($_POST['export_products'])) {
     
     if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
     
     if (empty(notices::$data['errors'])) {
+    
+      $csv = array();
       
       ob_clean();
       
-      $csv = array();
-      
-      $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
-      while ($category = database::fetch($categories_query)) {
-        $category = catalog::category($category['id']);
-        
-        $parent_category_query = database::query(
-          "select * from ". DB_TABLE_CATEGORIES ."
-          where id = '". (int)$category->parent_id ."'
-          limit 1;"
-        );
-        $parent_category = database::fetch($parent_category_query);
+      $products_query = database::query(
+        "select p.id from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
+        order by pi.name;"
+      );
+      while ($product = database::fetch($products_query)) {
+        $product = catalog::product($product['id']);
         
         $csv[] = array(
-          'id' => $category->id,
-          'parent_code' => $parent_category['code'],
-          'code' => $category->code,
-          'name' => $category->name[$_POST['language_code']],
-          'short_description' => $category->short_description[$_POST['language_code']],
-          'description' => $category->description[$_POST['language_code']],
-          'keywords' => $category->keywords,
-          'image' => $category->image,
-          'status' => $category->status,
-          'priority' => $category->priority,
+          'id' => $product->id,
+          'categories' => implode(',', array_keys($product->categories)),
+          'manufacturer_id' => $product->manufacturer['id'],
+          'status' => $product->status,
+          'code' => $product->code,
+          'sku' => $product->sku,
+          'upc' => $product->upc,
+          //'ean' => $product->ean,
+          'taric' => $product->taric,
+          'name' => $product->name[$_POST['language_code']],
+          'short_description' => $product->short_description[$_POST['language_code']],
+          'description' => $product->description[$_POST['language_code']],
+          'keywords' => $product->keywords,
+          'attributes' => $product->attributes[$_POST['language_code']],
+          'head_title' => $product->head_title[$_POST['language_code']],
+          'meta_description' => $product->meta_description[$_POST['language_code']],
+          'images' => implode(';', $product->images),
+          'purchase_price' => $product->purchase_price,
+          'price' => $product->price,
+          'tax_class_id' => $product->tax_class_id,
+          'quantity' => $product->quantity,
+          'weight' => $product->weight,
+          'weight_class' => $product->weight_class,
+          'delivery_status_id' => $product->delivery_status_id,
+          'sold_out_status_id' => $product->sold_out_status_id,
           'language_code' => $_POST['language_code'],
+          'currency_code' => $_POST['currency_code'],
+          'date_valid_from' => $product->date_valid_from,
+          'date_valid_to' => $product->date_valid_to,
         );
       }
-      
+
       if ($_POST['output'] == 'screen') {
         header('Content-type: text/plain; charset='. $_POST['charset']);
       } else {
         header('Content-type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
+        header('Content-Disposition: attachment; filename=products-'. $_POST['language_code'] .'.csv');
       }
       
       switch($_POST['eol']) {
@@ -161,7 +213,7 @@
       exit;
     }
   }
-  
+
   if (!empty($_POST['import_products'])) {
     
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
@@ -303,81 +355,6 @@
     }
   }
   
-  if (!empty($_POST['export_products'])) {
-    
-    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
-    
-    if (empty(notices::$data['errors'])) {
-    
-      $csv = array();
-      
-      ob_clean();
-      
-      $products_query = database::query(
-        "select p.id from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
-        order by pi.name;"
-      );
-      while ($product = database::fetch($products_query)) {
-        $product = catalog::product($product['id']);
-        
-        $csv[] = array(
-          'id' => $product->id,
-          'categories' => implode(',', array_keys($product->categories)),
-          'manufacturer_id' => $product->manufacturer['id'],
-          'status' => $product->status,
-          'code' => $product->code,
-          'sku' => $product->sku,
-          'upc' => $product->upc,
-          //'ean' => $product->ean,
-          'taric' => $product->taric,
-          'name' => $product->name[$_POST['language_code']],
-          'short_description' => $product->short_description[$_POST['language_code']],
-          'description' => $product->description[$_POST['language_code']],
-          'keywords' => $product->keywords,
-          'attributes' => $product->attributes[$_POST['language_code']],
-          'head_title' => $product->head_title[$_POST['language_code']],
-          'meta_description' => $product->meta_description[$_POST['language_code']],
-          'images' => implode(';', $product->images),
-          'purchase_price' => $product->purchase_price,
-          'price' => $product->price,
-          'tax_class_id' => $product->tax_class_id,
-          'quantity' => $product->quantity,
-          'weight' => $product->weight,
-          'weight_class' => $product->weight_class,
-          'delivery_status_id' => $product->delivery_status_id,
-          'sold_out_status_id' => $product->sold_out_status_id,
-          'language_code' => $_POST['language_code'],
-          'currency_code' => $_POST['currency_code'],
-          'date_valid_from' => $product->date_valid_from,
-          'date_valid_to' => $product->date_valid_to,
-        );
-      }
-
-      if ($_POST['output'] == 'screen') {
-        header('Content-type: text/plain; charset='. $_POST['charset']);
-      } else {
-        header('Content-type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=products-'. $_POST['language_code'] .'.csv');
-      }
-      
-      switch($_POST['eol']) {
-        case 'Linux':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-          break;
-        case 'Max':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-          break;
-        case 'Win':
-        default:
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-          break;
-      }
-      
-      exit;
-    }
-  }
-
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?></h1>
 
