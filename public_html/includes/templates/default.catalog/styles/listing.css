@@ -214,7 +214,8 @@ ul.listing-wrapper > li.product.row a.link {
   text-align: left;
 }
 
-ul.listing-wrapper > li.product .image-wrapper {
+ul.listing-wrapper > li.product.row .image-wrapper {
+  display: inline-block;
 }
 ul.listing-wrapper > li.product .image {
   display: block;

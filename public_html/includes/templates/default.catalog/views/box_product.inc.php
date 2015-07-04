@@ -64,7 +64,7 @@
       
       <?php if ($cheapest_shipping) { ?>
       <div class="cheapest-shipping" style="margin-bottom: 10px;">
-        <?php echo $cheapest_shipping; ?>
+        <?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo $cheapest_shipping; ?>
       </div>
       <?php } ?>
       

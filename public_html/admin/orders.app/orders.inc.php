@@ -66,6 +66,8 @@
       "o.id = '". database::input($_GET['query']) ."'",
       "o.uid = '". database::input($_GET['query']) ."'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
+      "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
+      "o.customer_company like '%". database::input($_GET['query']) ."%'",
       "o.customer_firstname like '%". database::input($_GET['query']) ."%'",
       "o.customer_lastname like '%". database::input($_GET['query']) ."%'",
       "o.payment_transaction_id like '%". database::input($_GET['query']) ."%'",

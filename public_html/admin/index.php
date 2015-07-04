@@ -17,7 +17,7 @@
       'name' => $app['name'],
       'link' => document::link(WS_DIR_ADMIN, array('app' => $app['code'], 'doc' => $app['default'])),
       'theme' => array(
-        'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'plus',
+        'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'fa-plus',
         'color' => !(empty($app['theme']['color'])) ? $app['theme']['color'] : '#97a3b5',
       ),
       'active' => (isset($_GET['app']) && $_GET['app'] == $app['code']) ? true : false,
