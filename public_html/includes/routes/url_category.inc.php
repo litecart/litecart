@@ -7,6 +7,7 @@
           'pattern' => '#^.*-c-([0-9]+)/?$#',
           'page' => 'category',
           'params' => 'category_id=$1',
+          'redirect' => true,
         ),
       );
     }

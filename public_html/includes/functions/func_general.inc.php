@@ -11,15 +11,14 @@
     
     if (empty($language_code)) $language_code = language::$selected['code'];
     
-    $text = mb_convert_encoding($text, 'UTF-8'); // Convert to UTF-8
+    if (strtoupper(language::$selected['charset']) != 'UTF-8') {
+      $text = mb_convert_encoding($text, 'UTF-8'); // Convert to UTF-8
+    }
+    
     $text = strip_tags($text);  // Remove HTML tags
     $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');  // Decode special characters
     
     $foreign_characters = array (
-      'de' => array ( /* German */
-        'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss',
-        'ẞ' => 'SS'
-      ),
       'latin' => array (
         'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A','Ă' => 'A', 'Æ' => 'AE', 'Ç' =>
         'C', 'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I',
@@ -30,6 +29,10 @@
         'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i', 'ð' => 'd', 'ñ' => 'n', 'ò' => 'o', 'ó' =>
         'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ő' => 'o', 'ø' => 'o', 'ș' => 's', 'ț' => 't', 'ù' => 'u', 'ú' => 'u',
         'û' => 'u', 'ü' => 'u', 'ű' => 'u', 'ý' => 'y', 'þ' => 'th', 'ÿ' => 'y'
+      ),
+      'de' => array ( /* German */
+        'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss',
+        'ẞ' => 'SS'
       ),
       'el' => array ( /* Greek */
         'α' => 'a', 'β' => 'b', 'γ' => 'g', 'δ' => 'd', 'ε' => 'e', 'ζ' => 'z', 'η' => 'h', 'θ' => '8',

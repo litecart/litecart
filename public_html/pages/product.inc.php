@@ -147,7 +147,7 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $box_product->snippets['extra_images'][] = array(
       'original' => WS_DIR_IMAGES . $image,
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, 'CROP', false),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, settings::get('product_image_clipping')),
       'viewport' => array(
         'width' => $width,
         'height' => $height,

@@ -3,7 +3,6 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<meta name="description" content="{snippet:description}" />
 <meta name="robots" content="noindex, nofollow" />
 <link href="{snippet:template_path}styles/loader.css" rel="stylesheet" media="screen" />
 <link href="{snippet:template_path}styles/theme.css" rel="stylesheet" media="screen" />
