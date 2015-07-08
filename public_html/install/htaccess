@@ -74,19 +74,15 @@ ErrorDocument 500 "Internal Server Error"
 </IfModule>
 
 # Protect catalog using admin .htpasswd, handy for development platforms
-#<IfVersion < 2.1>
-#  <IfModule mod_auth.c>
-#    AuthType Basic
-#    AuthName "Restricted Area"
-#    AuthUserFile "{ADMIN_DIR_FULL}.htpasswd"
-#    Require valid-user
-#  </IfModule>
-#</IfVersion>
-#<IfVersion >= 2.1>
-#  <IfModule mod_auth_basic.c>
-#    AuthType Basic
-#    AuthName "Restricted Area"
-#    AuthUserFile "{ADMIN_DIR_FULL}.htpasswd"
-#    Require valid-user
-#  </IfModule>
-#</IfVersion>
+#<IfModule mod_auth.c>
+#  AuthType Basic
+#  AuthName "Restricted Area"
+#  AuthUserFile "{ADMIN_DIR_FULL}.htpasswd"
+#  Require valid-user
+#</IfModule>
+#<IfModule mod_auth_basic.c>
+#  AuthType Basic
+#  AuthName "Restricted Area"
+#  AuthUserFile "{ADMIN_DIR_FULL}.htpasswd"
+#  Require valid-user
+#</IfModule>

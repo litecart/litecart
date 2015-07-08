@@ -261,22 +261,18 @@
             . '</FilesMatch>' . PHP_EOL
             . PHP_EOL
             . '# Basic authentication' . PHP_EOL
-            . '<IfVersion < 2.1>' . PHP_EOL
-            . '  <IfModule mod_auth.c>' . PHP_EOL
-            . '    AuthType Basic' . PHP_EOL
-            . '    AuthName "Restricted Area"' . PHP_EOL
-            . '    AuthUserFile "' . $installation_path . $_REQUEST['admin_folder'] . '.htpasswd"' . PHP_EOL
-            . '    Require valid-user' . PHP_EOL
-            . '  </IfModule>' . PHP_EOL
-            . '</IfVersion>' . PHP_EOL
-            . '<IfVersion >= 2.1>' . PHP_EOL
-            . '  <IfModule mod_auth_basic.c>' . PHP_EOL
-            . '    AuthType Basic' . PHP_EOL
-            . '    AuthName "Restricted Area"' . PHP_EOL
-            . '    AuthUserFile "' . $installation_path . $_REQUEST['admin_folder'] . '.htpasswd"' . PHP_EOL
-            . '    Require valid-user' . PHP_EOL
-            . '  </IfModule>' . PHP_EOL
-            . '</IfVersion>';
+            . '<IfModule mod_auth.c>' . PHP_EOL
+            . '  AuthType Basic' . PHP_EOL
+            . '  AuthName "Restricted Area"' . PHP_EOL
+            . '  AuthUserFile "' . $installation_path . $_REQUEST['admin_folder'] . '.htpasswd"' . PHP_EOL
+            . '  Require valid-user' . PHP_EOL
+            . '</IfModule>' . PHP_EOL
+            . '<IfModule mod_auth_basic.c>' . PHP_EOL
+            . '  AuthType Basic' . PHP_EOL
+            . '  AuthName "Restricted Area"' . PHP_EOL
+            . '  AuthUserFile "' . $installation_path . $_REQUEST['admin_folder'] . '.htpasswd"' . PHP_EOL
+            . '  Require valid-user' . PHP_EOL
+            . '</IfModule>';
   
   if (is_dir('../'.$_REQUEST['admin_folder'])) {
     file_put_contents('../'. $_REQUEST['admin_folder'] .'.htaccess', $htaccess);

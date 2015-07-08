@@ -18,7 +18,7 @@
       if (empty($this->modules)) return;
       
       foreach ($this->modules as $module_id => $module) {
-        if ($data = $module->process()) {
+        if ($data = $module->process($order)) {
           $output .= $data;
         }
       }

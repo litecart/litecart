@@ -2,18 +2,6 @@
   <div class="header columns">
     <div class="toggle column">
       <label for="toggle-menu"><?php echo functions::draw_fonticon('fa-bars'); ?></label>
-      
-      <script>
-        /*
-        $("#toggle-menu").click(function() {
-          if ($(this).is(':checked')) {
-            $(this).closest('.box').find('.content').slideDown();
-          } else {
-            $(this).closest('.box').find('.content').slideUp();
-          }
-        });
-        */
-      </script>
     </div>
     
     <div class="search column">

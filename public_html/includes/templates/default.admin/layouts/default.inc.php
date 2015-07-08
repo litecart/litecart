@@ -48,22 +48,10 @@ catch(e){window.attachEvent("onload", $buo_f)}
 <?php
   foreach (language::$languages as $language) {
     if ($language['status']) {
-      echo '<a href="javascript:set_language(\''. $language['code'] .'\');"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" style="max-width: 16px;" /></a> ';
+      echo '<a href="'. document::href_link(null, array('language' => $language['code']), true) .'"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language['code'] .'.png" alt="'. $language['name'] .'" style="max-width: 16px;" /></a> ';
     }
   }
 ?>
-<script>
-  function set_language(code) {
-    var form = $('<?php
-      echo str_replace(array("\r", "\n"), '', functions::form_draw_form_begin('language_form', 'post')
-                                            . functions::form_draw_hidden_field('set_language', '\'+ code +\'')
-                                            . functions::form_draw_form_end()
-      );
-    ?>');
-    $(document.body).append(form);
-    form.submit();
-  }
-</script>
             </div>
             
             <div id="platform"><?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></div>

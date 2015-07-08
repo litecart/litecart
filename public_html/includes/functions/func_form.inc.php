@@ -67,6 +67,7 @@
         case 'cancel':
           $icon = functions::draw_fonticon('fa-times');
           break;
+        case 'remove':
         case 'delete':
           $icon = functions::draw_fonticon('fa-trash-o');
           break;

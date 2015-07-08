@@ -137,11 +137,6 @@
     'title_details' => language::translate('title_details', 'Details'),
   );
   
-// Watermark Main Image
-  if (settings::get('product_image_watermark')) {
-    $box_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $box_product->snippets['image']['original'], array('watermark' => true));
-  }
-  
 // Extra Images 
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
@@ -153,6 +148,14 @@
         'height' => $height,
       ),
     );
+  }
+  
+// Watermark Images
+  if (settings::get('product_image_watermark')) {
+    $box_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $box_product->snippets['image']['original'], array('watermark' => true));
+    foreach (array_keys($box_product->snippets['extra_images']) as $key) {
+      $box_product->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $box_product->snippets['extra_images'][$key]['original'], array('watermark' => true));
+    }
   }
   
 // Stickers

@@ -35,10 +35,6 @@
       
       $supplier->save();
       
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
-        $supplier->save_image($_FILES['image']['tmp_name']);
-      }
-      
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'suppliers'), array('app')));
       exit;
