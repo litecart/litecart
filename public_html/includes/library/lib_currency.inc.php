@@ -86,6 +86,13 @@
         if (isset(self::$currencies[$_GET['currency']])) return $_GET['currency'];
       }
       
+    // Return chained currency with language
+      if (!empty(language::$selected['currency_code'])) {
+        if (!empty(self::$currencies[language::$selected['currency_code']])) {
+          return language::$selected['currency_code'];
+        }
+      }
+      
     // Return currency from session
       if (isset(self::$selected['code']) && isset(self::$currencies[self::$selected['code']])) return self::$selected['code'];
       
