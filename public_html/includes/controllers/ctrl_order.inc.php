@@ -607,6 +607,7 @@
         'address1',
         'city',
         'country_code',
+        'phone',
       );
       
       if (functions::reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'postcode';
