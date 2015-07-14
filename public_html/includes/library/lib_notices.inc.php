@@ -39,7 +39,24 @@
       
       foreach(array('debugs', 'errors', 'notices', 'warnings', 'success') as $notice_type) {
         if (!empty(notices::$data[$notice_type])) {
-          $notices[] = '  <div class="notice '. $notice_type .'">' . implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">', array_unique(notices::$data[$notice_type])) . '</div>' . PHP_EOL;
+          
+          switch ($notice_type) {
+            case 'warnings':
+            case 'errors':
+              $icon = functions::draw_fonticon('fa-exclamation-triangle');
+              break;
+            case 'notices':
+              $icon = functions::draw_fonticon('fa-exclamation-circle');
+              break;
+            case 'success':
+              $icon = functions::draw_fonticon('fa-check-circle');
+              break;
+            default:
+              $icon = '';
+              break;
+          }
+          
+          $notices[] = '  <div class="notice '. $notice_type .'">' . $icon .' '. implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">' . $icon . ' ', array_unique(notices::$data[$notice_type])) . '</div>' . PHP_EOL;
         }
       }
       
