@@ -37,7 +37,7 @@
         $rowclass = 'even';
       }
       
-      if (empty($order_status['icon'])) $order_status['icon'] = 'circle-thin';
+      if (empty($order_status['icon'])) $order_status['icon'] = 'fa-circle-thin';
       if (empty($order_status['color'])) $order_status['color'] = '#cccccc';
 ?>
   <tr class="<?php echo $rowclass; ?>">
