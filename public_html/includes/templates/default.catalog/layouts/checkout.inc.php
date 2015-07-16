@@ -4,7 +4,7 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <meta name="description" content="{snippet:description}" />
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
 <link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
 <!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" /><![endif]-->
@@ -15,11 +15,6 @@
 <!--snippet:head_tags-->
 <!--snippet:styles-->
 <!--snippet:javascript-->
-<script>
-  if (/iphone|ipod|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(navigator.userAgent.toLowerCase())) {
-    $("meta[name='viewport']").attr("content", "width=480");
-  }
-</script>
 <style>
 <?php
   $settings = unserialize(settings::get('store_template_catalog_settings'));
