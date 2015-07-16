@@ -161,6 +161,17 @@
         }
       }
       
+    // Return language from country (TLD)
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+        $countries_query = database::query(
+          "select * from ". DB_TABLE_COUNTRIES ."
+          where iso_code_2 = '". database::input(strtoupper($matches[0])) ."'
+          limit 1;"
+        );
+        $country = database::fetch($countries_query);
+        if (!empty($country['language_code']) && isset(self::$languages[$country['language_code']])) return $country['language_code'];
+      }
+      
     // Return default language
       if (isset(self::$languages[settings::get('default_language_code')])) return settings::get('default_language_code');
       

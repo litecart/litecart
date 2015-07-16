@@ -72,6 +72,7 @@ CREATE TABLE `lc_countries` (
   `iso_code_3` varchar(3) NOT NULL DEFAULT '',
   `address_format` text NOT NULL,
   `postcode_required` tinyint(1) NOT NULL,
+  `language_code` varchar(2) CHARACTER SET utf8 NOT NULL,
   `currency_code` varchar(3) CHARACTER SET utf8 NOT NULL,
   `phone_code` varchar(3) CHARACTER SET utf8 NOT NULL,
   `date_updated` datetime NOT NULL,
