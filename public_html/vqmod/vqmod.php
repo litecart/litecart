@@ -205,11 +205,13 @@
 
       self::$_modFileList = glob(self::path('vqmod/xml/', true) . '*.xml');
       
-      foreach(self::$_modFileList as $file) {
-        if (file_exists($file)) {
-          $lastMod = filemtime($file);
-          if ($lastMod > self::$_lastModifiedTime){
-            self::$_lastModifiedTime = $lastMod;
+      if (!empty(self::$_modFileList)) {
+        foreach(self::$_modFileList as $file) {
+          if (file_exists($file)) {
+            $lastMod = filemtime($file);
+            if ($lastMod > self::$_lastModifiedTime){
+              self::$_lastModifiedTime = $lastMod;
+            }
           }
         }
       }
