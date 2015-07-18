@@ -920,7 +920,7 @@
         if (function_exists('exif_imagetype')) {
           $image_type = exif_imagetype($this->_src);
         } else {
-          $params = getimagesize($filename);
+          $params = getimagesize($this->_src);
           $image_type = $params[2];
         }
         switch($image_type) {
