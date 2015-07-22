@@ -30,7 +30,7 @@
   document::$snippets['title'][] = !empty($page['head_title']) ? $page['head_title'] : $page['title'];
   document::$snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
   
-  breadcrumbs::add($page['title'], document::ilink(null, array(), true));
+  breadcrumbs::add($page['title']);
   
   $box_information = new view();
   

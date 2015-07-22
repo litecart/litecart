@@ -66,7 +66,7 @@
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
   }
   
-  breadcrumbs::add($product->name[language::$selected['code']], document::ilink(null, array('product_id' => $product->id), array('category_id')));
+  breadcrumbs::add($product->name[language::$selected['code']]);
   
 // Recently viewed products
   if (isset(session::$data['recently_viewed_products'][$product->id])) {
