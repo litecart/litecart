@@ -86,11 +86,11 @@
     </tr>
     <tr>
       <td><?php echo language::translate('title_icon', 'Icon');?><br />
-      <?php echo functions::form_draw_text_field('icon', !empty($_POST['color']) ? true : 'fa-circle-thin', 'placeholder="fa-circle-thin"'); ?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a></td>
+      <?php echo functions::form_draw_text_field('icon', true, 'placeholder="fa-circle-thin"'); ?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_color', 'Color');?><br />
-      <?php echo functions::form_draw_color_field('color', !empty($_POST['color']) ? true : '#cccccc', 'placeholder="#cccccc"'); ?></td>
+      <?php echo functions::form_draw_color_field('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?></td>
     </tr>
     <tr>
       <td><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></td>

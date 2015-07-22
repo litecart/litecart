@@ -329,7 +329,7 @@ CREATE TABLE `lc_orders_items` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `icon` tinyint(1) NOT NULL,
+  `icon` varchar(24) NOT NULL,
   `color` tinyint(1) NOT NULL,
   `is_sale` tinyint(1) NOT NULL,
   `notify` tinyint(1) NOT NULL,

@@ -1,3 +1,15 @@
+ALTER TABLE `lc_order_statuses` CHANGE `icon` `icon` VARCHAR(24) NOT NULL, CHANGE `color` `color` VARCHAR(7) NOT NULL;
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-chain-broken', color = '#c0c0c0' WHERE id = 1 AND icon = 0;
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-clock-o', color = '#d7d96f' WHERE id = 2 AND icon = 0;
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-cog', color = '#ffa851' WHERE id = 3 AND icon = 0;
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-truck', color = '#99cc66' WHERE id = 4 AND icon = 0;
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses` SET icon = 'fa-times', color = '#ff6666' WHERE id = 5 AND icon = 0;
+-- --------------------------------------------------------
 ALTER TABLE `lc_countries` ADD `language_code` VARCHAR(2) NOT NULL AFTER postcode_required;
 -- --------------------------------------------------------
 UPDATE `lc_countries` SET language_code = 'ca' WHERE iso_code_2 = 'AD';
@@ -497,3 +509,6 @@ UPDATE `lc_countries` SET language_code = 'en' WHERE iso_code_2 = 'ZW';
 UPDATE `lc_countries` SET language_code = 'cu' WHERE iso_code_2 = 'CS';
 -- --------------------------------------------------------
 UPDATE `lc_countries` SET language_code = 'nl' WHERE iso_code_2 = 'AN';
+-- --------------------------------------------------------
+INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('images', 'local', 'Product Images: Trim Whitespace', 'Trim whitespace in generated thumbnail images.', 'product_image_trim', '0', 'toggle("y/n")', '32', NOW(), NOW());
