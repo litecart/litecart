@@ -46,6 +46,7 @@
     $page->snippets = array(
       'id' => $category->id,
       'name' => $category->name[language::$selected['code']],
+      'short_description' => $category->short_description[language::$selected['code']],
       'description' => $category->description[language::$selected['code']],
       'h1_title' => $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']],
       'head_title' => $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']],
