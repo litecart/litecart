@@ -27,7 +27,7 @@
   }
   
   $database->query(
-    "alter table `lc_products` drop `categories`;"
+    "alter table ". DB_TABLE_PRODUCTS ." drop `categories`;"
   );
   
   $deleted_files = array(
