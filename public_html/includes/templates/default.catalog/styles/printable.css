@@ -2,10 +2,17 @@
   line-height: 125%;
 }
 
+#footer {
+  position: absolute;
+  bottom: 0px;
+  font-size: 8pt;
+  width: 100%;
+}
+
 @media print {
   @page {
     size: A4; /* auto is the initial value */
-    margin: 20mm;
+    margin: 15mm;
     zoom: 100%;
     padding: 0px;
   }
@@ -18,21 +25,11 @@
   }
   
   body {
-    font-size: 8pt;
+    font-size: 9pt;
     font-family: Arial, Helvetica,sans-serif;
     color: #000;
     margin: 0px;
     padding: 0px;
-  }
-  
-  #window {
-    position: absolute;
-    top: 44mm;
-    right: 15mm;
-    width: 95mm;
-    height: 29mm;
-    padding: 5mm 0px 0px 5mm;
-    margin: -20mm;
   }
   
   #page {
@@ -49,12 +46,6 @@
     color: #000;
   }
   
-  #footer {
-    position: absolute;
-    bottom: 0px;
-    font-size: 6pt;
-  }
-  
   .page-break  {
     page-break-before: always; 
   }
@@ -67,17 +58,9 @@
   body {
     margin: 0px auto;
     max-width: 640px;
-    font-size: 8pt;
+    font-size: 9pt;
     font-family: Arial, Helvetica,sans-serif;
     color: #000;
-  }
-  
-  #window {
-    display: none;
-  }
-  
-  #footer {
-    display: none;
   }
 
   .page-break  {

@@ -16,34 +16,34 @@
   <div id="body">
     <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc;">
       <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></strong><br />
         <?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></td>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_address', 'Payment Address'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_address', 'Payment Address'); ?></strong><br />
         <?php echo nl2br(functions::format_address($order['customer'])); ?></td>
       </tr>
       <tr>
         <td colspan="2" style="padding-top: 20px;"></td>
       </tr>
       <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_phone', 'Phone'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
         <?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></td>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_email', 'E-mail'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_email', 'E-mail'); ?></strong><br />
         <?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></td>
       </tr>
       <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></strong><br />
         <?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></td>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_option', 'Payment Option'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_option', 'Payment Option'); ?></strong><br />
         <?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></td>
       </tr>
       <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></strong><br />
           <?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></td>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></strong><br />
           <?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></td>
       </tr>
       <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?>:</strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></strong><br />
           <?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></td>
         <td style="padding: 5px 10px;"></td>
       </tr>
@@ -96,12 +96,12 @@
       <?php foreach ($order['order_total'] as $ot_row) { ?>
       <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
       <tr>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?>:</td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?></td>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } else { ?>
       <tr>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?>:</td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?></td>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
@@ -109,13 +109,13 @@
       
       <?php if (!empty($order['tax_total'])) { ?>
       <tr>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?></td>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
       
       <tr>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?></strong></td>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><strong><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></strong></td>
       </tr>
     </table>
@@ -131,14 +131,14 @@
 ?>
   <table id="comments" cellspacing="0" cellpadding="0" style="width: 100%; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc;">
     <tr>
-      <td style="padding: 5px 20px;"><strong><?php echo language::translate('title_comments', 'Comments'); ?>:</strong></td>
+      <td style="padding: 5px 20px;"><strong><?php echo language::translate('title_comments', 'Comments'); ?></strong></td>
     </tr>
 <?php
       foreach ($order['comments'] as $comment) {
         if (!empty($comment['hidden'])) continue;
 ?>
     <tr>
-      <td style="padding: 5px 20px;"><strong><?php echo strftime(language::$selected['format_date'], strtotime($comment['date_created'])); ?>:</strong> <?php echo $comment['text']; ?></td>
+      <td style="padding: 5px 20px;"><strong><?php echo strftime(language::$selected['format_date'], strtotime($comment['date_created'])); ?></strong> <?php echo $comment['text']; ?></td>
     </tr>
 <?php
       }
@@ -154,22 +154,22 @@
     <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
       <tr>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_address', 'Address'); ?>:</strong><br />
+          <strong><?php echo language::translate('title_address', 'Address'); ?></strong><br />
           <?php echo nl2br(settings::get('store_postal_address')); ?>
         </td>
         <?php if (settings::get('store_phone')) { ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_phone', 'Phone'); ?>:</strong><br />
+          <strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
             <?php echo settings::get('store_phone'); ?><br />
         </td>
         <?php } ?>
         <td style="vertical-align: top;">     
-          <strong><?php echo language::translate('title_email', 'E-mail'); ?>:</strong><br />
+          <strong><?php echo language::translate('title_email', 'E-mail'); ?></strong><br />
             <?php echo settings::get('store_email'); ?>
         </td>
           <?php if (settings::get('store_tax_id')) { ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?>:</strong><br />
+          <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></strong><br />
           <?php echo settings::get('store_tax_id'); ?>
         </td>
         <?php } ?>

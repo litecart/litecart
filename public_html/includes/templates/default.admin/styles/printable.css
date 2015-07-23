@@ -2,42 +2,34 @@
   line-height: 125%;
 }
 
+#footer {
+  position: absolute;
+  bottom: 0px;
+  font-size: 8pt;
+  width: 100%;
+}
+
 @media print {
   @page {
     size: A4; /* auto is the initial value */
-    margin: 20mm;
+    margin: 15mm;
     zoom: 100%;
-    padding: 0;
+    padding: 0px;
   }
-  
-  /*#header {
-    position: absolute;  
-    top: 0;  
-  }*/
   
   html, body {
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
   }
   
   body {
-    font-size: 10pt;
+    font-size: 9pt;
     font-family: Arial, Helvetica,sans-serif;
     color: #000;
-    margin: 0;
-    padding: 0;
-  }
-  
-  #window {
-    position: absolute;
-    top: 44mm;
-    right: 15mm;
-    width: 95mm;
-    height: 29mm;
-    padding: 5mm 0 0 5mm;
-    margin: -20mm;
+    margin: 0px;
+    padding: 0px;
   }
   
   #page {
@@ -47,51 +39,28 @@
   }
   
   h1 {
-    margin-top: 0;
+    margin-top: 0px;
   }
   
-  a {
+  a:link, a:visited, a:hover, a:active {
     color: #000;
   }
   
-  #footer {
-    position: absolute;
-    bottom: 0;
-    margin-top: 20mm;
-    font-size: 0.9em;
-  }
-  
   .page-break  {
-    page-break-before: always;
+    page-break-before: always; 
   }
 }
 
 @media screen {
   #header {
-  
   }
   
   body {
-    margin: 0 auto;
+    margin: 0px auto;
     max-width: 640px;
-    font-size: 10pt;
+    font-size: 9pt;
     font-family: Arial, Helvetica,sans-serif;
-    color: 333;
-  }
-  
-  #window {
-    display: none;
-  }
-  
-  a:link, a:visited{
-    color: #0000cc;
-  }
-  a:hover, a:active{
-    color: #ff0000;
-  }
-  
-  #footer {
-    display: none;
+    color: #000;
   }
 
   .page-break  {
