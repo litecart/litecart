@@ -234,7 +234,7 @@
               <?php echo functions::form_draw_zones_list(isset($_POST['customer']['country_code']) ? $_POST['customer']['country_code'] : '', 'customer[zone_code]', true); ?></td>
           </tr>
           <tr>
-            <td width="50%"><?php echo language::translate('title_email', 'E-mail'); ?><br />
+            <td width="50%"><?php echo language::translate('title_email', 'Email'); ?><br />
               <?php echo functions::form_draw_email_field('customer[email]', true); ?></td>
             <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
             <?php echo functions::form_draw_text_field('customer[phone]', true); ?></td>

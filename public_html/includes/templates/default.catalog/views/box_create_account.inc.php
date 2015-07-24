@@ -34,7 +34,7 @@
             <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
         </tr>
         <tr>
-          <td><?php echo language::translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
+          <td><?php echo language::translate('title_email', 'Email'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_email_field('email', true); ?></td>
           <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
             <?php echo functions::form_draw_phone_field('phone', true); ?></td>

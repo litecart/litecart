@@ -35,7 +35,7 @@
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
     <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
-    <th width="100%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?></th>
+    <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
   </tr>
 <?php

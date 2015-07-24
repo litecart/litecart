@@ -36,7 +36,7 @@
           </tr>
           <?php if (empty(customer::$data['id'])) { ?>
           <tr>
-            <td width="50%"><?php echo language::translate('title_email', 'E-mail'); ?> <span class="required">*</span><br />
+            <td width="50%"><?php echo language::translate('title_email', 'Email'); ?> <span class="required">*</span><br />
               <?php echo functions::form_draw_email_field('email', true, 'required="required"'. (!empty(customer::$data['id']) ? ' readonly="readonly"' : '')); ?></td>
             <td><?php echo language::translate('title_phone', 'Phone'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_phone_field('phone', true, 'required="required" placeholder="'. functions::reference_get_phone_country_code(isset($_POST['country_code']) ? $_POST['country_code'] : '') .'"'); ?></td>

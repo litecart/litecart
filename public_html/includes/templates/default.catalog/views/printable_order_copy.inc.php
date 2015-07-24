@@ -27,7 +27,7 @@
       <tr>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
         <?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></td>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_email', 'E-mail'); ?></strong><br />
+        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
         <?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></td>
       </tr>
       <tr>
@@ -138,7 +138,7 @@
         if (!empty($comment['hidden'])) continue;
 ?>
     <tr>
-      <td style="padding: 5px 20px;"><strong><?php echo strftime(language::$selected['format_date'], strtotime($comment['date_created'])); ?></strong> <?php echo $comment['text']; ?></td>
+      <td style="padding: 5px 20px;"><strong><?php echo strftime(language::$selected['format_date'], strtotime($comment['date_created'])); ?>:</strong> <?php echo $comment['text']; ?></td>
     </tr>
 <?php
       }
@@ -164,7 +164,7 @@
         </td>
         <?php } ?>
         <td style="vertical-align: top;">     
-          <strong><?php echo language::translate('title_email', 'E-mail'); ?></strong><br />
+          <strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
             <?php echo settings::get('store_email'); ?>
         </td>
           <?php if (settings::get('store_tax_id')) { ?>

@@ -99,8 +99,8 @@
       <td><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('text_notify_customer', 'Notify customer');?></td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_email_message', 'E-mail Message'); ?></strong><br />
-        <p><?php echo language::translate('description_order_status_email_message', 'Compose a message that will be used as e-mail body or leave blank to display the order copy.'); ?></p>
+      <td><strong><?php echo language::translate('title_email_message', 'Email Message'); ?></strong><br />
+        <p><?php echo language::translate('description_order_status_email_message', 'Compose a message that will be used as email body or leave blank to display the order copy.'); ?></p>
         <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>%order_id, %firstname, %lastname, %billing_address, %shipping_address, %order_copy_url</em></p>
 <?php
   $use_br = false;

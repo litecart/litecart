@@ -22,9 +22,9 @@
   
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     
-    if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' and id != '". $customer->data['id'] ."' limit 1;"))) notices::add('errors', language::translate('error_email_already_registered', 'The e-mail address already exists in our customer database.'));
+    if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' and id != '". $customer->data['id'] ."' limit 1;"))) notices::add('errors', language::translate('error_email_already_registered', 'The email address already exists in our customer database.'));
     
-    if (empty($_POST['email'])) notices::add('errors', language::translate('error_email_missing', 'You must enter an e-mail address.'));
+    if (empty($_POST['email'])) notices::add('errors', language::translate('error_email_missing', 'You must enter an email address.'));
       
     if (!empty($_POST['new_password'])) {
       if (empty($_POST['confirmed_password'])) notices::add('errors', language::translate('error_missing_confirmed_password', 'You must confirm your password.'));

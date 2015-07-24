@@ -69,7 +69,7 @@
         </td>
         <?php } ?>
         <td style="vertical-align: top;">     
-          <strong><?php echo language::translate('title_email', 'E-mail'); ?></strong><br />
+          <strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
             <?php echo settings::get('store_email'); ?>
         </td>
           <?php if (settings::get('store_tax_id')) { ?>

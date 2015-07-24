@@ -61,12 +61,12 @@
       
       if (strtoupper(language::$selected['charset']) == 'UTF-8') {
         if (!mail($to_email, '=?utf-8?b?'. base64_encode($subject) .'?=', $message, $headers)) {
-          trigger_error("Failed sending e-mail to ". $to_email, E_USER_WARNING);
+          trigger_error("Failed sending email to ". $to_email, E_USER_WARNING);
           $success = false;
         }
       } else {
         if (!mail($to_email, $subject, $message, $headers)) {
-          trigger_error("Failed sending e-mail to ". $to_email, E_USER_WARNING);
+          trigger_error("Failed sending email to ". $to_email, E_USER_WARNING);
           $success = false;
         }
       }

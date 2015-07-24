@@ -102,7 +102,7 @@
 
   <table>
     <tr>
-      <td width="50%"><?php echo language::translate('title_email_address', 'E-mail Address'); ?><br />
+      <td width="50%"><?php echo language::translate('title_email_address', 'Email Address'); ?><br />
         <?php echo functions::form_draw_email_field('email', true); ?></td>
       <td></td>
     </tr>

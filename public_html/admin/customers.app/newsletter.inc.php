@@ -29,7 +29,7 @@
 
 <ul class="list-horizontal">
   <li><a href="<?php echo document::href_link('', array('template' => 'raw'), array('app', 'doc')); ?>">Raw</a></li>
-  <li><a href="<?php echo document::href_link('', array('template' => 'email'), array('app', 'doc')); ?>">E-mail Formatted</a></li>
+  <li><a href="<?php echo document::href_link('', array('template' => 'email'), array('app', 'doc')); ?>">Email Formatted</a></li>
   <li><a href="<?php echo document::href_link('', array('template' => 'csv'), array('app', 'doc')); ?>">CSV</a></li>
 </ul>
 <div style="float: left; width: 50%;">
@@ -39,7 +39,7 @@
   
     switch($_GET['template']) {
       case 'csv':
-        $output .= 'First Name;Last Name;E-mail Address' . PHP_EOL;
+        $output .= 'First Name;Last Name;Email Address' . PHP_EOL;
         break;
     }
   
@@ -74,7 +74,7 @@
   
     switch($_GET['template']) {
       case 'csv':
-        $output .= 'First Name;Last Name;E-mail Address' . PHP_EOL;
+        $output .= 'First Name;Last Name;Email Address' . PHP_EOL;
         break;
     }
   

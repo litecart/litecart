@@ -430,7 +430,7 @@
       <tr>
         <td><strong>Store Name</strong><br />
           <input name="store_name" type="text" value="My Store" required="required" /></td>
-        <td><strong>Store E-mail</strong><br />
+        <td><strong>Store Email</strong><br />
           <input name="store_email" type="text" value="store@email.com" required="required" /></td>
       </tr>
       <tr>

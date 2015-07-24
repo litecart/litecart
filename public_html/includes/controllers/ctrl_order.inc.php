@@ -491,12 +491,11 @@
         }
       }
       
-      
-    // Send update notice e-mail
+    // Send update notice email
       if (empty($previous_order_status['id']) || (isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id'])) {
         if (!empty($current_order_status['notify'])) {
           
-        // Prepare e-mail body
+        // Prepare email body
           if (empty($current_order_status['email_message']) || trim(strip_tags($current_order_status['email_message'])) == '') {
             $email_body = $this->draw_printable_copy();
           } else {

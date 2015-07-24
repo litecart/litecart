@@ -258,8 +258,8 @@
         array(
           'key' => 'merchant_email',
           'default_value' => '',
-          'title' => language::translate(__CLASS__.':title_merchant_email', 'Merchant E-mail'),
-          'description' => language::translate(__CLASS__.':description_merchant_email', 'Your Paypal registered merchant e-mail address.'),
+          'title' => language::translate(__CLASS__.':title_merchant_email', 'Merchant Email'),
+          'description' => language::translate(__CLASS__.':description_merchant_email', 'Your Paypal registered merchant email address.'),
           'function' => 'input()',
         ),
         array(

@@ -17,7 +17,7 @@
   
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     
-    if (empty($_POST['email'])) notices::add('errors', language::translate('error_email_missing', 'You must enter your e-mail address.'));
+    if (empty($_POST['email'])) notices::add('errors', language::translate('error_email_missing', 'You must enter your email address.'));
     
     if (settings::get('register_guests') && settings::get('fields_customer_password')) {
       if (isset($_POST['email']) && !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
@@ -115,7 +115,7 @@
         if (empty($_POST['password'])) $_POST['password'] = functions::password_generate(6);
         $customer->set_password($_POST['password']);
         
-        $email_message = language::translate('email_subject_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your e-mail address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
+        $email_message = language::translate('email_subject_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
         
         $translations = array(
           '%store_name' => settings::get('store_name'),

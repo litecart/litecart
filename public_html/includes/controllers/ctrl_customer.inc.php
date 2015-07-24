@@ -117,7 +117,7 @@
     
     public function set_password($password) {
       
-      if (empty($this->data['email'])) trigger_error('Cannot set password without an e-mail address', E_USER_ERROR);
+      if (empty($this->data['email'])) trigger_error('Cannot set password without an email address', E_USER_ERROR);
       
       if (empty($this->data['id'])) {
         $this->save();

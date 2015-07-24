@@ -216,7 +216,7 @@
     public static function password_reset($email) {
       
       if (empty($email)) {
-        notices::add('errors', language::translate('error_missing_email', 'To reset your password you must provide an e-mail address.'));
+        notices::add('errors', language::translate('error_missing_email', 'To reset your password you must provide an email address.'));
         return;
       }
 
@@ -229,7 +229,7 @@
       
       if (empty($customer)) {
         sleep(rand(3, 10));
-        notices::add('errors', language::translate('error_email_not_in_database', 'The e-mail address does not exist in our database.'));
+        notices::add('errors', language::translate('error_email_not_in_database', 'The email address does not exist in our database.'));
         return;
       }
       
@@ -251,7 +251,7 @@
         $message
       );
       
-      notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your e-mail address.'));
+      notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your email address.'));
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
     }
@@ -297,7 +297,7 @@
       setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       
       if (empty($email) || empty($password)) {
-        notices::add('errors', language::translate('error_missing_login_credentials', 'You must provide both e-mail address and password.'));
+        notices::add('errors', language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
         return;
       }
       
@@ -311,7 +311,7 @@
       
       if (empty($customer)) {
         sleep(5);
-        notices::add('errors', language::translate('error_login_incorrect', 'Wrong e-mail and password combination or the account does not exist.'));
+        notices::add('errors', language::translate('error_login_incorrect', 'Wrong email and password combination or the account does not exist.'));
         return;
       }
       
