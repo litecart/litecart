@@ -14,7 +14,7 @@
 <?php
   if ($extra_images) {
     foreach ($extra_images as $image) {
-      echo '<a class="extra-image fancybox zoomable shadow" href="'. $image['original'] .'" data-fancybox-group="product"><img class="image" src="'. $image['thumbnail'] .'" title="'. htmlspecialchars($name) .'" /></a>';
+      echo '<a class="extra-image fancybox zoomable shadow" href="'. $image['original'] .'" data-fancybox-group="product"><img class="image" src="'. $image['thumbnail'] .'" srcset="'. $image['thumbnail'] .' 1x, '. $image['thumbnail_2x'] .' 2x" title="'. htmlspecialchars($name) .'" /></a>';
     }
   }
 ?>
@@ -93,7 +93,7 @@
   if (!empty($quantity_unit_decimals)) {
     echo functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null, 'data-size="small"') .' '. $quantity_unit_name .' &nbsp; ';
    } else {
-    echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1, null, 'data-size="tiny"') .' '. $quantity_unit_name .' &nbsp; ';
+    echo functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1, null, 'style="width: 60px;"') .' '. $quantity_unit_name .' &nbsp; ';
   }
 
   if ($quantity > 0 || $orderable) {

@@ -11,6 +11,8 @@ input[type=color], input[type=date], input[type=datetime], input[type=email], in
   margin: 3px 0;
   padding: 6px 10px;
   
+  box-sizing: border-box;
+  
   border: 1px solid #d1d1d1;
   border-radius: 3px;
   
@@ -19,7 +21,7 @@ input[type=color], input[type=date], input[type=datetime], input[type=email], in
   font: normal 14px Roboto, Sans-serif;
   color: #000;
   
-  vertical-align: baseline; 
+  vertical-align: middle; 
 }
 
 .input-wrapper *:focus {
@@ -112,7 +114,7 @@ option {
 button, a.button, span.button, .button-set {
   display: inline-block;
   
-  margin: 0px 1px;
+  margin: 3px 1px;
   padding: 6px 10px;
   
   border: 1px solid #d1d1d1;
@@ -134,9 +136,10 @@ button, a.button, span.button, .button-set {
   font: 400 14px Roboto, Sans-serif;
   
   white-space: nowrap;
-  vertical-align: middle;
   
   cursor: pointer;
+  
+  vertical-align: middle;
 }
 button::-moz-focus-inner {
   border: 0;

@@ -11,6 +11,8 @@ input[type=color], input[type=date], input[type=datetime], input[type=email], in
   margin: 3px 0;
   padding: 6px 10px;
   
+  box-sizing: border-box;
+  
   border: 1px solid #ccc;
   border-radius: 3px;
   
@@ -100,8 +102,9 @@ option {
 
 button, a.button, span.button, .button-set {
   display: inline-block;
-  
+  margin: 3px 0px;
   padding: 6px 10px;
+  
   outline: 0;
   border: 1px solid #ddd;
   border-radius: 3px;
