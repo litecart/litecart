@@ -110,16 +110,11 @@
         <?php echo functions::form_draw_form_end(); ?>
       </div>
       
-      <div style="margin-bottom: 10px;" class="social-bookmarks">
-        <!-- ShareThis Button BEGIN -->
-        <span class="st_facebook_large" displayText="Facebook"></span>
-        <span class="st_twitter_large" displayText="Tweet"></span>
-        <span class="st_googleplus_large" displayText="Google+"></span>
-        <span class="st_email_large" displayText="Email"></span>
-        <script>var switchTo5x=true;</script>
-        <script src="//w.sharethis.com/button/buttons.js"></script>
-        <script>stLight.options({publisher: "", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-        <!-- ShareThis Button END -->
+      <div class="social-bookmarks">
+        <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => $name .' - '. document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square', 'style="color: #55acee;"'); ?></a>
+        <a class="facebook" href="<?php echo document::href_link('http://www.facebook.com/sharer.php', array('u' => document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square', 'style="color: #3b5998;"'); ?></a>
+        <a class="googleplus" href="<?php echo document::href_link('https://plus.google.com/share', array('url' => document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Google+'); ?>"><?php echo functions::draw_fonticon('fa-google-plus-square', 'style="color: #dd4b39;"'); ?></a>
+        <a class="pinterest" href="<?php echo document::href_link('http://pinterest.com/pin/create/button/', array('url' => document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square', 'style="color: #bd081c;"'); ?></a>
       </div>
       
     </div>

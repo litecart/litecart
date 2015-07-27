@@ -78,6 +78,11 @@
   color: #c00;
 }
 
+#box-product .social-bookmarks {
+  margin-bottom: 10px;
+  font-size: 2em;
+}
+
 #box-product .tabs {
   clear: left;
   white-space: normal;
