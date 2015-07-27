@@ -353,7 +353,6 @@
       setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       
       session::regenerate_id();
-      session::stop();
       
       notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
       
