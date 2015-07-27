@@ -509,6 +509,3 @@ UPDATE `lc_countries` SET language_code = 'en' WHERE iso_code_2 = 'ZW';
 UPDATE `lc_countries` SET language_code = 'cu' WHERE iso_code_2 = 'CS';
 -- --------------------------------------------------------
 UPDATE `lc_countries` SET language_code = 'nl' WHERE iso_code_2 = 'AN';
--- --------------------------------------------------------
-INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('images', 'local', 'Product Images: Trim Whitespace', 'Trim whitespace in generated thumbnail images.', 'product_image_trim', '0', 'toggle("y/n")', '32', NOW(), NOW());
