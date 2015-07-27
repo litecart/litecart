@@ -111,16 +111,15 @@
       </div>
       
       <div style="margin-bottom: 10px;" class="social-bookmarks">
-        <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
-        <a class="addthis_button_facebook"></a>
-        <a class="addthis_button_google_plusone_share"></a>
-        <a class="addthis_button_twitter"></a>
-        <a class="addthis_button_email"></a>
-        <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
-        </div>
-        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5187e5911f6d7f8a"></script>
-        <!-- AddThis Button END -->
+        <!-- ShareThis Button BEGIN -->
+        <span class="st_facebook_large" displayText="Facebook"></span>
+        <span class="st_twitter_large" displayText="Tweet"></span>
+        <span class="st_googleplus_large" displayText="Google+"></span>
+        <span class="st_email_large" displayText="Email"></span>
+        <script>var switchTo5x=true;</script>
+        <script src="//w.sharethis.com/button/buttons.js"></script>
+        <script>stLight.options({publisher: "", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+        <!-- ShareThis Button END -->
       </div>
       
     </div>
@@ -150,7 +149,7 @@
       $rowclass = 'even';
     }
     if (strpos($attributes[$i], ':') !== false) {
-      list($key, $value) = explode(':', $attributes[$i]);
+      @list($key, $value) = explode(':', $attributes[$i]);
       echo '<tr class="'. $rowclass .'">' . PHP_EOL
          . '  <td>'. trim($key) .':</td>' . PHP_EOL
          . '  <td>'. trim($value) .'</td>' . PHP_EOL
