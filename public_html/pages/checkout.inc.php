@@ -123,7 +123,7 @@
   
   function refreshSummary() {
     if (console) console.log("Refreshing summary");
-    var comments = $('textarea[name=comments]').val();
+    var comments = $("textarea[name='comments']").val();
     $.ajax({
       url: '<?php echo document::ilink('ajax/checkout_summary.html'); ?>',
       data: false,
@@ -140,16 +140,16 @@
       },
       success: function(data) {
         $('#checkout-summary-wrapper').html(data);
-        $('textarea[name=comments]').val(comments);
+        $("textarea[name='comments']").val(comments);
       },
     });
   }
     
-  $("body").on("click", "form button[type=submit]", function(e) {
+  $("body").on("click", "form button[type='submit']", function(e) {
     $(this).closest("form").append('<input type="hidden" name="'+ $(this).attr("name") +'" value="'+ $(this).text() +'" />');
   });
   
-  $("body").on('submit', 'form[name=cart_form]', function(e) {
+  $("body").on('submit', "form[name='cart_form']", function(e) {
     e.preventDefault();
     $('body').css('cursor', 'wait');
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
@@ -181,10 +181,10 @@
   });
   
   var customer_form_checksum;
-  var customer_saved_checksum = $('form[name=customer_form]').serialize();
+  var customer_saved_checksum = $("form[name='customer_form']").serialize();
   var stateCustomerChanged = false;
-  $("body").on('change keyup', 'form[name=customer_form] *', function(e) {
-    customer_form_checksum = $('form[name=customer_form]').serialize();
+  $("body").on('change keyup', "form[name='customer_form'] *", function(e) {
+    customer_form_checksum = $("form[name='customer_form']").serialize();
     if (customer_form_checksum != customer_saved_checksum) {
       stateCustomerChanged = true;
       $("#box-checkout-customer button[name='set_addresses']").removeAttr('disabled');
@@ -195,29 +195,29 @@
   });
   
   var timerSubmitCustomer;
-  $("body").on('focusout', 'form[name=customer_form]', function() {
+  $("body").on('focusout', "form[name='customer_form']", function() {
     timerSubmitCustomer = setTimeout(
       function() {
-        if (!$('form[name=customer_form]').is(':focus')) {
+        if (!$("form[name='customer_form']").is(':focus')) {
           if (stateCustomerChanged) {
-            $('form[name=customer_form]').trigger('submit');
+            $("form[name='customer_form']").trigger('submit');
           }
         }
       }, 50
     );
   });
-  $("body").on('focusin', 'form[name=customer_form]', function() {
+  $("body").on('focusin', "form[name='customer_form']", function() {
     clearTimeout(timerSubmitCustomer);
   });
   
-  $("body").on('submit', 'form[name="order_form"]', function(e) {
+  $("body").on('submit', "form[name='order_form']", function(e) {
     if (stateCustomerChanged) {
       e.preventDefault();
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
   });
   
-  $("body").on('submit', 'form[name=customer_form]', function(e) {
+  $("body").on('submit', "form[name='customer_form']", function(e) {
     e.preventDefault();
     clearTimeout(timerSubmitCustomer);
     $('*').css('cursor', 'wait');
@@ -239,7 +239,7 @@
         $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
         $('#checkout-customer-wrapper').html(data);
         stateCustomerChanged = false;
-        customer_saved_checksum = $('form[name=customer_form]').serialize();
+        customer_saved_checksum = $("form[name='customer_form']").serialize();
         if (jQuery.isFunction(window.updateCart)) updateCart();
         refreshCart();
         refreshShipping();
@@ -255,7 +255,7 @@
     });
   });
   
-  $("body").on('submit', 'form[name=shipping_form]', function(e) {
+  $("body").on('submit', "form[name='shipping_form']", function(e) {
     e.preventDefault();
     $('*').css('cursor', 'wait');
     $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
@@ -286,7 +286,7 @@
     });
   });
   
-  $("body").on('submit', 'form[name=payment_form]', function(e) {
+  $("body").on('submit', "form[name='payment_form']", function(e) {
     e.preventDefault();
     $('*').css('cursor', 'wait');
     $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
@@ -317,7 +317,7 @@
     });
   });
   
-  $("body").on('blur', 'form[name=comments_form]', function(e) {
+  $("body").on('blur', "form[name='comments_form']", function(e) {
     e.preventDefault();
     $('*').css('cursor', 'wait');
     $('#checkout-comments-wrapper').fadeTo('slow', 0.25);
@@ -344,6 +344,3 @@
     });
   });
 </script>
-<?php
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
-?>

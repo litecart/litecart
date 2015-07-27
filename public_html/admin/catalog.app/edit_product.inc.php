@@ -350,7 +350,10 @@ foreach (array_keys(language::$languages) as $language_code) {
           </tr>
           <tr>
             <td><strong><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></strong><br />
-              <?php echo functions::form_draw_date_field('date_valid_from', true); ?></strong><br />
+              <?php echo functions::form_draw_date_field('date_valid_from', true); ?></td>
+          </tr>
+          <tr>
+            <td><strong><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></strong><br />
               <?php echo functions::form_draw_date_field('date_valid_to', true); ?></td>
           </tr>
           <?php if (!empty($product->data['id'])) { ?>

@@ -256,7 +256,7 @@
               success: function(data) {
                 $.each(data, function(key, value) {
                   if (console) console.log(key +": "+ value);
-                  if ($("input[name='customer["+key+"]']").length) $("input[name='customer["+key+"]']").val(data[key]);
+                  if ($("*[name='customer["+key+"]']").length) $("*[name='customer["+key+"]']").val(data[key]).trigger('change');
                 });
                 $(this).closest('form').submit();
               },
@@ -269,7 +269,7 @@
               url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
               type: 'get',
               cache: true,
-              async: true,
+              async: false,
               dataType: 'json',
               error: function(jqXHR, textStatus, errorThrown) {
                 //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
@@ -570,10 +570,7 @@
 ?>
     <tr>
       <td style="text-align: right;">&nbsp;</td>
-      <td style="text-align: right;">
-        <?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true); ?>
-        <?php echo functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small" readonly="readonly"'); ?>
-      </td>
+      <td style="text-align: right;"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small" readonly="readonly"'); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="width: 75px; text-align: right;"'); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled="disabled"', language::translate('title_calculate', 'Calculate')); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="width: 75px; text-align: right;"'); ?></td>
@@ -585,10 +582,7 @@
 ?>
     <tr>
       <td style="text-align: right;"><a href="#" class="add_ot_row" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
-      <td style="text-align: right;">
-        <?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true); ?>
-        <?php echo functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small"'); ?>
-      </td>
+      <td style="text-align: right;"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small"'); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, '', language::translate('title_calculate', 'Calculate')); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true); ?></td>
@@ -603,7 +597,7 @@
       <td colspan="6"><a class="add" href="#" title="<?php echo language::translate('title_insert_', 'Insert'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
     </tr>
     <tr class="footer" style="font-size: 1.5em;">
-    <td colspan="6" style="text-align: right;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
+      <td colspan="6" style="text-align: right;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
     </tr>
   </table>
   <script>

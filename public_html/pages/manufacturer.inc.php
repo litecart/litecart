@@ -46,6 +46,11 @@
       'title' => $manufacturer->h1_title[language::$selected['code']] ? $manufacturer->h1_title[language::$selected['code']] : $manufacturer->name,
       'name' => $manufacturer->name,
       'description' => $manufacturer->description[language::$selected['code']],
+      'image' => array(
+        'original' => WS_DIR_IMAGES . $manufacturer->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200, 0, 'FIT_ONLY_BIGGER'),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200*2, 0, 'FIT_ONLY_BIGGER'),
+      ),
       'products' => array(),
       'sort_alternatives' => array(
         'name' => language::translate('title_name', 'Name'),
