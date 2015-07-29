@@ -6,11 +6,11 @@
       <table>
         <tr>
           <td><?php echo language::translate('title_email_address', 'Email Address'); ?><br />
-            <?php echo functions::form_draw_text_field('email', true, 'required="required"'); ?></td>
+            <?php echo functions::form_draw_text_field('email', true, 'required="required" style="width: 210px"'); ?></td>
         </tr>
         <tr>
           <td><?php echo language::translate('title_password', 'Password'); ?><br />
-          <?php echo functions::form_draw_password_field('password', ''); ?></td>
+          <?php echo functions::form_draw_password_field('password', '', 'style="width: 210px"'); ?></td>
         </tr>
         <tr>
           <td><label><?php echo functions::form_draw_checkbox('remember_me', '1', true); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label></td>
