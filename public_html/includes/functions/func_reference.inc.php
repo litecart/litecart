@@ -77,7 +77,7 @@
   function reference_get_postcode_required($country_code) {
     
     $country_query = database::query(
-      "select postcode_required from ". DB_TABLE_COUNTRIES ."
+      "select postcode_format from ". DB_TABLE_COUNTRIES ."
       where iso_code_2 = '". database::input($country_code) ."'
       limit 1;"
     );

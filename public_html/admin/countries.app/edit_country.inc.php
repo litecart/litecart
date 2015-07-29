@@ -33,8 +33,9 @@
         'iso_code_3',
         'name',
         'domestic_name',
+        'tax_id_format',
         'address_format',
-        'postcode_required',
+        'postcode_format',
         'currency_code',
         'phone_code',
         'zones',
@@ -94,6 +95,10 @@
       </td>
     </tr>
     <tr>
+      <td><strong><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank">?</a>)<br />
+        <?php echo functions::form_draw_text_field('tax_id_format', true); ?></td>
+    </tr>
+    <tr>
       <td><strong><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>)</strong> <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo language::translate('title_reference', 'Reference')?></a><br />
         <?php echo functions::form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
         <script>
@@ -111,10 +116,8 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_postcode_required', 'Postcode Required'); ?></strong><br />
-        <?php echo functions::form_draw_radio_button('postcode_required', '1', isset($_POST['postcode_required']) ? $_POST['postcode_required'] : '1'); ?> <?php echo language::translate('title_yes', 'Yes'); ?>
-        <?php echo functions::form_draw_radio_button('postcode_required', '0', isset($_POST['postcode_required']) ? $_POST['postcode_required'] : '1'); ?> <?php echo language::translate('title_no', 'No'); ?>
-      </td>
+      <td><strong><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank">?</a>)<br />
+        <?php echo functions::form_draw_text_field('postcode_format', true); ?></td>
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_currency_code', 'Currency Code'); ?></strong><br />

@@ -24,7 +24,7 @@
           </tr>
           <tr>
             <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-              <?php echo functions::form_draw_text_field('postcode', true, 'required="required" style="width: 50px;"'); ?></td>
+              <?php echo functions::form_draw_text_field('postcode', true, 'data-size="tiny"'); ?></td>
             <td><?php echo language::translate('title_city', 'City'); ?> <span class="required">*</span><br />
               <?php echo functions::form_draw_text_field('city', true, 'required="required"'); ?></td>
           </tr>
@@ -39,7 +39,7 @@
             <td width="50%"><?php echo language::translate('title_email', 'Email'); ?> <span class="required">*</span><br />
               <?php echo functions::form_draw_email_field('email', true, 'required="required"'. (!empty(customer::$data['id']) ? ' readonly="readonly"' : '')); ?></td>
             <td><?php echo language::translate('title_phone', 'Phone'); ?> <span class="required">*</span><br />
-            <?php echo functions::form_draw_phone_field('phone', true, 'required="required" placeholder="'. functions::reference_get_phone_country_code(isset($_POST['country_code']) ? $_POST['country_code'] : '') .'"'); ?></td>
+            <?php echo functions::form_draw_phone_field('phone', true, 'required="required"'); ?></td>
           </tr>
           <?php if (settings::get('register_guests') && settings::get('fields_customer_password')) { ?>
           <?php if (empty($_POST['email']) || !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) { ?>
@@ -81,7 +81,7 @@
             </tr>
             <tr>
               <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-                <?php echo functions::form_draw_text_field('shipping_address[postcode]', !empty($_POST['different_shipping_address']) ? true : '', 'style="width: 50px;"'); ?></td>
+                <?php echo functions::form_draw_text_field('shipping_address[postcode]', !empty($_POST['different_shipping_address']) ? true : '', 'data-size="tiny"'); ?></td>
               <td><?php echo language::translate('title_city', 'City'); ?> <span class="required">*</span><br />
                 <?php echo functions::form_draw_text_field('shipping_address[city]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
             </tr>
@@ -132,6 +132,9 @@
   });
   
   $("select[name='country_code']").change(function(){
+    $(this).closest('table').find("input[name='tax_id']").attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+    $(this).closest('table').find("input[name='postcode']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
+    $(this).closest('table').find("input[name='phone']").attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -160,6 +163,7 @@
   });
   
   $("select[name='shipping_address[country_code]']").change(function(){
+    $(this).closest('table').find("input[name='shipping_address[postcode]']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -186,4 +190,9 @@
       }
     });
   });
+  
+  $("select[name='country_code']").closest('table').find("input[name='tax_id']").attr('pattern', $("select[name='country_code']").find('option:selected').data('tax-id-format'));
+  $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('pattern', $("select[name='country_code']").find('option:selected').data('postcode-format'));
+  $("select[name='country_code']").closest('table').find("input[name='phone']").attr('placeholder', '+' + $("select[name='country_code']").find('option:selected').data('phone-code'));
+  $("select[name='shipping_address[country_code]']").closest('table').find("input[name='shipping_address[postcode]']").attr('pattern', $("select[name='shipping_address[country_code]']").find('option:selected').data('postcode-format'));
 </script>

@@ -582,7 +582,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
     while ($country = database::fetch($countries_query)) {
-      $options[] = array($country['name'], $country['iso_code_2']);
+      $options[] = array($country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);

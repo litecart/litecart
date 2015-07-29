@@ -42,9 +42,9 @@
           exit;
         }
         
-        switch (@strtolower($gateway['method'])) {
+        switch (@strtoupper($gateway['method'])) {
           
-          case 'post':
+          case 'POST':
             echo '<p>'. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
                . '<form name="gateway_form" method="post" action="'. (!empty($gateway['action']) ? $gateway['action'] : document::ilink()) .'">' . PHP_EOL;
             if (is_array($gateway['fields'])) {
@@ -53,7 +53,7 @@
               echo $gateway['fields'];
             }
             echo '</form>' . PHP_EOL
-               . '<script language="javascript">' . PHP_EOL;
+               . '<script>' . PHP_EOL;
             if (!empty($gateway['delay'])) {
               echo '  var t=setTimeout(function(){' . PHP_EOL
                  . '    document.forms["gateway_form"].submit();' . PHP_EOL
@@ -64,12 +64,12 @@
             echo '</script>';
             exit;
             
-          case 'html':
+          case 'HTML':
             echo $gateway['content'];
             require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
             exit;
           
-          case 'get':
+          case 'GET':
           default:
             header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink()));
             exit;

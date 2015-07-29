@@ -180,16 +180,14 @@
     });
   });
   
-  var customer_form_checksum;
-  var customer_saved_checksum = $("form[name='customer_form']").serialize();
-  var stateCustomerChanged = false;
-  $("body").on('change keyup', "form[name='customer_form'] *", function(e) {
-    customer_form_checksum = $("form[name='customer_form']").serialize();
-    if (customer_form_checksum != customer_saved_checksum) {
-      stateCustomerChanged = true;
+  var customer_form_changed = false;
+  var customer_form_checksum = $("form[name='customer_form']").serialize();
+  $("body").on('change keyup', "form[name='customer_form']", function(e) {
+    if ($("form[name='customer_form']").serialize() != customer_form_checksum) {
+      customer_form_changed = true;
       $("#box-checkout-customer button[name='set_addresses']").removeAttr('disabled');
     } else {
-      stateCustomerChanged = false;
+      customer_form_changed = false;
       $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
     }
   });
@@ -199,7 +197,7 @@
     timerSubmitCustomer = setTimeout(
       function() {
         if (!$("form[name='customer_form']").is(':focus')) {
-          if (stateCustomerChanged) {
+          if (customer_form_changed) {
             $("form[name='customer_form']").trigger('submit');
           }
         }
@@ -211,7 +209,7 @@
   });
   
   $("body").on('submit', "form[name='order_form']", function(e) {
-    if (stateCustomerChanged) {
+    if (customer_form_changed) {
       e.preventDefault();
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
