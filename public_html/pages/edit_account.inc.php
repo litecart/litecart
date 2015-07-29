@@ -52,6 +52,7 @@
     if (!notices::get('errors')) {
       
       if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
+      if (!isset($_POST['newsletter'])) $_POST['newsletter'] = 0;
       
       $fields = array(
         'email',
