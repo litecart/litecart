@@ -16,9 +16,19 @@
     <th>&nbsp;</th>
   </tr>
 <?php
+  if (!empty($_GET['query'])) {
+    $sql_find = array(
+      "id = '". database::input($_GET['query']) ."'",
+      "email like '%". database::input($_GET['query']) ."%'",
+      "tax_id like '%". database::input($_GET['query']) ."%'",
+      "company like '%". database::input($_GET['query']) ."%'",
+      "concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%'",
+    );
+  }
+  
   $customers_query = database::query(
     "select * from ". DB_TABLE_CUSTOMERS ."
-    ". ((!empty($_GET['query'])) ? "where (email like '%". database::input($_GET['query']) ."%' or firstname like '%". database::input($_GET['query']) ."%' or lastname like '%". database::input($_GET['query']) ."%')" : "") ."
+    ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by firstname, lastname;"
   );
   

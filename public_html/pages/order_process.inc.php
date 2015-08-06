@@ -1,5 +1,6 @@
 <?php
   header('X-Robots-Tag: noindex');
+  document::$layout = 'checkout';
   
   $shipping = new mod_shipping();
   

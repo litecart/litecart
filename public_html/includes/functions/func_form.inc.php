@@ -85,7 +85,7 @@
       }
     }
   
-    return '<button type="'. (($type == 'submit') ? 'submit' : 'button') .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $value .'</button>';
+    return '<button type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $value .'</button>';
   }
   
   function form_draw_checkbox($name, $value, $input=true, $parameters='', $hint='') {

@@ -261,6 +261,7 @@
       }
       
       $item['price'] += $item['extras'];
+      $item['tax'] += tax::get_tax($item['extras'], $product->tax_class_id);
       
       if (!empty($item['options'])) {
         foreach (array_keys($item['options']) as $key) {
