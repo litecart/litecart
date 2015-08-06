@@ -120,7 +120,7 @@
     
     public function after_process($order) {
       
-      if (empty($this->data['selected'])) return;
+      if (empty($this->data['selected']['id'])) return;
       
       list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
       

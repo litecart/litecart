@@ -236,8 +236,8 @@
       success: function(data) {
         $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
         $('#checkout-customer-wrapper').html(data);
-        stateCustomerChanged = false;
-        customer_saved_checksum = $("form[name='customer_form']").serialize();
+        customer_form_changed = false;
+        customer_form_checksum = $("form[name='customer_form']").serialize();
         if (jQuery.isFunction(window.updateCart)) updateCart();
         refreshCart();
         refreshShipping();

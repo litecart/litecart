@@ -109,7 +109,7 @@
     
     public function pre_check($order) {
       
-      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      if (empty($this->data['selected']['id'])) return;
       
       list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
       
@@ -120,7 +120,7 @@
     
     public function transfer($order) {
       
-      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      if (empty($this->data['selected']['id'])) return;
       
       list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
       
@@ -131,7 +131,7 @@
     
     public function verify($order) {
       
-      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      if (empty($this->data['selected']['id'])) return;
       
       list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
       
@@ -142,7 +142,7 @@
     
     public function after_process($order) {
       
-      if (empty($this->data['selected'])) trigger_error('Error: No payment option selected', E_USER_ERROR);
+      if (empty($this->data['selected']['id'])) return;
       
       list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
       
