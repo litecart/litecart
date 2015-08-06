@@ -4,6 +4,7 @@
     private static $_categories;
     private static $_products;
     private static $_manufacturers;
+    private static $_pages;
     
     //public static function construct() {
     //}
@@ -61,7 +62,14 @@
       return self::$_products[$product_id];
     }
     
-    
+    public static function page($page_id) {
+      
+      if (!isset(self::$_pages[$page_id])) {
+        self::$_pages[$page_id] = new ref_page($page_id);
+      }
+      
+      return self::$_pages[$page_id];
+    }
   }
   
 ?>
