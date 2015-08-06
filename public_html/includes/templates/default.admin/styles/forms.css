@@ -11,8 +11,6 @@ input[type=color], input[type=date], input[type=datetime], input[type=email], in
   margin: 3px 0;
   padding: 6px 10px;
   
-  box-sizing: border-box;
-  
   border: 1px solid #ccc;
   border-radius: 3px;
   
