@@ -43,10 +43,10 @@
       return self::get_price($value, $tax_class_id, $calculate, $customer);
     }
     
-    public static function get_price($value, $tax_class_id, $calculate=null, $customer=null) {
-      if ($calculate === null) $calculate = !empty(customer::$data['display_prices_including_tax']) ? true : false;
+    public static function get_price($value, $tax_class_id, $calculate_tax=null, $customer=null) {
+      if ($calculate_tax === null) $calculate_tax = !empty(customer::$data['display_prices_including_tax']) ? true : false;
       
-      if ($calculate) {
+      if ($calculate_tax) {
         return $value + self::get_tax($value, $tax_class_id, $customer);
       } else {
         return $value;

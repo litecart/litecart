@@ -89,7 +89,7 @@
       if (settings::get('security_session_hijacking')) {
         if (!empty($_SERVER['HTTP_USER_AGENT']) && session::$data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) { // Decreased session security due to GoogleBot and mobile networks
           error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .'] on '. $_SERVER['REQUEST_URI'] .'. Expected '. session::$data['last_ip'] .' ['. session::$data['last_agent'] .']');
-          session::reset();
+          session::clear();
           sleep(5);
           header('HTTP/1.1 400 Bad Request');
           header('Location: ' . $_SERVER['REQUEST_URI']);
@@ -102,7 +102,7 @@
         if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || REQUIRE_POST_TOKEN) && empty(route::$route['post_security'])) {
           if (!isset($_POST['token']) || $_POST['token'] != form::session_post_token()) {
             error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
-            session::reset();
+            session::clear();
             sleep(5);
             header('HTTP/1.1 400 Bad Request');
             die('HTTP POST Error: The form submit token was issued for another session identity. Your request has therefore not been processed. Please try again.');
@@ -247,7 +247,7 @@
       
       file_put_contents(self::$_blacklist, $row, FILE_APPEND);
       
-      session::reset();
+      session::clear();
       sleep(5);
       header('HTTP/1.1 400 Bad Request');
       exit;

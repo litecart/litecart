@@ -310,7 +310,7 @@
       // Set new product data
         foreach (array('categories', 'manufacturer_id', 'status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'weight', 'weight_class', 'purchase_price', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
           if (isset($row[$field])) $product->data[$field] = $row[$field];
-          if (in_array($field, array('categories'))) $product->data[$field] = explode(', ', $product->data[$field]);
+          if (in_array($field, array('categories'))) $product->data[$field] = explode(',', str_replace(' ', '', $product->data[$field]));
         }
         
       // Set price

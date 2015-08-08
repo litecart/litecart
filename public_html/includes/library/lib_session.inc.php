@@ -59,7 +59,8 @@
     }
     
     public static function clear() {
-      return session::clear();
+      $_SESSION = array();
+      return true;
     }
     
     public static function destroy() {
