@@ -868,4 +868,8 @@ UPDATE `lc_countries` SET postcode_format = '((1[0-2]|[2-9])\\d{2})?' WHERE iso_
 -- --------------------------------------------------------
 ALTER TABLE `lc_countries` CHANGE COLUMN `address_format` `address_format` VARCHAR(128) NOT NULL AFTER `tax_id_format`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_products` CHANGE COLUMN `upc` `gtin` VARCHAR(32) NOT NULL;
+ALTER TABLE `lc_products` ADD COLUMN `gtin` VARCHAR(32) NOT NULL AFTER `upc`;
+-- --------------------------------------------------------
+UPDATE `lc_products` SET `gtin` = `upc`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products` CHANGE COLUMN `upc` `upc` VARCHAR(32) NOT NULL COMMENT 'Deprecated';
