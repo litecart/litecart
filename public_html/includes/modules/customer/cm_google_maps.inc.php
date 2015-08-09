@@ -61,7 +61,7 @@
       if (!empty($output['address1'])) $output['address1'] = str_replace('  ', ' ', $output['address1']);
       
       if (strtolower(language::$selected['charset']) != 'utf-8') {
-        $output = array_walk($output, 'utf8_decode');
+        $output = array_map('utf8_decode', $output);
       }
       
       return $output;
