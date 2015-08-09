@@ -12,6 +12,8 @@
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
   
+  date_default_timezone_set($_REQUEST['store_time_zone']);
+  
   if (empty($_REQUEST['install'])) {
     header('Location: index.php');
     exit;
