@@ -21,7 +21,6 @@
     
     if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) notices::add('warnings', language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
     if (!empty($_POST['sku']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and sku = '". database::input($_POST['sku']) ."' limit 1;"))) notices::add('warnings', language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
-    if (!empty($_POST['ean']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and ean = '". database::input($_POST['ean']) ."' limit 1;"))) notices::add('warnings', language::translate('error_ean_database_conflict', 'Another entry with the given EAN already exists in the database'));
     if (!empty($_POST['upc']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and upc = '". database::input($_POST['upc']) ."' limit 1;"))) notices::add('warnings', language::translate('error_upc_database_conflict', 'Another entry with the given UPC already exists in the database'));
     
     if (!notices::get('errors')) {
@@ -442,17 +441,17 @@ foreach (array_keys(language::$languages) as $language_code) {
       <div id="tab-data">
         <table>
           <tr>
-            <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank">?</a>)<br />
               <?php echo functions::form_draw_text_field('sku', true); ?>
             </td>
           </tr>
           <tr>
-            <td><strong><?php echo language::translate('title_upc', 'UPC'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_upc_ean_gtin', 'UPC / EAN / GTIN'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank">?</a>)<br />
               <?php echo functions::form_draw_text_field('upc', true); ?>
             </td>
           </tr>
           <tr>
-            <td><strong><?php echo language::translate('title_taric', 'TARIC'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_taric', 'TARIC'); ?></strong> (<a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank">?</a>)<br />
               <?php echo functions::form_draw_text_field('taric', true); ?>
             </td>
           </tr>

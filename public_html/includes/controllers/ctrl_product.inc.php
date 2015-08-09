@@ -177,10 +177,12 @@
       }
       
     // Cleanup empty elements in categories
-      foreach(array_keys($this->data['categories']) as $key){
-        if ($this->data['categories'][$key] == '') unset($this->data['categories'][$key]);
+      if (!empty($this->data['categories'])) {
+        foreach(array_keys($this->data['categories']) as $key){
+          if ($this->data['categories'][$key] == '') unset($this->data['categories'][$key]);
+        }
+        $this->data['categories'] = array_unique($this->data['categories']);
       }
-      $this->data['categories'] = array_unique($this->data['categories']);
       
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);

@@ -165,7 +165,6 @@
           'code' => $product->code,
           'sku' => $product->sku,
           'upc' => $product->upc,
-          //'ean' => $product->ean,
           'taric' => $product->taric,
           'name' => $product->name[$_POST['language_code']],
           'short_description' => $product->short_description[$_POST['language_code']],
@@ -267,12 +266,6 @@
             where sku = '". database::input($row['sku']) ."'
             limit 1;"
           );
-        } elseif (!empty($row['ean'])) {
-          $product_query = database::query(
-            "select id from ". DB_TABLE_PRODUCTS ."
-            where ean = '". database::input($row['ean']) ."'
-            limit 1;"
-          );
         } elseif (!empty($row['upc'])) {
           $product_query = database::query(
             "select id from ". DB_TABLE_PRODUCTS ."
@@ -308,7 +301,7 @@
         }
         
       // Set new product data
-        foreach (array('categories', 'manufacturer_id', 'status', 'code', 'sku', 'ean', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'weight', 'weight_class', 'purchase_price', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
+        foreach (array('categories', 'manufacturer_id', 'status', 'code', 'sku', 'upc', 'taric', 'tax_class_id', 'keywords', 'quantity', 'weight', 'weight_class', 'purchase_price', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
           if (isset($row[$field])) $product->data[$field] = $row[$field];
           if (in_array($field, array('categories'))) $product->data[$field] = explode(',', str_replace(' ', '', $product->data[$field]));
         }
