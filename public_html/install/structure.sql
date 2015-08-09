@@ -403,7 +403,7 @@ CREATE TABLE `lc_products` (
   `keywords` varchar(256) NOT NULL,
   `code` varchar(64) NOT NULL,
   `sku` varchar(64) NOT NULL,
-  `upc` varchar(12) NOT NULL,
+  `gtin` varchar(32) NOT NULL,
   `taric` varchar(16) NOT NULL,
   `quantity` decimal(11,4) NOT NULL,
   `quantity_unit_id` INT(1) NOT NULL,

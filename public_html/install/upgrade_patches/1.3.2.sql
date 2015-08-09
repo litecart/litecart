@@ -867,3 +867,5 @@ UPDATE `lc_countries` SET postcode_format = '((\\d{4}-)?\\d{3}-\\d{3}(-\\d{1})?)
 UPDATE `lc_countries` SET postcode_format = '((1[0-2]|[2-9])\\d{2})?' WHERE iso_code_2 = 'BH';
 -- --------------------------------------------------------
 ALTER TABLE `lc_countries` CHANGE COLUMN `address_format` `address_format` VARCHAR(128) NOT NULL AFTER `tax_id_format`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products` CHANGE COLUMN `upc` `gtin` VARCHAR(32) NOT NULL;

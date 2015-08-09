@@ -204,7 +204,7 @@
         tax_class_id = '". database::input($this->data['tax_class_id']) ."',
         code = '". database::input($this->data['code']) ."',
         sku = '". database::input($this->data['sku']) ."',
-        upc = '". database::input($this->data['upc']) ."',
+        gtin = '". database::input($this->data['gtin']) ."',
         taric = '". database::input($this->data['taric']) ."',
         dim_x = '". database::input($this->data['dim_x']) ."',
         dim_y = '". database::input($this->data['dim_y']) ."',

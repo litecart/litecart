@@ -43,7 +43,7 @@
   }
   
   $sql_select_occurrences = "(0
-    + if(p.upc like '%". database::input($_GET['query']) ."%', 3, 0)
+    + if(p.gtin like '%". database::input($_GET['query']) ."%', 3, 0)
     + if(p.sku like '%". database::input($_GET['query']) ."%', 3, 0)
     + if(p.code like '%". database::input($_GET['query']) ."%', 3, 0)
     + if(p.keywords like '%". database::input($_GET['query']) ."%', 3, 0)
@@ -59,7 +59,7 @@
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price, " . $sql_select_occurrences ."
     
     from (
-      select id, code, upc, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
+      select id, code, gtin, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
       from ". DB_TABLE_PRODUCTS ."
       where status
       and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -79,7 +79,7 @@
     where (
       p.code like '%". database::input($_GET['query']) ."%'
       or p.sku like '%". database::input($_GET['query']) ."%'
-      or p.upc like '%". database::input($_GET['query']) ."%'
+      or p.gtin like '%". database::input($_GET['query']) ."%'
       or p.keywords like '%". database::input($_GET['query']) ."%'
       ". (!empty($manufacturer_ids) ? "or p.manufacturer_id in (". implode(", ", $manufacturer_ids) .")" : false) ."
       or pi.name like '%". database::input($_GET['query']) ."%'

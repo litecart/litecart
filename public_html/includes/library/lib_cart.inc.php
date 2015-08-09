@@ -171,7 +171,7 @@
         'name' => $product->name[language::$selected['code']],
         'code' => $product->code,
         'sku' =>  $product->sku,
-        'upc' =>  $product->upc,
+        'gtin' =>  $product->gtin,
         'taric' =>  $product->taric,
         'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
         'extras' => 0,
