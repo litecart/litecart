@@ -36,9 +36,9 @@
     if (empty($_POST['lastname'])) notices::add('errors', language::translate('error_missing_lastname', 'You must enter a last name.'));
     if (empty($_POST['address1'])) notices::add('errors', language::translate('error_missing_address1', 'You must enter an address.'));
     if (empty($_POST['city'])) notices::add('errors', language::translate('error_missing_city', 'You must enter a city.'));
-    if (empty($_POST['postcode'])) notices::add('errors', language::translate('error_missing_postcode', 'You must enter a postcode.'));
+    if (empty($_POST['postcode']) && !empty($_POST['country_code']) && functions::reference_get_postcode_required($_POST['country_code'])) notices::add('errors', language::translate('error_missing_postcode', 'You must enter a postcode.'));
     if (empty($_POST['country_code'])) notices::add('errors', language::translate('error_missing_country', 'You must select a country.'));
-    if (empty($_POST['country_code']) && functions::reference_country_num_zones($_POST['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
+    if (empty($_POST['zone_code']) && !empty($_POST['country_code']) && functions::reference_country_num_zones($_POST['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
     
     if (!notices::get('errors')) {
       
