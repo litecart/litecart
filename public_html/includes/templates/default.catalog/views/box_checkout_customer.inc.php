@@ -34,14 +34,13 @@
             <td><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?> <span class="required">*</span><br />
               <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?></td>
           </tr>
-          <?php if (empty(customer::$data['id'])) { ?>
           <tr>
             <td width="50%"><?php echo language::translate('title_email', 'Email'); ?> <span class="required">*</span><br />
               <?php echo functions::form_draw_email_field('email', true, 'required="required"'. (!empty(customer::$data['id']) ? ' readonly="readonly"' : '')); ?></td>
             <td><?php echo language::translate('title_phone', 'Phone'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_phone_field('phone', true, 'required="required"'); ?></td>
           </tr>
-          <?php if (settings::get('register_guests') && settings::get('fields_customer_password')) { ?>
+          <?php if (empty(customer::$data['id']) && settings::get('register_guests') && settings::get('fields_customer_password')) { ?>
           <?php if (empty($_POST['email']) || !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) { ?>
           <tr>
             <td><?php echo language::translate('title_password', 'Password'); ?> <span class="required">*</span><br />
@@ -49,7 +48,6 @@
             <td><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?></td>
           </tr>
-          <?php } ?>
           <?php } ?>
           <?php } ?>
           <tr>
@@ -135,7 +133,7 @@
     if ($(this).find('option:selected').data('tax-id-format') != '') {
       $(this).closest('table').find("input[name='tax_id']").attr('pattern', $(this).find('option:selected').data('tax-id-format'));
     } else {
-      $(this).closest('table').find("input[name='tax_id']").attr('pattern');
+      $(this).closest('table').find("input[name='tax_id']").removeAttr('pattern');
     }
     
     if ($(this).find('option:selected').data('postcode-format') != '') {

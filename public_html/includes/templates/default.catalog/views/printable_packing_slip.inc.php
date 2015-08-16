@@ -1,7 +1,7 @@
-<div id="page" style="min-width: 560px; max-width: 640px; margin: 0px auto;">
+<div id="page" style="width: 640px; margin: 0px auto;">
   
   <header id="header" style="margin-bottom: 10px;">
-    <table style="width: 100%;">
+    <table cellspacing="0" cellpadding="0" style="width: 100%;">
       <tr>
         <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 50px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
         <td style="text-align: right;">
@@ -55,7 +55,7 @@
     </table>
   </div>
 
-  <footer id="footer">
+  <footer id="footer" style="width: 640px; margin: 0px auto;">
     <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
       <tr>
         <td style="vertical-align: top;">

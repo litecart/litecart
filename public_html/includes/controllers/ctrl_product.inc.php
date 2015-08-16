@@ -48,6 +48,8 @@
       
       $this->reset();
       
+      if (empty($product_id)) return false;
+      
     // Product
       $products_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS ."
@@ -55,6 +57,8 @@
         limit 1;"
       );
       $product = database::fetch($products_query);
+      
+      if (empty($product)) return false;
       
       foreach ($product as $key => $value) {
         $this->data[$key] = $value;
@@ -206,11 +210,11 @@
         sku = '". database::input($this->data['sku']) ."',
         gtin = '". database::input($this->data['gtin']) ."',
         taric = '". database::input($this->data['taric']) ."',
-        dim_x = '". database::input($this->data['dim_x']) ."',
-        dim_y = '". database::input($this->data['dim_y']) ."',
-        dim_z = '". database::input($this->data['dim_z']) ."',
+        dim_x = '". (float)$this->data['dim_x'] ."',
+        dim_y = '". (float)$this->data['dim_y'] ."',
+        dim_z = '". (float)$this->data['dim_z'] ."',
         dim_class = '". database::input($this->data['dim_class']) ."',
-        weight = '". database::input($this->data['weight']) ."',
+        weight = '". (float)$this->data['weight'] ."',
         weight_class = '". database::input($this->data['weight_class']) ."',
         date_valid_from = ". (empty($this->data['date_valid_from']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
         date_valid_to = ". (empty($this->data['date_valid_to']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",

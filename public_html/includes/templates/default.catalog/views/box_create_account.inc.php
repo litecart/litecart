@@ -11,19 +11,19 @@
         </tr>
         <tr>
           <td><?php echo language::translate('title_firstname', 'First Name'); ?> <span class="required">*</span><br />
-            <?php echo functions::form_draw_text_field('firstname', true); ?></td>
+            <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?></td>
           <td><?php echo language::translate('title_lastname', 'Last Name'); ?> <span class="required">*</span><br />
-            <?php echo functions::form_draw_text_field('lastname', true); ?></td>
+            <?php echo functions::form_draw_text_field('lastname', true, 'required="required"'); ?></td>
         </tr>
         <tr>
           <td><?php echo language::translate('title_address1', 'Address 1'); ?> <span class="required">*</span><br />
-            <?php echo functions::form_draw_text_field('address1', true); ?></td>
+            <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?></td>
           <td><?php echo language::translate('title_address2', 'Address 2'); ?><br />
           <?php echo functions::form_draw_text_field('address2', true); ?></td>
         </tr>
         <tr>
           <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-            <?php echo functions::form_draw_text_field('postcode', true); ?></td>
+            <?php echo functions::form_draw_text_field('postcode', true, 'required="required"'); ?></td>
           <td><?php echo language::translate('title_city', 'City'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_text_field('city', true); ?></td>
         </tr>
@@ -35,21 +35,21 @@
         </tr>
         <tr>
           <td><?php echo language::translate('title_email', 'Email'); ?> <span class="required">*</span><br />
-            <?php echo functions::form_draw_email_field('email', true); ?></td>
-          <td><?php echo language::translate('title_phone', 'Phone'); ?><br />
-            <?php echo functions::form_draw_phone_field('phone', true); ?></td>
+            <?php echo functions::form_draw_email_field('email', true, 'required="required"'); ?></td>
+          <td><?php echo language::translate('title_phone', 'Phone'); ?> <span class="required">*</span><br />
+            <?php echo functions::form_draw_phone_field('phone', true, 'required="required"'); ?></td>
         </tr>
         <tr>
           <td><?php echo language::translate('title_newsletter', 'Newsletter'); ?><br />
-            <label><?php echo functions::form_draw_checkbox('newsletter', '1', !empty($_POST) ? true : '1'); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
+            <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label></td>
           </td>
           <td></td>
         </tr>
         <tr>
           <td><?php echo language::translate('title_desired_password', 'Desired Password'); ?> <span class="required">*</span><br />
-          <?php echo functions::form_draw_password_field('password', ''); ?></td>
+          <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?></td>
           <td><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
-          <?php echo functions::form_draw_password_field('confirmed_password', ''); ?></td>
+          <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo functions::form_draw_button('create_account', language::translate('title_create_account', 'Create Account')); ?></td>
@@ -117,6 +117,24 @@
     });
     
     $("select[name='country_code']").change(function(){
+      if ($(this).find('option:selected').data('tax-id-format') != '') {
+        $(this).closest('table').find("input[name='tax_id']").attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+      } else {
+        $(this).closest('table').find("input[name='tax_id']").removeAttr('pattern');
+      }
+      
+      if ($(this).find('option:selected').data('postcode-format') != '') {
+        $(this).closest('table').find("input[name='postcode']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
+      } else {
+        $(this).closest('table').find("input[name='postcode']").removeAttr('pattern');
+      }
+      
+      if ($(this).find('option:selected').data('phone-code') != '') {
+        $(this).closest('table').find("input[name='phone']").attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+      } else {
+        $(this).closest('table').find("input[name='phone']").removeAttr('placeholder');
+      }
+    
       $('body').css('cursor', 'wait');
       $.ajax({
         url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -143,5 +161,29 @@
         }
       });
     });
+    
+    if ($("select[name='country_code']").find('option:selected').data('tax-id-format') != '') {
+      $("select[name='country_code']").closest('table').find("input[name='tax_id']").attr('pattern', $("select[name='country_code']").find('option:selected').data('tax-id-format'));
+    } else {
+      $("select[name='country_code']").closest('table').find("input[name='tax_id']").removeAttr('pattern');
+    }
+    
+    if ($("select[name='country_code']").find('option:selected').data('postcode-format') != '') {
+      $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('pattern', $("select[name='country_code']").find('option:selected').data('postcode-format'));
+    } else {
+      $("select[name='country_code']").closest('table').find("input[name='postcode']").removeAttr('pattern');
+    }
+    
+    if ($("select[name='country_code']").find('option:selected').data('phone-code') != '') {
+      $("select[name='country_code']").closest('table').find("input[name='phone']").attr('placeholder', '+' + $("select[name='country_code']").find('option:selected').data('phone-code'));
+    } else {
+      $("select[name='country_code']").closest('table').find("input[name='phone']").removeAttr('placeholder');
+    }
+    
+    if ($("select[name='shipping_address[country_code]']").find('option:selected').data('postcode-format') != '') {
+      $("select[name='shipping_address[country_code]']").closest('table').find("input[name='shipping_address[postcode]']").attr('pattern', $("select[name='shipping_address[country_code]']").find('option:selected').data('postcode-format'));
+    } else {
+      $("select[name='shipping_address[country_code]']").closest('table').find("input[name='shipping_address[postcode]']").removeAttr('pattern');
+    }
   </script>
 </div>
