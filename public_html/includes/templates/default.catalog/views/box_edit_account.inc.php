@@ -28,7 +28,7 @@
         </tr>
         <tr>
           <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-            <?php echo functions::form_draw_text_field('postcode', true, 'required="required"'); ?></td>
+            <?php echo functions::form_draw_text_field('postcode', true); ?></td>
           <td><?php echo language::translate('title_city', 'City'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_text_field('city', true, 'required="required"'); ?></td>
         </tr>
@@ -132,8 +132,12 @@
       
       if ($(this).find('option:selected').data('postcode-format') != '') {
         $(this).closest('table').find("input[name='postcode']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
+        $(this).closest('table').find("input[name='postcode']").attr('required', 'required');
+        $(this).closest('table').find("input[name='postcode']").closest('td').find('.required').show();
       } else {
         $(this).closest('table').find("input[name='postcode']").removeAttr('pattern');
+        $(this).closest('table').find("input[name='postcode']").removeAttr('required');
+        $(this).closest('table').find("input[name='postcode']").closest('td').find('.required').hide();
       }
       
       if ($(this).find('option:selected').data('phone-code') != '') {
@@ -154,13 +158,15 @@
         },
         success: function(data) {
           $("select[name='zone_code']").html('');
-          if ($("select[name='zone_code']").attr('disabled')) $("select[name='zone_code']").removeAttr('disabled');
           if (data) {
+            $("select[name='zone_code']").removeAttr('disabled');
+            $("select[name='zone_code']").closest('td').css('opacity', 1);
             $.each(data, function(i, zone) {
               $("select[name='zone_code']").append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
             });
           } else {
             $("select[name='zone_code']").attr('disabled', 'disabled');
+            $("select[name='zone_code']").closest('td').css('opacity', 0.15);
           }
         },
         complete: function() {
@@ -177,8 +183,12 @@
     
     if ($("select[name='country_code']").find('option:selected').data('postcode-format') != '') {
       $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('pattern', $("select[name='country_code']").find('option:selected').data('postcode-format'));
+      $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('required', 'required');
+      $("select[name='country_code']").closest('table').find("input[name='postcode']").closest('td').find('.required').show();
     } else {
       $("select[name='country_code']").closest('table').find("input[name='postcode']").removeAttr('pattern');
+      $("select[name='country_code']").closest('table').find("input[name='postcode']").removeAttr('required');
+      $("select[name='country_code']").closest('table').find("input[name='postcode']").closest('td').find('.required').hide();
     }
     
     if ($("select[name='country_code']").find('option:selected').data('phone-code') != '') {
@@ -192,5 +202,7 @@
     } else {
       $("select[name='shipping_address[country_code]']").closest('table').find("input[name='shipping_address[postcode]']").removeAttr('pattern');
     }
+    
+    if ($("select[name='zone_code'] option").length == 0) $("select[name='zone_code']").closest('td').css('opacity', 0.15);
   </script>
 </div>
