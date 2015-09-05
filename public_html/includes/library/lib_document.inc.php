@@ -96,7 +96,7 @@
     public static function before_output() {
       
     // Get template settings
-      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
+      self::$settings = json_decode(settings::get('store_template_catalog_settings'), true);
       
     // Clean orphan snippets
       $search = array(

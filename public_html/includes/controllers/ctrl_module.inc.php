@@ -22,7 +22,7 @@
       $this->settings = array();
       
     // Get settings from database
-      $settings = unserialize(settings::get($this->type.'_module_'.$module_id, ''));
+      $settings = json_decode(settings::get($module_id, ''), true);
       
     // Set settings to module
       foreach ($this->_module->settings() as $setting) {
@@ -47,22 +47,22 @@
         $this->update();
       }
       
-      $save_array = array();
+      $settings = array();
       foreach ($this->_module->settings() as $setting) {
-        $save_array[$setting['key']] = $values[$setting['key']];
+        $settings[$setting['key']] = $values[$setting['key']];
       }
       
       if (!settings::get($this->type.'_module_'.$this->_module->id, '')) {
         database::query(
           "insert into ". DB_TABLE_SETTINGS ."
           (`key`, date_created)
-          values ('". $this->type.'_module_'. $this->_module->id ."', '". date('Y-m-d H:i:s') ."');"
+          values ('". database::input($this->_module->id) ."', '". date('Y-m-d H:i:s') ."');"
         );
       }
       
       database::query(
         "update ". DB_TABLE_SETTINGS ."
-        set value = '". database::input(serialize($save_array)) ."'
+        set value = '". database::input(json_encode($settings)) ."'
         where `key` = '". database::input($this->type.'_module_'. $this->_module->id) ."'
         limit 1;"
       );
@@ -83,7 +83,7 @@
       database::query(
         "update ". DB_TABLE_SETTINGS ."
         set value = '". database::input(implode(';', $installed_modules)) ."'
-        where `key` = '". $this->type."_modules'
+        where `key` = '". database::input($this->type.'_modules') ."'
         limit 1;"
       );
       
@@ -116,13 +116,13 @@
       database::query(
         "update ". DB_TABLE_SETTINGS ."
         set value = '". database::input(implode(';', $installed_modules)) ."'
-        where `key` = '". $this->type ."_modules'
+        where `key` = '". database::input($this->type.'_modules') ."'
         limit 1;"
       );
       
       database::query(
         "delete from ". DB_TABLE_SETTINGS ."
-        where `key` = '". database::input($this->type.'_module_'. $this->_module->id) ."';"
+        where `key` = '". database::input($this->_module->id) ."';"
       );
       
       cache::clear_cache('modules');
