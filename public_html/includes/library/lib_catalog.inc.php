@@ -2,6 +2,7 @@
   
   class catalog {
     private static $_categories;
+    private static $_customers;
     private static $_products;
     private static $_manufacturers;
     private static $_pages;
@@ -42,6 +43,15 @@
       }
       
       return self::$_categories[$category_id];
+    }
+
+    public static function customer($customer_id) {
+      
+      if (!isset(self::$_customers[$customer_id])) {
+        self::$_customers[$customer_id] = new ref_customer($customer_id);
+      }
+      
+      return self::$_customers[$customer_id];
     }
     
     public static function manufacturer($manufacturer_id) {
