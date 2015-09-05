@@ -417,7 +417,7 @@ foreach (array_keys(language::$languages) as $language_code) {
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large" data-test="test"');
+  echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large"');
   $use_br = true;
 }
 ?>

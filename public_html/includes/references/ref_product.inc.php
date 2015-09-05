@@ -38,20 +38,25 @@
       switch($field) {
       
         case 'name':
-        case 'description':
         case 'short_description':
+        case 'description':
         case 'head_title':
         case 'meta_description':
         case 'attributes':
           
           $query = database::query(
-            "select language_code, name, description, short_description, attributes, head_title, meta_description from ". DB_TABLE_PRODUCTS_INFO ."
+            "select * from ". DB_TABLE_PRODUCTS_INFO ."
             where product_id = '". (int)$this->_id ."'
             and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
           );
           
+          $keys = array();
           while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) $this->_data[$key][$row['language_code']] = $value;
+            foreach ($row as $key => $value) {
+              if (in_array($key, array('id', 'product_id', 'language_code'))) continue;
+              $keys[] = $key;
+              $this->_data[$key][$row['language_code']] = $value;
+            }
           }
           
         // Fix missing translations
@@ -63,7 +68,7 @@
                 $this->_data['name'][$language_code] = '[untitled]';
               }
             }
-            foreach (array('description', 'short_description', 'attributes', 'head_title', 'meta_description') as $key) {
+            foreach ($keys as $key) {
               if (empty($this->_data[$key][$language_code])) {
                 if (!empty($this->_data[$key][settings::get('default_language_code')])) {
                   $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];

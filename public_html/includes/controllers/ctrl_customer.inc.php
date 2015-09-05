@@ -19,27 +19,27 @@
       $customer = database::fetch($customer_query);
       if (empty($customer)) trigger_error('Could not find customer ('. $customer_id .') in database.', E_USER_ERROR);
       
-      $key_map = array(
-        'id' => 'id',
-        'email' => 'email',
-        'password' => 'password',
-        'tax_id' => 'tax_id',
-        'company' => 'company',
-        'firstname' => 'firstname',
-        'lastname' => 'lastname',
-        'address1' => 'address1',
-        'address2' => 'address2',
-        'postcode' => 'postcode',
-        'country_code' => 'country_code',
-        'zone_code' => 'zone_code',
-        'city' => 'city',
-        'phone' => 'phone',
-        'mobile' => 'mobile',
-        'different_shipping_address' => 'different_shipping_address',
-        'newsletter' => 'newsletter',
+      $map = array(
+        'id',
+        'email',
+        'password',
+        'tax_id',
+        'company',
+        'firstname',
+        'lastname',
+        'address1',
+        'address2',
+        'postcode',
+        'country_code',
+        'zone_code',
+        'city',
+        'phone',
+        'mobile',
+        'different_shipping_address',
+        'newsletter',
       );
-      foreach ($key_map as $skey => $tkey) {
-        $this->data[$tkey] = $customer[$skey];
+      foreach ($map as $key) {
+        $this->data[$key] = $customer[$key];
       }
       
       $key_map = array(

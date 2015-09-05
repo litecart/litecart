@@ -35,9 +35,7 @@
 <!--snippet:javascript-->
 <style>
 <?php
-  $settings = unserialize(settings::get('store_template_catalog_settings'));
-  
-  if (!empty($settings['fixed_header'])) {
+  if (!empty(document::$settings['fixed_header'])) {
     echo '#header-wrapper { position: fixed !important; }' . PHP_EOL;
   } else {
     echo '#header-wrapper { position: absolute !important; box-shadow: none !important; background: none; }' . PHP_EOL;
@@ -47,7 +45,6 @@
 </style>
 </head>
 <body>
-
 
 <div id="header-wrapper" class="shadow">
   <div style="padding: 0px 10px;">

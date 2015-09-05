@@ -27,7 +27,7 @@
 }
 
 #box-checkout-cart .viewport {
-  width: 560px;
+  width: 790px;
   overflow: hidden;
   max-height: 300px;
   padding: 5px;
@@ -45,7 +45,7 @@
 #box-checkout-cart .item {
 	float: left;
   text-align: left;
-  width: 580px;
+  width: 800px;
 } 
 #box-checkout-cart .item a.image-wrapper {
   float: left;

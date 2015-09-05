@@ -31,7 +31,6 @@
   
   $installed = in_array($module_id, explode(';', settings::get($type.'_modules'))) ? true : false;
   
-  
   $module = new ctrl_module(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $type . '/' . $module_id .'.inc.php');
   
   if (isset($_POST['save'])) {

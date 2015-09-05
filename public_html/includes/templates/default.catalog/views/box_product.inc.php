@@ -41,7 +41,7 @@
       
       <div class="tax" style="margin-bottom: 10px;">
       <?php if ($tax_rates) { ?>
-        <?php echo $tax_status; ?>: <?php echo implode('<br />', $tax_rates); ?>
+        <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <?php echo implode('<br />', $tax_rates); ?>
       <?php } else { ?>
         <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
       <?php } ?>
@@ -49,15 +49,15 @@
       
       <div class="stock-status" style="margin-bottom: 10px;">
       <?php if ($quantity > 0) { ?>
-        <div class="stock-available"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
-        <?php if ($sold_out_status_value) { ?>
-        <div class="stock-delivery"><?php echo $title_delivery_status; ?>: <span class="value"><?php echo $delivery_status_value;?></span></div>
+        <div class="stock-available"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
+        <?php if ($delivery_status_value) { ?>
+        <div class="stock-delivery"><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo $delivery_status_value;?></span></div>
         <?php } ?>
       <?php } else { ?>
         <?php if ($sold_out_status_value) { ?>
-          <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>"><?php echo $title_stock_status; ?>: <span class="value"><?php echo $sold_out_status_value; ?></span></div>
+          <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $sold_out_status_value; ?></span></div>
         <?php } else { ?>
-          <div class="stock-unavailable"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $title_sold_out; ?></span></div>
+          <div class="stock-unavailable"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span></div>
         <?php } ?>
       <?php } ?>
       </div>
@@ -88,7 +88,7 @@
 ?>
           <?php if (!$catalog_only_mode) { ?>
           <tr>
-            <td class="quantity"><strong><?php echo $title_quantity; ?></strong><br />
+            <td class="quantity"><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong><br />
 <?php
   if (!empty($quantity_unit_decimals)) {
     echo functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null, 'data-size="small"') .' '. $quantity_unit_name .' &nbsp; ';
@@ -97,9 +97,9 @@
   }
 
   if ($quantity > 0 || $orderable) {
-    echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit'); 
+    echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit'); 
   } else {
-    echo functions::form_draw_button('add_cart_product', $title_add_to_cart, 'submit', 'disabled="disabled"'); 
+    echo functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit', 'disabled="disabled"'); 
   }
 ?>
             </td>
@@ -122,9 +122,9 @@
     <?php if ($description || $attributes) { ?>
     <div class="tabs" style="margin-top: 20px;">
       <ul class="index">
-        <li><a href="#tab-information"><?php echo $title_information; ?></a></li>
+        <li><a href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
       <?php if ($attributes) { ?>
-        <li><a href="#tab-details"><?php echo $title_details; ?></a></li>
+        <li><a href="#tab-details"><?php echo language::translate('title_details', 'Details'); ?></a></li>
       <?php } ?>
       </ul>
       
