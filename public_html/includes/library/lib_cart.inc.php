@@ -123,18 +123,16 @@
       );
       
       while ($item = database::fetch($cart_items_query)) {
-        self::add_product($item['product_id'], unserialize($item['options']), $item['quantity'], true);
+        self::add_product($item['product_id'], unserialize($item['options']), $item['quantity'], true, $item['key']);
       }
     }
     
-    public static function add_product($product_id, $options, $quantity=1, $silent=false) {
+    public static function add_product($product_id, $options, $quantity=1, $silent=false, $item_key=null) {
       
       if ($quantity <= 0) {
         if (!$silent) notices::add('errors', language::translate('error_cannot_add_to_cart_invalid_quantity', 'Cannot add product to cart. Invalid quantity'));
         return;
       }
-      
-      $item_key = md5(serialize(array($product_id, $options)));
       
       $product = catalog::product($product_id);
       
@@ -191,8 +189,12 @@
         'dim_class' => $product->dim_class,
       );
       
-      if (!empty($product->quantity_unit['separate'])) {
-        $item_key = uniqid();
+      if (empty($item_key)) {
+        if (!empty($product->quantity_unit['separate'])) {
+          $item_key = uniqid();
+        } else {
+          $item_key = md5(serialize(array($product_id, $options)));
+        }
       }
       
       $options = array_filter($options);
@@ -387,7 +389,7 @@
     }
     
     public static function remove($item_key) {
-    
+      
       if (isset(self::$items[$item_key])) {
         unset(self::$items[$item_key]);
       }
