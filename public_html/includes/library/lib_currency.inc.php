@@ -147,14 +147,14 @@
     
     public static function format($value, $auto_decimals=true, $raw=false, $currency_code=null, $currency_value=null) {
       
-      if ($raw) return self::format_raw($value, $currency_code, $currency_value);
+      if (empty($currency_code)) {
+        $currency_code = self::$selected['code'];
+        if (empty($currency_value)) $currency_value = (float)self::$currencies[$currency_code]['value'];
+      }
       
-      if (empty($currency_code)) $currency_code = self::$selected['code'];
-      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
-
-      if ($currency_value === null) $currency_value = currency::$currencies[$currency_code]['value'];
-      
-      $value = round($value * $currency_value, currency::$currencies[$currency_code]['decimals']);
+      if (!isset(currency::$currencies[$currency_code]) && !empty($currency_value)) {
+        return number_format($value * $currency_value, 2, '.', ',') .' '. $currency_code;
+      }
       
       if ($auto_decimals == false || $value - floor($value) > 0) {
         $decimals = (int)self::$currencies[$currency_code]['decimals'];
@@ -162,7 +162,7 @@
         $decimals = 0;
       }
       
-      return self::$currencies[$currency_code]['prefix'] . number_format($value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$currency_code]['suffix'];
+      return self::$currencies[$currency_code]['prefix'] . number_format($value * $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$currency_code]['suffix'];
     }
     
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
