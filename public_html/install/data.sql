@@ -249,7 +249,7 @@ INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charse
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'fa-chain-broken', '#c0c0c0', 0, 1, NOW(), NOW()),
+(1, 'fa-money', '#c0c0c0', 0, 1, NOW(), NOW()),
 (2, 'fa-clock-o', '#d7d96f', 1, 2, NOW(), NOW()),
 (3, 'fa-cog', '#ffa851', 1, 3, NOW(), NOW()),
 (4, 'fa-truck', '#99cc66', 1, 4, NOW(), NOW()),
@@ -341,7 +341,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('security', 'global', 'Session Hijacking Protection', 'Destroy sessions that were signed for a different IP address and user agent.', 'security_session_hijacking', '0', 'toggle("e/d")', 11, NOW(), NOW()),
 ('security', 'global', 'HTTP POST Protection', 'Deny incoming HTTP POST data from external sites by checking for valid form tickets.', 'security_http_post', '0', 'toggle("e/d")', 12, NOW(), NOW()),
 ('security', 'global', 'Bad Bot Trap', 'Catch bad behaving bots from crawling your website by setting up a trap.', 'security_bot_trap', '0', 'toggle("e/d")', 13, NOW(), NOW()),
-('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and deny access to the site.', 'security_xss', '0', 'toggle("e/d")', 14, NOW(), NOW()),
+('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and deny access to the site.', 'security_xss', '1', 'toggle("e/d")', 14, NOW(), NOW()),
 ('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'templates("catalog")', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'templates("admin")', 0, NOW(), NOW()),
 ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', 0, NOW(), NOW()),

@@ -35,9 +35,9 @@
   
   if (version_compare(PHP_VERSION, '5.3', '<')) {
     die('<span class="error">[Error] PHP 5.3+ required - Detected '. PHP_VERSION .'</span></p>');
-  } else if (version_compare(PHP_VERSION, '5.4', '<')) {
+  } else if (version_compare(PHP_VERSION, '5.5', '<')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">PHP 5.4+ recommended</span></span></p>';
+       . '<span class="warning">PHP 5.6+ recommended</span></span></p>';
   } else {
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }

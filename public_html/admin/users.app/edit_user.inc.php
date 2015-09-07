@@ -104,17 +104,17 @@
     <tr>
       <td>
         <?php echo language::translate('title_last_ip', 'Last IP'); ?><br />
-          <?php echo functions::form_draw_static_field('last_ip', true); ?>
+          <?php echo functions::form_draw_text_field('last_ip', true, 'disabled="disabled"'); ?>
       </td>
       <td>
         <?php echo language::translate('title_last_host', 'Last Host'); ?><br />
-          <?php echo functions::form_draw_static_field('last_host', true); ?>
+          <?php echo functions::form_draw_text_field('last_host', true, 'disabled="disabled"'); ?>
       </td>
     </tr>
     <tr>
       <td>
         <?php echo language::translate('title_last_login', 'Last Login'); ?><br />
-          <?php echo functions::form_draw_static_field('date_login', true); ?>
+          <?php echo functions::form_draw_text_field('date_login', true, 'disabled="disabled"'); ?>
       </td>
       <td>
       </td>

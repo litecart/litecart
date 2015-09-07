@@ -83,7 +83,7 @@
   }
  
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer Profile') : language::translate('title_add_new_customer_profile', 'Add New Customer Profile'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer'); ?></h1>
 
 <?php if (!empty($customer->data['id'])) { ?>
   <table class="dataTable">

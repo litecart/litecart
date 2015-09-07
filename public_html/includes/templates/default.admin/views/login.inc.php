@@ -93,7 +93,7 @@ html, body, body > table {
           <div id="box-login" class="box rounded-corners">
             
             <div class="header">
-              <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . 'index.php'); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 100px;" alt="<?php echo settings::get('store_name'); ?>" /></a>
+              <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 100px;" alt="<?php echo settings::get('store_name'); ?>" /></a>
             </div>
             
             <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
