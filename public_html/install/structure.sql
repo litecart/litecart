@@ -332,7 +332,7 @@ CREATE TABLE `lc_orders_items` (
 CREATE TABLE `lc_order_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `icon` varchar(24) NOT NULL,
-  `color` tinyint(1) NOT NULL,
+  `color` varchar(7) NOT NULL,
   `is_sale` tinyint(1) NOT NULL,
   `notify` tinyint(1) NOT NULL,
   `priority` tinyint(2) NOT NULL,
