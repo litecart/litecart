@@ -19,10 +19,44 @@ INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charse
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('SE VAT Zone', '', NOW(), NOW());
 -- --------------------------------------------------------
-SET @TAX_ZONE_SE = LAST_INSERT_ID();
+SET @SE_VAT_ZONE = LAST_INSERT_ID();
 -- --------------------------------------------------------
 INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`, `date_updated`, `date_created`) VALUES
-(@TAX_ZONE_SE, 'SE', '', NOW(), NOW());
+(@SE_VAT_ZONE, 'SE', '', NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
+('EU VAT Zone', 'European Union excl. SE', NOW(), NOW());
+-- --------------------------------------------------------
+SET @EU_VAT_ZONE = LAST_INSERT_ID();
+-- --------------------------------------------------------
+INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`, `date_updated`, `date_created`) VALUES
+(@EU_VAT_ZONE, 'AT', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'BE', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'BG', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'CY', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'CZ', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'DE', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'DK', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'EE', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'ES', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'FR', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'FI', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'GB', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'GR', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'HR', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'HU', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'IE', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'IT', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'LV', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'LT', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'LU', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'MT', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'NL', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'PL', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'PT', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'RO', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'SI', '', NOW(), NOW()),
+(@EU_VAT_ZONE, 'SK', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('Standard', '', NOW(), NOW()),
@@ -30,6 +64,12 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Groceries', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `customer_type`, `tax_id_rule`, `date_updated`, `date_created`) VALUES
-(1, @TAX_ZONE_SE, 'percent', 'SE VAT 25%', '', 25.0000, 'both', 'both', NOW(), NOW()),
-(2, @TAX_ZONE_SE, 'percent', 'SE VAT 6%', '', 6.0000, 'both', 'both', NOW(), NOW()),
-(3, @TAX_ZONE_SE, 'percent', 'SE VAT 12%', '', 12.0000, 'both', 'both', NOW(), NOW());
+(1, @SE_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 'both', 'both', NOW(), NOW()),
+(1, @EU_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 'individuals', 'both', NOW(), NOW()),
+(1, @EU_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 'companies', 'without', NOW(), NOW()),
+(2, @SE_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 'both', 'both', NOW(), NOW()),
+(2, @EU_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 'individuals', 'both', NOW(), NOW()),
+(2, @EU_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 'companies', 'without', NOW(), NOW()),
+(3, @SE_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 'both', 'both', NOW(), NOW()),
+(3, @EU_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 'individuals', 'both', NOW(), NOW()),
+(3, @EU_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 'companies', 'without', NOW(), NOW());
