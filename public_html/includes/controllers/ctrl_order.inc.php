@@ -11,7 +11,7 @@
       switch ($action) {
         case 'load':
           if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
-          self::load($order_id);
+          self::load((int)$order_id);
           break;
         case 'new':
           self::reset();
@@ -122,7 +122,7 @@
         limit 1;"
       );
       $order = database::fetch($order_query);
-      if (empty($order)) trigger_error('Could not find order in database ('. $order_id .')', E_USER_ERROR);
+      if (empty($order)) trigger_error('Could not find order in database (ID: '. (int)$order_id .')', E_USER_ERROR);
       
       $key_map = array(
         'id' => 'id',

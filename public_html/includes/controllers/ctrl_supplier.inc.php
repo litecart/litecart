@@ -3,9 +3,9 @@
   class ctrl_supplier {
     public $data = array();
     
-    public function __construct($supplier_id='') {
+    public function __construct($supplier_id=null) {
       
-      if (!empty($supplier_id)) $this->load($supplier_id);
+      if (!empty($supplier_id)) $this->load((int)$supplier_id);
     }
     
     public function load($supplier_id) {
@@ -15,6 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($suppliers_query);
+      if (empty($this->data)) trigger_error('Could not find supplier (ID: '. (int)$supplier_id .') in database.', E_USER_ERROR);
     }
     
     public function save() {

@@ -42,6 +42,7 @@
         limit 1;"
       );
       $this->data = database::fetch($manufacturers_query);
+      if (empty($this->data)) trigger_error('Could not find manufacturer (ID: '. (int)$manufacturer_id .') in database.', E_USER_ERROR);
       
       $manufacturers_info_query = database::query(
         "select * from ". DB_TABLE_MANUFACTURERS_INFO ."

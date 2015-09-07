@@ -7,7 +7,7 @@
       
       $this->reset();
       
-      if ($group_id !== null) $this->load($group_id);
+      if ($group_id !== null) $this->load((int)$group_id);
     }
     
     public function reset() {
@@ -29,7 +29,7 @@
         limit 1;"
       );
       $this->data = database::fetch($option_group_query);
-      if (empty($this->data)) trigger_error('Could not find option_group ('. $group_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find option group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
       
       $option_groups_info_query = database::query(
         "select * from ". DB_TABLE_OPTION_GROUPS_INFO ."

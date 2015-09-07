@@ -5,7 +5,7 @@
     
     public function __construct($page_id=null) {
       
-      if ($page_id !== null) $this->load($page_id);
+      if ($page_id !== null) $this->load((int)$page_id);
     }
     
     public function load($page_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($page_query);
-      if (empty($this->data)) trigger_error('Could not find page (ID: '. $page_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find page (ID: '. (int)$page_id .') in database.', E_USER_ERROR);
       
       $this->data['dock'] = explode(',', $this->data['dock']);
       

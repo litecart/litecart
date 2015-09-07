@@ -5,7 +5,7 @@
     
     public function __construct($sold_out_status_id=null) {
       
-      if ($sold_out_status_id !== null) $this->load($sold_out_status_id);
+      if ($sold_out_status_id !== null) $this->load((int)$sold_out_status_id);
     }
     
     public function load($sold_out_status_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($sold_out_status_query);
-      if (empty($this->data)) trigger_error('Could not find sold out status ID ('. $sold_out_status_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.', E_USER_ERROR);
       
       $sold_out_status_info_query = database::query(
         "select name, description, language_code from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."

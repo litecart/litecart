@@ -7,7 +7,7 @@
       
       $this->reset();
       
-      if ($user_id !== null) $this->load($user_id);
+      if ($user_id !== null) $this->load((int)$user_id);
     }
     
     public function reset() {
@@ -40,7 +40,7 @@
       );
       $this->data = database::fetch($user_query);
       
-      if (empty($this->data)) trigger_error('Could not find user ('. $user_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find user (ID: '. (int)$user_id .') in database.', E_USER_ERROR);
       
       foreach(file(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd') as $row) {
         $row = explode(':', trim($row));

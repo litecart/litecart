@@ -3,10 +3,10 @@
   class ctrl_category {
     public $data = array();
     
-    public function __construct($category_id='') {
+    public function __construct($category_id=null) {
       
       if (!empty($category_id)) {
-        $this->load($category_id);
+        $this->load((int)$category_id);
       } else {
         $this->reset();
       }
@@ -46,6 +46,7 @@
         limit 1;"
       );
       $this->data = database::fetch($categories_query);
+      if (empty($this->data)) trigger_error('Could not find category (ID: '. (int)$category_id .') in database.', E_USER_ERROR);
       
       $categories_info_query = database::query(
         "select name, short_description, description, head_title, h1_title, meta_description, language_code from ". DB_TABLE_CATEGORIES_INFO ."

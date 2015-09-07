@@ -3,10 +3,10 @@
   class ctrl_product {
     public $data;
     
-    public function __construct($product_id='') {
+    public function __construct($product_id=null) {
       
       if (!empty($product_id)) {
-        $this->load($product_id);
+        $this->load((int)$product_id);
       } else {
         $this->reset();
       }
@@ -57,8 +57,7 @@
         limit 1;"
       );
       $product = database::fetch($products_query);
-      
-      if (empty($product)) return false;
+      if (empty($this->data)) trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
       
       foreach ($product as $key => $value) {
         $this->data[$key] = $value;

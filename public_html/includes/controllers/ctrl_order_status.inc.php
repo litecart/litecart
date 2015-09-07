@@ -5,7 +5,7 @@
     
     public function __construct($order_status_id=null) {
       
-      if ($order_status_id !== null) $this->load($order_status_id);
+      if ($order_status_id !== null) $this->load((int)$order_status_id);
     }
     
     public function load($order_status_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($order_status_query);
-      if (empty($this->data)) trigger_error('Could not find order_status ('. $order_status_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find order_status (ID: '. (int)$order_status_id .') in database.', E_USER_ERROR);
       
       $order_status_info_query = database::query(
         "select name, description, email_message, language_code from ". DB_TABLE_ORDER_STATUSES_INFO ."

@@ -5,7 +5,7 @@
     
     public function __construct($tax_rate_id=null) {
       
-      if ($tax_rate_id !== null) $this->load($tax_rate_id);
+      if ($tax_rate_id !== null) $this->load((int)$tax_rate_id);
     }
     
     public function load($tax_rate_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($tax_rate_query);
-      if (empty($this->data)) trigger_error('Could not find tax rate ('. $tax_rate_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.', E_USER_ERROR);
     }
     
     public function save() {

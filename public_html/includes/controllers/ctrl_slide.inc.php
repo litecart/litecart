@@ -5,7 +5,7 @@
     
     public function __construct($slide_id=null) {
       
-      if ($slide_id !== null) $this->load($slide_id);
+      if ($slide_id !== null) $this->load((int)$slide_id);
     }
     
     public function load($slide_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($slide_query);
-      if (empty($this->data)) trigger_error('Could not find slide ('. $slide_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find slide (ID: '. (int)$slide_id .') in database.', E_USER_ERROR);
     }
     
     public function save() {

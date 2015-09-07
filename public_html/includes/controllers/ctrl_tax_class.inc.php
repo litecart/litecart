@@ -5,7 +5,7 @@
     
     public function __construct($tax_class_id=null) {
       
-      if ($tax_class_id !== null) $this->load($tax_class_id);
+      if ($tax_class_id !== null) $this->load((int)$tax_class_id);
     }
     
     public function load($tax_class_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($tax_class_query);
-      if (empty($this->data)) trigger_error('Could not find tax class ('. $tax_class_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find tax class (ID: '. (int)$tax_class_id .') in database.', E_USER_ERROR);
     }
     
     public function save() {

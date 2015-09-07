@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($language_query);
-      if (empty($this->data)) trigger_error('Could not find language ('. $language_code .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.', E_USER_ERROR);
     }
     
     public function save() {

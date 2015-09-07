@@ -6,7 +6,7 @@
     public function __construct($customer_id=null) {
       
       
-      if ($customer_id !== null) $this->load($customer_id);
+      if ($customer_id !== null) $this->load((int)$customer_id);
     }
     
     public function load($customer_id) {
@@ -17,7 +17,7 @@
         limit 1;"
       );
       $customer = database::fetch($customer_query);
-      if (empty($customer)) trigger_error('Could not find customer ('. $customer_id .') in database.', E_USER_ERROR);
+      if (empty($customer)) trigger_error('Could not find customer (ID: '. (int)$customer_id .') in database.', E_USER_ERROR);
       
       $map = array(
         'id',

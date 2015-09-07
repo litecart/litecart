@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($country_query);
-      if (empty($this->data)) trigger_error('Could not find country ('. $country_code .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find country (Code: '. htmlspecialchars($country_code) .') in database.', E_USER_ERROR);
       
       $zones_query = database::query(
         "select * from ". DB_TABLE_ZONES ."

@@ -5,7 +5,7 @@
     
     public function __construct($delivery_status_id=null) {
       
-      if ($delivery_status_id !== null) $this->load($delivery_status_id);
+      if ($delivery_status_id !== null) $this->load((int)$delivery_status_id);
     }
     
     public function load($delivery_status_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($delivery_status_query);
-      if (empty($this->data)) trigger_error('Could not find delivery status ID ('. $delivery_status_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find delivery status (ID: '. (int)$delivery_status_id .') in database.', E_USER_ERROR);
       
       $delivery_status_info_query = database::query(
         "select name, description, language_code from ". DB_TABLE_DELIVERY_STATUSES_INFO ."

@@ -5,7 +5,7 @@
     
     public function __construct($quantity_unit_id=null) {
       
-      if ($quantity_unit_id !== null) $this->load($quantity_unit_id);
+      if ($quantity_unit_id !== null) $this->load((int)$quantity_unit_id);
     }
     
     public function load($quantity_unit_id) {
@@ -15,7 +15,7 @@
         limit 1;"
       );
       $this->data = database::fetch($quantity_unit_query);
-      if (empty($this->data)) trigger_error('Could not find quantity unit ID ('. $quantity_unit_id .') in database.', E_USER_ERROR);
+      if (empty($this->data)) trigger_error('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.', E_USER_ERROR);
       
       $quantity_unit_info_query = database::query(
         "select name, description, language_code from ". DB_TABLE_QUANTITY_UNITS_INFO ."

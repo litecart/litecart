@@ -52,7 +52,7 @@
         $settings[$setting['key']] = $values[$setting['key']];
       }
       
-      if (!settings::get($this->type.'_module_'.$this->_module->id, '')) {
+      if (!settings::get($this->_module->id, '')) {
         database::query(
           "insert into ". DB_TABLE_SETTINGS ."
           (`key`, date_created)
@@ -63,7 +63,7 @@
       database::query(
         "update ". DB_TABLE_SETTINGS ."
         set value = '". database::input(json_encode($settings)) ."'
-        where `key` = '". database::input($this->type.'_module_'. $this->_module->id) ."'
+        where `key` = '". database::input($this->_module->id) ."'
         limit 1;"
       );
       
