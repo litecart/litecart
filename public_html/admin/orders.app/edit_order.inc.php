@@ -572,8 +572,8 @@
       <td style="text-align: right;">&nbsp;</td>
       <td style="text-align: right;"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'data-size="small" readonly="readonly"'); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: right;"'); ?> :</td>
-      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="width: 75px; text-align: right;"'); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled="disabled"', language::translate('title_calculate', 'Calculate')); ?></td>
-      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="width: 75px; text-align: right;"'); ?></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="text-align: right;"'); ?><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled="disabled"', language::translate('title_calculate', 'Calculate')); ?></td>
+      <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: right;"'); ?></td>
       <td>&nbsp;</td>
     </tr>
 <?php

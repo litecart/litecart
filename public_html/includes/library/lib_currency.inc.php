@@ -147,10 +147,11 @@
     
     public static function format($value, $auto_decimals=true, $raw=false, $currency_code=null, $currency_value=null) {
       
-      if (empty($currency_code)) {
-        $currency_code = self::$selected['code'];
-        if (empty($currency_value)) $currency_value = (float)self::$currencies[$currency_code]['value'];
-      }
+      if ($raw) return self::format_raw($value, $currency_code, $currency_value);
+      
+      if (empty($currency_code)) $currency_code = self::$selected['code'];
+      
+      if (empty($currency_value) && isset(self::$currencies[$currency_code])) $currency_value = (float)self::$currencies[$currency_code]['value'];
       
       if (!isset(currency::$currencies[$currency_code]) && !empty($currency_value)) {
         return number_format($value * $currency_value, 2, '.', ',') .' '. $currency_code;
