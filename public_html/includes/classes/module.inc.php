@@ -47,7 +47,7 @@
       // Get settings from database
         $settings = array();
         if (settings::get($module_id)) {
-          $settings = json_decode(settings::get($module_id), true);
+          $settings = unserialize(settings::get($module_id));
         }
         
       // Set settings to module

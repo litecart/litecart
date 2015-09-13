@@ -4,7 +4,7 @@
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
   
 // Get settings from database
-  $settings = json_decode(settings::get('store_template_catalog_settings'), true);
+  $settings = unserialize(settings::get('store_template_catalog_settings'));
   
 // Build template settings
   foreach (array_keys($template_config) as $i) {

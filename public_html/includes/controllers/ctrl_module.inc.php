@@ -22,7 +22,7 @@
       $this->settings = array();
       
     // Get settings from database
-      $settings = json_decode(settings::get($module_id, ''), true);
+      $settings = unserialize(settings::get($module_id, ''));
       
     // Set settings to module
       foreach ($this->_module->settings() as $setting) {
@@ -62,7 +62,7 @@
       
       database::query(
         "update ". DB_TABLE_SETTINGS ."
-        set value = '". database::input(json_encode($settings)) ."'
+        set value = '". database::input(serialize($settings)) ."'
         where `key` = '". database::input($this->_module->id) ."'
         limit 1;"
       );

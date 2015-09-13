@@ -16,10 +16,9 @@
   );
   while($row = $database->fetch($query)) {
     $new_key = preg_replace('#^((customer|job|shipping|payment|order_action|order_success|order_total)_module_)#', '', $row['key']);
-    $new_value = json_encode(unserialize($row['value']));
     $database->query(
       "update  ". DB_TABLE_SETTINGS ."
-      set `key` = '". $database->input($new_key) ."', `value` = '". $database->input($new_value) ."'
+      set `key` = '". $database->input($new_key) ."'
       where `key` = '". $database->input($row['key']) ."'
       limit 1;"
     );
