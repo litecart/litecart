@@ -55,7 +55,7 @@
           if (isset($row[$field])) $customer->data[$field] = $row[$field];
         }
         
-        if (empty($customer->data['id'])) $customer->set_password(md5(serialize($row)));
+        if (empty($row['password'])) $customer->set_password($row['password']);
         
         $customer->save();
       }
