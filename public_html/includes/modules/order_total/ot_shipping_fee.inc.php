@@ -14,12 +14,11 @@
       $this->name = language::translate(__CLASS__.':title_shipping_fee', 'Shipping Fee');
     }
     
-    public function process() {
-      global $shipping, $order;
+    public function process($order) {
       
       if (empty($this->settings['status'])) return;
       
-      if (empty($shipping->data['selected']['cost'])) return;
+      if (empty($GLOBALS['shipping']->data['selected']['cost'])) return;
       
       $output = array();
       

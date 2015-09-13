@@ -13,8 +13,9 @@
       $this->name = language::translate(__CLASS__.':title_subtotal', 'Subtotal');
     }
     
-    public function process() {
-      global $order;
+    public function process($order) {
+      
+      if (empty($this->settings['status'])) return;
       
       $output = array();
       $value = 0;
@@ -41,10 +42,10 @@
       return array(
         array(
           'key' => 'status',
-          'default_value' => 'Enabled',
+          'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
-          'function' => 'radio("Enabled")',
+          'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'priority',

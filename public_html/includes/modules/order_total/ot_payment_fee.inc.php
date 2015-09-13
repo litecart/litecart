@@ -14,12 +14,11 @@
       $this->name = language::translate(__CLASS__.':title_payment_fee', 'Payment Fee');
     }
     
-    public function process() {
-      global $payment, $order;
+    public function process($order) {
       
       if (empty($this->settings['status'])) return;
       
-      if (empty($payment->data['selected']['cost'])) return;
+      if (empty($GLOBALS['payment']->data['selected']['cost'])) return;
       
       $output = array();
       
