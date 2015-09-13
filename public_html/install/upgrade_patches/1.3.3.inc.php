@@ -1,11 +1,10 @@
 <?php
 
-// Convert module settings to JSON
+// Rename module settings keys
   $query = $database->query(
     "select * from ". DB_TABLE_SETTINGS ."
     where (
-      `key` = 'store_template_catalog_settings'
-      or `key` like 'customer_module_%'
+      `key` like 'customer_module_%'
       or `key` like 'job_module_%'
       or `key` like 'shipping_module_%'
       or `key` like 'payment_module_%'
