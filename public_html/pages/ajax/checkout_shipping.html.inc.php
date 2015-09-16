@@ -41,10 +41,12 @@
     $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
   }
   
+  /*
   if (count($options) == 1
   && count($options[key($options)]['options']) == 1
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
   && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
+  */
   
   $box_checkout_shipping = new view();
   

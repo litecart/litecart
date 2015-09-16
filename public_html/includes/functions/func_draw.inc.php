@@ -27,6 +27,7 @@
     list($width, $height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
     
     $list_item->snippets = array(
+      'category_id' => $category['id'],
       'name' => $category['name'],
       'link' => document::ilink('category', array('category_id' => $category['id'])),
       'image' => array(

@@ -23,9 +23,9 @@
       $output = array();
       
       $output[] = array(
-        'title' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
-        'value' => $payment->data['selected']['cost'],
-        'tax' => tax::get_tax($payment->data['selected']['cost'], $payment->data['selected']['tax_class_id'], $order->data['customer']),
+        'title' => $GLOBALS['payment']->data['selected']['title'] .' ('. $GLOBALS['payment']->data['selected']['name'] .')',
+        'value' => $GLOBALS['payment']->data['selected']['cost'],
+        'tax' => tax::get_tax($GLOBALS['payment']->data['selected']['cost'], $GLOBALS['payment']->data['selected']['tax_class_id'], $order->data['customer']),
         'calculate' => true,
       );
       

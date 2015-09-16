@@ -11,6 +11,7 @@
     }
     
     public static function initiate() {
+      
       if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
         self::reset();
       }

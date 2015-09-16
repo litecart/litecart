@@ -23,13 +23,13 @@
       $output = array();
       
       $output[] = array(
-        'title' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
-        'value' => $shipping->data['selected']['cost'],
-        'tax' => tax::get_tax($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], $order->data['customer']),
+        'title' => $GLOBALS['shipping']->data['selected']['title'] .' ('. $GLOBALS['shipping']->data['selected']['name'] .')',
+        'value' => $GLOBALS['shipping']->data['selected']['cost'],
+        'tax' => tax::get_tax($GLOBALS['shipping']->data['selected']['cost'], $GLOBALS['shipping']->data['selected']['tax_class_id'], $order->data['customer']),
         'calculate' => true,
       );
       
-      if (!empty($this->settings['free_shipping_amount'])) {
+      if (!empty($this->settings['free_shipping_amount']) && $this->settings['free_shipping_amount'] > 0) {
       
       // Calculate cart total
         $subtotal = 0;
@@ -41,9 +41,9 @@
         if ($subtotal >= $this->settings['free_shipping_amount']) {
           $output[] = array(
             'title' => language::translate('title_free_shipping', 'Free Shipping'),
-            'value' => -$shipping->data['selected']['cost'],
-            'tax' => -tax::get_tax($shipping->data['selected']['cost'], $shipping->data['selected']['tax_class_id'], $order->data['customer']),
-            'tax_class_id' => $shipping->data['selected']['tax_class_id'],
+            'value' => -$GLOBALS['shipping']->data['selected']['cost'],
+            'tax' => -tax::get_tax($GLOBALS['shipping']->data['selected']['cost'], $GLOBALS['shipping']->data['selected']['tax_class_id'], $order->data['customer']),
+            'tax_class_id' => $GLOBALS['shipping']->data['selected']['tax_class_id'],
             'calculate' => true,
           );
         }
