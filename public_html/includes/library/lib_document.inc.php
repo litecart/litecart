@@ -41,6 +41,9 @@
                                              . '</script>';
       
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
+    }
+    
+    public static function before_capture() {
       
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -52,9 +55,6 @@
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
     }
-    
-    //public static function before_capture() {
-    //}
     
     public static function after_capture() {
     
