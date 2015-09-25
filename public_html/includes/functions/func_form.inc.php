@@ -393,7 +393,7 @@
     if ($value === true) $value = form_reinsert_value($name);
     
     document::$snippets['head_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.js"></script>' . PHP_EOL
+                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL
                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
@@ -402,6 +402,7 @@
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" data-size="auto" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
+         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
          . '    btnsDef: {' . PHP_EOL
          . '      image: {' . PHP_EOL
          . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
