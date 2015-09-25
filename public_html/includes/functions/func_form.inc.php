@@ -392,21 +392,25 @@
     
     if ($value === true) $value = form_reinsert_value($name);
     
-    document::$snippets['head_tags']['sceditor'] = '<script src="'. WS_DIR_EXT .'sceditor/jquery.sceditor.xhtml.min.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'sceditor/plugins/format.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'sceditor/languages/'. language::$selected['code'] .'.js"></script>' . PHP_EOL
-                                                 . '<link href="'. WS_DIR_EXT .'sceditor/themes/square.min.css" rel="stylesheet" />' . PHP_EOL;
+    document::$snippets['head_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
+                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.js"></script>' . PHP_EOL
+                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
+                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
+                                                 . '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
+                                                 . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />' . PHP_EOL;
     
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" data-size="auto" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
-         . '  $("textarea[name=\''. $name .'\']").sceditor({' . PHP_EOL
-         . '    "plugins": "xhtml,format",' . PHP_EOL
-         . '    "width": "100%",' . PHP_EOL
-         . '    "resizeEnabled": true,' . PHP_EOL
-         . '    "style": "{snippet:template_path}styles/loader.css",' . PHP_EOL
-         . '    "locale": "'. htmlspecialchars(language::$selected['code']) .'",' . PHP_EOL
-         . '    "emoticons": false,' . PHP_EOL
-         . '    "toolbar": "format|font,size,bold,italic,underline,strike,subscript,superscript|left,center,right,justify|color,removeformat|bulletlist,orderedlist,table|code,quote|horizontalrule,image,email,link,unlink|youtube,date,time|ltr,rtl|print,maximize,source"' . PHP_EOL
+         . '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
+         . '    btnsDef: {' . PHP_EOL
+         . '      image: {' . PHP_EOL
+         . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
+         . '       ico: "insertImage"' . PHP_EOL
+         . '      }' . PHP_EOL
+         . '    },' . PHP_EOL
+         . '    semantic: true,' . PHP_EOL
+         . '    removeformatPasted: true,' . PHP_EOL
+         . '    btns: ["viewHTML", "|", "formatting", "|", "btnGrp-design", "|", "link", "|", "image", "|", "btnGrp-justify", "|", "btnGrp-lists", "|", "foreColor", "backColor", "|", "horizontalRule"],' . PHP_EOL
          . '  });' . PHP_EOL
          . '</script>' . PHP_EOL;
   }
