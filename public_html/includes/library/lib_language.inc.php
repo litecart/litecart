@@ -165,7 +165,7 @@
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
         $countries_query = database::query(
           "select * from ". DB_TABLE_COUNTRIES ."
-          where iso_code_2 = '". database::input(strtoupper($matches[0])) ."'
+          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
         );
         $country = database::fetch($countries_query);
