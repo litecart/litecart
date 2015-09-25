@@ -6,13 +6,14 @@
     
     public static function construct() {
       
-      @ini_set('session.name', PLATFORM_NAME);
+      @ini_set('session.name', 'LCSESSID');
       @ini_set('session.gc_maxlifetime', 65535);
       @ini_set('session.use_cookies', 1);
       @ini_set('session.use_only_cookies', 1);
       @ini_set('session.use_trans_sid', 0);
       @ini_set('session.cookie_lifetime', 0);
       @ini_set('session.cookie_path', WS_DIR_HTTP_HOME);
+      
       register_shutdown_function(array('session', 'close'));
       
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);

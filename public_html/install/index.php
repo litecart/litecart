@@ -331,15 +331,19 @@
     <ul>
 <?php
   $paths = array(
+    //'admin/discussions.widget/discussions.cache',
+    //'admin/addons.widget/addons.cache',
     'admin/.htaccess',
     'admin/.htpasswd',
     'cache/',
     'data/',
     'images/',
     'includes/config.inc.php',
+    'vqmod/',
     'vqmod/xml/',
     'vqmod/vqcache/',
-    'vqmod/',
+    'vqmod/checked.cache',
+    'vqmod/mods.cache',
     '.htaccess',
   );
   foreach($paths as $path) {

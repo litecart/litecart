@@ -2,21 +2,22 @@
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '1.3.3');
   
-// Start redirecting output to the output buffer
-  ob_start();
-  
-// Get config
   if (!file_exists(realpath(dirname(__FILE__)) . '/config.inc.php')) {
     header('Location: ./install/');
     exit;
   }
+  
+// Start redirecting output to the output buffer
+  ob_start();
+  
+// Get config
   require_once realpath(dirname(__FILE__)) . '/config.inc.php';
+  
+// Compatibility
+  require_once FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php';
   
 // Virtual Modifications System
   require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'vmod.inc.php';
-  
-// Compatibility
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php');
   
 // Autoloader
   spl_autoload_register(function ($class) {

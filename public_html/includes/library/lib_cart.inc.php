@@ -5,7 +5,6 @@
     public static $data = array();
     public static $items = array();
     public static $total = array();
-    public static $checksum = null;
     
     //public static function construct() {
     //}
@@ -87,7 +86,6 @@
       self::$items = array();
       
       self::_calculate_total();
-      self::checksum();
     }
     
     public static function clear() {
@@ -187,6 +185,7 @@
         'dim_y' => $product->dim_y,
         'dim_z' => $product->dim_z,
         'dim_class' => $product->dim_class,
+        'error' => '',
       );
       
       if (empty($item_key)) {
@@ -327,7 +326,6 @@
         }
         
         self::_calculate_total();
-        self::checksum();
       }
       
       if (!$silent) {
@@ -363,7 +361,6 @@
           }
         }
       }
-      
       if ($quantity <= 0) {
         self::remove($item_key);
         return;
@@ -385,7 +382,6 @@
       }
       
       self::_calculate_total();
-      self::checksum();
     }
     
     public static function remove($item_key) {
@@ -402,7 +398,6 @@
       );
       
       self::_calculate_total();
-      self::checksum();
       
       header('Location: '. document::ilink());
       exit;
@@ -433,10 +428,6 @@
         'items' => $total_items,
         'weight' => $total_weight,
       );
-    }
-    
-    public static function checksum() {
-      self::$data['checksum'] = sha1(serialize(array_merge(self::$items, language::$selected)));
     }
   }
   

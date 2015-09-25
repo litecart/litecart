@@ -171,7 +171,7 @@
       if (empty($currency_code)) $currency_code = self::$selected['code'];
       if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
       
-      if ($currency_value === null) $currency_value = currency::$currencies[$currency_code]['value'];
+      if (empty($currency_value)) $currency_value = currency::$currencies[$currency_code]['value'];
       
       return number_format($value * $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
     }

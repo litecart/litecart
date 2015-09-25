@@ -62,7 +62,7 @@
     <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
     <th style="text-align: center;">&nbsp;</th>
     <th><?php echo language::translate('title_version', 'Version'); ?></th>
-    <th><?php echo language::translate('title_developed_by', 'Developed By'); ?></th>
+    <th><?php echo language::translate('title_developer', 'Developer'); ?></th>
     <th><?php echo language::translate('title_id', 'ID'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_priority', 'Priority'); ?></th>
     <th>&nbsp;</th>
