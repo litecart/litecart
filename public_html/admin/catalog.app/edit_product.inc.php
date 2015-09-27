@@ -442,17 +442,17 @@ foreach (array_keys(language::$languages) as $language_code) {
       <div id="tab-data">
         <table>
           <tr>
-            <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank">?</a>)<br />
+            <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
               <?php echo functions::form_draw_text_field('sku', true); ?>
             </td>
           </tr>
           <tr>
-            <td><strong><?php echo language::translate('title_gtin', 'GTIN'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank">?</a>)<br />
+            <td><strong><?php echo language::translate('title_gtin', 'GTIN'); ?></strong> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
               <?php echo functions::form_draw_text_field('gtin', true); ?>
             </td>
           </tr>
           <tr>
-            <td><strong><?php echo language::translate('title_taric', 'TARIC'); ?></strong> (<a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank">?</a>)<br />
+            <td><strong><?php echo language::translate('title_taric', 'TARIC'); ?></strong> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
               <?php echo functions::form_draw_text_field('taric', true); ?>
             </td>
           </tr>
@@ -462,12 +462,12 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
-            <td><strong><?php echo language::translate('title_dimensions', 'Dimensions'); ?></strong><br />
-              <?php echo functions::form_draw_decimal_field('dim_x', true); ?> x <?php echo functions::form_draw_decimal_field('dim_y', true); ?> x <?php echo functions::form_draw_decimal_field('dim_z', true); ?> <?php echo functions::form_draw_length_classes_list('dim_class', true); ?> (<?php echo language::translate('description_width_height_length', 'width x height x length'); ?>)
+            <td><strong><?php echo language::translate('title_dimensions', 'Dimensions'); ?></strong> (<?php echo language::translate('title_width_height_length', 'Width x Height x Length'); ?>)<br />
+              <span class="input-wrapper"><?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> x <?php echo functions::form_draw_decimal_field('dim_y', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> x <?php echo functions::form_draw_decimal_field('dim_z', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?></span>  <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
             </td>
           </tr>
           <tr>
-            <td><strong><?php echo language::translate('title_attributes', 'Attributes'); ?></strong><br />
+            <td><strong><?php echo language::translate('title_attributes', 'Attributes'); ?></strong> (<a class="attributes-hint" href="#">?</a>)<br />
 <?php
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
@@ -475,6 +475,11 @@ foreach (array_keys(language::$languages) as $language_code) {
   echo functions::form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'data-size="large" style="height: 120px;"');  $use_br = true;
 }
 ?>
+              <script>
+                $('a.attributes-hint').click(function(){
+                  alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\nTitle2\nProperty3: Value3...');
+                });
+              </script>
             </td>
           </tr>
         </table>

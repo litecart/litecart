@@ -1,7 +1,12 @@
 <div id="box-product" class="box" itemscope itemtype="http://www.schema.org/Product">
   <div style="margin-bottom: 20px;">
     <h1 class="title" style="margin-bottom: 0px;" itemprop="name"><?php echo $name; ?></h1>
-    <?php if ($sku) echo '<div class="sku">'. $sku .'</div>'; ?>
+    <?php if ($sku || $gtin) { ?>
+    <div class="codes">
+      <?php if ($sku) echo '<span class="sku" itemprop="sku">'. $sku .'</span>'; ?>
+      <?php if ($gtin) echo '<span class="gtin" itemprop="gtin14">'. $gtin .'</span>'; ?>
+    </div>
+    <?php } ?>
   </div>
   
   <div class="content">
@@ -22,7 +27,7 @@
     
     <div class="information">
       <?php if ($manufacturer_name) { ?>
-      <div class="manufacturer" style="font-size: 1.5em; margin-bottom: 10px;" itemscope itemtype="http://www.schema.org/Organisation">
+      <div class="manufacturer" style="font-size: 1.5em; margin-bottom: 10px;" itemscope itemtype="http://www.schema.org/Organization">
       <?php if ($manufacturer_image) { ?>
         <a href="<?php echo htmlspecialchars($manufacturer_url); ?>"><img src="<?php echo htmlspecialchars($manufacturer_image); ?>" alt="<?php echo htmlspecialchars($manufacturer_name); ?>" title="<?php echo htmlspecialchars($manufacturer_name); ?>" itemprop="image" /></a>
       <?php } else { ?>

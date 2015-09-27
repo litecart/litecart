@@ -59,7 +59,7 @@
 </style>
 
 <div id="slider-wrapper" class="shadow">
-  <ul id="slider">
+  <ul id="slider" style="listing-style: none; padding: 0;">
 <?php
   foreach($slides as $slide) {
     if ($slide['link']) {

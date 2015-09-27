@@ -137,7 +137,7 @@
     <tr class="header">
       <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
       <th style="vertical-align: text-top;"><?php echo language::translate('title_code', 'Code'); ?></th>
-      <th style="vertical-align: text-top;"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th style="vertical-align: text-top; width: 100%;"><?php echo language::translate('title_name', 'Name'); ?></th>
       <th style="text-align: center; vertical-align: text-top;">&nbsp;</th>
     </tr>
   <?php
@@ -156,7 +156,7 @@
   ?>
     <tr>
       <td>&nbsp;</td>
-      <td><?php echo functions::form_draw_text_field('zone[code]', ''); ?></td>
+      <td><?php echo functions::form_draw_text_field('zone[code]', '', 'data-size="small"'); ?></td>
       <td><?php echo functions::form_draw_text_field('zone[name]', ''); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_button('add_zone', language::translate('title_add', 'Add'), 'button'); ?></td>
     </tr>

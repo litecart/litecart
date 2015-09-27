@@ -1,3 +1,9 @@
+#box-product .codes span:before {
+  content: '\b7\a0';
+}
+#box-product .codes span:first-child:before {
+  content: none;
+}
 #box-product .images-wrapper {
   float: left;
   display: inline-block;
