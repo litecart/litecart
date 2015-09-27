@@ -25,6 +25,10 @@
     ),
     'pagination' => null,
   );
+  
+  if (empty($_GET['query'])) {
+    $_page->snippets['title'] = language::translate('title_all_products', 'All Products');
+  }
 
   $manufacturers_info_query = database::query(
     "select m.id
