@@ -50,14 +50,14 @@
       
       if (!empty($_POST['add_cart_product'])) {
         
-        $options = $_POST['options'];
+        $options = !empty($_POST['options']) ? $_POST['options'] : array();
         if (!empty($options)) {
           foreach (array_keys($options) as $key) {
             if (is_array($options[$key])) $options[$key] = implode(', ', $options[$key]);
           }
         }
         
-        self::add_product($_POST['product_id'], !empty($options) ? $options : null, (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        self::add_product($_POST['product_id'], $options, (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['remove_cart_item'])) {
