@@ -76,12 +76,12 @@
     </tr>
     <tr>
         <td><strong><?php echo language::translate('title_code', 'Code'); ?></strong> (ISO 3166-1 alpha-2)<br />
-          <?php echo functions::form_draw_text_field('iso_code_2', true, 'data-size="tiny" required="required" pattern="[A-Z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
+          <?php echo functions::form_draw_text_field('iso_code_2', true, 'data-size="tiny" required="required" pattern="[A-Z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
       </td>
     </tr>
     <tr>
-        <td><strong><?php echo language::translate('title_code', 'Code'); ?></strong> (ISO 3166-1 alpha-3)<br />
-          <?php echo functions::form_draw_text_field('iso_code_3', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
+        <td><strong><?php echo language::translate('title_code', 'Code'); ?></strong> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+          <?php echo functions::form_draw_text_field('iso_code_3', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?>
       </td>
     </tr>
     <tr>
@@ -95,11 +95,11 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?></strong> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
         <?php echo functions::form_draw_text_field('tax_id_format', true); ?></td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_address_format', 'Address Format'); ?></strong> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo language::translate('title_reference', 'Reference')?></a><br />
+      <td><strong><?php echo language::translate('title_address_format', 'Address Format'); ?></strong> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
         <?php echo functions::form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
         <script>
           $("#address-format-hint").click(function() {
@@ -116,8 +116,9 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?></strong> (<a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank">?</a>)<br />
-        <?php echo functions::form_draw_text_field('postcode_format', true); ?></td>
+      <td><strong><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?></strong> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+        <?php echo functions::form_draw_text_field('postcode_format', true); ?>
+      </td>
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_currency_code', 'Currency Code'); ?></strong><br />
@@ -125,7 +126,7 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?></strong> <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
         <?php echo functions::form_draw_text_field('phone_code', true, 'data-size="tiny"'); ?>
       </td>
     </tr>

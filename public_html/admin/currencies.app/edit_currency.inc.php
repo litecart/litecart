@@ -116,13 +116,14 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217)</strong><br />
-        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?>
+      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217)</strong> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?>
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217)</strong><br />
-      <?php echo functions::form_draw_text_field('number', true, 'data-size="tiny" pattern="[0-9]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?> </a></td>
+      <td><strong><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217)</strong> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+        <?php echo functions::form_draw_text_field('number', true, 'data-size="tiny" pattern="[0-9]{3}"'); ?>
+      </td>
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_value', 'Value'); ?></strong><br />

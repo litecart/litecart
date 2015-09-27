@@ -122,13 +122,13 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1)</strong><br />
-        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a>
+      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1)</strong> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?>
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2)</strong><br />
-        <?php echo functions::form_draw_text_field('code2', true, 'data-size="tiny" required="required" pattern="[a-z]{3}"'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo language::translate('title_reference', 'Reference'); ?></a>
+      <td><strong><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2)</strong> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+        <?php echo functions::form_draw_text_field('code2', true, 'data-size="tiny" required="required" pattern="[a-z]{3}"'); ?>
       </td>
     </tr>
     <tr>
@@ -147,7 +147,7 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_date_format', 'Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_date_format', 'Date Format'); ?></strong> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
     array(strftime('%e %b %Y'), '%e %b %Y'),
@@ -158,7 +158,7 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_time_format', 'Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_time_format', 'Time Format'); ?></strong> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
     array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
@@ -171,7 +171,7 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?></strong> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
     array('Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
@@ -190,7 +190,7 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?></strong> (<a href="http://php.net/manual/en/function.date.php" target="_blank">?</a>)<br />
+      <td><strong><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?></strong> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
     array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
