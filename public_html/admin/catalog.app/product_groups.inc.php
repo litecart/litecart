@@ -17,13 +17,8 @@
     order by pgi.name asc;"
   );
   while ($product_group = database::fetch($product_groups_query)) {
-    if (!isset($rowclass) || $rowclass == 'even') {
-      $rowclass = 'odd';
-    } else {
-      $rowclass = 'even';
-    }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('product_groups['. $product_group['id'] .']', $product_group['id']); ?></td>
     <td style="text-align: center;"><?php echo $product_group['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_product_group', 'product_group_id' =>$product_group['id']), array('app')); ?>"><?php echo $product_group['name']; ?></a></td>

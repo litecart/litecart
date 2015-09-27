@@ -19,14 +19,8 @@
   if (database::num_rows($tax_classses_query) > 0) {
     
     while ($tax_class = database::fetch($tax_classses_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('tax_classes['. $tax_class['id'] .']', $tax_class['id']); ?></td>
     <td><?php echo $tax_class['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>"><?php echo $tax_class['name']; ?></a></td>

@@ -37,16 +37,10 @@
     
     if (database::num_rows($manufacturers_query) > 0) {
       while ($manufacturer = database::fetch($manufacturers_query)) {
-        if (!isset($rowclass) || $rowclass == 'even') {
-          $rowclass = 'odd';
-        } else {
-          $rowclass = 'even';
-        }
-        
         $num_active = database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where status and manufacturer_id = ". (int)$manufacturer['id'] .";"));
         $num_products = database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where manufacturer_id = ". (int)$manufacturer['id'] .";"));
 ?>
-    <tr class="<?php echo $rowclass . ($manufacturer['status'] ? false : ' semi-transparent'); ?>">
+    <tr class="row<?php echo !$manufacturer['status'] ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($manufacturer['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('manufacturers['. $manufacturer['id'] .']', $manufacturer['id']); ?></td>
       <td><img src="<?php echo (($manufacturer['image']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 16, 16, 'FIT_USE_WHITESPACING') : WS_DIR_IMAGES .'no_image.png'); ?>" width="16" height="16" align="absbottom" /> <a href="<?php echo document::href_link('', array('doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']), array('app')); ?>"><?php echo $manufacturer['name']; ?></a></td>
       <td style="text-align: right;"><?php echo (int)$num_active .' ('. (int)$num_products .')'; ?></td>

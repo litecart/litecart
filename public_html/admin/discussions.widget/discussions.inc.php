@@ -43,11 +43,6 @@
       echo '<td style="vertical-align: top;">' . PHP_EOL
          . '  <table style="width: 100%;">' . PHP_EOL;
       foreach ($column as $item) {
-        if (!isset($rowclass) || $rowclass == 'even') {
-          $rowclass = 'odd';
-        } else {
-          $rowclass = 'even';
-        }
 ?>
         <tr>
           <td><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>

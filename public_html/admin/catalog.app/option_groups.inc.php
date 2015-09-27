@@ -17,13 +17,8 @@
     order by pcgi.name asc;"
   );
   while ($option_group = database::fetch($option_groups_query)) {
-    if (!isset($rowclass) || $rowclass == 'even') {
-      $rowclass = 'odd';
-    } else {
-      $rowclass = 'even';
-    }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('configuration_groups['. $option_group['id'] .']', $option_group['id']); ?></td>
     <td style="text-align: center;"><?php echo $option_group['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), array('app')); ?>"><?php echo $option_group['name']; ?></a></td>

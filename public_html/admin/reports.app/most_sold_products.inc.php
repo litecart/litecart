@@ -63,14 +63,8 @@
     
     $page_items = 0;
     while ($order_item = database::fetch($order_items_query)) {
-      
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo $order_item['name']; ?></td>
     <td style="text-align: center;"><?php echo $order_item['quantity']; ?></td>
   </tr>

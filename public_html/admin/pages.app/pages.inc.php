@@ -27,14 +27,8 @@
     
     $page_items = 0;
     while ($page = database::fetch($pages_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass . ($page['status'] ? false : ' semi-transparent'); ?>">
+  <tr class="row<?php echo !$page['status'] ? ' semi-transparent' : null; ?>">
     <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('delivery_statuses['. $page['id'] .']', $page['id']); ?></td>
     <td><?php echo $page['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>"><?php echo $page['title']; ?></a></td>

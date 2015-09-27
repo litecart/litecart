@@ -16,13 +16,8 @@
     
     if (database::num_rows($suppliers_query) > 0) {
       while ($supplier = database::fetch($suppliers_query)) {
-        if (!isset($rowclass) || $rowclass == 'even') {
-          $rowclass = 'odd';
-        } else {
-          $rowclass = 'even';
-        }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']); ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_supplier', 'supplier_id' => $supplier['id']), array('app')); ?>"><?php echo $supplier['name']; ?></a></td>
     <td><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier', 'supplier_id' => $supplier['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>

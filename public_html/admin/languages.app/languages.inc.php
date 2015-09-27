@@ -43,14 +43,8 @@
     
     $page_items = 0;
     while ($language = database::fetch($languages_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-    <tr class="<?php echo $rowclass . ($language['status'] ? false : ' semi-transparent'); ?>">
+    <tr class="row<?php echo !$language['status'] ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($language['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
       <td><?php echo $language['id']; ?></td>
       <td style="text-align: center;"><?php echo $language['code']; ?></td>

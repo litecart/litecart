@@ -72,13 +72,8 @@
   if (is_array($modules->modules) && count($modules->modules)) {
     foreach ($modules->modules as $module) {
       $num_module_rows++;
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass . (!empty($module->status) ? false : ' semi-transparent'); ?>">
+  <tr class="row<?php echo empty($module->status) ? ' semi-transparent' : null; ?>">
     <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
     <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
@@ -102,14 +97,8 @@
       $num_module_rows++;
       require_once vmod::check($file);
       $module = new $module_id;
-      
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?> semi-transparent">
+  <tr class="row semi-transparent">
     <td></td>
     <td><?php echo $module->name; ?></td>
     <td style="text-align: center;"></td>

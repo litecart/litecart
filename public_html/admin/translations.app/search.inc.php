@@ -138,16 +138,10 @@ ul.filter li {
     
     $page_items = 0;
     while ($row=database::fetch($translations_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
       
       $row['pages'] = rtrim($row['pages'], ',');
 ?>
-    <tr class="<?php echo $rowclass; ?>">
+    <tr class="row">
       <td><?php echo $row['code']; ?><br />
         <small style="color: #999;"><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
         <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>

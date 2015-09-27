@@ -230,14 +230,8 @@
     if (database::num_rows($products_query) > 0) {
       while ($product = database::fetch($products_query)) {
         $num_product_rows++;
-        
-        if (!isset($rowclass) || $rowclass == 'even') {
-          $rowclass = 'odd';
-        } else {
-          $rowclass = 'even';
-        }
 ?>
-    <tr class="<?php echo $rowclass . (($product['status']) ? false : ' semi-transparent'); ?>">
+    <tr class="row<?php echo $product['status'] ? false : ' semi-transparent'; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
       <td><?php echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
       <td style="text-align: right;"></td>
@@ -261,16 +255,13 @@
       $category_trail = array();
     }
     
-    $rowclass = 'odd';
-    
     function admin_catalog_category_tree($category_id=0, $depth=1) {
       global $category_trail, $rowclass, $num_category_rows;
       
       $output = '';
       
       if (empty($category_id)) {
-        $rowclass = 'odd';
-        $output .= '<tr class="'. $rowclass .'">' . PHP_EOL
+        $output .= '<tr class="row">' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', array('category_id' => '0'), true) .'">'. language::translate('title_root', '[Root]') .'</a></strong></td>' . PHP_EOL
                  . '  <td>&nbsp;</td>' . PHP_EOL
@@ -290,12 +281,7 @@
       while ($category = database::fetch($categories_query)) {
         $num_category_rows++;
         
-        if (!isset($rowclass) || $rowclass == 'even') {
-          $rowclass = 'odd';
-        } else {
-          $rowclass = 'even';
-        }
-        $output .= '<tr class="'. $rowclass . (($category['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
+        $output .= '<tr class="row'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#99cc66' : '#ff6666') .';"') .' '. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL;
         if (@in_array($category['id'], $category_trail)) {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
@@ -318,13 +304,8 @@
             }
             
           } else {
-          
-            if (!isset($rowclass) || $rowclass == 'even') {
-              $rowclass = 'odd';
-            } else {
-              $rowclass = 'even';
-            }
-            $output .= '<tr class="'. $rowclass .'">' . PHP_EOL
+            
+            $output .= '<tr class="row">' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td><em style="margin-left: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
@@ -345,7 +326,7 @@
     }
     
     function admin_catalog_category_products($category_id=0, $depth=1) {
-      global $rowclass, $num_product_rows;
+      global $num_product_rows;
       
       $output = '';
       
@@ -366,13 +347,7 @@
       while ($product=database::fetch($products_query)) {
         $num_product_rows++;
         
-        if (!isset($rowclass) || $rowclass == 'even') {
-          $rowclass = 'odd';
-        } else {
-          $rowclass = 'even';
-        }
-        
-        $output .= '<tr class="'. $rowclass . (($product['status']) ? false : ' semi-transparent') .'">' . PHP_EOL
+        $output .= '<tr class="row'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"') .' '. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL;
         
         if ($display_images) {

@@ -45,15 +45,8 @@
     
     $page_items = 0;
     while ($slide = database::fetch($slides_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
-    
 ?>
-    <tr class="<?php echo $rowclass . ($slide['status'] ? false : ' semi-transparent'); ?>">
+    <tr class="row<?php echo !$slide['status'] ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
       <td><?php echo $slide['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>

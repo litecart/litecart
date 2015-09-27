@@ -36,16 +36,11 @@
   if (database::num_rows($orders_query) > 0) {
     
     while ($order = database::fetch($orders_query)) {
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
       
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
-    <tr class="<?php echo $rowclass; ?>"<?php echo ($order['order_status_id'] == 0) ? ' style="color: #999;"' : false; ?>>
+    <tr class="row<?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
       <td><?php echo $order['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>

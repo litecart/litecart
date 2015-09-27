@@ -33,14 +33,8 @@
     
     $page_items = 0;
     while ($tax_rate = database::fetch($tax_rates_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('tax_rates['. $tax_rate['id'] .']', $tax_rate['id']); ?></td>
     <td><?php echo $tax_rate['id']; ?></td>
     <td><?php echo $tax_rate['tax_class']; ?></td>

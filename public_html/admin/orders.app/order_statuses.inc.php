@@ -31,16 +31,11 @@
     
     $page_items = 0;
     while ($order_status = database::fetch($orders_status_query)) {
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
       
       if (empty($order_status['icon'])) $order_status['icon'] = 'fa-circle-thin';
       if (empty($order_status['color'])) $order_status['color'] = '#cccccc';
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
     <td><?php echo $order_status['id']; ?></td>
     <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>

@@ -26,14 +26,8 @@
     
     $page_items = 0;
     while ($delivery_status = database::fetch($delivery_status_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $delivery_status['id'] .']', $delivery_status['id']); ?></td>
     <td><?php echo $delivery_status['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']), true); ?>"><?php echo $delivery_status['name']; ?></a></td>

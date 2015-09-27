@@ -84,14 +84,8 @@
     );
     
     $orders = database::fetch($orders_query);
-    
-    if (!isset($rowclass) || $rowclass == 'even') {
-      $rowclass = 'odd';
-    } else {
-      $rowclass = 'even';
-    }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo ucfirst(strftime('%B, %Y', $timestamp)); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>

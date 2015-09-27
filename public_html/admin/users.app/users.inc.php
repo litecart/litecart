@@ -41,13 +41,8 @@
   
     $page_items = 0;
     while ($user = database::fetch($users_query)) {
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-    <tr class="<?php echo $rowclass; ?>"<?php echo empty($user['status']) ? ' style="color: #999;"' : ''; ?>>
+    <tr class="row<?php echo !$user['status'] ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
       <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>

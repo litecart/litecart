@@ -77,14 +77,8 @@
   if (database::num_rows($currencies_query) > 0) {
     
     while ($currency = database::fetch($currencies_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-    <tr class="<?php echo $rowclass . ($currency['status'] ? false : ' semi-transparent'); ?>">
+    <tr class="row<?php echo !$currency['status'] ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($currency['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
       <td><?php echo $currency['id']; ?></td>
       <td><?php echo $currency['code']; ?></td>

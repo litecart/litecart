@@ -59,15 +59,9 @@
     foreach ($vqmods as $vqmod) {
     
       $xml = simplexml_load_file($vqmod);
-    $enabled = preg_match('/\.xml$/', $vqmod) ? true : false;
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
+      $enabled = preg_match('/\.xml$/', $vqmod) ? true : false;
 ?>
-    <tr class="<?php echo $rowclass . ($enabled ? '' : ' semi-transparent'); ?>">
+    <tr class="row<?php echo !$enabled ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
       <td><?php echo (string)$xml->id; ?></td>
       <td><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>

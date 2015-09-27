@@ -27,14 +27,8 @@
     
     $page_items = 0;
     while ($quantity_unit = database::fetch($quantity_units_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('quantity_units['. $quantity_unit['id'] .']', $quantity_unit['id']); ?></td>
     <td><?php echo $quantity_unit['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']), true); ?>"><?php echo $quantity_unit['name']; ?></a></td>

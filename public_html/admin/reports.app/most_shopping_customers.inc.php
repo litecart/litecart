@@ -62,14 +62,8 @@
     
     $page_items = 0;
     while ($customer = database::fetch($customers_query)) {
-      
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
     <td><?php echo $customer['email']; ?></td>
     <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, false, settings::get('store_currency_code')); ?></td>

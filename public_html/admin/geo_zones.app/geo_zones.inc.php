@@ -26,14 +26,8 @@
     
     $page_items = 0;
     while ($geo_zone = database::fetch($geo_zones_query)) {
-    
-      if (!isset($rowclass) || $rowclass == 'even') {
-        $rowclass = 'odd';
-      } else {
-        $rowclass = 'even';
-      }
 ?>
-  <tr class="<?php echo $rowclass; ?>">
+  <tr class="row">
     <td><?php echo functions::form_draw_checkbox('geo_zones['. $geo_zone['id'] .']', $geo_zone['id']); ?></td>
     <td><?php echo $geo_zone['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>"><?php echo $geo_zone['name']; ?></a></td>
