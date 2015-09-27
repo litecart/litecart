@@ -36,11 +36,11 @@ table.dataTable td {
   vertical-align: middle;
   white-space: nowrap;
 }
-table.dataTable tr.row:nth-child(odd) {
-  background-color: #fcfcfc;
-}
-table.dataTable tr.row:nth-child(even) {
+table.dataTable tr.row:nth-child(odd), table.dataTable tr.odd {
   background-color: #f5f5f5;
+}
+table.dataTable tr.row:nth-child(even), table.dataTable tr.even {
+  background-color: #fcfcfc;
 }
 table.dataTable tr.footer {
   background-color: #f0f0f0;

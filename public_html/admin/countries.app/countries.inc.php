@@ -38,7 +38,7 @@
     
     while ($country = database::fetch($countries_query)) {
 ?>
-    <tr class="row<?php echo !$country['status'] ? ' semi-transparent' : null; ?>>
+    <tr class="row<?php echo !$country['status'] ? ' semi-transparent' : null; ?>">
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($country['status']) ? '#99cc66' : '#ff6666') .'";'); ?> <?php echo functions::form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
       <td><?php echo $country['id']; ?></td>
       <td><?php echo $country['iso_code_2']; ?></td>

@@ -33,13 +33,13 @@ table.dataTable td {
   vertical-align: middle;
   white-space: nowrap;
 }
-table.dataTable tr.row:nth-child(odd) {
-  background-color: #fcfcfc;
-}
-table.dataTable tr.row:nth-child(even) {
+table.dataTable tr.row:nth-child(odd), table.dataTable tr.odd {
   background-color: #f8f8f8;
 }
-table.dataTable tr.odd:hover, table.dataTable tr.even:hover {
+table.dataTable tr.row:nth-child(even), table.dataTable tr.even {
+  background-color: #fcfcfc;
+}
+table.dataTable tr.row:hover, table.dataTable tr.odd:hover, table.dataTable tr.even:hover {
   background-color: #ececec;
   cursor: arrow;
 }
