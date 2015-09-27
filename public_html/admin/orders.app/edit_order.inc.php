@@ -88,6 +88,14 @@
       
       $order->save();
       
+    // Send e-mails
+      if (!empty($_POST['email_order_copy'])) {
+        $order->email_order_copy($order->data['customer']['email']);
+        foreach (explode(';', settings::get('email_order_copy')) as $email) {
+          $order->email_order_copy($email);
+        }
+      }
+      
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
       exit;
@@ -706,7 +714,11 @@
     });
   </script>
 
-  <p><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
+  <p style="text-align: right;""><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
+  
+  <?php if (empty($order->data['id'])) { ?>
+  <p style="text-align: right;"><label><?php echo functions::form_draw_checkbox('email_order_copy', true); ?> <?php echo language::translate('title_send_email_order_copy', 'Send email order copy'); ?></label></p>
+  <?php } ?>
 
   <p style="text-align: right;"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
   
