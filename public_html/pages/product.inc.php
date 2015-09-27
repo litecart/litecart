@@ -88,6 +88,9 @@
   
   $box_product->snippets = array(
     'product_id' => $product->id,
+    'code' => $product->code,
+    'sku' => $product->sku,
+    'gtin' => $product->gtin,
     'name' => $product->name[language::$selected['code']],
     'short_description' => !empty($product->short_description[language::$selected['code']]) ? $product->short_description[language::$selected['code']] : '',
     'description' => !empty($product->description[language::$selected['code']]) ? $product->description[language::$selected['code']] : '<p><em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em></p>',
@@ -95,7 +98,6 @@
     'meta_description' => !empty($product->meta_description[language::$selected['code']]) ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']],
     'keywords' => $product->keywords,
     'attributes' => !empty($product->attributes[language::$selected['code']]) ? preg_split('/\R+/', $product->attributes[language::$selected['code']]) : array(),
-    'sku' => $product->sku,
     'image' => array(
       'original' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
       'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width, $height, settings::get('product_image_clipping')),
