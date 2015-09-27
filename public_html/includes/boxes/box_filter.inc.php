@@ -19,10 +19,11 @@
         left join ". DB_TABLE_MANUFACTURERS ." m on m.id = p.manufacturer_id ".
         (!empty($_GET['category_id']) ? " left join " . DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on pc.product_id = p.id " : "")."
         where p.status
+        and manufacturer_id
         ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
         ;"
       );
-      if (database::num_rows($manufacturers_query) > 1) {
+      if (database::num_rows($manufacturers_query)) {
         
         while($manufacturer = database::fetch($manufacturers_query)) {
           $box_filter->snippets['manufacturers'][] = array(
