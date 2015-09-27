@@ -406,7 +406,7 @@ foreach (array_keys(language::$languages) as $language_code) {
 $use_br = false;
 foreach (array_keys(language::$languages) as $language_code) {
   if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 240px;"');
+  echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 125px;"');
   $use_br = true;
 }
 ?>
@@ -509,12 +509,10 @@ foreach (array_keys(language::$languages) as $language_code) {
         
         <table>
           <tr>
-            <th style="text-align: center; vertical-align: text-top;"><?php echo language::translate('title_currency', 'Currency'); ?></th>
-            <th style="text-align: center; vertical-align: text-top;"><?php echo language::translate('title_price', 'Price'); ?></th>
-            <td style="text-align: center;"><?php echo language::translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</td>
+            <th style="text-align: left;"><?php echo language::translate('title_price', 'Price'); ?></th>
+            <th style="text-align: left;"><?php echo language::translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</th>
           </tr>
           <tr>
-            <td style="width: 75px;"><strong><?php echo settings::get('store_currency_code'); ?></strong></td>
             <td><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
             <td><?php echo functions::form_draw_decimal_field('net_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 0, null, 'placeholder=""'); ?></td>
           </tr>
@@ -523,7 +521,6 @@ foreach (currency::$currencies as $currency) {
   if ($currency['code'] == settings::get('store_currency_code')) continue;
 ?>
           <tr>
-            <td><?php echo $currency['code']; ?></td>
             <td><?php echo functions::form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder=""'); ?></td>
             <td><?php echo functions::form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], 0, null, 'placeholder=""'); ?></td>
           </tr>
@@ -797,12 +794,12 @@ foreach (currency::$currencies as $currency) {
             <th style="text-align: left; vertical-align: text-top;"><?php echo language::translate('title_group', 'Group'); ?></th>
             <th style="text-align: left; vertical-align: text-top;"><?php echo language::translate('title_value', 'Value'); ?></th>
             <th style="vertical-align: text-top;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>
-            <th style="vertical-align: text-top; text-align: center;"><?php echo settings::get('store_currency_code'); ?></th>
+            <th style="vertical-align: text-top; text-align: left;"><?php echo language::translate('title_price_adjust', 'Price Adjust'); ?></th>
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
     if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
-            <th style="vertical-align: text-top; text-align: center;"><?php echo $currency_code; ?></th>
+            <th style="vertical-align: text-top; text-align: center;"></th>
 <?php
   }
 ?>
@@ -941,136 +938,140 @@ foreach (currency::$currencies as $currency) {
   }
 ?>
         </table>
+        
         <p>&nbsp;</p>
-        <h3><?php echo language::translate('title_new_combination', 'New Combination'); ?></h3>
-        <table id="table-option-combo">
-          <tr>
-            <th style="vertical-align: text-top;"><?php echo language::translate('title_group', 'Group'); ?></th>
-            <th style="vertical-align: text-top;"><?php echo language::translate('title_value', 'Value'); ?></th>
-            <th style="vertical-align: text-top;">&nbsp;</th>
-          </tr>
-          <tr>
-            <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_option_groups_list('new_option[new_1][group_id]', '')); ?></td>
-            <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>
-          </tr>
-          <tr>
-            <td><a class="add" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td><?php echo functions::form_draw_button('add_option', language::translate('title_add_option', 'Add Option'), 'button'); ?></td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-        </table>
-        <script>
+        
+        <fieldset style="display: inline-block;">
+          <legend><h3><?php echo language::translate('title_new_combination', 'New Combination'); ?></h3></legend>
+          <table id="table-option-combo">
+            <tr>
+              <th style="vertical-align: text-top;"><?php echo language::translate('title_group', 'Group'); ?></th>
+              <th style="vertical-align: text-top;"><?php echo language::translate('title_value', 'Value'); ?></th>
+              <th style="vertical-align: text-top;">&nbsp;</th>
+            </tr>
+            <tr>
+              <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_option_groups_list('new_option[new_1][group_id]', '')); ?></td>
+              <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>
+            </tr>
+            <tr>
+              <td><a class="add" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_another_option', 'Another Option'); ?></a></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td><?php echo functions::form_draw_button('add_combination', language::translate('title_add_combination', 'Add Combination'), 'button'); ?></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+          <script>
 
-          $("#table-options-stock").on("click", ".remove", function(event) {
-            event.preventDefault();
-            $(this).closest('tr').remove();
-          });
-          
-          $("#table-options-stock").on("click", ".move-up, .move-down", function(event) {
-            event.preventDefault();
-            var row = $(this).closest("tr");
+            $("#table-options-stock").on("click", ".remove", function(event) {
+              event.preventDefault();
+              $(this).closest('tr').remove();
+            });
             
-            if ($(this).is(".move-up") && $(row).prevAll().length > 1) {
-              $(row).insertBefore($(row).prev());
-            } else if ($(this).is(".move-down") && $(row).nextAll().length > 0) {
-              $(row).insertAfter($(row).next());
-            }
-          });
-          
-          var option_index = 2;
-          $("#table-option-combo").on("click", ".add", function(event) {
-            event.preventDefault();
-            var output = '<tr>'
-                       + '  <td><?php echo functions::general_escape_js(functions::form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
-                       + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>'
-                       + '  <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-                       + '</tr>';
-            output = output.replace(/option_index/g, 'new_' + option_index);
-            $(this).closest('tr').before(output);
-            option_index++;
-          });
-          
-          $("#table-option-combo").on("click", ".remove", function(event) {
-            event.preventDefault();
-            $(this).closest('tr').remove();
-          });
-          
-          $("#table-option-combo").on("change", "select[name^='new_option'][name$='[group_id]']", function(){
-            var valueField = this.name.replace(/group/, 'value');
-            $('body').css('cursor', 'wait');
-            $.ajax({
-              url: '<?php echo document::ilink('ajax/option_values.json'); ?>?option_group_id=' + $(this).val(),
-              type: 'get',
-              cache: true,
-              async: true,
-              dataType: 'json',
-              error: function(jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-              },
-              success: function(data) {
-                $('select[name=\''+ valueField +'\']').html('');
-                if ($('select[name=\''+ valueField +'\']').attr('disabled')) $('select[name=\''+ valueField +'\']').removeAttr('disabled');
-                if (data) {
-                  $.each(data, function(i, zone) {
-                    $('select[name=\''+ valueField +'\']').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
-                  });
-                } else {
-                  $('select[name=\''+ valueField +'\']').attr('disabled', 'disabled');
+            $("#table-options-stock").on("click", ".move-up, .move-down", function(event) {
+              event.preventDefault();
+              var row = $(this).closest("tr");
+              
+              if ($(this).is(".move-up") && $(row).prevAll().length > 1) {
+                $(row).insertBefore($(row).prev());
+              } else if ($(this).is(".move-down") && $(row).nextAll().length > 0) {
+                $(row).insertAfter($(row).next());
+              }
+            });
+            
+            var option_index = 2;
+            $("#table-option-combo").on("click", ".add", function(event) {
+              event.preventDefault();
+              var output = '<tr>'
+                         + '  <td><?php echo functions::general_escape_js(functions::form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
+                         + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>'
+                         + '  <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+                         + '</tr>';
+              output = output.replace(/option_index/g, 'new_' + option_index);
+              $(this).closest('tr').before(output);
+              option_index++;
+            });
+            
+            $("#table-option-combo").on("click", ".remove", function(event) {
+              event.preventDefault();
+              $(this).closest('tr').remove();
+            });
+            
+            $("#table-option-combo").on("change", "select[name^='new_option'][name$='[group_id]']", function(){
+              var valueField = this.name.replace(/group/, 'value');
+              $('body').css('cursor', 'wait');
+              $.ajax({
+                url: '<?php echo document::ilink('ajax/option_values.json'); ?>?option_group_id=' + $(this).val(),
+                type: 'get',
+                cache: true,
+                async: true,
+                dataType: 'json',
+                error: function(jqXHR, textStatus, errorThrown) {
+                  alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+                },
+                success: function(data) {
+                  $('select[name=\''+ valueField +'\']').html('');
+                  if ($('select[name=\''+ valueField +'\']').attr('disabled')) $('select[name=\''+ valueField +'\']').removeAttr('disabled');
+                  if (data) {
+                    $.each(data, function(i, zone) {
+                      $('select[name=\''+ valueField +'\']').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+                    });
+                  } else {
+                    $('select[name=\''+ valueField +'\']').attr('disabled', 'disabled');
+                  }
+                },
+                complete: function() {
+                  $('body').css('cursor', 'auto');
                 }
-              },
-              complete: function() {
-                $('body').css('cursor', 'auto');
-              }
+              });
             });
-          });
-          
-          var new_option_stock_i = 1;
-          $("#table-option-combo").on("click", "button[name='add_option']", function(event) {
-            event.preventDefault();
-            var new_option_code = '';
-            var new_option_name = '';
-            var use_coma = false;
-            var success = $("select[name^='new_option'][name$='[group_id]']").each(function(i, groupElement) {
-              var groupElement = $(groupElement);
-              var valueElement = $("select[name='"+ $(groupElement).attr("name").replace(/group_id/g, 'value_id') +"']");
-              if (valueElement.val() == "") {
-                alert("<?php echo language::translate('error_empty_option_group', 'Error: Empty option group'); ?>");
-                return false;
-              }
-              if (groupElement.val() == "") {
-                alert("<?php echo language::translate('error_empty_option_value', 'Error: Empty option value'); ?>");
-                return false;
-              }
-              if (use_coma) {
-                new_option_code += ",";
-                new_option_name += ", ";
-              }
-              new_option_code += groupElement.val() + "-" + valueElement.val();
-              new_option_name += valueElement.find("option:selected").text();
-              use_coma = true;
+            
+            var new_option_stock_i = 1;
+            $("#table-option-combo").on("click", "button[name='add_combination']", function(event) {
+              event.preventDefault();
+              var new_option_code = '';
+              var new_option_name = '';
+              var use_coma = false;
+              var success = $("select[name^='new_option'][name$='[group_id]']").each(function(i, groupElement) {
+                var groupElement = $(groupElement);
+                var valueElement = $("select[name='"+ $(groupElement).attr("name").replace(/group_id/g, 'value_id') +"']");
+                if (valueElement.val() == "") {
+                  alert("<?php echo language::translate('error_empty_option_group', 'Error: Empty option group'); ?>");
+                  return false;
+                }
+                if (groupElement.val() == "") {
+                  alert("<?php echo language::translate('error_empty_option_value', 'Error: Empty option value'); ?>");
+                  return false;
+                }
+                if (use_coma) {
+                  new_option_code += ",";
+                  new_option_name += ", ";
+                }
+                new_option_code += groupElement.val() + "-" + valueElement.val();
+                new_option_name += valueElement.find("option:selected").text();
+                use_coma = true;
+              });
+              if (new_option_code == "") return;
+              var output = '<tr>'
+                         + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options_stock[new_option_stock_i][id]', '') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][combination]', 'new_option_code') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][name]['. language::$selected['code'] .']', 'new_option_name')); ?>new_option_name</td>'
+                         + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '', 'data-size="small"')); ?></td>'
+                         + '  <td><?php echo functions::general_escape_js(functions::form_draw_number_field('options_stock[new_option_stock_i][quantity]', '0')); ?></td>'
+                         + '  <td style="white-space: nowrap;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00') .' '. functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
+                         + '  <td style="white-space: nowrap;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00') .' '. functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
+                         + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+                         + '</tr>';
+              while ($("input[name='options_stock[new_"+new_option_stock_i+"]']").length) new_option_stock_i++;
+              output = output.replace(/new_option_stock_i/g, 'new_' + new_option_stock_i);
+              output = output.replace(/new_option_code/g, new_option_code);
+              output = output.replace(/new_option_name/g, new_option_name);
+              $("#table-options-stock").append(output);
+              new_option_stock_i++;
             });
-            if (new_option_code == "") return;
-            var output = '<tr>'
-                       + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options_stock[new_option_stock_i][id]', '') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][combination]', 'new_option_code') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][name]['. language::$selected['code'] .']', 'new_option_name')); ?>new_option_name</td>'
-                       + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '', 'data-size="small"')); ?></td>'
-                       + '  <td><?php echo functions::general_escape_js(functions::form_draw_number_field('options_stock[new_option_stock_i][quantity]', '0')); ?></td>'
-                       + '  <td style="white-space: nowrap;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00') .' '. functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
-                       + '  <td style="white-space: nowrap;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00') .' '. functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
-                       + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-                       + '</tr>';
-            while ($("input[name='options_stock[new_"+new_option_stock_i+"]']").length) new_option_stock_i++;
-            output = output.replace(/new_option_stock_i/g, 'new_' + new_option_stock_i);
-            output = output.replace(/new_option_code/g, new_option_code);
-            output = output.replace(/new_option_name/g, new_option_name);
-            $("#table-options-stock").append(output);
-            new_option_stock_i++;
-          });
-        </script>
+          </script>
+        </fieldset>
       </div>
     </div>
   </div>

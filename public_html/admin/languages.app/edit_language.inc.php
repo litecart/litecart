@@ -161,12 +161,20 @@
       <td><strong><?php echo language::translate('title_time_format', 'Time Format'); ?></strong> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
-    array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
-    array(strftime('%I:%M %p'), '%I:%M %P'),
-    array('24-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
-    array(strftime('%H:%M'), '%H:%M'),
+    array(
+      'label' => '12-Hour Format',
+      'options' => array(
+        array(strftime('%I:%M %p'), '%I:%M %P'),
+      ),
+    ),
+    array(
+      'label' => '24-Hour Format',
+      'options' => array(
+        array(strftime('%H:%M'), '%H:%M'),
+      ),
+    ),
   );
-  echo functions::form_draw_select_field('format_time', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('format_time', $options, true, false, 'data-size="auto"');
 ?>
       </td>
     </tr>
@@ -174,18 +182,30 @@
       <td><strong><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?></strong> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
-    array('Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
-    array(date('Y-m-d'), 'Y-m-d'),
-    array(date('Y.m.d'), 'Y.m.d'),
-    array(date('Y/m/d'), 'Y/m/d'),
-    array('Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
-    array(date('d-m-Y'), 'd-m-Y'),
-    array(date('d.m.Y'), 'd.m.Y'),
-    array(date('d/m/Y'), 'd/m/Y'),
-    array('Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled="disabled"'),
-    array(date('m/d/y'), 'm/d/y'),
+    array(
+      'label' => 'Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled="disabled"',
+      'options' => array(
+        array(date('Y-m-d'), 'Y-m-d'),
+        array(date('Y.m.d'), 'Y.m.d'),
+        array(date('Y/m/d'), 'Y/m/d'),
+      ),
+    ),
+    array(
+      'label' => 'Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled="disabled"',
+      'options' => array(
+        array(date('d-m-Y'), 'd-m-Y'),
+        array(date('d.m.Y'), 'd.m.Y'),
+        array(date('d/m/Y'), 'd/m/Y'),
+      ),
+    ),
+    array(
+      'label' => 'Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled="disabled"',
+      'options' => array(
+        array(date('m/d/y'), 'm/d/y'),
+      ),
+    ),
   );
-  echo functions::form_draw_select_field('raw_date', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false, 'data-size="auto"');
 ?>
       </td>
     </tr>
@@ -193,12 +213,20 @@
       <td><strong><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?></strong> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
-    array('12-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
-    array(date('h:i A'), 'h:i A'),
-    array('24-hour format', 'null', 'style="font-weight: bold;" disabled="disabled"'),
-    array(date('H:i'), 'H:i'),
+    array(
+      'label' => '12-hour format',
+      'options' => array(
+        array(date('h:i A'), 'h:i A'),
+      ),
+    ),
+    array(
+      'label' => '24-hour format',
+      'options' => array(
+        array(date('H:i'), 'H:i'),
+      )
+    ),
   );
-  echo functions::form_draw_select_field('raw_time', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('raw_time', $options, true, false, 'data-size="auto"');
 ?>
       </td>
     </tr>
