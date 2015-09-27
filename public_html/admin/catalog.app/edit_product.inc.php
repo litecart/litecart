@@ -25,7 +25,6 @@
     
     if (!notices::get('errors')) {
       
-      if (!isset($_POST['status'])) $_POST['status'] = '0';
       if (!isset($_POST['images'])) $_POST['images'] = array();
       if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
       if (!isset($_POST['options'])) $_POST['options'] = array();
@@ -33,6 +32,7 @@
       if (!isset($_POST['product_groups'])) $_POST['product_groups'] = array();
       
       $fields = array(
+        'status',
         'manufacturer_id',
         'supplier_id',
         'delivery_status_id',
@@ -40,7 +40,6 @@
         'default_category_id',
         'categories',
         'product_groups',
-        'status',
         'date_valid_from',
         'date_valid_to',
         'quantity',
@@ -128,7 +127,9 @@
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-              <label><?php echo functions::form_draw_checkbox('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label></td>
+              <label><?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '0'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+              <label><?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '0'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+            </td>
           </tr>
           <tr>
             <td>

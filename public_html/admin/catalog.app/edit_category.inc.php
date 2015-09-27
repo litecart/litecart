@@ -22,8 +22,6 @@
     
     if (!notices::get('errors')) {
     
-      if (!isset($_POST['status'])) $_POST['status'] = '0';
-    
       $fields = array(
         'status',
         'parent_id',
@@ -91,7 +89,9 @@
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-              <label><?php echo functions::form_draw_checkbox('status', '1', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label></td>
+              <label><?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '0'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+              <label><?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '0'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+            </td>
           </tr>
           <tr>
             <td>

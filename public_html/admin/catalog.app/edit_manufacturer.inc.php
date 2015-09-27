@@ -20,8 +20,6 @@
     if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) notices::add('errors', language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
     
     if (!notices::get('errors')) {
-    
-      if (!isset($_POST['status'])) $_POST['status'] = '0';
       
       if (!empty($_POST['remove_image']) && !empty($manufacturer->data['image'])) {
         functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image']);
@@ -94,7 +92,9 @@
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-              <label><?php echo functions::form_draw_checkbox('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label></td>
+              <label><?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+              <label><?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '1'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+            </td>
           </tr>
           <tr>
             <td>
