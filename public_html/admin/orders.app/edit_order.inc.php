@@ -116,6 +116,14 @@
     'height' => 100,
     'transitionIn' => 'fade',
     'transitionOut' => 'fade',
+    'onStart' => 'function(links, index){' . PHP_EOL
+               . '  if ($(links[index]).hasClass("add-product")) {' . PHP_EOL
+               . '    $(links[index]).attr("href", $(links[index]).data("href") + "&language_code=" + $("select[name=\'language_code\']").val() + "&currency_code=" + $("select[name=\'currency_code\']").val() + "&currency_value=" + $("input[name=\'currency_value\']").val() + "&customer%5Bcountry_code%5D=" + $("select[name=\'customer[country_code]\']").val() + "&customer%5Bzone_code%5D=" + $("select[name=\'customer[zone_code]\']").val() + "&customer%5Bcompany%5D=" + $("input[name=\'customer[company]\']").val());' . PHP_EOL
+               . '  }' . PHP_EOL
+               . '  if ($(links[index]).hasClass("add-custom-item")) {' . PHP_EOL
+               . '    $(links[index]).attr("href", $(links[index]).data("href") + "&language_code=" + $("select[name=\'language_code\']").val() + "&currency_code=" + $("select[name=\'currency_code\']").val() + "&currency_value=" + $("input[name=\'currency_value\']").val() + "&customer%5Bcountry_code%5D=" + $("select[name=\'customer[country_code]\']").val() + "&customer%5Bzone_code%5D=" + $("select[name=\'customer[zone_code]\']").val() + "&customer%5Bcompany%5D=" + $("input[name=\'customer[company]\']").val());' . PHP_EOL
+               . '  }' . PHP_EOL
+               . '}',
   ));
 ?>
 
@@ -147,55 +155,18 @@
   <table class="dataTable">
     <tr>
       <td><?php echo language::translate('title_language', 'Language'); ?><br />
-        <?php echo functions::form_draw_hidden_field('language_code', true); ?>
-        <ul id="languages" class="list-horizontal">
-<?php
-  foreach (language::$languages as $language) {
-    if ($language['code'] == $_POST['language_code']) {
-      echo '<li class="language"><strong>'. $language['code'] .'</strong></li>' . PHP_EOL;
-    } else {
-      echo '<li class="language"><a href="#" data-code="'. $language['code'] .'">'. $language['code'] .'</a></li>' . PHP_EOL;
-    }
-  }
-?>
-        </ul>
-        <script>
-          $('#languages .language a').click(function(e){
-            e.preventDefault();
-            $("input[name='language_code']").val($(this).data('code'));
-            $(this).closest('form').submit();
-          });
-        </script>
+        <?php echo functions::form_draw_languages_list('language_code', true); ?>
       </td>
-    </tr>
-  </table>
-  
-  <table class="dataTable">
-    <tr>
       <td><?php echo language::translate('title_currency', 'Currency'); ?><br />
-        <?php echo functions::form_draw_hidden_field('currency_code', true); ?><?php echo functions::form_draw_hidden_field('currency_value', true); ?>
-        <ul id="currencies" class="list-horizontal">
-<?php
-  foreach (currency::$currencies as $currency) {
-    if ($currency['code'] == $_POST['currency_code']) {
-      echo '<li class="currency"><strong>'. $currency['code'] .'</strong></li>' . PHP_EOL;
-    } else {
-      echo '<li class="currency"><a href="#" data-code="'. $currency['code'] .'" data-value="'. $currency['value'] .'">'. $currency['code'] .'</a></li>' . PHP_EOL;
-    }
-  }
-?>
-        </ul>
+        <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
         <script>
-          $('#currencies .currency a').click(function(e){
-            e.preventDefault();
-            $("input[name='currency_code']").val($(this).data('code'));
-            $("input[name='currency_value']").val($(this).data('value'));
-            $(this).closest('form').submit();
+          $('select[name="currency_code"]').change(function(e){
+            $("input[name='currency_value']").val($(this).find('option:selected').data('value'));
           });
         </script>
       </td>
       <td><?php echo language::translate('title_currency_value', 'Currency Value'); ?><br />
-        1 <?php echo settings::get('store_currency_code'); ?> = <?php echo number_format($_POST['currency_value'], 3, language::$selected['decimal_point'], language::$selected['thousands_sep']); ?> <?php echo $_POST['currency_code']; ?>
+        <span id="currency-value"><?php echo functions::form_draw_decimal_field('currency_value', true, 3); ?></span>
       </td>
     </tr>
   </table>
@@ -266,7 +237,6 @@
                   if (console) console.log(key +": "+ value);
                   if ($("*[name='customer["+key+"]']").length) $("*[name='customer["+key+"]']").val(data[key]).trigger('change');
                 });
-                $(this).closest('form').submit();
               },
             });
           });
@@ -297,10 +267,6 @@
                 $('body').css('cursor', 'auto');
               }
             });
-          });
-          
-          $("input[name='customer[tax_id]'], input[name='customer[company]'], select[name='customer[country_code]'], select[name='customer[zone_code]']").change(function() {
-            $(this).closest('form').submit();
           });
         </script>
       </td>
@@ -480,8 +446,8 @@
 ?>
     <tr class="footer">
       <td colspan="7">
-        <a class="button fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_product', 'language_code' => $_POST['language_code'], 'currency_code' => $_POST['currency_code'], 'currency_value' => $_POST['currency_value'], 'customer' => $_POST['customer'], 'return_method' => 'addItem'), true); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
-        <a class="button fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_custom_item', 'currency_code' => $_POST['currency_code'], 'return_method' => 'addItem'), true); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
+        <a class="button add-product fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+        <a class="button add-custom-item fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
       </td>
     </tr>
   </table>

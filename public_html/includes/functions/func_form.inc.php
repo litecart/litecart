@@ -609,7 +609,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
     while ($currency = database::fetch($currencies_query)) {
-      $options[] = array($currency['name'], $currency['code']);
+      $options[] = array($currency['name'], $currency['code'], 'data-value="'. (float)$currency['value'] .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
