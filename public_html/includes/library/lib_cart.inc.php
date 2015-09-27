@@ -47,8 +47,17 @@
     // Load/Refresh
       self::load();
       
+      
       if (!empty($_POST['add_cart_product'])) {
-        self::add_product($_POST['product_id'], (isset($_POST['options']) ? $_POST['options'] : array()), (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        
+        $options = $_POST['options'];
+        if (!empty($options)) {
+          foreach (array_keys($options) as $key) {
+            if (is_array($options[$key])) $options[$key] = implode(', ', $options[$key]);
+          }
+        }
+        
+        self::add_product($_POST['product_id'], !empty($options) ? $options : null, (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
       }
       
       if (!empty($_POST['remove_cart_item'])) {
@@ -216,13 +225,13 @@
                 $valid_values = array();
                 foreach ($product->options[$key]['values'] as $value) {
                   $valid_values[] = $value['name'][language::$selected['code']];
-                  if (in_array($value['name'][language::$selected['code']], $options[$product->options[$key]['name'][language::$selected['code']]])) {
+                  if (in_array($value['name'][language::$selected['code']], explode(', ', $options[$product->options[$key]['name'][language::$selected['code']]]))) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                     $item['extras'] += $value['price_adjust'];
                   }
                 }
                 
-                foreach ($options[$product->options[$key]['name'][language::$selected['code']]] as $current_value) {
+                foreach (explode(', ', $options[$product->options[$key]['name'][language::$selected['code']]]) as $current_value) {
                   if (!in_array($current_value, $valid_values)) {
                     if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
                     return;
