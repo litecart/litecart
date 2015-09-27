@@ -94,7 +94,7 @@
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-              <label><?php echo functions::form_draw_checkbox('status', '1', true); ?> <?php echo language::translate('title_published', 'Published'); ?></label></td>
+              <label><?php echo functions::form_draw_checkbox('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label></td>
           </tr>
           <tr>
             <td>

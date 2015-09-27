@@ -392,6 +392,8 @@
     
     if ($value === true) $value = form_reinsert_value($name);
     
+    if (!empty($parameters)) $parameters = preg_replace('/(data-size="[^"]*")/', '', $parameters);
+    
     document::$snippets['head_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL
                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
@@ -399,7 +401,7 @@
                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />' . PHP_EOL;
     
-    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" data-size="auto" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
+    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg" title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
          . '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
          . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
