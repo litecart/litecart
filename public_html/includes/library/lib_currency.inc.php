@@ -81,16 +81,16 @@
     
     public static function identify() {
       
-    // Return currency from URI query
-      if (!empty($_GET['currency'])) {
-        if (isset(self::$currencies[$_GET['currency']])) return $_GET['currency'];
-      }
-      
     // Return chained currency with language
       if (!empty(language::$selected['currency_code'])) {
         if (!empty(self::$currencies[language::$selected['currency_code']])) {
           return language::$selected['currency_code'];
         }
+      }
+      
+    // Return currency from URI query
+      if (!empty($_GET['currency'])) {
+        if (isset(self::$currencies[$_GET['currency']])) return $_GET['currency'];
       }
       
     // Return currency from session
@@ -101,7 +101,7 @@
         return $_COOKIE['currency_code'];
       }
       
-    // Get country from browser
+    // Get currency from country (via browser locale)
       if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#^([a-z]{2}-[A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
           if (!empty($matches[1])) $country_code = $matches[1];
@@ -120,8 +120,24 @@
         }
       }
       
+    // Get currency from country (via TLD)
+      if (empty(self::$data['country_code'])) {
+        if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+          $countries_query = database::query(
+            "select * from ". DB_TABLE_COUNTRIES ."
+            where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
+            limit 1;"
+          );
+          $country = database::fetch($countries_query);
+          if (!empty($country['currency_code']) && isset(self::$currencies[$country['currency_code']])) return $country['currency_code'];
+        }
+      }
+      
     // Return default currency
       if (isset(self::$currencies[settings::get('default_currency_code')])) return settings::get('default_currency_code');
+      
+    // Return store currency
+      if (isset(self::$currencies[settings::get('store_currency_code')])) return settings::get('store_currency_code');
       
     // Return first currency
       $currencies = array_keys(self::$currencies);

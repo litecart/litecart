@@ -137,8 +137,18 @@
       }
       
     // Set default country
-      if (empty(self::$data['country_code'])) {
+      if (empty(self::$data['country_code']) && in_array(settings::get('default_country_code'), $countries)) {
         self::$data['country_code'] = settings::get('default_country_code');
+      }
+      
+    // Set store country
+      if (empty(self::$data['country_code']) && in_array(settings::get('store_country_code'), $countries)) {
+        self::$data['country_code'] = settings::get('store_country_code');
+      }
+      
+    // Set first country in list
+      if (empty(self::$data['country_code'])) {
+        self::$data['country_code'] = $countries[0]['iso_code_2'];
       }
       
     // Set zone from cookie
@@ -148,16 +158,19 @@
         }
       }
       
-      if (empty(self::$data['zone_code'])) {
+    // Set default zone 
+      if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('default_country_code')) {
         self::$data['zone_code'] = settings::get('default_zone_code');
+      }
+      
+    // Set store zone 
+      if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('store_country_code')) {
+        self::$data['zone_code'] = settings::get('store_zone_code');
       }
       
     // Unset zone if not in country
       if (!functions::reference_verify_zone_code(self::$data['country_code'], self::$data['zone_code'])) {
         self::$data['zone_code'] = '';
-      }
-      if (!functions::reference_verify_zone_code(self::$data['shipping_address']['country_code'], self::$data['shipping_address']['zone_code'])) {
-        self::$data['shipping_address']['zone_code'] = '';
       }
       
     // Set shipping country if empty
@@ -169,6 +182,11 @@
     // Set shipping zone if empty
       if (empty(self::$data['shipping_address']['zone_code'])) {
         self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
+      }
+      
+    // Unset zone if not in country
+      if (!functions::reference_verify_zone_code(self::$data['shipping_address']['country_code'], self::$data['shipping_address']['zone_code'])) {
+        self::$data['shipping_address']['zone_code'] = '';
       }
       
     // Set tax from cookie
