@@ -167,10 +167,10 @@
 </div>
 
 <script>
-  $('form[name=buy_now_form]').submit(function(e) {
+  $('body').on('submit', 'form[name=buy_now_form]', function(e) {
     var form = $(this);
     e.preventDefault();
-    $("button[name='add_cart_product']").animate_from_to("#cart", {
+    $(this).find("button[name='add_cart_product']").animate_from_to("#cart", {
       initial_css: {
         "border": "1px rgba(0,136,204,1) solid",
         "background-color": "rgba(0,136,204,0.5)",
