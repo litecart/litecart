@@ -108,19 +108,31 @@
       if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';
       if (!in_array(self::$data['shipping_address']['country_code'], $countries)) self::$data['shipping_address']['country_code'] = '';
       
-      // Set country from cookie
+    // Set country from cookie
       if (empty(self::$data['country_code'])) {
         if (!empty($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $countries)) {
           self::$data['country_code'] = $_COOKIE['country_code'];
         }
       }
       
-    // Get country from browser
+    // Get country from browser locale (primary)
       if (empty(self::$data['country_code'])) {
-        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#^([a-z]{2}-[A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-          if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
-            if (!empty($matches[1]) && in_array($matches[1], $countries)) self::$data['country_code'] = $matches[1];
-          }
+        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#(^[a-z]{2}-([A-Z]{2}))#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+          if (!empty($matches[2]) && in_array($matches[2], $countries)) self::$data['country_code'] = $matches[2];
+        }
+      }
+      
+    // Get country from TLD
+      if (empty(self::$data['country_code'])) {
+        if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+          $countries_query = database::query(
+            "select * from ". DB_TABLE_COUNTRIES ."
+            where status
+            and iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
+            limit 1;"
+          );
+          $country = database::fetch($countries_query);
+          if (!empty($country['iso_code_2']) && in_array($country['iso_code_2'], $countries)) self::$data['country_code'] = $country['iso_code_2'];
         }
       }
       
