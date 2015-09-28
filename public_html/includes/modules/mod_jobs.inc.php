@@ -14,7 +14,6 @@
     }
     
     public function process($module_id=null, $force=false) {
-      global $order;
       
       $output = '';
       

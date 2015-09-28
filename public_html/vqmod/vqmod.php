@@ -120,7 +120,7 @@
       foreach(self::$_mods as $modObject) {
         foreach($modObject->mods as $path => $mods) {
           if (self::_checkMatch($path, $modificationsPath)) {
-            $modObject->applyMod($mods, $fileData);
+            $modObject->applyMod($mods, $fileData, $modObject);
           }
         }
       }
@@ -503,7 +503,7 @@
      * @return null
      * @description Applies all modifications to the text data
      */
-    public function applyMod($mods, &$data) {
+    public function applyMod($mods, &$data, &$modObject) {
       if ($this->_skip) return;
       $tmp = $data;
 
@@ -546,7 +546,8 @@
           foreach($tmp as $lineNum => $line) {
             if (strlen($mod['search']->getContent()) == 0) {
               if ($mod['error'] == 'log' || $mod['error'] == 'abort') {
-                trigger_error(__METHOD__.' - Empty search content ('. VQMod::$fileModding .')', E_USER_WARNING);
+                //trigger_error(__METHOD__.' - Empty search content ('. VQMod::$fileModding .')', E_USER_WARNING);
+                trigger_error(__METHOD__.' - Empty search content in "'. $modObject->id  .'": '. VQMod::$fileModding .' '. $skip, E_USER_WARNING);
               }
               break;
             }
@@ -555,7 +556,8 @@
               $pos = @preg_match($mod['search']->getContent(), $line);
               if ($pos === false) {
                 if ($mod['error'] == 'log' || $mod['error'] == 'abort' ) {
-                  trigger_error(__METHOD__.' - Invalid regular expression ('. VQMod::$fileModding .'): '. $mod['search']->getContent(), E_USER_WARNING);
+                  //trigger_error(__METHOD__.' - Invalid regular expression ('. VQMod::$fileModding .'): '. $mod['search']->getContent(), E_USER_WARNING);
+                  trigger_error(__METHOD__.' - Invalid regular expression in "'. $modObject->id  .'": '. VQMod::$fileModding .' '. $skip, E_USER_WARNING);
                 }
                 continue 2;
               } elseif ($pos == 0) {
@@ -622,7 +624,8 @@
             $skip = ($mod['error'] == 'skip' || $mod['error'] == 'log') ? ' (SKIPPED)' : ' (ABORTING MOD)';
 
             if ($mod['error'] == 'log' || $mod['error'] == 'abort') {
-              trigger_error(__METHOD__.' - Search not found ('. VQMod::$fileModding .'): '. $mod['search']->getContent() .' '. $skip, E_USER_WARNING);
+              //VQMod::$log->write('VQModObject::applyMod - SEARCH NOT FOUND' . $skip . ': ' . $mod['search']->getContent(), $this);
+              trigger_error(__METHOD__.' - Search not found in "'. $modObject->id  .'": '. VQMod::$fileModding .' '. $skip, E_USER_WARNING);
             }
 
             if ($mod['error'] == 'abort') {
