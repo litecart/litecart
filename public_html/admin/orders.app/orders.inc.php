@@ -68,8 +68,7 @@
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
       "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
       "o.customer_company like '%". database::input($_GET['query']) ."%'",
-      "o.customer_firstname like '%". database::input($_GET['query']) ."%'",
-      "o.customer_lastname like '%". database::input($_GET['query']) ."%'",
+      "concat(o.customer_firstname, ' ', o.customer_lastname) like '%". database::input($_GET['query']) ."%'",
       "o.payment_transaction_id like '%". database::input($_GET['query']) ."%'",
       "o.shipping_tracking_id like '%". database::input($_GET['query']) ."%'",
     );
