@@ -5,7 +5,7 @@
     "select * from ". DB_TABLE_SETTINGS ."
     where (
       `key` like 'customer_module_%'
-      or `key` like 'job_module_%'
+      or `key` like 'jobs_module_%'
       or `key` like 'shipping_module_%'
       or `key` like 'payment_module_%'
       or `key` like 'order_action_module_%'
@@ -14,7 +14,7 @@
     );"
   );
   while($row = $database->fetch($query)) {
-    $new_key = preg_replace('#^((customer|job|shipping|payment|order_action|order_success|order_total)_module_)#', '', $row['key']);
+    $new_key = preg_replace('#^((customer|jobs|shipping|payment|order_action|order_success|order_total)_module_)#', '', $row['key']);
     $database->query(
       "update  ". DB_TABLE_SETTINGS ."
       set `key` = '". $database->input($new_key) ."'
