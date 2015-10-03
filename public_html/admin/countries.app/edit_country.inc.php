@@ -121,7 +121,7 @@
       </td>
     </tr>
     <tr>
-      <td><strong><?php echo language::translate('title_currency_code', 'Currency Code'); ?></strong><br />
+      <td><strong><?php echo language::translate('title_currency_code', 'Currency Code'); ?></strong> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
         <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
       </td>
     </tr>
