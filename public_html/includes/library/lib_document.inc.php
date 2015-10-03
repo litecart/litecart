@@ -36,8 +36,8 @@
       self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>' . PHP_EOL
                                              . '<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>' . PHP_EOL
                                              . '<script>' . PHP_EOL
-                                             . '  if (window.jQuery === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-1.11.3.min.js\'%3E%3C/script%3E"));' . PHP_EOL
-                                             . '  if (jQuery.migrateTrace === undefined) document.write(unescape("%3Cscript src=\''. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js\'%3E%3C/script%3E"));' . PHP_EOL
+                                             . '  window.jQuery || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-1.11.3.min.js"%3E%3C/script%3E\'));' . PHP_EOL
+                                             . '  (window.jQuery && jQuery.migrateTrace) || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-migrate-1.2.1.min.js"%3E%3C/script%3E\'));' . PHP_EOL
                                              . '</script>';
       
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
