@@ -147,9 +147,7 @@
   $sql = file_get_contents('clean.sql');
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
   
-  $sql = explode('-- --------------------------------------------------------', $sql);
-  
-  foreach ($sql as $query) {
+  foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
     $query = preg_replace('/--.*\s/', '', $query);
     $database->query($query);
   }
@@ -171,9 +169,7 @@
     $sql = str_replace($search, $replace, $sql);
   }
   
-  $sql = explode('-- --------------------------------------------------------', $sql);
-  
-  foreach ($sql as $query) {
+  foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
     $query = preg_replace('/--.*\s/', '', $query);
     $database->query($query);
   }
@@ -206,7 +202,6 @@
   }
   
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
-  
   
   ### Files > Default Data ####################################
   
@@ -252,7 +247,7 @@
   ### Admin > .htaccess Protection ###################################
   
   echo '<p>Securing admin folder...';
-   
+  
   $htaccess = '# Solve 401 rewrite and auth conflict on some machines' . PHP_EOL
             .  'ErrorDocument 401 "Access Forbidden"' . PHP_EOL
             . PHP_EOL
@@ -337,30 +332,25 @@
     
     echo '<p>Patching installation with regional data...';
     
-    $directories = glob('data/*'. $_REQUEST['country_code'] .'*/');
-    
-    if (empty($directories)) {
-      $directories = glob('data/*XX*/');
-    }
+    $directories = glob('data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
     
     if (!empty($directories)) {
       foreach ($directories as $dir) {
 
         $dir = basename($dir);
         if ($dir == 'demo') continue;
+        if ($dir == 'default') continue;
         
-        if (file_exists('data/'. $dir .'/data.sql')) {
-          $sql = file_get_contents('data/'. $dir .'/data.sql');
+        foreach(glob('data/'. $dir .'/*.sql') as $file) {
+          $sql = file_get_contents(file);
+
+          if (empty($sql)) continue;
           
-          if (!empty($sql)) {
-            $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
-             
-            $sql = explode('-- --------------------------------------------------------', $sql);
-            
-            foreach ($sql as $query) {
-              $query = preg_replace('/--.*\s/', '', $query);
-              $database->query($query);
-            }
+          $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+          
+          foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+            $query = preg_replace('/--.*\s/', '', $query);
+            $database->query($query);
           }
         }
       }
