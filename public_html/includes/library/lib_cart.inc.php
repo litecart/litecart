@@ -18,6 +18,9 @@
       }
       
       self::$data = &session::$data['cart'];
+    }
+    
+    public static function initiate() {
       
     // Recover a previous cart uid if possible
       if (empty(self::$data['uid'])) {
@@ -32,9 +35,6 @@
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         setcookie('cart[uid]', self::$data['uid'], strtotime('+1 years'), WS_DIR_HTTP_HOME);
       }
-    }
-    
-    public static function initiate() {
       
       database::query(
         "delete from ". DB_TABLE_CART_ITEMS ."
