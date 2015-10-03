@@ -22,7 +22,7 @@
     
     if (empty($_POST['zones'])) $_POST['zones'] = array();
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
       $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
@@ -59,7 +59,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
-    exit();
+    exit;
   }
 
 ?>

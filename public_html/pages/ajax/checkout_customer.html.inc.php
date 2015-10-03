@@ -106,7 +106,7 @@
     
     if (empty(customer::$data['id'])) {
       
-      if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;")) && settings::get('register_guests') && !notices::get('errors')) {
+      if (empty(notices::$data['errors']) && settings::get('register_guests') && !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
         
         $customer = new ctrl_customer();
         $customer->data = customer::$data;

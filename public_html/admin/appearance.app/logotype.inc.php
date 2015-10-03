@@ -8,7 +8,7 @@
       if (!$image->width()) notices::add('errors', language::translate('error_invalid_image', 'The image is invalid'));
     }
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
       
       $filename = 'logotype.png';
       

@@ -15,7 +15,7 @@
   
   if (isset($_POST['save'])) {
 
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
       
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
       

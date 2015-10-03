@@ -15,11 +15,11 @@
   // Save data to database
   if (isset($_POST['save'])) {
     
-    if ($_POST['name'] == '') notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
+    if (empty($_POST['name'])) notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
     
     if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) notices::add('errors', language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
       
       if (!empty($_POST['remove_image']) && !empty($manufacturer->data['image'])) {
         functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image']);
@@ -108,10 +108,10 @@
             </td>
           </tr>
           <tr>
-            <td><strong><?php echo ((isset($manufacturer->data['image']) && $manufacturer->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></strong><br />
+            <td><strong><?php echo !empty($manufacturer->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></strong><br />
             <?php echo functions::form_draw_file_field('image', ''); ?></td>
           </tr>
-          <?php if (isset($manufacturer->data['image']) && $manufacturer->data['image'] != '') { ?>
+          <?php if (!empty($manufacturer->data['image'])) { ?>
           <tr>
             <td><?php echo $manufacturer->data['image']; ?><br />
             <?php echo functions::form_draw_checkbox('remove_image', '1', true); ?> <?php echo language::translate('text_remove_image', 'Remove image'); ?></td>

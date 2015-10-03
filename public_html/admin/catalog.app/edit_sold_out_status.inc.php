@@ -16,7 +16,7 @@
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       if (empty($_POST['orderable'])) $_POST['orderable'] = 0;
     
@@ -44,7 +44,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
-    exit();
+    exit;
   }
 
 ?>

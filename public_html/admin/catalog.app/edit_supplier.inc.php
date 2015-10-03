@@ -15,9 +15,9 @@
   // Save data to database
   if (isset($_POST['save'])) {
 
-    if ($_POST['name'] == '') notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
+    if (empty($_POST['name'])) notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       if (!isset($_POST['status'])) $_POST['status'] = '0';
     
@@ -48,7 +48,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'suppliers'), array('app')));
-    exit();
+    exit;
   }
 
 ?>

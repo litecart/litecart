@@ -31,7 +31,7 @@
     if (empty($_POST['order_total'])) $_POST['order_total'] = array();
     if (empty($_POST['comments'])) $_POST['comments'] = array();
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
       
       if (!empty($_POST['items'])) {
         foreach (array_keys($_POST['items']) as $key) {

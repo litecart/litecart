@@ -40,7 +40,7 @@
     if (empty($_POST['country_code'])) notices::add('errors', language::translate('error_missing_country', 'You must select a country.'));
     if (empty($_POST['zone_code']) && !empty($_POST['country_code']) && functions::reference_country_num_zones($_POST['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
       
       $customer = new ctrl_customer();
       

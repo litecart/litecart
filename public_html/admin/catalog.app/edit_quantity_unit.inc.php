@@ -16,7 +16,7 @@
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       if (empty($_POST['separate'])) $_POST['separate'] = 0;
       
@@ -46,7 +46,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'quantity_units'), true, array('quantity_unit_id')));
-    exit();
+    exit;
   }
 
 ?>

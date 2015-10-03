@@ -21,7 +21,7 @@
     if (empty($_POST['tax_class_id'])) notices::add('errors', language::translate('error_must_select_tax_class', 'You must select a tax class'));
     if (empty($_POST['rate'])) notices::add('errors', language::translate('error_must_enter_rate', 'You must enter a rate'));
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       $fields = array(
         'tax_class_id',
@@ -53,7 +53,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
-    exit();
+    exit;
   }
 
 ?>

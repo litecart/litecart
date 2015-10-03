@@ -14,7 +14,7 @@
   
   if (isset($_POST['save'])) {
   
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       $fields = array(
         'name',
@@ -40,7 +40,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
-    exit();
+    exit;
   }
   
 ?>

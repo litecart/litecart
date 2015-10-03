@@ -18,7 +18,7 @@
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       $fields = array(
         'code',
@@ -44,7 +44,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
-    exit();
+    exit;
   }
 
 ?>

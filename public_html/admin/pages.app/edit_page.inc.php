@@ -19,7 +19,7 @@
     
     if (empty($_POST['status'])) $_POST['status'] = 0;
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       $fields = array(
         'status',
@@ -49,7 +49,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'pages'), true, array('page_id')));
-    exit();
+    exit;
   }
 
 ?>

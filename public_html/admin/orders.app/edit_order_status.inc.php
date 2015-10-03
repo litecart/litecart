@@ -19,7 +19,7 @@
     if (empty($_POST['notify'])) $_POST['notify'] = 0;
     if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
     
       $fields = array(
         'icon',
@@ -50,7 +50,7 @@
     
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
-    exit();
+    exit;
   }
 
 ?>
