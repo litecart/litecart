@@ -7,6 +7,8 @@
     return;
   }
   
+  ob_start();
+  
   $url = document::link('http://www.litecart.net/feeds/addons', array('whoami' => document::ilink(''), 'version' => PLATFORM_VERSION));
   
   $store_info = array(
@@ -39,8 +41,6 @@
       $total++;
       if ($total == 12) break;
     }
-    
-    ob_start();
 ?>
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
@@ -53,6 +53,11 @@
       echo '<td style="vertical-align: top;">' . PHP_EOL
          . '  <table style="width: 100%;">' . PHP_EOL;
       foreach ($column as $item) {
+        if (!isset($rowclass) || $rowclass == 'even') {
+          $rowclass = 'odd';
+        } else {
+          $rowclass = 'even';
+        }
 ?>
         <tr>
           <td><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>

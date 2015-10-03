@@ -7,6 +7,8 @@
     return;
   }
   
+  ob_start();
+    
   $url = document::link('http://forums.litecart.net/feed/rss/');
   
   $rss = @functions::http_fetch($url);
@@ -29,8 +31,6 @@
       $total++;
       if ($total == 12) break;
     }
-    
-    ob_start();
 ?>
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
