@@ -320,7 +320,6 @@
     
     return $html;
   }
-
   
   function form_draw_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $hint='') {
     if (!is_array($options)) $options = array($options);
@@ -343,12 +342,54 @@
     return $html;
   }
   
-  function form_draw_static_field($name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name);
+  function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $hint='') {
+    
+    if (!is_array($options)) $options = array($options);
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    return '<div class="input-static"'. (($parameters) ? ' '.$parameters : false) .'>'. (($value) ? $value : '&nbsp;') .'</div>';
+    document::$snippets['head_tags']['select2'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'/select2/select2.min.css" />' . PHP_EOL
+                                                . '<script src="'. WS_DIR_EXT .'/select2/select2.min.js"></script>' . PHP_EOL
+                                                . '<script src="'. WS_DIR_EXT .'/select2/i18n/'. language::$selected['code'] .'.js"></script>';
+                                               
+    document::$snippets['javascript'][] = '$(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
+                                        . '  ajax: {' . PHP_EOL
+                                        . '    url: "'. $ajax_url .'",' . PHP_EOL
+                                        . '    dataType: "json",' . PHP_EOL
+                                        . '    delay: 250,' . PHP_EOL
+                                        . '    data: function(params) {' . PHP_EOL
+                                        . '      return {' . PHP_EOL
+                                        . '        query: params.term,' . PHP_EOL
+                                        . '        page: params.page' . PHP_EOL
+                                        . '      };' . PHP_EOL
+                                        . '    },' . PHP_EOL
+                                        . '    processResults: function(data, page) {' . PHP_EOL
+                                        . '      return {' . PHP_EOL
+                                        . '        results: data.items' . PHP_EOL
+                                        . '      };' . PHP_EOL
+                                        . '    },' . PHP_EOL
+                                        . '    cache: true' . PHP_EOL
+                                        . '  }' . PHP_EOL
+                                        //. '  escapeMarkup: function (markup) { return markup; },' . PHP_EOL
+                                        //. '  minimumInputLength: 1,' . PHP_EOL
+                                        //. '  templateResult: formatRepo,' . PHP_EOL
+                                        //. '  templateSelection: formatRepoSelection' . PHP_EOL
+                                        . '});';
+    
+    $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    
+    foreach ($options as $option) {
+      if ($input === true) {
+        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+      } else {
+        $option_input = $input;
+      }
+      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+    }
+    
+    $html .= '</select>';
+    
+    return $html;
   }
   
   function form_draw_textarea($name, $value=true, $parameters='', $hint='') {
