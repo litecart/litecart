@@ -342,7 +342,7 @@
     return $html;
   }
   
-  function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $hint='') {
+  function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $ajax_url=null, $hint='') {
     
     if (!is_array($options)) $options = array($options);
     
@@ -352,29 +352,51 @@
                                                 . '<script src="'. WS_DIR_EXT .'/select2/select2.min.js"></script>' . PHP_EOL
                                                 . '<script src="'. WS_DIR_EXT .'/select2/i18n/'. language::$selected['code'] .'.js"></script>';
                                                
-    document::$snippets['javascript'][] = '$(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
-                                        . '  ajax: {' . PHP_EOL
-                                        . '    url: "'. $ajax_url .'",' . PHP_EOL
-                                        . '    dataType: "json",' . PHP_EOL
-                                        . '    delay: 250,' . PHP_EOL
-                                        . '    data: function(params) {' . PHP_EOL
-                                        . '      return {' . PHP_EOL
-                                        . '        query: params.term,' . PHP_EOL
-                                        . '        page: params.page' . PHP_EOL
-                                        . '      };' . PHP_EOL
-                                        . '    },' . PHP_EOL
-                                        . '    processResults: function(data, page) {' . PHP_EOL
-                                        . '      return {' . PHP_EOL
-                                        . '        results: data.items' . PHP_EOL
-                                        . '      };' . PHP_EOL
-                                        . '    },' . PHP_EOL
-                                        . '    cache: true' . PHP_EOL
-                                        . '  }' . PHP_EOL
-                                        //. '  escapeMarkup: function (markup) { return markup; },' . PHP_EOL
-                                        //. '  minimumInputLength: 1,' . PHP_EOL
-                                        //. '  templateResult: formatRepo,' . PHP_EOL
-                                        //. '  templateSelection: formatRepoSelection' . PHP_EOL
-                                        . '});';
+    if (!empty($ajax_url)) {
+      document::$snippets['javascript'][] = '$(document).ready(function(){' . PHP_EOL
+                                          . '  $(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
+                                          . '    minimumInputLength: 1,' . PHP_EOL
+                                          . '    ajax: {' . PHP_EOL
+                                          . '      url: "'. $ajax_url .'",' . PHP_EOL
+                                          . '      cache: false,' . PHP_EOL
+                                          . '      dataType: "json",' . PHP_EOL
+                                          . '      delay: 250,' . PHP_EOL
+                                          . '      data: function(params) {' . PHP_EOL
+                                          . '        return {' . PHP_EOL
+                                          . '          query: params.term,' . PHP_EOL
+                                          . '          page: params.page || 1' . PHP_EOL
+                                          . '        };' . PHP_EOL
+                                          . '      },' . PHP_EOL
+                                          /*
+                                          . '      processResults: function(data, page) {' . PHP_EOL
+                                          . '        return {' . PHP_EOL
+                                          . '          results: data' . PHP_EOL
+                                          . '        };' . PHP_EOL
+                                          . '      }' . PHP_EOL
+                                          */
+                                          . '      processResults: function(data, page) {' . PHP_EOL
+                                          . '        var results = [];' . PHP_EOL
+                                          . '        $.each(data, function(i, v) {' . PHP_EOL
+                                          . '          var o = {};' . PHP_EOL
+                                          . '          o.id = v.id;' . PHP_EOL
+                                          . '          o.text = v.name;' . PHP_EOL
+                                          . '          results.push(o);' . PHP_EOL
+                                          . '        });' . PHP_EOL
+                                          . '        return {' . PHP_EOL
+                                          . '          results: results' . PHP_EOL
+                                          . '        };' . PHP_EOL
+                                          . '      },' . PHP_EOL
+                                          . '    }' . PHP_EOL
+                                          //.   '  escapeMarkup: function (markup) { return markup; },' . PHP_EOL
+                                          //.   '  templateResult: formatRepo,' . PHP_EOL
+                                          //.   '  templateSelection: formatRepoSelection' . PHP_EOL
+                                          . '  });' . PHP_EOL
+                                          . '});';
+    } else {
+      document::$snippets['javascript'][] = '$(document).ready(function(){' . PHP_EOL
+                                          . '  $(\'select[name="'.$name.'"]\').select2();' . PHP_EOL
+                                          . '});';
+    }
     
     $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .' title="'. htmlspecialchars($hint) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
@@ -384,6 +406,7 @@
       } else {
         $option_input = $input;
       }
+      
       $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
     
@@ -659,7 +682,7 @@
       $options[] = array($country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"');
     }
     
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"');
   }
   
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
@@ -683,24 +706,27 @@
   
   function form_draw_customers_list($name, $input=true, $multiple=false, $parameters='') {
     
-    $customers_query = database::query(
-      "select id, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
-      order by lastname, firstname;"
-    );
+    if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_draw_customers_list()', E_USER_ERROR);
     
-    if (database::num_rows($customers_query) > 1000 && empty($multiple)) {
-      return functions::form_draw_text_field($name, $input, $parameters);
-    }
+    if ($input === true) $input = form_reinsert_value($name);
+    
+    //if (!preg_match('/data-ajax--url="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . ' data-ajax--url="'. document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')) .'"'; // Does not work in jQuery <= 1.11.3
     
     $options = array();
     
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-    
-    while ($customer = database::fetch($customers_query)) {
-      $options[] = array($customer['lastname'] .', '. $customer['firstname'] .' ['. $customer['id'] .']', $customer['id']);
+    if (!empty($input)) {
+      $customers_query = database::query(
+        "select id, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
+        where id = ". (int)$input ."
+        limit 1;"
+      );
+      
+      while($customer = database::fetch($customers_query)) {
+        $options[] = array($customer['company'] ? $customer['company'] :  $customer['firstname'] .' '. $customer['lastname'], $customer['id']);
+      }
     }
-    
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+
+    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"', document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')));
   }
   
   function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {

@@ -24,7 +24,7 @@
           </tr>
           <tr>
             <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-              <?php echo functions::form_draw_text_field('postcode', true, 'data-size="tiny"'); ?></td>
+              <?php echo functions::form_draw_text_field('postcode', true, 'data-size="small"'); ?></td>
             <td><?php echo language::translate('title_city', 'City'); ?> <span class="required">*</span><br />
               <?php echo functions::form_draw_text_field('city', true, 'required="required"'); ?></td>
           </tr>
@@ -79,7 +79,7 @@
             </tr>
             <tr>
               <td><?php echo language::translate('title_postcode', 'Postcode'); ?> <span class="required">*</span><br />
-                <?php echo functions::form_draw_text_field('shipping_address[postcode]', !empty($_POST['different_shipping_address']) ? true : '', 'data-size="tiny"'); ?></td>
+                <?php echo functions::form_draw_text_field('shipping_address[postcode]', !empty($_POST['different_shipping_address']) ? true : '', 'data-size="small"'); ?></td>
               <td><?php echo language::translate('title_city', 'City'); ?> <span class="required">*</span><br />
                 <?php echo functions::form_draw_text_field('shipping_address[city]', !empty($_POST['different_shipping_address']) ? true : ''); ?></td>
             </tr>
