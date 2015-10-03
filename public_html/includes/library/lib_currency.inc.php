@@ -121,16 +121,14 @@
       }
       
     // Get currency from country (via TLD)
-      if (empty(self::$data['country_code'])) {
-        if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
-          $countries_query = database::query(
-            "select * from ". DB_TABLE_COUNTRIES ."
-            where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
-            limit 1;"
-          );
-          $country = database::fetch($countries_query);
-          if (!empty($country['currency_code']) && isset(self::$currencies[$country['currency_code']])) return $country['currency_code'];
-        }
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+        $countries_query = database::query(
+          "select * from ". DB_TABLE_COUNTRIES ."
+          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
+          limit 1;"
+        );
+        $country = database::fetch($countries_query);
+        if (!empty($country['currency_code']) && isset(self::$currencies[$country['currency_code']])) return $country['currency_code'];
       }
       
     // Return default currency
