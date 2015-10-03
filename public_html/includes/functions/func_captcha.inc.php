@@ -3,7 +3,7 @@
   function captcha_get($id='default') {
     
     if (!isset(session::$data['captcha'][$id]['expires']) || session::$data['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) return false;
-    if (!isset(session::$data['captcha'][$id]['value']) || session::$data['captcha'][$id]['value'] == '') return false;
+    if (empty(session::$data['captcha'][$id]['value'])) return false;
 
     return session::$data['captcha'][$id]['value'];
   }

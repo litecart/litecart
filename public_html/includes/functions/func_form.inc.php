@@ -602,8 +602,6 @@
 
   function form_draw_countries_list($name, $input=true, $multiple=false, $parameters='') {
     
-    if ($input === true) $input = form_reinsert_value($name);
-    
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_country_code');
     
     $countries_query = database::query(
@@ -665,8 +663,6 @@
   }
   
   function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {
-    
-    if ($input === true) $input = form_reinsert_value($name);
     
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_delivery_status_id');
     
@@ -730,8 +726,6 @@
   
   function form_draw_length_classes_list($name, $input=true, $multiple=false, $parameters='') {
     
-    if ($input === true) $input = form_reinsert_value($name);
-    
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_class');
     
     $options = array();
@@ -764,8 +758,6 @@
   }
   
   function form_draw_mysql_collations_list($name, $input=true, $multiple=false, $parameters='') {
-    
-    if ($input === true) $input = form_reinsert_value($name);
     
     $collations_query = database::query(
       "SHOW COLLATION;"
@@ -844,8 +836,6 @@
   
   function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
     
-    if ($input === true) $input = form_reinsert_value($name);
-    
     $query = database::query(
       "select p.id, pi.name from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (pi.delivery_status_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -911,8 +901,6 @@
   
   function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {
     
-    if ($input === true) $input = form_reinsert_value($name);
-    
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_quantity_unit_id');
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
@@ -948,8 +936,6 @@
   }
   
   function form_draw_sold_out_statuses_list($name, $input=true, $multiple=false, $parameters='') {
-    
-    if ($input === true) $input = form_reinsert_value($name);
     
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_sold_out_status_id');
     
@@ -1026,8 +1012,6 @@
   
   function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
     
-    if ($input === true) $input = form_reinsert_value($name);
-    
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
     
     $tax_classes_query = database::query(
@@ -1047,8 +1031,6 @@
   }
   
   function form_draw_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
-    
-    if ($input === true) $input = form_reinsert_value($name);
     
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_class');
     
@@ -1070,8 +1052,6 @@
     if ($country_code == 'default_country_code') $country_code = settings::get('default_country_code');
     
     if ($country_code == 'store_country_code') $country_code = settings::get('store_country_code');
-    
-    if ($input === true) $input = form_reinsert_value($name);
     
     $zones_query = database::query(
       "select * from ". DB_TABLE_ZONES ."

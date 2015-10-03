@@ -1,5 +1,5 @@
 <?php
-  if (!isset($_GET['category_id']) || $_GET['category_id'] == '') $_GET['category_id'] = 0;
+  if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
   
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
   
@@ -28,7 +28,7 @@
 
     if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
     if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
-    if (isset($_POST['category_id']) && $_POST['category_id'] == '') notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
+    if (empty($_POST['category_id'])) notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
     
     if (empty(notices::$data['errors'])) {
       

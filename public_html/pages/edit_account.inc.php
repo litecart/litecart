@@ -49,7 +49,7 @@
       if (empty($_POST['shipping_address']['zone_code']) && !empty($_POST['shipping_address']['country_code']) && functions::reference_country_num_zones($_POST['shipping_address']['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
     }
     
-    if (!notices::get('errors')) {
+    if (empty(notices::$data['errors'])) {
       
       if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
       if (!isset($_POST['newsletter'])) $_POST['newsletter'] = 0;

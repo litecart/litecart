@@ -182,7 +182,7 @@
     // Cleanup empty elements in categories
       if (!empty($this->data['categories'])) {
         foreach(array_keys($this->data['categories']) as $key){
-          if ($this->data['categories'][$key] == '') unset($this->data['categories'][$key]);
+          if (empty($this->data['categories'][$key])) unset($this->data['categories'][$key]);
         }
         $this->data['categories'] = array_unique($this->data['categories']);
       }

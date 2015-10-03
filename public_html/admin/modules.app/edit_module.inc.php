@@ -1,5 +1,5 @@
 <?php
-  if (!isset($_GET['module_id']) || $_GET['module_id'] == '') die('Unknown module id');
+  if (empty($_GET['module_id'])) die('Unknown module id');
   
   $module_id = basename($_GET['module_id']);
   
