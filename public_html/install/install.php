@@ -342,7 +342,7 @@
         if ($dir == 'default') continue;
         
         foreach(glob('data/'. $dir .'/*.sql') as $file) {
-          $sql = file_get_contents(file);
+          $sql = file_get_contents($file);
 
           if (empty($sql)) continue;
           
