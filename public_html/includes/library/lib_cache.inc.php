@@ -67,18 +67,21 @@
     
     ######################################################################
     
-    public static function get($cache_id, $type, $max_age=900) {
+    public static function get($cache_id, $type, $max_age=900, $force=false) {
       
-      if (empty(self::$enabled)) return null;
-      
-    // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
-      if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return null;
-      
-      if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return null;
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return null;
+      if (empty($force)) {
+        
+        if (empty(self::$enabled)) return null;
+
+      // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
+        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return null;
+        
+        if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
+          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return null;
+          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return null;
+        }
       }
-    
+      
       switch ($type) {
       
         case 'database': // Not supported yet
@@ -115,8 +118,6 @@
     }
     
     public static function set($cache_id, $type, $data) {
-    
-      if (empty(self::$enabled)) return false;
       
       switch ($type) {
       
@@ -231,11 +232,11 @@
     }
     
     /* This option is not affected by $enabled since new data is always recorded */
-    public static function capture($cache_id, $type='session', $max_age=3600) {
+    public static function capture($cache_id, $type='session', $max_age=3600, $force=false) {
       
       if (isset(self::$_recorders[$cache_id])) trigger_error('Cache recorder already initiated ('. $cache_id .')', E_USER_ERROR);
       
-      $_data = self::get($cache_id, $type, $max_age);
+      $_data = self::get($cache_id, $type, $max_age, $force);
       
       if (!empty($_data)) {
         echo $_data;

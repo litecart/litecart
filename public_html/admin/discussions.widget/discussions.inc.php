@@ -1,36 +1,30 @@
 <?php
   
-  $cache_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'discussions.cache';
-  
-  if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-6 hours')) {
-    echo file_get_contents($cache_file);
-    return;
-  }
-  
-  ob_start();
+  $widget_discussions_cache_id = cache::cache_id('widget_discussions');
+  if (cache::capture($widget_discussions_cache_id, 'file', 21600, true)) {
     
-  $url = document::link('http://forums.litecart.net/feed/rss/');
-  
-  $rss = @functions::http_fetch($url);
-  $rss = @simplexml_load_string($rss);
-  
-  if (!empty($rss->channel->item)) {
+    $url = document::link('http://forums.litecart.net/feed/rss/');
     
-    $columns = array();
+    $response = @functions::http_fetch($url, null, false, false, true);
+    $rss = @simplexml_load_string($response);
     
-    $col = 0;
-    $count = 0;
-    $total = 0;
-    foreach ($rss->channel->item as $item) {
-      if (!isset($count) || $count == 3) {
-        $count = 0;
-        $col++;
+    if (!empty($rss->channel->item)) {
+      
+      $columns = array();
+      
+      $col = 0;
+      $count = 0;
+      $total = 0;
+      foreach ($rss->channel->item as $item) {
+        if (!isset($count) || $count == 3) {
+          $count = 0;
+          $col++;
+        }
+        $columns[$col][] = $item;
+        $count++;
+        $total++;
+        if ($total == 12) break;
       }
-      $columns[$col][] = $item;
-      $count++;
-      $total++;
-      if ($total == 12) break;
-    }
 ?>
 <div class="widget">
   <table style="width: 100%;" class="dataTable">
@@ -39,10 +33,10 @@
     </tr>
     <tr>
 <?php
-    foreach ($columns as $column) {
-      echo '<td style="vertical-align: top;">' . PHP_EOL
-         . '  <table style="width: 100%;">' . PHP_EOL;
-      foreach ($column as $item) {
+      foreach ($columns as $column) {
+        echo '<td style="vertical-align: top;">' . PHP_EOL
+           . '  <table style="width: 100%;">' . PHP_EOL;
+        foreach ($column as $item) {
 ?>
         <tr>
           <td><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
@@ -50,10 +44,10 @@
           </td>
         </tr>
 <?php
+        }
+        echo '  </table>' . PHP_EOL
+           . '</td>' . PHP_EOL;
       }
-      echo '  </table>' . PHP_EOL
-         . '</td>' . PHP_EOL;
-    }
 ?>
     </tr>
   </table>
@@ -61,9 +55,6 @@
 <?php
   }
   
-  $buffer = ob_get_clean();
-  
-  file_put_contents($cache_file, $buffer);
-  
-  echo $buffer;
+    cache::end_capture($widget_discussions_cache_id);
+  }
 ?>

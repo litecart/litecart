@@ -110,7 +110,6 @@
     'FJ' => 'Fiji',
     'FI' => 'Finland',
     'FR' => 'France',
-    'FX' => 'France, Metropolitan',
     'GF' => 'French Guiana',
     'PF' => 'French Polynesia',
     'TF' => 'French Southern Territories',
@@ -331,8 +330,6 @@
     <ul>
 <?php
   $paths = array(
-    //'admin/discussions.widget/discussions.cache',
-    //'admin/addons.widget/addons.cache',
     'admin/.htaccess',
     'admin/.htpasswd',
     'cache/',
