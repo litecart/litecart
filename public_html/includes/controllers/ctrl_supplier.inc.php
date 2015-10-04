@@ -35,7 +35,8 @@
         description = '". database::input($this->data['description'], true) ."',
         email = '". database::input($this->data['email']) ."',
         phone = '". database::input($this->data['phone']) ."',
-        link = '". database::input($this->data['link']) ."'
+        link = '". database::input($this->data['link']) ."',
+        date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
