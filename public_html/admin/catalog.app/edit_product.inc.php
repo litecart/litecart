@@ -127,8 +127,7 @@
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-              <label><?php echo functions::form_draw_radio_button('status', '1', isset($_POST['status']) ? $_POST['status'] : '0'); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
-              <label><?php echo functions::form_draw_radio_button('status', '0', isset($_POST['status']) ? $_POST['status'] : '0'); ?> <?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+              <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '0', 'e/d'); ?>
             </td>
           </tr>
           <tr>
