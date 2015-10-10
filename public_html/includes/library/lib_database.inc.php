@@ -179,7 +179,7 @@
       return $result;
     }
     
-    public function multi_query($query, $link='default') {
+    public static function multi_query($query, $link='default') {
     
       if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
       
