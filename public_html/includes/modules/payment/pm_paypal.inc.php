@@ -46,8 +46,8 @@
       
       if (empty($this->settings['merchant_email'])) return;
       
-      if (!empty($this->settings['save_order_first'])) {
-        $order->save(); // Save order to database
+      if (!empty($this->settings['save_order'])) {
+        $order->save(); // Save order to database first
       }
       
       $fields = array(
@@ -62,7 +62,7 @@
         'cancel_return' => document::ilink('checkout'),
         //'notify_url'    => document::ilink('callback', array('order_uid' => $order->data['uid'])), // We're not using IPN callbacks
         'charset'       => language::$selected['charset'],
-        'custom'        => $order->data['uid'],
+        'custom'        => !empty($this->settings['save_order']) ? $order->data['id'] : $order->data['uid'],
       );
       
       $item_no = 1;
