@@ -1,0 +1,1 @@
+ALTER TABLE `lc_orders_items` CHANGE `quantity` `quantity` DECIMAL(11, 4) NOT NULL;

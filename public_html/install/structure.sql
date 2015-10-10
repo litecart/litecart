@@ -320,7 +320,7 @@ CREATE TABLE `lc_orders_items` (
   `options` varchar(512) NOT NULL,
   `name` varchar(128) NOT NULL,
   `sku` varchar(64) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `quantity` decimal(11,4) NOT NULL,
   `price` decimal(11,4) NOT NULL,
   `tax` decimal(11,4) NOT NULL,
   `weight` decimal(11,4) NOT NULL,
