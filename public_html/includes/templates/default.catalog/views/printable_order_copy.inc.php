@@ -68,7 +68,7 @@
     }
 ?>
       <tr style="<?php echo ($rowclass == 'odd') ? 'background-color: #fcfcfc;' : 'background-color: #f5f5f5;'; ?>">
-        <td style="padding: 10px 10px 10px 20px; text-align: center;"><?php echo $item['quantity']; ?></td>
+        <td style="padding: 10px 10px 10px 20px; text-align: center;"><?php echo rtrim(language::number_format($item['quantity'], 4), language::$selected['decimal_point'].'0'); ?></td>
         <td style="padding: 5px 10px;"><?php echo $item['name']; ?>
 <?php
     if (!empty($item['options'])) {

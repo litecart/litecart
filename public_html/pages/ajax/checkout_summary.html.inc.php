@@ -52,7 +52,7 @@
       'price' => !empty(customer::$data['display_prices_including_tax']) ? currency::format($item['price'] + $item['tax'], false) : currency::format($item['price'], false),
       'tax' => currency::format($item['tax'], false),
       'sum' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(($item['price'] + $item['tax']) * $item['quantity'], false) : currency::format($item['price'] * $item['quantity'], false),
-      'quantity' => $item['quantity'],
+      'quantity' => rtrim(language::number_format($item['quantity'], 4), language::$selected['decimal_point'].'0'),
     );
   }
   
