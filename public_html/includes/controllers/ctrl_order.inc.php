@@ -651,7 +651,10 @@
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
+        '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
+        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
+        '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
       );
     
