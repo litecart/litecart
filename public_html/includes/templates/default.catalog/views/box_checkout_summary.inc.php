@@ -3,7 +3,7 @@
   <div id="order_confirmation-wrapper" class="content">
     <table class="dataTable rounded-corners" style="width: 100%;">
       <tr class="header">
-        <th class="quantity" width="50"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+        <th class="quantity" style="width: 50px; text-align: center;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
         <th class="item"><?php echo language::translate('title_product', 'Product'); ?></th>
         <th class="sku"><?php echo language::translate('title_sku', 'SKU'); ?></th>
         <th class="unit-cost" style="text-align: right;"><?php echo language::translate('title_unit_cost', 'Unit Cost'); ?></th>

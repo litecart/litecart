@@ -129,14 +129,13 @@
         }
         
         foreach ($order->data['order_total'] as $row) {
-          if ($row['calculate']) {
-            $fields['item_name_'.$item_no] = $row['title'];
-            $fields['item_number_'.$item_no] = $row['module_id'];
-            $fields['quantity_'.$item_no] = '1';
-            $fields['amount_'.$item_no] = $this->_format_raw($row['value'], $order->data['currency_code'], $order->data['currency_value']);
-            $fields['tax_'.$item_no] = $this->_format_raw($row['tax'], $order->data['currency_code'], $order->data['currency_value']);
-            $item_no++;
-          }
+          if (empty($row['calculate'])) continue;
+          $fields['item_name_'.$item_no] = $row['title'];
+          $fields['item_number_'.$item_no] = $row['module_id'];
+          $fields['quantity_'.$item_no] = '1';
+          $fields['amount_'.$item_no] = $this->_format_raw($row['value'], $order->data['currency_code'], $order->data['currency_value']);
+          $fields['tax_'.$item_no] = $this->_format_raw($row['tax'], $order->data['currency_code'], $order->data['currency_value']);
+          $item_no++;
         }
       }
       

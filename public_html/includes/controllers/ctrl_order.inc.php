@@ -514,7 +514,10 @@
           functions::email_send(
             null,
             $this->data['customer']['email'],
-            sprintf(language::translate('title_order_d_updated', 'Order #%d Updated: %s', $this->data['language_code']), (int)$this->data['id'], (string)$current_order_status['name']),
+            strtr(language::translate('email_subject_order_updated', 'Order Update: %s', $this->data['language_code']), array(
+              'id' => (int)$this->data['id'],
+              'status' => $current_order_status['name'],
+            )),
             $email_body,
             true
           );

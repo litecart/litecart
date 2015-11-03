@@ -76,6 +76,10 @@
       return session_destroy();
     }
     
+    public static function get_id() {
+      return session_id();
+    }
+    
     public static function regenerate_id() {
       return session_regenerate_id(true);
     }
