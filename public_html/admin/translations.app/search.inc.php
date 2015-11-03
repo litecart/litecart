@@ -101,7 +101,7 @@ ul.filter li {
   
   <li>
     <?php echo language::translate('title_languages', 'Languages'); ?>:<br />
-    <?php foreach (array_keys(language::$languages) as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
+    <?php foreach (array_merge(array('en'), array_keys(language::$languages)) as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
   </li>
   
   <li>
@@ -117,7 +117,7 @@ ul.filter li {
   <table align="center" width="100%" class="dataTable">
     <tr class="header">
       <th style="width: 100%;"><?php echo language::translate('title_code', 'Code');?></th>
-      <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. language::$languages[$language_code]['name'] .'</th>'; ?>
+      <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. (!empty(language::$languages[$language_code]['name']) ? language::$languages[$language_code]['name'] : $language_code) .'</th>'; ?>
       <th>&nbsp;</th>
     </tr>
 <?php 
