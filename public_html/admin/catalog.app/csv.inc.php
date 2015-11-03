@@ -12,7 +12,7 @@
       
       $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
       while ($category = database::fetch($categories_query)) {
-        $category = catalog::category($category['id']);
+        $category = ref_category($category['id']);
         
         $csv[] = array(
           'id' => $category->id,
@@ -155,7 +155,7 @@
         order by pi.name;"
       );
       while ($product = database::fetch($products_query)) {
-        $product = catalog::product($product['id']);
+        $product = ref_product($product['id']);
         
         $csv[] = array(
           'id' => $product->id,
