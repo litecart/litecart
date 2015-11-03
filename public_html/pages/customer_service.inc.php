@@ -7,7 +7,7 @@
   
   if (!empty($_POST['send'])) {
   
-    if (settings::get('contact_form_captcha_enabled')) {
+    if (settings::get('captcha_enabled')) {
       $captcha = functions::captcha_get('contact_us');
       if (empty($captcha) || $captcha != $_POST['captcha']) notices::add('errors', language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
     }

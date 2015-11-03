@@ -17,7 +17,7 @@
         <td colspan="2"><?php echo language::translate('title_message', 'Message'); ?> <span class="required">*</span><br />
           <?php echo functions::form_draw_textarea('message', true, 'data-size="large" style="height: 250px;"'); ?></td>
       </tr>
-      <?php if (settings::get('contact_form_captcha_enabled')) { ?>
+      <?php if (settings::get('captcha_enabled')) { ?>
       <tr>
         <td colspan="2"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?> <span class="required">*</span><br />
           <?php echo functions::captcha_generate(100, 40, 4, 'contact_us', 'numbers', 'align="absbottom"') .' '. functions::form_draw_text_field('captcha', '', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>

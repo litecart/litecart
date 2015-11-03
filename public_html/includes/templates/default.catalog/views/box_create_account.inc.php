@@ -51,6 +51,13 @@
           <td><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?> <span class="required">*</span><br />
           <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?></td>
         </tr>
+        <?php if (settings::get('captcha_enabled')) { ?>
+        <tr>
+          <td colspan="2"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?> <span class="required">*</span><br />
+            <?php echo functions::captcha_generate(100, 40, 4, 'create_account', 'numbers', 'align="absbottom"') .' '. functions::form_draw_text_field('captcha', '', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
+          </td>
+        </tr>
+        <?php } ?>
         <tr>
           <td colspan="2"><?php echo functions::form_draw_button('create_account', language::translate('title_create_account', 'Create Account')); ?></td>
         </tr>
