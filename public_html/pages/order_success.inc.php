@@ -35,7 +35,7 @@
   
   $page->snippets = array(
     'printable_link' => document::ilink('printable_order_copy', array('order_id' => $order->data['id'], 'checksum' => functions::general_order_public_checksum($order->data['id']), 'media' => 'print')),
-    'payment_receipt' => $payment->run('receipt'),
+    'payment_receipt' => $payment->receipt($order),
     'order_success_modules_output' => $order_success->process($order),
   );
   

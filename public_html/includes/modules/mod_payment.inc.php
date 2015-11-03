@@ -151,6 +151,17 @@
       return $this->modules[$module_id]->after_process($order);
     }
     
+    public function receipt($order) {
+      
+      if (empty($this->data['selected']['id'])) return;
+      
+      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      
+      if (!method_exists($this->modules[$module_id], 'receipt')) return;
+      
+      return $this->modules[$module_id]->receipt($order);
+    }
+    
     public function run($method_name, $module_id=null) {
     
       if (empty($module_id)) {
