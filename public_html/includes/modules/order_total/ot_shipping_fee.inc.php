@@ -30,22 +30,24 @@
       );
       
       if (!empty($this->settings['free_shipping_amount']) && $this->settings['free_shipping_amount'] > 0) {
+        if (empty($this->settings['countries']) || in_array($order->data['customer']['shipping_address']['country_code'], explode(', ', $this->settings['countries']))) {
       
-      // Calculate cart total
-        $subtotal = 0;
-        foreach ($order->data['items'] as $item) {
-          $subtotal += $item['quantity'] * $item['price'];
-        }
-        
-      // If below minimum amount
-        if ($subtotal >= $this->settings['free_shipping_amount']) {
-          $output[] = array(
-            'title' => language::translate('title_free_shipping', 'Free Shipping'),
-            'value' => -$GLOBALS['shipping']->data['selected']['cost'],
-            'tax' => -tax::get_tax($GLOBALS['shipping']->data['selected']['cost'], $GLOBALS['shipping']->data['selected']['tax_class_id'], $order->data['customer']),
-            'tax_class_id' => $GLOBALS['shipping']->data['selected']['tax_class_id'],
-            'calculate' => true,
-          );
+        // Calculate cart total
+          $subtotal = 0;
+          foreach ($order->data['items'] as $item) {
+            $subtotal += $item['quantity'] * $item['price'];
+          }
+          
+        // If below minimum amount
+          if ($subtotal >= $this->settings['free_shipping_amount']) {
+            $output[] = array(
+              'title' => language::translate('title_free_shipping', 'Free Shipping'),
+              'value' => -$GLOBALS['shipping']->data['selected']['cost'],
+              'tax' => -tax::get_tax($GLOBALS['shipping']->data['selected']['cost'], $GLOBALS['shipping']->data['selected']['tax_class_id'], $order->data['customer']),
+              'tax_class_id' => $GLOBALS['shipping']->data['selected']['tax_class_id'],
+              'calculate' => true,
+            );
+          }
         }
       }
       
@@ -67,6 +69,13 @@
           'title' => language::translate(__CLASS__.':title_free_shipping_amount', 'Free Shipping Amount'),
           'description' => language::translate(__CLASS__.':description_free_shipping_amount', 'Enable free shipping for orders that meet the given cart total amount or above (excluding tax). 0 = disabled'),
           'function' => 'decimal()',
+        ),
+        array(
+          'key' => 'countries',
+          'default_value' => '',
+          'title' => language::translate(__CLASS__.':title_countries', 'Countries'),
+          'description' => language::translate(__CLASS__.':description_countries', 'A coma separated list of countries to recceive free shipping e.g. SE,DK or leave blank for all.'),
+          'function' => 'input()',
         ),
         array(
           'key' => 'priority',
