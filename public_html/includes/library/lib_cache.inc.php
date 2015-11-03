@@ -70,7 +70,6 @@
     public static function get($cache_id, $type, $max_age=900, $force=false) {
       
       if (empty($force)) {
-        
         if (empty(self::$enabled)) return null;
 
       // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
@@ -90,7 +89,7 @@
         case 'file':
           $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$cache_id;
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
-            if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return null;
+            if (!$force && filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return null;
             
             $data = @json_decode(file_get_contents($cache_file), true);
             
@@ -104,7 +103,7 @@
         
         case 'session':
           if (isset(self::$_data[$cache_id]['mtime']) && self::$_data[$cache_id]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            if (self::$_data[$cache_id]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return null;
+            if (!$force && self::$_data[$cache_id]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return null;
             return self::$_data[$cache_id]['data'];
           }
           return null;
@@ -232,7 +231,7 @@
     }
     
     /* This option is not affected by $enabled since new data is always recorded */
-    public static function capture($cache_id, $type='session', $max_age=3600, $force=false) {
+    public static function capture($cache_id, $type='session', $max_age=900, $force=false) {
       
       if (isset(self::$_recorders[$cache_id])) trigger_error('Cache recorder already initiated ('. $cache_id .')', E_USER_ERROR);
       
