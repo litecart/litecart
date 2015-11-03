@@ -22,6 +22,11 @@
   
   if (!empty($_POST['create_account'])) {
   
+    if (settings::get('captcha_enabled')) {
+      $captcha = functions::captcha_get('create_account');
+      if (empty($captcha) || $captcha != $_POST['captcha']) notices::add('errors', language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+    }
+    
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     
     if (!empty($_POST['email']) && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) notices::add('errors', language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
