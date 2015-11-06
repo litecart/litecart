@@ -15,20 +15,25 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 
+<style>
+.border-left {
+  border-left: 1px #999 dashed;
+}
+</style>
+
 <div style="float: right; display: inline;">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app'); ?>
     <?php echo functions::form_draw_hidden_field('doc'); ?>
     <table>
       <tr>
-        <td><?php echo language::translate('title_date_period', 'Date Period'); ?>:</td>
-        <td><?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></td>
+        <td><?php echo language::translate('title_item_name', 'Item Name'); ?>: <?php echo functions::form_draw_search_field('name'); ?></td>
+        <td><?php echo language::translate('title_date_period', 'Date Period'); ?>: <?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></td>
         <td><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></td>
       </tr>
     </table>
   <?php echo functions::form_draw_form_end(); ?>
 </div>
-
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_most_sold_products', 'Most Sold Products'); ?></h1>
 
@@ -36,6 +41,8 @@
   <tr class="header">
     <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_sales', 'Sales'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
   </tr>
 <?php
   $order_statuses = array();
@@ -47,14 +54,19 @@
   }
   
   $order_items_query = database::query(
-    "select sum(oi.quantity) as quantity, oi.name from ". DB_TABLE_ORDERS_ITEMS ." oi
+    "select
+      oi.name,
+      sum(oi.quantity) as total_quantity,
+      sum(oi.price) as total_sales,
+      sum(oi.tax) as total_tax
+    from ". DB_TABLE_ORDERS_ITEMS ." oi
     left join ". DB_TABLE_ORDERS ." o on (o.id = oi.order_id)
     where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-    and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'
-    and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'
+    and o.date_created >= '". date('Y-m-1 00:00:00', strtotime($_GET['date_from'])) ."'
+    and o.date_created <= '". date('Y-m-t 23:59:59', strtotime($_GET['date_to'])) ."'
+    ". (!empty($_GET['name']) ? "and oi.name like '%". database::input($_GET['name']) ."%'" : "") ."
     group by oi.product_id
-    order by quantity desc
-    limit 50;"
+    order by total_quantity desc;"
   );
   
   if (database::num_rows($order_items_query) > 0) {
@@ -66,7 +78,9 @@
 ?>
   <tr class="row">
     <td><?php echo $order_item['name']; ?></td>
-    <td style="text-align: center;"><?php echo $order_item['quantity']; ?></td>
+    <td style="text-align: center;" class="border-left"><?php echo rtrim($order_item['total_quantity'], '.0'); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
   </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
