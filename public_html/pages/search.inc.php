@@ -118,6 +118,13 @@
   }
   
   $products_query = database::query($query);
+  
+  if (database::num_rows($products_query) == 1) {
+    $product = database::fetch($products_query);
+    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), 302);
+    exit;
+  }
+  
   if (database::num_rows($products_query) > 0) {
     
     if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page') * ($_GET['page']-1)));
