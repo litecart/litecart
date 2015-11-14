@@ -348,9 +348,9 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    document::$snippets['head_tags']['select2'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'/select2/select2.min.css" />' . PHP_EOL
-                                                . '<script src="'. WS_DIR_EXT .'/select2/select2.min.js"></script>' . PHP_EOL
-                                                . '<script src="'. WS_DIR_EXT .'/select2/i18n/'. language::$selected['code'] .'.js"></script>';
+    document::$snippets['head_tags']['select2'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'select2/select2.min.css" />' . PHP_EOL
+                                                . '<script src="'. WS_DIR_EXT .'select2/select2.min.js"></script>' . PHP_EOL
+                                                . '<script src="'. WS_DIR_EXT .'select2/i18n/'. language::$selected['code'] .'.js"></script>';
                                                
     if (!empty($ajax_url)) {
       document::$snippets['javascript'][] = '$(document).ready(function(){' . PHP_EOL

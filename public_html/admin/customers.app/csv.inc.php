@@ -34,9 +34,7 @@
             limit 1;"
           );
           $customer = database::fetch($customers_query);
-        }
-        
-        if (empty($customer) && !empty($row['email'])) {
+        } else if (!empty($row['email'])) {
           $customers_query = database::query(
             "select id from ". DB_TABLE_CUSTOMERS ."
             where email like '". database::input($row['email']) ."'
