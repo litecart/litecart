@@ -323,35 +323,35 @@
       }
     }
     
-    public static function login($email, $password, $redirect_url='', $customer_remember_me=false) {
+    public static function login($login, $password, $redirect_url='', $customer_remember_me=false) {
       
       setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       
-      if (empty($email) || empty($password)) {
+      if (empty($login) || empty($password)) {
         notices::add('errors', language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
         return;
       }
       
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where email like '". database::input($email) ."'
-        and (password = '". functions::password_checksum($email, $password) ."' /*or password = ''*/)
+        where status
+        and email like '". database::input($login) ."'
         limit 1;"
       );
       $customer = database::fetch($customer_query);
       
-      if (empty($customer)) {
+      if (empty($customer) || (!empty($customer['password']) && $customer['password'] != functions::password_checksum($customer['email'], $password))) {
         sleep(5);
-        notices::add('errors', language::translate('error_login_incorrect', 'Wrong email and password combination or the account does not exist.'));
+        notices::add('errors', language::translate('error_login_invalid', 'Wrong password or the account is disabled, or does not exist'));
         return;
       }
       
       if (empty($customer['password'])) {
-        $customer['password'] = functions::password_checksum($email, $password);
+        $customer['password'] = functions::password_checksum($customer['email'], $password);
         $customer_query = database::query(
           "update ". DB_TABLE_CUSTOMERS ."
           set password = '". database::input($customer['password']) ."'
-          where email = '". database::input($email) ."'
+          where id = ". (int)$customer['id'] ."
           limit 1;"
         );
       }

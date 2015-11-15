@@ -5,7 +5,7 @@
     <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::ilink('')); ?>
       <table>
         <tr>
-          <td><?php echo language::translate('title_email_address', 'Email Address'); ?><br />
+          <td><?php echo language::translate('title_email_address', 'Email Address'); ?> <span class="required">*</span><br />
             <?php echo functions::form_draw_text_field('email', true, 'required="required" style="width: 190px"'); ?></td>
         </tr>
         <tr>

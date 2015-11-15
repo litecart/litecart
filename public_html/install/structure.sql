@@ -104,6 +104,7 @@ CREATE TABLE `lc_currencies` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_customers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `email` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
   `tax_id` varchar(32) NOT NULL,

@@ -21,6 +21,7 @@
       
       $map = array(
         'id',
+        'status',
         'email',
         'password',
         'tax_id',
@@ -80,6 +81,7 @@
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set
+          status = '". @(int)$this->data['status'] ."',
           email = '". @database::input($this->data['email']) ."',
           tax_id = '". @database::input($this->data['tax_id']) ."',
           company = '". @database::input($this->data['company']) ."',
