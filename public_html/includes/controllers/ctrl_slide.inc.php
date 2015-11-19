@@ -4,8 +4,23 @@
     public $data = array();
     
     public function __construct($slide_id=null) {
+      if ($slide_id !== null) {
+        $this->load((int)$slide_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if ($slide_id !== null) $this->load((int)$slide_id);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_SLIDES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($slide_id) {

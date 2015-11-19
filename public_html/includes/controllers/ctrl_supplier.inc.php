@@ -4,8 +4,23 @@
     public $data = array();
     
     public function __construct($supplier_id=null) {
+      if (!empty($supplier_id)) {
+        $this->load((int)$supplier_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if (!empty($supplier_id)) $this->load((int)$supplier_id);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_SUPPLIERS .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($supplier_id) {

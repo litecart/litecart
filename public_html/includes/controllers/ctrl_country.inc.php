@@ -4,8 +4,23 @@
     public $data = array();
     
     public function __construct($country_code=null) {
+      if ($country_code !== null) {
+        $this->load($country_code);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if ($country_code !== null) $this->load($country_code);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_COUNTRIES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($country_code) {

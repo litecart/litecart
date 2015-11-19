@@ -4,21 +4,37 @@
     public $data = array();
     
     public function __construct($group_id=null) {
-      
-      $this->reset();
-      
-      if ($group_id !== null) $this->load((int)$group_id);
+      if ($group_id !== null) {
+        $this->load((int)$group_id);
+      } else {
+        $this->reset();
+      }
     }
     
     public function reset() {
-      $this->data = array(
-        'id' => '',
-        'function' => '',
-        'name' => array(),
-        'description' => array(),
-        'values' => array(),
-        'sort' => 'alphabetical'
+      
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_OPTION_GROUPS .";"
       );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
+      
+      $info_fields_query = database::query(
+        "show fields from ". DB_TABLE_OPTION_GROUPS_INFO .";"
+      );
+      
+      while ($field = database::fetch($info_fields_query)) {
+        if (in_array($field['Field'], array('id', 'option_group_id', 'language_code'))) continue;
+        $this->data[$field['Field']] = array();
+        foreach (array_keys(language::$languages) as $language_code) {
+          $this->data[$field['Field']][$language_code] = '';
+        }
+      }
+      
+      $this->data['sort'] = 'alphabetical';
     }
     
     public function load($group_id) {

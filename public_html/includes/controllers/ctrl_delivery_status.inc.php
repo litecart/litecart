@@ -4,8 +4,35 @@
     public $data = array();
     
     public function __construct($delivery_status_id=null) {
+      if ($delivery_status_id !== null) {
+        $this->load((int)$delivery_status_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if ($delivery_status_id !== null) $this->load((int)$delivery_status_id);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_DELIVERY_STATUSES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
+      
+      $info_fields_query = database::query(
+        "show fields from ". DB_TABLE_DELIVERY_STATUSES_INFO .";"
+      );
+      
+      while ($field = database::fetch($info_fields_query)) {
+        if (in_array($field['Field'], array('id', 'delivery_status_id', 'language_code'))) continue;
+        $this->data[$field['Field']] = array();
+        foreach (array_keys(language::$languages) as $language_code) {
+          $this->data[$field['Field']][$language_code] = '';
+        }
+      }
     }
     
     public function load($delivery_status_id) {

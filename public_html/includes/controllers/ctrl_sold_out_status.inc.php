@@ -4,8 +4,23 @@
     public $data = array();
     
     public function __construct($sold_out_status_id=null) {
+      if ($sold_out_status_id !== null) {
+        $this->load((int)$sold_out_status_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if ($sold_out_status_id !== null) $this->load((int)$sold_out_status_id);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_SOLD_OUT_STATUSES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($sold_out_status_id) {

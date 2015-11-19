@@ -3,11 +3,24 @@
   class ctrl_user {
     public $data = array();
     
-    public function __construct($user_id=null) {
+    public function __construct($user_id=null) {      
+      if ($user_id !== null) {
+        $this->load((int)$user_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      $this->reset();
+      $this->data = array();
       
-      if ($user_id !== null) $this->load((int)$user_id);
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_USERS .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function reset() {

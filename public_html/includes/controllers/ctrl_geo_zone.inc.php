@@ -4,8 +4,23 @@
     public $data = array();
     
     public function __construct($geo_zone_id=null) {
+      if ($geo_zone_id !== null) {
+        $this->load((int)$geo_zone_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if ($geo_zone_id !== null) $this->load((int)$geo_zone_id);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_GEO_ZONES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($geo_zone_id) {

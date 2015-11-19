@@ -4,8 +4,23 @@
     public $data = array();
     
     public function __construct($language_code=null) {
+      if ($language_code !== null) {
+        $this->load($language_code);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if ($language_code !== null) $this->load($language_code);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_LANGUAGES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($language_code) {

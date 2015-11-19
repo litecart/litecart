@@ -4,8 +4,23 @@
     public $data = array();
     
     public function __construct($tax_rate_id=null) {
+      if ($tax_rate_id !== null) {
+        $this->load((int)$tax_rate_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
-      if ($tax_rate_id !== null) $this->load((int)$tax_rate_id);
+      $this->data = array();
+      
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_TAX_RATES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($tax_rate_id) {

@@ -4,7 +4,6 @@
     public $data;
     
     public function __construct($product_id=null) {
-      
       if (!empty($product_id)) {
         $this->load((int)$product_id);
       } else {
@@ -16,11 +15,23 @@
       
       $this->data = array();
       
-      $products_query = database::query(
+      $fields_query = database::query(
         "show fields from ". DB_TABLE_PRODUCTS .";"
       );
-      while ($field = database::fetch($products_query)) {
+      while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = '';
+      }
+      
+      $info_fields_query = database::query(
+        "show fields from ". DB_TABLE_PRODUCTS_INFO .";"
+      );
+      
+      while ($field = database::fetch($info_fields_query)) {
+        if (in_array($field['Field'], array('id', 'product_id', 'language_code'))) continue;
+        $this->data[$field['Field']] = array();
+        foreach (array_keys(language::$languages) as $language_code) {
+          $this->data[$field['Field']][$language_code] = '';
+        }
       }
       
       $this->data['categories'] = array();
@@ -30,18 +41,6 @@
       $this->data['campaigns'] = array();
       $this->data['options'] = array();
       $this->data['options_stock'] = array();
-      
-      $products_info_query = database::query(
-        "show fields from ". DB_TABLE_PRODUCTS_INFO .";"
-      );
-      
-      while ($field = database::fetch($products_info_query)) {
-        if (in_array($field['Field'], array('id', 'product_id', 'language_code'))) continue;
-        $this->data[$field['Field']] = array();
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = '';
-        }
-      }
     }
     
     public function load($product_id) {

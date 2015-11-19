@@ -4,9 +4,23 @@
     public $data = array();
     
     public function __construct($customer_id=null) {
+      if ($customer_id !== null) {
+        $this->load((int)$customer_id);
+      } else {
+        $this->reset();
+      }
+    }
+    
+    public function reset() {
       
+      $this->data = array();
       
-      if ($customer_id !== null) $this->load((int)$customer_id);
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_CUSTOMERS .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = '';
+      }
     }
     
     public function load($customer_id) {
