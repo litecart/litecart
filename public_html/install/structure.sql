@@ -567,7 +567,7 @@ CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -578,7 +578,7 @@ CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
   PRIMARY KEY (`id`),
   KEY `quantity_unit_id` (`quantity_unit_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -684,12 +684,8 @@ CREATE TABLE `lc_tax_rates` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_translations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL,
+  `code` varchar(250) NOT NULL,
   `text_en` text NOT NULL,
-  `text_de` text NOT NULL,
-  `text_nb` text NOT NULL,
-  `text_da` text NOT NULL,
-  `text_sv` text NOT NULL,
   `html` tinyint(1) NOT NULL,
   `pages` text NOT NULL,
   `date_created` datetime NOT NULL,
