@@ -126,7 +126,10 @@
         trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['code'], E_USER_WARNING);
       }
       
-    // Set output encoding
+    // Set PHP multibyte charset
+      mb_internal_encoding(self::$selected['charset']);
+      
+    // Set PHP output encoding
       mb_http_output(self::$selected['charset']);
       
     // Set mysql charset and collation

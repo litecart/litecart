@@ -369,7 +369,7 @@
       
       if (empty($redirect_url)) $redirect_url = document::ilink('');
       
-      notices::add('success', str_replace(array('%firstname', '%lastname'), array(self::$data['firstname'], self::$data['lastname']), language::translate('success_welcome_back_user', 'Welcome back %firstname %lastname.')));
+      notices::add('success', str_replace(array('%firstname', '%lastname'), array(self::$data['firstname'], self::$data['lastname']), language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.')));
       header('Location: '. $redirect_url);
       exit;
     }

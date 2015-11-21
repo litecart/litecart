@@ -22,12 +22,13 @@
           $fields = $this->_get_address_cache[$checksum];
           continue;
         }
-        if (method_exists($module, 'get_address')) {
-          if ($result = $module->get_address($fields)) {
-            if (is_array($result) && empty($result['error'])) {
-              foreach ($result as $key => $value) {
-                if (!empty($result[$key])) $fields[$key] = $result[$key];
-              }
+        
+        if (!method_exists($module, 'get_address')) continue;
+        
+        if ($result = $module->get_address($fields)) {
+          if (is_array($result) && empty($result['error'])) {
+            foreach ($result as $key => $value) {
+              if (!empty($result[$key])) $fields[$key] = $result[$key];
             }
           }
         }
@@ -43,9 +44,8 @@
       if (empty($this->modules)) return false;
       
       foreach ($this->modules as $module) {
-        if (method_exists($module, 'after_save')) {
-          $module->after_save($object);
-        }
+        if (!method_exists($module, 'after_save')) continue;
+        $module->after_save($object);
       }
     }
     

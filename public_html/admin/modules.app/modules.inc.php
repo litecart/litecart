@@ -95,7 +95,6 @@
     $module_id = substr(basename($file), 0, -8);
     if (!in_array($module_id, $installed_modules)) {
       $num_module_rows++;
-      require_once vmod::check($file);
       $module = new $module_id;
 ?>
   <tr class="row semi-transparent">

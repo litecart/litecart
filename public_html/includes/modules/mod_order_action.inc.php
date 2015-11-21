@@ -20,15 +20,14 @@
       
         $module_options = $module->options();
         
-        if (!empty($module_options['options'])) {
+        if (empty($module_options['options'])) continue;
         
-          $this->data['options'][$module->id] = $module_options;
-          $this->data['options'][$module->id]['id'] = $module->id;
-          $this->data['options'][$module->id]['options'] = array();
-          
-          foreach ($module_options['options'] as $option) {
-            $this->data['options'][$module->id]['options'][$option['id']] = $option;
-          }
+        $this->data['options'][$module->id] = $module_options;
+        $this->data['options'][$module->id]['id'] = $module->id;
+        $this->data['options'][$module->id]['options'] = array();
+        
+        foreach ($module_options['options'] as $option) {
+          $this->data['options'][$module->id]['options'][$option['id']] = $option;
         }
       }
       

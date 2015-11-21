@@ -119,10 +119,10 @@
       $sql_select_occurrences = "(0
         ". (isset($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (isset($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
-        ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", $filter['categories']) ."', categories), 1, 0)" : false) ."
-        ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", $filter['keywords']) ."', p.keywords), 1, 0)" : false) ."
+        ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", database::input($filter['categories'])) ."', categories), 1, 0)" : false) ."
+        ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."
         ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
-        ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", $filter['product_groups']) ."', p.product_groups), 1, 0)" : false) ."
+        ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", database::input($filter['product_groups'])) ."', p.product_groups), 1, 0)" : false) ."
         ". (isset($filter['products']) ? "+ if(p.id in ('". implode("', '", database::input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences";
       $sql_andor = "or";
@@ -159,10 +159,10 @@
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
         where p.status
           and (id
-          ". (isset($filter['products']) ? "$sql_andor p.id in ('". implode("', '", $filter['products']) ."')" : false) ."
-          ". (!empty($filter['categories']) ? "$sql_andor ptc.category_id in (". implode(",", $filter['categories']) .")" : false) ."
+          ". (isset($filter['products']) ? "$sql_andor p.id in ('". implode("', '", database::input($filter['products'])) ."')" : false) ."
+          ". (!empty($filter['categories']) ? "$sql_andor ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : false) ."
           ". (!empty($filter['manufacturers']) ? "$sql_andor manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : false) ."
-          ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", $filter['keywords']) ."', p.keywords))" : false) ."
+          ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : false) ."
           ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
           ". (!empty($filter['purchased']) ? "$sql_andor p.purchases" : false) ."
         )
