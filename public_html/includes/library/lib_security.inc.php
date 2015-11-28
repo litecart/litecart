@@ -99,7 +99,7 @@
       
     // HTTP POST Protection
       if (settings::get('security_http_post')) {
-        if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || REQUIRE_POST_TOKEN) && empty(route::$route['post_security'])) {
+        if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || REQUIRE_POST_TOKEN) && (!isset(route::$route['post_security']) || route::$route['post_security'])) {
           if (!isset($_POST['token']) || $_POST['token'] != form::session_post_token()) {
             error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
             session::clear();
