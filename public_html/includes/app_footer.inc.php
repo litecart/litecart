@@ -23,7 +23,6 @@
   system::run('before_output');
   
 // Output page
-  header('Content-Type: text/html; charset='. language::$selected['charset']);
   header('Content-Language: '. language::$selected['code']);
   echo $output;
   

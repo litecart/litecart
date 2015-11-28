@@ -191,6 +191,8 @@
     
     public static function translate($code, $default=null, $language_code=null) {
       
+      $code = strtolower($code);
+      
       if (empty($language_code)) {
         $language_code = language::$selected['code'];
         $default_language_code = 'en';

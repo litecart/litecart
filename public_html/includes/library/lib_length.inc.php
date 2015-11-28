@@ -38,6 +38,18 @@
           'value' => 39.37,
           'decimals' => 2,
         ),
+        'km' => array(
+          'name' => 'Kilometres',
+          'unit' => 'km',
+          'value' => 0.001,
+          'decimals' => 2,
+        ),
+        'mi' => array(
+          'name' => 'Miles',
+          'unit' => 'mi',
+          'value' => 0.00062137119224,
+          'decimals' => 2,
+        ),
         'mm' => array(
           'name' => 'Millimetres',
           'unit' => 'mm',
