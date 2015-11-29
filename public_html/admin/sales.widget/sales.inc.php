@@ -1,10 +1,10 @@
 <?php
 
-  document::$snippets['head_tags']['jqplot'] = '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
+  document::$snippets['head_tags']['jqplot'] = '<link href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" rel="stylesheet"  />' . PHP_EOL
+                                             . '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.barRenderer.min.js"></script>' . PHP_EOL
-                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>' . PHP_EOL
-                                             . '<link rel="stylesheet" href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" />';
+                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>';
   
   $order_statuses = array();
   $orders_status_query = database::query(
