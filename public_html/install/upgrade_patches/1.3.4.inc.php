@@ -1,45 +1,44 @@
 <?php
 
-// Rename module settings keys
-  $query = $database->query(
-    "select * from ". DB_TABLE_SETTINGS ."
-    where (
-      `key` like 'customer_module_%'
-      or `key` like 'jobs_module_%'
-      or `key` like 'shipping_module_%'
-      or `key` like 'payment_module_%'
-      or `key` like 'order_action_module_%'
-      or `key` like 'order_success_module_%'
-      or `key` like 'order_total_module_%'
-    );"
-  );
-  while($row = $database->fetch($query)) {
-    $new_key = preg_replace('#^((customer|jobs|shipping|payment|order_action|order_success|order_total)_module_)#', '', $row['key']);
-    $database->query(
-      "update  ". DB_TABLE_SETTINGS ."
-      set `key` = '". $database->input($new_key) ."'
-      where `key` = '". $database->input($row['key']) ."'
-      limit 1;"
-    );
-  }
-
-  $modified_files = array(
-    array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
-      'search'  => "  ini_set('display_errors', 'Off');" . PHP_EOL,
-      'replace' => "  ini_set('display_startup_errors', 'Off');" . PHP_EOL
-                 . "  ini_set('display_errors', 'Off');" . PHP_EOL,
-    ),
-    array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
-      'search'  => "    ini_set('display_errors', 'On');" . PHP_EOL,
-      'replace' => "    ini_set('display_startup_errors', 'On');" . PHP_EOL
-                 . "    ini_set('display_errors', 'On');" . PHP_EOL,
-    ),
+  $deleted_files = array(
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.BezierCurveRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.blockRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.bubbleRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.canvasOverlay.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.canvasTextRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.ciParser.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.cursor.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.dateAxisRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.donutRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.dragable.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.enhancedLegendRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.funnelRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.json2.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.logAxisRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.mekkoAxisRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.mekkoRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.meterGaugeRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.mobile.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.ohlcRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.pieRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.pointLabels.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.pyramidAxisRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.pyramidGridRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.pyramidRenderer.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.trendline.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/changes.txt',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/jqPlotCssStyling.txt',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/jqPlotOptions.txt',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jquery/jquery.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/jquery.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/optionsTutorial.txt',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/usage.txt',
   );
   
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
+  foreach ($deleted_files as $pattern) {
+    if (!file_delete($pattern)) {
       die('<span class="error">[Error]</span></p>');
     }
   }

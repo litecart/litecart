@@ -2,9 +2,9 @@
 
   document::$snippets['head_tags']['jqplot'] = '<link href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" rel="stylesheet"  />' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
-                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.barRenderer.min.js"></script>' . PHP_EOL
-                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>';
+                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>' . PHP_EOL
+                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>';
   
   $order_statuses = array();
   $orders_status_query = database::query(
@@ -76,6 +76,10 @@
         show: true
       }
     });
+    
+    $(window).resize(function() {
+      plot1.replot({resetAxes: true});
+    });
   </script>
 
 <?php
@@ -97,8 +101,8 @@
 ?>
   <div id="chart-sales-daily" style="float: right; width: 50%; height: 150px;"></div>
   <script>
-    var bar1 = [<?php echo implode(',', $daily_sales); ?>];
-    var plot1 = $.jqplot('chart-sales-daily', [bar1], {
+    var bar2 = [<?php echo implode(',', $daily_sales); ?>];
+    var plot2 = $.jqplot('chart-sales-daily', [bar2], {
       title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_days', '%s days'), '30'); ?>)',
       grid:{
         borderColor: 'transparent',
@@ -137,6 +141,11 @@
       highlighter: {
         show: true
       }
+    });
+    
+    
+    $(window).resize(function() {
+      plot2.replot({resetAxes: true});
     });
   </script>
   <div style="clear: both;"></div>
