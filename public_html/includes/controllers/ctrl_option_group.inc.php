@@ -95,7 +95,7 @@
       database::query(
         "update ". DB_TABLE_OPTION_GROUPS ."
         set function = '". database::input($this->data['function']) ."',
-        required = '". @(int)$this->data['required'] ."',
+        required = '". (!empty($this->data['required']) ? '1' : '0') ."',
         sort = '". database::input($this->data['sort']) ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -175,7 +175,7 @@
         
         database::query(
           "update ". DB_TABLE_OPTION_VALUES ."
-          set value = '". @database::input($option_value['value']) ."',
+          set value = '". database::input($option_value['value']) ."',
             priority = '". (int)$i ."'
           where id = '". (int)$option_value['id'] ."'
           limit 1;"

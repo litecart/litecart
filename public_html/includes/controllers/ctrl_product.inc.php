@@ -253,7 +253,7 @@
         database::query(
           "update ". DB_TABLE_PRODUCTS_INFO ." set
           name = '". database::input($this->data['name'][$language_code]) ."',
-          short_description = '". database::input($this->data['short_description'][$language_code]) ."',
+          short_description = '". @database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
@@ -412,14 +412,14 @@
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ." 
             set combination = '". database::input($this->data['options_stock'][$key]['combination']) ."',
-            sku = '". database::input(@$this->data['options_stock'][$key]['sku']) ."',
-            weight = '". database::input(@$this->data['options_stock'][$key]['weight']) ."',
-            weight_class = '". database::input(@$this->data['options_stock'][$key]['weight_class']) ."',
-            dim_x = '". database::input(@$this->data['options_stock'][$key]['dim_x']) ."',
-            dim_y = '". database::input(@$this->data['options_stock'][$key]['dim_y']) ."',
-            dim_z = '". database::input(@$this->data['options_stock'][$key]['dim_z']) ."',
-            dim_class = '". database::input(@$this->data['options_stock'][$key]['dim_class']) ."',
-            quantity = '". database::input(@$this->data['options_stock'][$key]['quantity']) ."',
+            sku = '". database::input($this->data['options_stock'][$key]['sku']) ."',
+            weight = '". database::input($this->data['options_stock'][$key]['weight']) ."',
+            weight_class = '". database::input($this->data['options_stock'][$key]['weight_class']) ."',
+            dim_x = '". database::input($this->data['options_stock'][$key]['dim_x']) ."',
+            dim_y = '". database::input($this->data['options_stock'][$key]['dim_y']) ."',
+            dim_z = '". database::input($this->data['options_stock'][$key]['dim_z']) ."',
+            dim_class = '". database::input($this->data['options_stock'][$key]['dim_class']) ."',
+            quantity = '". database::input($this->data['options_stock'][$key]['quantity']) ."',
             priority = '". $i++ ."',
             date_updated =  '". date('Y-m-d H:i:s') ."'
             where product_id = '". (int)$this->data['id'] ."'

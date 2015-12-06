@@ -24,7 +24,7 @@
       $zone = database::fetch($zones_query);
     }
     
-    $translation_map = array(
+    $address = array(
       '%company' => !empty($address['company']) ? $address['company'] : '',
       '%firstname' => !empty($address['firstname']) ? $address['firstname'] : '',
       '%lastname' => !empty($address['lastname']) ? $address['lastname'] : '',
@@ -38,15 +38,9 @@
       '%zone_name' => !empty($zone['name']) ? $zone['name'] : '',
     );
     
-    $output = $country['address_format'] ? $country['address_format'] : settings::get('default_address_format');
+    $output = strtr($country['address_format'] ? $country['address_format'] : settings::get('default_address_format'), $address);
     
-    foreach ($translation_map as $search => $replace) {
-      $output = str_replace($search, $replace, $output);
-    }
-    
-    while (strpos($output, "\r\n\r\n") !== false) $output = str_replace("\r\n\r\n", "\r\n", $output);
-    while (strpos($output, "\r\r") !== false) $output = str_replace("\r\r", "\n\n", $output);
-    while (strpos($output, "\n\n") !== false) $output = str_replace("\n\n", "\n\n", $output);
+    while (preg_match('#(\r\n\r\n|\n\n|\r\r)#', $output)) $output = preg_replace('#(\r\n\r\n|\n\n|\r\r)#', "\r\n", $output);
     
     $output = trim($output);
     

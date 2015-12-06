@@ -47,6 +47,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-cart-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
       },
       success: function(data) {
@@ -69,6 +70,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(data) {
@@ -91,6 +93,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-shipping-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(data) {
@@ -113,6 +116,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-payment-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(data) {
@@ -136,6 +140,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-summary-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(data) {
@@ -150,6 +155,7 @@
   });
   
   $("body").on('submit', "form[name='cart_form']", function(e) {
+    if (console) console.log("Saving cart");
     e.preventDefault();
     $('body').css('cursor', 'wait');
     $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
@@ -164,6 +170,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-cart-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
       },
       success: function(data) {
@@ -198,6 +205,7 @@
       function() {
         if (!$("form[name='customer_form']").is(':focus')) {
           if (customer_form_changed) {
+            if (console) console.log("Autosaving customer details");
             $("form[name='customer_form']").trigger('submit');
           }
         }
@@ -216,6 +224,7 @@
   });
   
   $("body").on('submit', "form[name='customer_form']", function(e) {
+    if (console) console.log("Saving customer details");
     e.preventDefault();
     clearTimeout(timerSubmitCustomer);
     $('*').css('cursor', 'wait');
@@ -231,6 +240,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(data) {
@@ -254,6 +264,7 @@
   });
   
   $("body").on('submit', "form[name='shipping_form']", function(e) {
+    if (console) console.log("Saving shipping details");
     e.preventDefault();
     $('*').css('cursor', 'wait');
     $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
@@ -268,6 +279,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-shipping-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
       },
       success: function(data) {
@@ -285,6 +297,7 @@
   });
   
   $("body").on('submit', "form[name='payment_form']", function(e) {
+    if (console) console.log("Saving payment details");
     e.preventDefault();
     $('*').css('cursor', 'wait');
     $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
@@ -300,6 +313,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-payment-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
       },
       success: function(data) {
@@ -316,6 +330,7 @@
   });
   
   $("body").on('blur', "form[name='comments_form']", function(e) {
+    if (console) console.log("Saving comments");
     e.preventDefault();
     $('*').css('cursor', 'wait');
     $('#checkout-comments-wrapper').fadeTo('slow', 0.25);
@@ -331,6 +346,7 @@
         jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn("Error");
         $('#checkout-comments-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
       },
       success: function(data) {

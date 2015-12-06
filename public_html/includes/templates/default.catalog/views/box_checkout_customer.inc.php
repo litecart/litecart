@@ -102,7 +102,7 @@
 <script>
   $("#box-checkout-customer .billing-address input, #box-checkout-customer .billing-address select").change(function() {
     if ($(this).val() == '') return;
-    if (console) console.log('Getting customer address..');
+    if (console) console.log('Retrieving address ["'+ $(this).attr('name') +']');
     $.ajax({
       url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
@@ -118,7 +118,7 @@
           alert(data['alert']);
         }
         $.each(data, function(key, value) {
-          if (console) console.log(key +": "+ value);
+          if (console) console.log('  ' + key +": "+ value);
           if ($("#box-checkout-customer .billing-address *[name='"+key+"']").length && $("#box-checkout-customer .billing-address *[name='"+key+"']").val() == '') {
             $("#box-checkout-customer .billing-address *[name='"+key+"']").val(value);
           }
@@ -190,6 +190,7 @@
       $(this).closest('table').find("input[name='shipping_address[postcode]']").closest('td').find('.required').hide();
     }
     
+    console.log('Retrieving zones');
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
