@@ -334,8 +334,7 @@
       
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where status
-        and email like '". database::input($login) ."'
+        where email like '". database::input($login) ."'
         limit 1;"
       );
       $customer = database::fetch($customer_query);
@@ -343,6 +342,11 @@
       if (empty($customer) || (!empty($customer['password']) && $customer['password'] != functions::password_checksum($customer['email'], $password))) {
         sleep(5);
         notices::add('errors', language::translate('error_login_invalid', 'Wrong password or the account is disabled, or does not exist'));
+        return;
+      }
+      
+      if (empty($customer['status'])) {
+        notices::add('errors', language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
         return;
       }
       

@@ -5,8 +5,6 @@
     header('X-Robots-Tag: noindex');
   }
   
-  $errors = array();
-  
   if (empty(cart::$items)) return;
   
   if (!isset($shipping)) $shipping = new mod_shipping();

@@ -320,7 +320,7 @@
      */
     private static function _realpath($file) {
 
-      if (!file_exists($path)) return false;
+      if (!file_exists($file)) return false;
 
       $path = str_replace("\\", '/', realpath($file));
 
