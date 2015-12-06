@@ -70,6 +70,8 @@
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
       
+      $customer->data['status'] = 1;
+      
       $customer->save();
       
       $customer->set_password($_POST['password']);
