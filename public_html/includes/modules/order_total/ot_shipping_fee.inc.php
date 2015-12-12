@@ -10,7 +10,6 @@
     public $priority = 0;
     
     public function __construct() {
-      
       $this->name = language::translate(__CLASS__.':title_shipping_fee', 'Shipping Fee');
     }
     

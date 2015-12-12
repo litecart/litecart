@@ -10,7 +10,7 @@
     
     public function get_address($data) {
       
-      if ($this->settings['status'] != 'Enabled') return;
+      if (!empty($this->settings['status'])) return;
       
       if (!in_array($data['trigger'], array('company', 'address1', 'postcode', 'city'))) return;
       
@@ -71,10 +71,10 @@
       return array(
         array(
           'key' => 'status',
-          'default_value' => 'Enabled',
+          'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
-          'function' => 'radio("Enabled", "Disabled")',
+          'function' => 'toggle("e/d")',
         ),
         array(
           'key' => 'priority',

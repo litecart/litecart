@@ -70,6 +70,7 @@
     // Prepare title
       if (!empty(self::$snippets['title'])) {
         if (!is_array(self::$snippets['title'])) self::$snippets['title'] = array(self::$snippets['title']);
+        self::$snippets['title'] = array_filter(self::$snippets['title']);
         self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
       }
       
