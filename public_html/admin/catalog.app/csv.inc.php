@@ -144,6 +144,10 @@
           if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
         }
         
+        if (isset($row['new_image'])) {
+          $product->save_image($row['new_imags']);
+        }
+        
         $category->save();
       }
       
