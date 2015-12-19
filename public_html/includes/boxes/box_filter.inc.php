@@ -21,7 +21,7 @@
         where p.status
         and manufacturer_id
         ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
-        ;"
+        order by m.name asc;"
       );
       if (database::num_rows($manufacturers_query)) {
         

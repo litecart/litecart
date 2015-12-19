@@ -14,7 +14,7 @@
       
       $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
       while ($category = database::fetch($categories_query)) {
-        $category = ref_category($category['id']);
+        $category = new ref_category($category['id']);
         
         $csv[] = array(
           'id' => $category->id,
@@ -171,7 +171,7 @@
         order by pi.name;"
       );
       while ($product = database::fetch($products_query)) {
-        $product = ref_product($product['id']);
+        $product = new ref_product($product['id']);
         
         $csv[] = array(
           'id' => $product->id,
@@ -194,6 +194,7 @@
           'price' => $product->price,
           'tax_class_id' => $product->tax_class_id,
           'quantity' => $product->quantity,
+          'quantity_unit_id' => $product->quantity_unit['id'],
           'weight' => $product->weight,
           'weight_class' => $product->weight_class,
           'delivery_status_id' => $product->delivery_status_id,
@@ -351,13 +352,33 @@
           }
         }
         
+        $fields = array(
+          'categories',
+          'manufacturer_id',
+          'status',
+          'code',
+          'sku',
+          'gtin',
+          'taric',
+          'tax_class_id',
+          'keywords',
+          'quantity',
+          'quantity_unit_id',
+          'weight',
+          'weight_class',
+          'purchase_price',
+          'delivery_status_id',
+          'sold_out_status_id',
+          'date_valid_from',
+          'date_valid_to'
+        );
+        
       // Set new product data
-        foreach (array('categories', 'manufacturer_id', 'status', 'code', 'sku', 'gtin', 'taric', 'tax_class_id', 'keywords', 'quantity', 'weight', 'weight_class', 'purchase_price', 'delivery_status_id', 'sold_out_status_id', 'date_valid_from', 'date_valid_to') as $field) {
+        foreach ($fields as $field) {
           if (isset($row[$field])) $product->data[$field] = $row[$field];
         }
-        foreach (array('categories') as $field) {
-          if (isset($row[$field])) $product->data[$field] = explode(',', str_replace(' ', '', $product->data[$field]));
-        }
+        
+        if (isset($row['categories'])) $product->data['categories'] = explode(',', str_replace(' ', '', $product->data['categories']));
         
       // Set price
         if (!empty($row['currency_code'])) {

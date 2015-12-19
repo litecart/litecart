@@ -48,6 +48,7 @@
   text-transform: uppercase;
   text-shadow: 0px 1px 2px #666;
   transform: rotate(-45deg);
+  box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.5);
 }
 #box-product  .sticker.new {
   background: rgba(191, 176, 121, 0.9);

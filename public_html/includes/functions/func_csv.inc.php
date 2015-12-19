@@ -8,11 +8,11 @@
     
     foreach ($array as $row) {
       foreach (array_keys($row) as $key) {
-        if (strpbrk($row[$key], $delimiter.$enclosure.$escape."\r\n") || strchr($row[$key], "\000")) {
-          $row[$key] = $enclosure . $row[$key] . $enclosure;
+        if (strpbrk($row[$key], $delimiter.$enclosure.$escape."\r\n") !== false) {
+          $row[$key] = $enclosure . str_replace($enclosure, $escape.$enclosure, $row[$key]) . $enclosure;
         }
       }
-      fputs($fp, implode($delimiter, $row) . $eol);
+      fputs($fp, implode($delimiter, $row) . $eol); // Don't use fputcsv as EOL and escape char can not be customized
     }
     
     $output = '';

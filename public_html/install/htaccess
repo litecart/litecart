@@ -6,7 +6,7 @@ ErrorDocument 410 {BASE_DIR}error_document?code=410
 ErrorDocument 500 "Internal Server Error"
 
 # Deny showing indexes for directory content - Uncomment if supported by you web host
-# Options -Indexes
+#Options -Indexes
 
 # URL-rewriting
 <IfModule mod_rewrite.c>

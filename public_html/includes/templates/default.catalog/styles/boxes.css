@@ -72,6 +72,11 @@
   margin-left: 12px;
 }
 
+#box-filter .manufacturers ul {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
 #box-recently-viewed-products li {
 }
 #box-recently-viewed-products li {

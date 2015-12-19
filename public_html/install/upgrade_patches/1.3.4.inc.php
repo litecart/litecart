@@ -29,6 +29,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.pyramidRenderer.min.js',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/plugins/jqplot.trendline.min.js',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/changes.txt',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/gpl-2.0.txt',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/jqPlotCssStyling.txt',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/jqPlotOptions.txt',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jquery/jquery.js',
