@@ -1,5 +1,5 @@
 INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `list_style`, `dock`, `keywords`, `image`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 0, 1, '', 'columns', 'menu', '', '', 0, NOW(), NOW()),
+(1, 0, 1, '', 'columns', 'menu,tree', '', '', 0, NOW(), NOW()),
 (2, 1, 1, '', 'rows', '', '', '', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_categories_info` (`id`, `category_id`, `language_code`, `name`, `short_description`, `description`, `head_title`, `h1_title`, `meta_description`) VALUES
