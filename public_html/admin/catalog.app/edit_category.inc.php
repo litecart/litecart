@@ -117,7 +117,8 @@ foreach (array_keys(language::$languages) as $language_code) {
           </tr>
           <tr>
             <td><strong><?php echo language::translate('title_dock', 'Dock'); ?></strong><br />
-              <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', isset($_POST['dock']) ? $_POST['dock'] : 'menu'); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in menu'); ?></label>
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', isset($_POST['dock']) ? $_POST['dock'] : 'menu'); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label>
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', isset($_POST['dock']) ? $_POST['dock'] : 'tree'); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
             </td>
           </tr>
           <tr>

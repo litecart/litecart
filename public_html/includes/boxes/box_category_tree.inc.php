@@ -13,7 +13,7 @@
     if (!function_exists('output_category_tree')) {
       function output_category_tree($category_id, $level, $category_trail, &$output) {
         
-        $categories_query = functions::catalog_categories_query($category_id);
+        $categories_query = functions::catalog_categories_query($category_id, ($level == 0) ? 'tree' : null);
         
         while ($category = database::fetch($categories_query)) {
           
