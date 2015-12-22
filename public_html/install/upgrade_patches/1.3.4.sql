@@ -10,3 +10,5 @@ ALTER TABLE `lc_customers` ADD `status` TINYINT(1) NOT NULL DEFAULT 1 AFTER `id`
 ALTER TABLE `lc_translations` CHANGE COLUMN `code` `code` VARCHAR(250) NOT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_categories` set dock = concat_ws(',', id(dock = '', null, dock), 'tree') where parent_id = 0;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products` ADD purchase_price_currency_code VARCHAR(3) NOT NULL AFTER purchase_price;

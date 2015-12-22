@@ -45,6 +45,7 @@
         'quantity',
         'quantity_unit_id',
         'purchase_price',
+        'purchase_price_currency_code',
         'prices',
         'campaigns',
         'tax_class_id',
@@ -490,7 +491,7 @@ foreach (array_keys(language::$languages) as $language_code) {
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></strong><br />
-              <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'purchase_price', true); ?>
+              <?php echo functions::form_draw_number_field(settings::get('store_currency_code'), 'purchase_price', true, 2); ?> <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
             </td>
           </tr>
         </table>
