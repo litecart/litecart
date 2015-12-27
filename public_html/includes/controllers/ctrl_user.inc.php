@@ -23,25 +23,6 @@
       }
     }
     
-    public function reset() {
-      $this->data = array(
-        'id' => '',
-        'status' => '',
-        'username' => '',
-        'password' => '',
-        'last_ip' => '',
-        'last_host' => '',
-        'total_logins' => '',
-        'login_attempts' => '',
-        'date_blocked' => '',
-        'date_expires' => '',
-        'date_active' => '',
-        'date_login' => '',
-        'date_updated' => '',
-        'date_created' => '',
-      );
-    }
-    
     public function load($user_id) {
       
       $this->reset();

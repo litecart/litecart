@@ -145,10 +145,19 @@
         }
         
         if (isset($row['new_image'])) {
-          $product->save_image($row['new_imags']);
+          $category->save_image($row['new_imags']);
         }
         
         $category->save();
+        
+        if (!empty($row['date_created'])) {
+          database::query(
+            "update ". DB_TABLE_CATEGORIES ."
+            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+            where id = ". (int)$category->data['id'] ."
+            limit 1;"
+          );
+        }
       }
       
       exit;
@@ -425,6 +434,15 @@
         }
         
         $product->save();
+        
+        if (!empty($row['date_created'])) {
+          database::query(
+            "update ". DB_TABLE_PRODUCTS ."
+            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+            where id = ". (int)$product->data['id'] ."
+            limit 1;"
+          );
+        }
       }
       
       exit;

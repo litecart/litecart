@@ -49,11 +49,27 @@
           $customer = new ctrl_customer();
         }
         
-        foreach (array('email', 'tax_id', 'company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone', 'newsletter') as $field) {
+        $fields = array(
+          'email',
+          'tax_id',
+          'company',
+          'firstname',
+          'lastname',
+          'address1',
+          'address2',
+          'postcode',
+          'city',
+          'country_code',
+          'zone_code',
+          'phone',
+          'newsletter'
+        );
+        
+        foreach ($fields as $field) {
           if (isset($row[$field])) $customer->data[$field] = $row[$field];
         }
         
-        if (empty($row['password'])) $customer->set_password($row['password']);
+        if (!empty($row['new_password'])) $customer->set_password($row['new_password']);
         
         $customer->save();
       }
