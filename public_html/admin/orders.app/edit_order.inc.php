@@ -163,6 +163,8 @@
         <script>
           $('select[name="currency_code"]').change(function(e){
             $("input[name='currency_value']").val($(this).find('option:selected').data('value'));
+            $('input[data-type="currency"]').closest('.input-wrapper').find('strong').text($(this).val());
+            calculate_total();
           });
         </script>
       </td>
@@ -387,7 +389,7 @@
       </td>
     </tr>
   </table>
-
+  
   <h2><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
   <table id="order-items" class="dataTable" style="width: 100%;">
     <tr class="header">
@@ -603,14 +605,14 @@
       $("input[name^='items['][name$='[price]']").each(function() {
         subtotal += Number($(this).val()) * Number($(this).closest('tr').find("input[name^='items['][name$='[quantity]']").val());
       });
-      subtotal = Math.round(subtotal * 1* 1<?php echo str_repeat('0', currency::$currencies[$_POST['currency_code']]['decimals']); ?>) / 1<?php echo str_repeat('0', currency::$currencies[$_POST['currency_code']]['decimals']); ?>;
+      subtotal = Math.round(subtotal * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
       $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[value]']").val(subtotal);
       
       var subtotal_tax = 0;
       $("input[name^='items['][name$='[tax]']").each(function() {
         subtotal_tax += Number($(this).val()) * Number($(this).closest('tr').find("input[name^='items['][name$='[quantity]']").val());
       });
-      subtotal_tax = Math.round(subtotal_tax * 1* 1<?php echo str_repeat('0', currency::$currencies[$_POST['currency_code']]['decimals']); ?>) / 1<?php echo str_repeat('0', currency::$currencies[$_POST['currency_code']]['decimals']); ?>;
+      subtotal_tax = Math.round(subtotal_tax * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
       $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[tax]']").val(subtotal_tax);
       
       var order_total = subtotal + subtotal_tax;
@@ -624,8 +626,8 @@
           order_total += Number($(this).val());
         }
       });
-      order_total = Math.round(order_total * 1<?php echo str_repeat('0', currency::$currencies[$_POST['currency_code']]['decimals']); ?>) / 1<?php echo str_repeat('0', currency::$currencies[$_POST['currency_code']]['decimals']); ?>;
-      $("#order-total .total").text("<?php echo currency::$currencies[$_POST['currency_code']]['prefix']; ?>" + order_total + "<?php echo currency::$currencies[$_POST['currency_code']]['suffix']; ?>");
+      order_total = Math.round(order_total * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
+      $("#order-total .total").text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
     }
     
     $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], #order-items a.remove, #order-total a.remove", function() {
@@ -633,54 +635,127 @@
     });
   </script>
   
-  <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-  <table id="comments" class="dataTable" style="width: 100%;">
-    <tr class="header">
-      <th style="text-align: center;"><?php echo language::translate('title_date', 'Date'); ?></th>
-      <th style="width: 100%;"><?php echo language::translate('title_comment', 'Comment'); ?></th>
-      <th style="text-align: center;"><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
-      <th>&nbsp;</th>
-    </tr>
-<?php
-  if (!empty($_POST['comments'])) {
-    foreach (array_keys($_POST['comments']) as $key) {
-?>
-    <tr>
-      <td><?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></td>
-      <td style="white-space: normal;"><?php echo nl2br($_POST['comments'][$key]['text']); ?></td>
-      <td><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
-      <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-    </tr>
-<?php
-    }
-  }
-?>
-    <tr>
-      <td colspan="4"><a class="add" href="#" title="<?php echo language::translate('title_insert_', 'Insert'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
-    </tr>
-  </table>
-  <script>
-    var new_comment_index = 0;
-    $("#comments .add").click(function(event) {
-      while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
-      event.preventDefault();
-      var output = '  <tr>'
-                 + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?></td>'
-                 + '    <td style="white-space: normal;"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 45px;"')); ?></td>'
-                 + '    <td><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', '1', '', '', language::translate('title_hidden', 'Hidden'))); ?></td>'
-                 + '    <td><a class="remove_comment" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-                 + '  </tr>';
-      output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
-      $(this).closest("tr").before(output);
-      new_comment_index++;
-    });
-    
-    $("body").on("click", "#comments .remove", function(event) {
-      event.preventDefault();
-      $(this).closest("tr").remove();
-    });
-  </script>
+<style>
+#comments {
+  margin: 0 auto;
+  max-width: 1024px;
+}
+#comments .comment {
+  position: relative;
+  margin-bottom: 1em;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+  box-sizing: border-box;
+  min-height: 4em;
+}
+#comments .comment.system {
+  margin-left: 10%;
+  margin-right: 10%;
+  background: #e5e5ea;
+}
 
+#comments .comment.staff {
+  margin-left: 20%;
+  background-color: #4096ee;
+  color: white;
+}
+#comments .comment.staff:after {
+  content: "";
+  position: absolute;
+  right: -0.5em;
+  bottom: 0;
+  width: 0.5em;
+  height: 1em;
+  border-left: 0.5em solid #4096ee;
+  border-bottom-left-radius: 1em 0.5em;
+}
+
+#comments .comment.customer {
+  margin-right: 20%;
+  background: #e5e5ea;
+}
+#comments .comment.customer:after {
+  content: "";
+  position: absolute;
+  left: -0.5em;
+  bottom: 0;
+  width: 0.5em;
+  height: 1em;
+  border-right: 0.5em solid #e5e5ea;
+  border-bottom-right-radius: 1em 0.5em;
+}
+
+#comments .date {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  font-size: 0.8em;
+  text-align: center;
+  opacity: 0.5;
+}
+
+#comments .remove {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+
+#comments .hidden {
+  position: absolute;
+  top: 0.5em;
+  right: 1.5em;
+}
+
+#comments .semi-transparent {
+  opacity: 0.5;
+}
+</style>
+  
+  <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
+  <ul id="comments" class="list-vertical">
+    <?php if (!empty($_POST['comments'])) foreach (array_keys($_POST['comments']) as $key) { ?>
+    <li class="comment <?php echo $_POST['comments'][$key]['author']; ?><?php echo !empty($_POST['comments'][$key]['hidden']) ? ' semi-transparent' : null; ?>">
+      <?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?>
+      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
+      <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
+      <div class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?></div>
+      <div class="date"><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
+    </li>
+    <?php } ?>
+    <li style="text-align: right;"><a class="add button" href="#" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></a></li>
+  </ul>
+<script>
+  var new_comment_index = 0;
+  $("#comments .add").click(function(event) {
+    event.preventDefault();
+    while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
+    var output = '  <li class="comment staff">'
+               + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?>'
+               + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
+               + '    <div class="text"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 4em; box-sizing: border-box"')); ?></div>'
+               + '    <div class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', 1, true); ?></div>'
+               + '    <div class="date"></div>'
+               + '  </li>';
+    output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
+    $(this).closest("li").before(output);
+    new_comment_index++;
+  });
+  
+  $("body").on("click", "#comments .remove", function(event) {
+    event.preventDefault();
+    $(this).closest("li").remove();
+  });
+  
+  $("body").on("click", '#comments input[name^="comments"][name$="[hidden]"]', function(event) {
+    if ($(this).is(':checked')) {
+      $(this).closest("li").addClass('semi-transparent');
+    } else {
+      $(this).closest("li").removeClass('semi-transparent');
+    }
+  });
+</script>
+  
   <p style="text-align: right;""><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
   
   <?php if (empty($order->data['id'])) { ?>

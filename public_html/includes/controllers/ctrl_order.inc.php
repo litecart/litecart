@@ -491,8 +491,9 @@
           }
           database::query(
             "update ". DB_TABLE_ORDERS_COMMENTS ." 
-            set text = '". database::input($this->data['comments'][$key]['text']) ."',
-            hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'
+            set author = '". database::input($this->data['comments'][$key]['author']) ."',
+              text = '". database::input($this->data['comments'][$key]['text']) ."',
+              hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['comments'][$key]['id'] ."'
             limit 1;"

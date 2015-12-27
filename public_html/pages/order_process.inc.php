@@ -32,6 +32,7 @@
       }
     
       if (!empty($_POST['comments'])) {
+        $order->data['comments']['session']['author'] = 'customer';
         $order->data['comments']['session']['text'] = $_POST['comments'];
       }
       

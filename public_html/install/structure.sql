@@ -306,8 +306,9 @@ CREATE TABLE `lc_orders` (
 CREATE TABLE `lc_orders_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
-  `hidden` int(11) NOT NULL,
+  `author` enum('system','staff','customer') NOT NULL,
   `text` varchar(512) NOT NULL,
+  `hidden` int(11) NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
@@ -416,6 +417,7 @@ CREATE TABLE `lc_products` (
   `dim_z` decimal(10,4) NOT NULL,
   `dim_class` varchar(2) NOT NULL,
   `purchase_price` decimal(10,4) NOT NULL,
+  `purchase_price_currency_code` varchar(3) NOT NULL,
   `tax_class_id` int(11) NOT NULL,
   `image` varchar(256) NOT NULL,
   `views` int(11) NOT NULL,
