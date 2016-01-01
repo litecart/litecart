@@ -612,6 +612,8 @@
     
     public function checkout_forbidden() {
       
+      if (empty(self::$data['items'])) return language::translate('error_order_missing_items', 'Your order does not contain any items');
+      
       $required_fields = array(
         'email',
         'firstname',
@@ -639,7 +641,7 @@
         );
         if (functions::reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'postcode';
         if (functions::reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'zone_code';
-      
+        
         foreach ($required_fields as $field) {
           if (empty($this->data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' (shipping_address['.$field.'])'*/;
         }

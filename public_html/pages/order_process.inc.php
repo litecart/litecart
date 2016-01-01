@@ -8,6 +8,12 @@
   
   $order = new ctrl_order('resume');
   
+  if ($error_message = $order->checkout_forbidden()) {
+    notices::add('errors', $error_message);
+    header('Location: '. document::ilink('checkout'));
+    exit;
+  }
+  
   if (isset($_POST['confirm_order'])) {
     
     if (!empty($shipping->modules) && count($shipping->options()) > 0) {
