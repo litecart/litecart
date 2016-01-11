@@ -49,6 +49,8 @@
       
       $customer = new ctrl_customer();
       
+      $customer->data['status'] = 1;
+      
       $fields = array(
         'email',
         'tax_id',
@@ -69,8 +71,6 @@
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
-      
-      $customer->data['status'] = 1;
       
       $customer->save();
       

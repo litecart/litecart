@@ -9,7 +9,7 @@ ALTER TABLE `lc_customers` ADD `status` TINYINT(1) NOT NULL DEFAULT 1 AFTER `id`
 -- --------------------------------------------------------
 ALTER TABLE `lc_translations` CHANGE COLUMN `code` `code` VARCHAR(250) NOT NULL;
 -- --------------------------------------------------------
-UPDATE `lc_categories` SET dock = CONCAT_WS(',', id(dock = '', null, dock), 'tree') WHERE parent_id = 0;
+UPDATE `lc_categories` SET dock = CONCAT_WS(',', if(dock = '', null, dock), 'tree') WHERE parent_id = 0;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products` ADD purchase_price_currency_code VARCHAR(3) NOT NULL AFTER purchase_price;
 -- --------------------------------------------------------

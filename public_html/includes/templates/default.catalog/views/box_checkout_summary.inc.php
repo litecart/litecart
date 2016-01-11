@@ -14,7 +14,7 @@
       <?php foreach ($items as $item) { ?>
       <tr>
         <td style="text-align: center;"><?php echo $item['quantity']; ?></td>
-        <td class="item" class="unit-cost"><?php echo $item['name']; ?></td>
+        <td class="item"><?php echo $item['name']; ?></td>
         <td class="sku"><?php echo $item['sku']; ?></td>
         <td class="unit-cost" style="text-align: right;"><?php echo $item['price']; ?></td>
         <td class="tax" style="text-align: right;"><?php echo $item['tax']; ?></td>

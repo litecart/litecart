@@ -9,9 +9,7 @@
     order by name asc;"
   );
   
-  if (database::num_rows($zones_query) == 0) {
-    exit;
-  }
+  if (database::num_rows($zones_query) == 0) die('{}');
   
   $json = array();
   while ($zone = database::fetch($zones_query)) {
