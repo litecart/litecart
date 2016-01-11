@@ -1,6 +1,6 @@
 <?php
 
-  function csv_encode($array, $delimiter=',', $enclosure='"', $escape='\\', $charset='utf-8', $eol="\r\n") {
+  function csv_encode($array, $delimiter=',', $enclosure='"', $escape='"', $charset='utf-8', $eol="\r\n") {
     
     $fp = fopen('php://temp', 'r+');
     
@@ -20,27 +20,19 @@
     while(!feof($fp)) $output .= fgets($fp);
     fclose($fp);
     
-    if (strtolower(language::$selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
-      $output = utf8_decode($output);
-    } else if (strtolower(language::$selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
-      $output = utf8_encode($output);
-    }
+    $output = mb_convert_encoding($output, language::$selected['charset'], $charset);
     
     return preg_replace('/(\r\n|\r|\n)/', $eol, $output);
   }
   
-  function csv_decode($string, $delimiter=',', $enclosure='"', $escape='\\', $charset='utf-8') {
+  function csv_decode($string, $delimiter=',', $enclosure='"', $escape='"', $charset='utf-8') {
 
     $output = array();
     
     $ini_eol = ini_get('auto_detect_line_endings');
     ini_set('auto_detect_line_endings', true);
     
-    if (strtolower(language::$selected['charset']) == 'utf-8' && strtolower($charset) != 'utf-8') {
-      $string = utf8_encode($string);
-    } else if (strtolower(language::$selected['charset']) != 'utf-8' && strtolower($charset) == 'utf-8') {
-      $string = utf8_decode($string);
-    }
+    $string = mb_convert_encoding($string, $charset, language::$selected['charset']);
     
     $fp = fopen('php://temp', 'r+');
     fputs($fp, $string);
