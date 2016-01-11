@@ -612,7 +612,7 @@
     
     public function checkout_forbidden() {
       
-      if (empty(self::$data['items'])) return language::translate('error_order_missing_items', 'Your order does not contain any items');
+      if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'Your order does not contain any items');
       
       $required_fields = array(
         'email',
