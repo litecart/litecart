@@ -43,6 +43,9 @@
     header('Location: '. document::link('', array(), true));
     exit;
   }
+  
+  $languages = array_keys(language::$languages);
+  if (!array_search('en', $languages)) array_unshift($languages, 'en');
 ?>
 <style>
 ul.filter li {
@@ -101,7 +104,7 @@ ul.filter li {
   
   <li>
     <?php echo language::translate('title_languages', 'Languages'); ?>:<br />
-    <?php foreach (array_merge(array('en'), array_keys(language::$languages)) as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
+    <?php foreach ($languages as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
   </li>
   
   <li>
