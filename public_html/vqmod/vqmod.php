@@ -476,7 +476,7 @@
 
         $indexCount = 0;
 
-        $tmp = $this->_explodeData($tmp);
+        $tmp = preg_split('#\R#', $tmp);
         $lineMax = count($tmp) - 1;
 
         switch($mod['search']->position) {
@@ -590,7 +590,7 @@
           break;
         }
         ksort($tmp);
-        $tmp = $this->_implodeData($tmp);
+        $tmp = implode(PHP_EOL, $tmp);
       }
 
       VQMod::$fileModding = false;
@@ -686,28 +686,6 @@
           VQMod::$fileModding = false;
         }
       }
-    }
-
-    /**
-     * VQModObject::_explodeData()
-     *
-     * @param string $data File contents
-     * @return string
-     * @description Splits a file into an array of individual lines
-     */
-    private function _explodeData($data) {
-      return explode("\n", $data);
-    }
-
-    /**
-     * VQModObject::_implodeData()
-     *
-     * @param array $data Array of lines
-     * @return string
-     * @description Joins an array of lines back into a text file
-     */
-    private function _implodeData($data) {
-      return implode("\n", $data);
     }
   }
 
