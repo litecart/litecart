@@ -492,6 +492,7 @@ CREATE TABLE `lc_products_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `filename` varchar(256) NOT NULL,
+  `checksum` CHAR(32) NOT NULL,
   `priority` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)

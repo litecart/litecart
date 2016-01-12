@@ -56,7 +56,7 @@
         limit 1;"
       );
       $product = database::fetch($products_query);
-      if (empty($this->data)) trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
+      if (empty($product)) trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
       
       foreach ($product as $key => $value) {
         $this->data[$key] = $value;
@@ -469,7 +469,8 @@
           
           database::query(
             "update ". DB_TABLE_PRODUCTS_IMAGES ."
-            set filename = '". $this->data['images'][$key]['filename'] ."',
+            set filename = '". database::input($this->data['images'][$key]['filename']) ."',
+                checksum = '". database::input($this->data['images'][$key]['checksum']) ."',
                 priority = '". $image_priority++ ."'
             where product_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['images'][$key]['id'] ."'
@@ -542,6 +543,9 @@
       
       if (empty($file)) return;
       
+      $checksum = md5_file($file);
+      if (in_array($checksum, array_column($this->data['images'], 'checksum'))) return false;
+      
       if (!empty($filename)) $filename = 'products/' . $filename;
       
       if (empty($this->data['id'])) {
@@ -571,14 +575,15 @@
       
       database::query(
         "insert into ". DB_TABLE_PRODUCTS_IMAGES ."
-        (product_id, filename, priority)
-        values ('". (int)$this->data['id'] ."', '". database::input($filename) ."', '". (int)$priority ."');"
+        (product_id, filename, checksum, priority)
+        values ('". (int)$this->data['id'] ."', '". database::input($filename) ."', '". database::input($checksum) ."', '". (int)$priority ."');"
       );
       $image_id = database::insert_id();
       
       $this->data['images'][$image_id] = array(
         'id' => $image_id,
         'filename' => $filename,
+        'checksum' => $checksum,
         'priority' => $priority,
       );
     }
