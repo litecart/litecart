@@ -36,7 +36,7 @@
   
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   
-  include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   
   $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {

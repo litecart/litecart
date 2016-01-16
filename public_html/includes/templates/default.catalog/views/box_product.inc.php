@@ -128,9 +128,7 @@
     <div class="tabs" style="margin-top: 20px;">
       <ul class="index">
         <li><a href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-      <?php if ($attributes) { ?>
-        <li><a href="#tab-details"><?php echo language::translate('title_details', 'Details'); ?></a></li>
-      <?php } ?>
+        <?php if ($attributes) { ?><li><a href="#tab-details"><?php echo language::translate('title_details', 'Details'); ?></a></li><?php } ?>
       </ul>
       
       <div class="content">

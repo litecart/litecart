@@ -81,7 +81,7 @@
     where o.id
     ". ((!empty($_GET['order_status_id'])) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
     ". ((!empty($sql_find)) ? "and (". implode(" or ", $sql_find) .")" : "") ."
-    order by o.date_created desc;"
+    order by o.date_created desc, o.id desc;"
   );
   
   if (database::num_rows($orders_query) > 0) {

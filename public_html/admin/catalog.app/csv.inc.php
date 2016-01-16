@@ -1,6 +1,4 @@
 <?php
-  set_time_limit(30);
-  ignore_user_abort(true);
   
   if (!empty($_POST['export_categories'])) {
     
@@ -140,7 +138,7 @@
         }
         
       // Set category info data
-        foreach (array('name', 'short_description', 'description') as $field) {
+        foreach (array('name', 'short_description', 'description', 'head_title', 'h1_title', 'meta_description') as $field) {
           if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
         }
         
