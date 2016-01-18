@@ -197,6 +197,7 @@
   <table class="dataTable" width="100%">
     <tr class="header">
       <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
+      <th></th>
       <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
       <th style="text-align: center;"></th>
       <th>&nbsp;</th>
@@ -232,7 +233,8 @@
         $num_product_rows++;
 ?>
     <tr class="row<?php echo $product['status'] ? false : ' semi-transparent'; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
       <td style="text-align: right;"></td>
       <td><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
@@ -242,7 +244,7 @@
     }
 ?>
     <tr class="footer">
-      <td colspan="4"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+      <td colspan="5"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
     </tr>
 <?php
     
@@ -263,6 +265,7 @@
       if (empty($category_id)) {
         $output .= '<tr class="row">' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', array('category_id' => '0'), true) .'">'. language::translate('title_root', '[Root]') .'</a></strong></td>' . PHP_EOL
                  . '  <td>&nbsp;</td>' . PHP_EOL
                  . '  <td>&nbsp;</td>' . PHP_EOL
@@ -282,7 +285,8 @@
         $num_category_rows++;
         
         $output .= '<tr class="row'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#99cc66' : '#ff6666') .';"') .' '. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL;
+                 . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#99cc66' : '#ff6666') .';"') .'</td>' . PHP_EOL;
         if (@in_array($category['id'], $category_trail)) {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else {
@@ -306,6 +310,7 @@
           } else {
             
             $output .= '<tr class="row">' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td><em style="margin-left: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
@@ -348,7 +353,8 @@
         $num_product_rows++;
         
         $output .= '<tr class="row'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"') .' '. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL;
+                 . '  <td>'. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"') .'</td>' . PHP_EOL;
         
         if ($display_images) {
           $output .= '  <td><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" width="16" height="16" align="absbottom" style="margin-left: '. ($depth*16) .'px;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
@@ -368,7 +374,7 @@
     echo admin_catalog_category_tree();
 ?>
     <tr class="footer">
-      <td colspan="4"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+      <td colspan="5"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
     </tr>
 <?php
   }
