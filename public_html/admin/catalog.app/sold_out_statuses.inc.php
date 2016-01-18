@@ -7,7 +7,7 @@
 <?php echo functions::form_draw_form_begin('sold_out_statuses_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">
   <tr class="header">
-    <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+    <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
     <th><?php echo language::translate('title_id', 'ID'); ?></th>
     <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
     <th><?php echo language::translate('title_orderable', 'Orderable'); ?></th>
@@ -23,7 +23,6 @@
 
   if (database::num_rows($sold_out_status_query) > 0) {
     
-  // Jump to data for current page
     if ($_GET['page'] > 1) database::seek($sold_out_status_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
@@ -47,11 +46,11 @@
 </table>
 
 <script>
-  $(".dataTable input[name='checkbox_toggle']").click(function() {
+  $(".dataTable .checkbox-toggle").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));
     });
-    $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+    $(".dataTable .checkbox-toggle").attr("checked", true);
   });
 
   $('.dataTable tr').click(function(event) {

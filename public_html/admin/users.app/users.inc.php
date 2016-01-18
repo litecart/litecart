@@ -24,7 +24,8 @@
 
   <table width="100%" align="center" class="dataTable">
     <tr class="header">
-      <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+      <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
+      <th></th>
       <th style="width: 100%;"><?php echo language::translate('title_username', 'Username'); ?></th>
       <th>&nbsp;</th>
     </tr>
@@ -36,14 +37,14 @@
   
   if (database::num_rows($users_query) > 0) {
   
-  // Jump to data for current page
     if ($_GET['page'] > 1) database::seek($users_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
   
     $page_items = 0;
     while ($user = database::fetch($users_query)) {
 ?>
     <tr class="row<?php echo !$user['status'] ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
       <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
@@ -53,16 +54,16 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="3"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo database::num_rows($users_query); ?></td>
+      <td colspan="4"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo database::num_rows($users_query); ?></td>
     </tr>
   </table>
 
   <script>
-    $(".dataTable input[name='checkbox_toggle']").click(function() {
+    $(".dataTable .checkbox-toggle").click(function() {
       $(this).closest("form").find(":checkbox").each(function() {
         $(this).attr('checked', !$(this).attr('checked'));
       });
-      $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+      $(".dataTable .checkbox-toggle").attr("checked", true);
     });
 
     $('.dataTable tr').click(function(event) {

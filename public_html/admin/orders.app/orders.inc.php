@@ -48,7 +48,8 @@
 <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
 <table width="100%" class="dataTable">
   <tr class="header">
-    <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+    <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
+    <th></th>
     <th><?php echo language::translate('title_id', 'ID'); ?></th>
     <th><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
     <th width="100%"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></th>
@@ -100,7 +101,8 @@
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
   <tr class="row<?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : null; ?>">
-    <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+    <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+    <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
     <td><?php echo $order['id']; ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
     <td><?php echo $order['customer_tax_id']; ?></td>
@@ -122,7 +124,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+    <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
   </tr>
 </table>
 
@@ -158,11 +160,11 @@
 </p>
 
 <script>
-  $(".dataTable input[name='checkbox_toggle']").click(function() {
+  $(".dataTable .checkbox-toggle").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));
     });
-    $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+    $(".dataTable .checkbox-toggle").attr("checked", true);
   });
 
   $('.dataTable tr').click(function(event) {

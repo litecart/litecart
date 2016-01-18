@@ -196,7 +196,7 @@
 
   <table class="dataTable" width="100%">
     <tr class="header">
-      <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+      <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
       <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
       <th style="text-align: center;"></th>
       <th>&nbsp;</th>
@@ -376,11 +376,11 @@
   </table>
 
   <script>
-    $(".dataTable input[name='checkbox_toggle']").click(function() {
+    $(".dataTable .checkbox-toggle").click(function() {
       $(this).closest("form").find(":checkbox").each(function() {
         $(this).attr('checked', !$(this).attr('checked'));
       });
-      $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+      $(".dataTable .checkbox-toggle").attr("checked", true);
     });
 
     $('.dataTable tr').click(function(event) {

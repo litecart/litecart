@@ -45,7 +45,6 @@
 
   if (database::num_rows($settings_query) > 0) {
     
-  // Jump to data for current page
     if ($_GET['page'] > 1) database::seek($settings_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;

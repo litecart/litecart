@@ -43,7 +43,8 @@
 
   <table width="100%" align="center" class="dataTable">
     <tr class="header">
-      <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+      <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
+      <th></th>
       <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
       <th><?php echo language::translate('title_code', 'Code'); ?></th>
       <th style="text-align: center;"><?php echo language::translate('title_version', 'Version'); ?></th>
@@ -62,7 +63,8 @@
       $enabled = preg_match('/\.xml$/', $vqmod) ? true : false;
 ?>
     <tr class="row<?php echo !$enabled ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
+      <td><?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo (string)$xml->id; ?></td>
       <td><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>
       <td><?php echo (string)$xml->version; ?></td>
@@ -74,16 +76,16 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="6"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
+      <td colspan="7"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
     </tr>
   </table>
 
   <script>
-    $(".dataTable input[name='checkbox_toggle']").click(function() {
+    $(".dataTable .checkbox-toggle").click(function() {
       $(this).closest("form").find(":checkbox").each(function() {
         $(this).attr('checked', !$(this).attr('checked'));
       });
-      $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+      $(".dataTable .checkbox-toggle").attr("checked", true);
     });
 
     $('.dataTable tr').click(function(event) {

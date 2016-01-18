@@ -23,7 +23,8 @@
 
   <table width="100%" align="center" class="dataTable">
     <tr class="header">
-      <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+      <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
+      <th></th>
       <th><?php echo language::translate('title_id', 'ID'); ?></th>
       <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
       <th style="text-align: center;"><?php echo language::translate('title_language', 'Language'); ?></th>
@@ -47,7 +48,8 @@
     while ($slide = database::fetch($slides_query)) {
 ?>
     <tr class="row<?php echo !$slide['status'] ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo $slide['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
       <td><?php echo $slide['language_code']; ?></td>
@@ -62,16 +64,16 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="8"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo database::num_rows($slides_query); ?></td>
+      <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo database::num_rows($slides_query); ?></td>
     </tr>
   </table>
 
   <script>
-    $(".dataTable input[name='checkbox_toggle']").click(function() {
+    $(".dataTable .checkbox-toggle").click(function() {
       $(this).closest("form").find(":checkbox").each(function() {
         $(this).attr('checked', !$(this).attr('checked'));
       });
-      $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+      $(".dataTable .checkbox-toggle").attr("checked", true);
     });
 
     $('.dataTable tr').click(function(event) {

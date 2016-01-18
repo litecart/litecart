@@ -7,7 +7,7 @@
   }
   
   if (empty($_POST)) {
-    foreach ($product_group->data as $key => $value) {
+    foreach ($option_group->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
