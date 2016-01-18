@@ -23,7 +23,7 @@
       }
       
       $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_ORDER_STATUES_INFO .";"
+        "show fields from ". DB_TABLE_ORDER_STATUSES_INFO .";"
       );
       
       while ($field = database::fetch($info_fields_query)) {
