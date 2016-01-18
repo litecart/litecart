@@ -1,10 +1,17 @@
 <?php
   
-  if (empty($_GET['order_id'])) {
-    $order = new ctrl_order('new');
-    
-  } else {
+  if (!empty($_GET['order_id'])) {
     $order = new ctrl_order('load', $_GET['order_id']);
+  } else {
+    $order = new ctrl_order('new');
+  }
+  
+  if (empty($_POST)) {
+    foreach ($order->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+    
+    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
     
   // Convert to local currency
     foreach (array_keys($order->data['items']) as $key) {
@@ -17,12 +24,7 @@
     }
   }
   
-  if (empty($_POST)) {
-    foreach ($order->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
-    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
-  }
+  breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
   
 // Save data to database
   if (isset($_POST['save'])) {

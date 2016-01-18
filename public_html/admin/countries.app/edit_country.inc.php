@@ -1,19 +1,19 @@
 <?php
   
-  if (isset($_GET['country_code'])) {
+  if (!empty($_GET['country_code'])) {
     $country = new ctrl_country($_GET['country_code']);
   } else {
     $country = new ctrl_country();
   }
   
-  if (!$_POST) {
+  if (empty($_POST)) {
     foreach ($country->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-
   
-  // Save data to database
+  breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'));
+  
   if (isset($_POST['save'])) {
 
     if (empty($_POST['iso_code_2'])) notices::add('errors', language::translate('error_missing_code', 'You must enter a code'));
@@ -63,7 +63,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($country->data['id'])) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
   

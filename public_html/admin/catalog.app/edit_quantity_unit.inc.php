@@ -1,16 +1,18 @@
 <?php
   
-  if (isset($_GET['quantity_unit_id'])) {
+  if (!empty($_GET['quantity_unit_id'])) {
     $quantity_unit = new ctrl_quantity_unit($_GET['quantity_unit_id']);
-    
-    if (!$_POST) {
-      foreach ($quantity_unit->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
   } else {
     $quantity_unit = new ctrl_quantity_unit();
   }
+  
+  if (empty($_POST)) {
+    foreach ($quantity_unit->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+  
+  breadcrumbs::add(!empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit'));
   
   if (isset($_POST['save'])) {
 

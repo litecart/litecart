@@ -1,18 +1,20 @@
 <?php
-  if (isset($_GET['product_id'])) {
+  
+  if (!empty($_GET['product_id'])) {
     $product = new ctrl_product($_GET['product_id']);
-    
-    if (!$_POST) {
-      foreach ($product->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
   } else {
     $product = new ctrl_product();
-    if (!$_POST) {
-      if (!empty($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
-    }
   }
+  
+  if (empty($_POST)) {
+    foreach ($product->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+    
+    if (!empty($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
+  }
+  
+  breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'));
   
   if (isset($_POST['save'])) {
     
@@ -98,7 +100,7 @@
   
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($product->data['id'])) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'); ?></h1>
   
 <?php
   if (isset($product->data['id'])) {

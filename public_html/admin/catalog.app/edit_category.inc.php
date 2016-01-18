@@ -6,12 +6,15 @@
     $category = new ctrl_category();
   }
   
-  if (!$_POST && !empty($category->data)) {
+  if (empty($_POST)) {
     foreach ($category->data as $key => $value) {
       $_POST[$key] = $value;
     }
+    
     if (!empty($_GET['parent_id'])) $_POST['parent_id'] = $_GET['parent_id'];
   }
+  
+  breadcrumbs::add(!empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category'));
   
   // Save data to database
   if (isset($_POST['save'])) {
@@ -26,6 +29,7 @@
         'status',
         'parent_id',
         'code',
+        'google_taxonomy_id',
         'list_style',
         'dock',
         'image',
@@ -68,7 +72,7 @@
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($category->data['id'])) ? language::translate('title_add_new_category', 'Add New Category') : language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']]; ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']] : language::translate('title_add_new_category', 'Add New Category'); ?></h1>
 
 <?php
   if (!empty($category->data['image'])) {
@@ -116,8 +120,13 @@ foreach (array_keys(language::$languages) as $language_code) {
             </td>
           </tr>
           <tr>
+            <td><strong><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?></strong> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+              <?php echo functions::form_draw_google_taxonomy_categories_list('google_taxonomy_id', true, false, 'style="size: 320px;"'); ?>
+            </td>
+          </tr>
+          <tr>
             <td><strong><?php echo language::translate('title_dock', 'Dock'); ?></strong><br />
-              <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', isset($_POST['dock']) ? $_POST['dock'] : 'menu'); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label>
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', isset($_POST['dock']) ? $_POST['dock'] : 'menu'); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label><br/>
               <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', isset($_POST['dock']) ? $_POST['dock'] : 'tree'); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
             </td>
           </tr>

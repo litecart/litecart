@@ -1,19 +1,19 @@
 <?php
 
-  if (isset($_GET['tax_class_id'])) {
+  if (!empty($_GET['tax_class_id'])) {
     $tax_class = new ctrl_tax_class($_GET['tax_class_id']);
   } else {
     $tax_class = new ctrl_tax_class();
   }
   
-  if (!$_POST) {
+  if (empty($_POST)) {
     foreach ($tax_class->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-
   
-  // Save data to database
+  breadcrumbs::add(!empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'));
+  
   if (isset($_POST['save'])) {
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
@@ -48,7 +48,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($tax_class->data['id'])) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
 

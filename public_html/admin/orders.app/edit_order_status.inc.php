@@ -1,16 +1,18 @@
 <?php
   
-  if (isset($_GET['order_status_id'])) {
+  if (!empty($_GET['order_status_id'])) {
     $order_status = new ctrl_order_status($_GET['order_status_id']);
-    
-    if (!$_POST) {
-      foreach ($order_status->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
   } else {
     $order_status = new ctrl_order_status();
   }
+  
+  if (empty($_POST)) {
+    foreach ($order_status->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+  
+  breadcrumbs::add(!empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'));
   
   if (isset($_POST['save'])) {
 

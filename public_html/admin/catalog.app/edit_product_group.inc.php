@@ -1,19 +1,18 @@
 <?php
 
-  $product_group = new ctrl_product_group();
-  
   if (!empty($_GET['product_group_id'])) {
+    $product_group = new ctrl_product_group($_GET['product_group_id']);
+  } else {
+    $product_group = new ctrl_product_group();
+  }
   
-    $product_group->load($_GET['product_group_id']);
-    
-    if (empty($product_group)) die('Invalid product group id');
-    
-    if (empty($_POST)) {
-      foreach ($product_group->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
+  if (empty($_POST)) {
+    foreach ($product_group->data as $key => $value) {
+      $_POST[$key] = $value;
     }
   }
+  
+  breadcrumbs::add(!empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'));
   
   if (!empty($_POST['save'])) {
     

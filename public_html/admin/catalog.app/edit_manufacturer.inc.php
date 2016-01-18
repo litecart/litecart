@@ -1,18 +1,19 @@
 <?php
   
-  if (isset($_GET['manufacturer_id'])) {
+  if (!empty($_GET['manufacturer_id'])) {
     $manufacturer = new ctrl_manufacturer($_GET['manufacturer_id']);
   } else {
     $manufacturer = new ctrl_manufacturer();
   }
   
-  if (!$_POST && isset($manufacturer)) {
+  if (empty($_POST)) {
     foreach ($manufacturer->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
+  
+  breadcrumbs::add(!empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'));
 
-  // Save data to database
   if (isset($_POST['save'])) {
     
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
@@ -70,7 +71,7 @@
 
 ?>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($manufacturer->data['id'])) ? language::translate('title_add_new_manufacturer', 'Add New Manufacturer') : language::translate('title_edit_manufacturer', 'Edit Manufacturer'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?></h1>
 
 <?php
   if (!empty($manufacturer->data['image'])) {

@@ -1,16 +1,18 @@
 <?php
   
-  if (isset($_GET['delivery_status_id'])) {
+  if (!empty($_GET['delivery_status_id'])) {
     $delivery_status = new ctrl_delivery_status($_GET['delivery_status_id']);
-    
-    if (!$_POST) {
-      foreach ($delivery_status->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
   } else {
     $delivery_status = new ctrl_delivery_status();
   }
+  
+  if (empty($_POST)) {
+    foreach ($delivery_status->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+  
+  breadcrumbs::add(!empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status'));
   
   if (isset($_POST['save'])) {
 

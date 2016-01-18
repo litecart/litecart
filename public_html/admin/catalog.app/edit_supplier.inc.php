@@ -1,18 +1,19 @@
 <?php
 
-  if (isset($_GET['supplier_id'])) {
+  if (!empty($_GET['supplier_id'])) {
     $supplier = new ctrl_supplier($_GET['supplier_id']);
   } else {
     $supplier = new ctrl_supplier();
   }
   
-  if (!$_POST && isset($supplier)) {
+  if (empty($_POST)) {
     foreach ($supplier->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
+  
+  breadcrumbs::add(!empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'));
 
-  // Save data to database
   if (isset($_POST['save'])) {
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
@@ -52,7 +53,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($supplier->data['id'])) ? language::translate('title_add_new_supplier', 'Add New Supplier') : language::translate('title_edit_supplier', 'Edit Supplier'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
 

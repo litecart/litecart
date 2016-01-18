@@ -1,15 +1,18 @@
 <?php
   
-  if (isset($_GET['language_code'])) {
+  if (!empty($_GET['language_code'])) {
     $language = new ctrl_language($_GET['language_code']);
-    if (!$_POST) {
-      foreach ($language->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
   } else {
     $language = new ctrl_language();
   }
+  
+  if (empty($_POST)) {
+    foreach ($language->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+  
+  breadcrumbs::add(!empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'));
 
   if (!empty($_POST['save'])) {
     
@@ -110,7 +113,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (isset($language->data['id'])) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('', 'post'); ?>
 

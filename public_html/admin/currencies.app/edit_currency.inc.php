@@ -1,15 +1,18 @@
 <?php
   
-  if (isset($_GET['currency_code'])) {
+  if (!empty($_GET['currency_code'])) {
     $currency = new ctrl_currency($_GET['currency_code']);
-    if (!$_POST) {
-      foreach ($currency->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
   } else {
     $currency = new ctrl_currency();
   }
+  
+  if (empty($_POST)) {
+    foreach ($currency->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+
+  breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'));
 
   if (!empty($_POST['save'])) {
     
@@ -99,7 +102,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (isset($currency->data['id'])) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('', 'post'); ?>
 

@@ -1,17 +1,18 @@
 <?php
   
-  if (isset($_GET['customer_id'])) {
+  if (!empty($_GET['customer_id'])) {
     $customer = new ctrl_customer($_GET['customer_id']);
-    
-    if (empty($_POST)) {
+  } else {
+    $customer = new ctrl_customer();
+  }
+
+  if (empty($_POST)) {
       foreach ($customer->data as $key => $value) {
         $_POST[$key] = $value;
       }
     }
-    
-  } else {
-    $customer = new ctrl_customer();
-  }
+  
+  breadcrumbs::add(!empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer'));
   
   if (isset($_POST['save'])) {
 

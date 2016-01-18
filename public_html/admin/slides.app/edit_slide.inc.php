@@ -1,16 +1,19 @@
 <?php
   
-  if (isset($_GET['slide_id'])) {
+  if (!empty($_GET['slide_id'])) {
     $slide = new ctrl_slide($_GET['slide_id']);
-    if (!$_POST) {
-      foreach ($slide->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
   } else {
     $slide = new ctrl_slide();
   }
-
+  
+  if (empty($_POST)) {
+    foreach ($slide->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+  
+  breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
+  
   if (!empty($_POST['save'])) {
     
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
@@ -54,7 +57,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (isset($slide->data['id'])) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'); ?></h1>
 
 <?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" /></p>'; ?>
 

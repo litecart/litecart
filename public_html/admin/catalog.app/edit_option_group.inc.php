@@ -1,19 +1,18 @@
 <?php
   
-  $option_group = new ctrl_option_group();
-  
   if (!empty($_GET['option_group_id'])) {
+    $option_group = new ctrl_option_group($_GET['option_group_id']);
+  } else {
+    $option_group = new ctrl_option_group();
+  }
   
-    $option_group->load($_GET['option_group_id']);
-    
-    if (empty($option_group)) die('Invalid option group id');
-    
-    if (empty($_POST)) {
-      foreach ($option_group->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
+  if (empty($_POST)) {
+    foreach ($product_group->data as $key => $value) {
+      $_POST[$key] = $value;
     }
   }
+  
+  breadcrumbs::add(!empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'));
   
   if (!empty($_POST['save'])) {
     

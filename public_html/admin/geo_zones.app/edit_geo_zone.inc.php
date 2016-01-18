@@ -1,16 +1,18 @@
 <?php
   
-  if (isset($_GET['geo_zone_id'])) {
+  if (!empty($_GET['geo_zone_id'])) {
     $geo_zone = new ctrl_geo_zone($_GET['geo_zone_id']);
   } else {
     $geo_zone = new ctrl_geo_zone();
   }
   
-  if (!$_POST) {
+  if (empty($_POST)) {
     foreach ($geo_zone->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
+  
+  breadcrumbs::add(!empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'));
   
   if (isset($_POST['save'])) {
   

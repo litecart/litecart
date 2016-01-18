@@ -45,6 +45,8 @@
     exit;
   }
   
+  breadcrumbs::add($installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
+  
   if (empty($_POST)) {
     if (!$installed) notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
   }
