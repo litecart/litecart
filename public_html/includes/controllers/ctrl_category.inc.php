@@ -75,8 +75,9 @@
         set parent_id = '". (int)$this->data['parent_id'] ."',
           status = '". (int)$this->data['status'] ."',
           code = '". database::input($this->data['code']) ."',
-          list_style = '". database::input($this->data['list_style']) ."',
+          google_taxonomy_id = '". (int)$this->data['google_taxonomy_id'] ."',
           dock = '". database::input(@implode(',', $this->data['dock'])) ."',
+          list_style = '". database::input($this->data['list_style']) ."',
           keywords = '". database::input($this->data['keywords']) ."',
           priority = '". (int)$this->data['priority'] ."',
           date_updated = '". date('Y-m-d H:i:s') ."'

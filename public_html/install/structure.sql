@@ -31,6 +31,7 @@ CREATE TABLE `lc_cart_items` (
 CREATE TABLE `lc_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL,
+  `google_taxonomy_id` INT(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `code` varchar(64) NOT NULL,
   `list_style` varchar(32) NOT NULL,

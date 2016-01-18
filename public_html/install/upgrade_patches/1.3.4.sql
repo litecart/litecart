@@ -16,3 +16,5 @@ ALTER TABLE `lc_products` ADD purchase_price_currency_code VARCHAR(3) NOT NULL A
 ALTER TABLE `lc_orders_comments` ADD COLUMN `author` ENUM('system','staff','customer') NOT NULL AFTER `order_id`, CHANGE COLUMN `hidden` `hidden` INT(11) NOT NULL AFTER `text`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_images` ADD COLUMN `checksum` CHAR(32) NOT NULL AFTER `filename`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_categories`	ADD COLUMN `google_taxonomy_id` INT(11) NOT NULL AFTER `parent_id`;
