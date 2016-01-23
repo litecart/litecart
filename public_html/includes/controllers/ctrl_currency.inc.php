@@ -152,6 +152,18 @@
         limit 1;"
       );
       
+      database::query(
+        "alter table ". DB_TABLE_PRODUCTS_PRICES ." drop `". database::input($this->data['code']) ."`;"
+      );
+      
+      database::query(
+        "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ." drop `". database::input($this->data['code']) ."`;"
+      );
+      
+      database::query(
+        "alter table ". DB_TABLE_PRODUCTS_OPTIONS ." drop `". database::input($this->data['code']) ."`;"
+      );
+      
       cache::clear_cache('currencies');
 
       $this->data['id'] = null;
