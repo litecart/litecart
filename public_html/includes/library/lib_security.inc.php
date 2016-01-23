@@ -87,7 +87,7 @@
       
     // Session Protection
       if (settings::get('security_session_hijacking')) {
-        if (!empty($_SERVER['HTTP_USER_AGENT']) && session::$data['last_agent'] != $_SERVER['HTTP_USER_AGENT']) { // Decreased session security due to GoogleBot and mobile networks
+        if ($_SERVER['REMOTE_ADDR'] != session::$data['last_ip'] && $_SERVER['HTTP_USER_AGENT'] != session::$data['last_agent']) { // Decreased session security due to iOS AJAX, GoogleBot, and mobile networks
           error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .'] on '. $_SERVER['REQUEST_URI'] .'. Expected '. session::$data['last_ip'] .' ['. session::$data['last_agent'] .']');
           session::clear();
           sleep(5);
