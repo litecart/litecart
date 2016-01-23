@@ -168,7 +168,7 @@
       if (empty($parts['host'])) {
         $parts['scheme'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
         @list($parts['host'], $parts['port']) = explode(':', $_SERVER['HTTP_HOST']);
-        if (empty($parts['port'])) $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443')) ? '' : $_SERVER['SERVER_PORT'];
+        if (empty($parts['port'])) $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443', '8080')) ? '' : $_SERVER['SERVER_PORT'];
       }
       
       if (empty($parts['scheme'])) $parts['scheme'] = 'http';
@@ -213,7 +213,7 @@
       if (empty($parts['host'])) {
         $parts['scheme'] = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
         @list($parts['host'], $parts['port']) = explode(':', $_SERVER['HTTP_HOST']);
-        if (empty($parts['port'])) $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443')) ? '' : $_SERVER['SERVER_PORT'];
+        if (empty($parts['port'])) $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443', '8080')) ? '' : $_SERVER['SERVER_PORT'];
       }
       
       if (empty($parts['scheme'])) $parts['scheme'] = 'http';
