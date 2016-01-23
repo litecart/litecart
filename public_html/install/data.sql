@@ -235,10 +235,10 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (233, 1, 'Wallis and Futuna Islands', '', '876', 'WF', 'WLF', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '986\\d{2}', 0, 'fr', 'XPF', '681', NOW(), NOW()),
 (234, 1, 'Western Sahara', '', '732', 'EH', 'ESH', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'ar', 'MAD', '212', NOW(), NOW()),
 (235, 1, 'Yemen', '', '887', 'YE', 'YEM', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'ar', 'YER', '967', NOW(), NOW()),
-(236, 1, 'Yugoslavia', '', '890', 'YU', 'YUG', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '\\d{5}', 0, '', 'YUM', '381', NOW(), NOW()),
+(236, 1, 'Serbia', '', '381', 'RS', 'SRB', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'sr', 'RSD', '381', NOW(), NOW()),
 (237, 1, 'Democratic Republic of Congo', '', '180', 'CD', 'COD', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'fr', 'XAF', '243', NOW(), NOW()),
 (238, 1, 'Zambia', '', '894', 'ZM', 'ZMB', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '\\d{5}', 0, 'en', 'ZMW', '260', NOW(), NOW()),
-(239, 0, 'Zimbabwe', '', '716', 'ZW', 'ZWE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'ZWD', '263', NOW(), NOW());
+(239, 1, 'Zimbabwe', '', '716', 'ZW', 'ZWE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'ZWD', '263', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
