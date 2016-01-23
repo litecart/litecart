@@ -75,16 +75,20 @@
       }
       
     // Prepare styles
-      if (isset(self::$snippets['styles'])) {
+      if (!empty(self::$snippets['styles'])) {
         self::$snippets['styles'] = '<style>' . PHP_EOL
+                                  . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                                   . implode(PHP_EOL . PHP_EOL, self::$snippets['styles']) . PHP_EOL
+                                  . '/*]]>*/-->' . PHP_EOL
                                   . '</style>' . PHP_EOL;
       }
       
     // Prepare javascript
-      if (isset(self::$snippets['javascript'])) {
+      if (!empty(self::$snippets['javascript'])) {
         self::$snippets['javascript'] = '<script>' . PHP_EOL
+                                      . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                                       . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
+                                      . '/*]]>*/-->' . PHP_EOL
                                       . '</script>' . PHP_EOL;
       }
       
