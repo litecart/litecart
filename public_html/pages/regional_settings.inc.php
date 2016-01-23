@@ -8,7 +8,8 @@
     document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   }
   
-  document::$snippets['title'][] = language::translate('select_region:head_title', 'Regional Settings');
+  document::$snippets['title'][] = language::translate('regional_settings:head_title', 'Regional Settings');
+  breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('regional_settings'));
   
   if (isset($_POST['save'])) {
     

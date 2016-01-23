@@ -6,7 +6,7 @@
     $_POST['newsletter'] = '1';
   }
   
-  breadcrumbs::add(language::translate('title_create_account', 'Create Account'));
+  breadcrumbs::add(language::translate('title_create_account', 'Create Account'), document::ilink('create_account'));
   
   document::$snippets['title'][] = language::translate('title_create_account', 'Create Account');
   

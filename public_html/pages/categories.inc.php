@@ -1,5 +1,5 @@
 <?php
-  breadcrumbs::add(language::translate('title_categories', 'Categories'));
+  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   
   document::$snippets['title'][] = language::translate('title_categories', 'Categories');
   

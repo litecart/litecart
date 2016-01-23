@@ -6,7 +6,7 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
-  breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
+  breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout'));
   
   document::$snippets['title'][] = language::translate('title_checkout', 'Checkout');
 ?>

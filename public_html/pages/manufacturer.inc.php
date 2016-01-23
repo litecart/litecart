@@ -30,7 +30,7 @@
   }
   
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-  breadcrumbs::add($manufacturer->name);
+  breadcrumbs::add($manufacturer->name, document::ilink('manufacturer', array('manufacturer_id' => $manufacturer_id), false));
   
   //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;

@@ -10,7 +10,7 @@
   document::$snippets['title'][] = language::translate('title_order_history', 'Order History');
 
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
-  breadcrumbs::add(language::translate('title_order_history', 'Order History'));
+  breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
   
   functions::draw_fancybox('a.fancybox', array(
     'type'          => 'iframe',

@@ -14,7 +14,7 @@
   document::$snippets['title'][] = language::translate('title_order_success', 'Order Success');
   
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout'));
-  breadcrumbs::add(language::translate('title_order_success', 'Order Success'));
+  breadcrumbs::add(language::translate('title_order_success', 'Order Success'), document::ilink('order_success'));
   
   cart::reset();
   
