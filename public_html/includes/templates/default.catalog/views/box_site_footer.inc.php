@@ -62,5 +62,6 @@
   </footer>
   
   <div id="copyright" class="twelve-eighty">
-    <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
+    <!-- LiteCart is provided free by End-User License Agreement (EULA). Removing the copyright notice without written permission is a vioaltion. -->
+    <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart®</a></p>
   </div>

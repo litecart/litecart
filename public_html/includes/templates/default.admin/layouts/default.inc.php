@@ -56,7 +56,7 @@ catch(e){window.attachEvent("onload", $buo_f)}
             
             <div id="platform"><?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></div>
             
-            <div id="copyright">&copy; <?php echo date('2012-Y'); ?> LiteCart<br />
+            <div id="copyright">&copy; <?php echo date('2012-Y'); ?> LiteCart®<br />
               <a href="http://www.litecart.net" target="_blank">www.litecart.net</a>
             </div>
           </div>
