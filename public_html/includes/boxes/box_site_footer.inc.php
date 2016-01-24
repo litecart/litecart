@@ -31,7 +31,7 @@
       } else {
         $box_site_footer->snippets['categories'][] = array(
           'id' => 0,
-          'name' => language::translate('title_more', 'More'),
+          'name' => language::translate('title_more', 'More') . '…',
           'link' => document::href_ilink('categories'),
         );
         break;
@@ -57,7 +57,7 @@
       } else {
         $box_site_footer->snippets['manufacturers'][] = array(
           'id' => 0,
-          'name' => language::translate('title_more', 'More'),
+          'name' => language::translate('title_more', 'More') . '…',
           'link' => document::href_ilink('manufacturers'),
         );
         break;
