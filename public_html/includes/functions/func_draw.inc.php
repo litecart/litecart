@@ -22,11 +22,11 @@
   
   function draw_listing_category($category) {
     
-    $list_item = new view();
+    $listing_category = new view();
     
     list($width, $height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
     
-    $list_item->snippets = array(
+    $listing_category->snippets = array(
       'category_id' => $category['id'],
       'name' => $category['name'],
       'link' => document::ilink('category', array('category_id' => $category['id'])),
@@ -42,7 +42,7 @@
       'short_description' => $category['short_description'],
     );
     
-    return $list_item->stitch('views/listing_category');
+    return $listing_category->stitch('views/listing_category');
   }
   
   function draw_listing_product($product, $listing_type='column') {

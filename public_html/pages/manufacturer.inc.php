@@ -64,7 +64,7 @@
     $products_query = functions::catalog_products_query(array(
       'manufacturer_id' => $manufacturer->id,
       'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
-      'sort' => $_GET['sort']
+      'sort' => $_GET['sort'],
     ));
     
     if (database::num_rows($products_query) > 0) {

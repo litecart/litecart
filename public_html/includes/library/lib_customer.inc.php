@@ -108,6 +108,11 @@
       if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';
       if (!in_array(self::$data['shipping_address']['country_code'], $countries)) self::$data['shipping_address']['country_code'] = '';
       
+    // Set country from URI
+      if (!empty($_GET['country'])) {
+        if (isset($countries[$_GET['country']])) self::data['country_code'] = $_GET['country'];
+      }
+      
     // Set country from cookie
       if (empty(self::$data['country_code'])) {
         if (!empty($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $countries)) {
