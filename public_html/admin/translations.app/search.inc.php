@@ -45,7 +45,7 @@
   }
   
   $languages = array_keys(language::$languages);
-  if (!array_search('en', $languages)) array_unshift($languages, 'en');
+  if (array_search('en', $languages) === false) array_unshift($languages, 'en');
 ?>
 <style>
 ul.filter li {
