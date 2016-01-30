@@ -110,7 +110,7 @@
       
     // Set country from URI
       if (!empty($_GET['country'])) {
-        if (isset($countries[$_GET['country']])) self::data['country_code'] = $_GET['country'];
+        if (isset($countries[$_GET['country']])) self::$data['country_code'] = $_GET['country'];
       }
       
     // Set country from cookie

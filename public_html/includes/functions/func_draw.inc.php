@@ -61,6 +61,7 @@
     $listing_product->snippets = array(
       'listing_type' => $listing_type,
       'product_id' => $product['id'],
+      'code' => $product['code'],
       'name' => $product['name'],
       'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id')),
       'image' => array(

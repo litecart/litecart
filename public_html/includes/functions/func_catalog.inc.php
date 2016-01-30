@@ -153,7 +153,7 @@
     
     $query = "
       select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
-        select p.id, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.code, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
         from ". DB_TABLE_PRODUCTS ." p
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
         where p.status
