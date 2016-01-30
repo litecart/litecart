@@ -4,6 +4,8 @@
   document::$template = settings::get('store_template_admin');
   document::$layout = 'login';
   
+  if (!isset($_POST['redirect_url'])) $_POST['redirect_url'] = null;
+  
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   
@@ -18,14 +20,6 @@
   
   if (empty($_POST['username']) && !empty($_SERVER['PHP_AUTH_USER'])) $_POST['username'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
   
-  document::$snippets['javascript'][] = '  $(document).ready(function() {' . PHP_EOL
-                                      . '    if ($("input[name=\'username\']").val() == \'\') {' . PHP_EOL
-                                      . '      $("input[name=\'username\']").focus();' . PHP_EOL
-                                      . '    } else {' . PHP_EOL
-                                      . '      $("input[name=\'password\']").focus();' . PHP_EOL
-                                      . '    }' . PHP_EOL
-                                      . '  });';
-                                      
   $page_login = new view();
   $page_login->snippets = array(
     'action' => !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link(WS_DIR_ADMIN),

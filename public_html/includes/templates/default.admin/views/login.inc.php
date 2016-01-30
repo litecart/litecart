@@ -127,6 +127,12 @@ html, body, body > table {
 </table>
 
 <script>
+  if ($("input[name='username']").val() == '') {
+    $("input[name='username']").focus();
+  } else {
+    $("input[name='password']").focus();
+  }
+  
   $("form[name='login_form']").submit(function(e) {
     $("#box-login-wrapper").fadeOut(100);
   });

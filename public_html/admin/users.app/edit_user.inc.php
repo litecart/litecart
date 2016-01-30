@@ -46,7 +46,7 @@
       $user->save();
       
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array(), array('app')));
+      header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
     }
   }
@@ -58,7 +58,7 @@
       $user->delete();
     
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array(), array('app')));
+      header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
     }
   }
