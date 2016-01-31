@@ -86,7 +86,7 @@
     $orders = database::fetch($orders_query);
 ?>
   <tr class="row">
-    <td><?php echo ucfirst(strftime('%B, %Y', $timestamp)); ?></td>
+    <td><?php echo ucfirst(language::strftime('%B, %Y', $timestamp)); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>

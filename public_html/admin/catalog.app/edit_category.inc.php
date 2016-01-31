@@ -158,11 +158,11 @@ foreach (array_keys(language::$languages) as $language_code) {
           <?php if (isset($category->data['id'])) { ?>
           <tr>
             <td><strong><?php echo language::translate('title_date_updated', 'Date Updated'); ?></strong><br />
-              <?php echo strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></td>
+              <?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></td>
           </tr>
           <tr>
             <td><strong><?php echo language::translate('title_date_created', 'Date Created'); ?></strong><br />
-              <?php echo strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></td>
+              <?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></td>
           </tr>
           <?php } ?>
         </table>

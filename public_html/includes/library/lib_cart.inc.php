@@ -149,7 +149,7 @@
       }
       
       if ($product->date_valid_from > date('Y-m-d H:i:s')) {
-        if (!$silent) notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
+        if (!$silent) notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
         return;
       }
       

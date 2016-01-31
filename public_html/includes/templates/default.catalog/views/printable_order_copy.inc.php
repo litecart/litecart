@@ -138,7 +138,7 @@
         if (!empty($comment['hidden'])) continue;
 ?>
     <tr>
-      <td style="padding: 5px 20px;"><strong><?php echo strftime(language::$selected['format_date'], strtotime($comment['date_created'])); ?>:</strong> <?php echo $comment['text']; ?></td>
+      <td style="padding: 5px 20px;"><strong><?php echo language::strftime(language::$selected['format_date'], strtotime($comment['date_created'])); ?>:</strong> <?php echo $comment['text']; ?></td>
     </tr>
 <?php
       }

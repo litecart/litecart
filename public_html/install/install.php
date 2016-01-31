@@ -305,6 +305,7 @@
   
   ## Windows OS Adjustments ###################################
   
+  /*
   if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
     echo '<p>Making adjustments for Windows platform...';
     $database->query(
@@ -325,6 +326,7 @@
     );
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
+  */
   
   ### Regional Data Patch ###################################
   

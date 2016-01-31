@@ -61,7 +61,7 @@
       <td><?php echo $customer['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
       <td><?php echo $customer['company']; ?></td>
-      <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
+      <td style="text-align: right;"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php

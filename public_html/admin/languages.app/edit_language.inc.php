@@ -152,8 +152,8 @@
       <td><strong><?php echo language::translate('title_date_format', 'Date Format'); ?></strong> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
 <?php
   $options = array(
-    array(strftime('%e %b %Y'), '%e %b %Y'),
-    array(strftime('%b %e %Y'), '%b %e %Y'),
+    array(language::strftime('%e %b %Y'), '%e %b %Y'),
+    array(language::strftime('%b %e %Y'), '%b %e %Y'),
   );
   echo functions::form_draw_select_field('format_date', $options, true, false, 'data-size="auto"');
 ?>
@@ -166,13 +166,13 @@
     array(
       'label' => '12-Hour Format',
       'options' => array(
-        array(strftime('%I:%M %p'), '%I:%M %P'),
+        array(language::strftime('%I:%M %p'), '%I:%M %P'),
       ),
     ),
     array(
       'label' => '24-Hour Format',
       'options' => array(
-        array(strftime('%H:%M'), '%H:%M'),
+        array(language::strftime('%H:%M'), '%H:%M'),
       ),
     ),
   );

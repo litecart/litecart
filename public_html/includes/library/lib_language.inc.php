@@ -295,6 +295,15 @@
     public static function number_format($number, $decimals=2) {
       return number_format($number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
     }
+
+    public static function strftime($format, $timestamp=time()) {
+
+      if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+        $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+      }
+
+      return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'auto');
+    }
   }
   
 ?>

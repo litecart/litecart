@@ -148,12 +148,12 @@
       }
       
       if (date('Y', strtotime($user['date_expires'])) > '1970' && date('Y-m-d H:i:s') > $user['date_expires']) {
-        notices::add('errors', sprintf(language::translate('error_account_expired', 'The account expired %s'), strftime(language::$selected['format_datetime'], strtotime($user['date_expires']))));
+        notices::add('errors', sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_expires']))));
         return;
       }
       
       if (date('Y-m-d H:i:s') < $user['date_blocked']) {
-        notices::add('errors', sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), strftime(language::$selected['format_datetime'], strtotime($user['date_blocked']))));
+        notices::add('errors', sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_blocked']))));
         return;
       }
       

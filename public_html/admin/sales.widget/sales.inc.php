@@ -29,7 +29,7 @@
     );
     $orders = database::fetch($orders_query);
     
-    $monthly_sales[date('Y-m', $timestamp)] = '[\''. strftime('%b', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
+    $monthly_sales[date('Y-m', $timestamp)] = '[\''. language::strftime('%b', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
   }
   
 ?>
