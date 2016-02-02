@@ -28,7 +28,7 @@
   }
   
   foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id), false));
+    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category->id), false));
   }
   
   document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];

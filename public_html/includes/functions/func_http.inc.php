@@ -19,14 +19,16 @@
       return;
     }
     
-    $out = ($post_string ? "POST " : "GET ") . $parts['path'] . ((isset($parts['query'])) ? "?" . $parts['query'] : '') ." HTTP/1.1\r\n"
+    $post_string = (!empty($post_data) && is_array($post_data)) ? http_build_query($post_data) : $post_data;
+
+    $out = (!empty($post_string) ? "POST " : "GET ") . $parts['path'] . ((isset($parts['query'])) ? "?" . $parts['query'] : '') ." HTTP/1.1\r\n"
          . "Host: ". $parts['host'] ."\r\n"
          . (!empty($post_string) ? "Content-Type: application/x-www-form-urlencoded\r\n" : '')
          . (!empty($headers) ? implode("\r\n", $headers) . "\r\n" : '')
          . "Content-Length: ". strlen($post_string) ."\r\n"
          . "Connection: Close\r\n"
          . "\r\n"
-         . (is_array($post_data) ? http_build_query($post_data) : $post_data);
+         . $post_string;
     
     fwrite($fp, $out);
     
@@ -61,8 +63,8 @@
     fclose($fp);
     
   // Make sure HTTP 200 OK
-    preg_match('/HTTP\/1\.[1|0]\s(\d{3})/', $response_header, $matches);
-    if (!isset($matches[1]) || $matches[1] != '200') return false;
+    preg_match('/HTTP\/1\.(1|0)\s(\d{3})/', $response_header, $matches);
+    if (!isset($matches[2]) || $matches[2] != '200') return false;
     
     if ($asynchronous) return true;
     

@@ -51,7 +51,7 @@
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
     foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
       document::$snippets['title'][] = $category_name;
-      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
+      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => (int)$_GET['category_id'])));
     }
   } else if (!empty($product->manufacturer)) {
     document::$snippets['title'][] = $product->manufacturer['name'];

@@ -221,6 +221,7 @@
     'ST' => 'Sao Tome and Principe',
     'SA' => 'Saudi Arabia',
     'SN' => 'Senegal',
+    'RS' => 'Serbia',
     'SC' => 'Seychelles',
     'SL' => 'Sierra Leone',
     'SG' => 'Singapore',
@@ -271,7 +272,6 @@
     'WF' => 'Wallis and Futuna Islands',
     'EH' => 'Western Sahara',
     'YE' => 'Yemen',
-    'YU' => 'Yugoslavia',
     'ZM' => 'Zambia',
     'ZW' => 'Zimbabwe',
   );
