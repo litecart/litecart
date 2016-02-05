@@ -68,9 +68,6 @@ catch(e){window.attachEvent("onload", $buo_f)}
           <!--snippet:notices-->
           <!--snippet:content-->
         </td>
-        <td id="column_right" style="vertical-align: top;">
-          <!--snippet:column_right-->
-        </td>
       </tr>
     </table>    
     </div>

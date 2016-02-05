@@ -32,6 +32,10 @@ ErrorDocument 500 "Internal Server Error"
   #RewriteCond %{REQUEST_METHOD} !=POST
   #RewriteRule ^(.*)$ https://%{HTTP_HOST}{BASE_DIR}$1 [R=302,L]
   
+  # Force HTTPS on load balancing servers - Remember to clear the link cache
+  #RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  #RewriteRule ^(.*)$ https://%{HTTP_HOST}{BASE_DIR}$1 [R=302,L]
+
   # Web path to catalog root
   RewriteBase {BASE_DIR}
   
