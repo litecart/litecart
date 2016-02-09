@@ -13,20 +13,38 @@
       $this->load();
     }
     
-    public function process($module_id=null, $force=false) {
-      
-      $output = '';
+    public function process($modules=null, $force=false) {
       
       if (empty($this->modules)) return;
       
-      if (!empty($module_id)) {
-        echo $module_id . PHP_EOL;
-        $this->modules[$module_id]->process($force);
-      } else {
-        foreach (array_keys($this->modules) as $module_id) {
-          echo $module_id . PHP_EOL;
-          $this->modules[$module_id]->process($force);
+      if (empty($modules)) $modules = array_keys($this->modules);
+      if (!is_array($modules)) $modules = array($modules);
+
+      foreach ($modules as $module_id) {
+        if (!in_array($module_id, array_keys($this->modules))) {
+          trigger_error($module_id .' is not a valid module id', E_USER_WARNING);
+          continue;
         }
+
+        ob_start();
+
+        $timestamp = microtime(true);
+
+        echo '##'.str_repeat('#', strlen($title='Executing '. $module_id .' at '. date('Y-m-d H:i:s'))).'##' . PHP_EOL
+           . '# '.$title.' #' . PHP_EOL
+           . '##'.str_repeat('#', strlen($title)).'##' . PHP_EOL;
+
+        $this->modules[$module_id]->process($force);
+
+        echo '##'.str_repeat('#', strlen($duration='Finished in '. round(microtime(true) - $timestamp, 3).' s')).'##' . PHP_EOL
+           . '# '.$duration.' #' . PHP_EOL
+           . '##'.str_repeat('#', strlen($duration)).'##' . PHP_EOL;
+
+        $log = ob_get_clean();
+
+        file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . $module_id .'.log', $log);
+
+        echo $log;
       }
     }
     
