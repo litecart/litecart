@@ -647,6 +647,13 @@
         }
       }
       
+      $customer = new mod_shipping();
+      $result = $customer->validate($this->data['customer']);
+
+      if (!empty($result['error'])) {
+        return $result['error'];
+      }
+
       return false;
     }
     

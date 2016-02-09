@@ -39,6 +39,21 @@
       return $fields;
     }
     
+    public function validate($fields) {
+
+      if (empty($this->modules)) return false;
+
+      foreach ($this->modules as $module) {
+        if (!method_exists($module, 'validate')) continue;
+        $result = $module->validate($fields);
+        if (!empty($result['error'])) {
+          return $result;
+        }
+      }
+
+      return true;
+    }
+
     public function after_save($object) {
       
       if (empty($this->modules)) return false;
