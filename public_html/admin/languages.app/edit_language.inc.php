@@ -43,6 +43,15 @@
       notices::add('errors', language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
     }
     
+    if (!preg_grep('#'. preg_quote($_POST['charset'], '#') .'#i', mb_list_encodings())) {
+      notices::add('errors', strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), array('%charset' => !empty($_POST['charset']) ? $_POST['charset'] : 'NULL')));
+    }
+
+    if (!setlocale(LC_ALL,  explode(',', $_POST['locale']))) {
+      notices::add('errors', strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), array('%locale' => !empty($_POST['locale']) ? $_POST['locale'] : 'NULL')));
+    }
+    setlocale(LC_ALL, explode(',', language::$selected['locale']));
+
     if (empty(notices::$data['errors'])) {
       
       $_POST['code'] = strtolower($_POST['code']);
