@@ -88,7 +88,6 @@
       }
       
       return $code;
-      
     }
   }
   
@@ -114,4 +113,15 @@
     }
   }
   
+// Emulate some $_SERVER variables
+  if (!isset($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+  if (!isset($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = 'off';
+
+// Redefine some $_SERVER variables
+  if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+  if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+  if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) $_SERVER['SERVER_PORT'] = $_SERVER['HTTP_X_FORWARDED_PORT'];
+  if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) $_SERVER['SERVER_PROTOCOL'] = $_SERVER['HTTP_X_FORWARDED_PROTO'];
+  if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') $_SERVER['HTTPS'] = 'on';
+
 ?>
