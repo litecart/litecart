@@ -43,10 +43,10 @@
           $selected = false;
         }
         
-        $box_apps_menu->snippets['apps'][$app['code']]['menu'][$item['doc']] = array(
+        $box_apps_menu->snippets['apps'][$app['code']]['menu'][] = array(
           'title' => $item['title'],
           'doc' => $item['doc'],
-          'link' => document::link(WS_DIR_ADMIN, array('app' => $app['code'], 'doc' => $item['doc'])),
+          'link' => document::link(WS_DIR_ADMIN, array('app' => $app['code'], 'doc' => $item['doc'] + (isset($item['params']) ? $item['params'] : array()))),
           'active' => $selected ? true : false,
         );
       }

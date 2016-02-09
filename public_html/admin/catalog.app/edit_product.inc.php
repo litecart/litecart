@@ -162,8 +162,8 @@ foreach (array_keys(language::$languages) as $language_code) {
     
     if ($category_id == 0) {
       $output .= '<tr>' . PHP_EOL
-               . '  <td>'. functions::form_draw_checkbox('categories[]', '0', (empty($_POST['categories']) || in_array('0', $_POST['categories'])) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', '[Root]')) .'" data-priority="0"') .'</td>' . PHP_EOL
-               . '  <td width="100%" id = "category-id-'. $category_id .'">'. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', '[Root]') .'" style="color: #cccc66;"') .'</td>' . PHP_EOL
+               . '  <td>'. functions::form_draw_checkbox('categories[]', '0', (empty($_POST['categories']) || in_array('0', $_POST['categories'])) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .'</td>' . PHP_EOL
+               . '  <td width="100%" id = "category-id-'. $category_id .'">'. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cccc66;"') .'</td>' . PHP_EOL
                . '</tr>' . PHP_EOL;
     }
     

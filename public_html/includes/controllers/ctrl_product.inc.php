@@ -470,7 +470,6 @@
           database::query(
             "update ". DB_TABLE_PRODUCTS_IMAGES ."
             set filename = '". database::input($this->data['images'][$key]['filename']) ."',
-                checksum = '". database::input($this->data['images'][$key]['checksum']) ."',
                 priority = '". $image_priority++ ."'
             where product_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['images'][$key]['id'] ."'
