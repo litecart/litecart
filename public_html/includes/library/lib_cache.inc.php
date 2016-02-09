@@ -180,6 +180,9 @@
       
       foreach ($dependants as $dependant) {
         switch ($dependant) {
+          case 'basename':
+            $hash_string .= $_SERVER['PHP_SELF'];
+            break;
           case 'currency':
             $hash_string .= currency::$selected['code'];
             break;
@@ -187,36 +190,35 @@
             $hash_string .= serialize(customer::$data);
             break;
           case 'domain':
-            $hash_string .= $_SERVER['HTTP_HOST'];
-            break;
-          case 'region':
-            $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
-            break;
-          case 'login':
-            $hash_string .= customer::$data['id'];
-            break;
           case 'host':
             $hash_string .= $_SERVER['HTTP_HOST'];
-            break;
-          case 'basename':
-            $hash_string .= $_SERVER['PHP_SELF'];
             break;
           case 'get':
             $hash_string .= serialize($_GET);
             break;
-          case 'post':
-            $hash_string .= serialize($_POST);
-            break;
-          case 'uri':
-            $hash_string .= $_SERVER['REQUEST_URI'];
-            break;
           case 'language':
             $hash_string .= language::$selected['code'];
+            break;
+          case 'login':
+            $hash_string .= !empty(customer::$data['id']) ? '1' : '0';
             break;
           case 'prices':
             $hash_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
             $hash_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
             $hash_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
+            break;
+          case 'post':
+            $hash_string .= serialize($_POST);
+            break;
+          case 'region':
+            $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
+            break;
+          case 'site':
+            $hash_string .= document::link(WS_DIR_HTTP_HOME);
+            break;
+          case 'uri':
+          case 'url':
+            $hash_string .= $_SERVER['REQUEST_URI'];
             break;
           default:
             if (is_array($dependant)) {

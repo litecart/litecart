@@ -15,7 +15,7 @@
     public static function initiate() {
       
     // Load cached links (url rewrites)
-      self::$_links_cache_id = cache::cache_id('links', array('language'));
+      self::$_links_cache_id = cache::cache_id('links', array('site', 'language'));
       self::$_links_cache = cache::get(self::$_links_cache_id, 'file');
       
     // Add default routes
