@@ -22,6 +22,8 @@
         $this->data[$field['Field']] = '';
       }
       
+      $this->data['dock'] = array();
+
       $info_fields_query = database::query(
         "show fields from ". DB_TABLE_PAGES_INFO .";"
       );

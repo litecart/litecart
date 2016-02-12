@@ -132,8 +132,13 @@
           continue;
         }
         
+      // Set default category data
+        if (empty($category->data['id'])) {
+          $category->data['dock'][] = 'tree';
+        }
+
       // Set new category data
-        foreach (array('parent_id', 'status', 'code', 'keywords', 'image') as $field) {
+        foreach (array('parent_id', 'status', 'code', 'dock', 'keywords', 'image') as $field) {
           if (isset($row[$field])) $category->data[$field] = $row[$field];
         }
         

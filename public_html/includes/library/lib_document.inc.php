@@ -58,6 +58,9 @@
     
     public static function after_capture() {
     
+    // Get template settings
+      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
+
     // Set after-snippets
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['charset'] = language::$selected['charset'];
@@ -99,9 +102,6 @@
     }
     
     public static function before_output() {
-      
-    // Get template settings
-      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
       
     // Clean orphan snippets
       $search = array(

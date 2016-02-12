@@ -515,9 +515,9 @@
           functions::email_send(
             null,
             $this->data['customer']['email'],
-            strtr(language::translate('email_subject_order_updated', 'Order Update: %s', $this->data['language_code']), array(
-              'id' => (int)$this->data['id'],
-              'status' => $current_order_status['name'],
+            strtr(language::translate('email_subject_order_updated', 'Order %order_id has updated to %order_status', $this->data['language_code']), array(
+              '%order_id' => (int)$this->data['id'],
+              '%order_status' => $current_order_status['name'],
             )),
             $email_body,
             true
@@ -659,6 +659,14 @@
     
     public function inject_email_message($html) {
       
+      $order_status_query = database::query(
+        "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
+        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
+        where os.id = ". (int)$this->data['order_status_id'] ."
+        limit 1;"
+      );
+      $order_status = database::fetch($order_status_query);
+
       $aliases = array(
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
@@ -668,7 +676,8 @@
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
-        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))),
+        '%order_status' => $order_status['name'],
       );
     
       $html = str_replace(array_keys($aliases), array_values($aliases), $html);
