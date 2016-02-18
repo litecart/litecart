@@ -149,7 +149,7 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_charset', 'Charset'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'placeholder="UTF-8" data-size="small"'); ?>
+        <?php echo functions::form_draw_charsets_list('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'placeholder="UTF-8" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
