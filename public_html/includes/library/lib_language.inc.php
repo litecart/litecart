@@ -302,9 +302,44 @@
 
       if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
         $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+
+        $locale = setlocale(LC_TIME, 0);
+
+        switch(true) {
+          //case (preg_match('#\.(0)$#', $locale)):
+          //  return '???';
+
+          case (preg_match('#\.(874|1256)$#', $locale, $matches)):
+            return iconv('UTF-8', "$locale_charset", strftime($format, $timestamp));
+
+          case (preg_match('#\.1250$#', $locale)):
+            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'ISO-8859-2');
+
+          case (preg_match('#\.(1251|1252|1254)$#', $locale, $matches)):
+            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'Windows-'.$matches[1]);
+
+          case (preg_match('#\.(1255|1256)$#', $locale, $matches)):
+            return iconv(language::$selected['charset'], "Windows-{$matches[1]}", strftime($format, $timestamp));
+
+          case (preg_match('#\.1257$#', $locale)):
+            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'ISO-8859-13');
+
+          case (preg_match('#\.(932|936|950)$#', $locale)):
+            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'CP'.$matches[1]);
+
+          case (preg_match('#\.(949)$#', $locale)):
+            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'EUC-KR');
+
+          //case (preg_match('#\.(x-iscii-ma)$i#', $locale)):
+          //  return '???';
+
+          default:
+            trigger_error("Unknown charset for system locale ($locale)", E_USER_NOTICE);
+            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'auto');
+        }
       }
 
-      return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'auto');
+      return strftime($format, $timestamp);
     }
   }
   
