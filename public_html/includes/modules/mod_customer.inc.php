@@ -54,13 +54,13 @@
       return true;
     }
 
-    public function after_save($object) {
+    public function update($fields) {
       
       if (empty($this->modules)) return false;
       
       foreach ($this->modules as $module) {
-        if (!method_exists($module, 'after_save')) continue;
-        $module->after_save($object);
+        if (!method_exists($module, 'update')) continue;
+        $module->update($fields);
       }
     }
     

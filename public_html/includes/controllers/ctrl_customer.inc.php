@@ -21,6 +21,8 @@
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = '';
       }
+
+      $this->data['status'] = 1;
     }
     
     public function load($customer_id) {
@@ -95,7 +97,7 @@
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set
-          status = '". (int)$this->data['status'] ."',
+          status = '". (!empty($this->data['status']) ? '1' : '0') ."',
           email = '". database::input($this->data['email']) ."',
           tax_id = '". database::input($this->data['tax_id']) ."',
           company = '". database::input($this->data['company']) ."',
@@ -126,7 +128,7 @@
       );
       
       $customer_modules = new mod_customer();
-      $customer_modules->after_save($this);
+      $customer_modules->update($this->data);
       
       cache::clear_cache('customers');
     }
