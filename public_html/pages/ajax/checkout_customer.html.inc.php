@@ -47,7 +47,7 @@
       if (empty($_POST['shipping_address']['zone_code']) && functions::reference_country_num_zones($_POST['shipping_address']['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
     }
     
-    if (isset($_POST['email']) && $_POST['email'] != customer::$data['email'] && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+    if (!empty($_POST['email']) && $_POST['email'] != customer::$data['email'] && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
       notices::add('notices', language::translate('notice_existing_customer_account_will_be_used', 'We found an existing customer account that will be used for this order'));
     }
     
@@ -109,7 +109,9 @@
       if (empty(notices::$data['errors']) && settings::get('register_guests') && !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
         
         $customer = new ctrl_customer();
-        $customer->data = customer::$data;
+        foreach (array_keys($customer->data) as $key) {
+          if (isset(customer::$data[$key])) $customer->data[$key] = customer::$data[$key];
+        }
         $customer->save();
         
         if (empty($_POST['password'])) $_POST['password'] = functions::password_generate(6);
