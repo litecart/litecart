@@ -47,7 +47,6 @@
     // Load/Refresh
       self::load();
       
-      
       if (!empty($_POST['add_cart_product'])) {
         
         $options = !empty($_POST['options']) ? $_POST['options'] : array();
@@ -370,6 +369,7 @@
           }
         }
       }
+
       if ($quantity <= 0) {
         self::remove($item_key);
         return;
@@ -390,6 +390,11 @@
         }
       }
       
+      if (settings::get('round_amounts')) {
+        self::$items[$item_key]['price'] = currency::round(self::$items[$item_key]['price'], currency::$selected['code']);
+        self::$items[$item_key]['tax'] = currency::round(self::$items[$item_key]['tax'], currency::$selected['code']);
+      }
+
       self::_calculate_total();
     }
     
