@@ -46,7 +46,7 @@
         $box_apps_menu->snippets['apps'][$app['code']]['menu'][] = array(
           'title' => $item['title'],
           'doc' => $item['doc'],
-          'link' => document::link(WS_DIR_ADMIN, array('app' => $app['code'], 'doc' => $item['doc'] + (isset($item['params']) ? $item['params'] : array()))),
+          'link' => document::link(WS_DIR_ADMIN, array('app' => $app['code'], 'doc' => $item['doc']) + (!empty($item['params']) ? $item['params'] : array())),
           'active' => $selected ? true : false,
         );
       }
