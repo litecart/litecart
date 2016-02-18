@@ -68,6 +68,16 @@
       }
     }
     
+    echo '<p>Clear cache... ';
+
+    cache::clear_cache();
+
+    foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+      if (is_file($file)) unlink($file);
+    }
+
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+
     if (!empty($_REQUEST['redirect'])) {
       header('Location: '. $_REQUEST['redirect']);
       exit;
