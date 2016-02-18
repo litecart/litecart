@@ -57,8 +57,8 @@
     <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-    <th><?php echo language::translate('title_date', 'Date'); ?></th>
     <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
+    <th><?php echo language::translate('title_date', 'Date'); ?></th>
     <th>&nbsp;</th>
   </tr>
 <?php
@@ -110,8 +110,8 @@
     <td><?php echo $order['payment_option_name']; ?></td>
     <td style="text-align: right;"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
     <td style="text-align: right;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-    <td style="text-align: right;"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
+    <td style="text-align: right;"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td>
       <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
       <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>

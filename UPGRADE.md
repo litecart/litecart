@@ -10,9 +10,11 @@
   
   3. Upload the contents of the folder public_html/* to the corresponding path of your installation replacing the old files. Any modified files will be overwritten!
   
-  4. Point your browser to http://www.yoursite.com/path/to/install/upgrade.php and follow the instructions on the page.
+  4. Point your browser to http://www.yoursite.com/install/upgrade.php and follow the instructions on the page.
   
   5. Make sure everything went fine and delete the install/ folder.
+
+     If there are complications, try switching to the default template and disable any vQmods.
   
   If you need help, turn to our forums at http://forums.litecart.net.
   
