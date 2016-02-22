@@ -821,7 +821,7 @@ foreach (currency::$currencies as $currency) {
       foreach (array_keys(currency::$currencies) as $currency_code) {
         if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
-            <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field($currency_code, 'options['.$key.']['. $currency_code. ']', number_format($_POST['options'][$key][$currency_code], 4, '.', ''))); ?></td>
+            <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field($currency_code, 'options['.$key.']['. $currency_code. ']', number_format((float)$_POST['options'][$key][$currency_code], 4, '.', ''))); ?></td>
 <?php
       }
 ?>

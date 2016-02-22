@@ -62,7 +62,7 @@
       
       database::query(
         "update ". DB_TABLE_SETTINGS ."
-        set value = '". database::input(serialize($settings)) ."'
+        set value = '". database::input(serialize($settings), true) ."'
         where `key` = '". database::input($this->_module->id) ."'
         limit 1;"
       );

@@ -46,10 +46,9 @@
       if (!empty($contents)) {
         $from = !empty($this->settings['email_receipient']) ? $this->settings['email_receipient'] : settings::get('store_email');
         $to = $this->settings['email_receipient'];
-        $result = functions::email_send($from, $to, 'Error Report for '. settings::get('store_name'), $contents);
+        $result = functions::email_send($from, $to, '[Error Report] '. settings::get('store_name') .' - '. PLATFORM_NAME .' '. PLATFORM_VERISON, $contents);
         if ($result === true) {
           file_put_contents($file, '');
-
         }
       }
     }
