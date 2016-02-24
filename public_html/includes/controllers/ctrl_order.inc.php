@@ -686,14 +686,22 @@
     }
     
     public function email_order_copy($email) {
-    
+
       if (empty($email)) return;
-    
+
+      $action_button = '<div itemscope itemtype="http://schema.org/EmailMessage">' . PHP_EOL
+              . '  <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">' . PHP_EOL
+              . '    <link itemprop="url" href="'. document::href_ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))) .'" />' . PHP_EOL
+              . '    <meta itemprop="name" content="'. htmlspecialchars(language::translate('title_view_order', 'View Order')) .'" />' . PHP_EOL
+              . '  </div>' . PHP_EOL
+              //. '  <meta itemprop="description" content="" />' . PHP_EOL
+              . '</div>';
+
       functions::email_send(
         null,
         $email,
         language::translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
-        self::draw_printable_copy(),
+        self::draw_printable_copy() . $action_button,
         true
       );
     }
