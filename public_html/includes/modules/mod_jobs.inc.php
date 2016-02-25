@@ -30,13 +30,13 @@
 
         $timestamp = microtime(true);
 
-        echo '##'.str_repeat('#', strlen($title='Executing '. $module_id .' at '. date('Y-m-d H:i:s'))).'##' . PHP_EOL
+        echo '##'.str_repeat('#', strlen($title=$module_id .' executed at '. date('Y-m-d H:i:s'))).'##' . PHP_EOL
            . '# '.$title.' #' . PHP_EOL
            . '##'.str_repeat('#', strlen($title)).'##' . PHP_EOL;
 
         $this->modules[$module_id]->process($force);
 
-        echo '##'.str_repeat('#', strlen($duration='Finished in '. round(microtime(true) - $timestamp, 3).' s')).'##' . PHP_EOL
+        echo '##'.str_repeat('#', strlen($duration='Completed in '. round(microtime(true) - $timestamp, 3).' s')).'##' . PHP_EOL
            . '# '.$duration.' #' . PHP_EOL
            . '##'.str_repeat('#', strlen($duration)).'##' . PHP_EOL;
 

@@ -19,7 +19,7 @@
         "show fields from ". DB_TABLE_CUSTOMERS .";"
       );
       while ($field = database::fetch($fields_query)) {
-        if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
+        if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
           $this->data['shipping_address'][$matches[1]] = '';
         } else {
           $this->data[$field['Field']] = '';
