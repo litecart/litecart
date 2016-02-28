@@ -47,14 +47,17 @@
           limit 1;"
         );
         $previous_language = database::fetch($previous_language_query);
+
         if ($this->data['code'] != $previous_language['code']) {
           if ($previous_language['code'] == 'en') {
-            trigger_error('You may not rename the english language because it is used for the PHP framework.', E_USER_ERROR);
+            trigger_error('You cannot not rename the english language because it is used for the PHP framework.', E_USER_ERROR);
+
           } else {
             database::query(
               "alter table ". DB_TABLE_TRANSLATIONS ."
               change `text_". database::input($previous_language['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
             );
+
             $info_tables = array(
               DB_TABLE_CATEGORIES_INFO,
               DB_TABLE_DELIVERY_STATUSES_INFO,
@@ -63,11 +66,13 @@
               DB_TABLE_OPTION_VALUES_INFO,
               DB_TABLE_ORDER_STATUSES_INFO,
               DB_TABLE_PAGES_INFO,
-              DB_TABLE_PRODUCTS_INFO,
               DB_TABLE_PRODUCT_GROUPS_INFO,
               DB_TABLE_PRODUCT_GROUPS_VALUES_INFO,
+              DB_TABLE_PRODUCTS_INFO,
+              DB_TABLE_QUANTITY_UNITS_INFO,
               DB_TABLE_SOLD_OUT_STATUSES_INFO,
             );
+
             foreach ($info_tables as $table) {
               database::query(
                 "update ". $table ."
@@ -80,6 +85,16 @@
       }
       
       if (empty($this->data['id'])) {
+        $languages_query = database::query(
+          "select id from ". DB_TABLE_LANGUAGES ."
+          where code = '". database::input($this->data['code']) ."'
+          limit 1;"
+        );
+
+        if (database::num_rows($languages_query)) {
+          trigger_error('Language already exists', E_USER_ERROR);
+        }
+
         database::query(
           "insert into ". DB_TABLE_LANGUAGES ."
           (date_created)
@@ -155,6 +170,27 @@
         );
       }
       
+      $info_tables = array(
+        DB_TABLE_CATEGORIES_INFO,
+        DB_TABLE_DELIVERY_STATUSES_INFO,
+        DB_TABLE_MANUFACTURERS_INFO,
+        DB_TABLE_OPTION_GROUPS_INFO,
+        DB_TABLE_OPTION_VALUES_INFO,
+        DB_TABLE_ORDER_STATUSES_INFO,
+        DB_TABLE_PAGES_INFO,
+        DB_TABLE_PRODUCT_GROUPS_INFO,
+        DB_TABLE_PRODUCT_GROUPS_VALUES_INFO,
+        DB_TABLE_PRODUCTS_INFO,
+        DB_TABLE_QUANTITY_UNITS_INFO,
+        DB_TABLE_SOLD_OUT_STATUSES_INFO,
+      );
+      foreach ($info_tables as $table) {
+        database::query(
+          "delete from ". $table ."
+          where language_code = '". $this->data['code'] ."';"
+        );
+      }
+
       cache::clear_cache('languages');
       
       $this->data['id'] = null;

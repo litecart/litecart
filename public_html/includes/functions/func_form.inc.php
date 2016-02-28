@@ -664,19 +664,6 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
-  function form_draw_charsets_list($name, $input=true, $multiple=false, $parameters=false) {
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    foreach(mb_list_encodings() as $charset) {
-      $options[] = array($charset);
-    }
-
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  }
-
   function form_draw_countries_list($name, $input=true, $multiple=false, $parameters='') {
     
     if ($input === true) $input = form_reinsert_value($name);

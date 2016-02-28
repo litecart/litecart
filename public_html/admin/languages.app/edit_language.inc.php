@@ -17,6 +17,35 @@
   if (!empty($_POST['save'])) {
     
     if (empty($_POST['code'])) notices::add('errors', language::translate('error_must_enter_code', 'You must enter a code'));
+
+    if (!empty($_POST['code']) && empty($language->data['id'])) {
+        $languages_query = database::query(
+          "select id from ". DB_TABLE_LANGUAGES ."
+          where code = '". database::input($_POST['code']) ."'
+          limit 1;"
+        );
+
+        if (database::num_rows($languages_query)) {
+          notices::add('errors', language::translate('error_language_already_exists', 'The language already exists in the database'));
+        }
+    }
+
+    if (!empty($_POST['code']) && !empty($language->data['id']) && $language->data['code'] != $_POST['code']) {
+      if ($language->data['code'] == 'en') {
+        notices::add('errors', language::translate('error_cannot_rename_framework_language', 'You cannot not rename the framework language, but you can disable it'));
+      }
+
+      $languages_query = database::query(
+        "select id from ". DB_TABLE_LANGUAGES ."
+        where code = '". database::input($_POST['code']) ."'
+        limit 1;"
+      );
+
+      if (database::num_rows($languages_query)) {
+        notices::add('errors', language::translate('error_language_already_exists', 'The language already exists in the database'));
+      }
+    }
+
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     
     if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
@@ -149,12 +178,12 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_charset', 'Charset'); ?></strong><br />
-        <?php echo functions::form_draw_charsets_list('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'placeholder="UTF-8" data-size="small"'); ?>
+        <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8" data-size="small"'); ?>
       </td>
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_system_locale', 'System Locale'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('locale', true, 'placeholder="xx_XX.utf8" data-size="small"'); ?>
+        <?php echo functions::form_draw_text_field('locale', true, 'placeholder="xx_XX.utf8"'); ?>
       </td>
     </tr>
     <tr>
@@ -271,7 +300,7 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
-        <?php echo functions::form_draw_number_field('priority', true); ?>
+        <?php echo functions::form_draw_number_field('priority', true, null, null, 'data-size="tiny"'); ?>
       </td>
     </tr>
     <tr>
