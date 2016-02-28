@@ -70,7 +70,12 @@
     
     echo '<p>Clear cache... ';
 
-    cache::clear_cache();
+    $database->query(
+      "update ". DB_TABLE_SETTINGS ."
+      set value = '1'
+      where `key` = 'cache_clear'
+      limit 1;"
+    );
 
     foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
       if (is_file($file)) unlink($file);

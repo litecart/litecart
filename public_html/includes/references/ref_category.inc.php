@@ -74,7 +74,7 @@
           foreach ($fields as $key) {
             foreach (array_keys(language::$languages) as $language_code) {
               if (empty($this->_data[$key][$language_code])) {
-                if (isset($this->_data[$key][settings::get('default_language_code')])) $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
+                $this->_data[$key][$language_code] = isset($this->_data[$key][settings::get('default_language_code')]) ? $this->_data[$key][settings::get('default_language_code')] : null;
               }
             }
           }
