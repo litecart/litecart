@@ -254,6 +254,7 @@
       if (isset($previous_order_status['id']) && isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id']) {
         if (!empty($this->data['id'])) {
           $this->data['comments'][] = array(
+            'author' => 'system',
             'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $current_order_status['name']),
             'hidden' => 1,
           );

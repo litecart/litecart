@@ -45,6 +45,7 @@
         case 'head_title':
         case 'meta_description':
         case 'h1_title':
+        case 'link':
           
           $this->_data['info'] = array();
           
@@ -60,6 +61,7 @@
             'head_title',
             'meta_description',
             'h1_title',
+            'link',
           );
           
           while ($row = database::fetch($query)) {

@@ -171,7 +171,7 @@
         return number_format($value * $currency_value, 2, '.', ',') .' '. $currency_code;
       }
       
-      if ($auto_decimals == false || $value - floor($value) > 0) {
+      if ($auto_decimals == false || round($value, self::$currencies[$currency_code]['decimals']) - floor($value) > 0) {
         $decimals = (int)self::$currencies[$currency_code]['decimals'];
       } else {
         $decimals = 0;

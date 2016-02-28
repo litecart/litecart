@@ -22,6 +22,12 @@
     <div class="description-wrapper">
       <p class="manufacturer-description"><?php echo $description; ?></p>
     </div>
+
+    <?php if ($link) { ?>
+    <p class="link">
+      <a href="<?php echo $link; ?>"><?php echo htmlspecialchars($link); ?></a>
+    </p>
+    <?php } ?>
     <?php } ?>
     
     <?php if ($products) { ?>
