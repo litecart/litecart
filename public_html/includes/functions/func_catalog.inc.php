@@ -92,7 +92,7 @@
         break;
       case 'date':
         $sql_inner_sort = "order by p.date_created desc";
-        $sql_outer_sort = "";
+        $sql_outer_sort = "order by p.date_created desc";
         break;
       case 'occurrences':
         $sql_inner_sort = "";
