@@ -737,7 +737,6 @@
                + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?>'
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
                + '    <div class="text"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 4em; box-sizing: border-box"')); ?></div>'
-               + '    <label class="notify" title="<?php echo htmlspecialchars(language::translate('title_Notify', 'Notify')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][notify]', 1, true); ?> <?php echo functions::draw_fonticon('fa-envelope'); ?></label>'
                + '    <label class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>'
                + '    <div class="date"></div>'
                + '  </li>';
