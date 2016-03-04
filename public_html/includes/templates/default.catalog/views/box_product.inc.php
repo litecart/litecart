@@ -116,10 +116,11 @@
       </div>
       
       <div class="social-bookmarks">
-        <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => $name .' - '. document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square', 'style="color: #55acee;"'); ?></a>
         <a class="facebook" href="<?php echo document::href_link('http://www.facebook.com/sharer.php', array('u' => document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square', 'style="color: #3b5998;"'); ?></a>
+        <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => $name .' - '. document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square', 'style="color: #55acee;"'); ?></a>
         <a class="googleplus" href="<?php echo document::href_link('https://plus.google.com/share', array('url' => document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Google+'); ?>"><?php echo functions::draw_fonticon('fa-google-plus-square', 'style="color: #dd4b39;"'); ?></a>
         <a class="pinterest" href="<?php echo document::href_link('http://pinterest.com/pin/create/button/', array('url' => document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square', 'style="color: #bd081c;"'); ?></a>
+        <a class="linkedin" href="<?php echo document::href_link('https://www.linkedin.com/cws/share', array('url' => document::link())); ?>" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'LinkedIn'); ?>"><?php echo functions::draw_fonticon('fa-linkedin-square', 'style="color: #0077b5;"'); ?></a>
       </div>
       
     </div>
