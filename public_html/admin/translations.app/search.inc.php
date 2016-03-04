@@ -3,7 +3,7 @@
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['languages'])) $_GET['languages'] = array_keys(language::$languages);
   
-  if (isset($_POST['save'])) {
+  if (isset($_POST['save']) && !empty($_POST['translations'])) {
     
     foreach ($_POST['translations'] as $translation) {
       $sql_update_fields = '';
@@ -29,7 +29,7 @@
     exit;
   }
   
-  if (isset($_POST['delete'])) {
+  if (isset($_POST['delete']) && !empty($_POST['translation_id'])) {
     database::query(
       "delete from ". DB_TABLE_TRANSLATIONS ."
       where id = '". database::input($_POST['translation_id']) ."'

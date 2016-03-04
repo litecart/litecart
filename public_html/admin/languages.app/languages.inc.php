@@ -11,6 +11,11 @@
           continue;
         }
 
+        if (!empty($_POST['disable']) && $language_code == settings::get('store_language_code')) {
+          notices::add('errors', language::translate('error_cannot_disable_store_language', 'You cannot disable the store language'));
+          continue;
+        }
+
         $language = new ctrl_language($_POST['languages'][$language_code]);
         $language->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $language->save();

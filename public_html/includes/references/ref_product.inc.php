@@ -384,8 +384,8 @@
                     $row[$key][$language_code] = $row[$key][settings::get('default_language_code')];
                   } else {
                     $row[$key][$language_code] = '[untitled]';
-              }
-            }
+                  }
+                }
               }
             }
             
@@ -458,10 +458,10 @@
                       $this->_data['product_groups'][$group_id]['values'][$value_id][$language_code] = $this->_data['product_groups'][$group_id]['values'][$value_id][settings::get('default_language_code')];
                     } else {
                       $this->_data['product_groups'][$group_id]['values'][$value_id][$language_code] = '[untitled]';
+                    }
+                  }
                 }
               }
-            }
-          }
             }
           }
           

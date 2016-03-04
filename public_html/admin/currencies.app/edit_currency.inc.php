@@ -17,6 +17,31 @@
   if (!empty($_POST['save'])) {
     
     if (empty($_POST['code'])) notices::add('errors', language::translate('error_must_enter_code', 'You must enter a code'));
+
+    if (!empty($_POST['code']) && empty($currency->data['id'])) {
+        $currencys_query = database::query(
+          "select id from ". DB_TABLE_CURRENCIES ."
+          where code = '". database::input($_POST['code']) ."'
+          limit 1;"
+        );
+
+        if (database::num_rows($currencys_query)) {
+          notices::add('errors', currency::translate('error_currency_already_exists', 'The currency already exists in the database'));
+        }
+    }
+
+    if (!empty($_POST['code']) && !empty($currency->data['id']) && $currency->data['code'] != $_POST['code']) {
+      $currencys_query = database::query(
+        "select id from ". DB_TABLE_CURRENCIES ."
+        where code = '". database::input($_POST['code']) ."'
+        limit 1;"
+      );
+
+      if (database::num_rows($currencys_query)) {
+        notices::add('errors', currency::translate('error_currency_already_exists', 'The currency already exists in the database'));
+      }
+    }
+
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     if (empty($_POST['value'])) notices::add('errors', language::translate('error_must_enter_value', 'You must enter a value'));
     

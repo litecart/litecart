@@ -2,8 +2,19 @@
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
   
     if (!empty($_POST['currencies'])) {
-      foreach ($_POST['currencies'] as $key => $value) {
-        $currency = new ctrl_currency($_POST['currencies'][$key]);
+      foreach (array_keys($_POST['currencies']) as $currency_code) {
+
+        if (!empty($_POST['disable']) && $currency_code == settings::get('default_currency_code')) {
+          notices::add('errors', language::translate('error_cannot_disable_default_currency', 'You cannot disable the default currency'));
+          continue;
+        }
+
+        if (!empty($_POST['disable']) && $currency_code == settings::get('store_currency_code')) {
+          notices::add('errors', language::translate('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
+          continue;
+        }
+
+        $currency = new ctrl_currency($_POST['currencies'][$currency_code]);
         $currency->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $currency->save();
       }

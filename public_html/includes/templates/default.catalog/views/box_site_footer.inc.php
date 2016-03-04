@@ -55,7 +55,7 @@
           <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
           <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
           <p><?php echo settings::get('store_phone'); ?><br />
-            <?php list($account, $domain) = explode('@', settings::get('store_email')); echo "<script>document.write('". $account ."' + '@' + '". $domain ."');</script>"; ?></p>
+            <?php list($account, $domain) = explode('@', settings::get('store_email')); echo "<script>document.write('<a href=\"mailto:". $account ."' + '@' + '". $domain ."\">". $account ."' + '@' + '". $domain ."</a>');</script>"; ?></p>
         </td>
       </tr>
     </table>
