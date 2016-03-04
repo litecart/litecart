@@ -19,9 +19,17 @@
     if (!empty($_POST['orders'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
       $order_action = new mod_order_action();
+
       $options = $order_action->options();
-      echo $order_action->modules[$module_id]->$options[$module_id]['options'][$option_id]['function']($_POST['orders']);
+
+      if (!method_exists($order_action->modules[$module_id], $options[$module_id]['options'][$option_id]['function'])) {
+        notices::$data['errors'][] = language::translate('error_method_doesnt_exist', 'The method doesn\'t exist');
+        return;
+      }
+
+      echo call_user_func(array($order_action->modules[$module_id], $options[$module_id]['options'][$option_id]['function']), $_POST['orders']);
       return;
+
     } else {
       notices::$data['errors'][] = language::translate('error_must_select_orders', 'You must select orders to perform the operation');
     }
