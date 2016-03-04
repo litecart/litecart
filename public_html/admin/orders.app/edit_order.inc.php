@@ -7,11 +7,6 @@
   }
   
   if (empty($_POST)) {
-    foreach ($order->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
-    
-    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
     
   // Convert to local currency
     foreach (array_keys($order->data['items']) as $key) {
@@ -22,6 +17,12 @@
       $order->data['order_total'][$key]['value'] = $order->data['order_total'][$key]['value'] * $order->data['currency_value'];
       $order->data['order_total'][$key]['tax'] = $order->data['order_total'][$key]['tax'] * $order->data['currency_value'];
     }
+
+    foreach ($order->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+
+    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
   }
   
   breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
@@ -736,7 +737,8 @@
                + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])) . strftime(language::$selected['format_datetime'])); ?>'
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
                + '    <div class="text"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 4em; box-sizing: border-box"')); ?></div>'
-               + '    <div class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', 1, true); ?></div>'
+               + '    <label class="notify" title="<?php echo htmlspecialchars(language::translate('title_Notify', 'Notify')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][notify]', 1, true); ?> <?php echo functions::draw_fonticon('fa-envelope'); ?></label>'
+               + '    <label class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>'
                + '    <div class="date"></div>'
                + '  </li>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
