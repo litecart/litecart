@@ -2,9 +2,13 @@
 
 ## Automatic Upgrade
 
+  This LiteCart release can upgrade from any previous master release version. The automated upgrade procedure will sort out and apply all necessary patches.
+
   Note: Add-ons are version specific and might cause your upgraded platform to malfunction. Make sure all your add-ons are up to date.
   
-  1. Backup your files and database!! Do not underestimate the damage that can be caused by a failed upgrade process.
+### Instructions
+
+  1. Backup your files AND database!! Do not underestimate the damage that can be caused by a failed upgrade process.
   
   2. Note your current platform version. This is seen in the admin panel footer or in the file ~/includes/app_header.inc.php.
   
@@ -20,7 +24,7 @@
   
 ## Performing a Manual Upgrade
   
-  This chapter is no longer provided as it is a safer method to use the automatic upgrade script.
+  This chapter is no longer provided as it is recommended to always use the automatic upgrade script.
   
   Doing a manual upgrade you must note any changes stated in the upgrade patches. See ~/install/upgrade_patches/*.
   

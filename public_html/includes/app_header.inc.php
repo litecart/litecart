@@ -69,23 +69,24 @@
     if (!(error_reporting() & $errno)) return;
     $errfile = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $errfile));
     
+    $href_link = htmlspecialchars('http://lmgtfy.com/?q='.urlencode($errstr));
+
     switch($errno) {
       case E_WARNING:
       case E_USER_WARNING:
-        $output = "<b>Warning:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
+        $output = "<b>Warning:</b> <a href=\"$link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
         break;
       case E_STRICT:
       case E_NOTICE:
       case E_USER_NOTICE:
-        $output = "<b>Notice:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
+        $output = "<b>Notice:</b> <a href=\"$link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
         break;
       case E_DEPRECATED:
       case E_USER_DEPRECATED:
-        $output = "<b>Deprecated:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
+        $output = "<b>Deprecated:</b> <a href=\"$link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
         break;
       default:
-        $output = "<b>Fatal error:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
-        $fatal = true;
+        $output = "<b>Fatal error:</b> <a href=\"$link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
         break;
     }
     
@@ -102,7 +103,7 @@
       }
     }
     
-    if (in_array(strtolower(ini_get('display_errors')), array('on', 'true', '1'))) {
+    if (in_array(strtolower(ini_get('display_errors')), array('1', 'on', 'true'))) {
       if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {
         echo strip_tags($output) . PHP_EOL;
       } else {

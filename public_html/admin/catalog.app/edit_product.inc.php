@@ -281,7 +281,7 @@ foreach (array_keys(language::$languages) as $language_code) {
               <table>
                 <tr>
                   <td><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong><br />
-                    <?php echo functions::form_draw_number_field('quantity', true); ?>
+                    <?php echo functions::form_draw_decimal_field('quantity', true); ?>
                   </td>
                   <td><strong><?php echo language::translate('title_quantity Unit', 'Quantity Unit'); ?></strong><br />
                     <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
@@ -465,7 +465,7 @@ foreach (array_keys(language::$languages) as $language_code) {
           </tr>
           <tr>
             <td><strong><?php echo language::translate('title_dimensions', 'Dimensions'); ?></strong> (<?php echo language::translate('title_width_height_length', 'Width x Height x Length'); ?>)<br />
-              <span class="input-wrapper"><?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> x <?php echo functions::form_draw_decimal_field('dim_y', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> x <?php echo functions::form_draw_decimal_field('dim_z', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?></span>  <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
+              <span class="input-wrapper"><?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> <sub>x</sub> <?php echo functions::form_draw_decimal_field('dim_y', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> <sub>x</sub> <?php echo functions::form_draw_decimal_field('dim_z', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?></span>  <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
             </td>
           </tr>
           <tr>
@@ -932,7 +932,7 @@ foreach (currency::$currencies as $currency) {
             <td><?php echo functions::form_draw_text_field('options_stock['.$key.'][sku]', true, 'data-size="small"'); ?></td>
             <td><?php echo functions::form_draw_number_field('options_stock['.$key.'][quantity]', true); ?></td>
             <td style="white-space: nowrap;"><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true); ?> <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true); ?></td>
-            <td style="white-space: nowrap;"><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true); ?> x <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true); ?> x <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true); ?> <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?></td>
+            <td style="white-space: nowrap;"><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true); ?> <sub>x</sub> <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true); ?> <sub>x</sub> <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true); ?> <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?></td>
             <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
           </tr>
 <?php
@@ -1062,7 +1062,7 @@ foreach (currency::$currencies as $currency) {
                          + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '', 'data-size="small"')); ?></td>'
                          + '  <td><?php echo functions::general_escape_js(functions::form_draw_number_field('options_stock[new_option_stock_i][quantity]', '0')); ?></td>'
                          + '  <td style="white-space: nowrap;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00') .' '. functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?></td>'
-                         + '  <td style="white-space: nowrap;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00') .' x '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00') .' '. functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
+                         + '  <td style="white-space: nowrap;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00') .' <sub>x</sub> '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00') .' <sub>x</sub> '. functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00') .' '. functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?></td>'
                          + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                          + '</tr>';
               while ($("input[name='options_stock[new_"+new_option_stock_i+"]']").length) new_option_stock_i++;
