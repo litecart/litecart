@@ -171,10 +171,10 @@
         return number_format($value * $currency_value, 2, '.', ',') .' '. $currency_code;
       }
       
-      if ($auto_decimals == false || round($value, self::$currencies[$currency_code]['decimals']) - floor($value) > 0) {
-        $decimals = (int)self::$currencies[$currency_code]['decimals'];
-      } else {
+      if (settings::get('auto_decimals') && $auto_decimals && round($value, self::$currencies[$currency_code]['decimals']) - floor($value) == 0) {
         $decimals = 0;
+      } else {
+        $decimals = (int)self::$currencies[$currency_code]['decimals'];
       }
       
       return self::$currencies[$currency_code]['prefix'] . number_format($value * $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$currency_code]['suffix'];
