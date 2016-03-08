@@ -288,6 +288,7 @@
     array(language::translate('char_comma', 'Comma'), ','),
     array(language::translate('char_dot', 'Dot'), '.'),
     array(language::translate('char_space', 'Space'), ' '),
+    array(language::translate('char_single_quote', 'Single quote'), '\''),
   );
   echo functions::form_draw_select_field('thousands_sep', $options, true, false, 'data-size="auto"');
 ?>
