@@ -386,7 +386,7 @@ CREATE TABLE `lc_pages_info` (
   `page_id` int(11) NOT NULL,
   `language_code` varchar(2) NOT NULL,
   `title` varchar(256) NOT NULL,
-  `content` text NOT NULL,
+  `content` mediumtext NOT NULL,
   `head_title` varchar(128) NOT NULL,
   `meta_description` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
