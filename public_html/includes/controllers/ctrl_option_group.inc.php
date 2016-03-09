@@ -35,6 +35,7 @@
       }
       
       $this->data['sort'] = 'alphabetical';
+      $this->data['values'] = array();
     }
     
     public function load($group_id) {

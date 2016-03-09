@@ -1,5 +1,4 @@
 <?php
-  ignore_user_abort(true);
   set_time_limit(60*5);
   ob_end_clean();
   
