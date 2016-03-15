@@ -81,7 +81,7 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_caption', 'Caption'); ?></strong><br />
-        <?php echo functions::form_draw_textarea('caption', true, 'style="height: 125px;"'); ?>
+        <?php echo functions::form_draw_textarea('caption', true, 'style="height: 320px;"'); ?>
       </td>
     </tr>
     <tr>
