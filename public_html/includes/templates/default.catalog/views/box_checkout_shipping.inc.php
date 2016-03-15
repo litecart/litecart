@@ -13,7 +13,7 @@
         <div class="name"><?php echo $option['name']; ?></div>
         <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
         <div class="footer">
-          <div class="price"><?php if ($option['cost'] != 0) echo '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])); ?></div>
+          <p class="price"><?php if ($option['cost'] != 0) echo '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])); ?></p>
           <div class="select">
 <?php
   if ($module['id'].':'.$option['id'] == $selected['id']) {
