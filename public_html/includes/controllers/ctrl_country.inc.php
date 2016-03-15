@@ -64,7 +64,7 @@
           domestic_name = '". database::input($this->data['domestic_name']) ."',
           tax_id_format = '". (int)$this->data['tax_id_format'] ."',
           address_format = '". database::input($this->data['address_format']) ."',
-          postcode_format = '". (int)$this->data['postcode_format'] ."',
+          postcode_format = '". database::input($this->data['postcode_format']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
           phone_code = '". database::input($this->data['phone_code']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
