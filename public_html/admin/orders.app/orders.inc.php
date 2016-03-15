@@ -48,9 +48,21 @@
 }
 </style>
 
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></div>
-<div style="float: right; padding-right: 10px;"><?php echo functions::form_draw_order_status_list('order_status_id', true, false, 'onchange="location=(\''. document::link('', array(), true, array('page', 'order_status_id')) .'&order_status_id=\' + this.options[this.selectedIndex].value)"'); ?></div>
-<div style="float: right; padding-right: 10px;"><?php echo functions::form_draw_form_begin('search_form', 'get', '', false, 'onsubmit="return false;"') . functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"') . functions::form_draw_form_end(); ?></div>
+<?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+  <?php echo functions::form_draw_hidden_field('app'); ?>
+  <?php echo functions::form_draw_hidden_field('doc'); ?>
+  <ul class="list-horizontal" style="float: right;">
+    <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
+    <li>
+      <?php echo language::translate('title_date_period', 'Date Period'); ?>:
+      <?php echo functions::form_draw_date_field('date_from', true, 'style="width: 130px;"'); ?> - <?php echo functions::form_draw_date_field('date_to', true, 'style="width: 130px;"'); ?>
+    </li>
+    <li><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></li>
+    <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
+    <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
+  </ul>
+<?php echo functions::form_draw_form_end(); ?>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_orders', 'Orders'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
@@ -87,8 +99,10 @@
     left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
-    ". ((!empty($_GET['order_status_id'])) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
-    ". ((!empty($sql_find)) ? "and (". implode(" or ", $sql_find) .")" : "") ."
+    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
+    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
+    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
+    ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by o.date_created desc, o.id desc;"
   );
   
