@@ -34,6 +34,10 @@
           limit 1;"
         );
         
+        foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+          if (is_file($file)) unlink($file);
+        }
+
         notices::add('success', 'Cache cleared');
       }
       
