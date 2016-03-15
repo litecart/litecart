@@ -213,7 +213,7 @@
         } else {
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-            set quantity = quantity + ". (int)$quantity ."
+            set quantity = quantity + ". (float)$quantity ."
             where product_id = '". (int)$product_id ."'
             and combination =  '". database::input($option_stock_combination) ."'
             limit 1;"
