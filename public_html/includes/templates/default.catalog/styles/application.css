@@ -1,8 +1,5 @@
-/*@import url(//fonts.googleapis.com/css?family=Roboto:400,700);*/
-@import url(//fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,latin-ext,cyrillic,cyrillic-ext,greek,greek-ext);
-
 body {
-  font: 14px 'Roboto', sans-serif;
+  font: 14px Arial, 'Helvetica Neue', Helvetica, sans-serif;
   color: #666;
 }
 

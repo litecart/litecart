@@ -7,14 +7,16 @@
   
   $box_recently_viewed_products->snippets['products'] = array();
   
+  list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
+
   $count = 0;
-  foreach(array_reverse(session::$data['recently_viewed_products'], true) as $key => $array) {
+  foreach(array_reverse(session::$data['recently_viewed_products'], true) as $key => $current_product) {
     if (++$count <= settings::get('box_recently_viewed_products_num_items')) {
       $box_recently_viewed_products->snippets['products'][$key] = array(
-        'id' => $array['id'],
-        'name' => $array['name'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $array['image'], 150, 150, 'FIT_USE_WHITESPACING'),
-        'link' => document::ilink('product', array('product_id' => $array['id'])),
+        'id' => $current_product['id'],
+        'name' => $current_product['name'],
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $current_product['image'], $width, $height, settings::get('product_image_clipping')),
+        'link' => document::ilink('product', array('product_id' => $current_product['id'])),
       );
     } else {
       unset(session::$data['recently_viewed_products'][$key]);

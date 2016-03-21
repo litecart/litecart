@@ -190,14 +190,15 @@
   margin-top: 10px;
   font-weight: 700;
 }
-
-#shipping-options .option .description, #payment-options .option .description {
+#shipping-options .option .description, #payment-options .option .description,
+#shipping-options .option .error, #payment-options .option .error {
   position: relative;
   height: 100px;
   overflow-y: auto;
   margin-bottom: 40px;
 }
-#shipping-options .option .description, #payment-options .option .description {
+#shipping-options .option .error, #payment-options .option .error {
+  color: #e00;
 }
 #shipping-options .option .footer, #payment-options .option .footer {
   position: relative;

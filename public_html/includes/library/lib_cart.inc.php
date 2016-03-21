@@ -345,7 +345,7 @@
     public static function update($item_key, $quantity, $silent=false) {
       
       if (!isset(self::$items[$item_key])) {
-        notices::add('errors', 'The product does not exist in cart.');
+        notices::add('errors', 'The item does not exist in cart.');
         return;
       }
       
