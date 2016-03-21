@@ -50,23 +50,23 @@ ErrorDocument 500 "Internal Server Error"
 
 # Deny access to content
 <FilesMatch "\.(htaccess|htpasswd|inc\.php)$">
-  Order Allow,Deny
-  Deny from all
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order Deny,Allow
+    Deny from all
+  </IfModule>
 </FilesMatch>
 
 # Cacheable external content
 <IfModule mod_headers.c>
   <FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|ttf)$">
-    Header set Cache-Control "max-age=86400, public, must-revalidate"
-    Header unset Last-Modified
+    Header set Cache-Control "max-age=604800, public, must-revalidate"
   </FilesMatch>
-</IfModule>
 
-# Cacheable external content
-<IfModule mod_headers.c>
   <FilesMatch "\.(css)$">
     Header set Cache-Control "max-age=86400, public, must-revalidate"
-    Header unset Last-Modified
   </FilesMatch>
 </IfModule>
 
