@@ -17,9 +17,9 @@
       if (empty($this->settings['status'])) return;
       
     // Calculate cart weight
-      $weight = 0;
+      $total_weight = 0;
       foreach ($items as $item) {
-        $weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
+        $total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
       }
       
       $options = array();
@@ -31,13 +31,13 @@
         
         if (!functions::reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
         
-        $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $weight);
+        $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
         
         $options[] = array(
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
           'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['country_code']),
-          'description' => weight::format($weight, $this->settings['weight_class']),
+          'description' => weight::format($total_weight, $this->settings['weight_class']),
           'fields' => '',
           'cost' => $cost,
           'tax_class_id' => $this->settings['tax_class_id'],
@@ -49,13 +49,13 @@
       
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
-          $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $weight);
+          $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
           
           $options[] = array(
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
             'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['country_code']),
-            'description' => weight::format($weight, $this->settings['weight_class']),
+            'description' => weight::format($total_weight, $this->settings['weight_class']),
             'fields' => '',
             'cost' => $cost + $this->settings['handling_fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
@@ -77,11 +77,20 @@
       
       if (empty($rate_table)) return 0;
       
-      $rate_table = preg_split("(;|\|)" , $rate_table);
-      foreach ($rate_table as $rate) {
-        list($rate_weight, $rate_cost) = explode(':', $rate);
-        if (!isset($cost) || $shipping_weight >= $rate_weight) {
-          $cost = $rate_cost;
+      if ($this->settings['method'] == '>=') {
+        foreach ($rate_table as $rate) {
+          list($rate_weight, $rate_cost) = explode(':', $rate);
+          if (!isset($cost) || $shipping_weight >= $rate_weight) {
+            $cost = $rate_cost;
+          }
+        }
+
+      } else if ($this->settings['method'] == '<') {
+        foreach (array_reverse($rate_table) as $rate) {
+          list($rate_weight, $rate_cost) = explode(':', $rate);
+          if (!isset($cost) || $shipping_weight < $rate_weight) {
+            $cost = $rate_cost;
+          }
         }
       }
       
@@ -163,6 +172,13 @@
           'title' => language::translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
           'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'input()',
+        ),
+        array(
+          'key' => 'method',
+          'default_value' => 'UP_TO',
+          'title' => language::translate(__CLASS__.':title_method', 'Method'),
+          'description' => language::translate(__CLASS__.':description_method', 'The calculation method that should to be used for the rate tables where a condition is met for shipping weight.'),
+          'function' => 'select("<",">=")',
         ),
         array(
           'key' => 'handling_fee',
