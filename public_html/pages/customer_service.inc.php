@@ -1,8 +1,12 @@
 <?php
-  document::$snippets['title'][] = language::translate('support.php:head_title', 'Customer Service');
-  document::$snippets['description'] = language::translate('support.php:meta_description', '');
+  document::$snippets['title'][] = language::translate('customer_service:head_title', 'Customer Service');
+  document::$snippets['description'] = language::translate('customer_service:meta_description', '');
   
-  breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'), document::ilink('customer_service'));
+  if (!empty($_GET['page_id'])) {
+    breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'), document::ilink('customer_service'));
+  } else {
+    breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'));
+  }
     
   $_page = new view();
   
@@ -33,7 +37,7 @@
     document::$snippets['keywords'] = !empty($page['meta_keywords']) ? $page['meta_keywords'] : '';
     document::$snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
     
-    breadcrumbs::add($page['title'], document::ilink(null, array(), true));
+    breadcrumbs::add($page['title']);
     
     $box_page = new view();
     $box_page->snippets = array(

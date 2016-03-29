@@ -9,7 +9,8 @@
   }
   
   document::$snippets['title'][] = language::translate('regional_settings:head_title', 'Regional Settings');
-  breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('regional_settings'));
+
+  breadcrumbs::add(language::translate('title_regional_settings', 'Regional Settings'));
   
   if (isset($_POST['save'])) {
     

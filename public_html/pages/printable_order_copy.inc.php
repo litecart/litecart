@@ -1,9 +1,8 @@
 <?php
+  document::$layout = 'printable';
   
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
-  
-  document::$layout = 'printable';
   
   if (empty($_GET['order_id']) || empty($_GET['checksum'])) {
     header('HTTP/1.1 401 Unauthorized');

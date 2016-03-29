@@ -28,7 +28,7 @@
   
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category->id)));
+    breadcrumbs::add($category_name);
   }
 
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");

@@ -60,7 +60,7 @@
     breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
     breadcrumbs::add(functions::reference_get_manufacturer_name($product->manufacturer['id']), document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])));
   }
-  breadcrumbs::add($product->name[language::$selected['code']], document::ilink('product', array('product_id' => $product->id), false));
+  breadcrumbs::add($product->name[language::$selected['code']]);
   
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product']");
 

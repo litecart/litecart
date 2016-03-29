@@ -28,7 +28,7 @@
   document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : $manufacturer->short_description[language::$selected['code']];
 
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-  breadcrumbs::add($manufacturer->name, document::ilink('manufacturer', array('manufacturer_id' => $manufacturer->id), false));
+  breadcrumbs::add($manufacturer->name);
 
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
 

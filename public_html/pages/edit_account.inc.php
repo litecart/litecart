@@ -8,7 +8,7 @@
   document::$snippets['title'][] = language::translate('title_edit_account', 'Edit Account');
   
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
-  breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'), document::ilink('edit_account'));
+  breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'));
   
   $customer = new ctrl_customer(customer::$data['id']);
   

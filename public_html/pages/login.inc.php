@@ -3,7 +3,7 @@
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   document::$snippets['title'][] = language::translate('login:head_title', 'Login');
   
-  breadcrumbs::add(language::translate('title_login', 'Log In'), document::ilink('login'));
+  breadcrumbs::add(language::translate('title_login', 'Log In'));
   
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
   

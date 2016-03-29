@@ -1,16 +1,14 @@
 <?php
-  
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['title'][] = language::translate('order_history:head_title', 'Order History');
   
   if (empty(customer::$data['id'])) die('You must be logged in');
   
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
-  document::$snippets['title'][] = language::translate('title_order_history', 'Order History');
 
-  breadcrumbs::add(language::translate('title_account', 'Account'), '');
-  breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
+  breadcrumbs::add(language::translate('title_account', 'Account'));
+  breadcrumbs::add(language::translate('title_order_history', 'Order History'));
   
   functions::draw_fancybox('a.fancybox', array(
     'type'          => 'iframe',
