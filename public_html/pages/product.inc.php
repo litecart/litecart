@@ -3,6 +3,13 @@
     $product = catalog::product($_GET['product_id']);
   }
   
+  if (empty($_GET['category_id']) && empty($product->manufacturer)) {
+    if (count($product->category_ids)) {
+      $category_ids = array_values($product->category_ids);
+      $_GET['category_id'] = array_shift($category_ids);
+    }
+  }
+
   if (empty($product->id)) {
     notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));
     http_response_code(410);
@@ -32,42 +39,31 @@
     limit 1;"
   );
   
+  document::$snippets['title'][] = $product->head_title[language::$selected['code']] ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']];
+  document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']];
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => $_GET['product_id']), false) .'" />';
-  
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
-  
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product']");
-  
   document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
   
-  if (empty($_GET['category_id']) && empty($product->manufacturer)) {
-    if (count($product->category_ids)) {
-      $category_ids = array_values($product->category_ids);
-      $_GET['category_id'] = array_shift($category_ids);
-    }
+  if (!empty($product->image)) {
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
   }
   
   if (!empty($_GET['category_id'])) {
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
     foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
       document::$snippets['title'][] = $category_name;
-      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => (int)$_GET['category_id'])));
+      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => (int)$category_id)));
     }
   } else if (!empty($product->manufacturer)) {
     document::$snippets['title'][] = $product->manufacturer['name'];
     breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
     breadcrumbs::add(functions::reference_get_manufacturer_name($product->manufacturer['id']), document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])));
   }
-  
-  document::$snippets['title'][] = $product->head_title[language::$selected['code']] ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']];
-  document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']];
-  
-  if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
-  }
-  
   breadcrumbs::add($product->name[language::$selected['code']], document::ilink('product', array('product_id' => $product->id), false));
   
+  functions::draw_fancybox("a.fancybox[data-fancybox-group='product']");
+
 // Recently viewed products
   if (isset(session::$data['recently_viewed_products'][$product->id])) {
     unset(session::$data['recently_viewed_products'][$product->id]);

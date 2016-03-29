@@ -1,15 +1,10 @@
 <?php
+  if (empty($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   if (empty($_GET['category_id'])) {
     header('Location: '. document::ilink('categories'));
     exit;
   }
-  
-  if (empty($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
-  
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $_GET['category_id']), false) .'" />';
-  
-  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   
   $category = catalog::category($_GET['category_id']);
   
@@ -27,13 +22,15 @@
     exit;
   }
   
-  foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category->id), false));
-  }
-  
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $category->id), false) .'" />';
   document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];
   document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
   
+  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
+  foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
+    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category->id)));
+  }
+
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
