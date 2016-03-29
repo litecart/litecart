@@ -262,7 +262,7 @@
       }
       
     // Link guests to customer profile
-      if (empty($this->data['customer']['id'])) {
+      if (empty($this->data['customer']['id']) && !empty($this->data['customer']['email'])) {
         $customers_query = database::query(
           "select id from ". DB_TABLE_CUSTOMERS ."
           where email = '". database::input($this->data['customer']['email']) ."'
@@ -276,15 +276,6 @@
       
     // Insert/update order
       if (empty($this->data['id'])) {
-        
-        $ip = $_SERVER['REMOTE_ADDR'];
-        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && filter_var($_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP)) {
-          $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-        }
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {
-          $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
           (uid, client_ip, date_created)

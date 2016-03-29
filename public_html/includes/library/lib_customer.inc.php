@@ -396,10 +396,10 @@
       
       notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
       
-      if ($redirect_url) {
-        header('Location: ' . $redirect_url);
-        exit;
-      }
+      if (empty($redirect_url)) $redirect_url = document::ilink('');
+
+      header('Location: ' . $redirect_url);
+      exit;
     }
   }
   

@@ -1,10 +1,10 @@
 <?php
   require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
   
-  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
+  document::$snippets['title'][] = language::translate('manufacturers:head_title', 'Manufacturers');
+  document::$snippets['description'] = language::translate('manufacturers:meta_description', '');
   
-  document::$snippets['title'][] = language::translate('manufacturers.php:head_title', 'Manufacturers');
-  document::$snippets['description'] = language::translate('manufacturers.php:meta_description', '');
+  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   

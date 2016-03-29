@@ -28,7 +28,16 @@
         self::$template = settings::get('store_template_catalog');
       }
       
-    // Set before-snippets
+      define('WS_DIR_TEMPLATE', WS_DIR_TEMPLATES . self::$template .'/');
+    }
+
+    public static function before_capture() {
+    // Set some snippets
+      self::$snippets['language'] = language::$selected['code'];
+      self::$snippets['charset'] = language::$selected['charset'];
+      self::$snippets['home_path'] = WS_DIR_HTTP_HOME;
+      self::$snippets['template_path'] = WS_DIR_TEMPLATES . self::$template .'/';
+
       self::$snippets['title'] = array(settings::get('store_name'));
       
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">' . PHP_EOL;
@@ -41,9 +50,6 @@
                                              . '</script>';
       
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
-    }
-    
-    public static function before_capture() {
       
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -54,18 +60,13 @@
         }
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
+
+    // Get template settings
+      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
     }
     
     public static function after_capture() {
-    
-    // Get template settings
-      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
 
-    // Set after-snippets
-      self::$snippets['language'] = language::$selected['code'];
-      self::$snippets['charset'] = language::$selected['charset'];
-      self::$snippets['home_path'] = WS_DIR_HTTP_HOME;
-      self::$snippets['template_path'] = WS_DIR_TEMPLATES . self::$template .'/';
     }
     
     public static function prepare_output() {

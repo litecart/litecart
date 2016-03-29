@@ -251,12 +251,6 @@
   $htaccess = '# Solve 401 rewrite and auth conflict on some machines' . PHP_EOL
             .  'ErrorDocument 401 "Access Forbidden"' . PHP_EOL
             . PHP_EOL
-            . '# Denied content' . PHP_EOL
-            . '<FilesMatch "\.(htaccess|htpasswd|inc.php)$">' . PHP_EOL
-            . '  Order Allow,Deny' . PHP_EOL
-            . '  Deny from all' . PHP_EOL
-            . '</FilesMatch>' . PHP_EOL
-            . PHP_EOL
             . '# Basic authentication' . PHP_EOL
             . '<IfModule mod_auth.c>' . PHP_EOL
             . '  AuthType Basic' . PHP_EOL

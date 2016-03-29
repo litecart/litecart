@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('index:head_title', 'One fancy web shop');
+  document::$snippets['title'][] = language::translate('index:head_title', 'Online Store');
   document::$snippets['description'] = language::translate('index:meta_description', '');
   
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('') .'" />';
