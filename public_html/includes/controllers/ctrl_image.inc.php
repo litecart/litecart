@@ -711,7 +711,17 @@
             return false;
           }
           
+          switch(strtolower($type)) {
+            case 'jpg':
+               $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
+               break;
+            default:
+               $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
+               break;
+          }
+
           $this->_image->setImageCompressionQuality($quality);
+
           return $this->_image->writeImage($type.':'.$destination);
           
         case 'gd':
