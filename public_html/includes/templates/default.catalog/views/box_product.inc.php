@@ -1,3 +1,7 @@
+<div style="margin: 0 -20px 2em -20px;">
+  <!--snippet:breadcrumbs-->
+</div>
+
 <div id="box-product" class="box" itemscope itemtype="http://www.schema.org/Product">
   <div style="margin-bottom: 20px;">
     <h1 class="title" style="margin-bottom: 0px;" itemprop="name"><?php echo $name; ?></h1>

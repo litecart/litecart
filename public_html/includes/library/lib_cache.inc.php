@@ -203,6 +203,9 @@
           case 'language':
             $hash_string .= language::$selected['code'];
             break;
+          case 'layout':
+            $hash_string .= document::$layout;
+            break;
           case 'login':
             $hash_string .= !empty(customer::$data['id']) ? '1' : '0';
             break;
@@ -219,6 +222,9 @@
             break;
           case 'site':
             $hash_string .= document::link(WS_DIR_HTTP_HOME);
+            break;
+          case 'template':
+            $hash_string .= document::$template;
             break;
           case 'uri':
           case 'url':

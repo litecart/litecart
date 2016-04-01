@@ -27,9 +27,10 @@
   document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
   
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
-  foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
-    breadcrumbs::add($category_name);
+  foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
+    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
   }
+  breadcrumbs::add($category->name[language::$selected['code']]);
 
   functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
   

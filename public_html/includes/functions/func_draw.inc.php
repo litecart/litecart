@@ -1,7 +1,7 @@
 <?php
 
   function draw_fontawesome_icon($name, $params=null, $class=null) {
-    //trigger_error('draw_fontawesome_icon() is deprecated. Use instead draw_fonticon()', E_USER_DEPRECATED);
+    trigger_error('draw_fontawesome_icon() is deprecated. Use instead draw_fonticon()', E_USER_DEPRECATED);
     return functions::draw_fonticon('fa-'.$name . ($class ? ' ' . $class : null), $params);
   }
   
@@ -9,7 +9,7 @@
     
     switch(true) {
       case (substr($class, 0, 3) == 'fa '):
-        return '<i classes="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
         
       case (substr($class, 0, 3) == 'fa-'):
         return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';

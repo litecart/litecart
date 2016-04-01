@@ -1,3 +1,7 @@
+<div style="margin: 0 -20px 2em -20px;">
+  <!--snippet:breadcrumbs-->
+</div>
+
 <div id="box-category" class="box">
   <nav class="filter" style="float: right;">
 <?php
