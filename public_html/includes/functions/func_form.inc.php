@@ -977,10 +977,10 @@
     
     $products_query = functions::catalog_products_query(array('sort' => 'name'));
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] .' ['. $product['quantity'] .'] '. currency::format($product['final_price']), $product['id']);
+      $options[] = array($product['name'] .' ['. (float)$product['quantity'] .'] '. currency::format($product['final_price']), $product['id']);
     }
     
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
   }
   
   function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {

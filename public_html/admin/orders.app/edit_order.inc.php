@@ -642,6 +642,10 @@
 #comments {
   margin: 0 auto;
   max-width: 1024px;
+  border: 1px #ddd dashed;
+  padding: 2em;
+  background: #fcfcfc;
+  border-radius: 0.5em;
 }
 #comments .comment {
   position: relative;
