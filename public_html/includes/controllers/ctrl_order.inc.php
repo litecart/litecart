@@ -11,13 +11,13 @@
       switch ($action) {
         case 'load':
           if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
-          self::load((int)$order_id);
+          $this->load((int)$order_id);
           break;
         case 'new':
-          self::reset();
+          $this->reset();
           break;
         case 'import_session':
-          self::import_session();
+          $this->import_session();
           break;
         case 'resume':
         default:
@@ -80,7 +80,7 @@
     private function import_session() {
       global $shipping, $payment, $order_total;
       
-      self::reset();
+      $this->reset();
       
       $this->data['weight_class'] = settings::get('store_weight_class');
       $this->data['currency_code'] = currency::$selected['code'];
@@ -104,17 +104,17 @@
       }
       
       foreach (cart::$items as $item) {
-        self::add_item($item);
+        $this->add_item($item);
       }
       
       foreach ($order_total->rows as $row) {
-        self::add_ot_row($row);
+        $this->add_ot_row($row);
       }
     }
     
     private function load($order_id) {
       
-      self::reset();
+      $this->reset();
       
       $order_query = database::query(
         "select * from ". DB_TABLE_ORDERS ."
@@ -227,7 +227,7 @@
     public function save() {
       
     // Re-calculate total if there are changes
-      self::calculate_total();
+      $this->calculate_total();
       
       if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
       
@@ -327,19 +327,11 @@
         limit 1;"
       );
       
-    // Build array of item ids
-      $item_ids = array();
-      if (!empty($this->data['items'])) {
-        foreach (array_keys($this->data['items']) as $key) {
-          if (!empty($this->data['items'][$key]['id'])) $item_ids[] = $this->data['items'][$key]['id'];
-        }
-      }
-      
     // Delete order items
       $previous_order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", $item_ids) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
       while($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
@@ -412,19 +404,11 @@
         }
       }
       
-    // Build array of order total ids
-      $order_total_ids = array();
-      if (!empty($this->data['order_total'])) {
-        foreach (array_keys($this->data['order_total']) as $key) {
-          if (!empty($this->data['order_total'][$key]['id'])) $order_total_ids[] = $this->data['order_total'][$key]['id'];
-        }
-      }
-      
     // Delete order total items
       database::query(
         "delete from ". DB_TABLE_ORDERS_TOTALS ."
         where order_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", $order_total_ids) ."');;"
+        and id not in ('". @implode("', '", array_column($this->data['order_total'], 'id')) ."');"
       );
       
     // Insert/update order total
@@ -454,19 +438,11 @@
         }
       }
       
-    // Build array of comments ids
-      $comments_ids = array();
-      if (!empty($this->data['comments'])) {
-        foreach (array_keys($this->data['comments']) as $key) {
-          if (!empty($this->data['comments'][$key]['id'])) $comments_ids[] = $this->data['comments'][$key]['id'];
-        }
-      }
-      
     // Delete comments
       database::query(
         "delete from ". DB_TABLE_ORDERS_COMMENTS ."
         where order_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", $comments_ids) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['comments'], 'id')) ."');"
       );
       
     // Insert/update comments
@@ -527,8 +503,8 @@
     // Empty order first..
       $this->data['items'] = array();
       $this->data['order_total'] = array();
-      self::calculate_total();
-      self::save();
+      $this->calculate_total();
+      $this->save();
       
     // ..then delete
       database::query(
@@ -544,13 +520,13 @@
       $this->data['weight_total'] = 0;
       
       foreach ($this->data['items'] as $item) {
-        self::add_cost($item['price'], $item['tax'], $item['quantity']);
+        $this->add_cost($item['price'], $item['tax'], $item['quantity']);
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
       
       foreach ($this->data['order_total'] as $order_total) {
         if (!empty($order_total['calculate'])) {
-          self::add_cost($order_total['value'], $order_total['tax']);
+          $this->add_cost($order_total['value'], $order_total['tax']);
         }
       }
     }
@@ -576,7 +552,7 @@
       
       $this->data['weight_total'] += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
       
-      self::add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax'] * $item['quantity']);
+      $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax'] * $item['quantity']);
     }
     
     public function add_ot_row($row) {
@@ -593,7 +569,7 @@
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       );
       
-      if (!empty($row['calculate'])) self::add_cost($row['value'], $row['tax']);
+      if (!empty($row['calculate'])) $this->add_cost($row['value'], $row['tax']);
     }
     
     private function add_cost($gross, $tax, $quantity=1) {
@@ -693,7 +669,7 @@
         null,
         $email,
         language::translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
-        self::draw_printable_copy() . $action_button,
+        $this->draw_printable_copy() . $action_button,
         true
       );
     }

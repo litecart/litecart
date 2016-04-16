@@ -93,12 +93,6 @@
   margin-bottom: 10px;
   padding: 5px 0px;
 }
-#box-checkout-customer h2:before, #box-checkout-shipping h2:before, #box-checkout-payment h2:before, #box-checkout-summary h2:before {
-  content: "\25bc";
-  padding-right: 10px;
-  opacity: 0.7;
-  font-size: 16px;
-}
 
 #box-checkout-customer .billing-address {
   display: inline-block;

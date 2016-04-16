@@ -65,7 +65,7 @@
         ),
         array(
           'key' => 'report_frequency',
-          'default_value' => 'Daily',
+          'default_value' => 'Weekly',
           'title' => language::translate(__CLASS__.':title_report_frequency', 'Report Frequency'),
           'description' => language::translate(__CLASS__.':description_report_frequency', 'How often the reports should be sent.'),
           'function' => 'radio("Immediately","Hourly","Daily","Weekly","Monthly")',
