@@ -195,12 +195,21 @@
       
       ###
       
-    // Set home path (Platform root)
-      $http_route_base = WS_DIR_HTTP_HOME;
-      
-    // Append router base (/index.php or /)
-      if (!isset($_SERVER['HTTP_MOD_REWRITE']) || !in_array(strtolower($_SERVER['HTTP_MOD_REWRITE']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-        $http_route_base .= 'index.php/';
+    // Detect URL rewrite support
+      $use_rewrite = false;
+      if (isset($_SERVER['HTTP_MOD_REWRITE']) && !in_array(strtolower($_SERVER['HTTP_MOD_REWRITE']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+        $use_rewrite = true;
+      } else if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
+        $use_rewrite = true;
+      } else if (!preg_match('#(apache)#i', $_SERVER['SERVER_SOFTWARE'])) {
+        $use_rewrite = true; // We are just going to assume any non-apache HTTP daemon supports URL rewriting
+      }
+
+    // Set router base (/index.php or /)
+      if ($use_rewrite) {
+        $http_route_base = WS_DIR_HTTP_HOME;
+      } else {
+        $http_route_base = WS_DIR_HTTP_HOME . 'index.php/';
       }
       
     // Append language prefix
@@ -208,6 +217,7 @@
         $http_route_base .= $language_code .'/';
       }
       
+    // Join link elements
       $parsed_link['path'] = $http_route_base . $parsed_link['path'];
       self::$_links_cache[$language_code][$link] = link::implode_link($parsed_link);
       
