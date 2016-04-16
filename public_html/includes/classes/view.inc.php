@@ -23,14 +23,11 @@
           $search_replace['{snippet:'.$key.'}'] = &$this->snippets[$key];
         }
         
-        $failsafe_count = 0;
-        while (!isset($count) || $count > 0) {
-          $this->html = str_replace(array_keys($search_replace), array_values($search_replace), $this->html, $count);
-          if (++$failsafe_count == 3) {
-            trigger_error('Failsafe activated due to possible endless loop while stitching content' . PHP_EOL . print_r($this->snippets, true), E_USER_NOTICE);
-            break;
-          }
+        foreach(array_keys($search_replace) as $key) {
+          $search_replace[$key] = str_replace(array_keys($search_replace), array_values($search_replace), $search_replace[$key]);
         }
+
+        $this->html = str_replace(array_keys($search_replace), array_values($search_replace), $this->html, $count);
       }
       
     // Clean orphan snippets
