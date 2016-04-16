@@ -27,7 +27,7 @@
   
   if (!empty($shipping->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $shipping->data['selected']['id']);
-    if (!isset($options[$module_id]['options'][$option_id])) {
+    if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
       $shipping->data['selected'] = array();
     } else {
       $shipping->select($module_id, $option_id); // Refresh
@@ -37,13 +37,16 @@
   if (empty($options)) return;
 
   if (empty($shipping->data['selected'])) {
-    $cheapest_shipping = explode(':', $shipping->cheapest());
-    $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
+    if ($cheapest_shipping = $shipping->cheapest()) {
+      $cheapest_shipping = explode(':', $cheapest_shipping);
+      $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
+    }
   }
   
   /*
   if (count($options) == 1
   && count($options[key($options)]['options']) == 1
+  && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['error'])
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
   && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
   */

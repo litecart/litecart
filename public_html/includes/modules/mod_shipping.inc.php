@@ -19,9 +19,11 @@
           }
           
           break;
+
         case 'local':
           $this->data = array();
           break;
+
         default:
           trigger_error('Unknown type', E_USER_ERROR);
       }
@@ -52,7 +54,17 @@
         $this->data['options'][$module->id]['options'] = array();
         
         foreach ($module_options['options'] as $option) {
-          $this->data['options'][$module->id]['options'][$option['id']] = $option;
+          $this->data['options'][$module->id]['options'][$option['id']] = array(
+            'id' => $option['id'],
+            'icon' => $option['icon'],
+            'name' => $option['name'],
+            'description' => $option['description'],
+            'fields' => $option['fields'],
+            'cost' => (float)$option['cost'],
+            'tax_class_id' => (int)$option['tax_class_id'],
+            'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
+            'error' => !empty($option['error']) ? $option['error'] : false,
+          );
         }
       }
       
@@ -61,12 +73,18 @@
     
     public function select($module_id, $option_id, $userdata=null) {
       
+      $this->data['selected'] = array();
+
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
-        $this->data['selected'] = array();
         notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
         return;
       }
       
+      if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
+        notices::add('errors', language::translate('error_cannot_select_shipping_option_with_error', 'Cannot set a shipping option that contains errors.'));
+        return;
+      }
+
       if (!empty($userdata)) {
         $this->data['userdata'][$module_id] = $userdata;
       }
@@ -87,6 +105,7 @@
       
       foreach ($this->data['options'] as $module) {
         foreach ($module['options'] as $option) {
+          if (!empty($option['error'])) continue;
           if (!empty($option['exclude_cheapest'])) continue;
           if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
             $cheapest = array(
@@ -101,6 +120,7 @@
       if (empty($cheapest)) {
         foreach ($this->data['options'] as $module) {
           foreach ($module['options'] as $option) {
+            if (!empty($option['error'])) continue;
             if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
               $cheapest = array(
                 'cost' => $option['cost'],

@@ -27,7 +27,7 @@
   
   if (!empty($payment->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $payment->data['selected']['id']);
-    if (!isset($options[$module_id]['options'][$option_id])) {
+    if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
       $payment->data['selected'] = array();
     } else {
       $payment->select($module_id, $option_id); // Refresh
@@ -37,15 +37,20 @@
   if (empty($options)) return;
   
   if (empty($payment->data['selected'])) {
-    $payment->set_cheapest();
+    if ($cheapest_payment = $payment->cheapest()) {
+      $cheapest_payment = explode(':', $cheapest_payment);
+      $payment->select($cheapest_payment[0], $cheapest_payment[1]);
+    }
   }
   
-// Hide
-  //if (count($options) == 1
-  //&& count($options[key($options)]['options']) == 1
-  //&& empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
-  //&& $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
-  
+/*
+  if (count($options) == 1
+  && count($options[key($options)]['options']) == 1
+  && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['error'])
+  && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
+  && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
+*/
+
   $box_checkout_payment = new view();
   
   $box_checkout_payment->snippets = array(

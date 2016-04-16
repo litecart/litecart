@@ -70,6 +70,11 @@
         return;
       }
       
+      if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
+        notices::add('errors', language::translate('error_cannot_select_payment_option_with_error', 'Cannot set a payment option that contains errors.'));
+        return;
+      }
+
       if (!empty($userdata)) {
         $this->data['userdata'][$module_id] = $userdata;
       }
@@ -91,18 +96,50 @@
       );
     }
     
-    public function set_cheapest() {
+    public function cheapest($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
+
+      $this->options($items, $subtotal, $tax, $currency_code, $customer);
       
       foreach ($this->data['options'] as $module) {
         foreach ($module['options'] as $option) {
-          if (!isset($cheapest_amount) || $option['cost'] < $cheapest_amount) {
-            $cheapest_amount = $option['cost'];
-            $module_id = $module['id'];
-            $option_id = $option['id'];
+          if (!empty($option['error'])) continue;
+          if (!empty($option['exclude_cheapest'])) continue;
+          if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
+            $cheapest = array(
+              'cost' => $option['cost'],
+              'module_id' => $module['id'],
+              'option_id' => $option['id'],
+            );
+          }
+        }
+      }
+
+      if (empty($cheapest)) {
+        foreach ($this->data['options'] as $module) {
+          foreach ($module['options'] as $option) {
+            if (!empty($option['error'])) continue;
+            if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
+              $cheapest = array(
+                'cost' => $option['cost'],
+                'module_id' => $module['id'],
+                'option_id' => $option['id'],
+              );
+            }
           }
         }
       }
       
+      if (empty($cheapest)) return false;
+
+      return $cheapest['module_id'].':'.$cheapest['option_id'];
+    }
+
+    public function set_cheapest() {
+
+      trigger_error('set_cheapest() is deprecated, use instead cheapest()', E_USER_DEPRECATED);
+
+      list($module_id, $option_id) = explode(':', $this->cheapest());
+
       $this->select($module_id, $option_id);
     }
     
