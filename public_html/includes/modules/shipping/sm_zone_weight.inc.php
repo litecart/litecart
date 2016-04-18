@@ -76,9 +76,8 @@
     private function calculate_cost($rate_table, $shipping_weight) {
       
       if (empty($rate_table)) return 0;
-      
       if ($this->settings['method'] == '>=') {
-        foreach ($rate_table as $rate) {
+        foreach (preg_split('#(\||;)#', $rate_table) as $rate) {
           list($rate_weight, $rate_cost) = explode(':', $rate);
           if (!isset($cost) || $shipping_weight >= $rate_weight) {
             $cost = $rate_cost;
@@ -86,7 +85,7 @@
         }
 
       } else if ($this->settings['method'] == '<') {
-        foreach (array_reverse($rate_table) as $rate) {
+        foreach (array_reverse(preg_split('#(\||;)#', $rate_table)) as $rate) {
           list($rate_weight, $rate_cost) = explode(':', $rate);
           if (!isset($cost) || $shipping_weight < $rate_weight) {
             $cost = $rate_cost;

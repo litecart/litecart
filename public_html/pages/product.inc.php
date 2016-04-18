@@ -196,10 +196,13 @@
       customer::$data
     );
     if (!empty($cheapest_shipping)) {
+      $box_product->snippets['cheapest_shipping'] = null;
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
-      $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
-      $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-      $box_product->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+      if (empty($shipping->data['options'][$module_id]['options'][$option_id]['error']) && !empty($shipping->data['options'][$module_id]['options'][$option_id]['cost'])) {
+        $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
+        $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
+        $box_product->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+      }
     }
   }
   
