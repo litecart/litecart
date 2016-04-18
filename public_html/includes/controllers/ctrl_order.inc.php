@@ -279,7 +279,7 @@
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
           (uid, client_ip, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($ip) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }

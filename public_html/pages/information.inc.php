@@ -1,9 +1,5 @@
 <?php
-// Information links
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php');
-  document::$snippets['column_left'] = ob_get_clean();
-  
+
 // Information page
   $pages_query = database::query(
     "select p.id, p.status, pi.title, pi.content, pi.head_title, pi.meta_description from ". DB_TABLE_PAGES ." p
@@ -32,12 +28,22 @@
   
   breadcrumbs::add($page['title']);
   
-  $box_information = new view();
+  $_page = new view();
+
+// Information links
+  ob_start();
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php');
+  $_page->snippets['column_left'] = ob_get_clean();
+  document::$snippets['column_left'] = $_page->snippets['box_customer_service_links']; // Also send to column_left
+
+  $box_page = new view();
   
-  $box_information->snippets = array(
+  $box_page->snippets = array(
     'title' => $page['title'],
     'content' => $page['content'],
   );
   
-  echo $box_information->stitch('views/box_information');
+  $_page->snippets['box_page'] = $box_page->stitch('views/box_page');
+
+  echo $_page->stitch('views/box_information');
 ?>

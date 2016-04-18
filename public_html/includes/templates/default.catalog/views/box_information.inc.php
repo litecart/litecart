@@ -1,1 +1,1 @@
-<?php echo $content; ?>
+<!--snippet:box_page-->

@@ -175,7 +175,7 @@
         ),
         array(
           'key' => 'method',
-          'default_value' => 'UP_TO',
+          'default_value' => '>=',
           'title' => language::translate(__CLASS__.':title_method', 'Method'),
           'description' => language::translate(__CLASS__.':description_method', 'The calculation method that should to be used for the rate tables where a condition is met for shipping weight.'),
           'function' => 'select("<",">=")',
