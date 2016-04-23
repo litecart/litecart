@@ -176,13 +176,17 @@
       self::clear_cache();
     }
     
-    public static function cache_id($keyword, $dependants=array()) {
+    public static function cache_id($keyword, $dependencies=array()) {
       
-      if (!is_array($dependants)) $dependants = array($dependants);
+      if (!is_array($dependencies)) {
+        $dependencies = array($dependencies);
+      } else {
+        sort($dependencies);
+      }
       
       $hash_string = $keyword;
       
-      foreach ($dependants as $dependant) {
+      foreach ($dependencies as $dependant) {
         switch ($dependant) {
           case 'basename':
             $hash_string .= $_SERVER['PHP_SELF'];
