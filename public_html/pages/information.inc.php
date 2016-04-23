@@ -30,11 +30,9 @@
   
   $_page = new view();
 
-// Information links
   ob_start();
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php');
-  $_page->snippets['column_left'] = ob_get_clean();
-  document::$snippets['column_left'] = $_page->snippets['box_customer_service_links']; // Also send to column_left
+  $_page->snippets['box_information_links'] = ob_get_clean();
 
   $box_page = new view();
   
@@ -42,7 +40,7 @@
     'title' => $page['title'],
     'content' => $page['content'],
   );
-  
+
   $_page->snippets['box_page'] = $box_page->stitch('views/box_page');
 
   echo $_page->stitch('views/box_information');

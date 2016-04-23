@@ -15,12 +15,12 @@
     );
     
     if (database::num_rows($pages_query)) {
-      while ($page = database::fetch($pages_query)) {
+      while ($information_link = database::fetch($pages_query)) {
         $box_information_links->snippets['pages'][] = array(
-          'id' => $page['id'],
-          'title' => $page['title'],
-          'link' => document::ilink('information', array('page_id' => $page['id'])),
-          'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $page['id']) ? true : false,
+          'id' => $information_link['id'],
+          'title' => $information_link['title'],
+          'link' => document::ilink('information', array('page_id' => $information_link['id'])),
+          'active' => (isset($_GET['page_id']) && $_GET['page_id'] == $information_link['id']) ? true : false,
         );
       }
       

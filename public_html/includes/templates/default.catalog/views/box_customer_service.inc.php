@@ -1,3 +1,4 @@
+<?php @document::$snippets['column_left'] .= $box_customer_service_links; ?>
 <?php if (!empty($box_page)) { ?>
   <!--snippet:box_page-->
 <?php } else { ?>

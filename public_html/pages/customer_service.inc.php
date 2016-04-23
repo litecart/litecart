@@ -13,7 +13,6 @@
   ob_start();
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php');
   $_page->snippets['box_customer_service_links'] = ob_get_clean();
-  document::$snippets['column_left'] = $_page->snippets['box_customer_service_links']; // Also send to column_left
   
 // Custom page
   if (!empty($_GET['page_id'])) {
