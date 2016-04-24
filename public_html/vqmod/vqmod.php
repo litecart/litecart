@@ -22,7 +22,7 @@
     public static $checkedCache = 'vqmod/checked.cache';       // Relative path to already checked files array cache file
     public static $protectedFilelist = 'vqmod/vqprotect.txt';  // Relative path to protected files array cache file
     public static $fileModding = false;                        // Reference to the current file being modified by vQmod for logging
-    public static $replaces = array();                         // Array of regex replaces to perform on file paths
+    public static $replaces = array();                         // Array of regex replaces to perform on file paths array(search => replace)
 
     /**
      * VQMod::bootup()
@@ -610,10 +610,8 @@
 
           $fileToMod = $path . $filename;
           if (!empty(VQMod::$replaces)) {
-            foreach(VQMod::$replaces as $r) {
-              if (count($r) == 2) {
-                $fileToMod = preg_replace($r[0], $r[1], $fileToMod);
-              }
+            foreach(VQMod::$replaces as $search => $replace) {
+              $fileToMod = preg_replace($search, $replace, $fileToMod);
             }
           }
 
