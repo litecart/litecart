@@ -21,6 +21,7 @@
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
       
       $fields = array(
+        'code',
         'status',
         'email',
         'password',
@@ -104,15 +105,16 @@
 
   <table>
     <tr>
-      <td><?php echo language::translate('title_status', 'Status'); ?><br />
+      <td width="50%"><?php echo language::translate('title_status', 'Status'); ?><br />
         <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
       </td>
       <td></td>
     </tr>
     <tr>
-      <td width="50%"><?php echo language::translate('title_email_address', 'Email Address'); ?><br />
+      <td><?php echo language::translate('title_code', 'Code'); ?><br />
+        <?php echo functions::form_draw_text_field('code', true); ?></td>
+      <td><?php echo language::translate('title_email_address', 'Email Address'); ?><br />
         <?php echo functions::form_draw_email_field('email', true); ?></td>
-      <td></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_tax_id', 'Tax ID'); ?><br />

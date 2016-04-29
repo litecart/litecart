@@ -12,6 +12,7 @@
     <th><?php echo language::translate('title_icon', 'Icon'); ?></th>
     <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
     <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
+    <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
     <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
     <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
     <th>&nbsp;</th>
@@ -40,6 +41,7 @@
     <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
     <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>"><?php echo $order_status['name']; ?></a></td>
     <td style="text-align: center;"><?php echo empty($order_status['is_sale']) ? '' : 'x'; ?></td>
+    <td style="text-align: center;"><?php echo empty($order_status['is_archived']) ? '' : 'x'; ?></td>
     <td style="text-align: center;"><?php echo empty($order_status['notify']) ? '' : 'x'; ?></td>
     <td style="text-align: center;"><?php echo $order_status['priority']; ?></td>
     <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
@@ -50,7 +52,7 @@
   }
 ?>
   <tr class="footer">
-    <td colspan="8"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo database::num_rows($orders_status_query); ?></td>
+    <td colspan="9"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo database::num_rows($orders_status_query); ?></td>
   </tr>
 </table>
 

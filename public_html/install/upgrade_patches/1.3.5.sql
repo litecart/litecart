@@ -6,3 +6,7 @@ ALTER TABLE `lc_pages_info` CHANGE COLUMN `content` `content` MEDIUMTEXT NOT NUL
 ALTER TABLE `lc_zones` ADD INDEX `code` (`code`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_slides`	CHANGE COLUMN `caption` `caption` TEXT NOT NULL;
+-- --------------------------------------------------------
+ALTER TABLE `lc_order_statuses`	ADD COLUMN `is_archived` TINYINT(1) NOT NULL AFTER `is_sale`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_customers` ADD `code` VARCHAR(32) NOT NULL AFTER `id`;

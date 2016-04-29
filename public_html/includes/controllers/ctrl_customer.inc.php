@@ -41,6 +41,7 @@
       
       $map = array(
         'id',
+        'code',
         'status',
         'email',
         'password',
@@ -101,6 +102,7 @@
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set
+          code = '". database::input($this->data['code']) ."',
           status = '". (!empty($this->data['status']) ? '1' : '0') ."',
           email = '". database::input($this->data['email']) ."',
           tax_id = '". database::input($this->data['tax_id']) ."',

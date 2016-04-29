@@ -20,13 +20,15 @@
     
     if (empty($_POST['notify'])) $_POST['notify'] = 0;
     if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
+    if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
     
     if (empty(notices::$data['errors'])) {
-    
+
       $fields = array(
         'icon',
         'color',
         'is_sale',
+        'is_archived',
         'notify',
         'priority',
         'name',
@@ -95,10 +97,13 @@
       <?php echo functions::form_draw_color_field('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?></td>
     </tr>
     <tr>
-      <td><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></td>
+      <td><label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></label></td>
     </tr>
     <tr>
-      <td><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('text_notify_customer', 'Notify customer');?></td>
+      <td><label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived');?></label></td>
+    </tr>
+    <tr>
+      <td><label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('text_notify_customer', 'Notify customer');?></label></td>
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_email_message', 'Email Message'); ?></strong><br />
