@@ -8,8 +8,9 @@
     public static $snippets = array();
     public static $settings = array();
     
-    //public static function construct() {
-    //}
+    public static function construct() {
+      header('X-Powered-By: '. PLATFORM_NAME);
+    }
     
     //public static function load_dependencies() {
     //}
@@ -17,9 +18,11 @@
     //public static function initiate() {
     //}
     
-    public static function startup() {
-      
-      header('X-Powered-By: '. PLATFORM_NAME);
+    //public static function startup() {
+    //}
+
+
+    public static function before_capture() {
       
     // Set template
       if (preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
@@ -29,9 +32,7 @@
       }
       
       define('WS_DIR_TEMPLATE', WS_DIR_TEMPLATES . self::$template .'/');
-    }
 
-    public static function before_capture() {
     // Set some snippets
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['charset'] = language::$selected['charset'];
@@ -42,10 +43,10 @@
       
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">' . PHP_EOL;
       
-      self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>' . PHP_EOL
+      self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.12.3.min.js"></script>' . PHP_EOL
                                              . '<script src="//code.jquery.com/jquery-migrate-1.3.0.min.js"></script>' . PHP_EOL
                                              . '<script>' . PHP_EOL
-                                             . '  window.jQuery || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-1.12.0.min.js"%3E%3C/script%3E\'));' . PHP_EOL
+                                             . '  window.jQuery || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-1.12.3.min.js"%3E%3C/script%3E\'));' . PHP_EOL
                                              . '  (window.jQuery && jQuery.migrateTrace) || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-migrate-1.3.0.min.js"%3E%3C/script%3E\'));' . PHP_EOL
                                              . '</script>';
       

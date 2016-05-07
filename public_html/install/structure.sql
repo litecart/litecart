@@ -727,7 +727,7 @@ CREATE TABLE `lc_zones` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `country_code` (`country_code`)
+  KEY `country_code` (`country_code`),
   KEY `code` (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
