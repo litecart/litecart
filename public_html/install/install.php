@@ -21,6 +21,14 @@
   
   ### Set Environment Variables ###################################
   
+// Set platform name
+  preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents('../includes/app_header.inc.php'), $matches);
+  define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
+
+// Set platform version
+  preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents('../includes/app_header.inc.php'), $matches);
+  define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
+
   $installation_path = file_absolute_path(dirname(__FILE__) .'/..') .'/';
   
   $_REQUEST['db_type'] = !empty($_REQUEST['db_type']) ? $_REQUEST['db_type'] : 'mysql';
@@ -297,6 +305,25 @@
     values ('1', '1', '". $database->input($_REQUEST['username']) ."', '". password_checksum('1', $_REQUEST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
   
+  ### Set platform database version ###################################
+
+  echo '<p>Set platform database version...';
+
+  if (defined('PLATFORM_VERSION')) {
+
+    $database->query(
+      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+      set `value` = '". $database->input($matches[1]) ."'
+      where `key` = 'platform_database_version'
+      limit 1;"
+    );
+
+    echo ' <strong>'. $platform_version .'</strong></p>' . PHP_EOL;
+
+  } else {
+    echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
+  }
+
   ## Windows OS Adjustments ###################################
   
   /*
