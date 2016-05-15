@@ -1,19 +1,19 @@
 <?php
-  
+
   if (!empty($_POST['export_categories'])) {
-    
+
     if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
-    
+
     if (empty(notices::$data['errors'])) {
-      
+
       ob_clean();
-      
+
       $csv = array();
-      
+
       $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
       while ($category = database::fetch($categories_query)) {
         $category = new ref_category($category['id']);
-        
+
         $csv[] = array(
           'id' => $category->id,
           'parent_id' => $category->parent_id,
@@ -28,14 +28,14 @@
           'language_code' => $_POST['language_code'],
         );
       }
-      
+
       if ($_POST['output'] == 'screen') {
         header('Content-type: text/plain; charset='. $_POST['charset']);
       } else {
         header('Content-type: application/csv; charset='. $_POST['charset']);
         header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
       }
-      
+
       switch($_POST['eol']) {
         case 'Linux':
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
@@ -48,24 +48,24 @@
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
           break;
       }
-      
+
       exit;
     }
   }
-  
+
   if (!empty($_POST['import_categories'])) {
-    
+
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-      
+
       ob_clean();
-      
+
       header('Content-type: text/plain; charset='. language::$selected['charset']);
-      
+
       echo "CSV Import\r\n"
          . "----------\r\n";
-      
+
       $csv = file_get_contents($_FILES['file']['tmp_name']);
-      
+
       if (empty($_POST['delimiter'])) {
         preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
         if (strpos($matches[1], ',') !== false) {
@@ -80,13 +80,13 @@
           trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
         }
       }
-      
+
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
-      
+
       $line = 0;
       foreach ($csv as $row) {
         $line++;
-        
+
       // Find category
         if (!empty($row['id'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
@@ -101,7 +101,7 @@
             $category = new ctrl_category($row['id']);
             echo 'Creating new category: '. $row['name'] . PHP_EOL;
           }
-          
+
         } elseif (!empty($row['code'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
             $category = new ctrl_category($category['id']);
@@ -114,7 +114,7 @@
             $category = new ctrl_category();
             echo 'Creating new category: '. $row['name'] . PHP_EOL;
           }
-          
+
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
             $category = new ctrl_category($category['id']);
@@ -126,12 +126,12 @@
             }
             $category = new ctrl_category();
           }
-          
+
         } else {
           echo "[Skipped] Could not identify category on line $line.\r\n";
           continue;
         }
-        
+
       // Set default category data
         if (empty($category->data['id'])) {
           $category->data['dock'][] = 'tree';
@@ -141,18 +141,18 @@
         foreach (array('parent_id', 'status', 'code', 'dock', 'keywords', 'image') as $field) {
           if (isset($row[$field])) $category->data[$field] = $row[$field];
         }
-        
+
       // Set category info data
         foreach (array('name', 'short_description', 'description', 'head_title', 'h1_title', 'meta_description') as $field) {
           if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
         }
-        
+
         if (isset($row['new_image'])) {
-          $category->save_image($row['new_imags']);
+          $category->save_image($row['new_image']);
         }
-        
+
         $category->save();
-        
+
         if (!empty($row['date_created'])) {
           database::query(
             "update ". DB_TABLE_CATEGORIES ."
@@ -162,21 +162,21 @@
           );
         }
       }
-      
+
       exit;
     }
   }
-  
+
   if (!empty($_POST['export_products'])) {
-    
+
     if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
-    
+
     if (empty(notices::$data['errors'])) {
-    
+
       $csv = array();
-      
+
       ob_clean();
-      
+
       $products_query = database::query(
         "select p.id from ". DB_TABLE_PRODUCTS ." p
         left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
@@ -184,7 +184,7 @@
       );
       while ($product = database::fetch($products_query)) {
         $product = new ref_product($product['id']);
-        
+
         $csv[] = array(
           'id' => $product->id,
           'categories' => implode(',', array_keys($product->categories)),
@@ -225,7 +225,7 @@
         header('Content-type: application/csv; charset='. $_POST['charset']);
         header('Content-Disposition: attachment; filename=products-'. $_POST['language_code'] .'.csv');
       }
-      
+
       switch($_POST['eol']) {
         case 'Linux':
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
@@ -238,24 +238,24 @@
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
           break;
       }
-      
+
       exit;
     }
   }
 
   if (!empty($_POST['import_products'])) {
-    
+
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-      
+
       ob_clean();
-      
+
       header('Content-type: text/plain; charset='. language::$selected['charset']);
-      
+
       echo "CSV Import\r\n"
          . "----------\r\n";
-      
+
       $csv = file_get_contents($_FILES['file']['tmp_name']);
-      
+
       if (empty($_POST['delimiter'])) {
         preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
         if (strpos($matches[1], ',') !== false) {
@@ -270,13 +270,13 @@
           trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
         }
       }
-      
+
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
-      
+
       $line = 0;
       foreach ($csv as $row) {
         $line++;
-        
+
       // Find product
         if (!empty($row['id'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where id = ". (int)$row['id'] ." limit 1;"))) {
@@ -291,7 +291,7 @@
             $product = new ctrl_product($row['id']);
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
-          
+
         } elseif (!empty($row['code'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
             $product = new ctrl_product($product['id']);
@@ -304,7 +304,7 @@
             $product = new ctrl_product();
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
-          
+
         } elseif (!empty($row['sku'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
             $product = new ctrl_product($product['id']);
@@ -317,7 +317,7 @@
             $product = new ctrl_product();
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
-          
+
         } elseif (!empty($row['gtin'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
             $product = new ctrl_product($product['id']);
@@ -330,7 +330,7 @@
             $product = new ctrl_product();
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
-          
+
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
             $product = new ctrl_product($product['id']);
@@ -342,12 +342,12 @@
             }
             $product = new ctrl_product();
           }
-          
+
         } else {
           echo "[Skipped] Could not identify product on line $line.\r\n";
           continue;
         }
-        
+
       // Append manufacturer id
         if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
           $manufacturers_query = database::query(
@@ -364,7 +364,7 @@
             $row['manufacturer_id'] = $manufacturer->data['id'];
           }
         }
-        
+
         $fields = array(
           'categories',
           'manufacturer_id',
@@ -386,19 +386,19 @@
           'date_valid_from',
           'date_valid_to'
         );
-        
+
       // Set new product data
         foreach ($fields as $field) {
           if (isset($row[$field])) $product->data[$field] = $row[$field];
         }
-        
+
         if (isset($row['categories'])) $product->data['categories'] = explode(',', str_replace(' ', '', $product->data['categories']));
-        
+
       // Set price
         if (!empty($row['currency_code'])) {
           if (isset($row['price'])) $product->data['prices'][$row['currency_code']] = $row['price'];
         }
-        
+
       // Set product info data
         if (!empty($row['language_code'])) {
           foreach (array('name', 'short_description', 'description', 'attributes', 'head_title', 'meta_description') as $field) {
@@ -407,10 +407,10 @@
             }
           }
         }
-        
+
         if (isset($row['images'])) {
           $row['images'] = explode(';', $row['images']);
-          
+
           $product_images = array();
           $current_images = array();
           foreach ($product->data['images'] as $key => $image) {
@@ -419,25 +419,25 @@
               $current_images[] = $image['filename'];
             }
           }
-          
+
           $i=0;
           foreach($row['images'] as $image) {
             if (!in_array($image, $current_images)) {
               $product_images['new'.++$i] = array('filename' => $image);
             }
           }
-          
+
           $product->data['images'] = $product_images;
         }
-        
+
         if (isset($row['new_images'])) {
           foreach(explode(';', $row['new_images']) as $new_image) {
             $product->add_image($new_image);
           }
         }
-        
+
         $product->save();
-        
+
         if (!empty($row['date_created'])) {
           database::query(
             "update ". DB_TABLE_PRODUCTS ."
@@ -447,11 +447,11 @@
           );
         }
       }
-      
+
       exit;
     }
   }
-  
+
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?></h1>
 
