@@ -16,7 +16,7 @@
       //}
     }
     
-    public function __get($name) {
+    public function &__get($name) {
       
       if (array_key_exists($name, $this->_data)) {
         return $this->_data[$name];
@@ -28,7 +28,7 @@
       return $this->_data[$name];
     }
     
-    public function __isset($name) {
+    public function &__isset($name) {
       return $this->__get($name);
     }
     

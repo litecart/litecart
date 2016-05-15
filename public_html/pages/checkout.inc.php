@@ -1,10 +1,10 @@
 <?php
   document::$layout = 'checkout';
-  
+
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   document::$snippets['title'][] = language::translate('checkout:head_title', 'Checkout');
-  
+
   if (settings::get('catalog_only_mode')) return;
 
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
@@ -54,7 +54,7 @@
       },
     });
   }
-  
+
   function refreshCustomer() {
     if (console) console.log("Refreshing customer");
     $.ajax({
@@ -123,7 +123,7 @@
       },
     });
   }
-  
+
   function refreshSummary() {
     if (console) console.log("Refreshing summary");
     var comments = $("textarea[name='comments']").val();
@@ -148,11 +148,11 @@
       },
     });
   }
-    
+
   $("body").on("click", "form button[type='submit']", function(e) {
     $(this).closest("form").append('<input type="hidden" name="'+ $(this).attr("name") +'" value="'+ $(this).text() +'" />');
   });
-  
+
   $("body").on('submit', "form[name='cart_form']", function(e) {
     if (console) console.log("Saving cart");
     e.preventDefault();
@@ -185,7 +185,7 @@
       }
     });
   });
-  
+
   var customer_form_changed = false;
   var customer_form_checksum = $("form[name='customer_form']").serialize();
   $("body").on('change keyup', "form[name='customer_form']", function(e) {
@@ -197,7 +197,7 @@
       $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
     }
   });
-  
+
   var timerSubmitCustomer;
   $("body").on('focusout', "form[name='customer_form']", function() {
     timerSubmitCustomer = setTimeout(
@@ -214,14 +214,14 @@
   $("body").on('focusin', "form[name='customer_form']", function() {
     clearTimeout(timerSubmitCustomer);
   });
-  
+
   $("body").on('submit', "form[name='order_form']", function(e) {
     if (customer_form_changed) {
       e.preventDefault();
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
   });
-  
+
   $("body").on('submit', "form[name='customer_form']", function(e) {
     if (console) console.log("Saving customer details");
     e.preventDefault();
@@ -261,7 +261,7 @@
       }
     });
   });
-  
+
   $("body").on('submit', "form[name='shipping_form']", function(e) {
     if (console) console.log("Saving shipping details");
     e.preventDefault();
@@ -294,7 +294,7 @@
       }
     });
   });
-  
+
   $("body").on('submit', "form[name='payment_form']", function(e) {
     if (console) console.log("Saving payment details");
     e.preventDefault();
@@ -327,7 +327,7 @@
       }
     });
   });
-  
+
   $("body").on('blur', "form[name='comments_form']", function(e) {
     if (console) console.log("Saving comments");
     e.preventDefault();

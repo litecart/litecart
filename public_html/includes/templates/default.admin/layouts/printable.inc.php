@@ -3,8 +3,9 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="print, screen" />
-<link rel="stylesheet" href="{snippet:template_path}styles/printable.css" media="print, screen" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}styles/printable.css" media="all" />
 <!--snippet:head_tags-->
 <!--snippet:styles-->
 <!--snippet:javascript-->

@@ -1,7 +1,7 @@
 <?php
   if (!isset($_GET['code'])) $_GET['code'] = 404;
   
-  switch ($_GET['code']) {
+  switch ((int)$_GET['code']) {
     case 403:
       notices::add('errors', language::translate('error_403_forbidden', 'Access to the requested file is forbidden'));
       break;

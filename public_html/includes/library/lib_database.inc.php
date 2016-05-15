@@ -73,6 +73,10 @@
         }
       }
       
+      if (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link])) {
+        trigger_error('Error: Invalid database link', E_USER_ERROR);
+      }
+
       $sql_mode_query = self::query("select @@SESSION.sql_mode;");
       $sql_mode = self::fetch($sql_mode_query);
 
@@ -85,10 +89,6 @@
       self::query("SET @@session.sql_mode = '". database::input($sql_mode['@@SESSION.sql_mode']) ."';");
 
       self::query("set names '". database::input($charset) ."';", $link);
-      
-      if (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link])) {
-        trigger_error('Error: Invalid database link', E_USER_ERROR);
-      }
       
       return self::$_links[$link];
     }

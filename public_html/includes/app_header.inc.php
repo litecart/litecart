@@ -68,25 +68,23 @@
   function error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
     if (!(error_reporting() & $errno)) return;
     $errfile = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $errfile));
-    
-    $href_link = document::href_link('http://lmgtfy.com/', array('q' => $errstr));
 
     switch($errno) {
       case E_WARNING:
       case E_USER_WARNING:
-        $output = "<b>Warning:</b> <a href=\"$href_link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
+        $output = "<b>Warning:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         break;
       case E_STRICT:
       case E_NOTICE:
       case E_USER_NOTICE:
-        $output = "<b>Notice:</b> <a href=\"$href_link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
+        $output = "<b>Notice:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         break;
       case E_DEPRECATED:
       case E_USER_DEPRECATED:
-        $output = "<b>Deprecated:</b> <a href=\"$href_link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
+        $output = "<b>Deprecated:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         break;
       default:
-        $output = "<b>Fatal error:</b> <a href=\"$href_link\" target=\"_blank\">$errstr</a> in <b>$errfile</b> on line <b>$errline</b>";
+        $output = "<b>Fatal error:</b> $errstr in <b>$errfile</b> on line <b>$errline</b>";
         break;
     }
     

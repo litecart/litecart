@@ -2,12 +2,16 @@
 
   $app_config = array(
     'name' => language::translate('title_modules', 'Modules'),
-    'default' => 'shipping',
+    'default' => 'jobs',
     'theme' => array(
       'color' => '#c78dc8',
       'icon' => 'fa-cube',
     ),
     'menu' => array(
+      array(
+        'title' => language::translate('title_background_jobs', 'Background Jobs'),
+        'doc' => 'jobs',
+      ),
       array(
         'title' => language::translate('title_customer', 'Customer'),
         'doc' => 'customer',
@@ -31,10 +35,6 @@
       array(
         'title' => language::translate('title_order_action', 'Order Action'),
         'doc' => 'order_action',
-      ),
-      array(
-        'title' => language::translate('title_background_jobs', 'Background Jobs'),
-        'doc' => 'jobs',
       ),
     ),
     'docs' => array(

@@ -142,7 +142,7 @@
     return $text;
   }
   
-  function general_order_public_checksum($order_id, $print=false) {
+  function general_order_public_checksum($order_id) {
     
     $query = database::query(
       "select * from ". DB_TABLE_ORDERS ."
