@@ -55,7 +55,7 @@
           </tr>
         </table>
       </div>
-      
+
       <div class="shipping-address">
         <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
         <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
@@ -126,14 +126,14 @@
       },
     });
   });
-  
+
   $("select[name='country_code']").change(function(){
     if ($(this).find('option:selected').data('tax-id-format') != '') {
       $(this).closest('table').find("input[name='tax_id']").attr('pattern', $(this).find('option:selected').data('tax-id-format'));
     } else {
       $(this).closest('table').find("input[name='tax_id']").removeAttr('pattern');
     }
-    
+
     if ($(this).find('option:selected').data('postcode-format') != '') {
       $(this).closest('table').find("input[name='postcode']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
       $(this).closest('table').find("input[name='postcode']").attr('required', 'required');
@@ -143,13 +143,13 @@
       $(this).closest('table').find("input[name='postcode']").removeAttr('required');
       $(this).closest('table').find("input[name='postcode']").closest('td').find('.required').hide();
     }
-    
+
     if ($(this).find('option:selected').data('phone-code') != '') {
       $(this).closest('table').find("input[name='phone']").attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
     } else {
       $(this).closest('table').find("input[name='phone']").removeAttr('placeholder');
     }
-    
+
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -178,9 +178,9 @@
       }
     });
   });
-  
+
   $("select[name='shipping_address[country_code]']").change(function(){
-    
+
     console.log('Retrieving zones');
     $('body').css('cursor', 'wait');
     $.ajax({
@@ -210,13 +210,13 @@
       }
     });
   });
-  
+
   if ($("select[name='country_code']").find('option:selected').data('tax-id-format') != '') {
     $("select[name='country_code']").closest('table').find("input[name='tax_id']").attr('pattern', $("select[name='country_code']").find('option:selected').data('tax-id-format'));
   } else {
     $("select[name='country_code']").closest('table').find("input[name='tax_id']").removeAttr('pattern');
   }
-  
+
   if ($("select[name='country_code']").find('option:selected').data('postcode-format') != '') {
     $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('pattern', $("select[name='country_code']").find('option:selected').data('postcode-format'));
     $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('required', 'required');
@@ -226,14 +226,14 @@
     $("select[name='country_code']").closest('table').find("input[name='postcode']").removeAttr('required');
     $("select[name='country_code']").closest('table').find("input[name='postcode']").closest('td').find('.required').hide();
   }
-  
+
   if ($("select[name='country_code']").find('option:selected').data('phone-code') != '') {
     $("select[name='country_code']").closest('table').find("input[name='phone']").attr('placeholder', '+' + $("select[name='country_code']").find('option:selected').data('phone-code'));
   } else {
     $("select[name='country_code']").closest('table').find("input[name='phone']").removeAttr('placeholder');
   }
-  
+
   if ($("select[name='zone_code'] option").length == 0) $("select[name='zone_code']").closest('td').css('opacity', 0.15);
-  
+
   if ($("select[name='shipping_address[zone_code]'] option").length == 0) $("select[name='shipping_address[zone_code]']").closest('td').css('opacity', 0.15);
 </script>

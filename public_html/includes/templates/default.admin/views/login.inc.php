@@ -42,7 +42,7 @@ html, body, body > table {
   margin-left: -44px;
   margin-top: -44px;
   z-index: 0;
-  
+
   -webkit-animation-name: spin;
   -webkit-animation-duration: 4000ms;
   -webkit-animation-iteration-count: infinite;
@@ -55,7 +55,7 @@ html, body, body > table {
   -ms-animation-duration: 4000ms;
   -ms-animation-iteration-count: infinite;
   -ms-animation-timing-function: linear;
-  
+
   animation-name: spin;
   animation-duration: 4000ms;
   animation-iteration-count: infinite;
@@ -86,16 +86,16 @@ html, body, body > table {
 <table>
   <tr>
     <td class="content">
-      
+
       <div id="box-login-wrapper">
         <!--snippet:notices-->
-      
+
           <div id="box-login" class="box rounded-corners">
-            
+
             <div class="header">
               <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 100px;" alt="<?php echo settings::get('store_name'); ?>" /></a>
             </div>
-            
+
             <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
             <?php echo functions::form_draw_hidden_field('redirect_url', $action); ?>
               <div class="content">
@@ -114,13 +114,13 @@ html, body, body > table {
                   </tr>
                 </table>
               </div>
-              
+
               <div class="footer">
                 <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?>
               </div>
             <?php echo functions::form_draw_form_end(); ?>
           </div>
-          
+
       </div>
     </td>
   </tr>
@@ -132,7 +132,7 @@ html, body, body > table {
   } else {
     $("input[name='password']").focus();
   }
-  
+
   $("form[name='login_form']").submit(function(e) {
     $("#box-login-wrapper").fadeOut(100);
   });

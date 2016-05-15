@@ -5,20 +5,20 @@ form {
 form fieldset {
   border: 1px #e6e6e6 solid;
 }
- 
+
 input[type=color], input[type=date], input[type=datetime], input[type=datetime-local], input[type=email], input[type=file], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=url], input[type=time], select, textarea, .input-static, .input-wrapper {
   display: inline-block;
   margin: 3px 0;
   padding: 6px 10px;
-  
+
   border: 1px solid #ccc;
   border-radius: 3px;
-  
+
   background-color: #f9f9f9;
-  
+
   font: normal 13px 'Noto Sans';
   color: #333;
-  
+
   vertical-align: baseline;
 }
 
@@ -102,11 +102,11 @@ button, a.button, span.button, .button-set {
   display: inline-block;
   margin: 3px 0px;
   padding: 6px 10px;
-  
+
   outline: 0;
   border: 1px solid #ddd;
   border-radius: 3px;
-  
+
   background-image: -webkit-linear-gradient(#ffffff, #ffffff 60%, #f5f5f5);
   background-image: -o-linear-gradient(#ffffff, #ffffff 60%, #f5f5f5);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(60%, #ffffff), to(#f5f5f5));
@@ -115,14 +115,14 @@ button, a.button, span.button, .button-set {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff5f5f5', GradientType=0);
   -webkit-filter: none;
   filter: none;
-  
+
   color: #333;
   text-decoration: none;
   font: normal 13px/20px 'Noto Sans';
-  
+
   white-space: nowrap;
   vertical-align: middle;
-  
+
   cursor: pointer;
 }
 

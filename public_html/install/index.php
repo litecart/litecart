@@ -1,8 +1,8 @@
 <?php
   require('includes/header.inc.php');
-  
+
   ini_set('display_errors', 'On');
-  
+
 // Function to get object from a relative path to this script
   function get_absolute_path($path=null) {
     if (empty($path)) $path = dirname(__FILE__);
@@ -19,9 +19,9 @@
     }
     return ((substr(PHP_OS, 0, 3) == 'WIN') ? '' : '/') . implode('/', $absolutes);
   }
-  
+
   $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
-  
+
   function return_bytes($val) {
     $val = trim($val);
     switch(strtolower($val[strlen($val)-1])) {
@@ -34,7 +34,7 @@
     }
     return $val;
   }
-  
+
   $countries = array(
     'AF' => 'Afghanistan',
     'AL' => 'Albania',
@@ -275,11 +275,11 @@
     'ZM' => 'Zambia',
     'ZW' => 'Zimbabwe',
   );
-  
+
 ?>
 
   <h1>Installer</h1>
-  
+
   <h2>System Requirements</h2>
   <ul>
     <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
@@ -319,13 +319,13 @@
     </li>
     <li>MySQL 5.5+</li>
   </ul>
-  
+
   <h2>Client Requirements</h2>
   <ul>
     <li>HTML 5</li>
     <li>CSS 3 (IE9+)</li>
   </ul>
-  
+
   <h2>Writables</h2>
     <ul>
 <?php
@@ -354,15 +354,15 @@
   }
 ?>
   </ul>
-  
+
   <h2>Installation Parameters</h2>
-  
+
 <?php
   if (file_exists('../includes/config.inc.php')) {
     echo '<p style="color: #f00; font-weight: bold;">Attention: An existing installation has been detected. If you continue the existing installation will be overwritten. <a href="upgrade.php">Upgraders click here to for the upgrade tool.</a></p>';
   }
 ?>
-  
+
   <form name="installation_form" method="post" action="install.php">
     <h3>File System</h3>
     <table>
@@ -447,10 +447,10 @@
           <select name="store_time_zone" required="required">
 <?php
   $zones = timezone_identifiers_list();
-       
+
   foreach ($zones as $zone) {
     $zone = explode('/', $zone); // 0 => Continent, 1 => City
-   
+
     // Only use "friendly" continent names
     if (in_array($zone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) {
       if (!empty($zone[1])) {
@@ -478,12 +478,12 @@
     </table>
     <h3>Errors</h3>
     <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
-    
+
     <p>Errors will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
     <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.</p>
-    
+
     <hr />
-    
+
     <p style="text-align: center;"><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>
     <p style="text-align: center;"><input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" /></p>
   </form>

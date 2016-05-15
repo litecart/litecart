@@ -1,32 +1,32 @@
 <?php
-  
+
   if (!empty($_GET['country_code'])) {
     $country = new ctrl_country($_GET['country_code']);
   } else {
     $country = new ctrl_country();
   }
-  
+
   if (empty($_POST)) {
     foreach ($country->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'));
-  
+
   if (isset($_POST['save'])) {
 
     if (empty($_POST['iso_code_2'])) notices::add('errors', language::translate('error_missing_code', 'You must enter a code'));
     if (empty($_POST['iso_code_3'])) notices::add('errors', language::translate('error_missing_code', 'You must enter a code'));
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    
+
     if (empty($_POST['zones'])) $_POST['zones'] = array();
-    
+
     if (empty(notices::$data['errors'])) {
-    
+
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
       $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
-      
+
       $fields = array(
         'status',
         'iso_code_2',
@@ -40,23 +40,23 @@
         'phone_code',
         'zones',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $country->data[$field] = $_POST[$field];
       }
-      
+
       $country->save();
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
       exit;
     }
   }
-  
+
   if (isset($_POST['delete'])) {
 
     $country->delete();
-    
+
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
     exit;
@@ -66,7 +66,7 @@
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'); ?></h1>
 
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
-  
+
   <table>
     <tr>
       <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
@@ -106,7 +106,7 @@
               "<?php echo language::translate('title_syntax', 'Syntax'); ?>:\n\n" +
               "%company, %firstname, %lastname, \n" +
               "%address1, %address2\n" +
-              "%postcode %city\n" + 
+              "%postcode %city\n" +
               "%zone_code, %zone_name\n" +
               "%country_code_2, %country_code_3, %country_name\n"
             );
@@ -130,7 +130,7 @@
       </td>
     </tr>
   </table>
-    
+
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
   <table width="100%" class="dataTable" id="table-zones">
     <tr class="header">
@@ -160,13 +160,13 @@
       <td style="text-align: right;"><?php echo functions::form_draw_button('add_zone', language::translate('title_add', 'Add'), 'button'); ?></td>
     </tr>
   </table>
-  
+
   <script>
     $("body").on("click", "#remove-zone", function(event) {
       event.preventDefault();
       $(this).closest('tr').remove();
     });
-    
+
     $("select[name='country[code]']").change(function(){
       $('body').css('cursor', 'wait');
       $.ajax({
@@ -195,7 +195,7 @@
         }
       });
     });
-    
+
     var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
     $("button[name=add_zone]").click(function(event) {
       event.preventDefault();
@@ -213,7 +213,7 @@
       $("#table-zones tr:last").before(output);
     });
   </script>
-  
+
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($country->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>

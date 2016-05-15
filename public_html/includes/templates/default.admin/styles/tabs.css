@@ -19,13 +19,13 @@
 .tabs .index li a {
   display: block;
   padding: 5px 10px;
-  
+
   background-color: #f4f4f4;
-  
+
   border: 1px solid #ccc;
   border-bottom: none;
   border-radius: 3px 3px 0 0;
-  
+
   color: #999;
   text-decoration: none;
 }

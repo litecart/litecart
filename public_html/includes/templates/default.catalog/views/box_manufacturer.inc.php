@@ -13,11 +13,11 @@
     }
 ?>
   </nav>
-  
+
   <h1 class="title"><?php echo $title; ?></h1>
-  
+
   <div class="content">
-  
+
     <?php if ($_GET['page'] == 1 && $description) { ?>
     <div class="description-wrapper">
       <p class="manufacturer-description"><?php echo $description; ?></p>
@@ -29,13 +29,13 @@
     </p>
     <?php } ?>
     <?php } ?>
-    
+
     <?php if ($products) { ?>
     <ul class="listing-wrapper products">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
     </ul>
     <?php } ?>
-    
+
     <?php echo $pagination; ?>
   </div>
 </div>

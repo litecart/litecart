@@ -1,23 +1,23 @@
 <?php
-  
+
   function general_escape_js($string, $is_html_attribute=false) {
-    
+
     $string = preg_replace('#\R#', "\\n", addslashes($string));
-    
+
     return $is_html_attribute ? htmlspecialchars($string) : $string;
   }
-  
+
   function general_path_friendly($text, $language_code=null) {
-    
+
     if (empty($language_code)) $language_code = language::$selected['code'];
-    
+
     if (strtoupper(language::$selected['charset']) != 'UTF-8') {
       $text = mb_convert_encoding($text, 'UTF-8'); // Convert to UTF-8
     }
-    
+
     $text = strip_tags($text);  // Remove HTML tags
     $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');  // Decode special characters
-    
+
     $foreign_characters = array (
       'latin' => array (
         'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A','Ă' => 'A', 'Æ' => 'AE', 'Ç' =>
@@ -116,43 +116,43 @@
         'Ç' => 'C', 'Ə' => 'E', 'Ğ' => 'G', 'İ' => 'I', 'Ö' => 'O', 'Ş' => 'S', 'Ü' => 'U'
       )
     );
-    
+
   // Convert foreign characters
     if (!empty($foreign_characters[$language_code])) {
       $text = strtr($text, $foreign_characters[$language_code]);
       unset($foreign_characters[$language_code]);
     }
-    
+
   // Convert other foreign characters
     foreach($foreign_characters as $characters) {
       $text = strtr($text, $characters);
     }
-    
+
   // Strip non printable characters
     $text = preg_replace("/\[.*\]/U", "", $text);
-    
+
   // Keep a-z0-9 and convert symbols to -
     $text = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $text);
     $text = preg_replace(array('/[^a-z0-9]/i', '/[-]+/'), '-', $text);
     $text = trim($text, '-');
-    
+
   // Convert to lowercases
     $text = strtolower($text);
-    
+
     return $text;
   }
-  
+
   function general_order_public_checksum($order_id) {
-    
+
     $query = database::query(
       "select * from ". DB_TABLE_ORDERS ."
       where id = '". (int)$order_id ."'
       limit 1;"
     );
     $order = database::fetch($query);
-    
+
     $checksum = md5($order['id'] . $order['uid'] . $order['customer_email'] . $order['date_created']);
-    
+
     return $checksum;
   }
 

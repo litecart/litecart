@@ -1,6 +1,6 @@
 <?php
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['countries'])) {
       foreach ($_POST['countries'] as $key => $value) $_POST['countries'][$key] = database::input($value);
       database::query(
@@ -9,7 +9,7 @@
         where id in ('". implode("', '", $_POST['countries']) ."');"
       );
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
@@ -36,7 +36,7 @@
   );
 
   if (database::num_rows($countries_query) > 0) {
-    
+
     while ($country = database::fetch($countries_query)) {
 ?>
     <tr class="row<?php echo !$country['status'] ? ' semi-transparent' : null; ?>">

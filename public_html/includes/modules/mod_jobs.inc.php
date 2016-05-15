@@ -1,5 +1,5 @@
 <?php
-  
+
   class mod_jobs extends module {
     public $data;
     public $cheapest = '';
@@ -7,16 +7,16 @@
     public $destination = array();
 
     public function __construct() {
-      
+
       parent::set_type('jobs');
-     
+
       $this->load();
     }
-    
+
     public function process($modules=null, $force=false) {
-      
+
       if (empty($this->modules)) return;
-      
+
       if (empty($modules)) $modules = array_keys($this->modules);
       if (!is_array($modules)) $modules = array($modules);
 
@@ -47,12 +47,12 @@
         echo $log;
       }
     }
-    
+
     public function run($method_name, $module_id) {
       if (method_exists($this->modules[$module_id], $method_name)) {
         return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
       }
     }
   }
-  
+
 ?>

@@ -9,7 +9,7 @@
         </span>
         <span class="name"><?php echo $app['name']; ?></span>
       </a>
-  
+
       <?php if ($app['active'] && !empty($app['menu'])) { ?>
       <ul class="docs">
         <?php foreach ($app['menu'] as $item) { ?>
@@ -17,7 +17,7 @@
         <?php } ?>
       </ul>
       <?php } ?>
-    
+
     </li>
   <?php } ?>
   </ul>

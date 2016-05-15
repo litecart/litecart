@@ -1,24 +1,24 @@
 <?php
-  
+
   if (!empty($_GET['option_group_id'])) {
     $option_group = new ctrl_option_group($_GET['option_group_id']);
   } else {
     $option_group = new ctrl_option_group();
   }
-  
+
   if (empty($_POST)) {
     foreach ($option_group->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'));
-  
+
   if (!empty($_POST['save'])) {
-    
+
     if (empty($_POST['required'])) $_POST['required'] = 0;
     if (empty($_POST['values'])) $_POST['values'] = array();
-    
+
     if (empty($errors)) {
       $fields = array(
         'name',
@@ -28,28 +28,28 @@
         'sort',
         'values',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $option_group->data[$field] = $_POST[$field];
       }
-      
+
       $option_group->save();
- 
+
       header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
       exit;
     }
   }
-  
+
   if (!empty($_POST['delete'])) {
-    
+
     if (empty($errors)) {
       $option_group->delete();
- 
+
       header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
       exit;
     }
   }
-  
+
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
 
@@ -156,7 +156,7 @@
 ?>
       <tr>
         <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_value', 'Add Value'); ?></a></td>
-      </tr>  
+      </tr>
     </table>
     <script>
       var new_value_index = 1;
@@ -180,7 +180,7 @@
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('tr').before(output);
       });
-      
+
       $("#option-values-multiset").on("click", ".move-up, .move-down", function(event) {
         event.preventDefault();
         var row = $(this).closest("tr");
@@ -191,7 +191,7 @@
           $(row).insertAfter($(row).next());
         }
       });
-      
+
       $("#option-values-multiset").on("click", ".remove", function(event) {
         event.preventDefault();
         $(this).closest('tr').remove();

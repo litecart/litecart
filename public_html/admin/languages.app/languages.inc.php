@@ -1,8 +1,8 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['languages'])) {
       foreach (array_keys($_POST['languages']) as $language_code) {
 
@@ -21,7 +21,7 @@
         $language->save();
       }
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
@@ -50,9 +50,9 @@
   );
 
   if (database::num_rows($languages_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($languages_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($language = database::fetch($languages_query)) {
 ?>
@@ -97,6 +97,6 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
+
   echo functions::draw_pagination(ceil(database::num_rows($languages_query)/settings::get('data_table_rows_per_page')));
 ?>

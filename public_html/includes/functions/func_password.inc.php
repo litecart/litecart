@@ -6,25 +6,25 @@
     $possible = '!#$%@2346789bcdfghjkmnpqrtvwxyzBCDFGHJKLMNPQRTVWXYZ';
 
     $maxlength = strlen($possible);
-  
+
     if ($length > $maxlength) {
       $length = $maxlength;
     }
-  
-    $i = 0; 
-    while ($i < $length) { 
+
+    $i = 0;
+    while ($i < $length) {
 
       $char = substr($possible, mt_rand(0, $maxlength-1), 1);
-        
-      if (!strstr($password, $char)) { 
+
+      if (!strstr($password, $char)) {
         $password .= $char;
         $i++;
       }
     }
-    
+
     return $password;
   }
-  
+
   function password_checksum($login, $password) {
     if (!defined('PASSWORD_SALT')) trigger_error('There is no password salt defined.', E_USER_ERROR);
     if (strlen($password) < 2) {

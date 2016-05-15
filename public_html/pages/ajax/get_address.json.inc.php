@@ -1,16 +1,16 @@
 <?php
   header('Content-type: text/plain; charset='. language::$selected['charset']);
-  
+
   if (empty($_GET['trigger'])) die('{}');
-  
+
   $customer = new mod_customer();
-  
+
   $result = $customer->get_address(array_merge($_POST, $_GET));
-  
+
   if (empty($result)) die('{}');
-  
+
   if (!empty($result['error'])) die('{}');
-  
+
   $json = array(
     'tax_id' => isset($result['tax_id']) ? $result['tax_id'] : '',
     'company' => isset($result['company']) ? $result['company'] : '',
@@ -27,12 +27,12 @@
     'email' => isset($result['email']) ? $result['email'] : '',
     'alert' => isset($result['alert']) ? $result['alert'] : '',
   );
-  
+
   mb_convert_variables(language::$selected['charset'], 'UTF-8', $json);
   $json = json_encode($json);
-  
+
   mb_convert_variables('UTF-8', language::$selected['charset'], $json);
   echo $json;
-  
+
   exit;
 ?>

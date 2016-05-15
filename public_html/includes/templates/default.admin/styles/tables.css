@@ -17,7 +17,7 @@ table.dataTable {
 table.dataTable .header {
   font-weight: bold;
   /*text-decoration: underline;*/
-  
+
   background-color: #f4f4f4;
 }
 table.dataTable th {

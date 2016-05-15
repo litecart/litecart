@@ -2,7 +2,7 @@
 
   class ctrl_sold_out_status {
     public $data = array();
-    
+
     public function __construct($sold_out_status_id=null) {
       if ($sold_out_status_id !== null) {
         $this->load((int)$sold_out_status_id);
@@ -10,11 +10,11 @@
         $this->reset();
       }
     }
-    
+
     public function reset() {
-      
+
       $this->data = array();
-      
+
       $fields_query = database::query(
         "show fields from ". DB_TABLE_SOLD_OUT_STATUSES .";"
       );
@@ -22,7 +22,7 @@
         $this->data[$field['Field']] = '';
       }
     }
-    
+
     public function load($sold_out_status_id) {
       $sold_out_status_query = database::query(
         "select * from ". DB_TABLE_SOLD_OUT_STATUSES ."
@@ -31,7 +31,7 @@
       );
       $this->data = database::fetch($sold_out_status_query);
       if (empty($this->data)) trigger_error('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.', E_USER_ERROR);
-      
+
       $sold_out_status_info_query = database::query(
         "select name, description, language_code from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
         where sold_out_status_id = '". (int)$this->data['id'] ."';"
@@ -42,9 +42,9 @@
         }
       }
     }
-    
+
     public function save() {
-    
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_SOLD_OUT_STATUSES ."
@@ -53,7 +53,7 @@
         );
         $this->data['id'] = database::insert_id();
       }
-      
+
       database::query(
         "update ". DB_TABLE_SOLD_OUT_STATUSES ."
         set orderable = '". (empty($this->data['orderable']) ? 0 : 1) ."',
@@ -61,9 +61,9 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
-      
+
       foreach (array_keys(language::$languages) as $language_code) {
-        
+
         $sold_out_status_info_query = database::query(
           "select * from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
           where sold_out_status_id = '". (int)$this->data['id'] ."'
@@ -71,7 +71,7 @@
           limit 1;"
         );
         $sold_out_status_info = database::fetch($sold_out_status_info_query);
-        
+
         if (empty($sold_out_status_info['id'])) {
           database::query(
             "insert into ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
@@ -80,7 +80,7 @@
           );
           $sold_out_status_info['id'] = database::insert_id();
         }
-        
+
         database::query(
           "update ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
           set
@@ -92,29 +92,29 @@
           limit 1;"
         );
       }
-      
+
       cache::clear_cache('sold_out_statuses');
     }
-    
+
     public function delete() {
-    
+
       if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where sold_out_status_id = '". (int)$this->data['id'] ."' limit 1;"))) {
         trigger_error('Cannot delete the sold out status because there are products using it', E_USER_ERROR);
         return;
       }
-      
+
       database::query(
         "delete from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
         where sold_out_status_id = '". (int)$this->data['id'] ."';"
       );
-      
+
       database::query(
         "delete from ". DB_TABLE_SOLD_OUT_STATUSES ."
         where id = '". (int)$this->data['id'] ."';"
       );
-      
+
       $this->data['id'] = null;
-      
+
       cache::clear_cache('sold_out_statuses');
     }
   }

@@ -10,10 +10,10 @@
 <!--snippet:styles-->
 <!--snippet:javascript-->
 <script>
-var $buoop = {c:2}; 
-function $buo_f(){ 
-  var e = document.createElement("script"); 
-  e.src = "//browser-update.org/update.js"; 
+var $buoop = {c:2};
+function $buo_f(){
+  var e = document.createElement("script");
+  e.src = "//browser-update.org/update.js";
   document.body.appendChild(e);
 };
 try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
@@ -38,11 +38,11 @@ catch(e){window.attachEvent("onload", $buo_f)}
             <?php if (settings::get('database_admin_link', '')) { ?><a href="<?php echo settings::get('database_admin_link'); ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>"><?php echo functions::draw_fonticon('fa-database'); ?></a><?php } ?>
             <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout.php'); ?>" title="<?php echo language::translate('text_logout', 'Logout'); ?>"><?php echo functions::draw_fonticon('fa-sign-out fa-lg'); ?></a>
           </div>
-          
+
           <!--snippet:dashboard-->
-          
+
           <!--snippet:box_apps_menu-->
-          
+
           <div class="footer">
             <div class="languages" style="text-align: center; margin-bottom: 10px 0 20px 0;">
 <?php
@@ -53,9 +53,9 @@ catch(e){window.attachEvent("onload", $buo_f)}
   }
 ?>
             </div>
-            
+
             <div id="platform"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></div>
-            
+
             <div id="copyright">&copy; <?php echo date('2012-Y'); ?> LiteCart<br />
               <a href="http://www.litecart.net" target="_blank">www.litecart.net</a>
             </div>
@@ -69,7 +69,7 @@ catch(e){window.attachEvent("onload", $buo_f)}
           <!--snippet:content-->
         </td>
       </tr>
-    </table>    
+    </table>
     </div>
   </div>
 </div>

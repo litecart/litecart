@@ -51,11 +51,11 @@ body {
   display: inline-block;
   font-size: 0.95em;
   color: #777;
-  
+
   padding: 5px 10px;
-  
+
   border-collapse: collapse;
-  
+
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
 
@@ -326,7 +326,7 @@ body {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  display: none;  
+  display: none;
   opacity: 0.3;
   width: 48px;
   height: 48px;

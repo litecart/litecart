@@ -1,6 +1,6 @@
 <?php
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['currencies'])) {
       foreach (array_keys($_POST['currencies']) as $currency_code) {
 
@@ -19,33 +19,33 @@
         $currency->save();
       }
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
-  
+
   if (!empty($_POST['update_rates'])) {
-    
+
     foreach (array_keys(currency::$currencies) as $currency_code) {
-      
+
       if ($currency_code == settings::get('store_currency_code')) continue;
-      
+
       $url = 'http://download.finance.yahoo.com/d/quotes.csv?f=l1&s='. settings::get('store_currency_code') . $currency_code .'=X';
-      
+
       $result = functions::http_fetch($url);
-      
+
       if (empty($result)) {
         trigger_error('Could not update currency value for '. $currency_code .': No data ('. $url .')', E_USER_ERROR);
         continue;
       }
-      
+
       $value = (float)trim($result) * currency::$currencies[settings::get('store_currency_code')]['value'];
-      
+
       if (empty($value)) {
         trigger_error('Could not update currency value for '. $currency_code .': No value ('. $url .')', E_USER_ERROR);
         continue;
       }
-      
+
       database::query(
         "update ". DB_TABLE_CURRENCIES ."
         set value = '". (float)$value ."'
@@ -53,7 +53,7 @@
         limit 1;"
       );
     }
-    
+
     notices::$data['success'][] = language::translate('success_currency_rates_updated', 'Currency rates updated');
     header('Location: '. document::link());
     exit;
@@ -87,7 +87,7 @@
   );
 
   if (database::num_rows($currencies_query) > 0) {
-    
+
     while ($currency = database::fetch($currencies_query)) {
 ?>
     <tr class="row<?php echo !$currency['status'] ? ' semi-transparent' : null; ?>">

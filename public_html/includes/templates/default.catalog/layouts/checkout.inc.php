@@ -31,27 +31,27 @@
 <div id="header-wrapper" class="shadow">
   <div style="padding: 0px 10px;">
     <header id="header" class="twelve-eighty">
-    
+
       <div id="logotype-wrapper">
         <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
       </div>
-      
+
       <div id="customer-service-wrapper">
         <span class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></span><br />
         <span class="phone"><?php echo settings::get('store_phone'); ?></span>
       </div>
-      
+
     </header>
   </div>
 </div>
 
 <div id="page-wrapper">
   <div id="page">
-    
+
     <div id="site-menu-wrapper">
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
     </div>
-    
+
     <div id="main-wrapper" class="twelve-eighty">
       <div id="main">
         <table style="width: 100%;">
@@ -86,7 +86,7 @@
     </div>
   </div>
 </div>
-  
+
 <!--snippet:foot_tags-->
 </body>
 </html>

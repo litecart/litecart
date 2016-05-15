@@ -1,11 +1,11 @@
 <?php
-  
+
   if (!empty($_POST['import'])) {
-    
+
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-    
+
       $csv = file_get_contents($_FILES['file']['tmp_name']);
-      
+
       if (empty($_POST['delimiter'])) {
         preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
         if (strpos($matches[1], ',') !== false) {
@@ -20,23 +20,23 @@
           trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
         }
       }
-      
+
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
-      
+
       $num_inserted_translations = 0;
       $num_updated_translations = 0;
-      
+
       foreach ($csv as $row) {
-      
+
         $translation_query = database::query(
           "select * from ". DB_TABLE_TRANSLATIONS ."
           where code = '". $row['code'] ."'
           limit 1;"
         );
         $translation = database::fetch($translation_query);
-        
+
         if (empty($translation)) {
-        
+
           if (!empty($_POST['insert'])) {
             database::query(
               "insert into ". DB_TABLE_TRANSLATIONS ."
@@ -55,9 +55,9 @@
               }
             }
           }
-          
+
         } else {
-          
+
           foreach (array_slice(array_keys($row), 1) as $language_code) {
             if (!empty($_POST['overwrite']) || (empty($translation['text_'.$language_code]) && !empty($row[$language_code]))) {
               database::query(
@@ -71,50 +71,50 @@
           }
         }
       }
-      
+
       cache::clear_cache('translations');
-      
+
       notices::add('success', sprintf(language::translate('success_d_translations_imported', 'Inserted %d new translations, updated %d translations'), $num_inserted_translations, $num_updated_translations));
-      
+
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
     }
   }
-  
+
   if (!empty($_POST['export'])) {
-    
+
     if (empty($_POST['language_codes'])) notices::add('errors', language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
-    
+
     if (empty(notices::$data['errors'])) {
-      
+
       ob_clean();
-      
+
       $csv = array();
-      
+
       $_POST['language_codes'] = array_filter($_POST['language_codes']);
-      
+
       $translations_query = database::query(
         "select * from ". DB_TABLE_TRANSLATIONS ."
         order by date_created asc;"
       );
-      
+
       while ($translation = database::fetch($translations_query)) {
-      
+
         $row = array('code' => $translation['code']);
         foreach ($_POST['language_codes'] as $language_code) {
           $row[$language_code] = $translation['text_'.$language_code];
         }
-        
+
         $csv[] = $row;
       }
-      
+
       if ($_POST['output'] == 'screen') {
         header('Content-type: text/plain; charset='. $_POST['charset']);
       } else {
         header('Content-type: application/csv; charset='. $_POST['charset']);
         header('Content-Disposition: attachment; filename=translations-'. implode('-', $_POST['language_codes']) .'.csv');
       }
-      
+
       switch($_POST['eol']) {
         case 'Linux':
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
@@ -127,7 +127,7 @@
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
           break;
       }
-      
+
       exit;
     }
   }

@@ -1,5 +1,5 @@
 <?php
-  
+
   if (!empty($_GET['customer_id'])) {
     $customer = new ctrl_customer($_GET['customer_id']);
   } else {
@@ -11,15 +11,15 @@
         $_POST[$key] = $value;
       }
     }
-  
+
   breadcrumbs::add(!empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer'));
-  
+
   if (isset($_POST['save'])) {
 
     if (empty(notices::$data['errors'])) {
-      
+
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
-      
+
       $fields = array(
         'code',
         'status',
@@ -39,30 +39,30 @@
         'mobile',
         'newsletter',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
-      
+
       $customer->save();
-      
+
       if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
       exit;
     }
   }
-  
+
   if (isset($_POST['delete'])) {
 
     $customer->delete();
-    
+
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
     exit;
   }
-  
+
   if (!empty($customer->data['id'])) {
     $order_statuses = array();
     $orders_status_query = database::query(
@@ -71,7 +71,7 @@
     while ($order_status = database::fetch($orders_status_query)) {
       $order_statuses[] = (int)$order_status['id'];
     }
-    
+
     $orders_query = database::query(
       "select count(o.id) as total_count, sum(oi.total_sales) as total_sales
       from ". DB_TABLE_ORDERS ." o
@@ -84,7 +84,7 @@
     );
     $orders = database::fetch($orders_query);
   }
- 
+
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer'); ?></h1>
 

@@ -21,9 +21,9 @@
   );
 
   if (database::num_rows($pages_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($pages_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($page = database::fetch($pages_query)) {
 ?>
@@ -62,6 +62,6 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
+
   echo functions::draw_pagination(ceil(database::num_rows($pages_query)/settings::get('data_table_rows_per_page')));
 ?>

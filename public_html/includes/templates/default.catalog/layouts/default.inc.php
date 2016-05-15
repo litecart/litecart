@@ -49,51 +49,51 @@
 <div id="header-wrapper" class="shadow">
   <div style="padding: 0px 10px;">
     <header id="header" class="twelve-eighty">
-    
+
       <div id="logotype-wrapper">
         <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 220px; max-height: 50px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
       </div>
-      
+
       <div id="region-wrapper">
         <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
       </div>
-      
+
       <?php if (!settings::get('catalog_only_mode')) { ?>
       <div id="cart-wrapper">
         <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
       </div>
       <?php } ?>
-      
+
     </header>
   </div>
 </div>
 
 <div id="page-wrapper">
   <div id="page">
-    
+
     <div id="site-menu-wrapper">
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
     </div>
-    
+
     <div id="main-wrapper" class="twelve-eighty">
       <div id="main">
-      
+
         <div class="top">
           <!--snippet:notices-->
           <!--snippet:top-->
         </div>
-        
+
         <div class="middle">
-          
+
           <div class="left">
             <!--snippet:column_left-->
           </div>
-          
+
           <div class="content">
             <!--snippet:content-->
           </div>
         </div>
-        
+
         <div class="bottom">
           <!--snippet:bottom-->
         </div>
@@ -118,13 +118,13 @@
       $('#scroll-up').fadeOut();
     }
   });
-  
+
   $('#scroll-up').click(function(){
     $("html, body").animate({scrollTop: 0}, 1000, 'swing');
     return false;
   });
 </script>
-  
+
 <!--snippet:foot_tags-->
 </body>
 </html>

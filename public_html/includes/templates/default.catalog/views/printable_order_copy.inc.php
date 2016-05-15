@@ -1,5 +1,5 @@
 <div id="page" style="width: 640px; margin: 0px auto;">
-  
+
   <header id="header" style="margin-bottom: 10px;">
     <table cellspacing="0" cellpadding="0" style="width: 100%;">
       <tr>
@@ -48,7 +48,7 @@
         <td style="padding: 5px 10px;"></td>
       </tr>
     </table>
-    
+
     <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
       <tr style="font-weight: bold; background-color: #f0f0f0;">
         <th style="padding: 10px 10px 10px 20px; border-bottom: 1px solid #ccc; text-align: center; width: 30px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
@@ -91,7 +91,7 @@
       </tr>
       <?php } ?>
     </table>
-    
+
     <table id="order-total" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding-right: 10px; border: none;">
       <?php foreach ($order['order_total'] as $ot_row) { ?>
       <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
@@ -106,20 +106,20 @@
       </tr>
       <?php } ?>
       <?php } ?>
-      
+
       <?php if (!empty($order['tax_total'])) { ?>
       <tr>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?></td>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
-      
+
       <tr>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?></strong></td>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><strong><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></strong></td>
       </tr>
     </table>
-      
+
 <?php
   if (!empty($order['comments'])) {
     $has_comments = false;
@@ -163,7 +163,7 @@
             <?php echo settings::get('store_phone'); ?><br />
         </td>
         <?php } ?>
-        <td style="vertical-align: top;">     
+        <td style="vertical-align: top;">
           <strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
             <?php echo settings::get('store_email'); ?>
         </td>

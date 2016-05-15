@@ -8,26 +8,26 @@
 
 <?php
   if (!empty($_POST['scan'])) {
-    
+
     echo '<hr />';
-    
+
     $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-    
+
     $found_files = 0;
     $found_translations = 0;
     $new_translations = 0;
     $updated_translations = 0;
     $translation_keys = array();
     $deleted_translations = 0;
-    
+
     foreach ($iterator as $file) {
       if (pathinfo($file, PATHINFO_EXTENSION) != 'php') continue;
       //if (strpos(pathinfo($file, PATHINFO_FILENAME), 'vq2') !== false) continue;
-      
+
       $found_files++;
       $contents = file_get_contents($file);
-      
+
       $regexp = array(
         '(?:language->|language::)translate\((?:(?!\$)',
         '(?:(__CLASS__)?\.)?',
@@ -40,7 +40,7 @@
 
       preg_match_all($regexp, $contents, $matches);
       $translations = array();
-      
+
       if (!empty($matches)) {
         for ($i=0; $i<count($matches[1]); $i++) {
           if ($matches[1][$i]) {
@@ -52,7 +52,7 @@
           $translation_keys[] = $key;
         }
       }
-      
+
       foreach ($translations as $code => $translation) {
         $found_translations++;
         $translations_query = database::query(
@@ -82,8 +82,8 @@
         }
       }
     }
-    
-    
+
+
     if (!empty($_POST['clean'])) {
       $settings_groups_query = database::query(
         "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
@@ -92,7 +92,7 @@
         $translation_keys[] = 'settings_group:title_'.$group['key'];
         $translation_keys[] = 'settings_group:title_'.$group['key'];
       }
-      
+
       $settings_query = database::query(
         "select `key` from ". DB_TABLE_SETTINGS ."
         where setting_group_key != '';"
@@ -101,7 +101,7 @@
         $translation_keys[] = 'settings_key:title_'.$setting['key'];
         $translation_keys[] = 'settings_key:description_'.$setting['key'];
       }
-      
+
       $translations_query = database::query(
         "select code from ". DB_TABLE_TRANSLATIONS .";"
       );
@@ -117,13 +117,13 @@
         }
       }
     }
-    
+
     cache::clear_cache('translations');
-    
+
     echo '<p>'. sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found_translations, $found_files) .'</p>';
     echo '<p>'. sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations) .'</p>';
     echo '<p>'. sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated_translations) .'</p>';
     echo '<p>'. sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) .'</p>';
   }
-  
+
 ?>

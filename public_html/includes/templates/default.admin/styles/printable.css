@@ -16,14 +16,14 @@
     zoom: 100%;
     padding: 0px;
   }
-  
+
   html, body {
     width: 100%;
     height: 100%;
     margin: 0px;
     padding: 0px;
   }
-  
+
   body {
     font-size: 9pt;
     font-family: Arial, Helvetica,sans-serif;
@@ -31,30 +31,30 @@
     margin: 0px;
     padding: 0px;
   }
-  
+
   #page {
     min-height: 100%;
     position: relative;
     page-break-after: always;
   }
-  
+
   h1 {
     margin-top: 0px;
   }
-  
+
   a:link, a:visited, a:hover, a:active {
     color: #000;
   }
-  
+
   .page-break  {
-    page-break-before: always; 
+    page-break-before: always;
   }
 }
 
 @media screen {
   #header {
   }
-  
+
   body {
     margin: 0px auto;
     max-width: 640px;

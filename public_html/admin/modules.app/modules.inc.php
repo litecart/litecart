@@ -90,7 +90,7 @@
 <?php
     }
   }
-    
+
   if (!empty($files)) foreach ($files as $file) {
     $module_id = substr(basename($file), 0, -8);
     if (!in_array($module_id, $installed_modules)) {

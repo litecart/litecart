@@ -37,7 +37,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/optionsTutorial.txt',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jqplot/usage.txt',
   );
-  
+
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
       die('<span class="error">[Error]</span></p>');

@@ -1,7 +1,7 @@
 <?php
 
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['manufacturers'])) {
       foreach ($_POST['manufacturers'] as $key => $value) $_POST['manufacturers'][$key] = database::input($value);
       database::query(
@@ -10,11 +10,11 @@
         where id in ('". implode("', '", $_POST['manufacturers']) ."');"
       );
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
-  
+
 ?>
 
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc' => 'edit_manufacturer')), language::translate('title_add_new_manufacturer', 'Add New Manufacturer'), '', 'add'); ?></div>
@@ -34,7 +34,7 @@
       "select * from ". DB_TABLE_MANUFACTURERS ."
       order by name asc;"
     );
-    
+
     if (database::num_rows($manufacturers_query) > 0) {
       while ($manufacturer = database::fetch($manufacturers_query)) {
         $num_active = database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where status and manufacturer_id = ". (int)$manufacturer['id'] .";"));

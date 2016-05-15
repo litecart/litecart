@@ -12,7 +12,7 @@
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_add_custom_item', 'post'); ?>
-  
+
   <table>
     <tr>
       <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong></td>
@@ -47,7 +47,7 @@
 <script>
   $("button[name='add']").click(function(e){
     e.preventDefault();
-    
+
     var item = {
       id: '',
       product_id: $("input[name='product_id']").val(),
@@ -61,7 +61,7 @@
       price: $("input[name='price']").val(),
       tax: $("input[name='tax']").val()
     };
-    
+
     parent.<?php echo preg_replace('#([^a-zA-Z_])#', '', $_GET['return_method']); ?>(item);
     parent.$.fancybox.close();
   });

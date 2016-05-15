@@ -11,13 +11,13 @@
       where `key` = '". database::input($_POST['key']) ."'
       limit 1;"
     );
-    
+
     notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-    
+
     header('Location: '. document::link('', array(), true, array('action')));
     exit;
   }
-  
+
   $settings_groups_query = database::query(
     "select * from ". DB_TABLE_SETTINGS_GROUPS ."
     order by priority, `key`;"
@@ -44,12 +44,12 @@
   );
 
   if (database::num_rows($settings_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($settings_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($setting = database::fetch($settings_query)) {
-    
+
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
   <tr class="row">
@@ -74,7 +74,7 @@
   </tr>
 <?php
     }
-    
+
     // Escape if enough page items
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
@@ -89,7 +89,7 @@
 </table>
 <?php
   echo functions::form_draw_form_end();
-  
+
 // Display page links
   echo functions::draw_pagination(ceil(database::num_rows($settings_query)/settings::get('data_table_rows_per_page')));
 ?>

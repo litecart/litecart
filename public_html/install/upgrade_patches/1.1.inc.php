@@ -9,7 +9,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'payment.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'shipping.inc.php',
   );
-  
+
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
       die('<span class="error">[Error]</span></p>');

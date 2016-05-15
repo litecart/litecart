@@ -2,9 +2,9 @@
   if (!isset($_GET['query'])) $_GET['query'] = '';
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['languages'])) $_GET['languages'] = array_keys(language::$languages);
-  
+
   if (isset($_POST['save']) && !empty($_POST['translations'])) {
-    
+
     foreach ($_POST['translations'] as $translation) {
       $sql_update_fields = '';
       foreach ($_GET['languages'] as $language_code) {
@@ -20,30 +20,30 @@
         limit 1;"
       );
     }
-    
+
     cache::clear_cache('translations');
-    
+
     notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-    
+
     header('Location: '. document::link('', array(), true));
     exit;
   }
-  
+
   if (isset($_POST['delete']) && !empty($_POST['translation_id'])) {
     database::query(
       "delete from ". DB_TABLE_TRANSLATIONS ."
       where id = '". database::input($_POST['translation_id']) ."'
       limit 1;"
     );
-    
+
     cache::clear_cache('translations');
-    
+
     notices::add('success', language::translate('success_translated_deleted', 'Translation was successfully deleted'));
-    
+
     header('Location: '. document::link('', array(), true));
     exit;
   }
-  
+
   $languages_query = database::query(
     "select code from ". DB_TABLE_LANGUAGES ."
     order by priority;"
@@ -72,8 +72,8 @@ ul.filter li {
   <?php echo language::translate('title_find', 'Find'); ?>
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword') .'"'); ?>
   </li>
-  
-  <li><?php echo language::translate('text_in', 'in'); ?> 
+
+  <li><?php echo language::translate('text_in', 'in'); ?>
 <?php
   $pages_query = database::query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
   $pages = array();
@@ -84,7 +84,7 @@ ul.filter li {
     }
   }
   function custom_sort_pages($a, $b) {
-    
+
     if (strpos($a, '/') && !strpos($b, '/')) {
       return -1;
     } else if (!strpos($a, '/') && strpos($b, '/')) {
@@ -94,26 +94,26 @@ ul.filter li {
     }
   }
   usort($pages, 'custom_sort_pages');
-  
+
   $options = array(array('-- '. language::translate('title_all_scripts', 'All Scripts') .' --', ''));
   foreach ($pages as $page) {
     $options[] = array(str_replace("'", '', $page));
   }
-  
+
   echo functions::form_draw_select_field('script', $options, isset($_GET['script']) ? $_GET['script'] : false, false, 'style="width: 250px;"');
 ?>
   </li>
-  
+
   <li>
     <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br />
     <label><?php echo functions::form_draw_checkbox('untranslated', 'true'); ?> <?php echo language::translate('text_only_untranslated', 'Only untranslated'); ?></label>
   </li>
-  
+
   <li>
     <?php echo language::translate('title_languages', 'Languages'); ?>:<br />
     <?php foreach ($language_codes as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
   </li>
-  
+
   <li>
     <?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?>
   </li>
@@ -130,7 +130,7 @@ ul.filter li {
       <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. (!empty(language::$languages[$language_code]['name']) ? language::$languages[$language_code]['name'] : $language_code) .'</th>'; ?>
       <th>&nbsp;</th>
     </tr>
-<?php 
+<?php
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
     where code != ''
@@ -142,12 +142,12 @@ ul.filter li {
   );
 
   if (database::num_rows($translations_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($row=database::fetch($translations_query)) {
-      
+
       $row['pages'] = rtrim($row['pages'], ',');
 ?>
     <tr class="row">
@@ -158,7 +158,7 @@ ul.filter li {
       <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="display: block; max-width: 250px;" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
       <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
     </tr>
-<?php      
+<?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
       }
     } else {

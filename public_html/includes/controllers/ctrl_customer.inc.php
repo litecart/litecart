@@ -2,7 +2,7 @@
 
   class ctrl_customer {
     public $data = array();
-    
+
     public function __construct($customer_id=null) {
       if ($customer_id !== null) {
         $this->load((int)$customer_id);
@@ -10,11 +10,11 @@
         $this->reset();
       }
     }
-    
+
     public function reset() {
-      
+
       $this->data = array();
-      
+
       $fields_query = database::query(
         "show fields from ". DB_TABLE_CUSTOMERS .";"
       );
@@ -28,9 +28,9 @@
 
       $this->data['status'] = 1;
     }
-    
+
     public function load($customer_id) {
-    
+
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where id = '". database::input($customer_id) ."'
@@ -38,7 +38,7 @@
       );
       $customer = database::fetch($customer_query);
       if (empty($customer)) trigger_error('Could not find customer (ID: '. (int)$customer_id .') in database.', E_USER_ERROR);
-      
+
       $map = array(
         'id',
         'code',
@@ -63,7 +63,7 @@
       foreach ($map as $key) {
         $this->data[$key] = $customer[$key];
       }
-      
+
       $key_map = array(
         'shipping_company' => 'company',
         'shipping_firstname' => 'firstname',
@@ -79,9 +79,9 @@
         $this->data['shipping_address'][$tkey] = $customer[$skey];
       }
     }
-    
+
     public function save() {
-      
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_CUSTOMERS ."
@@ -89,7 +89,7 @@
           values ('". database::input($this->data['email']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
-        
+
         if (!empty($this->data['email'])) {
           database::query(
             "update ". DB_TABLE_ORDERS ."
@@ -98,7 +98,7 @@
           );
         }
       }
-      
+
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set
@@ -132,23 +132,23 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
-      
+
       $customer_modules = new mod_customer();
       $customer_modules->update($this->data);
-      
+
       cache::clear_cache('customers');
     }
-    
+
     public function set_password($password) {
-      
+
       if (empty($this->data['email'])) trigger_error('Cannot set password without an email address', E_USER_ERROR);
-      
+
       if (empty($this->data['id'])) {
         $this->save();
       }
-      
+
       $password_hash = functions::password_checksum($this->data['email'], $password, PASSWORD_SALT);
-      
+
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set
@@ -157,20 +157,20 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
-      
+
       $this->data['password'] = $password_hash;
     }
-    
+
     public function delete() {
-      
+
       database::query(
         "delete from ". DB_TABLE_CUSTOMERS ."
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
-      
+
       cache::clear_cache('customers');
-      
+
       $this->data['id'] = null;
     }
   }

@@ -11,7 +11,7 @@
       if (isset($GLOBALS[$key])) unset($GLOBALS[$key]);
     }
   }
-  
+
 // Fix Magic Quotes
   if (ini_get('magic_quotes_gpc')) {
     function clean($data) {
@@ -22,19 +22,19 @@
       } else {
         $data = stripslashes($data);
       }
-    
+
       return $data;
     }
-    
+
     $_GET = clean($_GET);
     $_POST = clean($_POST);
     $_REQUEST = clean($_REQUEST);
     $_COOKIE = clean($_COOKIE);
   }
-  
+
 // Fix Windows Paths
   $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
-  
+
 // Emulate http_response_code() as of PHP 5.4
   if (!function_exists('http_response_code')) {
     function http_response_code($code = null) {
@@ -79,18 +79,18 @@
           case 505: $text = 'HTTP Version not supported'; break;
           default: trigger_error('Unknown http status code "' . htmlentities($code) . '"', E_USER_WARNING); break;
         }
-        
+
         $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
         header($protocol . ' ' . $code . ' ' . $text, true, $code);
-        
+
       } else {
         $code = (isset($GLOBALS['http_response_code']) ? $GLOBALS['http_response_code'] : 200);
       }
-      
+
       return $code;
     }
   }
-  
+
 // Emulate array_column() as of PHP 5.5
   if (!function_exists('array_column')) {
     function array_column(array $array, $column_key, $index_key=null) {
@@ -112,7 +112,7 @@
       return $result;
     }
   }
-  
+
 // Emulate some $_SERVER variables
   if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
   if (empty($_SERVER['HTTP_HTTPS'])) $_SERVER['HTTP_HTTPS'] = 'off';

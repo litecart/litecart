@@ -1,23 +1,23 @@
 <?php
-  
+
 // Load template settings structure
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
-  
+
 // Get settings from database
   $settings = unserialize(settings::get('store_template_catalog_settings'));
-  
+
 // Build template settings
   foreach (array_keys($template_config) as $i) {
     $template_config[$i]['value'] = isset($settings[$template_config[$i]['key']]) ? $settings[$template_config[$i]['key']] : $template_config[$i]['default_value'];
   }
-  
+
   if (!empty($_POST['save'])) {
-    
+
     $new_settings = array();
     foreach (array_keys($template_config) as $i) {
       $new_settings[$template_config[$i]['key']] = isset($_POST[$template_config[$i]['key']]) ? $_POST[$template_config[$i]['key']] : $template_config[$i]['value'];
     }
-    
+
     database::query(
       "update ". DB_TABLE_SETTINGS ."
       set
@@ -26,13 +26,13 @@
       where `key` = '". database::input('store_template_catalog_settings') ."'
       limit 1;"
     );
-    
+
     notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-    
+
     header('Location: '. document::link('', array(), true, array('action')));
     exit;
   }
-  
+
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?></h1>
 
@@ -45,9 +45,9 @@
   </tr>
 <?php
   if (!empty($template_config)) {
-    
+
     foreach ($template_config as $setting) {
-      
+
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
   <tr class="row">

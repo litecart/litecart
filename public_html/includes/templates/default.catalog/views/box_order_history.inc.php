@@ -23,6 +23,6 @@
       </tr>
     <?php } ?>
     </table>
-    <?php echo $pagination; ?>    
+    <?php echo $pagination; ?>
   </div>
 </div>

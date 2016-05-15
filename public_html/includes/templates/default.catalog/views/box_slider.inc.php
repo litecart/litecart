@@ -9,7 +9,7 @@
   z-index: 99;
   padding: 0px 20px;
   margin-top: -1em;
-  
+
   font-size: 2em;
   color: #000 !important;
   text-shadow: 1px 1px #fff;

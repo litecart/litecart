@@ -27,9 +27,9 @@
   );
 
   if (database::num_rows($tax_rates_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($tax_rates_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($tax_rate = database::fetch($tax_rates_query)) {
 ?>
@@ -72,7 +72,7 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
+
 // Display page links
   echo functions::draw_pagination(ceil(database::num_rows($tax_rates_query)/settings::get('data_table_rows_per_page')));
 ?>

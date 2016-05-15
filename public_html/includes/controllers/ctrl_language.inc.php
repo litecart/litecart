@@ -2,7 +2,7 @@
 
   class ctrl_language {
     public $data = array();
-    
+
     public function __construct($language_code=null) {
       if ($language_code !== null) {
         $this->load($language_code);
@@ -10,11 +10,11 @@
         $this->reset();
       }
     }
-    
+
     public function reset() {
-      
+
       $this->data = array();
-      
+
       $fields_query = database::query(
         "show fields from ". DB_TABLE_LANGUAGES .";"
       );
@@ -22,7 +22,7 @@
         $this->data[$field['Field']] = '';
       }
     }
-    
+
     public function load($language_code) {
       $language_query = database::query(
         "select * from ". DB_TABLE_LANGUAGES ."
@@ -32,14 +32,14 @@
       $this->data = database::fetch($language_query);
       if (empty($this->data)) trigger_error('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.', E_USER_ERROR);
     }
-    
+
     public function save() {
-      
+
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_language_code')) {
         trigger_error('You cannot disable the default language.', E_USER_ERROR);
         return;
       }
-      
+
       if (!empty($this->data['id'])) {
         $previous_language_query = database::query(
           "select * from ". DB_TABLE_LANGUAGES ."
@@ -83,7 +83,7 @@
           }
         }
       }
-      
+
       if (empty($this->data['id'])) {
         $languages_query = database::query(
           "select id from ". DB_TABLE_LANGUAGES ."
@@ -102,7 +102,7 @@
         );
         $this->data['id'] = database::insert_id();
       }
-      
+
       $translations_query = database::query(
         "show fields from ". DB_TABLE_TRANSLATIONS ."
         where `Field` = 'text_". database::input($this->data['code']) ."';"
@@ -113,7 +113,7 @@
           add `text_". database::input($this->data['code']) ."` text not null after text_en;"
         );
       }
-      
+
       database::query(
         "update ". DB_TABLE_LANGUAGES ."
         set
@@ -137,28 +137,28 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
-      
+
       cache::clear_cache('languages');
     }
-    
+
     public function delete() {
-      
+
       if ($this->data['code'] == 'en') {
         trigger_error('English is the PHP framework language and must not be deleted, but it can be disabled.', E_USER_ERROR);
         return;
       }
-      
+
       if ($this->data['code'] == settings::get('default_language_code')) {
         trigger_error('Cannot delete the store default language', E_USER_ERROR);
         return;
       }
-      
+
       database::query(
         "delete from ". DB_TABLE_LANGUAGES ."
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
-      
+
       $translations_query = database::query(
         "show fields from ". DB_TABLE_TRANSLATIONS ."
         where `Field` = 'text_". database::input($this->data['code']) ."';"
@@ -169,7 +169,7 @@
           drop `text_". database::input($this->data['code']) ."`;"
         );
       }
-      
+
       $info_tables = array(
         DB_TABLE_CATEGORIES_INFO,
         DB_TABLE_DELIVERY_STATUSES_INFO,
@@ -192,7 +192,7 @@
       }
 
       cache::clear_cache('languages');
-      
+
       $this->data['id'] = null;
     }
   }

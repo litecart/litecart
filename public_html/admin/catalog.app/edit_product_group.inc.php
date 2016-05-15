@@ -5,46 +5,46 @@
   } else {
     $product_group = new ctrl_product_group();
   }
-  
+
   if (empty($_POST)) {
     foreach ($product_group->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'));
-  
+
   if (!empty($_POST['save'])) {
-    
+
     if (empty($_POST['values'])) $_POST['values'] = array();
-    
+
     if (empty($errors)) {
       $fields = array(
         'name',
         'values',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $product_group->data[$field] = $_POST[$field];
       }
-      
+
       $product_group->save();
- 
+
       header('Location: '. document::link('', array('doc' => 'product_groups'), array('app')));
       exit;
     }
   }
-  
+
   if (!empty($_POST['delete'])) {
-    
+
     if (empty($errors)) {
       $product_group->delete();
- 
+
       header('Location: '. document::link('', array('doc' => 'product_groups'), array('app')));
       exit;
     }
   }
-  
+
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'); ?></h1>
 
@@ -70,7 +70,7 @@
       </tr>
 <?php
     if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) {
-      
+
       $products_query = database::query(
         "select id from ". DB_TABLE_PRODUCTS ."
         where product_groups like '%". (int)$product_group->data['id'] ."-". (int)$group_value['id'] ."%';"
@@ -97,7 +97,7 @@
   ?>
       <tr>
         <td colspan="4"><a id="add-group-value" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group', 'Add Group Value'); ?></a></td>
-      </tr>  
+      </tr>
     </table>
     <script>
       var new_value_index = 1;
@@ -122,7 +122,7 @@
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('tr').before(output);
       });
-      
+
       $("body").on("click", "#remove-group-value", function(event) {
         event.preventDefault();
         $(this).closest('tr').remove();

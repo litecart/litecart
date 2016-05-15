@@ -1,5 +1,5 @@
 <?php
-  
+
   $deleted_files = array(
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/index.html',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax/cart.json.php',
@@ -64,16 +64,16 @@
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'search.php',
     FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'select_region.php',
   );
-  
+
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
       die('<span class="error">[Error]</span></p>');
     }
   }
-  
+
   file_rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'ajax.deleteme');
   file_rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'feeds.deleteme');
-  
+
   $modified_files = array(
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htaccess',
@@ -157,7 +157,7 @@
       'replace' => "",
     ),
   );
-  
+
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
       die('<span class="error">[Error]</span></p>');

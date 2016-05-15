@@ -1,27 +1,27 @@
 <?php
-  
+
   if (!empty($_GET['order_status_id'])) {
     $order_status = new ctrl_order_status($_GET['order_status_id']);
   } else {
     $order_status = new ctrl_order_status();
   }
-  
+
   if (empty($_POST)) {
     foreach ($order_status->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'));
-  
+
   if (isset($_POST['save'])) {
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    
+
     if (empty($_POST['notify'])) $_POST['notify'] = 0;
     if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
     if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
-    
+
     if (empty(notices::$data['errors'])) {
 
       $fields = array(
@@ -35,23 +35,23 @@
         'description',
         'email_message',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $order_status->data[$field] = $_POST[$field];
       }
-      
+
       $order_status->save();
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
       exit;
     }
   }
-  
+
   if (isset($_POST['delete'])) {
 
     $order_status->delete();
-    
+
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
     exit;
@@ -125,7 +125,7 @@
       </td>
     </tr>
   </table>
-  
+
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order_status->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>

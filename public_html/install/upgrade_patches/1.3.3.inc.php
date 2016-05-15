@@ -37,7 +37,7 @@
                  . "    ini_set('display_errors', 'On');" . PHP_EOL,
     ),
   );
-  
+
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
       die('<span class="error">[Error]</span></p>');

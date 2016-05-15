@@ -1,14 +1,14 @@
-<?php 
+<?php
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) : date('Y-m-d H:i:s');
-  
+
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
-  
+
   $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
   $date_first_order = $date_first_order['min(date_created)'];
   if (empty($date_first_order)) $date_first_order = date('Y-m-d 00:00:00');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
-  
+
   if ($_GET['date_from'] > date('Y-m-d H:i:s')) $_GET['date_from'] = date('Y-m-d H:i:s');
   if ($_GET['date_to'] > date('Y-m-d H:i:s')) $_GET['date_to'] = date('Y-m-d H:i:s');
 ?>
@@ -52,12 +52,12 @@
   while ($order_status = database::fetch($orders_status_query)) {
     $order_statuses[] = (int)$order_status['id'];
   }
-  
+
   $timestamp_from = mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), 1, date('Y', strtotime($_GET['date_from'])));
   $timestamp_to = mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('t', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])));
-  
+
   for ($timestamp = mktime(0, 0, 0, date('m', strtotime($_GET['date_to'])), date(1, strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to']))); $timestamp >= $timestamp_from; $timestamp = strtotime('-1 month', $timestamp)) {
-  
+
     $orders_query = database::query(
       "select
         sum(o.payment_due) - sum(o.tax_total) as total_sales,
@@ -82,7 +82,7 @@
       and o.date_created >= '". date('Y-m-1 00:00:00', $timestamp) ."'
       and o.date_created <= '". date('Y-m-t 23:59:59', $timestamp) ."';"
     );
-    
+
     $orders = database::fetch($orders_query);
 ?>
   <tr class="row">
@@ -100,7 +100,7 @@
       else $total[$key] += $orders[$key];
     }
   }
-  
+
   if (!empty($total)) {
 ?>
   <tr class="footer">

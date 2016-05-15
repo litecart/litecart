@@ -1,30 +1,30 @@
 <?php
-  
+
   if (!empty($_GET['category_id'])) {
     $category = new ctrl_category($_GET['category_id']);
   } else {
     $category = new ctrl_category();
   }
-  
+
   if (empty($_POST)) {
     foreach ($category->data as $key => $value) {
       $_POST[$key] = $value;
     }
-    
+
     if (!empty($_GET['parent_id'])) $_POST['parent_id'] = $_GET['parent_id'];
   }
-  
+
   breadcrumbs::add(!empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category'));
-  
+
   // Save data to database
   if (isset($_POST['save'])) {
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) notices::add('errors', language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
     if (!empty($category->data['id']) && $category->data['parent_id'] == $category->data['id']) notices::add('errors', language::translate('error_cannot_mount_category_to_self', 'Cannot mount category to itself'));
-    
+
     if (empty(notices::$data['errors'])) {
-    
+
       $fields = array(
         'status',
         'parent_id',
@@ -42,17 +42,17 @@
         'meta_description',
         'priority',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $category->data[$field] = $_POST[$field];
       }
-      
+
       $category->save();
-      
+
       if (is_uploaded_file($_FILES['image']['tmp_name'])) {
         $category->save_image($_FILES['image']['tmp_name']);
       }
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
       exit;
@@ -61,14 +61,14 @@
 
   // Delete from database
   if (isset($_POST['delete']) && $category) {
-    
+
     $category->delete();
-    
+
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
     exit();
   }
-  
+
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
 
 ?>
@@ -80,14 +80,14 @@
   }
 ?>
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
-  
+
   <div class="tabs">
-  
+
     <ul class="index">
       <li><a href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
       <li><a href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
     </ul>
-    
+
     <div class="content">
       <div id="tab-general">
         <table>
@@ -167,7 +167,7 @@ foreach (array_keys(language::$languages) as $language_code) {
           <?php } ?>
         </table>
       </div>
-    
+
       <div id="tab-information">
         <table>
           <tr>
@@ -233,7 +233,7 @@ foreach (array_keys(language::$languages) as $language_code) {
       </div>
     </div>
   </div>
-  
+
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($category->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>

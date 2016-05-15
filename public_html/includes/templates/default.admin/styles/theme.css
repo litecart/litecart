@@ -15,9 +15,9 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
 
 #sidebar {
   width: 230px;
-  
+
   background: #f5f5f5;
-  
+
   box-shadow: 3px 0 10px 0 #aaa inset;
 }
 #sidebar .logotype {
@@ -65,9 +65,9 @@ html, body, #body-wrapper, #body, #content-wrapper, #content-wrapper > table {
 
 #box-apps-menu {
   margin: 0 5px;
-  
+
   padding: 0;
-  
+
   border-top: 1px #dfdfdf solid;
 }
 #box-apps-menu li {

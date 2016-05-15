@@ -36,13 +36,13 @@
   <h2><?php echo language::translate('title_customers', 'Customers'); ?></h2>
 <?php
   $output = '';
-  
+
     switch($_GET['template']) {
       case 'csv':
         $output .= 'First Name;Last Name;Email Address' . PHP_EOL;
         break;
     }
-  
+
   $customers_query = database::query(
     "select firstname, lastname, email from ". DB_TABLE_CUSTOMERS ."
     where newsletter
@@ -62,7 +62,7 @@
         break;
     }
   }
-  
+
   echo functions::form_draw_textarea('subscribers', $output, 'style="width: 98%; height: 400px;"');
 ?>
 </div>
@@ -71,13 +71,13 @@
   <h2><?php echo language::translate('title_guests', 'Guests'); ?></h2>
 <?php
   $output = '';
-  
+
     switch($_GET['template']) {
       case 'csv':
         $output .= 'First Name;Last Name;Email Address' . PHP_EOL;
         break;
     }
-  
+
   $customers_query = database::query(
     "select customer_firstname as firstname, customer_lastname as lastname, customer_email as email from ". DB_TABLE_ORDERS ."
     where customer_id = 0
@@ -98,7 +98,7 @@
         break;
     }
   }
-  
+
   echo functions::form_draw_textarea('subscribers', $output, 'style="width: 98%; height: 400px;"');
 ?>
 </div>

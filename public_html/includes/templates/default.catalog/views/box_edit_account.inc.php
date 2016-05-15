@@ -64,7 +64,7 @@
       </table>
     <?php echo functions::form_draw_form_end(); ?>
   </div>
-  
+
   <script>
     $("#box-checkout-account input, #box-checkout-account select").change(function() {
       if ($(this).val() == '') return;
@@ -93,7 +93,7 @@
         }
       });
     });
-      
+
     $("form[name='customer_form'] input, form[name='customer_form'] select").change(function() {
       if ($(this).val() == '') return;
       $('body').css('cursor', 'wait');
@@ -122,14 +122,14 @@
         }
       });
     });
-    
+
     $("select[name='country_code']").change(function(){
       if ($(this).find('option:selected').data('tax-id-format') != '') {
         $(this).closest('table').find("input[name='tax_id']").attr('pattern', $(this).find('option:selected').data('tax-id-format'));
       } else {
         $(this).closest('table').find("input[name='tax_id']").removeAttr('pattern');
       }
-      
+
       if ($(this).find('option:selected').data('postcode-format') != '') {
         $(this).closest('table').find("input[name='postcode']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
         $(this).closest('table').find("input[name='postcode']").attr('required', 'required');
@@ -139,13 +139,13 @@
         $(this).closest('table').find("input[name='postcode']").removeAttr('required');
         $(this).closest('table').find("input[name='postcode']").closest('td').find('.required').hide();
       }
-      
+
       if ($(this).find('option:selected').data('phone-code') != '') {
         $(this).closest('table').find("input[name='phone']").attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
       } else {
         $(this).closest('table').find("input[name='phone']").removeAttr('placeholder');
       }
-      
+
       $('body').css('cursor', 'wait');
       $.ajax({
         url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -174,13 +174,13 @@
         }
       });
     });
-    
+
     if ($("select[name='country_code']").find('option:selected').data('tax-id-format') != '') {
       $("select[name='country_code']").closest('table').find("input[name='tax_id']").attr('pattern', $("select[name='country_code']").find('option:selected').data('tax-id-format'));
     } else {
       $("select[name='country_code']").closest('table').find("input[name='tax_id']").removeAttr('pattern');
     }
-    
+
     if ($("select[name='country_code']").find('option:selected').data('postcode-format') != '') {
       $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('pattern', $("select[name='country_code']").find('option:selected').data('postcode-format'));
       $("select[name='country_code']").closest('table').find("input[name='postcode']").attr('required', 'required');
@@ -190,19 +190,19 @@
       $("select[name='country_code']").closest('table').find("input[name='postcode']").removeAttr('required');
       $("select[name='country_code']").closest('table').find("input[name='postcode']").closest('td').find('.required').hide();
     }
-    
+
     if ($("select[name='country_code']").find('option:selected').data('phone-code') != '') {
       $("select[name='country_code']").closest('table').find("input[name='phone']").attr('placeholder', '+' + $("select[name='country_code']").find('option:selected').data('phone-code'));
     } else {
       $("select[name='country_code']").closest('table').find("input[name='phone']").removeAttr('placeholder');
     }
-    
+
     if ($("select[name='shipping_address[country_code]']").find('option:selected').data('postcode-format') != '') {
       $("select[name='shipping_address[country_code]']").closest('table').find("input[name='shipping_address[postcode]']").attr('pattern', $("select[name='shipping_address[country_code]']").find('option:selected').data('postcode-format'));
     } else {
       $("select[name='shipping_address[country_code]']").closest('table').find("input[name='shipping_address[postcode]']").removeAttr('pattern');
     }
-    
+
     if ($("select[name='zone_code'] option").length == 0) $("select[name='zone_code']").closest('td').css('opacity', 0.15);
   </script>
 </div>

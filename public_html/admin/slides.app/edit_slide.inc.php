@@ -1,27 +1,27 @@
 <?php
-  
+
   if (!empty($_GET['slide_id'])) {
     $slide = new ctrl_slide($_GET['slide_id']);
   } else {
     $slide = new ctrl_slide();
   }
-  
+
   if (empty($_POST)) {
     foreach ($slide->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
-  
+
   if (!empty($_POST['save'])) {
-    
+
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    
+
     if (empty(notices::$data['errors'])) {
-      
+
       if (empty($_POST['stable'])) $_POST['stable'] = 0;
-      
+
       $fields = array(
         'status',
         'language_code',
@@ -32,25 +32,25 @@
         'date_valid_from',
         'date_valid_to',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $slide->data[$field] = $_POST[$field];
       }
-      
+
       if (is_uploaded_file($_FILES['image']['tmp_name'])) $slide->save_image($_FILES['image']['tmp_name']);
-      
+
       $slide->save();
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
       header('Location: '. document::link('', array('doc' => 'slides'), true, array('action', 'slide_id')));
       exit;
     }
   }
-  
+
   if (!empty($_POST['delete'])) {
-    
+
     $slide->delete();
-    
+
     notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
     header('Location: '. document::link('', array('doc' => 'slides'), true, array('action', 'slide_id')));
     exit;
@@ -111,7 +111,7 @@
       </td>
     </tr>
   </table>
-  
+
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($slide->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>

@@ -10,7 +10,7 @@
         <th class="tax" style="text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_incl_tax', 'Incl. Tax') : language::translate('title_excl_tax', 'Excl. Tax'); ?></th>
         <th class="sum" style="text-align: right;"><?php echo language::translate('title_total', 'Total'); ?></th>
       </tr>
-      
+
       <?php foreach ($items as $item) { ?>
       <tr>
         <td style="text-align: center;"><?php echo $item['quantity']; ?></td>
@@ -21,41 +21,41 @@
         <td class="sum" style="text-align: right;"><?php echo $item['sum']; ?></td>
       </tr>
       <?php } ?>
-      
+
       <tr>
         <td style="text-align: right;" colspan="6">&nbsp;</td>
       </tr>
-      
+
       <?php foreach ($order_total as $row) { ?>
       <tr>
         <td colspan="5" style="text-align: right;"><strong><?php echo $row['title']; ?>:</strong></td>
         <td style="text-align: right;"><?php echo $row['value']; ?></td>
       </tr>
       <?php } ?>
-      
+
       <tr>
         <td colspan="6">&nbsp;</td>
       </tr>
-      
+
       <?php if ($tax_total) { ?>
       <tr>
         <td colspan="5" style="text-align: right; color: #999999;"><?php echo $incl_excl_tax; ?>:</td>
         <td style="text-align: right; color: #999999;"><?php echo $tax_total; ?></td>
       </tr>
       <?php } ?>
-      
+
       <tr class="footer">
         <td colspan="5" style="text-align: right;"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
         <td style="text-align: right;"><strong><?php echo $payment_due; ?></strong></td>
       </tr>
     </table>
-    
+
     <?php echo functions::form_draw_form_begin('order_form', 'post', document::ilink('order_process'));  ?>
       <div class="comments">
         <strong><?php echo language::translate('title_comments', 'Comments'); ?></strong><br />
           <?php echo functions::form_draw_textarea('comments', true); ?>
       </div>
-      
+
       <div class="confirm">
         <?php if ($error) echo '<div class="warning">'. $error .'</div>' . PHP_EOL; ?>
 

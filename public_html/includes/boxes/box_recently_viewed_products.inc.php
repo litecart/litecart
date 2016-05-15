@@ -2,11 +2,11 @@
   if (empty(session::$data['recently_viewed_products'])) return;
 
   if (settings::get('box_recently_viewed_products_num_items') == 0) return;
-  
+
   $box_recently_viewed_products = new view();
-  
+
   $box_recently_viewed_products->snippets['products'] = array();
-  
+
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
 
   $count = 0;
@@ -22,6 +22,6 @@
       unset(session::$data['recently_viewed_products'][$key]);
     }
   }
-  
+
   echo $box_recently_viewed_products->stitch('views/box_recently_viewed_products');
 ?>

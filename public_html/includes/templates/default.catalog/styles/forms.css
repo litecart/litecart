@@ -12,15 +12,15 @@ input[type=color], input[type=date], input[type=datetime], input[type=datetime-l
 
   box-sizing: border-box;
   padding: 0.5em 0.5em;
-  
+
   border: 1px solid #d1d1d1;
   border-radius: 3px;
-  
+
   background-color: #fcfcfc;
-  
+
   font: normal 14px Roboto, Sans-serif;
   color: #000;
-  
+
   vertical-align: middle;
 }
 
@@ -114,34 +114,34 @@ option {
 
 button, a.button, span.button, .button-set {
   display: inline-block;
-  
+
   margin: 3px 1px;
-  
+
   box-sizing: border-box;
   padding: 0.5em 1em;
-  
+
   border: 1px solid #d1d1d1;
   border-radius: 3px;
-  
+
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ececec');
   background-image: -webkit-linear-gradient(top, #f9f9f9, #ececec);
   background-image: -moz-linear-gradient(top, #f9f9f9, #ececec);
   background-image: -ms-linear-gradient(top, #f9f9f9, #ececec);
   background-image: -o-linear-gradient(top, #f9f9f9, #ececec);
-  
+
   -webkit-box-shadow: 0px 1px 1px #ccc, inset 0px 0px 1px #fff;
   -moz-box-shadow: 0px 1px 1px #ccc, inset 0px 0px 1px #fff;
   box-shadow: inset 0px 1px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
-  
+
   color: #666;
   text-decoration: none;
   text-shadow: 0px 1px 1px white;
   font: 400 14px Roboto, Sans-serif;
-  
+
   white-space: nowrap;
-  
+
   cursor: pointer;
-  
+
   vertical-align: middle;
 }
 button::-moz-focus-inner {

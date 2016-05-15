@@ -9,18 +9,18 @@
     public $support_link = 'http://www.litecart.net';
     public $website = 'http://www.litecart.net';
     public $priority = 0;
-    
+
     public function __construct() {
     }
-    
+
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
-    
+
       if (empty($this->settings['status'])) return;
-      
+
       if (!empty($this->settings['geo_zone_id'])) {
         if (functions::reference_in_geo_zone($this->settings['geo_zone_id'], $customer['country_code'], $customer['zone_code']) != true) return;
       }
-      
+
       $method = array(
         'title' => language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
         'description' => '',
@@ -39,10 +39,10 @@
       );
       return $method;
     }
-    
+
     public function pre_check() {
     }
-    
+
     public function transfer() {
       return array(
         'action' => '',
@@ -50,7 +50,7 @@
         'fields' => '',
       );
     }
-    
+
     public function verify() {
       return array(
         'order_status_id' => $this->settings['order_status_id'],
@@ -58,10 +58,10 @@
         'errors' => '',
       );
     }
-    
+
     public function after_process() {
     }
-    
+
     function settings() {
       return array(
         array(
@@ -115,10 +115,10 @@
         ),
       );
     }
-    
+
     public function install() {}
-    
+
     public function uninstall() {}
   }
-    
+
 ?>

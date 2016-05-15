@@ -1,28 +1,28 @@
 <?php
-  
+
   if (!empty($_GET['tax_rate_id'])) {
     $tax_rate = new ctrl_tax_rate($_GET['tax_rate_id']);
   } else {
     $tax_rate = new ctrl_tax_rate();
   }
-  
+
   if (empty($_POST)) {
     foreach ($tax_rate->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'));
-  
+
   if (isset($_POST['save'])) {
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     if (empty($_POST['geo_zone_id'])) notices::add('errors', language::translate('error_must_select_geo_zone', 'You must select a geo zone'));
     if (empty($_POST['tax_class_id'])) notices::add('errors', language::translate('error_must_select_tax_class', 'You must select a tax class'));
     if (empty($_POST['rate'])) notices::add('errors', language::translate('error_must_enter_rate', 'You must enter a rate'));
-    
+
     if (empty(notices::$data['errors'])) {
-    
+
       $fields = array(
         'tax_class_id',
         'geo_zone_id',
@@ -34,23 +34,23 @@
         'tax_id_rule',
         'customer_type',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $tax_rate->data[$field] = $_POST[$field];
       }
-      
+
       $tax_rate->save();
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
       exit;
     }
   }
-  
+
   if (isset($_POST['delete'])) {
 
     $tax_rate->delete();
-    
+
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
     exit;
@@ -107,7 +107,7 @@
       </td>
     </tr>
   </table>
-          
+
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($tax_rate->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>

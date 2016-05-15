@@ -36,11 +36,11 @@
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jqplot/jquery.js',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jqplot/jquery.min.js',
   );
-  
+
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
       die('<span class="error">[Error]</span></p>');
     }
   }
-  
+
 ?>

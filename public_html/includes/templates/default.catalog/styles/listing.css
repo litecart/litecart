@@ -10,10 +10,10 @@ ul.listing-wrapper {
 ul.listing-wrapper > li.category {
   display: inline-block;
   float: left;
-  
+
   padding: 0px;
   margin: 5px;
-  
+
   background: rgb(255, 255, 255);
 }
 
@@ -50,7 +50,7 @@ ul.listing-wrapper > li.category {
 ul.listing-wrapper > li.category a.link {
   display: block;
   padding: 5px;
-  
+
   text-decoration: none;
   color: inherit;
 }
@@ -65,7 +65,7 @@ ul.listing-wrapper > li.category .image-wrapper img {
 
 ul.listing-wrapper > li.category .footer {
   display: block;
-  
+
   position: absolute;
   bottom: 0;
 
@@ -74,7 +74,7 @@ ul.listing-wrapper > li.category .footer {
 
   background: rgba(100, 100, 100, 0.5);
   color: #fff;
-  
+
   text-align: center;
 }
 ul.listing-wrapper > li.category .title {
@@ -85,12 +85,12 @@ ul.listing-wrapper > li.category .title {
 ul.listing-wrapper  > li.manufacturer {
   display: inline-block;
   float: left;
-  
+
   padding: 0px;
   margin: 5px;
-  
+
   background: rgb(255, 255, 255);
-  
+
   text-align: center;
 }
 
@@ -121,9 +121,9 @@ ul.listing-wrapper > li.manufacturer {
 
 ul.listing-wrapper > li.manufacturer a.link {
   display: block;
-  
+
   padding: 5px;
-  
+
   text-decoration: none;
   color: inherit;
 }
@@ -149,14 +149,14 @@ ul.listing-wrapper > li.product.column {
   position: relative;
   display: inline-block;
   float: left;
-  
+
   padding: 0px;
   margin: 5px;
 }
 ul.listing-wrapper > li.product.row {
   position: relative;
   display: block;
-  
+
   padding: 0px;
   margin: 10px 5px;
 }
@@ -188,29 +188,29 @@ ul.listing-wrapper > li.product.column {
 
 ul.listing-wrapper > li.product.column a.link {
   display: block;
-  
+
   margin: 0px;
   padding: 10px;
-  
+
   background: #fff;
 
   text-decoration: none;
   color: inherit;
-  
+
   text-align: left;
 }
 
 ul.listing-wrapper > li.product.row a.link {
   display: block;
-  
+
   margin: 0px;
   padding: 10px;
-  
+
   background: #fff;
 
   text-decoration: none;
   color: inherit;
-  
+
   text-align: left;
 }
 

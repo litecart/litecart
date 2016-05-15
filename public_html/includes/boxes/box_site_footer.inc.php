@@ -1,15 +1,15 @@
-<?php  
+<?php
   $box_site_footer_cache_id = cache::cache_id('box_site_footer', array('language', 'login', 'region'));
   if (cache::capture($box_site_footer_cache_id, 'file')) {
-    
+
     $box_site_footer = new view();
-    
+
     $box_site_footer->snippets = array(
       'categories' => array(),
       'manufacturers' => array(),
       'pages' => array(),
     );
-    
+
   // Categories
     $categories_query = database::query(
       "select c.id, ci.name
@@ -19,7 +19,7 @@
       and c.parent_id = 0
       order by c.priority asc, ci.name asc;"
     );
-    
+
     $i = 0;
     while ($category = database::fetch($categories_query)) {
       if (++$i < 10) {
@@ -37,7 +37,7 @@
         break;
       }
     }
-    
+
   // Manufacturers
     $manufacturers_query = database::query(
       "select m.id, m.name
@@ -45,7 +45,7 @@
       where status
       order by m.name asc;"
     );
-    
+
     $i = 0;
     while ($manufacturer = database::fetch($manufacturers_query)) {
       if (++$i < 10) {
@@ -63,7 +63,7 @@
         break;
       }
     }
-    
+
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -78,7 +78,7 @@
         'link' => document::href_ilink('information', array('page_id' => $page['id'])),
       );
     }
-    
+
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -93,9 +93,9 @@
         'link' => document::href_ilink('customer_service', array('page_id' => $page['id'])),
       );
     }
-    
+
     echo $box_site_footer->stitch('views/box_site_footer');
-    
+
     cache::end_capture($box_site_footer_cache_id);
   }
 ?>

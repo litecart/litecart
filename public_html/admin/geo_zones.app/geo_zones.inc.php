@@ -21,9 +21,9 @@
   );
 
   if (database::num_rows($geo_zones_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($geo_zones_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($geo_zone = database::fetch($geo_zones_query)) {
 ?>
@@ -60,7 +60,7 @@
 </script>
 <?php
   echo functions::form_draw_form_end();
-  
+
 // Display page links
   echo functions::draw_pagination(ceil(database::num_rows($geo_zones_query)/settings::get('data_table_rows_per_page')));
 ?>

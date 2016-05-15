@@ -17,11 +17,11 @@
         return array($width, $width);
     }
   }
-  
+
   function image_process($source, $options) {
-    
+
     if (!is_file($source)) $source = FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png';
-    
+
     $options = array(
       'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_HTTP_ROOT . WS_DIR_CACHE,
       'width' => !empty($options['width']) ? $options['width'] : 0,
@@ -32,12 +32,12 @@
       'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
       'extension' => !empty($options['extension']) ? $options['extension'] : null,
     );
-    
+
   // If destination is a directory
     if (is_dir($options['destination'])) {
-      
+
       $options['destination'] = rtrim($options['destination'], '/') . '/';
-      
+
       switch (strtoupper($options['clipping'])) {
         case 'CROP':
           $clipping_filename_flag = '_c';
@@ -64,11 +64,11 @@
           trigger_error('Unknown resample method ('.$options['clipping'].') for image', E_USER_WARNING);
           return;
       }
-      
+
       $source_webpath = str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($source)));
       $options['destination'] .= sha1($source_webpath) . (int)$options['width'] .'x'. (int)$options['height'] . $clipping_filename_flag . (!empty($options['trim']) ? '_t' : null) . (!empty($options['watermark']) ? '_wm' : null) . '.' . pathinfo($source, PATHINFO_EXTENSION);
     }
-    
+
   // Return an already existing file
     if (is_file($options['destination'])) {
       if (!empty($options['overwrite'])) {
@@ -77,26 +77,26 @@
         return str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($options['destination'])));
       }
     }
-    
+
     if (!$image = new ctrl_image($source)) return;
-    
+
     if (empty($options['extension'])) {
       $options['extension'] = $image->type();
     }
-    
+
     if ($options['width'] != 0 || $options['height'] != 0) {
       if (!$image->resample($options['width'], $options['height'], strtoupper($options['clipping']))) return;
     }
-    
+
     if (!empty($options['trim'])) {
       $image->trim();
     }
-    
+
     if (!empty($options['watermark'])) {
       if ($options['watermark'] === true) $options['watermark'] = FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png';
       if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
     }
-    
+
     switch($options['extension']) {
       case 'jpg':
         $options['extension'] = 'jpg';
@@ -110,14 +110,14 @@
         $options['extension'] = 'png';
         break;
     }
-    
+
     if (!$image->write($options['destination'], $options['extension'], $options['quality'])) return;
-    
+
     return str_replace(FS_DIR_HTTP_ROOT, '', str_replace('\\', '/', realpath($options['destination'])));
   }
-  
+
   function image_resample($source, $destination, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $quality=null) {
-    
+
     return image_process($source, array(
       'destination' => $destination,
       'width' => $width,
@@ -127,9 +127,9 @@
       'quality' => $quality,
     ));
   }
-  
+
   function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=null) {
-    
+
     return image_process($source, array(
       'destination' => FS_DIR_HTTP_ROOT . WS_DIR_CACHE,
       'width' => $width,
@@ -139,18 +139,18 @@
       'quality' => settings::get('image_thumbnail_quality'),
     ));
   }
-  
+
   function image_delete_cache($file) {
-    
+
     $webpath = str_replace(FS_DIR_HTTP_ROOT, '', $file);
-    
+
     $cachename = sha1($webpath);
-    
+
     $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . $cachename .'*');
-    
+
     if ($files) foreach($files as $file) {
       unlink($file);
     }
   }
-  
+
 ?>

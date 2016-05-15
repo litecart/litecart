@@ -26,12 +26,12 @@
   );
 
   if (database::num_rows($orders_status_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($orders_status_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($order_status = database::fetch($orders_status_query)) {
-      
+
       if (empty($order_status['icon'])) $order_status['icon'] = 'fa-circle-thin';
       if (empty($order_status['color'])) $order_status['color'] = '#cccccc';
 ?>
@@ -74,6 +74,6 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
+
   echo functions::draw_pagination(ceil(database::num_rows($orders_status_query)/settings::get('data_table_rows_per_page')));
 ?>

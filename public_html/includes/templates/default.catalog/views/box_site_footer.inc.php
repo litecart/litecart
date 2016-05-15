@@ -1,5 +1,5 @@
   <footer id="footer" class="twelve-eighty">
-    
+
     <div id="breadcrumbs-wrapper">
       <!--snippet:breadcrumbs-->
     </div>
@@ -14,7 +14,7 @@
             </ul>
           </nav>
         </td>
-        
+
         <?php if ($manufacturers) { ?>
         <td class="manufacturers">
           <nav>
@@ -25,7 +25,7 @@
           </nav>
         </td>
         <?php } ?>
-        
+
         <td class="account">
           <nav>
             <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
@@ -60,7 +60,7 @@
       </tr>
     </table>
   </footer>
-  
+
   <div id="copyright" class="twelve-eighty">
     <!-- LiteCart is provided free by End-User License Agreement (EULA). Removing the link back to LiteCart.net without written permission is a violation. -->
     <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a></p>

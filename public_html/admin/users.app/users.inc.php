@@ -1,17 +1,17 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['users'])) {
-    
+
       foreach ($_POST['users'] as $user_id) {
-      
+
         $user = new ctrl_user($user_id);
         $user->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $user->save();
       }
-      
+
       header('Location: '. document::link());
       exit;
     }
@@ -34,11 +34,11 @@
     "select * from ". DB_TABLE_USERS ."
     order by username;"
   );
-  
+
   if (database::num_rows($users_query) > 0) {
-  
+
     if ($_GET['page'] > 1) database::seek($users_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-  
+
     $page_items = 0;
     while ($user = database::fetch($users_query)) {
 ?>
@@ -78,8 +78,8 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
+
 // Display page links
   echo functions::draw_pagination(ceil(database::num_rows($users_query)/settings::get('data_table_rows_per_page')));
-  
+
 ?>

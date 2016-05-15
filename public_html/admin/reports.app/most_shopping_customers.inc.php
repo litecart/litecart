@@ -1,17 +1,17 @@
 <?php
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) : date('Y-m-d H:i:s');
-  
+
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
-  
+
   $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
   $date_first_order = $date_first_order['min(date_created)'];
   if (empty($date_first_order)) $date_first_order = date('Y-m-d 00:00:00');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
-  
+
   if ($_GET['date_from'] > date('Y-m-d H:i:s')) $_GET['date_from'] = date('Y-m-d H:i:s');
   if ($_GET['date_to'] > date('Y-m-d H:i:s')) $_GET['date_to'] = date('Y-m-d H:i:s');
-  
+
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 
@@ -46,7 +46,7 @@
   while ($order_status = database::fetch($orders_status_query)) {
     $order_statuses[] = (int)$order_status['id'];
   }
-  
+
   $customers_query = database::query(
     "select sum(o.payment_due - tax_total) as total_amount, o.customer_id as id, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name, customer_email as email from ". DB_TABLE_ORDERS ." o
     where o.order_status_id in ('". implode("', '", $order_statuses) ."')
@@ -55,11 +55,11 @@
     group by if(o.customer_id, o.customer_id, o.customer_email)
     order by total_amount desc;"
   );
-  
+
   if (database::num_rows($customers_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($customer = database::fetch($customers_query)) {
 ?>

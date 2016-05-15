@@ -1,19 +1,19 @@
 <?php
-  
+
   function format_address($address) {
-    
+
     $country_query = database::query(
       "select * from ". DB_TABLE_COUNTRIES ."
       where iso_code_2 = '". database::input($address['country_code']) ."'
       limit 1;"
     );
     $country = database::fetch($country_query);
-    
+
     if (empty($country)) {
       trigger_error('Invalid country code for address format', E_USER_WARNING);
       return;
     }
-    
+
     if (isset($address['zone_code'])) {
       $zones_query = database::query(
         "select * from ". DB_TABLE_ZONES ."
@@ -23,7 +23,7 @@
       );
       $zone = database::fetch($zones_query);
     }
-    
+
     $address = array(
       '%company' => !empty($address['company']) ? $address['company'] : '',
       '%firstname' => !empty($address['firstname']) ? $address['firstname'] : '',
@@ -37,13 +37,13 @@
       '%zone_code' => !empty($zone['code']) ? $zone['code'] : '',
       '%zone_name' => !empty($zone['name']) ? $zone['name'] : '',
     );
-    
+
     $output = strtr($country['address_format'] ? $country['address_format'] : settings::get('default_address_format'), $address);
-    
+
     while (preg_match('#(\r\n\r\n|\n\n|\r\r)#', $output)) $output = preg_replace('#(\r\n\r\n|\n\n|\r\r)#', "\r\n", $output);
-    
+
     $output = trim($output);
-    
+
     return $output;
   }
 

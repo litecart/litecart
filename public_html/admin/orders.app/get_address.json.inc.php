@@ -9,7 +9,7 @@
   );
   $customer = database::fetch($customer_query);
   if (empty($customer)) exit;
-  
+
   $json = array(
     'tax_id' => !empty($customer['tax_id']) ? $customer['tax_id'] : '',
     'company' => !empty($customer['company']) ? $customer['company'] : '',
@@ -25,12 +25,12 @@
     'mobile' => !empty($customer['mobile']) ? $customer['mobile'] : '',
     'email' => !empty($customer['email']) ? $customer['email'] : '',
   );
-  
+
   mb_convert_variables(language::$selected['charset'], 'UTF-8', $json);
   $json = json_encode($json);
-  
+
   mb_convert_variables('UTF-8', language::$selected['charset'], $json);
   echo $json;
-  
+
   exit;
 ?>

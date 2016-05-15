@@ -1,8 +1,8 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['customers'])) {
       foreach ($_POST['customers'] as $key => $value) {
         $customer = new ctrl_customer($_POST['customers'][$key]);
@@ -10,7 +10,7 @@
         $customer->save();
       }
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
@@ -41,18 +41,18 @@
       "concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%'",
     );
   }
-  
+
   $customers_query = database::query(
     "select * from ". DB_TABLE_CUSTOMERS ."
     ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by firstname, lastname;"
   );
-  
+
   if (database::num_rows($customers_query) > 0) {
-  
-    
+
+
     if ($_GET['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-  
+
     $page_items = 0;
     while ($customer = database::fetch($customers_query)) {
 ?>

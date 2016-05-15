@@ -1,5 +1,5 @@
 <div id="page" style="width: 640px; margin: 0px auto;">
-  
+
   <header id="header" style="margin-bottom: 10px;">
     <table cellspacing="0" cellpadding="0" style="width: 100%;">
       <tr>
@@ -22,7 +22,7 @@
         <?php echo nl2br(functions::format_address($order['customer'])); ?></td>
       </tr>
     </table>
-    
+
     <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
       <tr style="font-weight: bold; background-color: #f0f0f0;">
         <th style="padding: 10px 10px 10px 20px; border-bottom: 1px solid #ccc; text-align: center; width: 30px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
@@ -68,7 +68,7 @@
             <?php echo settings::get('store_phone'); ?><br />
         </td>
         <?php } ?>
-        <td style="vertical-align: top;">     
+        <td style="vertical-align: top;">
           <strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
             <?php echo settings::get('store_email'); ?>
         </td>

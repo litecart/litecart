@@ -1,6 +1,6 @@
 <div id="box-filter" class="box">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-  
+
   <?php if ($manufacturers) { ?>
   <div class="manufacturers">
     <h3 class="title" style="margin-bottom: 0px;"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
@@ -16,7 +16,7 @@
     </script>
   </div>
   <?php } ?>
-  
+
   <?php if ($product_groups) { ?>
   <?php foreach ($product_groups as $group) { ?>
   <div class="product-groups">
@@ -36,6 +36,6 @@
   </div>
   <?php } ?>
   <?php } ?>
-  
+
   <?php echo functions::form_draw_form_end(); ?>
 </div>

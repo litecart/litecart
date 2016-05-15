@@ -9,8 +9,8 @@
     'type' => 'ajax',
     'scrolling' => 'false',
   ));
-  
+
   $box_region = new view();
-  
+
   echo $box_region->stitch('views/box_region');
 ?>

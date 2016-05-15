@@ -1,8 +1,8 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['slides'])) {
       foreach ($_POST['slides'] as $key => $value) $_POST['slides'][$key] = database::input($value);
       database::query(
@@ -11,7 +11,7 @@
         where id in ('". implode("', '", $_POST['slides']) ."');"
       );
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
@@ -41,9 +41,9 @@
   );
 
   if (database::num_rows($slides_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($slides_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($slide = database::fetch($slides_query)) {
 ?>
@@ -88,8 +88,8 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
+
 // Display page links
   echo functions::draw_pagination(ceil(database::num_rows($slides_query)/settings::get('data_table_rows_per_page')));
-  
+
 ?>

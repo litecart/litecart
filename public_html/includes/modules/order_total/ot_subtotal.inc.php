@@ -8,36 +8,36 @@
     public $version = '1.0';
     public $website = 'http://www.litecart.net';
     public $priority = 0;
-    
+
     public function __construct() {
       $this->name = language::translate(__CLASS__.':title_subtotal', 'Subtotal');
     }
-    
+
     public function process($order) {
-      
+
       if (empty($this->settings['status'])) return;
-      
+
       $output = array();
       $value = 0;
       $tax = 0;
-      
+
       if (!empty($order->data['items'])) {
         foreach ($order->data['items'] as $item) {
           $value += $item['price'] * $item['quantity'];
           $tax += $item['tax'] * $item['quantity'];
         }
       }
-      
+
       $output[] = array(
         'title' => language::translate('title_subtotal', 'Subtotal'),
         'value' => $value,
         'tax' => $tax,
         'calculate' => false,
       );
-      
+
       return $output;
     }
-    
+
     function settings() {
       return array(
         array(
@@ -56,10 +56,10 @@
         ),
       );
     }
-    
+
     public function install() {}
-    
+
     public function uninstall() {}
   }
-  
+
 ?>

@@ -6,9 +6,9 @@
   while ($order_status = database::fetch($orders_status_query)) {
     $order_statuses[] = (int)$order_status['id'];
   }
-  
+
   $stats = array();
-  
+
 // Total Sales
   $orders_query = database::query(
     "select sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
@@ -16,7 +16,7 @@
   );
   $orders = database::fetch($orders_query);
   $stats['total_sales'] = $orders['total_sales'];
-  
+
 // Total Sales Year
   $orders_query = database::query(
     "select sum(payment_due - tax_total) as total_sales_year from ". DB_TABLE_ORDERS ."
@@ -25,7 +25,7 @@
   );
   $orders = database::fetch($orders_query);
   $stats['total_sales_year'] = $orders['total_sales_year'];
-  
+
 // Total Sales Month
   $orders_query = database::query(
     "select sum(payment_due - tax_total) as total_sales_month from ". DB_TABLE_ORDERS ."
@@ -34,7 +34,7 @@
   );
   $orders = database::fetch($orders_query);
   $stats['total_sales_month'] = $orders['total_sales_month'];
-  
+
 // Average order
   $orders_query = database::query(
     "select count(id) as num_orders, sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
@@ -42,14 +42,14 @@
   );
   $orders = database::fetch($orders_query);
   @$stats['average_order_amount'] = $orders['total_sales'] / $orders['num_orders'];
-  
+
 // Num customers
   $customers_query = database::query(
     "select count(id) as num_customers from ". DB_TABLE_CUSTOMERS .";"
   );
   $customers = database::fetch($customers_query);
   $stats['num_customers'] = $customers['num_customers'];
-  
+
 // Num products
   $products_query = database::query(
     "select count(id) as num_products from ". DB_TABLE_PRODUCTS .";"

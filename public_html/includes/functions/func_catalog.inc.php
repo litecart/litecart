@@ -1,13 +1,13 @@
 <?php
 
   function catalog_category_trail($category_id=0, $language_code='') {
-    
+
     if (empty($language_code)) $language_code = language::$selected['code'];
-    
+
     $trail = array();
 
     if (empty($category_id)) $category_id = 0;
-    
+
     $categories_query = database::query(
       "select c.id, c.parent_id, ci.name
       from ". DB_TABLE_CATEGORIES ." c
@@ -16,25 +16,25 @@
       limit 1;"
     );
     $category = database::fetch($categories_query);
-    
+
     if (!empty($category['parent_id'])) {
       $trail = functions::catalog_category_trail($category['parent_id']);
       $trail[$category['id']] = $category['name'];
     } else if (isset($category['id'])) {
       $trail = array($category['id'] => $category['name']);
     }
-    
+
     return $trail;
   }
-  
+
   function catalog_category_descendants($category_id=0, $language_code='') {
-    
+
     if (empty($language_code)) $language_code = language::$selected['code'];
-    
+
     $subcategories = array();
-    
+
     if (empty($category_id)) $category_id = 0;
-    
+
     $categories_query = database::query(
       "select c.id, c.parent_id, ci.name
       from ". DB_TABLE_CATEGORIES ." c
@@ -45,12 +45,12 @@
       $subcategories[$category['id']] = $category['name'];
       $subcategories = $subcategories + catalog_category_descendants($category['id'], $language_code);
     }
-    
+
     return $subcategories;
   }
-  
+
   function catalog_categories_query($parent_id=0, $dock=null) {
-    
+
     $categories_query = database::query(
       "select c.id, c.image, ci.name, ci.short_description, c.date_updated from ". DB_TABLE_CATEGORIES ." c
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
@@ -59,28 +59,28 @@
       ". (!empty($dock) ? "and find_in_set('". database::input($dock) ."', c.dock)" : null) ."
       order by c.priority asc, ci.name asc;"
     );
-    
+
     return $categories_query;
   }
-  
+
   function catalog_products_query($filter=array()) {
-    
+
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
-    
+
     if (empty($filter['categories'])) $filter['categories'] = array();
     if (empty($filter['manufacturers'])) $filter['manufacturers'] = array();
     if (empty($filter['product_groups'])) $filter['product_groups'] = array();
-    
+
     if (!empty($filter['category_id'])) $filter['categories'][] = $filter['category_id'];
     if (!empty($filter['manufacturer_id'])) $filter['manufacturers'][] = $filter['manufacturer_id'];
     if (!empty($filter['product_group_id'])) $filter['product_groups'][] = $filter['product_group_id'];
-    
+
     $filter['categories'] = array_filter($filter['categories']);
     $filter['manufacturers'] = array_filter($filter['manufacturers']);
     $filter['product_groups'] = array_filter($filter['product_groups']);
-    
+
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
-    
+
     switch ($filter['sort']) {
       case 'name':
         $sql_inner_sort = "";
@@ -108,11 +108,11 @@
         $sql_outer_sort = "order by (p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
         break;
     }
-    
+
     if (!empty($filter['exclude_products']) && !is_array($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
-    
+
     $sql_andor = "and";
-    
+
   // Define match points
     if ($filter['sort'] == 'occurrences') {
       $sql_select_occurrences = "(0
@@ -126,7 +126,7 @@
       ) as occurrences";
       $sql_andor = "or";
     }
-    
+
   // Create levels of product groups
     $sql_where_product_groups = "";
     if (!empty($filter['product_groups'])) {
@@ -139,7 +139,7 @@
         $sql_where_product_groups .= "$sql_andor (find_in_set('". implode("', product_groups) or find_in_set('", $group_value) ."', product_groups))";
       }
     }
-    
+
     $sql_where_prices = "";
     if (!empty($filter['price_ranges'])) {
       foreach ($filter['price_ranges'] as $price_range) {
@@ -148,9 +148,9 @@
       }
       $sql_where_prices = "$sql_andor (". ltrim($sql_where_prices, " or ") .")";
     }
-    
+
     $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
-    
+
     $query = "
       select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ." from (
         select p.id, p.code, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
@@ -191,16 +191,16 @@
       ". $sql_outer_sort ."
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";
     ";
-    
+
     $products_query = database::query($query);
-    
+
     return $products_query;
   }
-  
+
   function catalog_stock_adjust($product_id, $option_stock_combination, $quantity) {
-    
+
     if (empty($product_id)) return;
-    
+
     if (!empty($option_stock_combination)) {
       $products_options_stock_query = database::query(
         "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
@@ -223,7 +223,7 @@
         $option_id = 0;
       }
     }
-    
+
     database::query(
       "update ". DB_TABLE_PRODUCTS ."
       set quantity = quantity + ". (int)$quantity ."
@@ -231,7 +231,7 @@
       limit 1;"
     );
   }
-  
+
   function catalog_purchase_count_adjust($product_id, $quantity) {
 
     $products_options_query = database::query(
@@ -241,5 +241,5 @@
       limit 1;"
     );
   }
-  
+
 ?>

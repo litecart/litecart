@@ -1,12 +1,12 @@
 <?php
-  
+
   $products_query =  $database->query(
     "select id, categories from ". DB_TABLE_PRODUCTS .";"
   );
-  
+
   while ($product = $database->fetch($products_query)) {
     $categories = explode( ',', $product['categories']);
-    
+
     $is_first = true;
     foreach ($categories as $category_id) {
       if ($is_first) {
@@ -25,11 +25,11 @@
       $is_first = false;
     }
   }
-  
+
   $database->query(
     "alter table ". DB_TABLE_PRODUCTS ." drop `categories`;"
   );
-  
+
   $deleted_files = array(
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'appearance.app/icon.png',
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN .'catalog.app/icon.png',
@@ -87,13 +87,13 @@
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'includes/templates/default.catalog/images/scroll_up.png',
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'includes/templates/default.catalog/images/search.png',
   );
-  
+
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
       die('<span class="error">[Error]</span></p>');
     }
   }
-  
+
   $modified_files = array(
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
@@ -109,7 +109,7 @@
                  . "  define('DB_TABLE_QUANTITY_UNITS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'quantity_units_info`');" . PHP_EOL,
     ),
   );
-  
+
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
       die('<span class="error">[Error]</span></p>');

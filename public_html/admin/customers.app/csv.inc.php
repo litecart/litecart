@@ -1,11 +1,11 @@
 <?php
-  
+
   if (!empty($_POST['import'])) {
-  
+
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-    
+
       $csv = file_get_contents($_FILES['file']['tmp_name']);
-      
+
       if (empty($_POST['delimiter'])) {
         preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
         if (strpos($matches[1], ',') !== false) {
@@ -20,13 +20,13 @@
           trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
         }
       }
-      
+
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
-      
+
       foreach ($csv as $row) {
-        
+
         $customer = null;
-        
+
         if (!empty($row['id'])) {
           $customers_query = database::query(
             "select id from ". DB_TABLE_CUSTOMERS ."
@@ -42,13 +42,13 @@
           );
           $customer = database::fetch($customers_query);
         }
-        
+
         if (!empty($customer)) {
           $customer = new ctrl_customer($customer['id']);
         } else {
           $customer = new ctrl_customer();
         }
-        
+
         $fields = array(
           'email',
           'tax_id',
@@ -64,33 +64,33 @@
           'phone',
           'newsletter'
         );
-        
+
         foreach ($fields as $field) {
           if (isset($row[$field])) $customer->data[$field] = $row[$field];
         }
-        
+
         if (!empty($row['new_password'])) $customer->set_password($row['new_password']);
-        
+
         $customer->save();
       }
-      
+
       notices::add('success', language::translate('success_customers_imported', 'Customers successfully imported.'));
-      
+
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
     }
-  
+
   }
-  
+
   if (!empty($_POST['export'])) {
-  
+
     $customers_query = database::query(
       "select * from ". DB_TABLE_CUSTOMERS ."
       order by date_created asc;"
     );
-    
+
     $csv = array();
-    
+
     while ($customer = database::fetch($customers_query)) {
       $csv[] = array(
         'id' => $customer['id'],
@@ -110,16 +110,16 @@
         'newsletter' => $customer['newsletter'],
       );
     }
-    
+
     ob_clean();
-    
+
     if ($_POST['output'] == 'screen') {
       header('Content-type: text/plain; charset='. $_POST['charset']);
     } else {
       header('Content-type: application/csv; charset='. $_POST['charset']);
       header('Content-Disposition: attachment; filename=customers.csv');
     }
-    
+
     switch($_POST['eol']) {
       case 'Linux':
         echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
@@ -132,7 +132,7 @@
         echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
         break;
     }
-    
+
     exit;
   }
 

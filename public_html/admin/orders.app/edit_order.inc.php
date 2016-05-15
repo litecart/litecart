@@ -1,13 +1,13 @@
 <?php
-  
+
   if (!empty($_GET['order_id'])) {
     $order = new ctrl_order('load', $_GET['order_id']);
   } else {
     $order = new ctrl_order('new');
   }
-  
+
   if (empty($_POST)) {
-    
+
   // Convert to local currency
     foreach (array_keys($order->data['items']) as $key) {
       $order->data['items'][$key]['price'] = $order->data['items'][$key]['price'] * $order->data['currency_value'];
@@ -24,31 +24,31 @@
 
     if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
   }
-  
+
   breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
-  
+
 // Save data to database
   if (isset($_POST['save'])) {
-    
+
     if (empty($_POST['items'])) $_POST['items'] = array();
     if (empty($_POST['order_total'])) $_POST['order_total'] = array();
     if (empty($_POST['comments'])) $_POST['comments'] = array();
-    
+
     if (empty(notices::$data['errors'])) {
-      
+
       if (!empty($_POST['items'])) {
         foreach (array_keys($_POST['items']) as $key) {
           $_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] / $_POST['currency_value'];
           $_POST['items'][$key]['tax'] = $_POST['items'][$key]['tax'] / $_POST['currency_value'];
         }
-        
+
         foreach (array_keys($_POST['order_total']) as $key) {
           if (empty($_POST['order_total'][$key]['calculate'])) $_POST['order_total'][$key]['calculate'] = false;
           $_POST['order_total'][$key]['value'] = $_POST['order_total'][$key]['value'] / $_POST['currency_value'];
           $_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] / $_POST['currency_value'];
         }
       }
-      
+
       $fields = array(
         'language_code',
         'currency_code',
@@ -62,11 +62,11 @@
         'shipping_tracking_id',
         'comments',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $order->data[$field] = $_POST[$field];
       }
-      
+
       $fields = array(
         'id',
         'email',
@@ -84,13 +84,13 @@
         'zone_code',
         'shipping_address',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST['customer'][$field])) $order->data['customer'][$field] = $_POST['customer'][$field];
       }
-      
+
       $order->save();
-      
+
     // Send e-mails
       if (!empty($_POST['email_order_copy'])) {
         $order->email_order_copy($order->data['customer']['email']);
@@ -99,13 +99,13 @@
           $order->email_order_copy($email);
         }
       }
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
       exit;
     }
   }
-  
+
   // Delete from database
   if (isset($_POST['delete']) && $order) {
     $order->delete();
@@ -113,7 +113,7 @@
     header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
     exit;
   }
-  
+
   functions::draw_fancybox('a.fancybox-iframe', array(
     'type' => 'iframe',
     'width' => 480,
@@ -225,7 +225,7 @@
             <?php echo functions::form_draw_text_field('customer[phone]', true); ?></td>
           </tr>
         </table>
-        
+
         <script>
           $("button[name='get_address']").click(function() {
             $.ajax({
@@ -246,7 +246,7 @@
               },
             });
           });
-          
+
           $("select[name='customer[country_code]']").change(function() {
             $('body').css('cursor', 'wait');
             $.ajax({
@@ -322,7 +322,7 @@
               $("*[name='customer[shipping_address]["+ field +"]']").val($("*[name='customer["+ field +"]']").val());
             });
           });
-          
+
           $("select[name='customer[shipping_address][country_code]']").change(function(){
             $('body').css('cursor', 'wait');
             $.ajax({
@@ -354,7 +354,7 @@
       </td>
     </tr>
   </table>
-  
+
   <table id="order-info" class="dataTable">
     <tr>
       <td style="vertical-align: top;">
@@ -392,7 +392,7 @@
       </td>
     </tr>
   </table>
-  
+
   <h2><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
   <table id="order-items" class="dataTable" style="width: 100%;">
     <tr class="header">
@@ -457,12 +457,12 @@
       </td>
     </tr>
   </table>
-  
+
   <script>
     var new_item_index = 0;
     function addItem(item) {
       new_item_index++;
-      
+
       var output = '  <tr class="item">'
                  + '    <td>' + item.name
                  + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
@@ -480,7 +480,7 @@
                  + '  </tr>';
       output = output.replace(/new_item_index/g, 'new_' + new_item_index);
       $("#order-items .footer").before(output);
-      
+
     // Insert values
       var row = $("#order-items tr.item").last();
       $(row).find("*[name$='[product_id]']").val(item.product_id);
@@ -493,7 +493,7 @@
       $(row).find("*[name$='[quantity]']").val(item.quantity);
       $(row).find("*[name$='[price]']").val(item.price);
       $(row).find("*[name$='[tax]']").val(item.tax);
-      
+
       if (item.options) {
         var product_options = '<br />'
                             + '<table>';
@@ -513,10 +513,10 @@
         product_options += '</table>';
         $(row).find("input[type='hidden'][name$='[options]']").replaceWith(product_options);
       }
-      
+
       calculate_total();
     }
-    
+
     $("body").on("click", "#order-items .remove", function(event) {
       event.preventDefault();
       $(this).closest("tr").remove();
@@ -597,12 +597,12 @@
     $(this).closest("tr").before(output);
     new_ot_row_index++;
     });
-    
+
     $("body").on("click", "#order-total .remove", function(event) {
       event.preventDefault();
     $(this).closest("tr").remove();
     });
-    
+
     function calculate_total() {
       var subtotal = 0;
       $("input[name^='items['][name$='[price]']").each(function() {
@@ -610,14 +610,14 @@
       });
       subtotal = Math.round(subtotal * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
       $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[value]']").val(subtotal);
-      
+
       var subtotal_tax = 0;
       $("input[name^='items['][name$='[tax]']").each(function() {
         subtotal_tax += Number($(this).val()) * Number($(this).closest('tr').find("input[name^='items['][name$='[quantity]']").val());
       });
       subtotal_tax = Math.round(subtotal_tax * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
       $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[tax]']").val(subtotal_tax);
-      
+
       var order_total = subtotal + subtotal_tax;
       $("input[name^='order_total['][name$='[value]']").each(function() {
         if ($(this).closest('tr').find("input[name^='order_total['][name$='[calculate]']").is(':checked')) {
@@ -632,12 +632,12 @@
       order_total = Math.round(order_total * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
       $("#order-total .total").text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
     }
-    
+
     $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], #order-items a.remove, #order-total a.remove", function() {
       calculate_total();
     });
   </script>
-  
+
 <style>
 #comments {
   margin: 0 auto;
@@ -718,7 +718,7 @@
   opacity: 0.5;
 }
 </style>
-  
+
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
   <ul id="comments" class="list-vertical">
     <?php if (!empty($_POST['comments'])) foreach (array_keys($_POST['comments']) as $key) { ?>
@@ -748,12 +748,12 @@
     $(this).closest("li").before(output);
     new_comment_index++;
   });
-  
+
   $("body").on("click", "#comments .remove", function(event) {
     event.preventDefault();
     $(this).closest("li").remove();
   });
-  
+
   $("body").on("click", '#comments input[name^="comments"][name$="[hidden]"]', function(event) {
     if ($(this).is(':checked')) {
       $(this).closest("li").addClass('semi-transparent');
@@ -762,11 +762,11 @@
     }
   });
 </script>
-  
+
   <p style="text-align: right;""><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
-  
+
   <p style="text-align: right;"><label><?php echo functions::form_draw_checkbox('email_order_copy', true); ?> <?php echo language::translate('title_send_email_order_copy', 'Send email order copy'); ?></label></p>
 
   <p style="text-align: right;"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>

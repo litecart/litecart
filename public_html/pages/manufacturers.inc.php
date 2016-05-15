@@ -1,16 +1,16 @@
 <?php
   document::$snippets['title'][] = language::translate('manufacturers:head_title', 'Manufacturers');
   document::$snippets['description'] = language::translate('manufacturers:meta_description', '');
-  
+
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
-  
+
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
-  
+
   $box_manufacturers_cache_id = cache::cache_id('box_manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($box_manufacturers_cache_id, 'file')) {
-    
+
     $box_manufacturers = new view();
-    
+
     $manufacturers_query = database::query(
       "select m.id, m.name, m.image, mi.short_description, mi.link
       from ". DB_TABLE_MANUFACTURERS ." m
@@ -18,9 +18,9 @@
       where status
       order by name;"
     );
-    
+
     $box_manufacturers->snippets['manufacturers'] = array();
-    
+
     while($manufacturer = database::fetch($manufacturers_query)) {
       $box_manufacturers->snippets['manufacturers'][] = array(
         'id' => $manufacturer['id'],
@@ -33,9 +33,9 @@
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
       );
     }
-    
+
     echo $box_manufacturers->stitch('views/box_manufacturers');
-    
+
     cache::end_capture($box_manufacturers_cache_id);
   }
 ?>
