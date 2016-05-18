@@ -40,7 +40,7 @@
         case 'Linux':
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
           break;
-        case 'Max':
+        case 'Mac':
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
           break;
         case 'Win':
@@ -230,7 +230,7 @@
         case 'Linux':
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
           break;
-        case 'Max':
+        case 'Mac':
           echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
           break;
         case 'Win':
