@@ -173,14 +173,14 @@
           alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
         },
         success: function(data) {
-          $('select[name=\'zone[code]\']').html('');
-          if ($('select[name=\'zone[code]\']').attr('disabled')) $('select[name=\'zone[code]\']').removeAttr('disabled');
+          $('select[name="zone_code"]').html('');
+          if ($('select[name="zone_code"]').attr('disabled')) $('select[name="zone_code"]').removeAttr('disabled');
           if (data) {
             $.each(data, function(i, zone) {
-              $('select[name=\'zone[code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+              $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
             });
           } else {
-            $('select[name=\'zone[code]\']').attr('disabled', 'disabled');
+            $('select[name="zone_code"]').attr('disabled', 'disabled');
           }
         },
         complete: function() {
