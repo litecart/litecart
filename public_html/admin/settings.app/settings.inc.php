@@ -3,19 +3,35 @@
   if (empty($_GET['page'])) $_GET['page'] = 1;
 
   if (!empty($_POST['save'])) {
-    database::query(
-      "update ". DB_TABLE_SETTINGS ."
-      set
-        `value` = '". database::input($_POST['value']) ."',
-        date_updated = '". date('Y-m-d H:i:s') ."'
-      where `key` = '". database::input($_POST['key']) ."'
-      limit 1;"
+
+    $values_required = array(
+      'store_language_code',
+      'store_currency_code',
+      'store_weight_class',
+      'store_length_class',
+      'default_language_code',
+      'default_currency_code',
     );
 
-    notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+    if (in_array($_POST['key'], $values_required) && empty($_POST['value'])) {
+      notices::add('errors', language::translate('error_cannot_set_empty_value_for_setting', 'You cannot set an empty value for this setting'));
+    }
 
-    header('Location: '. document::link('', array(), true, array('action')));
-    exit;
+    if (empty(notices::$data['errors'])) {
+      database::query(
+        "update ". DB_TABLE_SETTINGS ."
+        set
+          `value` = '". database::input($_POST['value']) ."',
+          date_updated = '". date('Y-m-d H:i:s') ."'
+        where `key` = '". database::input($_POST['key']) ."'
+        limit 1;"
+      );
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+
+      header('Location: '. document::link('', array(), true, array('action')));
+      exit;
+    }
   }
 
   $settings_groups_query = database::query(
