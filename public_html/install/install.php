@@ -313,12 +313,12 @@
 
     $database->query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
-      set `value` = '". $database->input($matches[1]) ."'
+      set `value` = '". $database->input(PLATFORM_VERSION) ."'
       where `key` = 'platform_database_version'
       limit 1;"
     );
 
-    echo ' <strong>'. $platform_version .'</strong></p>' . PHP_EOL;
+    echo ' <strong>'. PLATFORM_VERSION .'</strong></p>' . PHP_EOL;
 
   } else {
     echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
