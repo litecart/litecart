@@ -20,7 +20,7 @@
 
     if (empty(notices::$data['errors'])) {
 
-      if (empty($_POST['stable'])) $_POST['stable'] = 0;
+      if (empty($_POST['status'])) $_POST['status'] = 0;
 
       $fields = array(
         'status',
