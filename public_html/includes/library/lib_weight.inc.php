@@ -36,6 +36,7 @@
           'name' => 'Stones',
           'unit' => 'st',
           'value' => 0.1575,
+          'decimals' => 2,
         ),
       );
     }
