@@ -502,7 +502,7 @@
          . '       ico: "insertImage"' . PHP_EOL
          . '      }' . PHP_EOL
          . '    },' . PHP_EOL
-         . '    semantic: true,' . PHP_EOL
+         . '    semantic: false,' . PHP_EOL
          . '    removeformatPasted: true,' . PHP_EOL
          . '    btns: ["viewHTML", "|", "formatting", "|", "btnGrp-design", "|", "link", "|", "image", "|", "btnGrp-justify", "|", "btnGrp-lists", "|", "foreColor", "backColor", "|", "horizontalRule"],' . PHP_EOL
          . '  });' . PHP_EOL
