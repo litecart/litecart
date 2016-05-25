@@ -152,7 +152,7 @@
          . '  <td>'. trim($key) .':</td>' . PHP_EOL
          . '  <td>'. trim($value) .'</td>' . PHP_EOL
          . '</tr>' . PHP_EOL;
-    } else if (trim($attributes[$i] != '')) {
+    } else if (trim($attributes[$i]) != '') {
       echo '<tr class="row header">' . PHP_EOL
          . '  <th colspan="2" class="header">'. $attributes[$i] .'</th>' . PHP_EOL
          . '</tr>' . PHP_EOL;
