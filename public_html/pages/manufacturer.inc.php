@@ -25,7 +25,7 @@
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => (int)$manufacturer->id), false) .'" />';
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;
-  document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : $manufacturer->short_description[language::$selected['code']];
+  document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : strip_tags($manufacturer->short_description[language::$selected['code']]);
 
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   breadcrumbs::add($manufacturer->name);

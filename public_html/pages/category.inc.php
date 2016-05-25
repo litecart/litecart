@@ -24,7 +24,7 @@
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $category->id), false) .'" />';
   document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];
-  document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
+  document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : strip_tags($category->short_description[language::$selected['code']]);
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
