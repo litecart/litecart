@@ -124,7 +124,7 @@
     // Bad Bot Trap - Rig the trap
       if (settings::get('security_bot_trap')) {
         if (document::$layout == 'default') {
-          $GLOBALS['content'] = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: inline-block; position: absolute;"><img src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="width: 1px; height: 1px; border: none;" alt="" /></a>' . PHP_EOL
+          $GLOBALS['content'] = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: inline-block; position: absolute;"><img src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="" style="width: 1px; height: 1px; border: none;" /></a>' . PHP_EOL
                                . $GLOBALS['content'];
         }
       }

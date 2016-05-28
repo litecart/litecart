@@ -36,7 +36,7 @@
 
   <table>
     <tr>
-      <td><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 250, 'FIT_ONLY_BIGGER'); ?>" /></td>
+      <td><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 250, 'FIT_ONLY_BIGGER'); ?>" alt="" /></td>
     </tr>
     <tr>
       <td><?php echo language::translate('title_new_image', 'New Image'); ?><br />

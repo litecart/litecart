@@ -4,7 +4,7 @@
     <?php foreach ($items as $key => $item) { ?>
       <li class="item">
         <?php echo functions::form_draw_form_begin('cart_form') . functions::form_draw_hidden_field('key', $key); ?>
-          <a href="<?php echo htmlspecialchars($item['link']); ?>" class="image-wrapper shadow"><img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" /></a>
+          <a href="<?php echo htmlspecialchars($item['link']); ?>" class="image-wrapper shadow"><img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" alt="" /></a>
           <div style="display: inline-block;">
             <p style="margin-top: 0px;"><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><strong><?php echo $item['name']; ?></strong></a>
             <?php echo $item['sku'] ? '<br /><span style="color: #999; font-size: 10px;">['. language::translate('title_sku', 'SKU') .': '. $item['sku'] .']</span>' : ''; ?></p>
@@ -23,7 +23,7 @@
   <ul class="shortcuts">
     <?php foreach ($items as $item) { ?>
     <li class="shortcut">
-      <a href="#" style="list-style:none; display:inline-block; text-align: center;"><img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" style="max-width: 42px; max-height: 32px" /></a>
+      <a href="#" style="list-style:none; display:inline-block; text-align: center;"><img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" alt="" style="max-width: 42px; max-height: 32px" /></a>
     </li>
     <?php } ?>
   </ul>

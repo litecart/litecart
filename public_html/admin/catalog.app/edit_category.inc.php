@@ -76,7 +76,7 @@
 
 <?php
   if (!empty($category->data['image'])) {
-    echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150) .'" /></p>';
+    echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150) .'" alt="" /></p>';
   }
 ?>
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>

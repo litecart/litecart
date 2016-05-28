@@ -7,9 +7,9 @@
     foreach ($module['options'] as $option) {
 ?>
       <li class="option<?php echo (!empty($selected['id']) && $module['id'].':'.$option['id'] == $selected['id']) ? ' selected' : false; ?><?php echo !empty($option['error']) ? ' semi-transparent' : ''; ?>">
-      <?php echo functions::form_draw_form_begin('shipping_form') . functions::form_draw_hidden_field('selected_shipping', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : ''); ?>
+      <?php echo functions::form_draw_form_begin('shipping_form') . functions::form_draw_hidden_field('selected_shipping', $module['id'].':'.$option['id']); ?>
 
-        <div class="icon-wrapper"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 200, 70, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" /></div>
+        <div class="icon-wrapper"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 200, 70, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" alt="" /></div>
 
         <div class="title"><?php echo $module['title']; ?></div>
 

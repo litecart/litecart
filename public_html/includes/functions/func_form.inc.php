@@ -277,15 +277,15 @@
   }
 
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters) .'</span>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters) .'</span>';
   }
 
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters) .'</span>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters) .'</span>';
   }
 
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters) .'</span>';
+    return '<span class="input-wrapper" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters) .'</span>';
   }
 
   function form_draw_search_field($name, $value=true, $parameters='') {
