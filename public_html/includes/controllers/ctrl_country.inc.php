@@ -62,7 +62,7 @@
           iso_code_3 = '". database::input($this->data['iso_code_3']) ."',
           name = '". database::input($this->data['name']) ."',
           domestic_name = '". database::input($this->data['domestic_name']) ."',
-          tax_id_format = '". (int)$this->data['tax_id_format'] ."',
+          tax_id_format = '". database::input($this->data['tax_id_format']) ."',
           address_format = '". database::input($this->data['address_format']) ."',
           postcode_format = '". database::input($this->data['postcode_format']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
