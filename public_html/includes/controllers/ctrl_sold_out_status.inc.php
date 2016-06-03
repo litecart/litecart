@@ -15,11 +15,23 @@
 
       $this->data = array();
 
-      $fields_query = database::query(
+      $sold_out_status_query = database::query(
         "show fields from ". DB_TABLE_SOLD_OUT_STATUSES .";"
       );
-      while ($field = database::fetch($fields_query)) {
+      while ($field = database::fetch($sold_out_status_query)) {
         $this->data[$field['Field']] = '';
+      }
+
+      $sold_out_status_info_query = database::query(
+        "show fields from ". DB_TABLE_SOLD_OUT_STATUSES_INFO .";"
+      );
+
+      while ($field = database::fetch($sold_out_status_info_query)) {
+        if (in_array($field['Field'], array('id', 'sold_out_status_id', 'language_code'))) continue;
+        $this->data[$field['Field']] = array();
+        foreach (array_keys(language::$languages) as $language_code) {
+          $this->data[$field['Field']][$language_code] = '';
+        }
       }
     }
 
