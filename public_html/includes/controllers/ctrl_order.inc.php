@@ -5,22 +5,23 @@
 
     public function __construct($action='new', $order_id='') {
 
-      if (!isset(session::$data['order'])) session::$data['order'] = array();
-      $this->data = &session::$data['order'];
+      $this->reset();
 
       switch ($action) {
         case 'load':
           if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
           $this->load((int)$order_id);
           break;
-        case 'new':
-          $this->reset();
-          break;
+
         case 'import_session':
+          if (!isset(session::$data['order'])) session::$data['order'] = array();
+          $this->data = &session::$data['order'];
           $this->import_session();
           break;
+
         case 'resume':
-        default:
+          if (!isset(session::$data['order'])) session::$data['order'] = array();
+          $this->data = &session::$data['order'];
           break;
       }
     }
@@ -28,7 +29,7 @@
     public function reset() {
 
       $this->data = array(
-        'id' => '',
+        'id' => null,
         'uid' => uniqid(),
         'items' => array(),
         'weight_total' => 0,
