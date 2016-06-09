@@ -10,4 +10,5 @@ $(document).ready(function(){
     $(selected_tab).fadeIn('fast');
     return false;
   });
+  if (window.location.hash != '') $('a[href="' + window.location.hash + '"]').click();
 });
