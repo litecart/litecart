@@ -119,7 +119,7 @@
       }
 
       session::$data['language'] = self::$languages[$code];
-      setcookie('language_code', $code, round(time()+3600*24*30), WS_DIR_HTTP_HOME);
+      setcookie('language_code', $code, time()+(3600*24*30), WS_DIR_HTTP_HOME);
 
     // Set system locale
       if (!setlocale(LC_TIME, explode(',', self::$selected['locale']))) {

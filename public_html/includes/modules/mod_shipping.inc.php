@@ -2,7 +2,6 @@
 
   class mod_shipping extends module {
     public $data;
-    public $cheapest = '';
     public $items = array();
 
     public function __construct($type='session') {

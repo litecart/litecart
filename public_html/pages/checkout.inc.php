@@ -218,7 +218,9 @@
   $("body").on('submit', "form[name='order_form']", function(e) {
     if (customer_form_changed) {
       e.preventDefault();
-      alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
+      alert("<?php echo htmlspecialchars(language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.'))?>");
+    } else {
+      $('#checkout-summary-wrapper button[name="confirm_order"]').css('display', 'none').before('<span style="font-size: 1.75em; text-align: center;"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo htmlspecialchars(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</span>');
     }
   });
 

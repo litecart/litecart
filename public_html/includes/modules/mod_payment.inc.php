@@ -1,7 +1,6 @@
 <?php
 
   class mod_payment extends module {
-    public $options;
     public $data;
 
     public function __construct() {

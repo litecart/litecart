@@ -5,8 +5,6 @@
 
     public function __construct($action='new', $order_id='') {
 
-      $this->reset();
-
       switch ($action) {
         case 'load':
           if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
