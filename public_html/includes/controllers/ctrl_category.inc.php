@@ -206,6 +206,23 @@
 
       $this->data['image'] = $filename;
     }
+
+    public function delete_image() {
+
+      if (empty($this->data['image'])) return;
+
+      if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
+
+      functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
+
+      database::query(
+        "update ". DB_TABLE_CATEGORIES ."
+        set image = ''
+        where id = '". (int)$this->data['id'] ."';"
+      );
+
+      $this->data['image'] = '';
+    }
   }
 
 ?>
