@@ -687,17 +687,11 @@
 
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $currencies_query = database::query(
-      "select * from ". DB_TABLE_CURRENCIES ."
-      where status
-      order by name asc;"
-    );
-
     $options = array();
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    while ($currency = database::fetch($currencies_query)) {
+    foreach (currency::$currencies as $currency) {
       $options[] = array($currency['name'], $currency['code'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. htmlspecialchars($currency['prefix']) .'" data-suffix="'. htmlspecialchars($currency['suffix']) .'"');
     }
 
@@ -807,17 +801,11 @@
 
   function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $languages_query = database::query(
-      "select * from ". DB_TABLE_LANGUAGES ."
-      where status
-      order by name asc;"
-    );
-
     $options = array();
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    while ($language = database::fetch($languages_query)) {
+    foreach (language::$languages as $language) {
       $options[] = array($language['name'], $language['code']);
     }
 

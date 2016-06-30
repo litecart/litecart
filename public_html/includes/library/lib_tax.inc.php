@@ -151,8 +151,7 @@
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
 
       $tax_rates_query = database::query(
-        "select tr.id, tr.name, tr.type, tr.rate, tr.customer_type, tr.tax_id_rule
-        from ". DB_TABLE_TAX_RATES ." tr
+        "select tr.* from ". DB_TABLE_TAX_RATES ." tr
         left join ". DB_TABLE_GEO_ZONES . " gz on (gz.id = tr.geo_zone_id)
         left join ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz on (z2gz.geo_zone_id = tr.geo_zone_id)
         where tr.tax_class_id = '" . (int)$tax_class_id . "'
@@ -160,7 +159,7 @@
         and (z2gz.zone_code = '' or z2gz.zone_code = '". database::input($customer['zone_code']) ."');"
       );
 
-      while ($row=database::fetch($tax_rates_query)) {
+      while ($row = database::fetch($tax_rates_query)) {
         if ($row['customer_type'] == 'individuals' && !empty($customer['company'])) continue;
         if ($row['customer_type'] == 'companies' && empty($customer['company'])) continue;
         if ($row['tax_id_rule'] == 'without' && !empty($customer['tax_id'])) continue;

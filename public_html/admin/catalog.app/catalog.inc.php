@@ -349,7 +349,7 @@
         $display_images = false;
       }
 
-      while ($product=database::fetch($products_query)) {
+      while ($product = database::fetch($products_query)) {
         $num_product_rows++;
 
         $output .= '<tr class="row'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL

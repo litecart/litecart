@@ -23,7 +23,7 @@
     "select tr.*, gz.name as geo_zone, tc.name as tax_class from ". DB_TABLE_TAX_RATES ." tr
     left join ". DB_TABLE_GEO_ZONES ." gz on (gz.id = tr.geo_zone_id)
     left join ". DB_TABLE_TAX_CLASSES ." tc on (tc.id = tr.tax_class_id)
-    order by tr.name, gz.name;"
+    order by tc.name, gz.name, tr.name;"
   );
 
   if (database::num_rows($tax_rates_query) > 0) {

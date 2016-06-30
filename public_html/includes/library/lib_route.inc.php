@@ -72,6 +72,8 @@
 
         $route['page'] = preg_replace($matched_pattern, $route['page'], self::$request);
 
+        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . $route['page'] .'.inc.php')) continue;
+
         if (!empty($route['params'])) {
           parse_str(preg_replace($matched_pattern, $route['params'], self::$request), $params);
           $_GET = array_merge($_GET, $params);

@@ -146,7 +146,7 @@ ul.filter li {
     if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
 
     $page_items = 0;
-    while ($row=database::fetch($translations_query)) {
+    while ($row = database::fetch($translations_query)) {
 
       $row['pages'] = rtrim($row['pages'], ',');
 ?>
@@ -156,7 +156,7 @@ ul.filter li {
         <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
       </td>
       <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="display: block; max-width: 250px;" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
-      <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+      <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
     </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -180,15 +180,20 @@ ul.filter li {
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
-  function delete_translation(id) {
-    var form = $('<?php
-      echo str_replace(array("\r", "\n"), '', functions::form_draw_form_begin('delete_translation_form', 'post')
-                                            . functions::form_draw_hidden_field('translation_id', '\'+ id +\'')
-                                            . functions::form_draw_hidden_field('delete', 'true')
-                                            . functions::form_draw_form_end()
-      );
-    ?>');
+  $('.delete').click(function(e){
+    e.preventDefault();
+
+    if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
+
+    var form = '<?php echo str_replace(array("\r", "\n"), '', functions::form_draw_form_begin('delete_translation_form', 'post')); ?>'
+             + '<?php echo str_replace(array("\r", "\n"), '', form_draw_hidden_field('translation_id', 'insert_translation_id')); ?>'
+             + '<?php echo str_replace(array("\r", "\n"), '', functions::form_draw_hidden_field('delete', 'true')); ?>'
+             + '<?php echo str_replace(array("\r", "\n"), '', functions::form_draw_form_end()); ?>';
+
+    form = form.replace(/insert_translation_id/g, $(this).closest('tr').find('input[name$="[id]"]').val());
+
     $(document.body).append(form);
-    form.submit();
-  }
+
+    $(form).submit();
+  });
 </script>

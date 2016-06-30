@@ -1,24 +1,21 @@
-LiteCart™
-=========
+![LiteCart™](https://www.litecart.net/images/logotype.png "LiteCart™")
+
+----------------------------------------------------------------------
+
 LiteCart is an e-commerce platform for online merchants founded and developed by T. Almroth - TiM International. http://www.tim-international.net
 
-Official Website
-----------------
-The official website can be found at [www.litecart.net](http://www.litecart.net).
+# Installation Instructions
 
-Installation Instructions
--------------------------
+  1. Copy the contents of the folder public_html/ to your web directory.
 
-1. Copy the contents of the folder public_html/ to your web directory.
+  2. Point your web browser to the subfolder install/:
 
-2. Point your web browser to the subfolder install/:
-
-    E.g. http://www.mysite.com/path/to/install
+      E.g. http://www.mysite.com/path/to/install
     
-Good luck!
+  Good luck!
 
-Community Forums
-http://forums.litecart.net
+### [Home Page](http://www.litecart.net)
 
-Community Wiki
-http://wiki.litecart.net
+### [Community Forums](http://www.litecart.net/forums/)
+
+### [Community Wiki](http://wiki.litecart.net)

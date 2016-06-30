@@ -107,7 +107,7 @@
       <?php } ?>
       <?php } ?>
 
-      <?php if (!empty($order['tax_total'])) { ?>
+      <?php if (!empty($order['tax_total']) && $order['tax_total'] != 0) { ?>
       <tr>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?></td>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
