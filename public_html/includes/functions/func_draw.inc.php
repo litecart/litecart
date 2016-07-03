@@ -76,8 +76,8 @@
       'sticker' => $sticker,
       'manufacturer_name' => $product['manufacturer_name'],
       'short_description' => $product['short_description'],
-      'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
       'quantity' => $product['quantity'],
+      'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
     );
 

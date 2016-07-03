@@ -185,11 +185,16 @@
           $this->_data['manufacturer'] = array();
 
           $query = database::query(
-            "select id, name, image from ". DB_TABLE_MANUFACTURERS ."
-            where id = '". (int)$this->manufacturer_id ."'
+            "select m.*, mi.description from ". DB_TABLE_MANUFACTURERS ."
+            left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (m.id = mi.manufacturer_id and language_code = '". database::input(language::$selected['code']) ."')
+            where m.id = '". (int)$this->manufacturer_id ."'
             limit 1;"
           );
           $this->_data['manufacturer'] = database::fetch($query);
+
+          if (!empty($this->_data['manufacturer']['id'])) {
+            $this->_data['manufacturer']['link'] => document::ilink('manufacturer', array('manufacturer_id' => $this->_data['manufacturer']['id']));
+          }
 
           break;
 
