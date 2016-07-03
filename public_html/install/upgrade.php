@@ -27,13 +27,13 @@
 
   $database = new database(null);
 
-// Set current platform database version
+// Get current platform database version
   $platform_database_version_query = $database->query(
     "select `value` from ". DB_TABLE_SETTINGS ."
     where `key` = 'platform_database_version'
     limit 1;"
   );
-  $platform_database_version = $database->fetch($platform_database_version);
+  $platform_database_version = $database->fetch($platform_database_version_query);
 
   if (!empty($platform_database_version)) {
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
@@ -43,8 +43,8 @@
 // List supported upgrades
   $supported_versions = array('1.0' => '1.0');
   foreach (glob("upgrade_patches/*") as $file) {
-    preg_match('/\/(.*).(inc.php|sql)$/', $file, $file);
-    $supported_versions[$file[1]] = $file[1];
+    preg_match('/\/(.*).(inc.php|sql)$/', $file, $matches);
+    $supported_versions[$matches[1]] = $matches[1];
   }
   usort($supported_versions, function($a, $b) {
     return version_compare($a, $b, '>');
@@ -90,12 +90,12 @@
 
       $database->query(
         "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
-        set `value` = '". $database->input($matches[1]) ."'
+        set `value` = '". $database->input(PLATFORM_VERSION) ."'
         where `key` = 'platform_database_version'
         limit 1;"
       );
 
-      echo ' <strong>'. $platform_version .'</strong></p>' . PHP_EOL;
+      echo ' <strong>'. PLATFORM_VERSION .'</strong></p>' . PHP_EOL;
 
     } else {
       echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
