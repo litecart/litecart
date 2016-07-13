@@ -1,5 +1,5 @@
 <div id="cart">
-  <a href="<?php echo htmlspecialchars($link); ?>" class="image"><img src="{snippet:template_path}images/<?php echo !empty($num_items) ? 'cart_filled.png' : 'cart.png'; ?>" alt="" style="height: 64px;" /></a>
+  <a href="<?php echo htmlspecialchars($link); ?>" class="image"><img src="{snippet:template_path}images/<?php echo !empty($num_items) ? 'cart_filled.png' : 'cart.png'; ?>" alt="" /></a>
   <a href="<?php echo htmlspecialchars($link); ?>" class="content">
     <strong><?php echo language::translate('title_cart', 'Cart'); ?>:</strong><br />
     <span class="quantity"><?php echo $num_items; ?></span> <?php echo language::translate('text_items', 'item(s)'); ?> - <span class="formatted_value"><?php echo $cart_total; ?></span>
