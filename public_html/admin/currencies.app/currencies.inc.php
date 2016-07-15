@@ -30,7 +30,7 @@
 
       if ($currency_code == settings::get('store_currency_code')) continue;
 
-      $url = 'http://download.finance.yahoo.com/d/quotes.csv?f=l1&s='. settings::get('store_currency_code') . $currency_code .'=X';
+      $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code'), $currency_code => 'X'));
 
       $result = functions::http_fetch($url);
 
