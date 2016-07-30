@@ -30,12 +30,12 @@
     </div>
 
     <div class="information">
-      <?php if ($manufacturer_name) { ?>
+      <?php if ($manufacturer) { ?>
       <div class="manufacturer" style="font-size: 1.5em; margin-bottom: 10px;" itemscope itemtype="http://www.schema.org/Organization">
-      <?php if ($manufacturer_image) { ?>
-        <a href="<?php echo htmlspecialchars($manufacturer_url); ?>"><img src="<?php echo htmlspecialchars($manufacturer_image); ?>" alt="<?php echo htmlspecialchars($manufacturer_name); ?>" title="<?php echo htmlspecialchars($manufacturer_name); ?>" itemprop="image" /></a>
+      <?php if ($manufacturer['image']) { ?>
+        <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 48); ?>" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" itemprop="image" /></a>
       <?php } else { ?>
-        <a href="<?php echo htmlspecialchars($manufacturer_url); ?>" itemprop="name"><?php echo $manufacturer_name; ?></a>
+        <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>" itemprop="name"><?php echo $manufacturer['name']; ?></a>
       <?php } ?>
       </div>
       <?php } ?>

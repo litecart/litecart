@@ -6,4 +6,3 @@ DELETE FROM `lc_settings` where `key` = 'set_currency_by_language';
 UPDATE `lc_settings` SET `setting_group_key` = 'listings', `priority` = 1 WHERE `key` = 'catalog_only_mode';
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `setting_group_key` = 'general' WHERE `key` = 'regional_settings_screen_enabled';
--- --------------------------------------------------------
