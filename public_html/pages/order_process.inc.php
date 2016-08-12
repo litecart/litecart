@@ -16,6 +16,15 @@
 
   if (isset($_POST['confirm_order'])) {
 
+    if (!empty($_POST['comments'])) {
+      $order->data['comments']['session'] = array(
+        'author' => 'customer',
+        'text' => $_POST['comments'],
+      );
+    } else {
+      unset($order->data['comments']['session']);
+    }
+
     if (!empty($shipping->modules) && count($shipping->options()) > 0) {
       if (empty($shipping->data['selected'])) {
         notices::add('errors', language::translate('error_no_shipping_method_selected', 'No shipping method selected'));
@@ -35,13 +44,6 @@
         notices::add('errors', $payment_error);
         header('Location: '. document::ilink('checkout'));
         exit;
-      }
-
-      if (!empty($_POST['comments'])) {
-        $order->data['comments']['session'] = array(
-          'author' => 'customer',
-          'text' => $_POST['comments'],
-        );
       }
 
       if ($gateway = $payment->transfer($order)) {
