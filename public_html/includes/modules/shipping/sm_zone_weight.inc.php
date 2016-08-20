@@ -76,21 +76,45 @@
     private function calculate_cost($rate_table, $shipping_weight) {
 
       if (empty($rate_table)) return 0;
-      if ($this->settings['method'] == '>=') {
-        foreach (preg_split('#(\||;)#', $rate_table) as $rate) {
-          list($rate_weight, $rate_cost) = explode(':', $rate);
-          if (!isset($cost) || $shipping_weight >= $rate_weight) {
-            $cost = $rate_cost;
-          }
-        }
 
-      } else if ($this->settings['method'] == '<') {
-        foreach (array_reverse(preg_split('#(\||;)#', $rate_table)) as $rate) {
-          list($rate_weight, $rate_cost) = explode(':', $rate);
-          if (!isset($cost) || $shipping_weight < $rate_weight) {
-            $cost = $rate_cost;
+      switch ($this->settings['method']) {
+
+        case '<':
+          foreach (array_reverse(preg_split('#(\||;)#', $rate_table)) as $rate) {
+            list($rate_weight, $rate_cost) = explode(':', $rate);
+            if (!isset($cost) || $shipping_weight < $rate_weight) {
+              $cost = $rate_cost;
+            }
           }
-        }
+          break;
+
+        case '<=':
+          foreach (array_reverse(preg_split('#(\||;)#', $rate_table)) as $rate) {
+            list($rate_weight, $rate_cost) = explode(':', $rate);
+            if (!isset($cost) || $shipping_weight <= $rate_weight) {
+              $cost = $rate_cost;
+            }
+          }
+          break;
+
+        case '>':
+          foreach (preg_split('#(\||;)#', $rate_table) as $rate) {
+            list($rate_weight, $rate_cost) = explode(':', $rate);
+            if (!isset($cost) || $shipping_weight > $rate_weight) {
+              $cost = $rate_cost;
+            }
+          }
+          break;
+
+        case '>=':
+        default:
+          foreach (preg_split('#(\||;)#', $rate_table) as $rate) {
+            list($rate_weight, $rate_cost) = explode(':', $rate);
+            if (!isset($cost) || $shipping_weight >= $rate_weight) {
+              $cost = $rate_cost;
+            }
+          }
+          break;
       }
 
       return $cost;
@@ -177,7 +201,7 @@
           'default_value' => '>=',
           'title' => language::translate(__CLASS__.':title_method', 'Method'),
           'description' => language::translate(__CLASS__.':description_method', 'The calculation method that should to be used for the rate tables where a condition is met for shipping weight.'),
-          'function' => 'select("<",">=")',
+          'function' => 'select("<","<=",">",">=")',
         ),
         array(
           'key' => 'handling_fee',
