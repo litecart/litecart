@@ -120,10 +120,17 @@
         }
       }
 
-    // Get country from browser locale (primary)
+    // Get country from browser locale
       if (empty(self::$data['country_code'])) {
         if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#(^[a-z]{2}-([A-Z]{2}))#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
           if (!empty($matches[2]) && in_array($matches[2], $countries)) self::$data['country_code'] = $matches[2];
+        }
+      }
+
+    // Get country from HTTP header (CloudFlare)
+      if (empty(self::$data['country_code'])) {
+        if (!empty($_SERVER['HTTP_CF_IPCOUNTRY']) && in_array($_SERVER['HTTP_CF_IPCOUNTRY'], $countries)) {
+          self::$data['country_code'] = $_SERVER['HTTP_CF_IPCOUNTRY'];
         }
       }
 

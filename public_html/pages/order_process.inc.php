@@ -65,7 +65,7 @@
               echo $gateway['fields'];
             }
             echo '</form>' . PHP_EOL
-               . '<script>' . PHP_EOL;
+               . '<script data-cfasync="false">' . PHP_EOL;
             if (!empty($gateway['delay'])) {
               echo '  var t=setTimeout(function(){' . PHP_EOL
                  . '    document.forms["gateway_form"].submit();' . PHP_EOL
