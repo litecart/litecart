@@ -30,8 +30,6 @@
         'id' => null,
         'uid' => uniqid(),
         'items' => array(),
-        'weight_total' => 0,
-        'weight_class' => settings::get('store_weight_class'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
