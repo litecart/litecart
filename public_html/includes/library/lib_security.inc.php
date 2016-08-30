@@ -38,7 +38,7 @@
     // Check if client is blacklisted
       if (settings::get('security_blacklist')) {
         if (self::is_blacklisted()) {
-          header('HTTP/1.1 403 Forbidden');
+          http_response_code(403);
           die('<html>' . PHP_EOL
             . '<head>' . PHP_EOL
             . '<title>Blacklisted</title>' . PHP_EOL
@@ -91,7 +91,7 @@
           error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .'] on '. $_SERVER['REQUEST_URI'] .'. Expected '. session::$data['last_ip'] .' ['. session::$data['last_agent'] .']');
           session::clear();
           sleep(3);
-          header('HTTP/1.1 400 Bad Request');
+          http_response_code(400);
           header('Location: ' . $_SERVER['REQUEST_URI']);
           exit;
         }
@@ -104,7 +104,7 @@
             error_log('Warning: Blocked a potential form hacking attempt (CSRF) by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
             session::clear();
             sleep(3);
-            header('HTTP/1.1 400 Bad Request');
+            http_response_code(400);
             die('HTTP POST Error: The form submit token was issued for another session identity. Your request has therefore not been processed. Please try again.');
           }
         }
@@ -249,7 +249,7 @@
 
       session::clear();
       sleep(3);
-      header('HTTP/1.1 400 Bad Request');
+      http_response_code(400);
       exit;
     }
   }

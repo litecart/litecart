@@ -27,7 +27,7 @@
 
     if (empty($page['status'])) {
       notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
-      header('HTTP/1.1 404 Not Found');
+      http_response_code(404);
       header('Location: '. document::ilink(''));
       exit;
     }

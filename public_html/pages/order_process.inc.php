@@ -16,6 +16,15 @@
 
   if (isset($_POST['confirm_order'])) {
 
+    if (!empty($_POST['comments'])) {
+      $order->data['comments']['session'] = array(
+        'author' => 'customer',
+        'text' => $_POST['comments'],
+      );
+    } else {
+      unset($order->data['comments']['session']);
+    }
+
     if (!empty($shipping->modules) && count($shipping->options()) > 0) {
       if (empty($shipping->data['selected'])) {
         notices::add('errors', language::translate('error_no_shipping_method_selected', 'No shipping method selected'));
@@ -37,13 +46,6 @@
         exit;
       }
 
-      if (!empty($_POST['comments'])) {
-        $order->data['comments']['session'] = array(
-          'author' => 'customer',
-          'text' => $_POST['comments'],
-        );
-      }
-
       if ($gateway = $payment->transfer($order)) {
 
         if (!empty($gateway['error'])) {
@@ -63,7 +65,7 @@
               echo $gateway['fields'];
             }
             echo '</form>' . PHP_EOL
-               . '<script>' . PHP_EOL;
+               . '<script data-cfasync="false">' . PHP_EOL;
             if (!empty($gateway['delay'])) {
               echo '  var t=setTimeout(function(){' . PHP_EOL
                  . '    document.forms["gateway_form"].submit();' . PHP_EOL

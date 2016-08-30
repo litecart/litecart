@@ -1,5 +1,5 @@
 <div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_tax_class'), true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></div>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_tax_classs', 'Tax Classes'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_tax_classes', 'Tax Classes'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('tax_classs_form', 'post'); ?>
 <table width="100%" align="center" class="dataTable">

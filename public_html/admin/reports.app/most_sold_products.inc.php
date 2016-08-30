@@ -62,8 +62,8 @@
     from ". DB_TABLE_ORDERS_ITEMS ." oi
     left join ". DB_TABLE_ORDERS ." o on (o.id = oi.order_id)
     where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-    and o.date_created >= '". date('Y-m-1 00:00:00', strtotime($_GET['date_from'])) ."'
-    and o.date_created <= '". date('Y-m-t 23:59:59', strtotime($_GET['date_to'])) ."'
+    and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
+    and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
     ". (!empty($_GET['name']) ? "and oi.name like '%". database::input($_GET['name']) ."%'" : "") ."
     group by oi.product_id
     order by total_quantity desc;"

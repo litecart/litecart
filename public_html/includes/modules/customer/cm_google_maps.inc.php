@@ -10,7 +10,7 @@
 
     public function get_address($data) {
 
-      if (!empty($this->settings['status'])) return;
+      if (empty($this->settings['status'])) return;
 
       if (!in_array($data['trigger'], array('company', 'address1', 'postcode', 'city'))) return;
 

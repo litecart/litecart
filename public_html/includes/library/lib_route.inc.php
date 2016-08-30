@@ -207,14 +207,14 @@
         $use_rewrite = true; // We are just going to assume any non-apache HTTP daemon supports URL rewriting
       }
 
-    // Set router base (/index.php or /)
+    // Set base (/index.php/ or /)
       if ($use_rewrite) {
         $http_route_base = WS_DIR_HTTP_HOME;
       } else {
         $http_route_base = WS_DIR_HTTP_HOME . 'index.php/';
       }
 
-    // Append language prefix
+    // Append language prefix to base
       if (settings::get('seo_links_language_prefix')) {
         $http_route_base .= $language_code .'/';
       }

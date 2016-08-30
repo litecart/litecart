@@ -329,33 +329,4 @@
       }
     });
   });
-
-  $("body").on('blur', "form[name='comments_form']", function(e) {
-    if (console) console.log("Saving comments");
-    e.preventDefault();
-    $('*').css('cursor', 'wait');
-    $('#checkout-comments-wrapper').fadeTo('slow', 0.25);
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_comments.html'); ?>',
-      data: $(this).serialize(),
-      type: 'post',
-      cache: false,
-      context: $('#checkout-comments-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-comments-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
-      },
-      success: function(data) {
-        $('#checkout-comments-wrapper').html(data).fadeTo('slow', 1);
-      },
-      complete: function() {
-        $('*').css('cursor', '');
-      }
-    });
-  });
 </script>

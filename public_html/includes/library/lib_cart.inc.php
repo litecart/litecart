@@ -210,14 +210,9 @@
       if (count($product->options) > 0) {
         foreach (array_keys($product->options) as $key) {
 
-          if ($product->options[$key]['required'] != 0) {
-            if (empty($options[$product->options[$key]['name'][language::$selected['code']]])) {
-              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][language::$selected['code']] .')');
-              return;
-            }
-          }
+          $submitted_option_group = @array_values(array_intersect(array_keys($options), $product->options[$key]['name']))[0];
 
-          if (!empty($options[$product->options[$key]['name'][language::$selected['code']]])) {
+          if (!empty($submitted_option_group) && !empty($options[$submitted_option_group])) {
             switch ($product->options[$key]['function']) {
 
               case 'checkbox':
@@ -230,7 +225,7 @@
                   }
                 }
 
-                foreach (explode(', ', $options[$product->options[$key]['name'][language::$selected['code']]]) as $current_value) {
+                foreach (explode(', ', $options[$submitted_option_group]) as $current_value) {
                   if (!in_array($current_value, $valid_values)) {
                     if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
                     return;
@@ -249,21 +244,29 @@
               case 'radio':
               case 'select':
 
-                $valid_values = array();
-                foreach ($product->options[$key]['values'] as $value) {
-                  $valid_values[] = $value['name'][language::$selected['code']];
-                  if ($value['name'][language::$selected['code']] == $options[$product->options[$key]['name'][language::$selected['code']]]) {
-                    $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-                    $item['extras'] += $value['price_adjust'];
-                  }
-                }
+                if (!in_array($options[$submitted_option_group], array_column($product->options[$key]['values'], 'name'))) {
 
-                if (!in_array($options[$product->options[$key]['name'][language::$selected['code']]], $valid_values)) {
+                  foreach ($product->options[$key]['values'] as $value) {
+
+                    if (in_array($options[$submitted_option_group], $value['name'])) {
+                      $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
+                      $item['extras'] += $value['price_adjust'];
+
+                    }
+                  }
+
+                } else {
                   if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
                   return;
                 }
 
                 break;
+            }
+
+          } else {
+            if ($product->options[$key]['required'] != 0) {
+              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][language::$selected['code']] .')');
+              return;
             }
           }
         }

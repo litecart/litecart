@@ -5,3 +5,6 @@
 # Search engines
 MSN Bot [ip=""][hostname=".search.msn.com"][agent=""]
 Google Bot [ip=""][hostname=".googlebot.com"][agent=""]
+
+# Other
+CloudFlare-AlwaysOnline [ip=""][hostname=""][agent="CloudFlare"]
