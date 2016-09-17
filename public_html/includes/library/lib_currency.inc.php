@@ -171,7 +171,9 @@
         return number_format($value * $currency_value, 2, '.', ',') .' '. $currency_code;
       }
 
-      if (settings::get('auto_decimals') && $auto_decimals && round($value, self::$currencies[$currency_code]['decimals']) - floor($value) == 0) {
+      $fraction = ($value * $currency_value) - (int)($value * $currency_value);
+
+      if ($fraction == 0 && $auto_decimals && settings::get('auto_decimals')) {
         $decimals = 0;
       } else {
         $decimals = (int)self::$currencies[$currency_code]['decimals'];
