@@ -43,14 +43,14 @@
 
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">' . PHP_EOL;
 
-      self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>' . PHP_EOL
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
+
+      self::$snippets['foot_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>' . PHP_EOL
                                              . '<script src="//code.jquery.com/jquery-migrate-1.4.1.min.js"></script>' . PHP_EOL
                                              . '<script>' . PHP_EOL
                                              . '  window.jQuery || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-1.12.4.min.js"%3E%3C/script%3E\'));' . PHP_EOL
                                              . '  (window.jQuery && jQuery.migrateTrace) || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-migrate-1.4.1.min.js"%3E%3C/script%3E\'));' . PHP_EOL
                                              . '</script>';
-
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -68,6 +68,29 @@
 
     public static function after_capture() {
 
+    // Extract in content styles
+      if (preg_match_all('#<style>(.*?)</style>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+          document::$snippets['style'][] = $match[1];
+          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+        }
+      }
+
+    // Extract in content javascript resources
+      if (preg_match_all('#<script[^>]+></script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+          document::$snippets['foot_tags'][] = $match[0];
+          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+        }
+      }
+
+    // Extract in content javascript
+      if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?[^>]*>(.*?)</script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+          document::$snippets['javascript'][] = $match[1];
+          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+        }
+      }
     }
 
     public static function prepare_output() {
@@ -83,7 +106,7 @@
       if (!empty(self::$snippets['styles'])) {
         self::$snippets['styles'] = '<style>' . PHP_EOL
                                   . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                                  . implode(PHP_EOL . PHP_EOL, self::$snippets['styles']) . PHP_EOL
+                                  . implode(PHP_EOL . PHP_EOL, self::$snippets['style']) . PHP_EOL
                                   . '/*]]>*/-->' . PHP_EOL
                                   . '</style>' . PHP_EOL;
       }
