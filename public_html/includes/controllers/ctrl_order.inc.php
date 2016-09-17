@@ -21,6 +21,13 @@
           if (!isset(session::$data['order'])) session::$data['order'] = array();
           $this->data = &session::$data['order'];
           break;
+
+        case 'new':
+          $this->reset();
+          break;
+
+        default:
+          trigger_error('Unknown action for first argument', E_USER_ERROR);
       }
     }
 
@@ -612,6 +619,7 @@
         }
       }
 
+    // Additional customer validation
       $customer = new mod_customer();
       $result = $customer->validate($this->data['customer']);
 
