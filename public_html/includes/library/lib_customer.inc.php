@@ -213,35 +213,22 @@
     }
 
     public static function reset() {
-      session::$data['customer'] = array(
-        'id' => '',
-        'email' => '',
-        'tax_id' => '',
-        'phone' => '',
-        'mobile' => '',
-        'company' => '',
-        'firstname' => '',
-        'lastname' => '',
-        'address1' => '',
-        'address2' => '',
-        'city' => '',
-        'postcode' => '',
-        'country_code' => '',
-        'zone_code' => '',
-        'different_shipping_address' => false,
-        'shipping_address' => array(
-          'company' => '',
-          'firstname' => '',
-          'lastname' => '',
-          'address1' => '',
-          'address2' => '',
-          'city' => '',
-          'postcode' => '',
-          'country_code' => '',
-          'zone_code' => '',
-        ),
-        'display_prices_including_tax' => null,
+
+      session::$data['customer'] = array();
+
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_CUSTOMERS .";"
       );
+      while ($field = database::fetch($fields_query)) {
+        if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
+          session::$data['customer']['shipping_address'][$matches[1]] = '';
+        } else {
+          session::$data['customer'][$field['Field']] = null;
+        }
+      }
+
+      session::$data['customer']['different_shipping_address'] = false;
+      session::$data['customer']['display_prices_including_tax'] = null;
     }
 
     public static function require_login() {
