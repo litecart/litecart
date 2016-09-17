@@ -180,11 +180,14 @@
 
       if (!is_array($dependencies)) {
         $dependencies = array($dependencies);
-      } else {
-        sort($dependencies);
       }
 
       $hash_string = $keyword;
+
+      $dependencies[] = 'site';
+
+      $dependencies = array_unique($dependencies);
+      sort($dependencies);
 
       foreach ($dependencies as $dependant) {
         switch ($dependant) {
