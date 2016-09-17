@@ -70,6 +70,8 @@
         $this->data['id'] = database::insert_id();
       }
 
+      if ($this->data['parent_id'] == $this->data['id']) $this->data['parent_id'] = null;
+
       database::query(
         "update ". DB_TABLE_CATEGORIES ."
         set parent_id = '". (int)$this->data['parent_id'] ."',
