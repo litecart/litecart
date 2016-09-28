@@ -45,7 +45,10 @@
     //public static function startup() {
     //}
 
-    public static function before_capture() {
+    //public static function before_capture() {
+    //}
+
+    public static function after_capture() {
 
     // Set regional data
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
@@ -67,9 +70,6 @@
         }
       }
     }
-
-    //public static function after_capture() {
-    //}
 
     //public static function prepare_output() {
     //}
