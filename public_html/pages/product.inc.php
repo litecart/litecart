@@ -50,8 +50,8 @@
   document::$snippets['title'][] = $product->head_title[language::$selected['code']] ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']];
   document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : strip_tags($product->short_description[language::$selected['code']]);
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
-  document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
-  document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
+  document::$snippets['foot_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
+  document::$snippets['foot_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
 
   if (!empty($product->image)) {
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';

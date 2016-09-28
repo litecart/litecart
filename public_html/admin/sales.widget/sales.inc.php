@@ -1,7 +1,7 @@
 <?php
 
-  document::$snippets['head_tags']['jqplot'] = '<link href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" rel="stylesheet"  />' . PHP_EOL
-                                             . '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
+  document::$snippets['head_tags']['jqplot'] = '<link href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" rel="stylesheet"  />';
+  document::$snippets['foot_tags']['jqplot'] = '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.barRenderer.min.js"></script>' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>';

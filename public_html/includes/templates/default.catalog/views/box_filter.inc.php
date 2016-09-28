@@ -9,11 +9,6 @@
         <?php foreach ($manufacturers as $manufacturer) echo '<li><label>'. functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true) .' '. $manufacturer['name'] .'</label> <a href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])) .'">&raquo;</a></li>' . PHP_EOL; ?>
       </ul>
     </div>
-    <script>
-      $("form[name='filter_form'] input[name='manufacturers[]']").click(function(){
-        $(this).closest("form").submit();
-      });
-    </script>
   </div>
   <?php } ?>
 
@@ -26,11 +21,6 @@
         <ul class="list-vertical">
           <?php foreach ($group['values'] as $value) echo '<li><label>' . functions::form_draw_checkbox('product_groups[]', $group['id'].'-'.$value['id']) .' '. $value['name'].'</label></li>' . PHP_EOL; ?>
         </ul>
-        <script>
-          $("form[name='filter_form'] input[name='product_groups[]']").click(function(){
-            $(this).closest("form").submit();
-          });
-        </script>
       </div>
     </div>
   </div>
@@ -39,3 +29,13 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 </div>
+
+<script>
+  $("form[name='filter_form'] input[name='manufacturers[]']").click(function(){
+    $(this).closest("form").submit();
+  });
+
+  $("form[name='filter_form'] input[name='product_groups[]']").click(function(){
+    $(this).closest("form").submit();
+  });
+</script>
