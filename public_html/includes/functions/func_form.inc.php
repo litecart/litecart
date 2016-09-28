@@ -498,7 +498,7 @@
                                                    . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
                                                    . '  });';
 
-    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
+    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
 
   ######################################################################
@@ -955,9 +955,14 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    $products_query = functions::catalog_products_query(array('sort' => 'name'));
+    $products_query = database::query(
+      "select p.*, pi.name from ". DB_TABLE_PRODUCTS ." p
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id)
+      order by pi.name"
+    );
+
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] .' ['. (float)$product['quantity'] .'] '. currency::format($product['final_price']), $product['id']);
+      $options[] = array($product['name'] .' ['. $product['sku'] .'] ('. (float)$product['quantity'] .')', $product['id']);
     }
 
     return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
