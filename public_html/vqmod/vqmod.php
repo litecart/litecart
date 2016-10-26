@@ -21,7 +21,7 @@
     public static $modCache = 'vqmod/mods.cache';              // Relative path to serialized mods array cache file
     public static $checkedCache = 'vqmod/checked.cache';       // Relative path to already checked files array cache file
     public static $protectedFilelist = 'vqmod/vqprotect.txt';  // Relative path to protected files array cache file
-    public static $fileModding = false;                        // Reference to the current file being modified by vQmod for logging
+    public static $fileModding = null;                        // Reference to the current file being modified by vQmod for logging
     public static $replaces = array();                         // Array of regex replaces to perform on file paths array(search => replace)
 
     /**
@@ -401,11 +401,11 @@
    * @description Object for the <modification> that orchestrates each applied modification
    */
   class VQModObject {
-    public $modFile = '';
-    public $id = '';
-    public $version = '';
-    public $vqmver = '';
-    public $author = '';
+    public $modFile = null;
+    public $id = null;
+    public $version = null;
+    public $vqmver = null;
+    public $author = null;
     public $mods = array();
 
     private $_skip = false;
@@ -492,7 +492,7 @@
             foreach($tmp as $lineNum => $line) {
               if (strlen($mod['search']->getContent()) == 0) {
                 if ($mod['error'] == 'log' || $mod['error'] == 'abort') {
-                  trigger_error(__METHOD__.' - Empty search content in "'. $modObject->id  .'": '. VQMod::$fileModding .' '. $skip, E_USER_WARNING);
+                  trigger_error(__METHOD__.'('. basename($this->modFile) .') - Empty search content in "'. $modObject->id  .'": '. VQMod::$fileModding . $skip, E_USER_WARNING);
                 }
                 break;
               }
@@ -501,8 +501,8 @@
                 $pos = @preg_match($mod['search']->getContent(), $line);
                 if ($pos === false) {
                   if ($mod['error'] == 'log' || $mod['error'] == 'abort' ) {
-                    //trigger_error(__METHOD__.' - Invalid regular expression ('. VQMod::$fileModding .'): '. $mod['search']->getContent(), E_USER_WARNING);
-                    trigger_error(__METHOD__.' - Invalid regular expression in "'. $modObject->id  .'": '. VQMod::$fileModding .' '. $skip, E_USER_WARNING);
+                    //trigger_error(__METHOD__.'('. basename($this->modFile) .') - Invalid regular expression ('. VQMod::$fileModding .'): '. $mod['search']->getContent(), E_USER_WARNING);
+                    trigger_error(__METHOD__.'('. basename($this->modFile) .') - Invalid regular expression in "'. $modObject->id  .'": '. VQMod::$fileModding . $skip, E_USER_WARNING);
                   }
                   continue 2;
                 } elseif ($pos == 0) {
@@ -566,11 +566,11 @@
             }
 
             if (!$changed) {
-              $skip = ($mod['error'] == 'skip' || $mod['error'] == 'log') ? ' (SKIPPED)' : ' (ABORTING MOD)';
+              $skip = ($mod['error'] == 'skip' || $mod['error'] == 'log') ? ' [SKIPPED]' : ' [ABORTING MOD]';
 
               if ($mod['error'] == 'log' || $mod['error'] == 'abort') {
                 //VQMod::$log->write('VQModObject::applyMod - SEARCH NOT FOUND' . $skip . ': ' . $mod['search']->getContent(), $this);
-                trigger_error(__METHOD__.' - Search not found in "'. $modObject->id  .'": '. VQMod::$fileModding .' '. $skip, E_USER_WARNING);
+                trigger_error(__METHOD__.'('. basename($this->modFile) .') - Search not found in "'. $modObject->id  .'": '. VQMod::$fileModding . $skip, E_USER_WARNING);
               }
 
               if ($mod['error'] == 'abort') {
@@ -587,7 +587,7 @@
         $tmp = implode(PHP_EOL, $tmp);
       }
 
-      VQMod::$fileModding = false;
+      VQMod::$fileModding = null;
 
       $data = $tmp;
     }
@@ -600,9 +600,8 @@
      * @description Parses modifications in preparation for the applyMod method to work
      */
     private function _parseMods(DOMNode $node){
-      $files = $node->getElementsByTagName('file');
 
-      foreach($files as $file) {
+      foreach($node->getElementsByTagName('file') as $file) {
         $path = $file->getAttribute('path') ? $file->getAttribute('path') : '';
         $filesToMod = explode(',', $file->getAttribute('name'));
 
@@ -624,7 +623,7 @@
             } else {
               if ($error == 'log' || $error == 'abort') {
                 $skip = ($error == 'log') ? ' [SKIPPED]' : ' [ABORTING MOD]';
-                trigger_error(__METHOD__.' - Could not resolve path ('. $fileToMod .') '. $skip, E_USER_WARNING);
+                trigger_error(__METHOD__.'('. basename($this->modFile) .') - Could not resolve path ('. $fileToMod .')'. $skip, E_USER_WARNING);
               }
 
               if ($error == 'log' || $error == 'skip') {
@@ -654,12 +653,12 @@
             $add = $operation->getElementsByTagName('add')->item(0);
 
             if (!$search) {
-              trigger_error(__METHOD__.' - Operation <search> tag missing', E_USER_WARNING);
+              trigger_error(__METHOD__.'('. basename($this->modFile) .') - Operation <search> tag missing', E_USER_WARNING);
               $skipOperation = true;
             }
 
             if (!$add) {
-              trigger_error(__METHOD__.' - Operation <add> tag missing', E_USER_WARNING);
+              trigger_error(__METHOD__.'('. basename($this->modFile) .') - Operation <add> tag missing', E_USER_WARNING);
               $skipOperation = true;
             }
 
@@ -675,7 +674,7 @@
             }
           }
 
-          VQMod::$fileModding = false;
+          VQMod::$fileModding = null;
         }
       }
     }
