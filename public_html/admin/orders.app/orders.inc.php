@@ -179,19 +179,16 @@
   }
 ?>
   </ul>
-  <script>
-  $(".dataTable input[name^='orders[']").change(function() {
-    if ($(".dataTable input[name^='orders[']:checked").length > 0) {
-      $("#order-actions button").removeAttr('disabled');
-    } else {
-      $("#order-actions button").attr('disabled', 'disabled');
-    }
-  });
-  $(".dataTable input[name^='orders[']").trigger('change');
-  </script>
 </p>
 
 <script>
+  $('input[name="query"]').keypress(function(e) {
+    if (e.which == 13) {
+      e.preventDefault();
+      $(this).closest('form').submit();
+    }
+  });
+
   $(".dataTable .checkbox-toggle").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));
@@ -205,6 +202,15 @@
     if ($(event.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
+
+  $(".dataTable input[name^='orders[']").change(function() {
+    if ($(".dataTable input[name^='orders[']:checked").length > 0) {
+      $("#order-actions button").removeAttr('disabled');
+    } else {
+      $("#order-actions button").attr('disabled', 'disabled');
+    }
+  });
+  $(".dataTable input[name^='orders[']").trigger('change');
 </script>
 <?php
   echo functions::form_draw_form_end();
