@@ -53,6 +53,7 @@
           description = '". database::input($this->data['description']) ."',
           type = '". database::input($this->data['type']) ."',
           rate = '". database::input($this->data['rate']) ."',
+          address_type = '". database::input($this->data['address_type']) ."',
           customer_type = '". database::input($this->data['customer_type']) ."',
           tax_id_rule = '". database::input($this->data['tax_id_rule']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
