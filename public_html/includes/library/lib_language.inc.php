@@ -341,6 +341,26 @@
 
       return strftime($format, $timestamp);
     }
+
+    function convert_characters($variable, $from_charset=null, $to_charset=null) {
+
+      if (empty($from_charset)) $from_charset = self::$selected['charset'];
+      if (empty($to_charset)) $to_charset = self::$selected['charset'];
+
+      if ($from_charset == $to_charset) return $variable;
+
+      if (function_exists('mb_convert_variables')) {
+        if (mb_convert_variables($to_charset, $from_charset, $variable)) {
+          return $variable;
+        } else {
+          trigger_error('Could not encode variable from '. $from_charset .' to '. $to_charset, E_USER_WARNING);
+        }
+      } else {
+        trigger_error('Missing Multibyte PHP extension', E_USER_ERROR);
+      }
+
+      return false;
+    }
   }
 
 ?>
