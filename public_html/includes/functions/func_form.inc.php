@@ -133,7 +133,7 @@
 
     $value = strtotime($value);
     if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
-      $value = date('Y-m-d H:i', strtotime($value));
+      $value = date('Y-m-d\TH:i:s', strtotime($value));
     } else {
       $value = '';
     }
