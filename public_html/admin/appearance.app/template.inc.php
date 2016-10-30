@@ -18,13 +18,13 @@
         );
 
 
-      // Get template settings structure
+      // Load template settings structure
         include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . basename($_POST['template_catalog']) .'/config.inc.php');
 
       // Set template default settings
         $settings = array();
-        foreach (array_keys($template_config) as $key) {
-          $settings[$key] = $template_config[$key]['default_value'];
+        foreach (array_keys($template_config) as $i) {
+          $settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
         }
 
         database::query(
