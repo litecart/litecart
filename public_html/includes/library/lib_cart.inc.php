@@ -211,7 +211,7 @@
         foreach (array_keys($product->options) as $key) {
 
           $submitted_option_groups = @array_values(array_intersect(array_keys($options), $product->options[$key]['name']));
-          $submitted_option_group = $submitted_option_groups[0];
+          $submitted_option_group = @$submitted_option_groups[0];
 
           if (!empty($submitted_option_group) && !empty($options[$submitted_option_group])) {
             switch ($product->options[$key]['function']) {
