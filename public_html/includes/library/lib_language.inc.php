@@ -342,7 +342,7 @@
       return strftime($format, $timestamp);
     }
 
-    function convert_characters($variable, $from_charset=null, $to_charset=null) {
+    public static function convert_characters($variable, $from_charset=null, $to_charset=null) {
 
       if (empty($from_charset)) $from_charset = self::$selected['charset'];
       if (empty($to_charset)) $to_charset = self::$selected['charset'];
