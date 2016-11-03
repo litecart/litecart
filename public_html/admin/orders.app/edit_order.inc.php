@@ -107,7 +107,7 @@
   }
 
   // Delete from database
-  if (isset($_POST['delete']) && $order) {
+  if (isset($_POST['delete']) && !empty($order->data['id'])) {
     $order->delete();
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
@@ -487,7 +487,6 @@
       $(row).find("*[name$='[sku]']").val(item.sku);
       $(row).find("*[name$='[option_stock_combination]']").val(item.option_stock_combination);
       $(row).find("*[name$='[name]']").val(item.name);
-      $(row).find("*[name$='[sku]']").val(item.sku);
       $(row).find("*[name$='[weight]']").val(item.weight);
       $(row).find("*[name$='[weight_class]']").val(item.weight_class);
       $(row).find("*[name$='[quantity]']").val(item.quantity);
