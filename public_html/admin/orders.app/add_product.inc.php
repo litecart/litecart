@@ -91,8 +91,8 @@
 
         if ($option_match) {
           if (($option_stock['quantity'] - $_POST['quantity']) < 0 && empty($product->sold_out_status['orderable'])) {
-            notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.'));
-            return;
+            notices::add('warnings', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.'));
+            break;
           }
 
           $option_stock_combination = $option_stock['combination'];
