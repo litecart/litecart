@@ -305,7 +305,7 @@
     }
 
     private static function _error($query, $errno, $error) {
-      trigger_error($errno .' - '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
+      trigger_error('MySQL Error '. $errno .': '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
     }
   }
 

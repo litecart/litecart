@@ -821,7 +821,7 @@ foreach (currency::$currencies as $currency) {
       foreach (array_keys(currency::$currencies) as $currency_code) {
         if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
-            <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field($currency_code, 'options['.$key.']['. $currency_code. ']', number_format((float)$_POST['options'][$key][$currency_code], 4, '.', ''))); ?></td>
+            <td><?php echo functions::form_draw_currency_field($currency_code, 'options['.$key.']['. $currency_code. ']', number_format((float)$_POST['options'][$key][$currency_code], 4, '.', '')); ?></td>
 <?php
       }
 ?>
@@ -952,8 +952,8 @@ foreach (currency::$currencies as $currency) {
               <th style="vertical-align: text-top;">&nbsp;</th>
             </tr>
             <tr>
-              <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_option_groups_list('new_option[new_1][group_id]', '')); ?></td>
-              <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>
+              <td><?php echo functions::form_draw_option_groups_list('new_option[new_1][group_id]', ''); ?></td>
+              <td><?php echo functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"'); ?></td>
             </tr>
             <tr>
               <td><a class="add" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_another_option', 'Another Option'); ?></a></td>
