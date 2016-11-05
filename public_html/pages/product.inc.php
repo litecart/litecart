@@ -198,7 +198,9 @@
       if (empty($shipping->data['options'][$module_id]['options'][$option_id]['error']) && !empty($shipping->data['options'][$module_id]['options'][$option_id]['cost'])) {
         $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
         $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-        $box_product->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+        $box_product->snippets['cheapest_shipping'] = strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'), array(
+          '%price' => currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)),
+        ));
       }
     }
   }

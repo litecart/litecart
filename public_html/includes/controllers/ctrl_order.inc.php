@@ -653,7 +653,7 @@
         '%order_status' => $order_status['name'],
       );
 
-      $html = str_replace(array_keys($aliases), array_values($aliases), $html);
+      $html = strtr($html, $aliases);
 
       return $html;
     }

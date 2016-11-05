@@ -272,7 +272,11 @@
         limit 1;"
       );
 
-      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::ilink('')), language::translate('email_body_password_reset', "We have set a new password for your account at %store_link. Use your email %email and new password %password to log in."));
+      $message = strtr(language::translate('email_body_password_reset', "We have set a new password for your account at %store_link. Use your email %email and new password %password to log in."), array(
+        '%email' => $email,
+        '%password' => $new_password,
+        '%store_link' => document::ilink(''),
+      ));
 
       functions::email_send(
         null,
@@ -372,7 +376,10 @@
 
       if (empty($redirect_url)) $redirect_url = document::ilink('');
 
-      notices::add('success', str_replace(array('%firstname', '%lastname'), array(self::$data['firstname'], self::$data['lastname']), language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.')));
+      notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
+        '%firstname' => self::$data['firstname'],
+        '%lastname' => self::$data['lastname'],
+      )));
       header('Location: '. $redirect_url);
       exit;
     }
