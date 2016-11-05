@@ -16,6 +16,11 @@
         self::$_cache[$row['key']] = $row['value'];
       }
 
+    // Check version
+      if (settings::get('platform_database_version') != PLATFORM_VERSION) {
+        trigger_error('Platform database version ('. settings::get('platform_database_version') .') does not match platform version ('. PLATFORM_VERSION .')', E_USER_WARNING);
+      }
+
     // Set time zone
       date_default_timezone_set(self::get('store_timezone'));
     }
