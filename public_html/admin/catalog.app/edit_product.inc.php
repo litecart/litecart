@@ -11,7 +11,7 @@
       $_POST[$key] = $value;
     }
 
-    if (!empty($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
+    if (isset($_GET['category_id']) && empty($_POST['categories'])) $_POST['categories'][] = $_GET['category_id'];
   }
 
   breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'));
@@ -217,20 +217,22 @@ foreach (array_keys(language::$languages) as $language_code) {
   echo functions::form_draw_select_field('default_category_id', $options, true);
 ?>
 <script>
-  $("input[name='categories[]']").click(function() {
-    if ($(this).is(':checked')) {
-      $("select[name='default_category_id']").append("<option value='"+ $(this).val() +"'>"+ $(this).data('name') +"</option>");
+  $('input[name="categories[]"]').change(function() {
+    if ($(this).is(":checked")) {
+      $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ $(this).data('name') +'</option>');
     } else {
-      $("select[name='default_category_id'] option[value='"+ $(this).val() +"']").remove();
+      $('select[name="default_category_id"] option[value="'+ $(this).val() +'"]').remove();
     }
-    var default_category = $("select[name='default_category_id'] option:selected").val();
-    $("select[name='default_category_id']").html($("select[name='default_category_id'] option").sort(function(a,b){
-        a = $("input[name='categories[]'][value='"+ a.value +"']").data('priority');
-        b = $("input[name='categories[]'][value='"+ b.value +"']").data('priority');
+    var default_category = $('select[name="default_category_id"] option:selected').val();
+    $('select[name="default_category_id"]').html($('select[name="default_category_id"] option').sort(function(a,b){
+        a = $('input[name="categories[]"][value="'+ a.value +'"]').data('priority');
+        b = $('input[name="categories[]"][value="'+ b.value +'"]').data('priority');
         return a-b;
     }));
-    $("select[name='default_category_id'] option[value='"+ default_category +"']").attr('selected', 'selected');
+    $('select[name="default_category_id"] option').prop('selected', '');
+    $('select[name="default_category_id"] option[value="'+ default_category +'"]').prop('selected', 'selected');
   });
+  $('input[name="categories[]"]:checked').trigger('change');
 </script>
              </td>
            </tr>
