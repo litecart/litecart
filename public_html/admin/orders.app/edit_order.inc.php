@@ -120,16 +120,32 @@
     'height' => 100,
     'transitionIn' => 'fade',
     'transitionOut' => 'fade',
-    'onStart' => 'function(links, index){' . PHP_EOL
-               . '  if ($(links[index]).hasClass("add-product")) {' . PHP_EOL
-               . '    $(links[index]).attr("href", $(links[index]).data("href") + "&language_code=" + $("select[name=\'language_code\']").val() + "&currency_code=" + $("select[name=\'currency_code\']").val() + "&currency_value=" + $("input[name=\'currency_value\']").val() + "&customer%5Bcountry_code%5D=" + $("select[name=\'customer[country_code]\']").val() + "&customer%5Bzone_code%5D=" + ($("select[name=\'customer[zone_code]\']").val() ? $("select[name=\'customer[zone_code]\']").val() : \'\') + "&customer%5Bcompany%5D=" + $("input[name=\'customer[company]\']").val());' . PHP_EOL
-               . '  }' . PHP_EOL
-               . '  if ($(links[index]).hasClass("add-custom-item")) {' . PHP_EOL
-               . '    $(links[index]).attr("href", $(links[index]).data("href") + "&language_code=" + $("select[name=\'language_code\']").val() + "&currency_code=" + $("select[name=\'currency_code\']").val() + "&currency_value=" + $("input[name=\'currency_value\']").val() + "&customer%5Bcountry_code%5D=" + $("select[name=\'customer[country_code]\']").val() + "&customer%5Bzone_code%5D=" + $("select[name=\'customer[zone_code]\']").val() + "&customer%5Bcompany%5D=" + $("input[name=\'customer[company]\']").val());' . PHP_EOL
-               . '  }' . PHP_EOL
-               . '}',
+    'onStart' => 'function(links, index){ rewrite_fancybox_link(links, index); }'
   ));
 ?>
+<script>
+  function rewrite_fancybox_link(links, index) {
+    var params = {
+      language_code: $('select[name="language_code"]').val(),
+      currency_code: $('select[name="currency_code"]').val(),
+      currency_value: $('input[name="currency_value"]').val(),
+      customer: {
+        tax_id: $('input[name="customer[tax_id]"]').val(),
+        company: $('input[name="customer[company]"]').val(),
+        country_code: $('select[name="customer[country_code]"]').val(),
+        zone_code: $('select[name="customer[zone_code]"]').val(),
+        shipping_address: {
+          company: $('input[name="customer[shipping_address][company]"]').val(),
+          country_code: $('select[name="customer[shipping_address][country_code]"]').val(),
+          zone_code: $('select[name="customer[shipping_address][zone_code]"]').val(),
+        }
+      }
+    }
+    if ($(links[index]).hasClass('add-product') || $(links[index]).hasClass('add-custom-item')) {
+      $(links[index]).attr('href', $(links[index]).data('href') +'&'+ $.param(params));
+    }
+  }
+</script>
 
 <?php if (!empty($order->data['id'])) { ?>
 <?php

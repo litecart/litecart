@@ -1,4 +1,6 @@
 <?php
+  parse_str($_SERVER['QUERY_STRING'], $_GET); // Rebuild GET params - Suhosin Bypass
+
   document::$layout = 'printable';
 
   if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('store_currency_code');
@@ -120,9 +122,9 @@
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('form_add_product', 'post'); ?>
+<?php echo functions::form_draw_form_begin('form_add_product', 'post', null, false, 'style="min-height: 250px;"'); ?>
 
-  <?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="$(this).closest(\'form\').submit();"'); ?>
+  <?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="$(this).closest(\'form\').submit();" data-size="large"'); ?>
 
   <?php if (!empty($product)) { ?>
 

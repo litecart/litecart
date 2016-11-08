@@ -1,4 +1,6 @@
 <?php
+  parse_str($_SERVER['QUERY_STRING'], $_GET); // Rebuild GET params - Suhosin Bypass
+
   document::$layout = 'printable';
 ?>
 
