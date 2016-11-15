@@ -51,6 +51,7 @@
 }
 #box-category-tree li a, #box-information li a {
   color: inherit;
+  line-height: 175%;
 }
 #box-category-tree a:hover, #box-information a:hover {
   color: rgb(0, 136, 204);
