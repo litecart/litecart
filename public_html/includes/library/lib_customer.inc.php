@@ -246,7 +246,7 @@
     public static function password_reset($email) {
 
       if (empty($email)) {
-        notices::add('errors', language::translate('error_missing_email', 'To reset your password you must provide an email address.'));
+        notices::add('errors', language::translate('error_password_reset_missing_email', 'To reset your password you must provide an email address.'));
         return;
       }
 
