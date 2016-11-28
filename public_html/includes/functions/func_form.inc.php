@@ -750,7 +750,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     if (database::num_rows($geo_zones_query) == 0) {
-      return functions::form_draw_hidden_field($name, '0') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
+      return functions::form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {

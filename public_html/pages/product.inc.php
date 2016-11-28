@@ -17,7 +17,7 @@
     exit;
   }
 
-  if ( empty($product->status)) {
+  if (empty($product->status)) {
     notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
     http_response_code(404);
     header('Refresh: 0; url='. document::ilink(''));
