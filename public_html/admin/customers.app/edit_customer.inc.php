@@ -105,7 +105,7 @@
 
   <table>
     <tr>
-      <td width="50%"><?php echo language::translate('title_status', 'Status'); ?><br />
+      <td><?php echo language::translate('title_status', 'Status'); ?><br />
         <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
       </td>
       <td></td>

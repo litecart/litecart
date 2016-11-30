@@ -130,6 +130,7 @@
       currency_code: $('select[name="currency_code"]').val(),
       currency_value: $('input[name="currency_value"]').val(),
       customer: {
+        id: $(':input[name="customer[id]"]').val(),
         tax_id: $('input[name="customer[tax_id]"]').val(),
         company: $('input[name="customer[company]"]').val(),
         country_code: $('select[name="customer[country_code]"]').val(),
@@ -161,7 +162,7 @@
   <?php echo functions::form_draw_button('', language::translate('title_go', 'Go'), 'submit'); ?>
   <?php echo functions::form_draw_form_end(); ?>
   <script>
-    $("input[name='order_id']").select();
+    $('input[name="order_id"]').select();
   </script>
 </div>
 <?php } ?>
@@ -181,7 +182,7 @@
         <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
         <script>
           $('select[name="currency_code"]').change(function(e){
-            $("input[name='currency_value']").val($(this).find('option:selected').data('value'));
+            $('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
             $('input[data-type="currency"]').closest('.input-wrapper').find('strong').text($(this).val());
             calculate_total();
           });
@@ -243,7 +244,7 @@
         </table>
 
         <script>
-          $("button[name='get_address']").click(function() {
+          $('button[name="get_address"]').click(function() {
             $.ajax({
               url: '<?php echo document::link('', array('doc' => 'get_address.json'), array('app')); ?>',
               type: 'post',
@@ -256,14 +257,13 @@
               },
               success: function(data) {
                 $.each(data, function(key, value) {
-                  if (console) console.log(key +": "+ value);
                   if ($("*[name='customer["+key+"]']").length) $("*[name='customer["+key+"]']").val(data[key]).trigger('change');
                 });
               },
             });
           });
 
-          $("select[name='customer[country_code]']").change(function() {
+          $('select[name="customer[country_code]"]').change(function() {
             $('body').css('cursor', 'wait');
             $.ajax({
               url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -332,14 +332,14 @@
         </table>
 
         <script>
-          $("button[name='copy_billing_address']").click(function(){
+          $('button[name="copy_billing_address"]').click(function(){
             fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code'];
             $.each(fields, function(key, field){
-              $("*[name='customer[shipping_address]["+ field +"]']").val($("*[name='customer["+ field +"]']").val());
+              $('*[name="customer[shipping_address]['+ field +']"]').val($('*[name="customer['+ field +']"]').val());
             });
           });
 
-          $("select[name='customer[shipping_address][country_code]']").change(function(){
+          $('select[name="customer[shipping_address][country_code]"]').change(function(){
             $('body').css('cursor', 'wait');
             $.ajax({
               url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -495,19 +495,19 @@
                  + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                  + '  </tr>';
       output = output.replace(/new_item_index/g, 'new_' + new_item_index);
-      $("#order-items .footer").before(output);
+      $('#order-items .footer').before(output);
 
     // Insert values
-      var row = $("#order-items tr.item").last();
-      $(row).find("*[name$='[product_id]']").val(item.product_id);
-      $(row).find("*[name$='[sku]']").val(item.sku);
-      $(row).find("*[name$='[option_stock_combination]']").val(item.option_stock_combination);
-      $(row).find("*[name$='[name]']").val(item.name);
-      $(row).find("*[name$='[weight]']").val(item.weight);
-      $(row).find("*[name$='[weight_class]']").val(item.weight_class);
-      $(row).find("*[name$='[quantity]']").val(item.quantity);
-      $(row).find("*[name$='[price]']").val(item.price);
-      $(row).find("*[name$='[tax]']").val(item.tax);
+      var row = $('#order-items tr.item').last();
+      $(row).find('*[name$="[product_id]"]').val(item.product_id);
+      $(row).find('*[name$="[sku]"]').val(item.sku);
+      $(row).find('*[name$="[option_stock_combination]"]').val(item.option_stock_combination);
+      $(row).find('*[name$="[name]"]').val(item.name);
+      $(row).find('*[name$="[weight]"]').val(item.weight);
+      $(row).find('*[name$="[weight_class]"]').val(item.weight_class);
+      $(row).find('*[name$="[quantity]"]').val(item.quantity);
+      $(row).find('*[name$="[price]"]').val(item.price);
+      $(row).find('*[name$="[tax]"]').val(item.tax);
 
       if (item.options) {
         var product_options = '<br />'
@@ -526,15 +526,15 @@
           product_options += '</tr>';
         });
         product_options += '</table>';
-        $(row).find("input[type='hidden'][name$='[options]']").replaceWith(product_options);
+        $(row).find('input[type="hidden"][name$="[options]"]').replaceWith(product_options);
       }
 
       calculate_total();
     }
 
-    $("body").on("click", "#order-items .remove", function(event) {
+    $('body').on('click', '#order-items .remove', function(event) {
       event.preventDefault();
-      $(this).closest("tr").remove();
+      $(this).closest('tr').remove();
     });
   </script>
 
@@ -597,8 +597,8 @@
   </table>
   <script>
     var new_ot_row_index = 0;
-    $("body").on("click", "#order-total .add", function(event) {
-      while ($("input[name='order_total["+new_ot_row_index+"][id]']").length) new_ot_row_index++;
+    $('body').on('click', '#order-total .add', function(event) {
+      while ($('input[name="order_total['+new_ot_row_index+'][id]"]').length) new_ot_row_index++;
       event.preventDefault();
       var output = '  <tr>'
                  + '    <td style="text-align: right;"><a href="#" class="add" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"')); ?></a></td>'
@@ -609,38 +609,38 @@
                  + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                  + '  </tr>';
     output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
-    $(this).closest("tr").before(output);
+    $(this).closest('tr').before(output);
     new_ot_row_index++;
     });
 
-    $("body").on("click", "#order-total .remove", function(event) {
+    $('body').on('click', '#order-total .remove', function(event) {
       event.preventDefault();
     $(this).closest("tr").remove();
     });
 
     function calculate_total() {
       var subtotal = 0;
-      $("input[name^='items['][name$='[price]']").each(function() {
-        subtotal += Number($(this).val()) * Number($(this).closest('tr').find("input[name^='items['][name$='[quantity]']").val());
+      $('input[name^="items["][name$="[price]"]').each(function() {
+        subtotal += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
       });
       subtotal = Math.round(subtotal * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
-      $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[value]']").val(subtotal);
+      $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
 
       var subtotal_tax = 0;
-      $("input[name^='items['][name$='[tax]']").each(function() {
-        subtotal_tax += Number($(this).val()) * Number($(this).closest('tr').find("input[name^='items['][name$='[quantity]']").val());
+      $('input[name^="items["][name$="[tax]"]').each(function() {
+        subtotal_tax += Number($(this).val()) * Number($(this).closest("tr").find('input[name^="items["][name$="[quantity]"]').val());
       });
       subtotal_tax = Math.round(subtotal_tax * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
-      $("input[name^='order_total['][value='ot_subtotal']").closest('tr').find("input[name^='order_total['][name$='[tax]']").val(subtotal_tax);
+      $('input[name^="order_total["][value="ot_subtotal"]').closest("tr").find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
 
       var order_total = subtotal + subtotal_tax;
-      $("input[name^='order_total['][name$='[value]']").each(function() {
-        if ($(this).closest('tr').find("input[name^='order_total['][name$='[calculate]']").is(':checked')) {
+      $('input[name^="order_total["][name$="[value]"]').each(function() {
+        if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
           order_total += Number(Number($(this).val()));
         }
       });
-      $("input[name^='order_total['][name$='[tax]']").each(function() {
-        if ($(this).closest('tr').find("input[name^='order_total['][name$='[calculate]']").is(':checked')) {
+      $('input[name^="order_total["][name$="[tax]"]').each(function() {
+        if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
           order_total += Number($(this).val());
         }
       });
@@ -648,7 +648,7 @@
       $("#order-total .total").text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
     }
 
-    $("body").on("click keyup", "input[name^='items'][name$='[price]'], input[name^='items'][name$='[tax]'], input[name^='items'][name$='[quantity]'], input[name^='order_total'][name$='[value]'], input[name^='order_total'][name$='[tax]'], input[name^='order_total'][name$='[calculate]'], #order-items a.remove, #order-total a.remove", function() {
+    $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
       calculate_total();
     });
   </script>
@@ -749,9 +749,9 @@
   </ul>
 <script>
   var new_comment_index = 0;
-  $("#comments .add").click(function(event) {
+  $('#comments .add').click(function(event) {
     event.preventDefault();
-    while ($("input[name='comments["+new_comment_index+"][id]']").length) new_comment_index++;
+    while ($('input[name="comments['+new_comment_index+'][id]"]').length) new_comment_index++;
     var output = '  <li class="comment staff">'
                + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime']))); ?>'
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
@@ -760,20 +760,20 @@
                + '    <div class="date"><?php echo strftime(language::$selected['format_datetime']); ?></div>'
                + '  </li>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
-    $(this).closest("li").before(output);
+    $(this).closest('li').before(output);
     new_comment_index++;
   });
 
-  $("body").on("click", "#comments .remove", function(event) {
+  $('body').on('click', '#comments .remove', function(event) {
     event.preventDefault();
-    $(this).closest("li").remove();
+    $(this).closest('li').remove();
   });
 
-  $("body").on("click", '#comments input[name^="comments"][name$="[hidden]"]', function(event) {
+  $('body').on('click', "#comments input[name^='comments'][name$='[hidden]']", function(event) {
     if ($(this).is(':checked')) {
-      $(this).closest("li").addClass('semi-transparent');
+      $(this).closest('li').addClass('semi-transparent');
     } else {
-      $(this).closest("li").removeClass('semi-transparent');
+      $(this).closest('li').removeClass('semi-transparent');
     }
   });
 </script>
