@@ -957,12 +957,12 @@
 
     $products_query = database::query(
       "select p.*, pi.name from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id)
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       order by pi.name"
     );
 
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] .' ['. $product['sku'] .'] ('. (float)$product['quantity'] .')', $product['id']);
+      $options[] = array($product['name'] . (!empty($product['sku']) ? ' ['. $product['sku'] .']' : '') .' ('. (float)$product['quantity'] .')', $product['id']);
     }
 
     return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
