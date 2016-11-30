@@ -24,8 +24,6 @@
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
 <link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
 <!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" media="all" /><![endif]-->
-<!--[if IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie9.css" media="all" /><![endif]-->
-<!--[if lt IE 9]><link rel="stylesheet" href="{snippet:template_path}styles/ie8.css" media="all" /><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
 <!--snippet:head_tags-->
@@ -48,7 +46,7 @@
     <header id="header" class="twelve-eighty">
 
       <div id="logotype-wrapper">
-        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 220px; max-height: 50px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
+        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 220px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
       </div>
 
       <div id="region-wrapper">
