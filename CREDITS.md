@@ -11,18 +11,20 @@ Language Icons
 
 Other Graphics
 --------------
-* (no-image/camera) Design modo - Creative Commons Attribution 3.0 Unported - http://designmodo.com//
+* (cart) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
+* (logotype) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
+* (no-image/camera) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
 * (magnify cursor) Peter Cowburn - Free - http://cowburn.info/
 
 TrueType Fonts
 --------------
-* (captcha) Reprobate TTF - Handwriting of Mike Sedillo - Free for commercial use - www.apostrophiclab.com
+* (captcha) Reprobate TTF - Handwriting of Mike Sedillo - Free for commercial use - http://www.apostrophiclab.com/
 
 JavaScript
 ----------
-* jQuery by jQuery Foundation - MIT License - http://www.jquery.com/
 * Featherlight - MIT License - https://github.com/noelboss/featherlight
 * Chartist - MIT and WTFPL License - https://gionkunz.github.io/chartist-js/
+* jQuery by jQuery Foundation - MIT License - https://www.jquery.com/
 * jQuery Animate From To by Emil Stenström - MIT and GPL - http://friendlybit.com/
 * ResponsiveSlides by Viljami Salminen - MIT License - http://responsiveslides.com/
 * Trumbowyg by Alex-D - MIT license - http://alex-d.github.io/Trumbowyg/
@@ -30,7 +32,7 @@ JavaScript
 
 PHP
 ---
-vQmod by Qphoria - Special permitted use - https://www.vqmod.com/
+vQmod by Qphoria - Special permitted use - https://github.com/vqmod/vqmod
 
 Inspired By
 -----------
