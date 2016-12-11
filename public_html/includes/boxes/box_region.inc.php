@@ -1,14 +1,5 @@
 <?php
-  functions::draw_fancybox('.fancybox-region', array(
-    'centerOnScroll' => true,
-    'hideOnContentClick' => false,
-    'modal' => false,
-    'speedIn' => 600,
-    'transitionIn' => 'fade',
-    'transitionOut' => 'fade',
-    'type' => 'ajax',
-    'scrolling' => 'false',
-  ));
+  functions::draw_lightbox('a.lightbox');
 
   $box_region = new view();
 

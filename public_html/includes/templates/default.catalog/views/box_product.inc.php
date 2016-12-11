@@ -16,14 +16,14 @@
   <div class="content">
     <div class="images-wrapper">
 
-      <a class="main-image fancybox zoomable shadow" href="<?php echo $image['original']; ?>" data-fancybox-group="product">
+      <a class="main-image lightbox zoomable shadow" href="<?php echo $image['original']; ?>" data-lightbox-group="product">
         <img class="image" src="<?php echo $image['original']; ?>" srcset="<?php echo $image['thumbnail']; ?> 1x, <?php echo $image['thumbnail_2x']; ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" title="<?php echo htmlspecialchars($name); ?>" itemprop="image" />
         <?php echo $sticker; ?>
       </a>
 <?php
   if ($extra_images) {
     foreach ($extra_images as $image) {
-      echo '<a class="extra-image fancybox zoomable shadow" href="'. $image['original'] .'" data-fancybox-group="product"><img class="image" src="'. $image['thumbnail'] .'" srcset="'. $image['thumbnail'] .' 1x, '. $image['thumbnail_2x'] .' 2x" alt="'. htmlspecialchars($name) .'" title="'. htmlspecialchars($name) .'" /></a>';
+      echo '<a class="extra-image lightbox zoomable shadow" href="'. $image['original'] .'" data-lightbox-group="product"><img class="image" src="'. $image['thumbnail'] .'" srcset="'. $image['thumbnail'] .' 1x, '. $image['thumbnail_2x'] .' 2x" alt="'. htmlspecialchars($name) .'" title="'. htmlspecialchars($name) .'" /></a>';
     }
   }
 ?>

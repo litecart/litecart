@@ -3,7 +3,7 @@
 
   if (settings::get('box_similar_products_num_items') == 0) return;
 
-  functions::draw_fancybox('a.fancybox');
+  functions::draw_lightbox('a.lightbox');
 
   $box_similar_products_cache_id = cache::cache_id('box_similar_products', array('get', 'language', 'currency', 'prices'));
   if (cache::capture($box_similar_products_cache_id, 'file')) {

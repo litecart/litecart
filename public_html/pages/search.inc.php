@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
   breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all Products', 'All Products'));
 
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
+  functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
 
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 

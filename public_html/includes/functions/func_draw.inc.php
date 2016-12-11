@@ -89,17 +89,24 @@
     return $listing_product->stitch('views/listing_product');
   }
 
-  function draw_fancybox($selector='a.fancybox', $params=array()) {
+  function draw_lightbox($selector='*[data-toggle="lightbox"]', $params=array()) {
+
+    $selector = str_replace("'", '"', $selector);
+
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'featherlight/featherlight.css" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_EXT .'featherlight/featherlight.js"></script>';
+
+    if (preg_match('#^(https?:)?//#', $selector)) {
+      document::$snippets['javascript']['featherlight-'.$selector] = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
+    } else {
+      document::$snippets['javascript']['featherlight-'.$selector] = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
+    }
 
     $default_params = array(
-      'hideOnContentClick' => true,
-      'padding'            => 20,
-      'showCloseButton'    => true,
-      'speedIn'            => 200,
-      'speedOut'           => 200,
-      'transitionIn'       => 'elastic',
-      'transitionOut'      => 'elastic',
-      'titlePosition'      => 'inside'
+      'openSpeed'          => 200,
+      'closeSpeed'         => 200,
+      'loading'            => '',
+      'closeIcon'          => '',
     );
 
     foreach (array_keys($default_params) as $key) {
@@ -107,49 +114,39 @@
     }
     ksort($params);
 
-    if (empty(document::$snippets['head_tags']['fancybox'])) {
-      document::$snippets['head_tags']['fancybox'] = '<link rel="stylesheet" href="{snippet:template_path}styles/fancybox.css" media="screen" />';
-      document::$snippets['foot_tags']['fancybox'] = '<script src="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.pack.js"></script>';
-    }
-
-    if (empty($selector)) {
-      document::$snippets['javascript']['fancybox-'.$selector] = '  $.fancybox({' . PHP_EOL;
-    } else {
-      document::$snippets['javascript']['fancybox-'.$selector] = '  $("a").each(function() {' . PHP_EOL // HTML 5 fix for rel attribute
-                                                               . '    $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
-                                                               . '  }); ' . PHP_EOL
-                                                               . '  $("body").on("hover", "'. $selector .'", function() { ' . PHP_EOL // Fixes ajax content
-                                                               . '    $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
-    }
-
-    foreach (array_keys($params) as $key) {
-      if (strpos($params[$key], '(') !== false) {
-        document::$snippets['javascript']['fancybox-'.$selector] .= '      "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
-      } else {
-        switch (gettype($params[$key])) {
-          case 'boolean':
-            document::$snippets['javascript']['fancybox-'.$selector] .=
-            '        "'. $key .'" : '.
-            ($params[$key] ? 'true' : 'false') .',' . PHP_EOL;
-            break;
-          case 'integer':
-            document::$snippets['javascript']['fancybox-'.$selector] .= '      "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
-            break;
-          case 'string':
-            document::$snippets['javascript']['fancybox-'.$selector] .= '      "'. $key .'" : "'. $params[$key] .'",' . PHP_EOL;
-            break;
-        }
+    foreach ($params as $key => $value) {
+      switch (gettype($params[$key])) {
+        case 'NULL':
+          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': null,' . PHP_EOL;
+          break;
+        case 'boolean':
+          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
+          break;
+        case 'integer':
+          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. $value .',' . PHP_EOL;
+          break;
+        case 'string':
+          if (preg_match('#^function\s?\(#', $value)) {
+            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. $value .',' . PHP_EOL;
+          } else if (preg_match('#^undefined$#', $value)) {
+            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': undefined,' . PHP_EOL;
+          } else {
+            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+          }
+          break;
+        case 'array':
+          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          break;
       }
     }
 
-    document::$snippets['javascript']['fancybox-'.$selector] = rtrim(document::$snippets['javascript']['fancybox-'.$selector], ','.PHP_EOL) . PHP_EOL;
+    document::$snippets['javascript']['featherlight-'.$selector] = rtrim(document::$snippets['javascript']['featherlight-'.$selector], ','.PHP_EOL) . PHP_EOL;
 
-    if (empty($selector)) {
-      document::$snippets['javascript']['fancybox-'.$selector] .= '  });';
-    } else {
-      document::$snippets['javascript']['fancybox-'.$selector] .= '    });' . PHP_EOL
-                                                                . '  });';
-    }
+    document::$snippets['javascript']['featherlight-'.$selector] .= '  });';
+  }
+
+  function draw_fancybox($selector='a.fancybox', $params=array()) {
+    return draw_lightbox($selector, $params=array());
   }
 
   function draw_pagination($pages) {

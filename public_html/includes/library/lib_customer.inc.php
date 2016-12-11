@@ -54,18 +54,7 @@
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
         if (settings::get('regional_settings_screen_enabled')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
-
-            functions::draw_fancybox('', array(
-              'centerOnScroll' => true,
-              'hideOnContentClick' => true,
-              'href' => document::ilink('regional_settings', array('redirect' => $_SERVER['REQUEST_URI'])),
-              //'modal' => true,
-              'speedIn' => 600,
-              'transitionIn' => 'fade',
-              'transitionOut' => 'fade',
-              'type' => 'ajax',
-              'scrolling' => 'false',
-            ));
+            functions::draw_lightbox(document::ilink('regional_settings', array('redirect' => $_SERVER['REQUEST_URI'])));
           }
         }
       }

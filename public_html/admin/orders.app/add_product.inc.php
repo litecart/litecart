@@ -113,16 +113,10 @@
     $tax = round($tax * $_GET['currency_value'], currency::$currencies[$_GET['currency_code']]['decimals']);
   }
 ?>
-<script>
-  $(document).ready(function() {
-    parent.$('#fancybox-content').height($('body').height() + parseInt(parent.$('#fancybox-content').css('border-top-width')) + parseInt(parent.$('#fancybox-content').css('border-bottom-width')));
-    parent.$.fancybox.center();
-  });
-</script>
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('form_add_product', 'post', null, false, 'style="min-height: 250px;"'); ?>
+<?php echo functions::form_draw_form_begin('form_add_product', 'post', null, false, 'style="min-height: 275px;"'); ?>
 
   <?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="$(this).closest(\'form\').submit();" data-size="large"'); ?>
 
@@ -130,7 +124,7 @@
 
   <hr />
 
-  <?php if (!empty($product->options_stock)) {?>
+  <?php if (!empty($product->options_stock)) { ?>
   <div style="float: right; display: inline-block; border: 1px dashed #ccc; padding: 10px;">
     <h3 style="margin-top: 0px;"><?php echo language::translate('title_options_stock', 'Options Stock'); ?></h3>
     <table>
@@ -299,31 +293,34 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
-  $("button[name='add']").click(function(e){
+  var window_height = Math.max($(document).height(), $(window).height());
+  $('.featherlight iframe', window.parent.document).css('height', window_height);
+
+  $('button[name="add"]').click(function(e){
     e.preventDefault();
 
     var item = {
       id: '',
-      product_id: $("select[name='product_id']").val(),
-      option_stock_combination: $("input[name='option_stock_combination']").val(),
+      product_id: $('select[name="product_id"]').val(),
+      option_stock_combination: $('input[name="option_stock_combination"]').val(),
       options: {},
-      name: $("input[name='name']").val(),
-      sku: $("input[name='sku']").val(),
-      weight: $("input[name='weight']").val(),
-      weight_class: $("input[name='weight_class']").val(),
-      quantity: $("input[name='quantity']").val(),
-      price: $("input[name='price']").val(),
-      tax: $("input[name='tax']").val()
+      name: $('input[name="name"]').val(),
+      sku: $('input[name="sku"]').val(),
+      weight: $('input[name="weight"]').val(),
+      weight_class: $('input[name="weight_class"]').val(),
+      quantity: $('input[name="quantity"]').val(),
+      price: $('input[name="price"]').val(),
+      tax: $('input[name="tax"]').val()
     };
 
-    $("input[name^='options['][type='radio']").each(function(){
+    $('input[name^="options["][type="radio"]').each(function(){
       if ($(this).is(':checked')) {
         var key = $(this).data('group');
         item.options[key] = $(this).val();
       }
     });
 
-    $("input[name^='options['][type='text'], textarea[name^='options['], select[name^='options[']").each(function(){
+    $('input[name^="options["][type="text"], textarea[name^="options["], select[name^="options["]').each(function(){
       if ($(this).val()) {
         var key = $(this).data('group');
         item.options[key] = $(this).val();
@@ -331,7 +328,7 @@
     });
 
     var option_i = 0;
-    $("input[name^='options['][type='checkbox']").each(function(){
+    $('input[name^="options["][type="checkbox"]').each(function(){
       if ($(this).is(':checked')) {
         var key = $(this).data('group');
         if (!item.options[key]) item.options[key] = [];
@@ -341,6 +338,6 @@
     });
 
     parent.<?php echo preg_replace('#([^a-zA-Z_])#', '', $_GET['return_method']); ?>(item);
-    parent.$.fancybox.close();
+    parent.$.featherlight.current().close();
   });
 </script>

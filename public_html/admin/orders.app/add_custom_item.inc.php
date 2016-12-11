@@ -4,13 +4,6 @@
   document::$layout = 'printable';
 ?>
 
-<script>
-  $(document).ready(function() {
-    parent.$('#fancybox-content').height($('body').height() + parseInt(parent.$('#fancybox-content').css('border-top-width')) + parseInt(parent.$('#fancybox-content').css('border-bottom-width')));
-    parent.$.fancybox.center();
-  });
-</script>
-
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('form_add_custom_item', 'post'); ?>
@@ -47,24 +40,27 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
-  $("button[name='add']").click(function(e){
+  var window_height = $('body').prop('scrollHeight');
+  $('.featherlight iframe', window.parent.document).css('height', window_height);
+
+  $('button[name="add"]').click(function(e){
     e.preventDefault();
 
     var item = {
       id: '',
-      product_id: $("input[name='product_id']").val(),
+      product_id: $('input[name="product_id"]').val(),
       option_stock_combination: null,
       options: null,
-      name: $("input[name='name']").val(),
-      sku: $("input[name='sku']").val(),
-      weight: $("input[name='weight']").val(),
-      weight_class: $("select[name='weight_class'] option:selected").val(),
-      quantity: $("input[name='quantity']").val(),
-      price: $("input[name='price']").val(),
-      tax: $("input[name='tax']").val()
+      name: $('input[name="name"]').val(),
+      sku: $('input[name="sku"]').val(),
+      weight: $('input[name="weight"]').val(),
+      weight_class: $('select[name="weight_class"] option:selected').val(),
+      quantity: $('input[name="quantity"]').val(),
+      price: $('input[name="price"]').val(),
+      tax: $('input[name="tax"]').val()
     };
 
     parent.<?php echo preg_replace('#([^a-zA-Z_])#', '', $_GET['return_method']); ?>(item);
-    parent.$.fancybox.close();
+    parent.$.featherlight.current().close();
   });
 </script>

@@ -30,7 +30,7 @@
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   breadcrumbs::add($manufacturer->name);
 
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
+  functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
 
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 

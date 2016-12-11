@@ -68,7 +68,7 @@
   }
   breadcrumbs::add($product->name[language::$selected['code']]);
 
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product']");
+  functions::draw_lightbox('a.lightbox[data-lightbox-group="product"]');
 
 // Recently viewed products
   if (isset(session::$data['recently_viewed_products'][$product->id])) {

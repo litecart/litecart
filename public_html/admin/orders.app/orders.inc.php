@@ -2,17 +2,10 @@
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 
-  functions::draw_fancybox('a.fancybox', array(
-    'type'          => 'iframe',
-    'padding'       => '40',
-    'width'         => 640,
-    'height'        => 800,
-    'titlePosition' => 'inside',
-    'transitionIn'  => 'elastic',
-    'transitionOut' => 'elastic',
-    'speedIn'       => 600,
-    'speedOut'      => 200,
-    'overlayShow'   => true
+  functions::draw_lightbox('a.lightbox-iframe', array(
+    'type' => 'iframe',
+    'iframeWidth' => 640,
+    'iframeHeight' => 800,
   ));
 
   if (!empty($_POST['order_action'])) {
@@ -145,8 +138,8 @@
     <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
     <td style="text-align: right;"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
     <td>
-      <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-      <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+      <a class="lightbox-iframe" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+      <a class="lightbox-iframe" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
       <a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id'], 'redirect' => $_SERVER['REQUEST_URI']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
     </td>
   </tr>

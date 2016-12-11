@@ -114,17 +114,15 @@
     exit;
   }
 
-  functions::draw_fancybox('a.fancybox-iframe', array(
+  functions::draw_lightbox('a.lightbox-iframe', array(
     'type' => 'iframe',
-    'width' => 480,
-    'height' => 100,
-    'transitionIn' => 'fade',
-    'transitionOut' => 'fade',
-    'onStart' => 'function(links, index){ rewrite_fancybox_link(links, index); }'
+    'iframeWidth' => 480,
+    'iframeHeight' => 100,
+    'beforeOpen' => 'function() { rewrite_modal_href(this.$currentTarget); }'
   ));
 ?>
 <script>
-  function rewrite_fancybox_link(links, index) {
+  function rewrite_modal_href(link) {
     var params = {
       language_code: $('select[name="language_code"]').val(),
       currency_code: $('select[name="currency_code"]').val(),
@@ -142,8 +140,8 @@
         }
       }
     }
-    if ($(links[index]).hasClass('add-product') || $(links[index]).hasClass('add-custom-item')) {
-      $(links[index]).attr('href', $(links[index]).data('href') +'&'+ $.param(params));
+    if ($(link).hasClass('add-product') || $(link).hasClass('add-custom-item')) {
+      $(link).attr('href', $(link).data('href') +'&'+ $.param(params));
     }
   }
 </script>
@@ -426,7 +424,7 @@
 ?>
     <tr class="item">
       <td>
-        <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?></div>
+        <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
         <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
         <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
         <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
@@ -468,8 +466,8 @@
 ?>
     <tr class="footer">
       <td colspan="7">
-        <a class="button add-product fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
-        <a class="button add-custom-item fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
+        <a class="button add-product lightbox-iframe" href="<?php echo document::href_link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::href_link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+        <a class="button add-custom-item lightbox-iframe" href="<?php echo document::href_link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::href_link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
       </td>
     </tr>
   </table>

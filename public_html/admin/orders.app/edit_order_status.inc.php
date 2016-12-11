@@ -108,7 +108,7 @@
     <tr>
       <td><strong><?php echo language::translate('title_email_message', 'Email Message'); ?></strong><br />
         <p><?php echo language::translate('description_order_status_email_message', 'Compose a message that will be used as email body or leave blank to display the order copy.'); ?></p>
-        <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>%order_id, %firstname, %lastname, %billing_address, %shipping_address, %order_copy_url</em></p>
+        <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>%order_id, %firstname, %lastname, %billing_address, %shipping_address, %shipping_tracking_id, %order_copy_url</em></p>
 <?php
   $use_br = false;
   foreach (array_keys(language::$languages) as $language_code) {

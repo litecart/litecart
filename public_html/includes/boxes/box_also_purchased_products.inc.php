@@ -1,7 +1,7 @@
 <?php
   if (!is_object($product)) return;
 
-  functions::draw_fancybox('a.fancybox');
+  functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
 
   $box_also_purchased_products_cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
   if (cache::capture($box_also_purchased_products_cache_id, 'file')) {
