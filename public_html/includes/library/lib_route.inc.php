@@ -117,8 +117,8 @@
       }
     }
 
-    public static function before_capture() {
-    }
+    //public static function before_capture() {
+    //}
 
     public static function after_capture() {
       cache::set(self::$_links_cache_id, 'file', self::$_links_cache);
@@ -134,12 +134,20 @@
 
     ######################################################################
 
-    public static function ilink($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
+    public static function ilink($page=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+
+      if ($route === null) {
+        $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if ($inherit_params === null) $inherit_params = true;
+      } else {
+        $route = WS_DIR_HTTP_HOME . $route;
+      }
+
+      return link::create_link($page, $new_params, $inherit_params, $skip_params, $language_code);
     }
 
-    public static function href_ilink($document=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
+    public static function href_ilink($page=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars(self::ilink($page, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
     public static function strip_url_logic($link) {
@@ -178,7 +186,7 @@
       if (preg_match('#^'. preg_quote(basename(WS_DIR_ADMIN), '#') .'.*#', $parsed_link['path'])) return;
 
     // Set route name
-      $route_name = preg_replace('#^(.*)$/#', '$1', $parsed_link['path']);
+      $route_name = str_replace('/', '_', trim($parsed_link['path'], '/'));
 
       if (!empty(self::$_classes[$route_name])) {
 
@@ -189,8 +197,6 @@
 
           if (!empty($rewritten_parsed_link)) {
             $parsed_link = $rewritten_parsed_link;
-            //$parsed_link['path'] = self::strip_url_logic($parsed_link['path']);
-            $parsed_link['path'] = $parsed_link['path'];
           }
         }
       }
