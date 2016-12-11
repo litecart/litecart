@@ -20,9 +20,9 @@ TrueType Fonts
 
 JavaScript
 ----------
-* jqPlot by Chris Leonello - MIT and GPL version 2 - http://www.jqplot.com/
 * jQuery by jQuery Foundation - MIT License - http://www.jquery.com/
 * Featherlight - MIT License - https://github.com/noelboss/featherlight
+* Chartist - MIT and WTFPL License - https://gionkunz.github.io/chartist-js/
 * jQuery Animate From To by Emil Stenström - MIT and GPL - http://friendlybit.com/
 * ResponsiveSlides by Viljami Salminen - MIT License - http://responsiveslides.com/
 * Trumbowyg by Alex-D - MIT license - http://alex-d.github.io/Trumbowyg/
