@@ -45,8 +45,8 @@
 
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
 
-      self::$snippets['foot_tags']['jquery'] = '<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>';
-      //self::$snippets['javascript']['jquery'] = '  window.jQuery || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-3.1.1.min.js"%3E%3C/script%3E\'));';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-3.1.1.min.js"></script>';
+      //self::$snippets['foot_tags']['jquery'] = '<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
