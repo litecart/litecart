@@ -30,18 +30,10 @@
 
   $_page = new view();
 
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php');
-  $_page->snippets['box_information_links'] = ob_get_clean();
-
-  $box_page = new view();
-
-  $box_page->snippets = array(
+  $_page->snippets = array(
     'title' => $page['title'],
     'content' => $page['content'],
   );
 
-  $_page->snippets['box_page'] = $box_page->stitch('views/box_page');
-
-  echo $_page->stitch('views/box_information');
+  echo $_page->stitch('pages/information');
 ?>

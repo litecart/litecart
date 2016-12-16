@@ -1,5 +1,5 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
     header('X-Robots-Tag: noindex');
@@ -25,9 +25,11 @@
     $order = new ctrl_order('import_session');
   }
 
+// Build Order
   $order->data['order_total'] = array();
   $order_total->process($order);
 
+// Output
   $box_checkout_summary = new view();
 
   $box_checkout_summary->snippets = array(
@@ -54,11 +56,10 @@
     );
   }
 
-  foreach ($order->data['order_total'] as $row) {
-    $box_checkout_summary->snippets['order_total'][] = array(
-      'title' => $row['title'],
-      'value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false),
-      'tax' => currency::format($row['tax'], false)
+  if (!empty($shipping->data['selected'])) {
+    $box_checkout_summary->snippets['selected_shipping'] = array(
+      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $shipping->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $shipping->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'title' => $shipping->data['selected']['title'],
     );
   }
 
@@ -69,6 +70,13 @@
     );
   }
 
-  echo $box_checkout_summary->stitch('views/box_checkout_summary');
+  foreach ($order->data['order_total'] as $row) {
+    $box_checkout_summary->snippets['order_total'][] = array(
+      'title' => $row['title'],
+      'value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false),
+      'tax' => currency::format($row['tax'], false)
+    );
+  }
 
+  echo $box_checkout_summary->stitch('views/box_checkout_summary');
 ?>

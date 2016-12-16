@@ -44,10 +44,6 @@
     exit;
   }
 
-  $page = new view();
-  echo $page->stitch('views/box_regional_settings');
-
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
-  }
+  $_page = new view();
+  echo $_page->stitch('pages/regional_settings');
 ?>

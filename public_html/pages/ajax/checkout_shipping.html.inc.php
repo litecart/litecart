@@ -1,5 +1,5 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
     header('X-Robots-Tag: noindex');
@@ -11,16 +11,14 @@
 
   $shipping = new mod_shipping();
 
-  if (!empty($_POST['set_shipping'])) {
-    list($module_id, $option_id) = explode(':', $_POST['selected_shipping']);
+  if (file_get_contents('php://input') != '') {
+    list($module_id, $option_id) = explode(':', $_POST['shipping']['option_id']);
     $result = $shipping->run('before_select', $module_id, $option_id, $_POST);
     if (!empty($result) && (is_string($result) || !empty($result['error']))) {
       notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
       $shipping->select($module_id, $option_id, $_POST);
     }
-    header('Location: '. ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') ? $_SERVER['REQUEST_URI'] : document::ilink('checkout')));
-    exit;
   }
 
   $options = $shipping->options();
@@ -28,7 +26,7 @@
   if (!empty($shipping->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $shipping->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
-      $shipping->data['selected'] = array();
+      $shipping->data['selected'] = array(); // Clear
     } else {
       $shipping->select($module_id, $option_id); // Refresh
     }
@@ -43,13 +41,14 @@
     }
   }
 
-  /*
+/*
+// Hide
   if (count($options) == 1
   && count($options[key($options)]['options']) == 1
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['error'])
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
   && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
-  */
+*/
 
   $box_checkout_shipping = new view();
 

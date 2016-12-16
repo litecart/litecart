@@ -45,6 +45,10 @@
     if (empty($_POST['country_code'])) notices::add('errors', language::translate('error_missing_country', 'You must select a country.'));
     if (empty($_POST['zone_code']) && !empty($_POST['country_code']) && functions::reference_country_num_zones($_POST['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
 
+    $mod_customer = new mod_customer();
+    $result = $mod_customer->validate($_POST);
+    if (!empty($result['error'])) notices::add('errors', $result['error']);
+
     if (empty(notices::$data['errors'])) {
 
       $customer = new ctrl_customer();
@@ -108,6 +112,6 @@
     }
   }
 
-  $page = new view();
-  echo $page->stitch('views/box_create_account');
+  $_page = new view();
+  echo $_page->stitch('pages/create_account');
 ?>

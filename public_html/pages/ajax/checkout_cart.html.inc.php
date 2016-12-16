@@ -1,5 +1,5 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
     header('X-Robots-Tag: noindex');
@@ -36,5 +36,4 @@
   }
 
   echo $box_checkout_cart->stitch('views/box_checkout_cart');
-
 ?>

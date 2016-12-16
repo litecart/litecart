@@ -12,8 +12,6 @@
 
   functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
 
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
-
   $_page = new view();
   $_page->snippets = array(
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
@@ -140,5 +138,5 @@
 
   $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
 
-  echo $_page->stitch('views/box_search_results');
+  echo $_page->stitch('pages/search_results');
 ?>

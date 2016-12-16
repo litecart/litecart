@@ -38,14 +38,17 @@
 
     breadcrumbs::add($page['title']);
 
-    $box_page = new view();
-    $box_page->snippets = array(
+    $_page->snippets += array(
       'title' => $page['title'],
       'content' => $page['content'],
     );
 
-    $_page->snippets['box_page'] = $box_page->stitch('views/box_page');
+  } else {
+
+    ob_start();
+    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_contact_us.inc.php');
+    $_page->snippets['content'] = ob_get_clean();
   }
 
-  echo $_page->stitch('views/box_customer_service');
+  echo $_page->stitch('pages/customer_service');
 ?>

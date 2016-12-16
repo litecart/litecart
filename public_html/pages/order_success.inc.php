@@ -7,12 +7,11 @@
   breadcrumbs::add(language::translate('title_order_success', 'Order Success'));
 
   $order = new ctrl_order('resume');
+  if (empty($order->data['id'])) die('Error: Missing session order object');
 
   $payment = new mod_payment();
 
   $order_success = new mod_order_success();
-
-  if (empty($order->data['id'])) die('Error: Missing session order object');
 
   cart::reset();
 
@@ -22,13 +21,15 @@
     'iframeHeight' => 800,
   ));
 
-  $page = new view();
+  $_page = new view();
 
-  $page->snippets = array(
+  $_page->snippets = array(
     'printable_link' => document::ilink('printable_order_copy', array('order_id' => $order->data['id'], 'checksum' => functions::general_order_public_checksum($order->data['id']), 'media' => 'print')),
     'payment_receipt' => $payment->receipt($order),
     'order_success_modules_output' => $order_success->process($order),
   );
 
-  echo $page->stitch('views/box_order_success');
+  echo $_page->stitch('pages/order_success');
+
+  //$order->reset();
 ?>

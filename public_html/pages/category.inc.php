@@ -34,14 +34,12 @@
 
   functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
 
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
-
   $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
-    $page = new view();
+    $_page = new view();
 
-    $page->snippets = array(
+    $_page->snippets = array(
       'id' => $category->id,
       'name' => $category->name[language::$selected['code']],
       'short_description' => $category->short_description[language::$selected['code']],
@@ -64,7 +62,7 @@
     $subcategories_query = functions::catalog_categories_query($category->id);
     if (database::num_rows($subcategories_query)) {
       while ($subcategory = database::fetch($subcategories_query)) {
-        $page->snippets['subcategories'][] = $subcategory;
+        $_page->snippets['subcategories'][] = $subcategory;
       }
     }
 
@@ -96,25 +94,24 @@
         switch($category->list_style) {
           case 'rows':
             $listing_product['listing_type'] = 'row';
-            $page->snippets['products'][] = $listing_product;
+            $_page->snippets['products'][] = $listing_product;
             break;
           default:
           case 'columns':
             $listing_product['listing_type'] = 'column';
-            $page->snippets['products'][] = $listing_product;
+            $_page->snippets['products'][] = $listing_product;
             break;
         }
         if (++$page_items == $items_per_page) break;
       }
     }
 
-    $page->snippets['num_products_page'] = count($page->snippets['products']);
-    $page->snippets['num_products_total'] = (int)database::num_rows($products_query);
-    $page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
+    $_page->snippets['num_products_page'] = count($_page->snippets['products']);
+    $_page->snippets['num_products_total'] = (int)database::num_rows($products_query);
+    $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
 
-    echo $page->stitch('views/box_category');
+    echo $_page->stitch('pages/category');
 
     cache::end_capture($box_category_cache_id);
   }
-
 ?>

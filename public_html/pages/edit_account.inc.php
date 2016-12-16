@@ -120,6 +120,6 @@
     }
   }
 
-  $page = new view();
-  echo $page->stitch('views/box_edit_account');
+  $_page = new view();
+  echo $_page->stitch('pages/edit_account');
 ?>
