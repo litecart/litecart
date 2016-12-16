@@ -5,16 +5,14 @@ Iconic Fonts
 ------------
 * Fontawesome - MIT License - http://www.fontawesome.io/
 
-Language Icons
---------------
-* Open Web Graphics - Creative Commons Attribution 3.0 Unported - http://www.openwebgraphics.com/
-
-Other Graphics
---------------
+Graphics
+--------
 * (cart) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
 * (logotype) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
 * (no-image/camera) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
 * (magnify cursor) Peter Cowburn - Free - http://cowburn.info/
+* (country flags) Fam Fam Fam - Public Domain - http://www.famfamfam.com/
+* (language flags) Open Web Graphics - Creative Commons Attribution 3.0 Unported - http://www.openwebgraphics.com/
 
 TrueType Fonts
 --------------
