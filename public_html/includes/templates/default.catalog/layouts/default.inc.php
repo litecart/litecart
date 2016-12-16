@@ -1,19 +1,3 @@
-<?php
-// Cookie acceptance - By EU law
-  if (empty($_COOKIE['cookies_accepted'])) {
-    if (!isset(document::$snippets['bottom'])) document::$snippets['bottom'] = '';
-    document::$snippets['bottom'] .= '<div id="cookies-acceptance-wrapper">' . PHP_EOL
-                                   . '  <div id="cookies-acceptance" class="twelve-eighty">' . PHP_EOL
-                                   . '    ' . language::translate('terms_cookies_acceptance', 'We rely on cookies to provide our services. By using our services, you agree to our use of cookies.') .' '. functions::form_draw_button('accept_cookies', language::translate('title_ok', 'OK'), 'button') . PHP_EOL
-                                   . '  </div>' . PHP_EOL
-                                   . '</div>';
-    document::$snippets['foot_tags'][] = '<script src="'. WS_DIR_EXT .'jquery/jquery.cookie.min.js"></script>';
-    document::$snippets['javascript'][] = '  $("button[name=\'accept_cookies\']").click(function(){' . PHP_EOL
-                                        . '    $("#cookies-acceptance-wrapper").fadeOut();' . PHP_EOL
-                                        . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
-                                        . '  });';
-  }
-?>
 <!DOCTYPE html>
 <html lang="{snippet:language}">
 <head>
@@ -21,82 +5,53 @@
 <meta charset="{snippet:charset}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
-<link rel="stylesheet" href="{snippet:template_path}styles/theme.css" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.css" media="all" />
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
 <!--snippet:head_tags-->
 <!--snippet:style-->
-<style>
-<?php
-  if (!empty(document::$settings['fixed_header'])) {
-    echo '#header-wrapper { position: fixed !important; }' . PHP_EOL;
-  } else {
-    echo '#header-wrapper { position: absolute !important; box-shadow: none !important; background: none; }' . PHP_EOL;
-    echo '#page-wrapper { padding-top: 80px; }' . PHP_EOL;
-  }
-?>
-</style>
 </head>
 <body>
 
-<div id="header-wrapper" class="shadow">
-  <div style="padding: 0px 10px;">
-    <header id="header" class="twelve-eighty">
+<div id="page" class="twelve-eighty shadow">
 
-      <div id="logotype-wrapper">
-        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 220px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
-      </div>
+  <header id="header" class="<?php echo !empty(document::$settings['fixed_header']) ? ' fixed' : ''; ?>">
 
-      <div id="region-wrapper">
-        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
-      </div>
+    <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
+      <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+    </a>
 
-      <?php if (!settings::get('catalog_only_mode')) { ?>
-      <div id="cart-wrapper">
-        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
-      </div>
-      <?php } ?>
-
-    </header>
-  </div>
-</div>
-
-<div id="page-wrapper">
-  <div id="page">
-
-    <div id="site-menu-wrapper">
-      <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
+    <div id="region-wrapper">
+      <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
     </div>
 
-    <div id="main-wrapper" class="twelve-eighty">
-      <div id="main">
+    <?php if (!settings::get('catalog_only_mode')) { ?>
+    <div id="cart-wrapper">
+      <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
+    </div>
+    <?php } ?>
+  </header>
 
-        <div class="top">
-          <!--snippet:notices-->
-          <!--snippet:top-->
-        </div>
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
 
-        <div class="middle">
+  <div id="main">
+    <div class="top">
+      <!--snippet:notices-->
+      <!--snippet:top-->
+    </div>
 
-          <div class="left">
-            <!--snippet:column_left-->
-          </div>
+    <div class="middle">
 
-          <div class="content">
-            <!--snippet:content-->
-          </div>
-        </div>
+      <!--snippet:content-->
 
-        <div class="bottom">
-          <!--snippet:bottom-->
-        </div>
-      </div>
+      <div style="clear: both;"></div>
+    </div>
+
+    <div class="bottom">
+      <!--snippet:bottom-->
     </div>
   </div>
-</div>
 
-<div id="footer-wrapper">
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
 </div>
 

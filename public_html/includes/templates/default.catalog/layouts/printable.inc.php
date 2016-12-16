@@ -3,9 +3,8 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<link href="{snippet:template_path}styles/loader.css" rel="stylesheet" media="print, screen" />
-<link href="{snippet:template_path}styles/printable.css" rel="stylesheet" media="print, screen" />
-<!--[if IE]><link rel="stylesheet" href="{snippet:template_path}styles/ie.css" media="all" /><![endif]-->
+<link href="{snippet:template_path}css/app.css" rel="stylesheet" media="print, screen" />
+<link href="{snippet:template_path}css/printable.css" rel="stylesheet" media="print, screen" />
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
 <!--snippet:head_tags-->
