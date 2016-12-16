@@ -124,7 +124,7 @@
     }
     $_page->snippets['doc'] = ob_get_clean();
 
-    echo $_page->stitch('views/doc');
+    echo $_page->stitch('pages/doc');
   }
 
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

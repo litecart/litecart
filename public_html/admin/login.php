@@ -25,7 +25,7 @@
     'action' => !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link(WS_DIR_ADMIN),
   );
 
-  echo $page_login->stitch('views/login');
+  echo $page_login->stitch('pages/login');
 
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>
