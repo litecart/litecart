@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="512" width="512" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<g transform="translate(0 -540)">
+<path d="m135 633 310 18.9 14.5 338-328-72.1z" fill="#aaa"/>
+</g>
+<g transform="translate(0 -540)">
+<path d="m344 1.04e3 117-50-111-22z" fill="#ccc"/>
+<path d="m461 990-15.7-338-95.4 12 2.49 26.9v278z" fill="#c3c3c3"/>
+<path d="m135 633 6.74 12.9 0.00001 233z" fill="#c3c3c3"/>
+<path d="m371 681-20.5-17.8-1.21 307z" fill="#cecece"/>
+<path d="m55.1 646h86.9l-20.5 269-76.6 8.06z" fill="#d4d4d4"/>
+</g>
+<g transform="translate(0 -540)">
+<rect transform="matrix(.994 .113 -.164 .987 0 0)" height="137" width="66.4" y="548" x="389" fill="#ff8080"/>
+<path transform="matrix(1.69 0 0 1.4 -223 591)" fill="#ffd9a3" d="m321 73.1-41-13.6-29 31.9v-43.3l-39-18 41-13.1 5-43.1 25 35.2 43-8.68-26 35z"/>
+<path d="m379 131a37.9 54.5 0 1 1 -75.8 0 37.9 54.5 0 1 1 75.8 0z" transform="matrix(1.38 .812 -.978 1.14 -63.7 264)" fill="#b1ffa3"/>
+<path d="m128 657 163 54-72-122z" fill="#9de2ff"/>
+</g>
+<g transform="translate(0 -540)">
+<path fill="#e9e9e9" d="m54.5 646 316 35-22 359-303-116z"/>
+<path d="m146 692c4.94 8.85 2.19 66 47.9 75.7 32.3 6.88 48.9-12.8 72-64.6" stroke="#afafaf" stroke-width="12.3" fill="none"/>
+</g>
+</svg>
