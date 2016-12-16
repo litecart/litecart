@@ -285,7 +285,7 @@ foreach (array_keys(language::$languages) as $language_code) {
                   <td><strong><?php echo language::translate('title_quantity', 'Quantity'); ?></strong><br />
                     <?php echo functions::form_draw_decimal_field('quantity', true); ?>
                   </td>
-                  <td><strong><?php echo language::translate('title_quantity Unit', 'Quantity Unit'); ?></strong><br />
+                  <td><strong><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></strong><br />
                     <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
                   </td>
                   <td><strong><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></strong><br />

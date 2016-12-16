@@ -43,7 +43,7 @@
 
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">' . PHP_EOL;
 
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
 
       self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-1.12.4.min.js"></script>' . PHP_EOL
                                              . '<script src="'. WS_DIR_EXT .'jquery/jquery-migrate-1.4.1.min.js"></script>';
@@ -99,7 +99,7 @@
       if (!function_exists('replace_first_occurrence')) {
         function replace_first_occurrence($search, $replace, $subject) {
           if (strlen($search) > 4096) {
-            return preg_replace('#'. preg_quote(substr($search, 0, 1024), '#') .'.*?'. preg_quote(substr($search, -1024), '#') .'#s', $replace, $subject, 1);
+            return preg_replace('#'. preg_quote(mb_substr($search, 0, 1024, language::$selected['charset']), '#') .'.*?'. preg_quote(mb_substr($search, -1024, null, language::$selected['charset']), '#') .'#s', $replace, $subject, 1);
           } else {
             return preg_replace('#'. preg_quote($search, '#') .'#', $replace, $subject, 1);
           }
