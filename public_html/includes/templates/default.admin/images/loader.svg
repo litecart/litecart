@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.00001 512.00001" width="512" version="1.1" xmlns:cc="http://creativecommons.org/ns#" height="512" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<g transform="translate(0 -540)">
+<rect id="purple" rx="50" transform="matrix(.829 .559 -.559 .829 0 0)" height="125" width="125" y="475" x="395" fill="#d13cab"/>
+<rect id="blue" rx="50" transform="rotate(15.5)" height="125" width="125" y="452" x="381" fill="#3ba5c6"/>
+<rect id="green" rx="50" height="125" width="125" y="726" x="372" fill="#97c000"/>
+<rect id="yello" rx="50" transform="matrix(.944 -.329 .329 .944 0 0)" height="125" width="125" y="967" x="-88.2" fill="#fbb829"/>
+<rect id="red" rx="50" transform="matrix(.628 .778 -.778 .628 0 0)" height="125" width="125" y="447" x="731" fill="#ed3c32"/>
+</g>
+</svg>
