@@ -1,19 +1,23 @@
-<div id="slider-wrapper" class="shadow">
-  <ul id="slider" style="listing-style: none; padding: 0;">
+<div id="box-slides" class="rslides box shadow">
+  <?php foreach($slides as $slide) { ?>
+  <div class="slide">
 <?php
-  foreach($slides as $slide) {
-    if ($slide['link']) {
-      echo '    <li><a href="'. htmlspecialchars($slide['link']) .'"><img src="'. $slide['image'] .'" alt="" /></a>'. (!empty($slide['caption']) ? '<div class="caption">'. $slide['caption'] .'</div>' : '') .'</li>' . PHP_EOL;
-    } else {
-      echo '    <li><img src="'. $slide['image'] .'" alt="" />'. (!empty($slide['caption']) ? '<div class="caption">'. $slide['caption'] .'</div>' : '') .'</li>' . PHP_EOL;
-    }
+  if ($slide['link']) {
+    echo '<a href="'. htmlspecialchars($slide['link']) .'"><img src="'. $slide['image'] .'" alt="" /></a>';
+  } else {
+    echo '<img src="'. $slide['image'] .'" alt="" />';
+  }
+
+  if (!empty($slide['caption'])) {
+    echo '<div class="caption">'. $slide['caption'] .'</div>';
   }
 ?>
-  </ul>
+  </div>
+  <?php } ?>
 </div>
 
 <script>
-  $('ul#slider').responsiveSlides({
+  $('#box-slides').responsiveSlides({
     speed: 500,       // Integer: Speed of the transition, in milliseconds
     timeout: 5000,    // Integer: Time between slide transitions, in milliseconds
     pause: true,       // Boolean: Pause on hover, true or false

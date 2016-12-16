@@ -93,12 +93,15 @@
             order by end_date asc
             limit 1;"
           );
-          $products_campaigns = database::fetch($products_campaigns_query);
 
-          if ($products_campaigns[$this->_currency_code] > 0) {
-            $this->_data['campaign']['price'] = currency::convert($products_campaigns[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+          if (database::num_rows($products_campaigns_query) == 0) return;
+
+          $this->_data['campaign'] = database::fetch($products_campaigns_query);
+
+          if ($this->_data['campaign'][$this->_currency_code] > 0) {
+            $this->_data['campaign']['price'] = currency::convert($this->_data['campaign'][$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
           } else {
-            $this->_data['campaign']['price'] = $products_campaigns[settings::get('store_currency_code')];
+            $this->_data['campaign']['price'] = $this->_data['campaign'][settings::get('store_currency_code')];
           }
 
           break;

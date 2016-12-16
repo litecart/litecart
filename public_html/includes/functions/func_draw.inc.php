@@ -103,10 +103,11 @@
     }
 
     $default_params = array(
-      'openSpeed'          => 200,
-      'closeSpeed'         => 200,
-      'loading'            => '',
-      'closeIcon'          => '',
+      'openSpeed'   => 50,
+      'closeSpeed'  => 50,
+      'loading'     => '',
+      'closeIcon'   => '',
+      'targetAttr'  => 'data',
     );
 
     foreach (array_keys($default_params) as $key) {

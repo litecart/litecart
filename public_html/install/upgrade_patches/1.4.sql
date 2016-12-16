@@ -1,5 +1,2 @@
-ALTER TABLE `lc_tax_rates` ADD COLUMN `address_type` ENUM('payment','shipping') NOT NULL DEFAULT 'payment' AFTER `rate`;
--- --------------------------------------------------------
-ALTER TABLE `lc_settings` CHANGE `value` `value` VARCHAR(8192);
--- --------------------------------------------------------
-UPDATE `lc_settings` SET `type` = 'global' WHERE `key` = 'platform_database_version' LIMIT 1;
+INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('images', 'local', 'Product Images: Trim Whitespace', 'Trim whitespace in generated thumbnail images.', 'product_image_trim', '0', 'toggle("y/n")', '33', NOW(), NOW());

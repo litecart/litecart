@@ -3,9 +3,9 @@
 
   <?php if ($manufacturers) { ?>
   <div class="manufacturers">
-    <h3 class="title" style="margin-bottom: 0px;"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
-    <div class="input-wrapper" style="display: block; color: inherit;">
-      <ul class="list-vertical">
+    <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
+    <div class="form-control" style="height: auto; max-height: 200px; overflow-y: auto;">
+      <ul class="list-unstyled">
         <?php foreach ($manufacturers as $manufacturer) echo '<li><label>'. functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true) .' '. $manufacturer['name'] .'</label> <a href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])) .'">&raquo;</a></li>' . PHP_EOL; ?>
       </ul>
     </div>
@@ -16,9 +16,9 @@
   <?php foreach ($product_groups as $group) { ?>
   <div class="product-groups">
     <div id="product-group-<?php echo $group['id']; ?>">
-      <h3 class="title" style="margin-bottom: 0px;"><?php echo $group['name']; ?></h3>
-      <div class="input-wrapper" style="display: block; color: inherit;">
-        <ul class="list-vertical">
+      <h3 class="title"><?php echo $group['name']; ?></h3>
+      <div class="form-control" style="height: auto; max-height: 200px; overflow-y: auto;">
+        <ul class="list-unstyled">
           <?php foreach ($group['values'] as $value) echo '<li><label>' . functions::form_draw_checkbox('product_groups[]', $group['id'].'-'.$value['id']) .' '. $value['name'].'</label></li>' . PHP_EOL; ?>
         </ul>
       </div>

@@ -18,11 +18,4 @@
     file_put_contents($file, $contents);
   }
 
-  foreach (glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . '*.catalog/*.inc.php') as $file) {
-    if (preg_match('#default\.catalog#', $file)) continue;
-    $contents = file_get_contents($file);
-    $contents = preg_replace('#'. preg_quote('fancybox', '#') .'#', 'lightbox', $contents);
-    file_put_contents($file, $contents);
-  }
-
 ?>
