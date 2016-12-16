@@ -83,7 +83,13 @@
       }
     }
 
-    return '<button type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $value .'</button>';
+    if (is_array($value)) {
+      list($value, $title) = $value;
+    } else {
+      $title = $value;
+    }
+
+    return '<button '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $title .'</button>';
   }
 
   function form_draw_checkbox($name, $value, $input=true, $parameters='') {
@@ -95,23 +101,24 @@
   function form_draw_color_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
-
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
-    document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="currency"]\', function(){' . PHP_EOL
-                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
+    document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
+                                                                        . '    $("body").on("change", "input[data-type=\'currency\']", function(){' . PHP_EOL
+                                                                        . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
+                                                                        . '    });' . PHP_EOL
                                                                         . '  });';
 
-    return '<span class="input-wrapper"><input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals']+2, '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong style="opacity: 0.5;">'. $currency_code .'</strong></span>';
+    return '<div class="input-group">' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals']+2, '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <strong class="input-group-addon" style="opacity: 0.5;">'. $currency_code .'</strong>' . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_date_field($name, $value=true, $parameters='') {
@@ -123,23 +130,20 @@
       $value = '';
     }
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="YYYY-MM-DD"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="YYYY-MM-DD"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_datetime_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
+    $value = strtotime($value);
     if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
       $value = date('Y-m-d\TH:i:s', strtotime($value));
     } else {
       $value = '';
     }
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="datetime-local" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="19" pattern="^\d{4}-\d{2}-\d{2}(.?\d{2}:\d{2}(:\d{2})?)?$" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="datetime-local" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="16" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}.*" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='') {
@@ -147,29 +151,36 @@
 
     $value = number_format((float)$value, (int)$decimals, '.', '');
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
-
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
                                                                        . '    $("body").on("change", "input[data-type=\'decimal\']", function(){' . PHP_EOL
                                                                        . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
                                                                        . '    });' . PHP_EOL
                                                                        . '  });';
 
-    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. $value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. $value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">@</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</div>';
   }
 
   function form_draw_file_field($name, $parameters='') {
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="large"';
 
-    return '<input type="file" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="file" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+  }
+
+  function form_draw_fonticon_field($name, $value=true, $type, $icon, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon($icon) .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />' . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_hidden_field($name, $value=true, $parameters='') {
@@ -179,15 +190,13 @@
   }
 
   function form_draw_image($name, $src, $parameters=false) {
-    return '<input type="image" name="'. htmlspecialchars($name) .'" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="image" name="'. htmlspecialchars($name) .'" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_input($name, $value=true, $type='text', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_link_button($url, $title, $parameters='', $icon='') {
@@ -216,7 +225,7 @@
       }
     }
 
-    return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : false) . $title .'</a>';
+    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : false) . $title .'</a>';
   }
 
   function form_draw_month_field($name, $value=true, $parameters='') {
@@ -228,33 +237,31 @@
       $value = '';
     }
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="month" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="month" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="month" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="month" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="tiny"';
-
-    return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_password_field($name, $value='', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-key') .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</div>';
   }
 
   function form_draw_phone_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-phone') .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</div>';
   }
 
   function form_draw_radio_button($name, $value, $input=true, $parameters='') {
@@ -266,37 +273,42 @@
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters) .'</span>';
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon"><img src="'. WS_DIR_IMAGES .'languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters) .'</span>';
+
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. WS_DIR_IMAGES .'languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  ' . form_draw_textarea($name, $value, $parameters) . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters) .'</span>';
+
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. WS_DIR_IMAGES .'languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  ' . form_draw_wysiwyg_field($name, $value, $parameters) . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_search_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="search" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="search"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="search" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="search"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_select_optgroup_field($name, $groups=array(), $input=true, $multiple=false, $parameters='') {
     if (!is_array($groups)) $groups = array($groups);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
       $html .= '  <optgroup label="'. $group['label'] .'">' . PHP_EOL;
@@ -317,11 +329,10 @@
   }
 
   function form_draw_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
+
     if (!is_array($options)) $options = array($options);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
       if ($input === true) {
@@ -329,75 +340,6 @@
       } else {
         $option_input = $input;
       }
-      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
-    }
-
-    $html .= '</select>';
-
-    return $html;
-  }
-
-  function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $ajax_url=null) {
-
-    if (!is_array($options)) $options = array($options);
-
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    document::$snippets['head_tags']['select2'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'select2/select2.min.css" />';
-    document::$snippets['foot_tags']['select2'] = '<script src="'. WS_DIR_EXT .'select2/select2.min.js"></script>' . PHP_EOL
-                                                . '<script src="'. WS_DIR_EXT .'select2/i18n/'. language::$selected['code'] .'.js"></script>';
-
-    if (!empty($ajax_url)) {
-      document::$snippets['javascript'][] = '  $(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
-                                          . '    minimumInputLength: 1,' . PHP_EOL
-                                          . '    ajax: {' . PHP_EOL
-                                          . '      url: "'. $ajax_url .'",' . PHP_EOL
-                                          . '      cache: false,' . PHP_EOL
-                                          . '      dataType: "json",' . PHP_EOL
-                                          . '      delay: 250,' . PHP_EOL
-                                          . '      data: function(params) {' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          query: params.term,' . PHP_EOL
-                                          . '          page: params.page || 1' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      },' . PHP_EOL
-                                          /*
-                                          . '      processResults: function(data, page) {' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          results: data' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      }' . PHP_EOL
-                                          */
-                                          . '      processResults: function(data, page) {' . PHP_EOL
-                                          . '        var results = [];' . PHP_EOL
-                                          . '        $.each(data, function(i, v) {' . PHP_EOL
-                                          . '          var o = {};' . PHP_EOL
-                                          . '          o.id = v.id;' . PHP_EOL
-                                          . '          o.text = v.name;' . PHP_EOL
-                                          . '          results.push(o);' . PHP_EOL
-                                          . '        });' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          results: results' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      },' . PHP_EOL
-                                          . '    }' . PHP_EOL
-                                          //.   '  escapeMarkup: function (markup) { return markup; },' . PHP_EOL
-                                          //.   '  templateResult: formatRepo,' . PHP_EOL
-                                          //.   '  templateSelection: formatRepoSelection' . PHP_EOL
-                                          . '  });';
-    } else {
-      document::$snippets['javascript'][] = '  $(\'select[name="'.$name.'"]\').select2();';
-    }
-
-    $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
-
-    foreach ($options as $option) {
-      if ($input === true) {
-        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-      } else {
-        $option_input = $input;
-      }
-
       $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
 
@@ -409,20 +351,16 @@
   function form_draw_textarea($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="large"';
-
-    return '<textarea name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
+    return '<textarea '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
 
   function form_draw_text_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name, $value);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_toggle($name, $input=true, $type='e/d') {
+  function form_draw_toggle($name, $input=true, $type='e/d', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
     $input = in_array(strtolower($input), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? '1' : '0';
@@ -451,30 +389,38 @@
         break;
     }
 
-    return '<label><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label> <label><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>';
+    return '<div>' . PHP_EOL
+         . '  <div class="btn-group btn-group-inline" data-toggle="buttons">'. PHP_EOL
+         . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label>'. PHP_EOL
+         . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_time_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    return '<input type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_url_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="url" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="url"'. (($parameters) ? ' '.$parameters : false) .' />';
+  }
 
-    return '<input type="url" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="url"'. (($parameters) ? ' '.$parameters : false) .' />';
+  function form_draw_username_field($name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-user') .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</div>';
   }
 
   function form_draw_wysiwyg_field($name, $value=true, $parameters='') {
 
     if ($value === true) $value = form_reinsert_value($name);
-
-    if (!empty($parameters)) $parameters = preg_replace('/(data-size="[^"]*")/', '', $parameters);
 
     document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
                                                   . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
@@ -528,17 +474,17 @@
       case 'currency':
         return functions::form_draw_currency_field(!empty($options[0]) ? $options[0] : null, $name, $input);
       case 'smallinput':
-        return functions::form_draw_input($name, $input, 'text', 'data-size="small"');
+        return functions::form_draw_input($name, $input, 'text');
       case 'input':
-        return functions::form_draw_input($name, $input, 'text', 'data-size="medium"');
+        return functions::form_draw_input($name, $input, 'text');
       case 'password':
-        return functions::form_draw_input($name, $input, 'password', 'data-size="medium"');
+        return functions::form_draw_input($name, $input, 'password');
       case 'smalltext':
-        return functions::form_draw_textarea($name, $input, 'rows="2" data-size="medium"');
+        return functions::form_draw_textarea($name, $input, 'rows="2"');
       case 'mediumtext':
-        return functions::form_draw_textarea($name, $input, 'rows="5" data-size="large"');
+        return functions::form_draw_textarea($name, $input, 'rows="5"');
       case 'bigtext':
-        return functions::form_draw_textarea($name, $input, 'rows="10" data-size="large"');
+        return functions::form_draw_textarea($name, $input, 'rows="10"');
       case 'category':
       case 'categories':
         return functions::form_draw_categories_list($name, $input);
@@ -577,7 +523,9 @@
         return functions::form_draw_pages_list($name, $input);
       case 'radio':
         $output = '';
-        for ($i=0; $i<count($options); $i++) $output .= ' <label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label>';
+        for ($i=0; $i<count($options); $i++) {
+          $output .= '<div class="radio"><label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label></div>';
+        }
         return $output;
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
@@ -674,7 +622,7 @@
       $options[] = array($country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"');
     }
 
-    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"');
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
@@ -696,23 +644,20 @@
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    //if (!preg_match('/data-ajax--url="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . ' data-ajax--url="'. document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')) .'"'; // Does not work in jQuery <= 1.11.3
-
     $options = array();
 
     if (!empty($input)) {
       $customers_query = database::query(
         "select id, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
-        where id = ". (int)$input ."
-        limit 1;"
+        order by email;"
       );
 
       while($customer = database::fetch($customers_query)) {
-        $options[] = array($customer['company'] ? $customer['company'] :  $customer['firstname'] .' '. $customer['lastname'], $customer['id']);
+        $options[] = array($customer['email'], $customer['id']);
       }
     }
 
-    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"', document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')));
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
   function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {
@@ -721,7 +666,7 @@
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_delivery_status_id');
 
     $query = database::query(
-      "select ds.id, dsi.name from ". DB_TABLE_DELIVERY_STATUSES ." ds
+      "select ds.id, dsi.name , dsi.description from ". DB_TABLE_DELIVERY_STATUSES ." ds
       left join ". DB_TABLE_DELIVERY_STATUSES_INFO ." dsi on (dsi.delivery_status_id = ds.id and dsi.language_code = '". database::input(language::$selected['code']) ."')
       order by dsi.name asc;"
     );
@@ -731,7 +676,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = array($row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"');
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -749,7 +694,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     if (database::num_rows($geo_zones_query) == 0) {
-      return functions::form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
+      return functions::form_draw_hidden_field($name, '0') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {
@@ -787,7 +732,7 @@
       }
     }
 
-    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
     */
   }
 
@@ -812,10 +757,8 @@
     $options = array();
 
     foreach (length::$classes as $class) {
-      $options[] = array($class['unit']);
+      $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');
     }
-
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
@@ -961,10 +904,10 @@
     );
 
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] . (!empty($product['sku']) ? ' ['. $product['sku'] .']' : '') .' ('. (float)$product['quantity'] .')', $product['id']);
+      $options[] = array($product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']);
     }
 
-    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
   function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {
@@ -972,10 +915,8 @@
     if ($input === true) $input = form_reinsert_value($name);
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_quantity_unit_id');
 
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
-
     $quantity_units_query = database::query(
-      "select qu.id, qui.name from ". DB_TABLE_QUANTITY_UNITS ." qu
+      "select qu.*, qui.name, qui.description from ". DB_TABLE_QUANTITY_UNITS ." qu
       left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qui.quantity_unit_id = qu.id and language_code = '". language::$selected['code'] ."')
       order by qu.priority, qui.name asc;"
     );
@@ -985,7 +926,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     while ($quantity_unit = database::fetch($quantity_units_query)) {
-      $options[] = array($quantity_unit['name'], $quantity_unit['id']);
+      $options[] = array($quantity_unit['name'], $quantity_unit['id'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. htmlspecialchars($quantity_unit['description']) .'"');
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -1010,7 +951,7 @@
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_sold_out_status_id');
 
     $query = database::query(
-      "select sos.id, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
+      "select sos.id, sosi.name, sosi.description from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
       left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
       order by sosi.name asc;"
     );
@@ -1020,7 +961,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = array($row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"');
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -1029,7 +970,7 @@
   function form_draw_suppliers_list($name, $input=true, $multiple=false, $parameters='') {
 
     $suppliers_query = database::query(
-      "select id, name from ". DB_TABLE_SUPPLIERS ."
+      "select id, name, description from ". DB_TABLE_SUPPLIERS ."
       order by name;"
     );
 
@@ -1038,7 +979,29 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     while ($supplier = database::fetch($suppliers_query)) {
-      $options[] = array($supplier['name'], $supplier['id']);
+      $options[] = array($supplier['name'], $supplier['id'], 'title="'. htmlspecialchars($supplier['description']) .'"');
+    }
+
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+
+
+  function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
+
+    if ($input === true) $input = form_reinsert_value($name);
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
+
+    $tax_classes_query = database::query(
+      "select * from ". DB_TABLE_TAX_CLASSES ."
+      order by name asc;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($tax_class = database::fetch($tax_classes_query)) {
+      $options[] = array($tax_class['name'], $tax_class['id'], 'title="'. htmlspecialchars($tax_class['description']) .'"');
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -1080,27 +1043,6 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
-  function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
-
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
-
-    $tax_classes_query = database::query(
-      "select * from ". DB_TABLE_TAX_CLASSES ."
-      order by name asc;"
-    );
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    while ($tax_class = database::fetch($tax_classes_query)) {
-      $options[] = array($tax_class['name'], $tax_class['id']);
-    }
-
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  }
-
   function form_draw_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
 
     if ($input === true) $input = form_reinsert_value($name);
@@ -1109,10 +1051,8 @@
     $options = array();
 
     foreach (weight::$classes as $class) {
-      $options[] = array($class['unit']);
+      $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');
     }
-
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
