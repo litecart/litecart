@@ -18,7 +18,7 @@
       <tr>
         <td id="sidebar" style="vertical-align: top; width: 230px;">
           <div class="logotype">
-            <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo functions::image_process(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', array('width' => 220, 'height' => 70, 'clipping' => 'FIT_ONLY_BIGGER')); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
+            <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>"><img src="<?php echo WS_DIR_TEMPLATE . 'images/logotype.svg'; ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" style="max-width: 230px; margin: -0.5em -1em;" /></a>
           </div>
           <div class="header">
             <a href="<?php echo document::href_ilink(''); ?>" title="<?php echo language::translate('title_catalog', 'Catalog'); ?>"><?php echo functions::draw_fonticon('fa-chevron-circle-left'); ?></a>
