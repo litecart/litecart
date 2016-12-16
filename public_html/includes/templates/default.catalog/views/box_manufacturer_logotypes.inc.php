@@ -1,7 +1,13 @@
-<div id="box-logotypes">
-  <div class="content">
-    <ul class="list-horizontal">
-      <?php foreach ($logotypes as $logotype) echo '<li><a href="'. htmlspecialchars($logotype['link']) .'"><img src="'. htmlspecialchars($logotype['image']) .'" alt="'. htmlspecialchars($logotype['title']) .'" title="'. htmlspecialchars($logotype['title']) .'" style="margin: 0px 15px;"></a></li>' . PHP_EOL; ?>
-    </ul>
-  </div>
+<div id="box-manufacturer-logotypes" class="box">
+  <ul class="list-inline text-center">
+
+    <?php foreach ($logotypes as $logotype) { ?>
+    <li>
+      <a href="<?php echo htmlspecialchars($logotype['link']); ?>">
+        <img src="<?php echo htmlspecialchars($logotype['image']); ?>" alt="" title="<?php echo htmlspecialchars($logotype['title']); ?>" style="margin: 0px 15px;">
+      </a>
+    </li>
+    <?php } ?>
+
+  </ul>
 </div>

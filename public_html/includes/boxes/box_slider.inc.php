@@ -1,6 +1,6 @@
 <?php
-  document::$snippets['head_tags']['responsiveslides'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'responsiveslides/responsiveslides.css" media="screen" />';
-  document::$snippets['foot_tags']['responsiveslides'] = '<script src="'. WS_DIR_EXT .'responsiveslides/responsiveslides.min.js"></script>';
+  document::$snippets['head_tags']['responsiveslides'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'responsiveslider/responsiveslides.css" media="screen" />';
+  document::$snippets['foot_tags']['responsiveslides'] = '<script src="'. WS_DIR_EXT .'responsiveslider/responsiveslides.min.js"></script>';
 
   $box_slider_cache_id = cache::cache_id('box_slider', array('language'));
   if (cache::capture($box_slider_cache_id, 'file')) {

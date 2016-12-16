@@ -1,5 +1,7 @@
 <?php
-  if (!is_object($product)) return;
+  if (empty($_GET['product_id'])) return;
+
+  $product = catalog::product($_GET['product_id']);
 
   if (settings::get('box_similar_products_num_items') == 0) return;
 

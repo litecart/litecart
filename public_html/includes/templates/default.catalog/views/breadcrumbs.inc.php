@@ -1,15 +1,11 @@
-<nav id="breadcrumbs">
-  <ul class="list-horizontal">
+<ul class="breadcrumb">
 <?php
-  $separator = '';
   foreach ($breadcrumbs as $breadcrumb) {
     if (!empty($breadcrumb['link'])) {
-      echo '<li>'. $separator .'<a href="'. htmlspecialchars($breadcrumb['link']) .'">'. htmlspecialchars($breadcrumb['title']) .'</a></li>';
+      echo '<li><a href="'. htmlspecialchars($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a></li>';
     } else {
-      echo '<li>'. $separator . htmlspecialchars($breadcrumb['title']) .'</li>';
+      echo '<li>'. $breadcrumb['title'] .'</li>';
     }
-    $separator = ' &raquo; ';
   }
 ?>
-  </ul>
-</nav>
+</ul>

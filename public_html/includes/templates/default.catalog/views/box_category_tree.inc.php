@@ -4,7 +4,7 @@
     <?php
       if (!function_exists('custom_draw_category_tree')) {
         function custom_draw_category_tree($categories, $indent=0) {
-          echo '<ul class="list-vertical">' . PHP_EOL;
+          echo '<ul class="list-unstyled">' . PHP_EOL;
           foreach ($categories as $category) {
             echo '  <li class="category-'. $category['id'] . (!empty($category['active']) ? ' active' : '') .'">'. functions::draw_fonticon(!empty($category['opened']) ? 'fa-minus-square' : 'fa-plus-square', 'style="font-size: 0.75em;"') .' <a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a>';
             if (!empty($category['subcategories'])) {

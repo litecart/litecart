@@ -1,10 +1,12 @@
 <?php
-  if (!is_object($product)) return;
+  if (empty($_GET['product_id'])) return;
 
   functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
 
   $box_also_purchased_products_cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
   if (cache::capture($box_also_purchased_products_cache_id, 'file')) {
+
+    $product = catalog::product($_GET['product_id']);
 
     $orders_query = database::query(
       "select distinct order_id as id from ". DB_TABLE_ORDERS_ITEMS ."
