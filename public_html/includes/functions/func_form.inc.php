@@ -7,19 +7,17 @@
 
   function form_draw_protected_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters=false) {
 
-    document::$snippets['javascript'][] = '  $(document).ready(function(){' . PHP_EOL
-                                        . '    $("form[name=\''. $name .'\']").on("change keyup keydown", ":input", function(){' . PHP_EOL
-                                        . '      $(this).addClass("unsaved");' . PHP_EOL
-                                        . '    });' . PHP_EOL
-                                        . '    $("form").submit(function() {' . PHP_EOL
-                                        . '      $(this).find(".changed-input").each(function(){' . PHP_EOL
-                                        . '        $(this).removeClass("unsaved");' . PHP_EOL
-                                        . '      });' . PHP_EOL
-                                        . '    });' . PHP_EOL
-                                        . '    $(window).on("beforeunload", function(){' . PHP_EOL
-                                        . '      if ($(".unsaved").length) return "'. htmlspecialchars(language::translate('warning_unsaved_changes', 'There are unsaved changes, do you wish to continue?')) .'";' . PHP_EOL
-                                        . '    });' . PHP_EOL
-                                        . '  });' . PHP_EOL;
+    document::$snippets['javascript'][] = "  $('form[name=\"". $name ."\"]').on('change keyup keydown', ':input', function(){" . PHP_EOL
+                                        . "    $(this).addClass('unsaved');" . PHP_EOL
+                                        . "  });" . PHP_EOL
+                                        . "  $('form').submit(function() {" . PHP_EOL
+                                        . "    $(this).find('.changed-input').each(function(){" . PHP_EOL
+                                        . "      $(this).removeClass('unsaved');" . PHP_EOL
+                                        . "    });" . PHP_EOL
+                                        . "  });" . PHP_EOL
+                                        . "  $(window).on('beforeunload', function(){" . PHP_EOL
+                                        . "    if ($('.unsaved').length) return '". htmlspecialchars(language::translate('warning_unsaved_changes', 'There are unsaved changes, do you wish to continue?')) ."';" . PHP_EOL
+                                        . "  });";
 
     return form_draw_form_begin($name, $method, $action, $multipart, $parameters);
   }
@@ -149,10 +147,8 @@
 
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
 
-    document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                       . '    $("body").on("change", "input[data-type=\'decimal\']", function(){' . PHP_EOL
-                                                                       . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
-                                                                       . '    });' . PHP_EOL
+    document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
+                                                                       . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
                                                                        . '  });';
 
     return '<input type="number" name="'. htmlspecialchars($name) .'" value="'. $value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';

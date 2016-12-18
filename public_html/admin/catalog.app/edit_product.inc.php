@@ -534,7 +534,7 @@ foreach (currency::$currencies as $currency) {
         </table>
         <script>
           function get_tax_rate() {
-            switch ($("select[name=tax_class_id]").val()) {
+            switch ($('select[name=tax_class_id]').val()) {
 <?php
   $tax_classes_query = database::query(
     "select * from ". DB_TABLE_TAX_CLASSES ."
@@ -572,17 +572,17 @@ foreach (currency::$currencies as $currency) {
             }
           }
 
-          $("select[name='tax_class_id'], input[name^='prices']").bind("change keyup", function() {
+          $('select[name="tax_class_id"], input[name^="prices["]').bind('input propertyChange', function() {
 
-            var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
+            var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
             var price = Number($(this).val());
             var net_price = Number($(this).val()) * (1+(get_tax_rate()/100));
 
           // Update net price
             if (net_price == 0) {
-              $("input[name='gross_prices["+ currency_code +"]']").val("");
+              $('input[name="gross_prices['+ currency_code +']"]').val('');
             } else {
-              $("input[name='gross_prices["+ currency_code +"]']").val(net_price.toFixed(get_currency_decimals(currency_code)));
+              $('input[name="gross_prices['+ currency_code +']"]').val(net_price.toFixed(get_currency_decimals(currency_code)));
             }
 
             if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') return;
@@ -592,13 +592,13 @@ foreach (currency::$currencies as $currency) {
             var currency_gross_price = net_price * get_currency_value(currency_code);
 
             if (currency_price == 0) {
-              $("input[name='prices["+ currency_code +"]']").attr("placeholder", "")
+              $('input[name="prices['+ currency_code +']"]').attr('placeholder', '')
             } else {
-              $("input[name='prices["+ currency_code +"]']").attr("placeholder", price.toFixed(get_currency_decimals(currency_code)));
+              $('input[name="prices['+ currency_code +']"]').attr('placeholder', price.toFixed(get_currency_decimals(currency_code)));
             };
 
           // Update currency prices
-            $("input[name^='prices']").each(function(){
+            $('input[name^="prices"]').each(function(){
               var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
 
               if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') {
@@ -607,59 +607,59 @@ foreach (currency::$currencies as $currency) {
                 var currency_gross_price = net_price * get_currency_value(currency_code);
 
                 if (currency_price == 0) {
-                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
-                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $('input[name="prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
                 } else {
-                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
-                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", currency_gross_price.toFixed(get_currency_decimals(currency_code)));
+                  $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_price.toFixed(get_currency_decimals(currency_code)));
+                  $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price.toFixed(get_currency_decimals(currency_code)));
                 };
 
               }
             });
           });
 
-          $("input[name^='gross_prices']").bind("change keyup", function() {
-
-            var currency_code = $(this).attr('name').replace(/^gross_prices\[(.*)\]$/, "$1");
+          $('input[name^="gross_prices"]').bind('input propertyChange', function() {
+            
+            var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
             var price = Number($(this).val()) / (1+(get_tax_rate()/100));
             var net_price = Number($(this).val());
 
           // Update price
             if (price == 0) {
-              $("input[name='prices["+ currency_code +"]']").val("");
+              $('input[name="prices['+ currency_code +']"]').val('');
             } else {
-              $("input[name='prices["+ currency_code +"]']").val(price.toFixed(get_currency_decimals(currency_code)));
+              $('input[name="prices['+ currency_code +']"]').val(price.toFixed(get_currency_decimals(currency_code)));
             }
 
-            if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') return;
+            if (currency_code != "<?php echo settings::get("store_currency_code"); ?>") return;
 
           // Update system currency price
             var currency_price = price * get_currency_value(currency_code);
             var currency_gross_price = net_price * get_currency_value(currency_code);
 
             if (currency_price == 0) {
-              $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
-              $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+              $('input[name="prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
+              $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
             } else {
-              $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
-              $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", currency_gross_price.toFixed(get_currency_decimals(currency_code)));
+              $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_price.toFixed(get_currency_decimals(currency_code)));
+              $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price.toFixed(get_currency_decimals(currency_code)));
             };
 
           // Update currency prices
-            $("input[name^='prices']").each(function() {
-              var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
+            $('input[name^="prices"]').each(function() {
+              var currency_code = $(this).attr("name").replace(/^prices\[(.*)\]$/, '$1');
 
-              if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') {
+              if (currency_code != "<?php echo settings::get("store_currency_code"); ?>") {
 
                 var currency_price = price * get_currency_value(currency_code);
                 var currency_gross_price = net_price * get_currency_value(currency_code);
 
                 if (currency_price == 0) {
-                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
-                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $('input[name="prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
                 } else {
-                  $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
-                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
+                  $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_price.toFixed(get_currency_decimals(currency_code)));
+                  $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_price.toFixed(get_currency_decimals(currency_code)));
                 };
 
               }
@@ -667,10 +667,10 @@ foreach (currency::$currencies as $currency) {
           });
 
         // Initiate
-          $("input[name^='prices']").trigger("change");
-          $("input[name^='gross_prices']").trigger("change");
+          $('input[name^="prices"]').trigger('change');
+          $('input[name^="gross_prices"]').trigger('change');
 
-          $("body").on('click', "#price-incl-tax-tooltip", function(e) {
+          $('body').on('click', '#price-incl-tax-tooltip', function(e) {
             e.preventDefault;
             alert("<?php echo str_replace(array("\r", "\n", "\""), array('', '', "\\\""), language::translate('tooltip_price_incl_tax', 'This field helps you calculate net price based on the store region tax. All prices input to database are always excluding tax.')); ?>");
           });
@@ -711,51 +711,51 @@ foreach (currency::$currencies as $currency) {
         </table>
 
         <script>
-          $("body").on("keyup change", "input[name^='campaigns'][name$='[percentage]']", function() {
+          $('body').on('input propertyChange', 'input[name^="campaigns"][name$="[percentage]"]', function() {
             var parent = $(this).closest('tr');
 
             <?php foreach (currency::$currencies as $currency) { ?>
-            if ($("input[name^='prices'][name$='[<?php echo $currency['code']; ?>]']").val() > 0) {
-              var value = $("input[name='prices[<?php echo $currency['code']; ?>]']").val() * ((100 - $(this).val()) / 100);
+            if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
+              var value = $('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * ((100 - $(this).val()) / 100);
               value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
-              $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val(value);
+              $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
             } else {
-              $(parent).find("input[name$='[<?php echo $currency['code']; ?>]']").val('');
+              $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val('');
             }
             <?php } ?>
 
             <?php foreach (currency::$currencies as $currency) { ?>
-            var value = $(parent).find("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").val() * <?php echo $currency['value']; ?>;
+            var value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() * <?php echo $currency['value']; ?>;
             value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
-            $(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").attr('placeholder', value);
+            $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
             <?php } ?>
           });
 
-          $("body").on("keyup change", "input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']", function() {
-            var parent = $(this).closest('tr');
-            var percentage = ($("input[name='prices[<?php echo settings::get('store_currency_code'); ?>]']").val() - $(this).val()) / $("input[name='prices[<?php echo settings::get('store_currency_code'); ?>]']").val() * 100;
+          $('body').on('input propertyChange', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
+            var parent = $(this).closest("tr");
+            var percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
             percentage = Number(percentage).toFixed(2);
-            $(parent).find("input[name$='[percentage]']").val(percentage);
+            $(parent).find('input[name$="[percentage]"]').val(percentage);
 
             <?php foreach (currency::$currencies as $currency) { ?>
             var value = 0;
-            value = $(parent).find("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").val() * <?php echo $currency['value']; ?>;
+            value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() * <?php echo $currency['value']; ?>;
             value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
-            $(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").attr('placeholder', value);
-            if ($(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").val() == 0) {
-              $(parent).find("input[name^='campaigns'][name$='[<?php echo $currency['code']; ?>]']").val('');
+            $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
+            if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
+              $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('');
             }
             <?php } ?>
           });
-          $("input[name^='campaigns'][name$='[<?php echo settings::get('store_currency_code'); ?>]']").trigger("keyup");
+          $('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('keyup');
 
-          $("body").on("click", "#remove-campaign", function(event) {
+          $('body').on('click', '#remove-campaign', function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
 
           var new_campaign_i = 1;
-          $("body").on("click", "#add-campaign", function(event) {
+          $('body').on('click', '#add-campaign', function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td><strong><?php functions::general_escape_js(language::translate('title_start_date', 'Start Date')); ?></strong><br />'
@@ -842,22 +842,22 @@ foreach (currency::$currencies as $currency) {
           </tr>
         </table>
         <script>
-          $("#table-options").on("click", ".remove", function(event) {
+          $('#table-options').on('click', '.remove', function(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
           });
 
-          $("#table-options").on("click", ".move-up, .move-down", function(event) {
+          $('#table-options').on('click', '.move-up, .move-down', function(event) {
             event.preventDefault();
-            var row = $(this).closest("tr");
-            if ($(this).is(".move-up") && $(row).prevAll().length > 1) {
+            var row = $(this).closest('tr');
+            if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
               $(row).insertBefore($(row).prev());
-            } else if ($(this).is(".move-down") && $(row).nextAll().length > 0) {
+            } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
               $(row).insertAfter($(row).next());
             }
           });
 
-          $("#table-options").on("change", "select[name^='options'][name$='[group_id]']", function(){
+          $('#table-options').on('input propertyChange', 'select[name^="options"][name$="[group_id]"]', function(){
             var valueField = this.name.replace(/group/, 'value');
             $('body').css('cursor', 'wait');
             $.ajax({
@@ -870,14 +870,14 @@ foreach (currency::$currencies as $currency) {
                 alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
               },
               success: function(data) {
-                $('select[name=\''+ valueField +'\']').html('');
-                if ($('select[name=\''+ valueField +'\']').attr('disabled')) $('select[name=\''+ valueField +'\']').removeAttr('disabled');
+                $('select[name="'+ valueField +'"]').html('');
+                if ($('select[name="'+ valueField +'"]').attr('disabled')) $('select[name="'+ valueField +'"]').removeAttr('disabled');
                 if (data) {
                   $.each(data, function(i, zone) {
-                    $('select[name=\''+ valueField +'\']').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+                    $('select[name="'+ valueField +'"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
                   });
                 } else {
-                  $('select[name=\''+ valueField +'\']').attr('disabled', 'disabled');
+                  $('select[name="'+ valueField +'"]').attr('disabled', 'disabled');
                 }
               },
               complete: function() {
@@ -887,7 +887,7 @@ foreach (currency::$currencies as $currency) {
           });
 
           var new_option_i = 1;
-          $("#table-options").on("click", ".add", function(event) {
+          $('#table-options').on('click', '.add', function(event) {
             event.preventDefault();
             var output = '<tr>'
                        + '  <td><a class="add" href="#" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"')); ?></a><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
@@ -1004,7 +1004,7 @@ foreach (currency::$currencies as $currency) {
               $(this).closest('tr').remove();
             });
 
-            $("#table-option-combo").on("change", "select[name^='new_option'][name$='[group_id]']", function(){
+            $("#table-option-combo").on("input propertyChange", "select[name^='new_option'][name$='[group_id]']", function(){
               var valueField = this.name.replace(/group/, 'value');
               $('body').css('cursor', 'wait');
               $.ajax({
