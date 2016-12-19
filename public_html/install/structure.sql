@@ -310,7 +310,7 @@ CREATE TABLE `lc_orders_comments` (
   `order_id` int(11) NOT NULL,
   `author` enum('system','staff','customer') NOT NULL,
   `text` varchar(512) NOT NULL,
-  `hidden` int(11) NOT NULL,
+  `hidden` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
