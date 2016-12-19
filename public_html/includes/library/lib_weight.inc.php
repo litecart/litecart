@@ -68,7 +68,7 @@
 
       if ($value == 0) return 0;
 
-      if ($from == $to) return $value;
+      if ($from == $to) return (float)$value;
 
       if (!isset(self::$classes[$from])) trigger_error('The unit '. $from .' is not a valid weight class.', E_USER_WARNING);
       if (!isset(self::$classes[$to])) trigger_error('The unit '. $to .' is not a valid weight class.', E_USER_WARNING);
