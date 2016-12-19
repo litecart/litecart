@@ -670,6 +670,9 @@
   box-sizing: border-box;
   min-height: 4em;
 }
+#comments .comment textarea {
+  margin: 2em 0 1em 0;
+}
 #comments .comment.system {
   margin-left: 10%;
   margin-right: 10%;
@@ -728,6 +731,9 @@
   top: 0.5em;
   right: 1.5em;
 }
+#comments .hidden input[type=checkbox] {
+  display: none;
+}
 
 #comments .semi-transparent {
   opacity: 0.5;
@@ -741,7 +747,7 @@
       <?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?>
       <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
       <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
-      <div class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?></div>
+      <label class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
       <div class="date"><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
     </li>
     <?php } ?>
@@ -756,7 +762,7 @@
                + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime']))); ?>'
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
                + '    <div class="text"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 4em; box-sizing: border-box;"')); ?></div>'
-               + '    <label class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>'
+               + '    <label class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>'
                + '    <div class="date"><?php echo strftime(language::$selected['format_datetime']); ?></div>'
                + '  </li>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
