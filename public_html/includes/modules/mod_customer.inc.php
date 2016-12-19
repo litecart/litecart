@@ -16,12 +16,12 @@
 
       if (empty($this->modules)) return false;
 
+      $checksum = md5(http_build_query($fields));
+      if (isset($this->_get_address_cache[$checksum])) {
+        return $this->_get_address_cache[$checksum];
+      }
+
       foreach ($this->modules as $module) {
-        $checksum = sha1(serialize($fields));
-        if (isset($this->_get_address_cache[$checksum])) {
-          $fields = $this->_get_address_cache[$checksum];
-          continue;
-        }
 
         if (!method_exists($module, 'get_address')) continue;
 

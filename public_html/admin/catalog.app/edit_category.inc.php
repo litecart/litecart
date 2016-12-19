@@ -71,7 +71,7 @@
     exit();
   }
 
-  document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
+  document::$snippets['foot_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
 
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']] : language::translate('title_add_new_category', 'Add New Category'); ?></h1>
@@ -151,10 +151,10 @@ foreach (array_keys(language::$languages) as $language_code) {
           <tr>
             <td><strong><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></strong><br />
               <?php echo functions::form_draw_file_field('image', ''); ?>
-              <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150); ?>" alt="" /><br />
+              <div><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150); ?>" alt="" /></div>
               <?php if (!empty($category->data['image'])) { ?><br />
-              <?php echo $category->data['image']; ?><br />
-              <?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?>
+              <div><?php echo $category->data['image']; ?></div>
+              <div><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
               <?php } ?>
             </td>
           </tr>
@@ -245,3 +245,9 @@ foreach (array_keys(language::$languages) as $language_code) {
   <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($category->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<?php if (!empty($category->data['id'])) { ?>
+<script>
+$('select[name="parent_id]" option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
+</script>
+<?php } ?>

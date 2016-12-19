@@ -9,7 +9,7 @@
 
     http_response_code(404);
 
-    if (preg_match('#\.(jpg|png|gif)$#', route::$request)) exit;
+    if (preg_match('#\.(css|js|gif|jpg|png|svg)$#', route::$request)) exit;
 
     echo '<h1>HTTP 404 - File Not Found</h1>';
     echo '<p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>';

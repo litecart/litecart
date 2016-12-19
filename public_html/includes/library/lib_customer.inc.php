@@ -45,7 +45,10 @@
     //public static function startup() {
     //}
 
-    public static function before_capture() {
+    //public static function before_capture() {
+    //}
+
+    public static function after_capture() {
 
     // Set regional data
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
@@ -67,9 +70,6 @@
         }
       }
     }
-
-    //public static function after_capture() {
-    //}
 
     //public static function prepare_output() {
     //}
@@ -213,35 +213,22 @@
     }
 
     public static function reset() {
-      session::$data['customer'] = array(
-        'id' => '',
-        'email' => '',
-        'tax_id' => '',
-        'phone' => '',
-        'mobile' => '',
-        'company' => '',
-        'firstname' => '',
-        'lastname' => '',
-        'address1' => '',
-        'address2' => '',
-        'city' => '',
-        'postcode' => '',
-        'country_code' => '',
-        'zone_code' => '',
-        'different_shipping_address' => false,
-        'shipping_address' => array(
-          'company' => '',
-          'firstname' => '',
-          'lastname' => '',
-          'address1' => '',
-          'address2' => '',
-          'city' => '',
-          'postcode' => '',
-          'country_code' => '',
-          'zone_code' => '',
-        ),
-        'display_prices_including_tax' => null,
+
+      session::$data['customer'] = array();
+
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_CUSTOMERS .";"
       );
+      while ($field = database::fetch($fields_query)) {
+        if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
+          session::$data['customer']['shipping_address'][$matches[1]] = '';
+        } else {
+          session::$data['customer'][$field['Field']] = null;
+        }
+      }
+
+      session::$data['customer']['different_shipping_address'] = false;
+      session::$data['customer']['display_prices_including_tax'] = null;
     }
 
     public static function require_login() {
@@ -259,7 +246,7 @@
     public static function password_reset($email) {
 
       if (empty($email)) {
-        notices::add('errors', language::translate('error_missing_email', 'To reset your password you must provide an email address.'));
+        notices::add('errors', language::translate('error_password_reset_missing_email', 'To reset your password you must provide an email address.'));
         return;
       }
 
@@ -285,7 +272,11 @@
         limit 1;"
       );
 
-      $message = str_replace(array('%email', '%password', '%store_link'), array($email, $new_password, document::ilink('')), language::translate('email_body_password_reset', "We have set a new password for your account at %store_link. Use your email %email and new password %password to log in."));
+      $message = strtr(language::translate('email_body_password_reset', "We have set a new password for your account at %store_link. Use your email %email and new password %password to log in."), array(
+        '%email' => $email,
+        '%password' => $new_password,
+        '%store_link' => document::ilink(''),
+      ));
 
       functions::email_send(
         null,
@@ -385,7 +376,10 @@
 
       if (empty($redirect_url)) $redirect_url = document::ilink('');
 
-      notices::add('success', str_replace(array('%firstname', '%lastname'), array(self::$data['firstname'], self::$data['lastname']), language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.')));
+      notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
+        '%firstname' => self::$data['firstname'],
+        '%lastname' => self::$data['lastname'],
+      )));
       header('Location: '. $redirect_url);
       exit;
     }

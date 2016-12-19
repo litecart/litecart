@@ -31,9 +31,11 @@
         if (in_array($field['Field'], array('id', 'category_id', 'language_code'))) continue;
         $this->data[$field['Field']] = array();
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = '';
+          $this->data[$field['Field']][$language_code] = null;
         }
       }
+
+      $this->data['dock'] = array();
     }
 
     public function load($category_id) {
@@ -57,6 +59,8 @@
           $this->data[$key][$category_info['language_code']] = $value;
         }
       }
+
+      $this->data['dock'] = explode(',', $this->data['dock']);
     }
 
     public function save() {
@@ -69,6 +73,8 @@
         );
         $this->data['id'] = database::insert_id();
       }
+
+      if ($this->data['parent_id'] == $this->data['id']) $this->data['parent_id'] = null;
 
       database::query(
         "update ". DB_TABLE_CATEGORIES ."

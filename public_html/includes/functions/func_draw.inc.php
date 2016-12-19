@@ -108,25 +108,23 @@
     ksort($params);
 
     if (empty(document::$snippets['head_tags']['fancybox'])) {
-      document::$snippets['head_tags']['fancybox'] = '<script src="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.pack.js"></script>' . PHP_EOL
-                                                   . '<link rel="stylesheet" href="{snippet:template_path}styles/fancybox.css" media="screen" />';
+      document::$snippets['head_tags']['fancybox'] = '<link rel="stylesheet" href="{snippet:template_path}styles/fancybox.css" media="screen" />';
+      document::$snippets['foot_tags']['fancybox'] = '<script src="'. WS_DIR_EXT .'fancybox/jquery.fancybox-1.3.4.pack.js"></script>';
     }
 
     if (empty($selector)) {
-      document::$snippets['javascript']['fancybox-'.$selector] = '  $(document).ready(function() {' . PHP_EOL
-                                                               . '    $.fancybox({' . PHP_EOL;
+      document::$snippets['javascript']['fancybox-'.$selector] = '  $.fancybox({' . PHP_EOL;
     } else {
-      document::$snippets['javascript']['fancybox-'.$selector] = '  $(document).ready(function() {' . PHP_EOL
-                                                               . '    $("a").each(function() {' . PHP_EOL // HTML 5 fix for rel attribute
-                                                               . '      $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
-                                                               . '    }); ' . PHP_EOL
-                                                               . '    $("body").on("hover", "'. $selector .'", function() { ' . PHP_EOL // Fixes ajax content
-                                                               . '      $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
+      document::$snippets['javascript']['fancybox-'.$selector] = '  $("a").each(function() {' . PHP_EOL // HTML 5 fix for rel attribute
+                                                               . '    $(this).attr("rel", $(this).attr("data-fancybox-group"));' . PHP_EOL
+                                                               . '  }); ' . PHP_EOL
+                                                               . '  $("body").on("hover", "'. $selector .'", function() { ' . PHP_EOL // Fixes ajax content
+                                                               . '    $'. ($selector ? '("'. $selector .'")' : '') .'.fancybox({' . PHP_EOL;
     }
 
     foreach (array_keys($params) as $key) {
       if (strpos($params[$key], '(') !== false) {
-        document::$snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
+        document::$snippets['javascript']['fancybox-'.$selector] .= '      "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
       } else {
         switch (gettype($params[$key])) {
           case 'boolean':
@@ -135,10 +133,10 @@
             ($params[$key] ? 'true' : 'false') .',' . PHP_EOL;
             break;
           case 'integer':
-            document::$snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
+            document::$snippets['javascript']['fancybox-'.$selector] .= '      "'. $key .'" : '. $params[$key] .',' . PHP_EOL;
             break;
           case 'string':
-            document::$snippets['javascript']['fancybox-'.$selector] .= '        "'. $key .'" : "'. $params[$key] .'",' . PHP_EOL;
+            document::$snippets['javascript']['fancybox-'.$selector] .= '      "'. $key .'" : "'. $params[$key] .'",' . PHP_EOL;
             break;
         }
       }
@@ -147,11 +145,9 @@
     document::$snippets['javascript']['fancybox-'.$selector] = rtrim(document::$snippets['javascript']['fancybox-'.$selector], ','.PHP_EOL) . PHP_EOL;
 
     if (empty($selector)) {
-      document::$snippets['javascript']['fancybox-'.$selector] .= '    });' . PHP_EOL
-                                                                . '  });';
+      document::$snippets['javascript']['fancybox-'.$selector] .= '  });';
     } else {
-      document::$snippets['javascript']['fancybox-'.$selector] .= '      });' . PHP_EOL
-                                                                . '    });' . PHP_EOL
+      document::$snippets['javascript']['fancybox-'.$selector] .= '    });' . PHP_EOL
                                                                 . '  });';
     }
   }

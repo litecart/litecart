@@ -19,7 +19,7 @@
     exit;
   }
 
-  ### Set Environment Variables ###################################
+  ### Set Environment Variables #################################
 
 // Set platform name
   preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents('../includes/app_header.inc.php'), $matches);
@@ -37,7 +37,7 @@
   $_REQUEST['admin_folder'] = str_replace('\\', '/', $_REQUEST['admin_folder']);
   $_REQUEST['admin_folder'] = rtrim($_REQUEST['admin_folder'], '/') . '/';
 
-  ### PHP > Check Version #############################
+  ### PHP > Check Version #######################################
 
   echo '<p>Checking PHP version... ';
 
@@ -50,7 +50,7 @@
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
 
-  ### PHP > Check display_errors #############################
+  ### PHP > Check display_errors ################################
 
   echo '<p>Checking PHP display_errors... ';
 
@@ -60,7 +60,7 @@
     echo ini_get('display_errors') . '<span class="warning">[Warning] Missing permissions to display errors?</span></p>';
   }
 
-  ### Database > Connection ###################################
+  ### Database > Connection #####################################
 
   echo '<p>Connecting to database... ';
 
@@ -78,7 +78,7 @@
 
   echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
 
-  ### Database > Check Version #############################
+  ### Database > Check Version ##################################
 
   echo '<p>Checking MySQL version... ';
 
@@ -91,7 +91,7 @@
     echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
 
-  ### Database > Check Charset #########################
+  ### Database > Check Charset ##################################
 
   echo '<p>Checking MySQL database default character set... ';
 
@@ -116,7 +116,7 @@
     }
   }
 
-  ### Config > Write ###################################
+  ### Config > Write ############################################
 
   echo '<p>Writing config file... ';
 
@@ -148,7 +148,7 @@
     die('<span class="error">[Error]</span></p>' . PHP_EOL);
   }
 
-  ### Database > Cleaning ###################################
+  ### Database > Cleaning #######################################
 
   echo '<p>Cleaning database... ';
 
@@ -162,7 +162,7 @@
 
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 
-  ### Database > Tables > Structure ###################################
+  ### Database > Tables > Structure #############################
 
   echo '<p>Writing database tables... ';
 
@@ -184,7 +184,7 @@
 
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 
-  ### Database > Tables > Data ###################################
+  ### Database > Tables > Data ##################################
 
   echo '<p>Writing database table data... ';
 
@@ -211,7 +211,7 @@
 
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 
-  ### Files > Default Data ####################################
+  ### Files > Default Data ######################################
 
   echo '<p>Copying default files...';
   if (file_xcopy('data/default/public_html/', $installation_path)) {
@@ -220,7 +220,7 @@
     echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
   }
 
-  ### .htaccess mod rewrite ###################################
+  ### .htaccess mod rewrite #####################################
 
   echo '<p>Setting mod_rewrite base path...';
 
@@ -240,7 +240,7 @@
     echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
   }
 
-  ### Admin > Folder ###################################
+  ### Admin > Folder ############################################
 
   if (!empty($_REQUEST['admin_folder']) && $_REQUEST['admin_folder'] != 'admin/') {
     echo '<p>Renaming admin folder...';
@@ -252,7 +252,7 @@
     }
   }
 
-  ### Admin > .htaccess Protection ###################################
+  ### Admin > .htaccess Protection ##############################
 
   echo '<p>Securing admin folder...';
 
@@ -295,7 +295,7 @@
     echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL;
   }
 
-  ### Admin > Database > Users ###################################
+  ### Admin > Database > Users ##################################
 
   require('../includes/functions/func_password.inc.php');
 
@@ -305,7 +305,7 @@
     values ('1', '1', '". $database->input($_REQUEST['username']) ."', '". password_checksum('1', $_REQUEST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
 
-  ### Set platform database version ###################################
+  ### Set platform database version #############################
 
   echo '<p>Set platform database version...';
 
@@ -324,7 +324,7 @@
     echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
   }
 
-  ## Windows OS Adjustments ###################################
+  ## OS Adjustments #############################################
 
   /*
   if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
@@ -337,6 +337,7 @@
       limit 1;"
     );
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+
   } else if (strtoupper(substr(PHP_OS, 0, 6)) == 'DARWIN') {
     echo '<p>Making adjustments for Darwin (Mac) platform...';
     $database->query(
@@ -349,7 +350,7 @@
   }
   */
 
-  ### Regional Data Patch ###################################
+  ### Regional Data Patch #######################################
 
   if (!empty($_REQUEST['country_code'])) {
 
@@ -386,7 +387,7 @@
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
 
-  ### Database > Tables > Demo Data ###################################
+  ### Database > Tables > Demo Data #############################
 
   if (!empty($_REQUEST['demo_data'])) {
     echo '<p>Writing demo data... ';
@@ -407,7 +408,7 @@
     echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   }
 
-  ### Files > Demo Data ###################################
+  ### Files > Demo Data #########################################
 
   if (!empty($_REQUEST['demo_data'])) {
     echo '<p>Copying demo files...';
@@ -418,7 +419,7 @@
     }
   }
 
-  ### Set cache breakpoint ###################################
+  ### Set cache breakpoint ######################################
 
   echo '<p>Set cache breakpoint...';
 
@@ -431,7 +432,7 @@
 
   echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
 
-  ### ###################################
+  ### #############################################################
 
   echo PHP_EOL . '<h2>Complete</h2>' . PHP_EOL
      . '<p style="font-weight: bold;">Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL

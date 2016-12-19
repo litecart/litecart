@@ -43,14 +43,10 @@
 
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">' . PHP_EOL;
 
-      self::$snippets['head_tags']['jquery'] = '<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>' . PHP_EOL
-                                             . '<script src="//code.jquery.com/jquery-migrate-1.4.1.min.js"></script>' . PHP_EOL
-                                             . '<script>' . PHP_EOL
-                                             . '  window.jQuery || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-1.12.4.min.js"%3E%3C/script%3E\'));' . PHP_EOL
-                                             . '  (window.jQuery && jQuery.migrateTrace) || document.write(unescape(\'%3Cscript src="'. WS_DIR_EXT .'jquery/jquery-migrate-1.4.1.min.js"%3E%3C/script%3E\'));' . PHP_EOL
-                                             . '</script>';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
 
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-1.12.4.min.js"></script>' . PHP_EOL
+                                             . '<script src="'. WS_DIR_EXT .'jquery/jquery-migrate-1.4.1.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -66,9 +62,8 @@
       self::$settings = unserialize(settings::get('store_template_catalog_settings'));
     }
 
-    public static function after_capture() {
-
-    }
+    //public static function after_capture() {
+    //}
 
     public static function prepare_output() {
 
@@ -80,20 +75,16 @@
       }
 
     // Prepare styles
-      if (!empty(self::$snippets['styles'])) {
-        self::$snippets['styles'] = '<style>' . PHP_EOL
-                                  . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                                  . implode(PHP_EOL . PHP_EOL, self::$snippets['styles']) . PHP_EOL
-                                  . '/*]]>*/-->' . PHP_EOL
+      if (!empty(self::$snippets['style'])) {
+        self::$snippets['style'] = '<style>' . PHP_EOL
+                                  . implode(PHP_EOL . PHP_EOL, self::$snippets['style']) . PHP_EOL
                                   . '</style>' . PHP_EOL;
       }
 
     // Prepare javascript
       if (!empty(self::$snippets['javascript'])) {
         self::$snippets['javascript'] = '<script>' . PHP_EOL
-                                      . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                                       . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
-                                      . '/*]]>*/-->' . PHP_EOL
                                       . '</script>' . PHP_EOL;
       }
 
@@ -105,10 +96,118 @@
 
     public static function before_output() {
 
+      if (!function_exists('replace_first_occurrence')) {
+        function replace_first_occurrence($search, $replace, $subject) {
+          if (strlen($search) > 4096) {
+            return preg_replace('#'. preg_quote(mb_substr($search, 0, 1024, language::$selected['charset']), '#') .'.*?'. preg_quote(mb_substr($search, -1024, null, language::$selected['charset']), '#') .'#s', $replace, $subject, 1);
+          } else {
+            return preg_replace('#'. preg_quote($search, '#') .'#', $replace, $subject, 1);
+          }
+        }
+      }
+
+    // Extract and group in content stylesheets
+      if (preg_match('#^.*<html(?:[^>]+)?>(.*)</html>.*$#is', $GLOBALS['output'], $matches)) {
+        $content = $matches[1];
+
+        $stylesheets = array();
+        if (preg_match_all('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
+          foreach ($matches as $match) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+              $stylesheets[] = trim($match[1]);
+            }
+          }
+
+        if (!empty($stylesheets)) {
+            $stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
+
+            if (!$GLOBALS['output'] = preg_replace('#</head>#', $stylesheets . '</head>', $GLOBALS['output'], 1)) {
+              trigger_error('Failed extracting stylesheets', E_USER_ERROR);
+            }
+          }
+        }
+      }
+
+    // Extract and group in content styling
+      if (preg_match('#^.*<html(?:[^>]+)?>(.*)</html>.*$#is', $GLOBALS['output'], $matches)) {
+        $content = $matches[1];
+
+        $styles = array();
+        if (preg_match_all('#<style>(.*?)</style>\R?#is', $content, $matches, PREG_SET_ORDER)) {
+          foreach ($matches as $match) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+              $styles[] = trim($match[1]);
+            }
+          }
+
+          if (!empty($styles)) {
+            $styles = '<style>' . PHP_EOL
+                   . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                   . implode(PHP_EOL . PHP_EOL, $styles) . PHP_EOL
+                   . '/*]]>*/-->' . PHP_EOL
+                   . '</style>' . PHP_EOL;
+
+            if (!$GLOBALS['output'] = preg_replace('#</head>#', $styles . '</head>', $GLOBALS['output'], 1)) {
+              trigger_error('Failed extracting styles', E_USER_ERROR);
+            }
+          }
+        }
+      }
+
+    // Extract and group javascript resources
+      if (preg_match('#^.*<body(?:[^>]+)?>(.*)</body>.*$#is', $GLOBALS['output'], $matches)) {
+        $content = $matches[1];
+
+        $js_resources = array();
+        if (preg_match_all('#\R?(<script[^>]+></script>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
+
+          foreach ($matches as $match) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+              $js_resources[] = trim($match[1]);
+            }
+          }
+
+          if (!empty($js_resources)) {
+            $js_resources = implode(PHP_EOL, $js_resources) . PHP_EOL;
+
+            if (!$GLOBALS['output'] = preg_replace('#</body>#is', $js_resources .'</body>', $GLOBALS['output'], 1)) {
+              trigger_error('Failed extracting javascript resources', E_USER_ERROR);
+            }
+          }
+        }
+      }
+
+    // Extract and group inline javascript
+      if (preg_match('#^.*<body(?:[^>]+)?>(.*)</body>.*$#is', $GLOBALS['output'], $matches)) {
+        $content = $matches[1];
+
+        $javascript = array();
+        if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?[^>]*>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
+
+          foreach ($matches as $match) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+              $javascript[] = trim($match[1], "\r\n");
+            }
+          }
+
+          if (!empty($javascript)) {
+            $javascript = '<script>' . PHP_EOL
+                        . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                        . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
+                        . '/*]]>*/-->' . PHP_EOL
+                        . '</script>' . PHP_EOL;
+
+            if (!$GLOBALS['output'] = preg_replace('#</body>#is', $javascript . '</body>', $GLOBALS['output'], 1)) {
+              trigger_error('Failed extracting javascripts', E_USER_ERROR);
+            }
+          }
+        }
+      }
+
     // Clean orphan snippets
       $search = array(
-        '/\{snippet:[^\}]+\}/',
-        '/<!--snippet:[^-->]+-->/',
+        '#\{snippet:[^\}]+\}#',
+        '#\R?<!--snippet:[^-->]+-->\R?#',
       );
 
       $GLOBALS['output'] = preg_replace($search, '', $GLOBALS['output']);

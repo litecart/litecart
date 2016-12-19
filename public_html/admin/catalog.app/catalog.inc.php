@@ -381,29 +381,29 @@
 ?>
   </table>
 
-  <script>
-    $(".dataTable .checkbox-toggle").click(function() {
-      $(this).closest("form").find(":checkbox").each(function() {
-        $(this).attr('checked', !$(this).attr('checked'));
-      });
-      $(".dataTable .checkbox-toggle").attr("checked", true);
-    });
-
-    $('.dataTable tr').click(function(event) {
-      if ($(event.target).is('input:checkbox')) return;
-      if ($(event.target).is('a, a *')) return;
-      if ($(event.target).is('th')) return;
-      $(this).find('input:checkbox').trigger('click');
-    });
-  </script>
-
-<p>
-  <ul class="list-horizontal">
-    <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-    <li><span class="button-set"><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></span></li>
-    <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <span class="button-set"><?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?><?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?><?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?></span></li>
-    <span class="button-set"><?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></span></li>
-  </ul>
-</p>
+  <p>
+    <ul class="list-horizontal">
+      <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
+      <li><span class="button-set"><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></span></li>
+      <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <span class="button-set"><?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?><?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?><?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?></span></li>
+      <span class="button-set"><?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></span></li>
+    </ul>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<script>
+  $(".dataTable .checkbox-toggle").click(function() {
+    $(this).closest("form").find(":checkbox").each(function() {
+      $(this).attr('checked', !$(this).attr('checked'));
+    });
+    $(".dataTable .checkbox-toggle").attr("checked", true);
+  });
+
+  $('.dataTable tr').click(function(event) {
+    if ($(event.target).is('input:checkbox')) return;
+    if ($(event.target).is('a, a *')) return;
+    if ($(event.target).is('th')) return;
+    $(this).find('input:checkbox').trigger('click');
+  });
+</script>

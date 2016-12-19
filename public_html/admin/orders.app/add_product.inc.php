@@ -1,4 +1,6 @@
 <?php
+  parse_str($_SERVER['QUERY_STRING'], $_GET); // Rebuild GET params - Suhosin Bypass
+
   document::$layout = 'printable';
 
   if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('store_currency_code');
@@ -91,8 +93,8 @@
 
         if ($option_match) {
           if (($option_stock['quantity'] - $_POST['quantity']) < 0 && empty($product->sold_out_status['orderable'])) {
-            notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.'));
-            return;
+            notices::add('warnings', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.'));
+            break;
           }
 
           $option_stock_combination = $option_stock['combination'];
@@ -120,9 +122,9 @@
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('form_add_product', 'post'); ?>
+<?php echo functions::form_draw_form_begin('form_add_product', 'post', null, false, 'style="min-height: 250px;"'); ?>
 
-  <?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="$(this).closest(\'form\').submit();"'); ?>
+  <?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="$(this).closest(\'form\').submit();" data-size="large"'); ?>
 
   <?php if (!empty($product)) { ?>
 
@@ -135,7 +137,7 @@
       <?php foreach (array_keys($product->options_stock) as $key) { ?>
       <tr>
         <td><strong><?php echo $product->options_stock[$key]['name'][$_GET['language_code']]; ?></strong></td>
-        <td><?php echo $product->options_stock[$key]['quantity']; ?></td>
+        <td><?php echo (float)$product->options_stock[$key]['quantity']; ?></td>
       </tr>
       <?php } ?>
     </table>
@@ -290,7 +292,9 @@
     });
   </script>
 
-  <p><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="parent.$.fancybox.close();"', 'cancel'); ?></p>
+  <p class="button-set">
+    <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="parent.$.fancybox.close();"', 'cancel'); ?>
+  </p>
 
 <?php } ?>
 

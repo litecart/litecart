@@ -55,13 +55,11 @@ body {
   padding: 5px 10px;
 
   border-collapse: collapse;
-
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
+  border-radius: 4px;
 
   background: #f0f0f0;
-  -webkit-box-shadow: inset 0px 1px 2px #bbb;
-  -moz-box-shadow: inset 0px 1px 2px #bbb;
   box-shadow: inset 0px 1px 2px #bbb;
 }
 #region > div {

@@ -41,15 +41,16 @@
         limit 1;"
       );
 
-      $file = ini_get('error_log');
-      $contents = file_get_contents($file);
+      $error_log_file = ini_get('error_log');
+      $contents = file_get_contents($error_log_file);
       if (!empty($contents)) {
-        $from = !empty($this->settings['email_receipient']) ? $this->settings['email_receipient'] : settings::get('store_email');
-        $to = $this->settings['email_receipient'];
-        $result = functions::email_send($from, $to, '[Error Report] '. settings::get('store_name'), PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents);
-        if ($result === true) {
-          file_put_contents($file, '');
-        }
+        $result = functions::email_send(
+          null,
+          !empty($this->settings['email_receipient']) ? $this->settings['email_receipient'] : settings::get('store_email'),
+          '[Error Report] '. settings::get('store_name'),
+          PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents
+        );
+        if ($result === true) file_put_contents($error_log_file, '');
       }
     }
 

@@ -26,10 +26,10 @@
     'email' => !empty($customer['email']) ? $customer['email'] : '',
   );
 
-  mb_convert_variables(language::$selected['charset'], 'UTF-8', $json);
+  language::convert_characters($json, language::$selected['charset'], 'UTF-8');
   $json = json_encode($json);
 
-  mb_convert_variables('UTF-8', language::$selected['charset'], $json);
+  language::convert_characters($json, 'UTF-8', language::$selected['charset']);
   echo $json;
 
   exit;

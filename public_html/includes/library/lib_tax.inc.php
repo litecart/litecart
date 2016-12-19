@@ -38,6 +38,11 @@
       $customer = array(
         'country_code' => $country_code,
         'zone_code' => $zone_code,
+        'different_shipping_address' => false,
+        'shipping_address' => array(
+          'country_code' => $country_code,
+          'zone_code' => $zone_code,
+        ),
       );
 
       return self::get_price($value, $tax_class_id, $calculate, $customer);
@@ -114,22 +119,39 @@
 
     // Presets
       if (is_string($customer)) {
-        if (strtolower($customer) == 'store') {
-          $customer = array(
-            'tax_id' => null,
-            'company' => null,
-            'country_code' => settings::get('store_country_code'),
-            'zone_code' => settings::get('store_zone_code'),
-          );
-        } else if (strtolower($customer) == 'customer') {
-          $customer = array(
-            'tax_id' => customer::$data['tax_id'],
-            'company' => customer::$data['company'],
-            'country_code' => customer::$data['country_code'],
-            'zone_code' => customer::$data['zone_code'],
-          );
-        } else {
-          trigger_error('Unknown preset for customer', E_USER_WARNING);
+        switch(strtolower($customer)) {
+
+          case 'store':
+            $customer = array(
+              'tax_id' => false,
+              'company' => false,
+              'country_code' => settings::get('store_country_code'),
+              'zone_code' => settings::get('store_zone_code'),
+              'shipping_address' => array(
+                'company' => false,
+                'country_code' => settings::get('store_country_code'),
+                'zone_code' => settings::get('store_zone_code'),
+              ),
+            );
+            break;
+
+          case 'customer':
+            $customer = array(
+              'tax_id' => !empty(customer::$data['tax_id']) ? true : false,
+              'company' => !empty(customer::$data['company']) ? true : false,
+              'country_code' => customer::$data['country_code'],
+              'zone_code' => customer::$data['zone_code'],
+              'shipping_address' => array(
+                'company' => !empty(customer::$data['different_shipping_address']) ? (!empty(customer::$data['shipping_address']['company']) ? true : false) : customer::$data['company'],
+                'country_code' => !empty(customer::$data['different_shipping_address']) ? customer::$data['shipping_address']['country_code'] : customer::$data['country_code'],
+                'zone_code' => !empty(customer::$data['different_shipping_address']) ? customer::$data['shipping_address']['zone_code'] : customer::$data['zone_code'],
+              ),
+            );
+            break;
+
+          default:
+            trigger_error('Unknown preset for customer', E_USER_WARNING);
+            break;
         }
       }
 
@@ -141,30 +163,38 @@
         }
       }
 
-      $checksum = md5(implode('', array(
-        $customer['country_code'],
-        $customer['zone_code'],
-        !empty($customer['company']) ? '1' : '0',
-        !empty($customer['tax_id']) ? '1' : '0',
-      )));
+      $checksum = md5(http_build_query($customer));
 
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
 
       $tax_rates_query = database::query(
-        "select tr.* from ". DB_TABLE_TAX_RATES ." tr
-        left join ". DB_TABLE_GEO_ZONES . " gz on (gz.id = tr.geo_zone_id)
-        left join ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz on (z2gz.geo_zone_id = tr.geo_zone_id)
-        where tr.tax_class_id = '" . (int)$tax_class_id . "'
-        and z2gz.country_code = '" . database::input($customer['country_code']) . "'
-        and (z2gz.zone_code = '' or z2gz.zone_code = '". database::input($customer['zone_code']) ."');"
+        "select * from ". DB_TABLE_TAX_RATES .";"
       );
 
-      while ($row = database::fetch($tax_rates_query)) {
-        if ($row['customer_type'] == 'individuals' && !empty($customer['company'])) continue;
-        if ($row['customer_type'] == 'companies' && empty($customer['company'])) continue;
-        if ($row['tax_id_rule'] == 'without' && !empty($customer['tax_id'])) continue;
-        if ($row['tax_id_rule'] == 'with' && empty($customer['tax_id'])) continue;
-        $tax_rates[$row['id']] = $row;
+      while ($rate = database::fetch($tax_rates_query)) {
+
+        switch($rate['address_type']) {
+          case 'payment':
+            if ($rate['customer_type'] == 'individuals' && !empty($customer['company'])) continue 2;
+            if ($rate['customer_type'] == 'companies' && empty($customer['company'])) continue 2;
+            if (!functions::reference_in_geo_zone($rate['geo_zone_id'], $customer['country_code'], $customer['zone_code'])) continue 2;
+            break;
+
+          case 'shipping':
+            if ($rate['customer_type'] == 'individuals' && !empty($customer['shipping_address']['company'])) continue 2;
+            if ($rate['customer_type'] == 'companies' && empty($customer['shipping_address']['company'])) continue 2;
+            if (!functions::reference_in_geo_zone($rate['geo_zone_id'], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue 2;
+            break;
+
+          default:
+            trigger_error('Unknown address type', E_USER_WARNING);
+            break;
+        }
+
+        if ($rate['tax_id_rule'] == 'without' && !empty($customer['tax_id'])) continue;
+        if ($rate['tax_id_rule'] == 'with' && empty($customer['tax_id'])) continue;
+
+        $tax_rates[$rate['id']] = $rate;
       }
 
       self::$_cache['rates'][$tax_class_id][$checksum] = $tax_rates;

@@ -13,8 +13,7 @@
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
 <!--snippet:head_tags-->
-<!--snippet:styles-->
-<!--snippet:javascript-->
+<!--snippet:style-->
 <style>
 <?php
   if (!empty(document::$settings['fixed_header'])) {
@@ -33,7 +32,7 @@
     <header id="header" class="twelve-eighty">
 
       <div id="logotype-wrapper">
-        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" height="50" alt="<?php echo settings::get('store_name'); ?>" /></a>
+        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-width: 250px; max-height: 60px;" /></a>
       </div>
 
       <div id="customer-service-wrapper">
@@ -88,5 +87,6 @@
 </div>
 
 <!--snippet:foot_tags-->
+<!--snippet:javascript-->
 </body>
 </html>

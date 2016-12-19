@@ -17,7 +17,7 @@
     exit;
   }
 
-  if ( empty($product->status)) {
+  if (empty($product->status)) {
     notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
     http_response_code(404);
     header('Refresh: 0; url='. document::ilink(''));
@@ -50,8 +50,8 @@
   document::$snippets['title'][] = $product->head_title[language::$selected['code']] ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']];
   document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : strip_tags($product->short_description[language::$selected['code']]);
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
-  document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
-  document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
+  document::$snippets['foot_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
+  document::$snippets['foot_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
 
   if (!empty($product->image)) {
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
@@ -198,7 +198,9 @@
       if (empty($shipping->data['options'][$module_id]['options'][$option_id]['error']) && !empty($shipping->data['options'][$module_id]['options'][$option_id]['cost'])) {
         $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
         $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-        $box_product->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+        $box_product->snippets['cheapest_shipping'] = strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'), array(
+          '%price' => currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)),
+        ));
       }
     }
   }

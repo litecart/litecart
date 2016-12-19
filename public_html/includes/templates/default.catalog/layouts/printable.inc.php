@@ -11,7 +11,13 @@
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
 <!--snippet:head_tags-->
-<!--snippet:styles-->
+<!--snippet:style-->
+</head>
+<body>
+
+<!--snippet:content-->
+
+<!--snippet:foot_tags-->
 <!--snippet:javascript-->
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <script>
@@ -20,11 +26,5 @@
   }
 </script>
 <?php } ?>
-</head>
-<body>
-
-<!--snippet:content-->
-
-<!--snippet:foot_tags-->
 </body>
 </html>

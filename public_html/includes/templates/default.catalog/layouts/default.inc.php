@@ -6,14 +6,12 @@
                                    . '  <div id="cookies-acceptance" class="twelve-eighty">' . PHP_EOL
                                    . '    ' . language::translate('terms_cookies_acceptance', 'We rely on cookies to provide our services. By using our services, you agree to our use of cookies.') .' '. functions::form_draw_button('accept_cookies', language::translate('title_ok', 'OK'), 'button') . PHP_EOL
                                    . '  </div>' . PHP_EOL
-                                   . '</div>' . PHP_EOL
-                                   . '<script src="'. WS_DIR_EXT .'jquery/jquery.cookie.min.js"></script>' . PHP_EOL
-                                   . '<script>' . PHP_EOL
-                                   . '  $("button[name=\'accept_cookies\']").click(function(){' . PHP_EOL
-                                   . '    $("#cookies-acceptance-wrapper").fadeOut();' . PHP_EOL
-                                   . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
-                                   . '  });' . PHP_EOL
-                                   . '</script>';
+                                   . '</div>';
+    document::$snippets['foot_tags'][] = '<script src="'. WS_DIR_EXT .'jquery/jquery.cookie.min.js"></script>';
+    document::$snippets['javascript'][] = '  $("button[name=\'accept_cookies\']").click(function(){' . PHP_EOL
+                                        . '    $("#cookies-acceptance-wrapper").fadeOut();' . PHP_EOL
+                                        . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
+                                        . '  });';
   }
 ?>
 <!DOCTYPE html>
@@ -31,8 +29,7 @@
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
 <!--snippet:head_tags-->
-<!--snippet:styles-->
-<!--snippet:javascript-->
+<!--snippet:style-->
 <style>
 <?php
   if (!empty(document::$settings['fixed_header'])) {
@@ -51,7 +48,7 @@
     <header id="header" class="twelve-eighty">
 
       <div id="logotype-wrapper">
-        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 220px; max-height: 50px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
+        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" /></a>
       </div>
 
       <div id="region-wrapper">
@@ -110,6 +107,8 @@
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
+<!--snippet:foot_tags-->
+<!--snippet:javascript-->
 <script>
   $(window).scroll(function(){
     if ($(this).scrollTop() > 100) {
@@ -124,7 +123,5 @@
     return false;
   });
 </script>
-
-<!--snippet:foot_tags-->
 </body>
 </html>

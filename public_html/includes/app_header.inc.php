@@ -1,6 +1,6 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '1.3.6');
+  define('PLATFORM_VERSION', '1.3.7');
 
   if (!file_exists(realpath(dirname(__FILE__)) . '/config.inc.php')) {
     header('Location: ./install/');

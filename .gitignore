@@ -24,6 +24,7 @@ public_html/cache/*
 ######################
 .DS_Store
 .DS_Store?
+._.DS_Store
 ._*
 .Spotlight-V100
 .Trashes

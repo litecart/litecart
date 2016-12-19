@@ -133,15 +133,6 @@
       return $cheapest['module_id'].':'.$cheapest['option_id'];
     }
 
-    public function set_cheapest() {
-
-      trigger_error('set_cheapest() is deprecated, use instead cheapest()', E_USER_DEPRECATED);
-
-      list($module_id, $option_id) = explode(':', $this->cheapest());
-
-      $this->select($module_id, $option_id);
-    }
-
     public function pre_check($order) {
 
       if (empty($this->data['selected']['id'])) return;

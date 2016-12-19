@@ -254,7 +254,7 @@
             // Calculate destination dimensional ratio
               $destination_ratio = $destination_width / $destination_height;
 
-              ImageAlphaBlending($_resized, false);
+              ImageAlphaBlending($_resized, true);
               ImageSaveAlpha($_resized, true);
 
               ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->whitespace[0], $this->whitespace[0], $this->whitespace[0], 127));
@@ -277,7 +277,7 @@
             // Create output image container
               $_resized = ImageCreateTrueColor($destination_width, $destination_height);
 
-              ImageAlphaBlending($_resized, false);
+              ImageAlphaBlending($_resized, true);
               ImageSaveAlpha($_resized, true);
 
               ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 127));
@@ -319,7 +319,7 @@
               // Create output image container
                 $_resized = ImageCreateTrueColor($width, $height);
 
-                ImageAlphaBlending($_resized, false);
+                ImageAlphaBlending($_resized, true);
                 ImageSaveAlpha($_resized, true);
 
               // Fill with whitespace color
@@ -336,7 +336,7 @@
               // Create output image container
                 $_resized = ImageCreateTrueColor($destination_width, $destination_height);
 
-                ImageAlphaBlending($_resized, false);
+                ImageAlphaBlending($_resized, true);
                 ImageSaveAlpha($_resized, true);
 
                 ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 127));

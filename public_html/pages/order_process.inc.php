@@ -95,6 +95,14 @@
 
 // If payment error
   if (!empty($result['error'])) {
+    if (!empty($order->data['id'])) {
+      $order->data['comments'][] = array(
+        'author' => 'system',
+        'text' => 'Payment Error: '. $result['error'],
+        'hidden' => true,
+      );
+      $order->save();
+    }
     notices::add('errors', $result['error']);
     header('Location: '. document::ilink('checkout'));
     exit;

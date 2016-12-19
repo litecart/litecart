@@ -7,18 +7,7 @@
 <link href="{snippet:template_path}styles/loader.css" rel="stylesheet" media="all" />
 <link href="{snippet:template_path}styles/theme.css" rel="stylesheet" media="all" />
 <!--snippet:head_tags-->
-<!--snippet:styles-->
-<!--snippet:javascript-->
-<script>
-var $buoop = {c:2};
-function $buo_f(){
-  var e = document.createElement("script");
-  e.src = "//browser-update.org/update.js";
-  document.body.appendChild(e);
-};
-try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-catch(e){window.attachEvent("onload", $buo_f)}
-</script>
+<!--snippet:style-->
 </head>
 <body>
 
@@ -75,5 +64,6 @@ catch(e){window.attachEvent("onload", $buo_f)}
 </div>
 
 <!--snippet:foot_tags-->
+<!--snippet:javascript-->
 </body>
 </html>

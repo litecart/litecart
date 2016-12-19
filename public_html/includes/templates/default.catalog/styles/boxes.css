@@ -51,6 +51,7 @@
 }
 #box-category-tree li a, #box-information li a {
   color: inherit;
+  line-height: 175%;
 }
 #box-category-tree a:hover, #box-information a:hover {
   color: rgb(0, 136, 204);
@@ -70,8 +71,6 @@
   max-height: 200px;
 }
 
-#box-recently-viewed-products li {
-}
 #box-recently-viewed-products li {
   margin: 3px;
 }

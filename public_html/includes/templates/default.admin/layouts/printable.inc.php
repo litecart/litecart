@@ -7,7 +7,13 @@
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
 <link rel="stylesheet" href="{snippet:template_path}styles/printable.css" media="all" />
 <!--snippet:head_tags-->
-<!--snippet:styles-->
+<!--snippet:style-->
+</head>
+<body>
+
+<!--snippet:content-->
+
+<!--snippet:foot_tags-->
 <!--snippet:javascript-->
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <script>
@@ -16,11 +22,5 @@
   }
 </script>
 <?php } ?>
-</head>
-<body>
-
-<!--snippet:content-->
-
-<!--snippet:foot_tags-->
 </body>
 </html>

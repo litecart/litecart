@@ -6,6 +6,7 @@
   </a><br />
   <a href="<?php echo htmlspecialchars($link); ?>" class="link"><?php echo language::translate('title_checkout', 'Checkout'); ?> &raquo;</a>
 </div>
+
 <script>
   function updateCart() {
     $.ajax({
