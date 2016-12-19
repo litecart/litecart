@@ -231,6 +231,7 @@
 
       error_log('A bad client with a suspected bad behaviour was banned for '. $time .'.' . PHP_EOL
               . (!empty($reason) ? "  Reason: $reason" . PHP_EOL : '')
+              . '  URI: '. $_SERVER['REQUEST_URI'] . PHP_EOL
               . '  Address: '. $_SERVER['REMOTE_ADDR'] .' ('. $hostname .')' . PHP_EOL
               . '  Agent: '. $_SERVER['HTTP_USER_AGENT']
               . '  Date: '. date('r')
