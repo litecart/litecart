@@ -17,9 +17,9 @@
 <div class="twelve-eighty">
   <header id="header" class="<?php echo !empty(document::$settings['fixed_header']) ? ' fixed' : ''; ?>">
 
-    <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-      <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
-    </a>
+      <div id="logotype-wrapper">
+        <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-width: 250px; max-height: 60px;" /></a>
+      </div>
 
     <div class="customer-service">
       <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>

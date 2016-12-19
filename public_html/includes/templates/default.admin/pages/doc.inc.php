@@ -8,7 +8,6 @@
   background: -o-linear-gradient(-45deg, rgba(<?php echo $rgb; ?>, 1) 0px, rgba(255,255,255,1) 100px); /* Opera 11.10+ */
   background: -ms-linear-gradient(-45deg, rgba(<?php echo $rgb; ?>, 1) 0px, rgba(255,255,255,1) 100px); /* IE10+ */
   background: linear-gradient(135deg, rgba(<?php echo $rgb; ?>, 1) 0px, rgba(255,255,255,1) 100px); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=<?php echo $theme['color']; ?>', endColorstr='#ffffff', GradientType=1); /* IE6-9 fallback on horizontal gradient */
 }
 </style>
 

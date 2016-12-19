@@ -131,7 +131,7 @@
       <?php foreach (array_keys($product->options_stock) as $key) { ?>
       <tr>
         <td><strong><?php echo $product->options_stock[$key]['name'][$_GET['language_code']]; ?></strong></td>
-        <td><?php echo $product->options_stock[$key]['quantity']; ?></td>
+        <td><?php echo (float)$product->options_stock[$key]['quantity']; ?></td>
       </tr>
       <?php } ?>
     </table>
@@ -286,7 +286,9 @@
     });
   </script>
 
-  <p><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="parent.$.fancybox.close();"', 'cancel'); ?></p>
+  <p class="button-set">
+    <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="parent.$.fancybox.close();"', 'cancel'); ?>
+  </p>
 
 <?php } ?>
 
