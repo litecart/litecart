@@ -99,7 +99,7 @@
       if (!function_exists('replace_first_occurrence')) {
         function replace_first_occurrence($search, $replace, $subject) {
           if (strlen($search) > 4096) {
-            return preg_replace('#'. preg_quote(mb_substr($search, 0, 1024, language::$selected['charset']), '#') .'.*?'. preg_quote(mb_substr($search, -1024, null, language::$selected['charset']), '#') .'#s', $replace, $subject, 1);
+            return preg_replace('#'. preg_quote(mb_substr($search, 0, 2048), '#') .'.*?'. preg_quote(mb_substr($search, -2048), '#') .'#s', $replace, $subject, 1);
           } else {
             return preg_replace('#'. preg_quote($search, '#') .'#', $replace, $subject, 1);
           }
