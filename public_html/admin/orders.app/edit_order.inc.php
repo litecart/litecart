@@ -123,30 +123,92 @@
     'onStart' => 'function(links, index){ rewrite_fancybox_link(links, index); }'
   ));
 ?>
-<script>
-  function rewrite_fancybox_link(links, index) {
-    var params = {
-      language_code: $('select[name="language_code"]').val(),
-      currency_code: $('select[name="currency_code"]').val(),
-      currency_value: $('input[name="currency_value"]').val(),
-      customer: {
-        id: $(':input[name="customer[id]"]').val(),
-        tax_id: $('input[name="customer[tax_id]"]').val(),
-        company: $('input[name="customer[company]"]').val(),
-        country_code: $('select[name="customer[country_code]"]').val(),
-        zone_code: $('select[name="customer[zone_code]"]').val(),
-        shipping_address: {
-          company: $('input[name="customer[shipping_address][company]"]').val(),
-          country_code: $('select[name="customer[shipping_address][country_code]"]').val(),
-          zone_code: $('select[name="customer[shipping_address][zone_code]"]').val(),
-        }
-      }
-    }
-    if ($(links[index]).hasClass('add-product') || $(links[index]).hasClass('add-custom-item')) {
-      $(links[index]).attr('href', $(links[index]).data('href') +'&'+ $.param(params));
-    }
-  }
-</script>
+<style>
+#comments {
+  margin: 0 auto;
+  max-width: 1024px;
+  border: 1px #ddd dashed;
+  padding: 2em;
+  background: #fcfcfc;
+  border-radius: 0.5em;
+}
+#comments .comment {
+  position: relative;
+  margin-bottom: 1em;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+  box-sizing: border-box;
+  min-height: 4em;
+}
+#comments .comment textarea {
+  margin: 2em 0 1em 0;
+}
+#comments .comment.system {
+  margin-left: 10%;
+  margin-right: 10%;
+  background: #e5e5ea;
+}
+
+#comments .comment.staff {
+  margin-left: 20%;
+  background-color: #4096ee;
+  color: white;
+}
+#comments .comment.staff:after {
+  content: "";
+  position: absolute;
+  right: -0.5em;
+  bottom: 0;
+  width: 0.5em;
+  height: 1em;
+  border-left: 0.5em solid #4096ee;
+  border-bottom-left-radius: 1em 0.5em;
+}
+
+#comments .comment.customer {
+  margin-right: 20%;
+  background: #e5e5ea;
+}
+#comments .comment.customer:after {
+  content: "";
+  position: absolute;
+  left: -0.5em;
+  bottom: 0;
+  width: 0.5em;
+  height: 1em;
+  border-right: 0.5em solid #e5e5ea;
+  border-bottom-right-radius: 1em 0.5em;
+}
+
+#comments .date {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  font-size: 0.8em;
+  text-align: center;
+  opacity: 0.5;
+}
+
+#comments .remove {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+
+#comments .hidden {
+  position: absolute;
+  top: 0.5em;
+  right: 1.5em;
+}
+#comments .hidden input[type=checkbox] {
+  display: none;
+}
+
+#comments .semi-transparent {
+  opacity: 0.5;
+}
+</style>
 
 <?php if (!empty($order->data['id'])) { ?>
 <?php
@@ -180,13 +242,6 @@
       </td>
       <td><?php echo language::translate('title_currency', 'Currency'); ?><br />
         <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
-        <script>
-          $('select[name="currency_code"]').change(function(e){
-            $('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
-            $('input[data-type="currency"]').closest('.input-wrapper').find('strong').text($(this).val());
-            calculate_total();
-          });
-        </script>
       </td>
       <td><?php echo language::translate('title_currency_value', 'Currency Value'); ?><br />
         <span id="currency-value"><?php echo functions::form_draw_decimal_field('currency_value', true, 3); ?></span>
@@ -242,55 +297,6 @@
             <?php echo functions::form_draw_text_field('customer[phone]', true); ?></td>
           </tr>
         </table>
-
-        <script>
-          $('button[name="get_address"]').click(function() {
-            $.ajax({
-              url: '<?php echo document::link('', array('doc' => 'get_address.json'), array('app')); ?>',
-              type: 'post',
-              data: "customer_id=" + $("*[name='customer[id]']").val() + "&token=<?php echo form::session_post_token(); ?>",
-              cache: false,
-              async: true,
-              dataType: 'json',
-              error: function(jqXHR, textStatus, errorThrown) {
-                if (console) console.warn(errorThrown.message);
-              },
-              success: function(data) {
-                $.each(data, function(key, value) {
-                  if ($("*[name='customer["+key+"]']").length) $("*[name='customer["+key+"]']").val(data[key]).trigger('change');
-                });
-              },
-            });
-          });
-
-          $('select[name="customer[country_code]"]').change(function() {
-            $('body').css('cursor', 'wait');
-            $.ajax({
-              url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
-              type: 'get',
-              cache: true,
-              async: false,
-              dataType: 'json',
-              error: function(jqXHR, textStatus, errorThrown) {
-                //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-              },
-              success: function(data) {
-                $('select[name=\'customer[zone_code]\']').html('');
-                if ($('select[name=\'customer[zone_code]\']').attr('disabled')) $('select[name=\'customer[zone_code]\']').removeAttr('disabled');
-                if (data) {
-                  $.each(data, function(i, zone) {
-                    $('select[name=\'customer[zone_code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-                  });
-                } else {
-                  $('select[name=\'customer[zone_code]\']').attr('disabled', 'disabled');
-                }
-              },
-              complete: function() {
-                $('body').css('cursor', 'auto');
-              }
-            });
-          });
-        </script>
       </td>
 
       <td class="border-left" style="vertical-align: top;">
@@ -331,42 +337,6 @@
           </tr>
         </table>
 
-        <script>
-          $('button[name="copy_billing_address"]').click(function(){
-            fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code'];
-            $.each(fields, function(key, field){
-              $('*[name="customer[shipping_address]['+ field +']"]').val($('*[name="customer['+ field +']"]').val());
-            });
-          });
-
-          $('select[name="customer[shipping_address][country_code]"]').change(function(){
-            $('body').css('cursor', 'wait');
-            $.ajax({
-              url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
-              type: 'get',
-              cache: true,
-              async: true,
-              dataType: 'json',
-              error: function(jqXHR, textStatus, errorThrown) {
-                //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-              },
-              success: function(data) {
-                $('select[name=\'customer[shipping_address][zone_code]\']').html('');
-                if ($('select[name=\'customer[shipping_address][zone_code]\']').attr('disabled')) $('select[name=\'customer[shipping_address][zone_code]\']').removeAttr('disabled');
-                if (data) {
-                  $.each(data, function(i, zone) {
-                    $('select[name=\'customer[shipping_address][zone_code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-                  });
-                } else {
-                  $('select[name=\'customer[shipping_address][zone_code]]\']').attr('disabled', 'disabled');
-                }
-              },
-              complete: function() {
-                $('body').css('cursor', 'auto');
-              }
-            });
-          });
-        </script>
       </td>
     </tr>
   </table>
@@ -474,70 +444,6 @@
     </tr>
   </table>
 
-  <script>
-    var new_item_index = 0;
-    function addItem(item) {
-      new_item_index++;
-
-      var output = '  <tr class="item">'
-                 + '    <td>' + item.name
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', '')); ?>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][options]', '')); ?>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
-                 + '    </td>'
-                 + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'+ item.sku +'</td>'
-                 + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][weight]', '')); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '')); ?></td>'
-                 + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
-                 + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-                 + '  </tr>';
-      output = output.replace(/new_item_index/g, 'new_' + new_item_index);
-      $('#order-items .footer').before(output);
-
-    // Insert values
-      var row = $('#order-items tr.item').last();
-      $(row).find('*[name$="[product_id]"]').val(item.product_id);
-      $(row).find('*[name$="[sku]"]').val(item.sku);
-      $(row).find('*[name$="[option_stock_combination]"]').val(item.option_stock_combination);
-      $(row).find('*[name$="[name]"]').val(item.name);
-      $(row).find('*[name$="[weight]"]').val(item.weight);
-      $(row).find('*[name$="[weight_class]"]').val(item.weight_class);
-      $(row).find('*[name$="[quantity]"]').val(item.quantity);
-      $(row).find('*[name$="[price]"]').val(item.price);
-      $(row).find('*[name$="[tax]"]').val(item.tax);
-
-      if (item.options) {
-        var product_options = '<br />'
-                            + '<table>';
-        $.each(item.options, function(group, value) {
-          product_options += '  <tr>'
-                           + '    <td style="padding-left: 10px;">'+ group +'</td>'
-                           + '    <td>';
-          if ($.isArray(value)) {
-            $.each(value, function(i, array_value) {
-              product_options += '<input type="text" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'" />';
-            });
-          } else {
-            product_options += '<input type="text" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'" />';
-          }
-          product_options += '</tr>';
-        });
-        product_options += '</table>';
-        $(row).find('input[type="hidden"][name$="[options]"]').replaceWith(product_options);
-      }
-
-      calculate_total();
-    }
-
-    $('body').on('click', '#order-items .remove', function(event) {
-      event.preventDefault();
-      $(this).closest('tr').remove();
-    });
-  </script>
-
   <h2><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
   <table id="order-total" width="100%" class="dataTable">
     <tr class="header">
@@ -595,150 +501,6 @@
       <td colspan="6" style="text-align: right;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
     </tr>
   </table>
-  <script>
-    var new_ot_row_index = 0;
-    $('body').on('click', '#order-total .add', function(event) {
-      while ($('input[name="order_total['+new_ot_row_index+'][id]"]').length) new_ot_row_index++;
-      event.preventDefault();
-      var output = '  <tr>'
-                 + '    <td style="text-align: right;"><a href="#" class="add" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"')); ?></a></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"')); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"')); ?> :</td>'
-                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true))); ?><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate'))); ?></td>'
-                 + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true))); ?></td>'
-                 + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-                 + '  </tr>';
-    output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
-    $(this).closest('tr').before(output);
-    new_ot_row_index++;
-    });
-
-    $('body').on('click', '#order-total .remove', function(event) {
-      event.preventDefault();
-    $(this).closest("tr").remove();
-    });
-
-    function calculate_total() {
-      var subtotal = 0;
-      $('input[name^="items["][name$="[price]"]').each(function() {
-        subtotal += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
-      });
-      subtotal = Math.round(subtotal * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
-      $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
-
-      var subtotal_tax = 0;
-      $('input[name^="items["][name$="[tax]"]').each(function() {
-        subtotal_tax += Number($(this).val()) * Number($(this).closest("tr").find('input[name^="items["][name$="[quantity]"]').val());
-      });
-      subtotal_tax = Math.round(subtotal_tax * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
-      $('input[name^="order_total["][value="ot_subtotal"]').closest("tr").find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
-
-      var order_total = subtotal + subtotal_tax;
-      $('input[name^="order_total["][name$="[value]"]').each(function() {
-        if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-          order_total += Number(Number($(this).val()));
-        }
-      });
-      $('input[name^="order_total["][name$="[tax]"]').each(function() {
-        if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-          order_total += Number($(this).val());
-        }
-      });
-      order_total = Math.round(order_total * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
-      $("#order-total .total").text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
-    }
-
-    $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
-      calculate_total();
-    });
-  </script>
-
-<style>
-#comments {
-  margin: 0 auto;
-  max-width: 1024px;
-  border: 1px #ddd dashed;
-  padding: 2em;
-  background: #fcfcfc;
-  border-radius: 0.5em;
-}
-#comments .comment {
-  position: relative;
-  margin-bottom: 1em;
-  padding: 0.5em 1em;
-  border-radius: 1em;
-  box-sizing: border-box;
-  min-height: 4em;
-}
-#comments .comment textarea {
-  margin: 2em 0 1em 0;
-}
-#comments .comment.system {
-  margin-left: 10%;
-  margin-right: 10%;
-  background: #e5e5ea;
-}
-
-#comments .comment.staff {
-  margin-left: 20%;
-  background-color: #4096ee;
-  color: white;
-}
-#comments .comment.staff:after {
-  content: "";
-  position: absolute;
-  right: -0.5em;
-  bottom: 0;
-  width: 0.5em;
-  height: 1em;
-  border-left: 0.5em solid #4096ee;
-  border-bottom-left-radius: 1em 0.5em;
-}
-
-#comments .comment.customer {
-  margin-right: 20%;
-  background: #e5e5ea;
-}
-#comments .comment.customer:after {
-  content: "";
-  position: absolute;
-  left: -0.5em;
-  bottom: 0;
-  width: 0.5em;
-  height: 1em;
-  border-right: 0.5em solid #e5e5ea;
-  border-bottom-right-radius: 1em 0.5em;
-}
-
-#comments .date {
-  position: absolute;
-  bottom: 0.5em;
-  left: 0.5em;
-  right: 0.5em;
-  font-size: 0.8em;
-  text-align: center;
-  opacity: 0.5;
-}
-
-#comments .remove {
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
-}
-
-#comments .hidden {
-  position: absolute;
-  top: 0.5em;
-  right: 1.5em;
-}
-#comments .hidden input[type=checkbox] {
-  display: none;
-}
-
-#comments .semi-transparent {
-  opacity: 0.5;
-}
-</style>
 
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
   <ul id="comments" class="list-vertical">
@@ -748,22 +510,260 @@
       <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
       <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
       <label class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
-      <div class="date"><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
+      <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
     </li>
     <?php } ?>
     <li style="text-align: right;"><a class="add button" href="#" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></a></li>
   </ul>
+
+  <p style="text-align: right;"><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
+
+  <p style="text-align: right;"><label><?php echo functions::form_draw_checkbox('email_order_copy', true); ?> <?php echo language::translate('title_send_email_order_copy', 'Send email order copy'); ?></label></p>
+
+  <p style="text-align: right;"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+
+<?php echo functions::form_draw_form_end(); ?>
+
 <script>
+  function rewrite_fancybox_link(links, index) {
+    var params = {
+      language_code: $('select[name="language_code"]').val(),
+      currency_code: $('select[name="currency_code"]').val(),
+      currency_value: $('input[name="currency_value"]').val(),
+      customer: {
+        id: $(':input[name="customer[id]"]').val(),
+        tax_id: $('input[name="customer[tax_id]"]').val(),
+        company: $('input[name="customer[company]"]').val(),
+        country_code: $('select[name="customer[country_code]"]').val(),
+        zone_code: $('select[name="customer[zone_code]"]').val(),
+        shipping_address: {
+          company: $('input[name="customer[shipping_address][company]"]').val(),
+          country_code: $('select[name="customer[shipping_address][country_code]"]').val(),
+          zone_code: $('select[name="customer[shipping_address][zone_code]"]').val(),
+        }
+      }
+    }
+    if ($(links[index]).hasClass('add-product') || $(links[index]).hasClass('add-custom-item')) {
+      $(links[index]).attr('href', $(links[index]).data('href') +'&'+ $.param(params));
+    }
+  }
+
+  $('select[name="currency_code"]').change(function(e){
+    $('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
+    $('input[data-type="currency"]').closest('.input-wrapper').find('strong').text($(this).val());
+    calculate_total();
+  });
+
+  $('button[name="get_address"]').click(function() {
+    $.ajax({
+      url: '<?php echo document::link('', array('doc' => 'get_address.json'), array('app')); ?>',
+      type: 'post',
+      data: "customer_id=" + $("*[name='customer[id]']").val() + "&token=<?php echo form::session_post_token(); ?>",
+      cache: false,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn(errorThrown.message);
+      },
+      success: function(data) {
+        $.each(data, function(key, value) {
+          if ($("*[name='customer["+key+"]']").length) $("*[name='customer["+key+"]']").val(data[key]).trigger('change');
+        });
+      },
+    });
+  });
+
+  $('select[name="customer[country_code]"]').change(function() {
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: false,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+      },
+      success: function(data) {
+        $('select[name=\'customer[zone_code]\']').html('');
+        if ($('select[name=\'customer[zone_code]\']').attr('disabled')) $('select[name=\'customer[zone_code]\']').removeAttr('disabled');
+        if (data) {
+          $.each(data, function(i, zone) {
+            $('select[name=\'customer[zone_code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $('select[name=\'customer[zone_code]\']').attr('disabled', 'disabled');
+        }
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+
+  $('button[name="copy_billing_address"]').click(function(){
+    fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code'];
+    $.each(fields, function(key, field){
+      $('*[name="customer[shipping_address]['+ field +']"]').val($('*[name="customer['+ field +']"]').val());
+    });
+  });
+
+  $('select[name="customer[shipping_address][country_code]"]').change(function(){
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+      },
+      success: function(data) {
+        $('select[name=\'customer[shipping_address][zone_code]\']').html('');
+        if ($('select[name=\'customer[shipping_address][zone_code]\']').attr('disabled')) $('select[name=\'customer[shipping_address][zone_code]\']').removeAttr('disabled');
+        if (data) {
+          $.each(data, function(i, zone) {
+            $('select[name=\'customer[shipping_address][zone_code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $('select[name=\'customer[shipping_address][zone_code]]\']').attr('disabled', 'disabled');
+        }
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+
+  var new_item_index = 0;
+  function addItem(item) {
+    new_item_index++;
+
+    var output = '  <tr class="item">'
+               + '    <td>' + item.name
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][options]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
+               + '    </td>'
+               + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'+ item.sku +'</td>'
+               + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][weight]', '')); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '')); ?></td>'
+               + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
+               + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
+               + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
+               + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '  </tr>';
+    output = output.replace(/new_item_index/g, 'new_' + new_item_index);
+    $('#order-items .footer').before(output);
+
+  // Insert values
+    var row = $('#order-items tr.item').last();
+    $(row).find('*[name$="[product_id]"]').val(item.product_id);
+    $(row).find('*[name$="[sku]"]').val(item.sku);
+    $(row).find('*[name$="[option_stock_combination]"]').val(item.option_stock_combination);
+    $(row).find('*[name$="[name]"]').val(item.name);
+    $(row).find('*[name$="[weight]"]').val(item.weight);
+    $(row).find('*[name$="[weight_class]"]').val(item.weight_class);
+    $(row).find('*[name$="[quantity]"]').val(item.quantity);
+    $(row).find('*[name$="[price]"]').val(item.price);
+    $(row).find('*[name$="[tax]"]').val(item.tax);
+
+    if (item.options) {
+      var product_options = '<br />'
+                          + '<table>';
+      $.each(item.options, function(group, value) {
+        product_options += '  <tr>'
+                         + '    <td style="padding-left: 10px;">'+ group +'</td>'
+                         + '    <td>';
+        if ($.isArray(value)) {
+          $.each(value, function(i, array_value) {
+            product_options += '<input type="text" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'" />';
+          });
+        } else {
+          product_options += '<input type="text" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'" />';
+        }
+        product_options += '</tr>';
+      });
+      product_options += '</table>';
+      $(row).find('input[type="hidden"][name$="[options]"]').replaceWith(product_options);
+    }
+
+    calculate_total();
+  }
+
+  $('body').on('click', '#order-items .remove', function(event) {
+    event.preventDefault();
+    $(this).closest('tr').remove();
+  });
+
+  var new_ot_row_index = 0;
+  $('body').on('click', '#order-total .add', function(event) {
+    while ($('input[name="order_total['+new_ot_row_index+'][id]"]').length) new_ot_row_index++;
+    event.preventDefault();
+    var output = '  <tr>'
+               + '    <td style="text-align: right;"><a href="#" class="add" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"')); ?></a></td>'
+               + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '', 'data-size="small"')); ?></td>'
+               + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"')); ?> :</td>'
+               + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true))); ?><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate'))); ?></td>'
+               + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true))); ?></td>'
+               + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '  </tr>';
+  output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
+  $(this).closest('tr').before(output);
+  new_ot_row_index++;
+  });
+
+  $('body').on('click', '#order-total .remove', function(event) {
+    event.preventDefault();
+  $(this).closest("tr").remove();
+  });
+
+  function calculate_total() {
+    var subtotal = 0;
+    $('input[name^="items["][name$="[price]"]').each(function() {
+      subtotal += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
+    });
+    subtotal = Math.round(subtotal * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
+    $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
+
+    var subtotal_tax = 0;
+    $('input[name^="items["][name$="[tax]"]').each(function() {
+      subtotal_tax += Number($(this).val()) * Number($(this).closest("tr").find('input[name^="items["][name$="[quantity]"]').val());
+    });
+    subtotal_tax = Math.round(subtotal_tax * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
+    $('input[name^="order_total["][value="ot_subtotal"]').closest("tr").find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
+
+    var order_total = subtotal + subtotal_tax;
+    $('input[name^="order_total["][name$="[value]"]').each(function() {
+      if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
+        order_total += Number(Number($(this).val()));
+      }
+    });
+    $('input[name^="order_total["][name$="[tax]"]').each(function() {
+      if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
+        order_total += Number($(this).val());
+      }
+    });
+    order_total = Math.round(order_total * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
+    $("#order-total .total").text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
+  }
+
+  $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
+    calculate_total();
+  });
+
   var new_comment_index = 0;
   $('#comments .add').click(function(event) {
     event.preventDefault();
     while ($('input[name="comments['+new_comment_index+'][id]"]').length) new_comment_index++;
     var output = '  <li class="comment staff">'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime']))); ?>'
+               + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime']))); ?>'
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
                + '    <div class="text"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '', 'style="width: 100%; height: 4em; box-sizing: border-box;"')); ?></div>'
                + '    <label class="hidden" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>'
-               + '    <div class="date"><?php echo strftime(language::$selected['format_datetime']); ?></div>'
+               + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
                + '  </li>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
     $(this).closest('li').before(output);
@@ -783,11 +783,3 @@
     }
   });
 </script>
-
-  <p style="text-align: right;""><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
-
-  <p style="text-align: right;"><label><?php echo functions::form_draw_checkbox('email_order_copy', true); ?> <?php echo language::translate('title_send_email_order_copy', 'Send email order copy'); ?></label></p>
-
-  <p style="text-align: right;"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
-
-<?php echo functions::form_draw_form_end(); ?>
