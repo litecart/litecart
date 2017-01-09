@@ -168,7 +168,8 @@
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
 
       $tax_rates_query = database::query(
-        "select * from ". DB_TABLE_TAX_RATES .";"
+        "select * from ". DB_TABLE_TAX_RATES ."
+        where tax_class_id = '". (int)$tax_class_id ."';"
       );
 
       while ($rate = database::fetch($tax_rates_query)) {
