@@ -22,7 +22,7 @@
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
           $this->data['shipping_address'][$matches[1]] = '';
         } else {
-          $this->data[$field['Field']] = '';
+          $this->data[$field['Field']] = null;
         }
       }
 

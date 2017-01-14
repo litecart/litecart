@@ -19,7 +19,7 @@
         "show fields from ". DB_TABLE_MANUFACTURERS .";"
       );
       while ($field = database::fetch($manufacturer_query)) {
-        $this->data[$field['Field']] = '';
+        $this->data[$field['Field']] = null;
       }
 
       $manufacturer_info_query = database::query(

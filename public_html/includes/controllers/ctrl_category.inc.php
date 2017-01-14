@@ -20,7 +20,7 @@
         "show fields from ". DB_TABLE_CATEGORIES .";"
       );
       while ($field = database::fetch($categories_query)) {
-        $this->data[$field['Field']] = '';
+        $this->data[$field['Field']] = null;
       }
 
       $categories_info_query = database::query(

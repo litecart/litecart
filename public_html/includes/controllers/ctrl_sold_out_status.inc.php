@@ -19,7 +19,7 @@
         "show fields from ". DB_TABLE_SOLD_OUT_STATUSES .";"
       );
       while ($field = database::fetch($sold_out_status_query)) {
-        $this->data[$field['Field']] = '';
+        $this->data[$field['Field']] = null;
       }
 
       $sold_out_status_info_query = database::query(

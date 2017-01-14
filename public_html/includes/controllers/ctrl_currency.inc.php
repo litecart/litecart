@@ -19,7 +19,7 @@
         "show fields from ". DB_TABLE_CURRENCIES .";"
       );
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = '';
+        $this->data[$field['Field']] = null;
       }
     }
 

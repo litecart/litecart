@@ -19,8 +19,10 @@
         "show fields from ". DB_TABLE_GEO_ZONES .";"
       );
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = '';
+        $this->data[$field['Field']] = null;
       }
+
+      $this->data['zones'] = array();
     }
 
     public function load($geo_zone_id) {

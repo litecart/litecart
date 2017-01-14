@@ -19,7 +19,7 @@
         "show fields from ". DB_TABLE_PRODUCTS .";"
       );
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = '';
+        $this->data[$field['Field']] = null;
       }
 
       $info_fields_query = database::query(
