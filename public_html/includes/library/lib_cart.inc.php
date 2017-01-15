@@ -140,7 +140,7 @@
         return;
       }
 
-      $product = catalog::product($product_id);
+      $product = reference::product($product_id);
 
       if ($product->status == 0) {
         if (!$silent) notices::add('errors', language::translate('text_product_not_available_for_purchase', 'The product is not available for purchase'));
@@ -172,7 +172,7 @@
         'options' => $options,
         'option_stock_combination' => '',
         'image' => $product->image,
-        'name' => $product->name[language::$selected['code']],
+        'name' => $product->name,
         'code' => $product->code,
         'sku' =>  $product->sku,
         'gtin' =>  $product->gtin,
@@ -183,7 +183,7 @@
         'tax_class_id' => $product->tax_class_id,
         'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
         'quantity_unit' => array(
-          'name' => $product->quantity_unit['name'][language::$selected['code']],
+          'name' => $product->quantity_unit['name'],
           'decimals' => $product->quantity_unit['decimals'],
           'separate' => $product->quantity_unit['separate'],
         ),
@@ -219,8 +219,8 @@
               case 'checkbox':
                 $valid_values = array();
                 foreach ($product->options[$key]['values'] as $value) {
-                  $valid_values[] = $value['name'][language::$selected['code']];
-                  if (in_array($value['name'][language::$selected['code']], explode(', ', $options[$product->options[$key]['name'][language::$selected['code']]]))) {
+                  $valid_values[] = $value['name'];
+                  if (in_array($value['name'], explode(', ', $options[$product->options[$key]['name']]))) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                     $item['extras'] += $value['price_adjust'];
                   }
@@ -247,14 +247,14 @@
 
                 if (!in_array($options[$submitted_option_group], array_column($product->options[$key]['values'], 'name'))) {
 
-                  foreach ($product->options[$key]['values'] as $value) {
+                foreach ($product->options[$key]['values'] as $value) {
 
                     if (in_array($options[$submitted_option_group], $value['name'])) {
-                      $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
-                      $item['extras'] += $value['price_adjust'];
+                    $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
+                    $item['extras'] += $value['price_adjust'];
 
-                    }
                   }
+                }
 
                 } else {
                   if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
@@ -265,8 +265,8 @@
             }
 
           } else {
-            if ($product->options[$key]['required'] != 0) {
-              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][language::$selected['code']] .')');
+            if (!empty($product->options[$key]['required'])) {
+              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'] .')');
               return;
             }
           }
@@ -354,7 +354,7 @@
       }
 
       if (!empty(self::$items[$item_key]['product_id'])) {
-        $product = catalog::product(self::$items[$item_key]['product_id']);
+        $product = reference::product(self::$items[$item_key]['product_id']);
 
       // Stock
         if (empty($product->sold_out_status['orderable'])) {

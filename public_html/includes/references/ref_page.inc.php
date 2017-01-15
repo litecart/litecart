@@ -17,7 +17,7 @@
       }
 
       $this->_data[$name] = null;
-      $this->load($name);
+      $this->_load($name);
 
       return $this->_data[$name];
     }
@@ -30,7 +30,7 @@
       trigger_error('Setting data ('. $name .') is prohibited', E_USER_ERROR);
     }
 
-    private function load($field='') {
+    private function _load($field='') {
 
       switch($field) {
 

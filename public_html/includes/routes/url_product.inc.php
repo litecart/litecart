@@ -17,7 +17,7 @@
 
       if (!isset($parsed_link['query']['product_id'])) return false;
 
-      $product = catalog::product($parsed_link['query']['product_id']);
+      $product = reference::product($parsed_link['query']['product_id'], $language_code);
 
       if (!$product->id) return $parsed_link;
 
@@ -38,7 +38,7 @@
         $parsed_link['path'] = functions::general_path_friendly($product->manufacturer['name'], $language_code) .'-m-'. $product->manufacturer['id'] .'/';
       }
 
-      $parsed_link['path'] .= functions::general_path_friendly($product->name[$language_code], $language_code) .'-p-'. $product->id;
+      $parsed_link['path'] .= functions::general_path_friendly($product->name, $language_code) .'-p-'. $product->id;
 
       unset($parsed_link['query']['category_id']);
       unset($parsed_link['query']['product_id']);

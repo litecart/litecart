@@ -4,12 +4,18 @@
 
     private $_id;
     private $_cache_id;
+    private $_language_codes;
     private $_data = array();
 
-    function __construct($category_id) {
+    function __construct($category_id, $language_code=null) {
 
       $this->_id = (int)$category_id;
       $this->_cache_id = cache::cache_id('category_'.(int)$category_id);
+      $this->_language_codes = array_unique(array(
+        !empty($language_code) ? $language_code : language::$selected['code'],
+        settings::get('default_language_code'),
+        settings::get('store_language_code'),
+      ));
 
       if ($cache = cache::get($this->_cache_id, 'file')) {
         $this->_data = $cache;
@@ -23,7 +29,7 @@
       }
 
       $this->_data[$name] = null;
-      $this->load($name);
+      $this->_load($name);
 
       return $this->_data[$name];
     }
@@ -33,10 +39,10 @@
     }
 
     public function __set($name, $value) {
-      trigger_error('Setting data is prohibited', E_USER_WARNING);
+      trigger_error('Setting data is prohibited ('.$name.')', E_USER_WARNING);
     }
 
-    private function load($field='') {
+    private function _load($field='') {
 
       switch($field) {
 
@@ -52,32 +58,26 @@
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES_INFO ."
             where category_id = '". (int)$this->_id ."'
-            and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
-          );
-
-          $fields = array(
-            'name',
-            'description',
-            'short_description',
-            'head_title',
-            'meta_description',
-            'h1_title',
+            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
 
           while ($row = database::fetch($query)) {
-            foreach ($fields as $key) {
-              if (isset($row[$key])) $this->_data[$key][$row['language_code']] = $row[$key];
+            foreach ($row as $key => $value) {
+              if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
+              if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
           }
 
-        // Fix missing translations
-          foreach ($fields as $key) {
-            foreach (array_keys(language::$languages) as $language_code) {
-              if (empty($this->_data[$key][$language_code])) {
-                $this->_data[$key][$language_code] = isset($this->_data[$key][settings::get('default_language_code')]) ? $this->_data[$key][settings::get('default_language_code')] : null;
-              }
-            }
-          }
+          break;
+
+        case 'parent':
+
+          $this->_data['parent'] = false;
+
+          if (empty($this->parent_id)) return;
+
+          $this->_data['parent'] = reference::category($this->parent_id);
 
           break;
 
@@ -88,35 +88,53 @@
           $query = database::query(
             "select id from ". DB_TABLE_PRODUCTS ."
             where status
-            and find_in_set ('". (int)$this->_id ."', categories);"
+            and find_in_set ('". database::input($this->_id) ."', categories);"
           );
 
           while ($row = database::fetch($query)) {
-            $this->_data['products'][$row['id']] = catalog::product($row);
+            $this->_data['products'][$row['id']] = reference::product($row['id']);
           }
 
           break;
 
+        case 'siblings':
+
+          $this->_data['siblings'] = array();
+
+          if (empty($this->parent_id)) return;
+
+          $query = database::query(
+            "select id from ". DB_TABLE_CATEGORIES ."
+            where status
+            and parent_id = '". (int)$this->parent_id ."'
+            and id != '". database::input($this->_id) ."';"
+          );
+
+          while($row = database::fetch($query)) {
+            $this->_data['siblings'][$row['id']] = reference::category($row['id']);
+          }
+
+          break;
+
+        case 'descendants':
         case 'subcategories':
 
           $this->_data['subcategories'] = array();
 
           $query = database::query(
-            "select id, name from ". DB_TABLE_CATEGORIES ."
+            "select id from ". DB_TABLE_CATEGORIES ."
             where parent_id = '". (int)$this->_id ."';"
           );
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              $this->_data['subcategories'][$row['id']] = $row['id'];
+              $this->_data['subcategories'][$row['id']] = reference::category($row['id']);
             }
           }
 
           break;
 
         default:
-
-          if (isset($this->_data['date_added'])) return;
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES ."
