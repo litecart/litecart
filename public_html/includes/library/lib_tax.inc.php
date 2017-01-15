@@ -32,22 +32,6 @@
 
     ######################################################################
 
-    public static function calculate($value, $tax_class_id, $calculate=null, $country_code=null, $zone_code=null) {
-      trigger_error('The method calculate() is deprecated, use instead get_price()', E_USER_DEPRECATED);
-
-      $customer = array(
-        'country_code' => $country_code,
-        'zone_code' => $zone_code,
-        'different_shipping_address' => false,
-        'shipping_address' => array(
-          'country_code' => $country_code,
-          'zone_code' => $zone_code,
-        ),
-      );
-
-      return self::get_price($value, $tax_class_id, $calculate, $customer);
-    }
-
     public static function get_price($value, $tax_class_id, $calculate_tax=null, $customer=null) {
       if ($calculate_tax === null) $calculate_tax = !empty(customer::$data['display_prices_including_tax']) ? true : false;
 
