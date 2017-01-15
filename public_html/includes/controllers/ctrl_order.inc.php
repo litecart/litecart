@@ -14,87 +14,56 @@
 
     public function reset() {
 
-      $this->data = array(
-        'id' => null,
+      $this->data = array();
+
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_ORDERS .";"
+      );
+
+      while ($field = database::fetch($fields_query)) {
+
+        if (preg_match('#^(customer|shipping|payment)_#', $field['Field'], $matches)) {
+
+          switch ($field['Field']) {
+            case 'shipping_company':
+            case 'shipping_firstname':
+            case 'shipping_lastname':
+            case 'shipping_address1':
+            case 'shipping_address2':
+            case 'shipping_postcode':
+            case 'shipping_city':
+            case 'shipping_country_code':
+            case 'shipping_zone_code':
+              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field['Field']);
+              $this->data['customer']['shipping_address'][$field] = null;
+              break;
+
+            case 'payment_due':
+              $this->data['payment_due'] = null;
+              break;
+
+            default:
+              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field['Field']);
+              $this->data[$matches[1]][$field] = null;
+              break;
+          }
+
+        } else {
+          $this->data[$field['Field']] = null;
+        }
+      }
+
+      $this->data = array_merge($this->data, array(
         'uid' => uniqid(),
-        'items' => array(),
+        'weight_class' => settings::get('store_weight_class'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
-        'customer' => array(
-          'id' => '',
-          'email' => '',
-          'desired_password' => '',
-          'phone' => '',
-          'tax_id' => '',
-          'company' => '',
-          'firstname' => '',
-          'lastname' => '',
-          'address1' => '',
-          'address2' => '',
-          'city' => '',
-          'postcode' => '',
-          'country_code' => '',
-          'zone_code' => '',
-          'shipping_address' => array(
-            'company' => '',
-            'firstname' => '',
-            'lastname' => '',
-            'address1' => '',
-            'address2' => '',
-            'city' => '',
-            'postcode' => '',
-            'country_code' => '',
-            'zone_code' => '',
-          ),
-        ),
-        'shipping_option' => array(),
-        'shipping_tracking_id' => '',
-        'payment_option' => array(),
-        'payment_transaction_id' => '',
+        'items' => array(),
         'order_total' => array(),
-        'tax_total' => 0,
-        'weight_total' => 0,
-        'weight_class' => settings::get('store_weight_class'),
-        'payment_due' => 0,
-        'order_status_id' => 0,
         'comments' => array(),
-      );
-    }
-
-    private function import_session() {
-      global $shipping, $payment, $order_total;
-
-      $this->reset();
-
-      $this->data['weight_class'] = settings::get('store_weight_class');
-      $this->data['currency_code'] = currency::$selected['code'];
-      $this->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
-      $this->data['language_code'] = language::$selected['code'];
-
-      $this->data['customer'] = customer::$data;
-
-      if (!empty($shipping->data['selected'])) {
-        $this->data['shipping_option'] = array(
-          'id' => $shipping->data['selected']['id'],
-          'name' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
-        );
-      }
-
-      if (!empty($payment->data['selected'])) {
-        $this->data['payment_option'] = array(
-          'id' => $payment->data['selected']['id'],
-          'name' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
-        );
-      }
-
-      foreach (cart::$items as $item) {
-        $this->add_item($item);
-      }
-
-      foreach ($order_total->rows as $row) {
-        $this->add_ot_row($row);
-      }
+        'subtotal' => array('amount' => 0, 'tax' => 0),
+      ));
     }
 
     private function load($order_id) {
@@ -103,81 +72,43 @@
 
       $order_query = database::query(
         "select * from ". DB_TABLE_ORDERS ."
-        where id = '". (int)$order_id ."'
+        where id = ". (int)$order_id ."
         limit 1;"
       );
       $order = database::fetch($order_query);
+
       if (empty($order)) trigger_error('Could not find order in database (ID: '. (int)$order_id .')', E_USER_ERROR);
 
-      $key_map = array(
-        'id' => 'id',
-        'weight_total' => 'weight_total',
-        'weight_class' => 'weight_class',
-        'currency_code' => 'currency_code',
-        'currency_value' => 'currency_value',
-        'language_code' => 'language_code',
-        'payment_due' => 'payment_due',
-        'tax_total' => 'tax_total',
-        'order_status_id' => 'order_status_id',
-        'shipping_tracking_id' => 'shipping_tracking_id',
-        'payment_transaction_id' => 'payment_transaction_id',
-        'client_ip' => 'client_ip',
-        'date_updated' => 'date_updated',
-        'date_created' => 'date_created',
-      );
-      foreach ($key_map as $skey => $tkey){
-        $this->data[$tkey] = $order[$skey];
-      }
+      foreach($order as $field => $value) {
+        if (preg_match('#^(customer|shipping|payment)_#', $field, $matches)) {
 
-      $key_map = array(
-        'customer_id' => 'id',
-        'customer_email' => 'email',
-        'customer_tax_id' => 'tax_id',
-        'customer_company' => 'company',
-        'customer_firstname' => 'firstname',
-        'customer_lastname' => 'lastname',
-        'customer_address1' => 'address1',
-        'customer_address2' => 'address2',
-        'customer_postcode' => 'postcode',
-        'customer_city' => 'city',
-        'customer_phone' => 'phone',
-        'customer_mobile' => 'mobile',
-        'customer_country_code' => 'country_code',
-        'customer_zone_code' => 'zone_code',
-      );
-      foreach ($key_map as $skey => $tkey){
-        $this->data['customer'][$tkey] = $order[$skey];
-      }
+          switch ($field) {
+            case 'shipping_company':
+            case 'shipping_firstname':
+            case 'shipping_lastname':
+            case 'shipping_address1':
+            case 'shipping_address2':
+            case 'shipping_postcode':
+            case 'shipping_city':
+            case 'shipping_country_code':
+            case 'shipping_zone_code':
+              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
+              $this->data['customer']['shipping_address'][$field] = $value;
+              break;
 
-      $key_map = array(
-        'shipping_company' => 'company',
-        'shipping_firstname' => 'firstname',
-        'shipping_lastname' => 'lastname',
-        'shipping_address1' => 'address1',
-        'shipping_address2' => 'address2',
-        'shipping_postcode' => 'postcode',
-        'shipping_city' => 'city',
-        'shipping_country_code' => 'country_code',
-        'shipping_zone_code' => 'zone_code',
-      );
-      foreach ($key_map as $skey => $tkey){
-        $this->data['customer']['shipping_address'][$tkey] = $order[$skey];
-      }
+            case 'payment_due':
+              $this->data['payment_due'] = $value;
+              break;
 
-      $key_map = array(
-        'shipping_option_id' => 'id',
-        'shipping_option_name' => 'name',
-      );
-      foreach ($key_map as $skey => $tkey){
-        $this->data['shipping_option'][$tkey] = $order[$skey];
-      }
+            default:
+              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
+              $this->data[$matches[1]][$field] = $value;
+              break;
+          }
 
-      $key_map = array(
-        'payment_option_id' => 'id',
-        'payment_option_name' => 'name',
-      );
-      foreach ($key_map as $skey => $tkey){
-        $this->data['payment_option'][$tkey] = $order[$skey];
+        } else {
+          $this->data[$field] = $value;
+        }
       }
 
       $order_items_query = database::query(
@@ -212,7 +143,7 @@
     public function save() {
 
     // Re-calculate total if there are changes
-      $this->calculate_total();
+      $this->refresh_total();
 
       if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
 
@@ -271,8 +202,8 @@
 
       database::query(
         "update ". DB_TABLE_ORDERS ." set
-        order_status_id = '". (int)$this->data['order_status_id'] ."',
-        customer_id = '". (int)$this->data['customer']['id'] ."',
+        order_status_id = ". (int)$this->data['order_status_id'] .",
+        customer_id = ". (int)$this->data['customer']['id'] .",
         customer_email = '". database::input($this->data['customer']['email']) ."',
         customer_phone = '". database::input($this->data['customer']['phone']) ."',
         customer_tax_id = '". database::input($this->data['customer']['tax_id']) ."',
@@ -294,21 +225,21 @@
         shipping_postcode = '". database::input($this->data['customer']['shipping_address']['postcode']) ."',
         shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
         shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
-        shipping_option_id = '". ((!empty($this->data['shipping_option'])) ? database::input($this->data['shipping_option']['id']) : false) ."',
-        shipping_option_name = '". ((!empty($this->data['shipping_option'])) ? database::input($this->data['shipping_option']['name']) : false) ."',
-        shipping_tracking_id = '". ((!empty($this->data['shipping_tracking_id'])) ? database::input($this->data['shipping_tracking_id']) : false) ."',
-        payment_option_id = '". ((!empty($this->data['payment_option'])) ? database::input($this->data['payment_option']['id']) : false) ."',
-        payment_option_name = '". ((!empty($this->data['payment_option'])) ? database::input($this->data['payment_option']['name']) : false) ."',
-        payment_transaction_id = '". ((!empty($this->data['payment_transaction_id'])) ? database::input($this->data['payment_transaction_id']) : false) ."',
+        shipping_option_id = '". database::input($this->data['shipping']['option_id']) ."',
+        shipping_option_name = '". database::input($this->data['shipping']['option_name']) ."',
+        shipping_tracking_id = '". database::input($this->data['shipping']['tracking_id']) ."',
+        payment_option_id = '". database::input($this->data['payment']['option_id']) ."',
+        payment_option_name = '". database::input($this->data['payment']['option_name']) ."',
+        payment_transaction_id = '". database::input($this->data['payment']['transaction_id']) ."',
         language_code = '". database::input($this->data['language_code']) ."',
         currency_code = '". database::input($this->data['currency_code']) ."',
-        currency_value = '". (float)$this->data['currency_value'] ."',
-        weight_total = '". (float)$this->data['weight_total'] ."',
+        currency_value = ". (float)$this->data['currency_value'] .",
+        weight_total = ". (float)$this->data['weight_total'] .",
         weight_class = '". database::input($this->data['weight_class']) ."',
-        payment_due = '". (float)$this->data['payment_due'] ."',
-        tax_total = '". (float)$this->data['tax_total'] ."',
+        payment_due = ". (float)$this->data['payment_due'] .",
+        tax_total = ". (float)$this->data['tax_total'] .",
         date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -446,7 +377,7 @@
             "update ". DB_TABLE_ORDERS_COMMENTS ."
             set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
               text = '". database::input($this->data['comments'][$key]['text']) ."',
-              hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'
+              hidden = '". (!empty($this->data['comments'][$key]['hidden']) ? 1 : 0) ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['comments'][$key]['id'] ."'
             limit 1;"
@@ -488,7 +419,7 @@
     // Empty order first..
       $this->data['items'] = array();
       $this->data['order_total'] = array();
-      $this->calculate_total();
+      $this->refresh_total();
       $this->save();
 
     // ..then delete
@@ -499,29 +430,31 @@
       );
     }
 
-    public function calculate_total() {
+    public function refresh_total() {
+      $this->data['subtotal'] = array('amount' => 0, 'tax' => 0);
       $this->data['payment_due'] = 0;
       $this->data['tax_total'] = 0;
       $this->data['weight_total'] = 0;
 
       foreach ($this->data['items'] as $item) {
-        $this->add_cost($item['price'], $item['tax'], $item['quantity']);
+        $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
+        $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
+        $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
+        $this->data['tax_total'] += $item['tax'] * $item['quantity'];
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
 
       foreach ($this->data['order_total'] as $order_total) {
         if (!empty($order_total['calculate'])) {
-          $this->add_cost($order_total['value'], $order_total['tax']);
+          $this->data['payment_due'] += ($item['price'] + $item['tax']);
+          $this->data['tax_total'] += $item['tax'];
         }
       }
     }
 
     public function add_item($item) {
 
-      $key_i = 1;
-      while (isset($this->data['items']['new'.$key_i])) $key_i++;
-
-      $this->data['items']['new'.$key_i] = array(
+      $item = array(
         'id' => '',
         'product_id' => $item['product_id'],
         'options' => $item['options'],
@@ -535,17 +468,20 @@
         'weight_class' => isset($item['weight_class']) ? $item['weight_class'] : '',
       );
 
-      $this->data['weight_total'] += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
+      $i = 1;
+      while (isset($this->data['items']['new_'.$i])) $i++;
+      $this->data['items']['new_'.$i] = $item;
 
-      $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax'] * $item['quantity']);
+      $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
+      $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
+      $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
+      $this->data['tax_total'] += $item['tax'] * $item['quantity'];
+      $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
     }
 
     public function add_ot_row($row) {
 
-      $key_i = 1;
-      while (isset($this->data['order_total']['new'.$key_i])) $key_i++;
-
-      $this->data['order_total']['new'.$key_i] = array(
+      $row = array(
         'id' => 0,
         'module_id' => $row['id'],
         'title' =>  $row['title'],
@@ -554,55 +490,116 @@
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       );
 
-      if (!empty($row['calculate'])) $this->add_cost($row['value'], $row['tax']);
+      $i = 1;
+      while (isset($this->data['order_total']['new_'.$i])) $i++;
+      $this->data['order_total']['new_'.$i] = $row;
+
+      if (!empty($row['calculate'])) {
+        $this->data['payment_due'] += $row['value'] + $row['tax'];
+        $this->data['tax_total'] += $row['tax'];
+      }
     }
 
-    private function add_cost($gross, $tax, $quantity=1) {
-      $this->data['payment_due'] += $gross * $quantity;
-      $this->data['payment_due'] += $tax * $quantity;
-      $this->data['tax_total'] += $tax * $quantity;
-    }
+    public function validate() {
 
-    public function checkout_forbidden() {
+    // Validate items
+      if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
 
-      if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'Your order does not contain any items');
+    // Validate customer details
+      try {
+        if (empty($this->data['customer']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
+        if (empty($this->data['customer']['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
+        if (empty($this->data['customer']['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+        if (empty($this->data['customer']['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+        if (empty($this->data['customer']['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
+        if (empty($this->data['customer']['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter your email address.'));
+        if (empty($this->data['customer']['phone'])) throw new Exception(language::translate('error_missing_phone', 'You must enter your phone number.'));
 
-      $required_fields = array(
-        'email',
-        'firstname',
-        'lastname',
-        'address1',
-        'city',
-        'country_code',
-        'phone',
-      );
+        if (reference::country($this->data['customer']['country_code'])->postcode_format) {
+          if (!empty($this->data['customer']['postcode'])) {
+            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
+              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+            }
+          } else {
+            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+          }
+        }
 
-      if (functions::reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'postcode';
-      if (functions::reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
+        if (reference::country($this->data['customer']['country_code'])->zones) {
+          if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+        }
 
-      foreach ($required_fields as $field) {
-        if (empty($this->data['customer'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' ('.$field.')'*/;
+      } catch (Exception $e) {
+        return language::translate('title_customer_details', 'Customer Details') .': '. $e->getMessage();
       }
 
-      if ($this->data['customer']['different_shipping_address']) {
-        $required_fields = array(
-          'firstname',
-          'lastname',
-          'address1',
-          'city',
-          'country_code',
-        );
-        if (functions::reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'postcode';
-        if (functions::reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'zone_code';
+      try {
+        if (!empty($this->data['customer']['different_shipping_address'])) {
+          if (empty($this->data['customer']['shipping_address']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
+          if (empty($this->data['customer']['shipping_address']['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
+          if (empty($this->data['customer']['shipping_address']['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+          if (empty($this->data['customer']['shipping_address']['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+          if (empty($this->data['customer']['shipping_address']['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
 
-        foreach ($required_fields as $field) {
-          if (empty($this->data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') /*. ' (shipping_address['.$field.'])'*/;
+          if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) {
+            if (!empty($this->data['customer']['shipping_address']['postcode'])) {
+              if (!preg_match('#'. reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format .'#i', $this->data['customer']['shipping_address']['postcode'])) {
+                throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+              }
+            } else {
+              throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+            }
+          }
+
+          if (reference::country($this->data['customer']['country_code'])->zones) {
+            if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) return language::translate('error_missing_zone', 'You must select a zone.');
+          }
         }
+
+      } catch (Exception $e) {
+        return language::translate('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
       }
 
     // Additional customer validation
-      $customer = new mod_customer();
-      $result = $customer->validate($this->data['customer']);
+      $mod_customer = new mod_customer();
+      $result = $mod_customer->validate($this->data['customer']);
+
+      if (!empty($result['error'])) {
+        return $result['error'];
+      }
+
+    // Validate shipping option
+      if (!empty($GLOBALS['shipping'])) {
+        if (!empty($GLOBALS['shipping']->modules) && count($GLOBALS['shipping']->options()) > 0) {
+          if (empty($GLOBALS['shipping']->data['selected']['id'])) {
+            return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
+          } else {
+            list($module_id, $option_id) = explode(':', $GLOBALS['shipping']->data['selected']['id']);
+            if (empty($GLOBALS['shipping']->data['options'][$module_id]['options'][$option_id])) {
+              var_dump($options);
+              return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
+            }
+          }
+        }
+      }
+
+    // Validate payment option
+      if (!empty($GLOBALS['payment'])) {
+        if (!empty($GLOBALS['payment']->modules) && count($GLOBALS['payment']->options()) > 0) {
+          if (empty($GLOBALS['payment']->data['selected']['id'])) {
+            return language::translate('error_no_payment_method_selected', 'No payment method selected');
+          } else {
+            list($module_id, $option_id) = explode(':', $GLOBALS['payment']->data['selected']['id']);
+            if (empty($GLOBALS['payment']->data['options'][$module_id]['options'][$option_id])) {
+              return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+            }
+          }
+        }
+      }
+
+    // Additional order validation
+      $mod_order = new mod_order();
+      $result = $mod_order->validate($this);
 
       if (!empty($result['error'])) {
         return $result['error'];
@@ -643,6 +640,9 @@
 
       if (empty($email)) return;
 
+      $session_language = language::$selected['code'];
+      language::set($this->data['language_code']);
+
       $action_button = '<div itemscope itemtype="https://schema.org/EmailMessage" style="display:none">' . PHP_EOL
                      . '  <div itemprop="potentialAction" itemscope itemtype="https://schema.org/ViewAction">' . PHP_EOL
                      . '    <link itemprop="target url" href="'. document::href_ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))) .'" />' . PHP_EOL
@@ -658,24 +658,36 @@
         $this->draw_printable_copy() . $action_button,
         true
       );
+
+      language::set($session_language);
     }
 
     public function draw_printable_copy() {
 
+      $session_language = language::$selected['code'];
+      language::set($this->data['language_code']);
+
       $printable_order_copy = new view();
-
       $printable_order_copy->snippets['order'] = $this->data;
+      $output = $printable_order_copy->stitch('views/printable_order_copy');
 
-      return $printable_order_copy->stitch('views/printable_order_copy');
+      language::set($session_language);
+
+      return $output;
     }
 
     public function draw_printable_packing_slip() {
 
+      $session_language = language::$selected['code'];
+      language::set($this->data['language_code']);
+
       $printable_packing_slip = new view();
-
       $printable_packing_slip->snippets['order'] = $this->data;
+      $output = $printable_packing_slip->stitch('views/printable_packing_slip');
 
-      return $printable_packing_slip->stitch('views/printable_packing_slip');
+      language::set($session_language);
+
+      return $output;
     }
   }
 
