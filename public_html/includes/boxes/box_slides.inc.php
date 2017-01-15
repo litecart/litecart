@@ -1,9 +1,9 @@
 <?php
-  document::$snippets['head_tags']['responsiveslides'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'responsiveslider/responsiveslides.css" media="screen" />';
-  document::$snippets['foot_tags']['responsiveslides'] = '<script src="'. WS_DIR_EXT .'responsiveslider/responsiveslides.min.js"></script>';
+  document::$snippets['head_tags']['responsiveslides'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'responsiveslides/responsiveslides.min.css" media="screen" />';
+  document::$snippets['foot_tags']['responsiveslides'] = '<script src="'. WS_DIR_EXT .'responsiveslides/responsiveslides.min.js"></script>';
 
-  $box_slider_cache_id = cache::cache_id('box_slider', array('language'));
-  if (cache::capture($box_slider_cache_id, 'file')) {
+  $box_slides_cache_id = cache::cache_id('box_slides', array('language'));
+  if (cache::capture($box_slides_cache_id, 'file')) {
 
     $slides_query = database::query(
       "select * from ". DB_TABLE_SLIDES ."
@@ -16,12 +16,12 @@
 
     if (database::num_rows($slides_query)) {
 
-      $box_slider = new view();
+      $box_slides = new view();
 
-      $box_slider->snippets['slides'] = array();
+      $box_slides->snippets['slides'] = array();
 
       while ($slide = database::fetch($slides_query)) {
-        $box_slider->snippets['slides'][] = array(
+        $box_slides->snippets['slides'][] = array(
           'id' => $slide['link'],
           'link' => $slide['link'],
           'image' => WS_DIR_IMAGES . $slide['image'],
@@ -29,10 +29,9 @@
         );
       }
 
-      echo $box_slider->stitch('views/box_slider');
-
+      echo $box_slides->stitch('views/box_slides');
     }
 
-    cache::end_capture($box_slider_cache_id);
+    cache::end_capture($box_slides_cache_id);
   }
 ?>
