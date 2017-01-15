@@ -159,6 +159,7 @@ CREATE TABLE `lc_delivery_statuses_info` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_geo_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(32) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(256) NOT NULL,
   `date_updated` datetime NOT NULL,
