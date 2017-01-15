@@ -1,14 +1,12 @@
 <footer id="footer">
 
-  <!--snippet:breadcrumbs-->
-
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/site_cookie_notice.inc.php'); ?>
 
   <table>
     <tr>
       <td class="categories">
         <nav>
-          <h4><?php echo language::translate('title_categories', 'Categories'); ?></h4>
+          <h3 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
           <ul class="list-unstyled">
             <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
           </ul>
@@ -18,7 +16,7 @@
       <?php if ($manufacturers) { ?>
       <td class="manufacturers">
         <nav>
-          <h4><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h4>
+          <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
           <ul class="list-unstyled">
           <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
           </ul>
@@ -28,7 +26,7 @@
 
       <td class="account">
         <nav>
-          <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
+          <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
           <ul class="list-unstyled">
             <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
             <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
@@ -45,14 +43,14 @@
       </td>
       <td class="information">
         <nav>
-          <h4><?php echo language::translate('title_information', 'Information'); ?></h4>
+          <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
           <ul class="list-unstyled">
             <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
           </ul>
         </nav>
       </td>
       <td class="contact">
-        <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
+        <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
         <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
         <p><?php echo settings::get('store_phone'); ?><br />
           <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
@@ -63,6 +61,6 @@
 </footer>
 
 <div id="copyright" class="twelve-eighty">
-  <!-- LiteCart is provided free by Creative Commons Attribution-NoDerivatives 4.0 International Public International License (CC BY-ND 4.0). Removing the link back to LiteCart.net without written permission is a violation. -->
+  <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without written permission is a violation. -->
   <p>Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a></p>
 </div>

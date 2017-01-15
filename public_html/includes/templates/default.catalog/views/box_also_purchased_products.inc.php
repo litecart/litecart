@@ -1,9 +1,8 @@
-<div class="row">
-  <div class="col-full">
-    <h3><?php echo language::translate('title_also_purchased_products', 'Also Purchased Products'); ?></h3>
-  </div>
-</div>
+<div id="box-also-purchased-products" class="box">
 
-<div class="products row half-gutter text-center">
-  <?php foreach($products as $product) echo functions::draw_listing_product($product); ?>
+  <h2 class="title"><?php echo language::translate('title_also_purchased_products', 'Also Purchased Products'); ?></h2>
+
+  <div class="products row half-gutter text-center">
+    <?php foreach($products as $product) echo functions::draw_listing_product($product); ?>
+  </div>
 </div>

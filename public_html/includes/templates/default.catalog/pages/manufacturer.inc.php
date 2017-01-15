@@ -1,4 +1,4 @@
-<aside id="sidebar" class="box shadow rounded-corners">
+<aside id="sidebar">
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
 </aside>
 

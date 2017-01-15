@@ -1,5 +1,5 @@
 <div id="box-account-login" class="box">
-  <h3><?php echo language::translate('title_login', 'Login'); ?></h3>
+  <h2><?php echo language::translate('title_login', 'Login'); ?></h2>
 
   <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login')); ?>
     <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::ilink('')); ?>
@@ -10,8 +10,8 @@
     </div>
 
     <div class="form-group">
-      <td><?php echo language::translate('title_password', 'Password'); ?><br />
-      <?php echo functions::form_draw_password_field('password', ''); ?></td>
+      <label><?php echo language::translate('title_password', 'Password'); ?></label>
+      <?php echo functions::form_draw_password_field('password', ''); ?>
     </div>
 
     <div class="checkbox">

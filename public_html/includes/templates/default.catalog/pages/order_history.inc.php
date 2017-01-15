@@ -1,3 +1,10 @@
+<aside id="sidebar">
+  <div id="column-left">
+    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_account_links.inc.php'); ?>
+  </div>
+</aside>
+
 <main id="content">
   <!--snippet:notices-->
 
@@ -12,6 +19,7 @@
         <th class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
         <th class="text-center"><?php echo language::translate('title_date', 'Date'); ?></th>
         <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -21,6 +29,7 @@
         <td class="text-center"><?php echo $order['order_status']; ?></td>
         <td class="text-right"><?php echo $order['date_created']; ?></td>
         <td class="text-right"><?php echo $order['payment_due']; ?></td>
+        <td class="text-right"><a href="<?php echo htmlspecialchars($order['link']); ?>" class="lightbox-iframe"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
       </tr>
       <?php } ?>
       </tbody>
