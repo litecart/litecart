@@ -121,6 +121,9 @@
     // Set PHP multibyte charset
       mb_internal_encoding(self::$selected['charset']);
 
+    // Set RegEx multibyte encoding
+      mb_regex_encoding(self::$selected['charset']);
+
     // Set PHP output encoding
       mb_http_output(self::$selected['charset']);
 
