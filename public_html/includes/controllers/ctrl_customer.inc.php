@@ -59,6 +59,7 @@
         'mobile',
         'different_shipping_address',
         'newsletter',
+        'notes',
       );
       foreach ($map as $key) {
         $this->data[$key] = $customer[$key];
@@ -128,6 +129,7 @@
           shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
           shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
           newsletter = '". (!empty($this->data['newsletter']) ? '1' : '0') ."',
+          notes = '". database::input($this->data['notes']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
