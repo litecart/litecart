@@ -151,17 +151,11 @@
       return self::calculate($value, $to, $from);
     }
 
-    public static function format($value, $auto_decimals=true, $raw=false, $currency_code=null, $currency_value=null) {
+    public static function format($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
 
-      if ($raw) return self::format_raw($value, $currency_code, $currency_value);
+      if ($currency_code === null) $currency_code = self::$selected['code'];
 
-      if (empty($currency_code)) $currency_code = self::$selected['code'];
-
-      if (empty($currency_value) && isset(self::$currencies[$currency_code])) $currency_value = (float)self::$currencies[$currency_code]['value'];
-
-      if (!isset(currency::$currencies[$currency_code]) && !empty($currency_value)) {
-        return number_format($value * $currency_value, 2, '.', ',') .' '. $currency_code;
-      }
+      if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
 
       $fraction = ($value * $currency_value) - (int)($value * $currency_value);
 
