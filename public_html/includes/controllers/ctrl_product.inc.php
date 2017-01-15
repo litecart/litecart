@@ -190,6 +190,13 @@
         $this->data['default_category_id'] = reset($this->data['categories']);
       }
 
+      $this->data['keywords'] = explode(',', $this->data['keywords']);
+      foreach(array_keys($this->data['keywords']) as $key) {
+        $this->data['keywords'][$key] = trim($this->data['keywords'][$key]);
+      }
+      $this->data['keywords'] = array_unique($this->data['keywords']);
+      $this->data['keywords'] = implode(',', $this->data['keywords']);
+
       database::query(
         "update ". DB_TABLE_PRODUCTS ." set
         status = ". (int)$this->data['status'] .",
@@ -199,7 +206,7 @@
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'].",
         product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
-        keywords = '". database::input(rtrim(trim($this->data['keywords']), ',')) ."',
+        keywords = '". database::input($this->data['keywords']) ."',
         quantity = ". (float)$this->data['quantity'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",
