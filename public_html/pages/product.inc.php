@@ -187,7 +187,7 @@
     );
 
     if (!empty($product->manufacturer['image'])) {
-      $box_product->snippets['manufacturer']['image'] = array(
+      $_page->snippets['manufacturer']['image'] = array(
         'original' => WS_DIR_IMAGES . $product->manufacturer['image'],
         'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 200, 60),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 400, 120),
