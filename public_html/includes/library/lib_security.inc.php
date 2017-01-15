@@ -5,6 +5,7 @@
     private static $_blacklist;
     private static $_whitelist;
     private static $_ban_time = '7 days';
+    private static $_bad_urls;
     private static $_trigger;
 
     public static function construct() {
@@ -14,6 +15,7 @@
 
       self::$_blacklist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt';
       self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt';
+      self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt';
     }
 
     //public static function load_dependencies() {
@@ -52,6 +54,13 @@
             . '</body>' . PHP_EOL
             . '</html>' . PHP_EOL
           );
+        }
+      }
+
+    // Check if client is accessing a blacklisted URL
+      if (settings::get('security_bad_urls')) {
+        if (self::is_accessing_bad_url()) {
+          self::ban('Bad URL');
         }
       }
 
@@ -219,6 +228,13 @@
       }
 
       return false;
+    }
+
+    public static function is_accessing_bad_url() {
+      $bad_urls = file_get_contents(self::$_bad_urls);
+      $bad_urls = preg_replace('#\R+#', "\n", $bad_urls);
+
+      return preg_match('#^/'. preg_quote(route::$request, '#') .'$#m', $bad_urls);
     }
 
     public static function ban($reason='', $time='') {
