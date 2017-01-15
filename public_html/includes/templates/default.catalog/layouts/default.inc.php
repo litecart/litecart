@@ -9,6 +9,7 @@
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
 <!--snippet:head_tags-->
+<link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <!--snippet:style-->
 </head>
 <body>
