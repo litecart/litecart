@@ -4,8 +4,8 @@
 
     private static $_blacklist;
     private static $_whitelist;
-    private static $_ban_time = '7 days';
     private static $_bad_urls;
+    private static $_ban_time = '12 hours';
     private static $_trigger;
 
     public static function construct() {
@@ -133,7 +133,7 @@
     // Bad Bot Trap - Rig the trap
       if (settings::get('security_bot_trap')) {
         if (document::$layout == 'default') {
-          $GLOBALS['content'] = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: inline-block; position: absolute;"><img src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="" style="width: 1px; height: 1px; border: none;" /></a>' . PHP_EOL
+          $GLOBALS['content'] = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: none;"><img src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="" style="width: 1px; height: 1px; border: none;" /></a>' . PHP_EOL
                                . $GLOBALS['content'];
         }
       }
@@ -254,6 +254,7 @@
               , 0);
 
       $row = $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'] .' '
+           . '[reason="'. htmlspecialchars($reason) .'"]'
            . '[date="'. date('Y-m-d H:i:s') .'"]'
            . '[ip="' . $_SERVER['REMOTE_ADDR'] .'"]'
            . '[hostname="'. $hostname .'"]'
