@@ -60,11 +60,11 @@
       }
 
       if (!empty($_POST['remove_cart_item'])) {
-        self::remove($_POST['key']);
+        self::remove($_POST['remove_cart_item']);
       }
 
       if (!empty($_POST['update_cart_item'])) {
-        self::update($_POST['key'], (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        self::update($_POST['update_cart_item'], isset($_POST['item'][$_POST['update_cart_item']]['quantity']) ? $_POST['item'][$_POST['update_cart_item']]['quantity'] : 1);
       }
 
       if (!empty($_POST['clear_cart_items'])) {
