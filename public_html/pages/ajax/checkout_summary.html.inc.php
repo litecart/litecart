@@ -11,23 +11,50 @@
 
   if (!isset($payment)) $payment = new mod_payment();
 
-  $order_total = new mod_order_total();
+  session::$data['order'] = new ctrl_order();
+  $order = &session::$data['order'];
 
-  $order = new ctrl_order('resume');
-
-// Overwrite incompleted order in session
-  if (!empty($order->data) && $order->data['customer']['id'] == customer::$data['id'] && empty($order->data['order_status_id'])) {
+// Resume incomplete order in session
+  if (!empty($order->data['id']) && empty($order->data['order_status_id']) && strtotime($order->data['date_created']) > strtotime('-15 minutes')) {
     $resume_id = $order->data['id'];
-    $order = new ctrl_order('import_session');
+  }
+
+  $order->reset();
+
+  if (!empty($resume_id)) {
     $order->data['id'] = $resume_id;
-// New order based on session
-  } else {
-    $order = new ctrl_order('import_session');
   }
 
 // Build Order
-  $order->data['order_total'] = array();
-  $order_total->process($order);
+  $order->data['weight_class'] = settings::get('store_weight_class');
+  $order->data['currency_code'] = currency::$selected['code'];
+  $order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
+  $order->data['language_code'] = language::$selected['code'];
+  $order->data['customer'] = customer::$data;
+
+  foreach (cart::$items as $item) {
+    $order->add_item($item);
+  }
+
+  if (!empty($shipping->data['selected'])) {
+    $order->data['shipping_option'] = array(
+      'id' => $shipping->data['selected']['id'],
+      'name' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
+    );
+  }
+
+  if (!empty($payment->data['selected'])) {
+    $order->data['payment_option'] = array(
+      'id' => $payment->data['selected']['id'],
+      'name' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
+    );
+  }
+
+  $order_total = new mod_order_total();
+  $rows = $order_total->process($order);
+  foreach ($rows as $row) {
+    $order->add_ot_row($row);
+  }
 
 // Output
   $box_checkout_summary = new view();
@@ -38,7 +65,8 @@
     'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : '',
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => currency::format($order->data['payment_due'], false),
-    'error' => $order->checkout_forbidden(),
+    'error' => $order->validate(),
+    'selected_shipping' => null,
     'selected_payment' => null,
     'confirm' => !empty($payment->data['selected']['confirm']) ? $payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   );

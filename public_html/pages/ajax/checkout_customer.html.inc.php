@@ -5,6 +5,8 @@
     header('X-Robots-Tag: noindex');
   }
 
+  functions::draw_lightbox();
+
   if (empty(cart::$items)) return;
 
   if (file_get_contents('php://input') == '') {

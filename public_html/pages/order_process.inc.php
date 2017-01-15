@@ -8,9 +8,15 @@
 
   $payment = new mod_payment();
 
-  $order = new ctrl_order('resume');
+  if (empty(session::$data['order'])) {
+    notices::add('errors', 'Missing order object');
+    header('Location: '. document::ilink('checkout'));
+    exit;
+  }
 
-  if ($error_message = $order->checkout_forbidden()) {
+  $order = &session::$data['order'];
+
+  if ($error_message = $order->validate()) {
     notices::add('errors', $error_message);
     header('Location: '. document::ilink('checkout'));
     exit;

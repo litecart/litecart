@@ -173,20 +173,19 @@
 
   $('#box-checkout .customer.wrapper').on('change', '.billing-address :input', function() {
     if ($(this).val() == '') return;
-    if (console) console.log('Retrieving address (Trigger: "'+ $(this).attr('name') +')');
+    if (console) console.log('Retrieving address (Trigger: '+ $(this).attr('name') +')');
     $.ajax({
       url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
       data: $('.billing-address :input').serialize(),
       cache: false,
-      async: false,
+      async: true,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
         if (console) console.warn(errorThrown.message + "\n" + jqXHR.responseText);
       },
       success: function(data) {
         if (data['alert']) alert(data['alert']);
-        if (console) console.log(data);
         $.each(data, function(key, value) {
           if ($(".billing-address *[name='"+key+"']").length && $(".billing-address *[name='"+key+"']").val() == '') {
             $(".billing-address *[name='"+key+"']").val(value);
@@ -200,25 +199,25 @@
 
   $('#box-checkout .customer.wrapper').on('change', 'select[name="country_code"]', function() {
     if ($(this).find('option:selected').data('tax-id-format') != '') {
-      $(this).closest('table').find("input[name='tax_id']").attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+      $(this).closest('table').find('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
     } else {
-      $(this).closest('table').find("input[name='tax_id']").removeAttr('pattern');
+      $(this).closest('table').find('input[name="tax_id"]').removeAttr('pattern');
     }
 
     if ($(this).find('option:selected').data('postcode-format') != '') {
-      $(this).closest('table').find("input[name='postcode']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
-      $(this).closest('table').find("input[name='postcode']").attr('required', 'required');
-      $(this).closest('table').find("input[name='postcode']").closest('td').find('.required').show();
+      $(this).closest('table').find('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+      $(this).closest('table').find('input[name="postcode"]').attr('required', 'required');
+      $(this).closest('table').find('input[name="postcode"]').closest('td').find('.required').show();
     } else {
-      $(this).closest('table').find("input[name='postcode']").removeAttr('pattern');
-      $(this).closest('table').find("input[name='postcode']").removeAttr('required');
-      $(this).closest('table').find("input[name='postcode']").closest('td').find('.required').hide();
+      $(this).closest('table').find('input[name="postcode"]').removeAttr('pattern');
+      $(this).closest('table').find('input[name="postcode"]').removeAttr('required');
+      $(this).closest('table').find('input[name="postcode"]').closest('td').find('.required').hide();
     }
 
     if ($(this).find('option:selected').data('phone-code') != '') {
-      $(this).closest('table').find("input[name='phone']").attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+      $(this).closest('table').find('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
     } else {
-      $(this).closest('table').find("input[name='phone']").removeAttr('placeholder');
+      $(this).closest('table').find('input[name="phone"]').removeAttr('placeholder');
     }
 
     $('body').css('cursor', 'wait');
@@ -294,9 +293,7 @@
 // Customer Form: Checksum
 
   window.customer_form_changed = false;
-  window.customer_form_checksum = $('#box-checkout-customer :input').serialize();
-
-  $('#box-checkout .customer.wrapper').on('input change', '#box-checkout-customer', function(e) {
+  $('#box-checkout .customer.wrapper').on('input propertyChange', '#box-checkout-customer', function(e) {
     if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
       window.customer_form_changed = true;
       $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
@@ -341,7 +338,7 @@
     queueUpdateTask('shipping');
     queueUpdateTask('payment');
     queueUpdateTask('summary');
-    customer_form_checksum = $('#box-checkout-customer :input').serialize();
+    window.customer_form_checksum = $('#box-checkout-customer :input').serialize();
     $('#box-checkout-customer :input:first-child').trigger('change');
   });
 

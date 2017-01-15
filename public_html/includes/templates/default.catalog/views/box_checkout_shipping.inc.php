@@ -2,9 +2,9 @@
   <h2 class="title"><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
 
   <?php echo functions::form_draw_form_begin('shipping_form', 'post'); ?>
-    <div class="options btn-group-vertical btn-block">
+    <div class="options btn-group-vertical">
       <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
-      <label class="option btn btn-default<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
+      <label class="option btn btn-default btn-block<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
         <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
         <div class="header row" style="margin: 0;">
           <div class="col-sm-fourths thumbnail" style="margin: 0;">
