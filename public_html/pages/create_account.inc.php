@@ -8,7 +8,7 @@
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   document::$snippets['title'][] = language::translate('create_account:head_title', 'Create Account');
 
-  breadcrumbs::add(language::translate('title_create_account', 'Create Account'), document::ilink('create_account'));
+  breadcrumbs::add(language::translate('title_create_account', 'Create Account'));
 
   if (!$_POST) {
     foreach (customer::$data as $key => $value) {
