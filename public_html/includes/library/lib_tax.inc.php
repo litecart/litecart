@@ -48,17 +48,17 @@
 
       if ($tax_class_id == 0) return 0;
 
-      $tax = 0;
-
       $tax_rates = self::get_rates($tax_class_id, $customer);
 
+      $tax = 0;
       foreach ($tax_rates as $tax_rate) {
         switch($tax_rate['type']) {
           case 'fixed':
             $tax += $tax_rate['rate'];
             break;
           case 'percent':
-            $tax += ($value / 100 * $tax_rate['rate']);
+            $val = $value / 100 * $tax_rate['rate'];
+            $tax += $value / 100 * $tax_rate['rate'];
             break;
         }
       }
@@ -152,11 +152,11 @@
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
 
       $tax_rates_query = database::query(
-        "select * from ". DB_TABLE_TAX_RATES .";"
+        "select * from ". DB_TABLE_TAX_RATES ."
+        where tax_class_id = '". (int)$tax_class_id ."';"
       );
 
       while ($rate = database::fetch($tax_rates_query)) {
-
         switch($rate['address_type']) {
           case 'payment':
             if ($rate['customer_type'] == 'individuals' && !empty($customer['company'])) continue 2;
