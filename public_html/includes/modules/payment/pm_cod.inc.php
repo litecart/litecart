@@ -28,7 +28,7 @@
           array(
             'id' => 'cod',
             'icon' => $this->settings['icon'],
-            'name' => functions::reference_get_country_name(customer::$data['shipping_address']['country_code']),
+            'name' => reference::country(customer::$data['shipping_address']['country_code'])->name,
             'description' => '',
             'fields' => '',
             'cost' => $this->settings['fee'],
