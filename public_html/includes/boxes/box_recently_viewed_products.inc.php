@@ -3,8 +3,9 @@
 
   if (settings::get('box_recently_viewed_products_num_items') == 0) return;
 
-  $box_recently_viewed_products = new view();
+  functions::draw_lightbox();
 
+  $box_recently_viewed_products = new view();
   $box_recently_viewed_products->snippets['products'] = array();
 
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
