@@ -36,7 +36,7 @@
         $options[] = array(
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
-          'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['shipping_address']['country_code']),
+          'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
           'description' => weight::format($total_weight, $this->settings['weight_class']),
           'fields' => '',
           'cost' => $cost,
@@ -54,7 +54,7 @@
           $options[] = array(
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
-            'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['shipping_address']['country_code']),
+            'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
             'description' => weight::format($total_weight, $this->settings['weight_class']),
             'fields' => '',
             'cost' => $cost + $this->settings['handling_fee'],
