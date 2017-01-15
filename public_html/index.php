@@ -1,4 +1,18 @@
 <?php
+/**
+ * LiteCart�
+ *
+ * Online Catalog and Shopping Cart Platform
+ *
+ * LiteCart is provided free without warranty. Use it at your own risk.
+ *
+ * @author    LiteCart Dev Team <development@litecart.net>
+ * @license   http://creativecommons.org/licenses/by-nd/4.0/ CC BY-ND 4.0
+ * @link      https://www.litecart.net Official Website
+ *
+ * LiteCart is a registered trademark, property of T. Almroth.
+ */
+
   require_once('includes/app_header.inc.php');
 
   if (!empty(route::$route) && is_file(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . route::$route['page'] .'.inc.php')) {
