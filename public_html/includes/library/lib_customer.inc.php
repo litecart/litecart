@@ -50,7 +50,7 @@
 
     public static function after_capture() {
 
-    // Set regional data
+    // Load regional settings screen
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
         if (settings::get('regional_settings_screen_enabled')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
@@ -170,7 +170,7 @@
       }
 
     // Unset zone if not in country
-      if (!functions::reference_verify_zone_code(self::$data['country_code'], self::$data['zone_code'])) {
+      if (!isset(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
         self::$data['zone_code'] = '';
       }
 
@@ -186,7 +186,7 @@
       }
 
     // Unset zone if not in country
-      if (!functions::reference_verify_zone_code(self::$data['shipping_address']['country_code'], self::$data['shipping_address']['zone_code'])) {
+      if (!isset(reference::country(self::$data['shipping_address']['country_code'])->zones[self::$data['shipping_address']['zone_code']])) {
         self::$data['shipping_address']['zone_code'] = '';
       }
 
