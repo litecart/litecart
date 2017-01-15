@@ -55,8 +55,6 @@
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
-  document::$snippets['foot_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
-  document::$snippets['foot_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
 
   if (!empty($product->image)) {
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
