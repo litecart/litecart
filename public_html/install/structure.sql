@@ -59,6 +59,7 @@ CREATE TABLE `lc_categories_info` (
   `h1_title` varchar(128) NOT NULL,
   `meta_description` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE INDEX `category` (`category_id`, `language_code`),
   KEY `category_id` (`category_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
@@ -153,6 +154,7 @@ CREATE TABLE `lc_delivery_statuses_info` (
   `name` varchar(64) NOT NULL,
   `description` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
+ UNIQUE INDEX `delivery_status` (`delivery_status_id`, `language_code`),
   KEY `delivery_status_id` (`delivery_status_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
@@ -187,7 +189,7 @@ CREATE TABLE `lc_languages` (
   `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
-  UNIQUE KEY `id` (`id`),
+  PRIMARY KEY `id` (`id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
@@ -216,6 +218,7 @@ CREATE TABLE `lc_manufacturers_info` (
   `meta_description` varchar(256) NOT NULL,
   `link` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE INDEX `manufacturer` (`manufacturer_id`, `language_code`),
   KEY `manufacturer_id` (`manufacturer_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
