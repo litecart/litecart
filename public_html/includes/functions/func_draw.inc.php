@@ -114,8 +114,8 @@
 
     $selector = str_replace("'", '"', $selector);
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'featherlight/featherlight.css" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_EXT .'featherlight/featherlight.js"></script>';
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'featherlight/featherlight.min.css" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_EXT .'featherlight/featherlight.min.js"></script>';
 
     if (preg_match('#^(https?:)?//#', $selector)) {
       document::$snippets['javascript']['featherlight-'.$selector] = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
@@ -128,7 +128,7 @@
       'closeSpeed'  => 50,
       'loading'     => '',
       'closeIcon'   => '',
-      'targetAttr'  => 'data',
+      'targetAttr'  => 'data-target',
     );
 
     foreach (array_keys($default_params) as $key) {
@@ -162,13 +162,8 @@
       }
     }
 
-    document::$snippets['javascript']['featherlight-'.$selector] = rtrim(document::$snippets['javascript']['featherlight-'.$selector], ','.PHP_EOL) . PHP_EOL;
-
-    document::$snippets['javascript']['featherlight-'.$selector] .= '  });';
-  }
-
-  function draw_fancybox($selector='a.fancybox', $params=array()) {
-    return draw_lightbox($selector, $params=array());
+    document::$snippets['javascript']['featherlight-'.$selector] = rtrim(document::$snippets['javascript']['featherlight-'.$selector], ','.PHP_EOL) . PHP_EOL
+                                                                 . '  });';
   }
 
   function draw_pagination($pages) {
