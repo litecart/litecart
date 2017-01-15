@@ -18,20 +18,6 @@
       self::$_links_cache_id = cache::cache_id('links', array('site', 'language'));
       self::$_links_cache = cache::get(self::$_links_cache_id, 'file');
 
-    // Add default routes
-      $routes = array(
-        '#^(?:index\.php)?$#'                  => array('page' => 'index',          'params' => '',  'redirect' => true),
-        '#^ajax/(.*)(?:\.php)?$#'              => array('page' => 'ajax/$1',        'params' => '',  'redirect' => true),
-        '#^feeds/(.*)(?:\.php)?$#'             => array('page' => 'feeds/$1',       'params' => '',  'redirect' => true),
-        '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false, 'post_security' => false),
-        '#^([0-9|a-z|_]+)(?:\.php)?$#'         => array('page' => '$1',             'params' => '',  'redirect' => true),
-        // See ~/includes/routes/ folder for more advanced routes
-      );
-
-      foreach ($routes as $pattern => $route) {
-        self::$_routes[$pattern] = $route;
-      }
-
     // Load external/dynamic routes
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . 'url_*.inc.php');
 
@@ -54,6 +40,20 @@
             }
           }
         }
+      }
+
+    // Append default routes
+      $routes = array(
+        '#^(?:index\.php)?$#'                  => array('page' => 'index',          'params' => '',  'redirect' => true),
+        '#^ajax/(.*)(?:\.php)?$#'              => array('page' => 'ajax/$1',        'params' => '',  'redirect' => true),
+        '#^feeds/(.*)(?:\.php)?$#'             => array('page' => 'feeds/$1',       'params' => '',  'redirect' => true),
+        '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false, 'post_security' => false),
+        '#^([0-9|a-z|_]+)(?:\.php)?$#'         => array('page' => '$1',             'params' => '',  'redirect' => true),
+        // See ~/includes/routes/ folder for more advanced routes
+      );
+
+      foreach ($routes as $pattern => $route) {
+        self::$_routes[$pattern] = $route;
       }
     }
 
