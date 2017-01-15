@@ -137,7 +137,7 @@
       $user = database::fetch($user_query);
 
       if (empty($user)) {
-        sleep(10);
+        sleep(3);
         notices::add('errors', language::translate('error_user_not_found', 'The user could not be found in our database'));
         return;
       }
@@ -188,8 +188,11 @@
           notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), 15));
         }
 
-        sleep(rand(3, 10));
         return;
+      }
+
+      if (!empty($user['last_host']) && $user['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
+        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), array('%hostname' => $user['last_host'])));
       }
 
       $user_query = database::query(
