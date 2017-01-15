@@ -7,10 +7,7 @@
     public $destination = array();
 
     public function __construct() {
-
-      parent::set_type('jobs');
-
-      $this->load();
+      $this->load('jobs');
     }
 
     public function process($modules=null, $force=false) {
@@ -29,8 +26,9 @@
         ob_start();
 
         $timestamp = microtime(true);
+        $start_time = date('Y-m-d H:i:s');
 
-        echo '##'.str_repeat('#', strlen($title=$module_id .' executed at '. date('Y-m-d H:i:s'))).'##' . PHP_EOL
+        echo '##'.str_repeat('#', strlen($title=$module_id .' executed at '. $start_time)).'##' . PHP_EOL
            . '# '.$title.' #' . PHP_EOL
            . '##'.str_repeat('#', strlen($title)).'##' . PHP_EOL;
 
@@ -42,7 +40,13 @@
 
         $log = ob_get_clean();
 
-        file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . $module_id .'.log', $log);
+        database::query(
+          "update ". DB_TABLE_MODULES ."
+          set last_log = '". database::input($log) ."',
+              date_last_run = '". database::input($start_time) ."'
+          where type = 'job'
+          and module_id = '". database::input($module_id) ."';"
+        );
 
         echo $log;
       }

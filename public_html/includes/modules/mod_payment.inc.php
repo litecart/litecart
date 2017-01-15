@@ -5,8 +5,6 @@
 
     public function __construct() {
 
-      parent::set_type('payment');
-
     // Link data to session object
       if (!isset(session::$data['payment']) || !is_array(session::$data['payment'])) {
         session::$data['payment'] = array();
@@ -17,12 +15,12 @@
         $this->data['selected'] = array();
       }
 
-    // Load modules
-      $this->load();
-
       if (!isset($this->data['userdata'])) {
         $this->data['userdata'] = array();
       }
+
+    // Load modules
+      $this->load('payment');
 
     // Attach userdata to module
       if (!empty($this->data['selected'])) {

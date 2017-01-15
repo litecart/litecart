@@ -5,11 +5,9 @@
 
     public function __construct() {
 
-      parent::set_type('customer');
-
       $this->_get_address_cache = &session::$data['get_address_cache'];
 
-      $this->load();
+      $this->load('customer');
     }
 
     public function get_address($fields) {

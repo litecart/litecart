@@ -6,8 +6,6 @@
 
     public function __construct($type='session') {
 
-      parent::set_type('shipping');
-
       switch($type) {
         case 'session': // Used for checkout
           if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) session::$data['shipping'] = array();
@@ -27,7 +25,7 @@
           trigger_error('Unknown type', E_USER_ERROR);
       }
 
-      $this->load();
+      $this->load('shipping');
     }
 
     public function options($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {
