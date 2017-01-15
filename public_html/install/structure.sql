@@ -218,6 +218,22 @@ CREATE TABLE `lc_manufacturers_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module_id` varchar(64) NOT NULL,
+  `type` varchar(16) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `priority` tinyint(4) NOT NULL,
+  `settings` text NOT NULL,
+  `last_log` text NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `module_id` (`module_id`),
+  KEY `type` (`type`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_option_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `function` varchar(32) NOT NULL,
