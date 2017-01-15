@@ -1,10 +1,5 @@
 <?php
 
-  function draw_fontawesome_icon($name, $params=null, $class=null) {
-    trigger_error('draw_fontawesome_icon() is deprecated. Use instead draw_fonticon()', E_USER_DEPRECATED);
-    return functions::draw_fonticon('fa-'.$name . ($class ? ' ' . $class : null), $params);
-  }
-
   function draw_fonticon($class, $params=null) {
 
     switch(true) {
