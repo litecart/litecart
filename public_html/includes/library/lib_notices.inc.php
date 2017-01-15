@@ -14,7 +14,6 @@
           'warnings' => array(),
           'notices' => array(),
           'success' => array(),
-          'debugs' => array(),
         );
       }
 
@@ -30,49 +29,21 @@
     //public static function before_capture() {
     //}
 
-    //public static function after_capture() {
+    public static function after_capture() {
+
+      if (!empty(array_filter(notices::$data))) {
+        $notices = new view();
+        $notices->snippets['notices'] = notices::$data;
+        document::$snippets['notices'] = $notices->stitch('views/notices');
+        self::reset();
+      }
+    }
+
+    //public static function prepare_output() {
     //}
 
-    public static function prepare_output() {
-
-      $notices = array();
-
-      foreach(array('debugs', 'errors', 'notices', 'warnings', 'success') as $notice_type) {
-        if (!empty(notices::$data[$notice_type])) {
-
-          switch ($notice_type) {
-            case 'warnings':
-            case 'errors':
-              $icon = functions::draw_fonticon('fa-exclamation-triangle');
-              break;
-            case 'notices':
-              $icon = functions::draw_fonticon('fa-exclamation-circle');
-              break;
-            case 'success':
-              $icon = functions::draw_fonticon('fa-check-circle');
-              break;
-            default:
-              $icon = '';
-              break;
-          }
-
-          $notices[] = '  <div class="notice '. $notice_type .'">' . $icon .' '. implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">' . $icon . ' ', array_unique(notices::$data[$notice_type])) . '</div>' . PHP_EOL;
-        }
-      }
-
-      self::reset();
-
-      if (!empty($notices)) {
-        document::$snippets['notices'] = '<div id="notices-wrapper">' . PHP_EOL
-                                       . '  <div id="notices">'. PHP_EOL . implode(PHP_EOL, $notices) . '</div>' . PHP_EOL
-                                       . '</div>' . PHP_EOL
-                                       . '<script>setTimeout(function(){$("#notices-wrapper").slideUp();}, 15000);</script>';
-        unset($notices);
-      }
-    }
-
-    public static function before_output() {
-    }
+    //public static function before_output() {
+    //}
 
     //public static function shutdown() {
     //}
