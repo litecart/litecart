@@ -7,6 +7,7 @@
 <link href="{snippet:template_path}styles/loader.css" rel="stylesheet" media="all" />
 <link href="{snippet:template_path}styles/theme.css" rel="stylesheet" media="all" />
 <!--snippet:head_tags-->
+<link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <!--snippet:style-->
 </head>
 <body>

@@ -5,6 +5,7 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="all" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 <!--snippet:head_tags-->
 <!--snippet:style-->
 </head>
