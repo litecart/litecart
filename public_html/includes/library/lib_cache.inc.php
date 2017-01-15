@@ -171,18 +171,13 @@
       );
     }
 
-    public static function set_breakpoint() {
-      trigger_error('The method '.__CLASS__.'::set_breakpoint() is deprecated, use instead '.__CLASS__.'::clear_cache()', E_USER_DEPRECATED);
-      self::clear_cache();
-    }
-
     public static function cache_id($keyword, $dependencies=array()) {
+
+      $hash_string = $keyword;
 
       if (!is_array($dependencies)) {
         $dependencies = array($dependencies);
       }
-
-      $hash_string = $keyword;
 
       $dependencies[] = 'site';
 

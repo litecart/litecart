@@ -40,6 +40,7 @@
 
     public function __construct($file=null, $force_library=null) {
 
+    // Set library
       if (!empty($force_library)) {
         $this->_library = $force_library;
       } else if (extension_loaded('imagick')) {
