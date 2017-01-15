@@ -151,54 +151,61 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo !empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('', 'post'); ?>
+<?php echo functions::form_draw_form_begin('language_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-  <table>
-    <tr>
-      <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_status', 'Status'); ?></label>
         <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1)</strong> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
-        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2)</strong> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
-        <?php echo functions::form_draw_text_field('code2', true, 'data-size="tiny" required="required" pattern="[a-z]{3}"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
         <?php echo functions::form_draw_text_field('name', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_charset', 'Charset'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8" data-size="small"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_system_locale', 'System Locale'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('locale', true, 'placeholder="xx_XX.utf8"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_date_format', 'Date Format'); ?></strong> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+        <?php echo functions::form_draw_text_field('code', true, 'required="required" pattern="[a-z]{2}"'); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+        <?php echo functions::form_draw_text_field('code2', true, 'required="required" pattern="[a-z]{3}"'); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+        <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8"'); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
+        <?php echo functions::form_draw_text_field('locale', true, 'placeholder="E.g. en_US.utf8,en-US.UTF-8,english"'); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
   $options = array(
     array(language::strftime('%e %b %Y'), '%e %b %Y'),
     array(language::strftime('%b %e %Y'), '%b %e %Y'),
   );
-  echo functions::form_draw_select_field('format_date', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_field('format_date', $options, true, false);
 ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_time_format', 'Time Format'); ?></strong> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
   $options = array(
     array(
@@ -214,12 +221,14 @@
       ),
     ),
   );
-  echo functions::form_draw_select_optgroup_field('format_time', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('format_time', $options, true, false);
 ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?></strong> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
   $options = array(
     array(
@@ -245,12 +254,12 @@
       ),
     ),
   );
-  echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false);
 ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?></strong> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
   $options = array(
     array(
@@ -266,23 +275,25 @@
       )
     ),
   );
-  echo functions::form_draw_select_optgroup_field('raw_time', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('raw_time', $options, true, false);
 ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></strong><br />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></label>
 <?php
   $options = array(
     array(language::translate('char_dot', 'Dot'), '.'),
     array(language::translate('char_comma', 'Comma'), ','),
   );
-  echo functions::form_draw_select_field('decimal_point', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_field('decimal_point', $options, true, false);
 ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></strong><br />
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></label>
 <?php
   $options = array(
     array(language::translate('char_comma', 'Comma'), ','),
@@ -291,28 +302,38 @@
     array(language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '),
     array(language::translate('char_single_quote', 'Single quote'), '\''),
   );
-  echo functions::form_draw_select_field('thousands_sep', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_field('thousands_sep', $options, true, false);
 ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_force_currency_code', 'Force Currency Code'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
-        <?php echo functions::form_draw_number_field('priority', true, null, null, 'data-size="tiny"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <?php echo functions::form_draw_checkbox('set_default', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_default_language', 'Set as default language'); ?><br />
-        <?php echo functions::form_draw_checkbox('set_store', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_store_language', 'Set as store language'); ?>
-      </td>
-    </tr>
-  </table>
+    </div>
+  </div>
 
-  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($language->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_force_currency_code', 'Force Currency Code'); ?></label>
+      <?php echo functions::form_draw_text_field('currency_code', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+      <?php echo functions::form_draw_number_field('priority', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <div class="radio">
+        <label><?php echo functions::form_draw_checkbox('set_default', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_default_language', 'Set as default language'); ?></label>
+      </div>
+      <div class="radio">
+        <label><?php echo functions::form_draw_checkbox('set_store', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_store_language', 'Set as store language'); ?></label>
+      </div>
+    </div>
+  </div>
+
+  <p class="btn-group">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+    <?php echo (isset($language->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>

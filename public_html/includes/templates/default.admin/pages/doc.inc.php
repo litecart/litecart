@@ -1,6 +1,6 @@
 <style>
 <?php $rgb = implode(', ', sscanf($theme['color'], "#%02x%02x%02x")); ?>
-#content {
+#main {
   background: #fff; /* Old browsers */
   background: -moz-linear-gradient(-45deg, rgba(<?php echo $rgb; ?>, 1) 0px, rgba(255,255,255,1) 100px); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0px, rgba(<?php echo $rgb; ?>, 1)), color-stop(100px,rgba(255,255,255,1))); /* Chrome,Safari4+ */

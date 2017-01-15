@@ -45,14 +45,23 @@
   }
 
   $languages_query = database::query(
-    "select code from ". DB_TABLE_LANGUAGES ."
+    "select * from ". DB_TABLE_LANGUAGES ."
     order by priority;"
   );
 
-  $language_codes = array();
+  $languages = array();
   while ($language = database::fetch($languages_query)) {
-    $language_codes[] = $language['code'];
+    $languages[$language['code']] = $language;
   }
+
+  $selected_languages = $languages;
+  if (!empty($_GET['languages'])) {
+    foreach (array_keys($selected_languages) as $language_code) {
+      if (!in_array($language_code, $_GET['languages'])) unset($selected_languages[$language_code]);
+    }
+  }
+
+  functions::draw_lightbox();
 ?>
 <style>
 ul.filter li {
@@ -65,11 +74,11 @@ ul.filter li {
 }
 </style>
 
-<ul class="filter list-horizontal" style="float: right;">
-  <?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
-  <?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
+<?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
+<?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
+<ul class="filter list-inline pull-right">
   <li>
-  <?php echo language::translate('title_find', 'Find'); ?>
+    <?php echo language::translate('title_find', 'Find'); ?>
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword') .'"'); ?>
   </li>
 
@@ -110,26 +119,31 @@ ul.filter li {
   </li>
 
   <li>
-    <?php echo language::translate('title_languages', 'Languages'); ?>:<br />
-    <?php foreach ($language_codes as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
+    <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
+    <div><?php foreach (array_keys($languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', $language_code) .' '. $language_code .'</span>'; ?></div>
   </li>
 
-  <li>
-    <?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?>
-  </li>
-  <?php echo functions::form_draw_form_end(); ?>
+  <li><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></li>
 </ul>
+<?php echo functions::form_draw_form_end(); ?>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
+
+<?php if (count($selected_languages) > 1) { ?>
+<p><button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button></p>
+<?php } ?>
 
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
-  <table align="center" width="100%" class="dataTable">
-    <tr class="header">
-      <th style="width: 100%;"><?php echo language::translate('title_code', 'Code');?></th>
-      <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. (!empty(language::$languages[$language_code]['name']) ? language::$languages[$language_code]['name'] : $language_code) .'</th>'; ?>
-      <th>&nbsp;</th>
-    </tr>
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+        <th><?php echo language::translate('title_code', 'Code');?></th>
+        <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. $languages[$language_code]['name'] .'</th>'; ?>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
 <?php
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
@@ -146,40 +160,135 @@ ul.filter li {
     if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
 
     $page_items = 0;
-    while ($row = database::fetch($translations_query)) {
+    while ($row=database::fetch($translations_query)) {
 
       $row['pages'] = rtrim($row['pages'], ',');
 ?>
-    <tr class="row">
-      <td><?php echo $row['code']; ?><br />
-        <small style="color: #999;"><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
-        <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
-      </td>
-      <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="display: block; max-width: 250px;" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
+      <tr>
+        <td><?php echo $row['code']; ?><br />
+          <small style="color: #999;"><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
+          <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
+        </td>
+        <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
       <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-    </tr>
+      </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
       }
     } else {
 ?>
-    <tr class="odd">
-      <td colspan="<?php echo 2+count(language::$languages); ?>" align="left" nowrap="nowrap"><?php echo language::translate('text_no_entries_found_in_database', 'No entries found in database'); ?></td>
-    </tr>
+      <tr>
+        <td colspan="<?php echo 2+count(language::$languages); ?>" align="left" nowrap="nowrap"><?php echo language::translate('text_no_entries_found_in_database', 'No entries found in database'); ?></td>
+      </tr>
 <?php
     }
 ?>
+    </tbody>
   </table>
-  <p style="display: inline; float: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?></p>
 
-<?php
-// Display page links
-  echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page')));
-?>
+  <p style="display: inline; float: right;">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>
 
+<?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
+
+<?php if (count($selected_languages) > 1) { ?>
+
+<div class="modal fade" id="translator-tool" style="max-width: 980px;">
+  <h2><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></h2>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
+<?php
+  $options = array(array('-- '. language::translate('title_select', 'Select') .' --'));
+  foreach ($selected_languages as $language) {
+    $options[] = array($language['name'], $language['code']);
+  }
+?>
+          <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>
+        </div>
+        <div class="form-group">
+          <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
+          <?php echo functions::form_draw_select_field('to_language_code', $options); ?>
+        </div>
+        <div class="form-group">
+          <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
+          <textarea class="form-control" name="source" style="height: 320px;" readonly="readonly"></textarea>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
+          <textarea class="form-control" name="result" style="height: 455px;"></textarea>
+        </div>
+      </div>
+    </div>
+    <ul class="list-unstyled">
+      <li><a href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a></li>
+      <li><a href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a></li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
+    <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo language::translate('title_cancel', 'Cancel'); ?></button>
+  </div>
+
+</div>
+
 <script>
+  var delimiter = "\r\n----------\r\n";
+
+  $('#translator-tool select[name="from_language_code"]').change(function(e){
+
+    var selected_language_code = $(this).val();
+    var translations = [];
+
+    if ($('#translator-tool select[name="to_language_code"]').val() == '') return;
+
+    $.each($('textarea[name$="[text_'+ $(this).val() +']"]'), function(i){
+      var target = $(this).closest('tr').find('textarea[name$="[text_'+ $('#translator-tool select[name="to_language_code"]').val() +']"]');
+      if ($(this).val() != '' && $(target).val() == '') {
+        translations.push('{{'+ i +'}} = ' + $(this).val());
+      }
+    });
+
+    translations = translations.join(delimiter);
+
+    $('#translator-tool textarea[name="source"]').val(translations);
+  }).trigger('change');
+
+  $('#translator-tool textarea[name="source"]').focus(function(e){
+    $(this).select();
+  });
+
+  $('#translator-tool select[name="to_language_code"]').change(function(e){
+    $('#translator-tool select[name="from_language_code"]').trigger('change');
+  });
+
+  $('#translator-tool button[name="prefill_fields"]').click(function(){
+
+    var translated = $('#translator-tool textarea[name="result"]').val();
+    translated = translated.split(delimiter.trim());
+
+    if ($('#translator-tool select[name="to_language_code"]').val() == '') {
+      alert('You must specify which language you are translating');
+      return false;
+    }
+
+    $.each(translated, function(i){
+      var matches = translated[i].trim().match(/^\{\{([0-9]+)\}\} = (.*)$/);
+      var index = matches[1];
+      var translation = matches[2].trim();
+
+      $('textarea[name$="[text_'+ $('#translator-tool select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
+    });
+  });
+
   $('.delete').click(function(e){
     e.preventDefault();
 
@@ -197,3 +306,4 @@ ul.filter li {
     $(form).submit();
   });
 </script>
+<?php } ?>

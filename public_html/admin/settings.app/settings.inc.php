@@ -42,17 +42,20 @@
     if ($_GET['doc'] == $group['key']) $setting_group = $group;
   }
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('settings_form', 'post'); ?>
-<table width="100%" align="center" class="dataTable">
-  <tr class="header">
-    <th width="250"><?php echo language::translate('title_key', 'Key'); ?></th>
-    <th><?php echo language::translate('title_value', 'Value'); ?></th>
-    <th>&nbsp;</th>
-  </tr>
-<?php
 
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+        <th><?php echo language::translate('title_key', 'Key'); ?></th>
+        <th><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+<?php
   $settings_query = database::query(
     "select * from ". DB_TABLE_SETTINGS ."
     where `setting_group_key` = '". $setting_group['key'] ."'
@@ -68,44 +71,35 @@
 
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
-  <tr class="row">
-    <td><u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br /><?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?></td>
-    <td><?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], 'value', $setting['value']); ?></td>
-    <td style="text-align: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
-  </tr>
+      <tr>
+        <td><u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br /><?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?></td>
+        <td><?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], 'value', $setting['value']); ?></td>
+        <td style="text-align: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
+      </tr>
 <?php
-	  } else {
-      if (substr($setting['function'], 0, 6) == 'toggle') {
-        if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-          $setting['value'] = language::translate('title_true', 'True');
-        } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
-          $setting['value'] = language::translate('title_false', 'False');
+      } else {
+        if (substr($setting['function'], 0, 6) == 'toggle') {
+          if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+            $setting['value'] = language::translate('title_true', 'True');
+          } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
+            $setting['value'] = language::translate('title_false', 'False');
+          }
         }
-      }
 ?>
-  <tr class="row">
-    <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
-    <td style="white-space: normal;"><span title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128) . '...' : $setting['value']); ?></span></td>
-    <td style="text-align: right;"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-  </tr>
+      <tr>
+        <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
+        <td style="white-space: normal;"><span title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>"><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128) . '...' : $setting['value']); ?></span></td>
+        <td style="text-align: right;"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+      </tr>
 <?php
-    }
-
-    // Escape if enough page items
+      }
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
-  } else {
+  }
 ?>
-  <tr class="odd">
-    <td colspan="3"><?php echo language::translate('text_no_entries_in_database', 'There are no entries in the database.'); ?></td>
-  </tr>
-<?php
-}
-?>
-</table>
-<?php
-  echo functions::form_draw_form_end();
+    </tbody>
+  </table>
 
-// Display page links
-  echo functions::draw_pagination(ceil(database::num_rows($settings_query)/settings::get('data_table_rows_per_page')));
-?>
+<?php echo functions::form_draw_form_end(); ?>
+
+<?php echo functions::draw_pagination(ceil(database::num_rows($settings_query)/settings::get('data_table_rows_per_page'))); ?>

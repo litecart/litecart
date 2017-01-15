@@ -7,13 +7,7 @@
       'color' => '#a6dad7',
       'icon' => 'fa-plug',
     ),
-    'menu' => array(
-      array(
-        'title' => language::translate('title_vqmods', 'vQmods'),
-        'doc' => 'vqmods',
-        'params' => array(),
-      ),
-    ),
+    'menu' => array(),
     'docs' => array(
       'download' => 'download.inc.php',
       'vqmods' => 'vqmods.inc.php',

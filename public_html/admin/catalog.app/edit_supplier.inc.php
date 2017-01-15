@@ -53,43 +53,52 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'); ?></h1>
 
-<?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
+<?php echo functions::form_draw_form_begin('supplier_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-  <table>
-    <tr>
-      <td>
-        <strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
-          <?php echo functions::form_draw_text_field('name', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <strong><?php echo language::translate('title_description', 'description'); ?></strong><br />
-          <?php echo functions::form_draw_textarea('description', true, 'data-size="large"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <strong><?php echo language::translate('title_email_address', 'Email Address'); ?></strong><br />
-          <?php echo functions::form_draw_email_field('email', true, 'email', ''); ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
-          <?php echo functions::form_draw_text_field('phone', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <strong><?php echo language::translate('title_link', 'Link'); ?></strong><br />
-          <?php echo functions::form_draw_text_field('link', true); ?>
-      </td>
-    </tr>
-  </table>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label>
+        <?php echo language::translate('title_name', 'Name'); ?></label>
+        <?php echo functions::form_draw_text_field('name', true); ?>
+    </div>
+  </div>
 
-  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($supplier->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+  <div class="row">
+    <div class="form-group col-md">
+      <label>
+        <?php echo language::translate('title_description', 'description'); ?></label>
+        <?php echo functions::form_draw_textarea('description', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label>
+        <?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+        <?php echo functions::form_draw_email_field('email', true, 'email', ''); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label>
+        <?php echo language::translate('title_phone', 'Phone'); ?></label>
+        <?php echo functions::form_draw_text_field('phone', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label>
+        <?php echo language::translate('title_link', 'Link'); ?></label>
+        <?php echo functions::form_draw_text_field('link', true); ?>
+    </div>
+  </div>
+
+  <p class="btn-group">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+    <?php echo (isset($supplier->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>

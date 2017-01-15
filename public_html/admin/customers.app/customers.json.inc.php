@@ -14,9 +14,10 @@
   }
 
   $customers_query = database::query(
-    "select * from ". DB_TABLE_CUSTOMERS ."
+    "select id, firstname, lastname, company, email, date_created from ". DB_TABLE_CUSTOMERS ."
     ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
-    order by firstname, lastname;"
+    order by firstname, lastname
+    limit 15;"
   );
 
   $customers = array();
@@ -28,7 +29,9 @@
     while ($customer = database::fetch($customers_query)) {
       $customers[] = array(
         'id' => $customer['id'],
-        'name' => $customer['company'] ? $customer['company'] :  $customer['firstname'] .' '. $customer['lastname'] .' ['. $customer['id'] .']',
+        'name' => $customer['company'] ? $customer['company'] :  $customer['firstname'] .' '. $customer['lastname'],
+        'email' => $customer['email'],
+        'date_created' => language::strftime(language::$selected['format_date'], strtotime($customer['date_created'])),
       );
 
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

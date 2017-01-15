@@ -7,7 +7,7 @@
 
   if (empty($_GET['order_id'])) die('Missing order ID');
 
-  $order = new ctrl_order('load', $_GET['order_id']);
+  $order = new ctrl_order($_GET['order_id']);
 
   echo $order->draw_printable_packing_slip();
 

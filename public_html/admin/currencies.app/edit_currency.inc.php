@@ -127,62 +127,78 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('', 'post'); ?>
+<?php echo functions::form_draw_form_begin('currency_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-  <table>
-    <tr>
-      <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-        <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('name', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217)</strong> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
-        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217)</strong> <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
-        <?php echo functions::form_draw_text_field('number', true, 'data-size="tiny" pattern="[0-9]{3}"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_value', 'Value'); ?></strong><br />
-        <?php echo functions::form_draw_decimal_field('value', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_prefix', 'Prefix'); ?></strong><br />
-        <?php echo functions::form_draw_text_field('prefix', true, 'data-size="tiny"'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_suffix', 'Suffix'); ?></strong><br />
-      <?php echo functions::form_draw_text_field('suffix', true, 'data-size="tiny"'); ?></td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_decimals', 'Decimals'); ?></strong><br />
-        <?php echo functions::form_draw_number_field('decimals', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_priority', 'Priority'); ?></strong><br />
-        <?php echo functions::form_draw_number_field('priority', true); ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><?php echo functions::form_draw_checkbox('set_default', '1', (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_default_currency', 'Set as default currency'); ?></label><br />
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_status', 'Status'); ?></label>
+      <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+      <?php echo functions::form_draw_text_field('name', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217) <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <?php echo functions::form_draw_text_field('code', true, 'required="required" pattern="[A-Z]{3}"'); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217) <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <?php echo functions::form_draw_text_field('number', true, 'pattern="[0-9]{3}"'); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_value', 'Value'); ?></label>
+      <?php echo functions::form_draw_decimal_field('value', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
+      <?php echo functions::form_draw_number_field('decimals', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_prefix', 'Prefix'); ?></label>
+      <?php echo functions::form_draw_text_field('prefix', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_suffix', 'Suffix'); ?></label>
+      <?php echo functions::form_draw_text_field('suffix', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+      <?php echo functions::form_draw_number_field('priority', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('set_default', '1', (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_default_currency', 'Set as default currency'); ?></label>
+      </div>
+      <div class="checkbox">
         <label><?php echo functions::form_draw_checkbox('set_store', '1', (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_store_currency', 'Set as store currency'); ?></label>
-      </td>
-    </tr>
-  </table>
-  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($currency->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+      </div>
+    </div>
+  </div>
+
+  <p class="btn-group">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+    <?php echo (isset($currency->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>

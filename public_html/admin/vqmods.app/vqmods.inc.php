@@ -37,20 +37,23 @@
     }
   }
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_vqmods', 'vQmods'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_vqmods', 'vQmods'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('vqmods_form', 'post'); ?>
 
-  <table width="100%" align="center" class="dataTable">
-    <tr class="header">
-      <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
-      <th></th>
-      <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th><?php echo language::translate('title_code', 'Code'); ?></th>
-      <th style="text-align: center;"><?php echo language::translate('title_version', 'Version'); ?></th>
-      <th><?php echo language::translate('title_author', 'Author'); ?></th>
-      <th>&nbsp;</th>
-    </tr>
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+        <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+        <th></th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th><?php echo language::translate('title_code', 'Code'); ?></th>
+        <th class="text-center"><?php echo language::translate('title_version', 'Version'); ?></th>
+        <th><?php echo language::translate('title_author', 'Author'); ?></th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
 <?php
 
   $vqmods = glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE);
@@ -62,7 +65,7 @@
       $xml = simplexml_load_file($vqmod);
       $enabled = preg_match('/\.xml$/', $vqmod) ? true : false;
 ?>
-    <tr class="row<?php echo !$enabled ? ' semi-transparent' : null; ?>">
+    <tr class="<?php echo empty($enabled) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo (string)$xml->id; ?></td>
@@ -75,32 +78,34 @@
     }
   }
 ?>
-    <tr class="footer">
-      <td colspan="7"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
-    </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="7"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
+      </tr>
+    </tfoot>
   </table>
 
-  <script>
-    $(".dataTable .checkbox-toggle").click(function() {
-      $(this).closest("form").find(":checkbox").each(function() {
-        $(this).attr('checked', !$(this).attr('checked'));
-      });
-      $(".dataTable .checkbox-toggle").attr("checked", true);
-    });
+  <?php if (count($vqmods)) { ?>
+  <p>
+    <span class="btn-group">
+      <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+      <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+    </span>
+    <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
+  </p>
+  <?php } ?>
 
-    $('.dataTable tr').click(function(event) {
-      if ($(event.target).is('input:checkbox')) return;
-      if ($(event.target).is('a, a *')) return;
-      if ($(event.target).is('th')) return;
-      $(this).find('input:checkbox').trigger('click');
-    });
-  </script>
+<?php echo functions::form_draw_form_end(); ?>
 
-  <p><span class="button-set"><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></span> <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?></p>
+<?php echo functions::form_draw_form_begin('vqmod_form', 'post', '', true); ?>
+  <div class="row" style="margin-top: 2em;">
+    <div class="form-group col-md-3">
+      <label><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</label>
+      <?php echo functions::form_draw_file_field('vqmod', 'accept="application/xml"'); ?>
+    </div>
+  </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
 
-  <fieldset style="display: inline; border: 1px solid #ccc;">
-    <legend><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</legend>
-    <?php echo functions::form_draw_form_begin('vqmod_form', 'post', '', true) . functions::form_draw_file_field('vqmod', 'accept="application/xml"') .' '. functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit') . functions::form_draw_form_end(); ?>
-  </fieldset>
+<?php echo functions::form_draw_form_end(); ?>

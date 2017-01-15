@@ -15,29 +15,39 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 
-<div style="float: right; display: inline;">
-  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app'); ?>
-    <?php echo functions::form_draw_hidden_field('doc'); ?>
-    <table>
-      <tr>
-        <td><?php echo language::translate('title_date_period', 'Date Period'); ?>:</td>
-        <td><?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></td>
-        <td><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></td>
-      </tr>
-    </table>
-  <?php echo functions::form_draw_form_end(); ?>
-</div>
+<style>
+form[name="filter_form"] li {
+  vertical-align: middle;
+}
+</style>
 
+<?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+  <?php echo functions::form_draw_hidden_field('app'); ?>
+  <?php echo functions::form_draw_hidden_field('doc'); ?>
+  <ul class="list-inline pull-right">
+    <li><?php echo language::translate('title_date_period', 'Date Period'); ?>:</li>
+    <li>
+      <div class="input-group" style="max-width: 350px;">
+        <?php echo functions::form_draw_date_field('date_from'); ?>
+        <span class="input-group-addon"> - </span>
+        <?php echo functions::form_draw_date_field('date_to'); ?>
+      </div>
+    </li>
+    <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
+  </ul>
+<?php echo functions::form_draw_form_end(); ?>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?></h1>
 
-<table width="100%" align="center" class="dataTable">
-  <tr class="header">
-    <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
-    <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
-  </tr>
+<table class="table table-striped data-table">
+  <thead>
+    <tr>
+      <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
+      <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
+    </tr>
+  </thead>
+  <tbody>
 <?php
   $order_statuses = array();
   $orders_status_query = database::query(
@@ -63,16 +73,17 @@
     $page_items = 0;
     while ($customer = database::fetch($customers_query)) {
 ?>
-  <tr class="row">
-    <td><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
-    <td><?php echo $customer['email']; ?></td>
-    <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, false, settings::get('store_currency_code')); ?></td>
-  </tr>
+    <tr>
+      <td><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+      <td><?php echo $customer['email']; ?></td>
+      <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
+    </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }
 ?>
+  </tbody>
 </table>
 
 <?php echo functions::draw_pagination(ceil(database::num_rows($customers_query)/settings::get('data_table_rows_per_page'))); ?>

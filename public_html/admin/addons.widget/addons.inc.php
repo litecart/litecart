@@ -15,7 +15,8 @@
       'url' => document::ilink(''),
     );
 
-    $response = @functions::http_fetch($url, $store_info, false, false, true);
+    $client = new http_client();
+    $response = @$client->call($url, $store_info);
     $rss = @simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {
@@ -26,50 +27,37 @@
       $count = 0;
       $total = 0;
       foreach ($rss->channel->item as $item) {
-        if (!isset($count) || $count == 3) {
+        $col++;
+        if (!isset($count) || $count == 6) {
           $count = 0;
-          $col++;
         }
         $columns[$col][] = $item;
         $count++;
         $total++;
-        if ($total == 12) break;
+        if ($total == 18) break;
       }
 ?>
-<div class="widget">
-  <table style="width: 100%;" class="dataTable">
-    <tr class="header">
-      <th colspan="4"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></th>
-    </tr>
-    <tr>
-<?php
-      foreach ($columns as $column) {
-        echo '<td style="vertical-align: top;">' . PHP_EOL
-           . '  <table style="width: 100%;">' . PHP_EOL;
-        foreach ($column as $item) {
-          if (!isset($rowclass) || $rowclass == 'even') {
-            $rowclass = 'odd';
-          } else {
-            $rowclass = 'even';
-          }
-?>
-        <tr>
-          <td><?php //echo language::strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
+<div class="widget panel panel-default">
+  <div class="panel-heading"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></div>
+  <div class="panel-body">
+    <div class="row">
+      <?php foreach (array_keys($columns) as $key) { ?>
+      <div class="col-sm-4 col-md-3 col-lg-2">
+        <ul class="list-unstyled">
+          <?php foreach ($columns[$key] as $item) { ?>
+          <li style="margin-bottom: 0.5em;">
+            <?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
             <span style="color: #666;"><?php echo (string)$item->description; ?></span>
-          </td>
-        </tr>
-<?php
-        }
-        echo '  </table>' . PHP_EOL
-           . '</td>' . PHP_EOL;
-      }
-?>
-    </tr>
-  </table>
+          </li>
+          <?php } ?>
+        </ul>
+      </div>
+      <?php } ?>
+    </div>
+  </div>
 </div>
 <?php
     }
-
     cache::end_capture($widget_addons_cache_id);
   }
 ?>

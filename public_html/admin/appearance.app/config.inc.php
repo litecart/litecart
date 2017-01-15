@@ -1,7 +1,7 @@
 <?php
 
   $app_config = array(
-    'name' => language::translate('title_appearence', 'Appearence'),
+    'name' => language::translate('title_appearance', 'Appearance'),
     'default' => 'template',
     'theme' => array(
       'color' => '#ff387c',

@@ -1,5 +1,5 @@
 <?php
-  if (!isset($_GET['template'])) $_GET['template'] = '';
+  if (!isset($_GET['template'])) $_GET['template'] = 'raw';
 ?>
 <style>
 #service-providers li a {
@@ -17,23 +17,27 @@
 #service-providers li .name {
   font-size: 1.5em;
   margin-left: 40px;
+  text-align: left;
 }
 #service-providers li .offer {
   margin-left: 40px;
+  text-align: left;
 }
 </style>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_newsletter', 'Newsletter'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_newsletter', 'Newsletter'); ?></h1>
 
 <h2><?php echo language::translate('title_list_of_subscribers', 'List of Subscribers'); ?></h2>
 
-<ul class="list-horizontal">
-  <li><a href="<?php echo document::href_link('', array('template' => 'raw'), array('app', 'doc')); ?>">Raw</a></li>
-  <li><a href="<?php echo document::href_link('', array('template' => 'email'), array('app', 'doc')); ?>">Email Formatted</a></li>
-  <li><a href="<?php echo document::href_link('', array('template' => 'csv'), array('app', 'doc')); ?>">CSV</a></li>
+<p class="btn-group">
+  <a class="btn btn-default<?php echo (empty($_GET['template']) || $_GET['template'] == 'raw') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'raw'), array('app', 'doc')); ?>">Raw</a>
+  <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'email') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'email'), array('app', 'doc')); ?>">Email Formatted</a>
+  <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'csv') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'csv'), array('app', 'doc')); ?>">CSV</a>
 </ul>
-<div style="float: left; width: 50%;">
-  <h2><?php echo language::translate('title_customers', 'Customers'); ?></h2>
+
+<div class="row" style="margin-bottom: 2em;">
+  <div class="col-md-6">
+    <h2><?php echo language::translate('title_customers', 'Customers'); ?></h2>
 <?php
   $output = '';
 
@@ -57,18 +61,17 @@
         $output .= implode(';', array($customer['firstname'], $customer['lastname'], $customer['email'])) . PHP_EOL;
         break;
       case 'raw':
-      default:
         $output .= $customer['email'] . PHP_EOL;
         break;
     }
   }
 
-  echo functions::form_draw_textarea('subscribers', $output, 'style="width: 98%; height: 400px;"');
+  echo functions::form_draw_textarea('subscribers', $output, 'style="height: 400px;"');
 ?>
-</div>
+  </div>
 
-<div style="float: right; width: 50%;">
-  <h2><?php echo language::translate('title_guests', 'Guests'); ?></h2>
+  <div class="col-md-6">
+    <h2><?php echo language::translate('title_guests', 'Guests'); ?></h2>
 <?php
   $output = '';
 
@@ -99,13 +102,14 @@
     }
   }
 
-  echo functions::form_draw_textarea('subscribers', $output, 'style="width: 98%; height: 400px;"');
+  echo functions::form_draw_textarea('subscribers', $output, 'style="height: 400px;"');
 ?>
+  </div>
 </div>
 
-<ul id="service-providers" class="list-horizontal">
+<ul id="service-providers" class="list-inline">
   <li>
-    <a href="http://eepurl.com/JAeav" target="_blank" class="button">
+    <a href="http://eepurl.com/JAeav" target="_blank" class="btn btn-default">
       <img src="<?php echo WS_DIR_ADMIN . 'customers.app/mailchimp.png'; ?>" alt="" />
       <div class="name">MailChimp</div>
       <div class="offer">LiteCart gives you $30 free credits</div>
