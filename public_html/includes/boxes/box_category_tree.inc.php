@@ -35,15 +35,15 @@
 
         }
 
-      database::free($categories_query);
+        database::free($categories_query);
 
-      return $output;
+        return $output;
       }
     }
 
-    $box_category_tree->snippets['categories'] = output_category_tree(0, 0, $category_trail, $box_category_tree->snippets['categories']);
-
-    echo $box_category_tree->stitch('views/box_category_tree');
+    if ($box_category_tree->snippets['categories'] = output_category_tree(0, 0, $category_trail, $box_category_tree->snippets['categories'])) {
+      echo $box_category_tree->stitch('views/box_category_tree');
+    }
 
     cache::end_capture($box_category_tree_cache_id);
   }
