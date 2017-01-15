@@ -60,6 +60,7 @@
 </a>
 
 <!--snippet:foot_tags-->
+<script src="{snippet:template_path}js/app.min.js"></script>
 <!--snippet:javascript-->
 <script>
   $(window).scroll(function(){
