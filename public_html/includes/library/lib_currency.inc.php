@@ -19,14 +19,6 @@
     // Load currencies
       self::load();
 
-    // Set upon HTTP POST request
-      if (!empty($_POST['set_currency'])) {
-        trigger_error('set_currency via HTTP POST is deprecated, use &language=xx instead', E_USER_DEPRECATED);
-        self::set($_POST['set_currency']);
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
-      }
-
     // Identify/set currency
       self::set();
     }
