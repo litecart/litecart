@@ -1,131 +1,150 @@
 <?php
 
   class ctrl_module {
-    private $_type;
     private $_module;
-    public $name;
-    public $description;
-    public $settings;
+    public $data;
 
-    public function __construct($file) {
+    public function __construct($module_id) {
 
-      preg_match('/.*'. str_replace('/', '\/', ltrim(WS_DIR_MODULES, '/')) .'(.*)\/(.*).inc.php/', $file, $matches);
-      $this->type = $matches[1];
-      $module_id = $matches[2];
+      if (empty($module_id)) trigger_error('First argument module_id cannot be empty', E_USER_ERROR);
+
+      preg_match('#^([^_]+)#', $module_id, $matches);
+
+      switch ($matches[1]) {
+        case 'cm':
+          $type = 'customer';
+          break;
+        case 'sm':
+          $type = 'shipping';
+          break;
+        case 'pm':
+          $type = 'payment';
+          break;
+        case 'om':
+          $type = 'order';
+          break;
+        case 'ot':
+          $type = 'order_total';
+          break;
+        case 'job':
+          $type = 'job';
+          break;
+        default:
+          trigger_error('Unknown module type for module '. $module_id, E_USER_ERROR);
+      }
+
+      $this->load($module_id, $type);
+    }
+
+    public function reset() {
+
+      $this->data = array();
+
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_MODULES .";"
+      );
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = null;
+      }
+    }
+
+    public function load($module_id, $type) {
+
+      $this->reset();
+
+      $modules_query = database::query(
+        "select * from ". DB_TABLE_MODULES ."
+        where type = '". database::input($type) ."'
+        and module_id = '". database::input($module_id) ."'
+        limit 1;"
+      );
+
+      if ($module = database::fetch($modules_query)) {
+        $this->data = array_replace($this->data, $module);
+      }
+
+      $this->data['module_id'] = $module_id;
+      $this->data['type'] = $type;
+      $this->data['settings'] = $this->_decode_settings($this->data['settings']);
 
       $this->_module = new $module_id;
-
-      $this->name = $this->_module->name;
-      $this->description = $this->_module->description;
-      $this->author = $this->_module->author;
-      $this->website = $this->_module->website;
-      $this->settings = array();
-
-    // Get settings from database
-      $settings = unserialize(settings::get($module_id, ''));
-
-    // Set settings to module
-      foreach ($this->_module->settings() as $setting) {
-        $this->settings[$setting['key']] = array(
-          'key' => $setting['key'],
-          'value' => isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'],
-          'default_value' => $setting['default_value'],
-          'title' => $setting['title'],
-          'description' => $setting['description'],
-          'function' => $setting['function'],
-        );
+      foreach ($this->_module->settings() as $structure) {
+        if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
       }
     }
 
-    public function save($values) {
+    public function save() {
 
-      if (empty($this->_module->id)) return false;
+      if (empty($this->data['id'])) {
 
-      if (!in_array($this->_module->id, explode(';', settings::get($this->type.'_modules')))) {
-        $this->install();
-      } else {
-        $this->update();
-      }
-
-      $settings = array();
-      foreach ($this->_module->settings() as $setting) {
-        $settings[$setting['key']] = $values[$setting['key']];
-      }
-
-      if (!settings::get($this->_module->id, '')) {
         database::query(
-          "insert into ". DB_TABLE_SETTINGS ."
-          (`key`, date_created)
-          values ('". database::input($this->_module->id) ."', '". date('Y-m-d H:i:s') ."');"
+          "insert into ". DB_TABLE_MODULES ."
+          (module_id, type, date_created)
+          values ('". database::input($this->data['module_id']) ."', '". database::input($type) ."', '". date('Y-m-d H:i:s') ."');"
         );
+
+        $this->data['id'] = database::insert_id();
+
+        if (method_exists($this->_module, 'uninstall')) {
+          $this->_module->uninstall();
+        }
+
+        if (method_exists($this->_module, 'install')) {
+          $this->_module->install();
+        }
+
+      } else {
+
+        if (method_exists($this->_module, 'update')) {
+          $this->_module->update();
+        }
       }
 
       database::query(
-        "update ". DB_TABLE_SETTINGS ."
-        set value = '". database::input(serialize($settings), true) ."'
-        where `key` = '". database::input($this->_module->id) ."'
+        "update ". DB_TABLE_MODULES ."
+        set
+          module_id = '". database::input($this->data['module_id']) ."',
+          type = '". database::input($this->data['type']) ."',
+          status = '". (int)$this->data['status'] ."',
+          priority = '". (int)$this->data['priority'] ."',
+          settings = '". database::input($this->_encode_settings($this->data['settings'])) ."',
+          date_updated = '". date('Y-m-d H:i:s') ."'
+        where id = '". (int)database::input($this->data['id']) ."'
         limit 1;"
       );
 
       cache::clear_cache('modules');
     }
 
-    public function install() {
+    public function delete() {
 
       if (method_exists($this->_module, 'uninstall')) {
         $this->_module->uninstall();
       }
 
-      $installed_modules = explode(';', settings::get($this->type.'_modules'));
-      $installed_modules[] = $this->_module->id;
-      $installed_modules = array_unique($installed_modules);
-
       database::query(
-        "update ". DB_TABLE_SETTINGS ."
-        set value = '". database::input(implode(';', $installed_modules)) ."'
-        where `key` = '". database::input($this->type.'_modules') ."'
+        "delete from ". DB_TABLE_MODULES ."
+        where module_id = '". database::input($this->data['module_id']) ."'
         limit 1;"
       );
-
-      if (method_exists($this->_module, 'install')) {
-        $this->_module->install();
-      }
 
       cache::clear_cache('modules');
     }
 
-    public function update() {
+    private function _encode_settings($data) {
 
-      if (method_exists($this->_module, 'update')) {
-        $this->_module->update();
-      }
+      mb_convert_variables('UTF-8', language::$selected['charset'], $data);
 
-      cache::clear_cache('modules');
+      return json_encode($data);
     }
 
-    public function uninstall() {
+    private function _decode_settings($data) {
 
-      if (method_exists($this->_module, 'uninstall')) {
-        $this->_module->uninstall();
-      }
+      $data = json_decode($data, true);
 
-      $installed_modules = explode(';', settings::get($this->type.'_modules'));
-      $key = array_search($this->_module->id, $installed_modules);
-      if ($key !== false) unset($installed_modules[$key]);
+      mb_convert_variables(language::$selected['charset'], 'UTF-8', $data);
 
-      database::query(
-        "update ". DB_TABLE_SETTINGS ."
-        set value = '". database::input(implode(';', $installed_modules)) ."'
-        where `key` = '". database::input($this->type.'_modules') ."'
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_SETTINGS ."
-        where `key` = '". database::input($this->_module->id) ."';"
-      );
-
-      cache::clear_cache('modules');
+      return $data;
     }
   }
 
