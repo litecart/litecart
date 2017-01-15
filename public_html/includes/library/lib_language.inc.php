@@ -4,7 +4,7 @@
     public static $selected = array();
     public static $languages = array();
     private static $_cache = array();
-    private static $_cache_id = '';
+    private static $_translations_cache_id = '';
 
     //public static function construct() {
     //}
@@ -33,11 +33,9 @@
 
     public static function startup() {
 
-    // Import cached translations
-      self::$_cache_id = cache::cache_id('translations', array('language', 'basename'));
-      self::$_cache = cache::get(self::$_cache_id, 'file');
-
       header('Content-Language: '. self::$selected['code']);
+
+      self::$_translations_cache_id = cache::cache_id('translations', array('language', 'uri'));
     }
 
     public static function before_capture() {
@@ -81,7 +79,7 @@
     //}
 
     public static function shutdown() {
-      cache::set(self::$_cache_id, 'file', self::$_cache);
+      cache::set(self::$_translations_cache_id, 'file', self::$_cache['translations']);
     }
 
     ######################################################################
@@ -198,6 +196,11 @@
       if (empty($language_code) || empty(language::$languages[$language_code])) {
         trigger_error('Unknown language code for translation ('. $language_code .')', E_USER_WARNING);
         return;
+      }
+
+    // Import cached translations
+      if (!isset(self::$_cache['translations']) === null) {
+        self::$_cache['translations'] = cache::get(self::$_translations_cache_id, 'file');
       }
 
     // Return from cache
