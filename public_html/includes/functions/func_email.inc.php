@@ -52,7 +52,7 @@
       }
     }
 
-    if (!is_array($recipients)) $recipients = preg_split('#>\s?(,|;|\r\n)#', $recipients);
+    if (!is_array($recipients)) $recipients = mb_split('#>\s?(,|;|\r\n)#', $recipients);
 
     $success = true;
     foreach ($recipients as $to_formatted) {
