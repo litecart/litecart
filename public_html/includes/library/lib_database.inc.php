@@ -2,74 +2,23 @@
 
   class database {
     private static $_links = array();
-    private static $_type = DB_TYPE;
-
-    public static function construct() {
-      if (self::$_type == 'mysql' && function_exists('mysqli_connect')) self::$_type = 'mysqli';
-    }
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    public static function shutdown() {
-
-    // Close a non-persistent database connection
-      if (!in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-        database::disconnect();
-      }
-    }
-
-    ######################################################################
 
     public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset=DB_CONNECTION_CHARSET) {
 
-      if (!isset(self::$_links[$link]) || (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link]))) {
+      if (!isset(self::$_links[$link])) {
 
-        $execution_time_start = microtime(true);
+        $measure_start = microtime(true);
 
-        if (self::$_type == 'mysqli') {
+        self::$_links[$link] = new mysqli($server, $username, $password, $database) or exit;
+        //self::$_links[$link]->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+        self::set_encoding($charset);
 
-          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            self::$_links[$link] = mysqli_connect('p:'.$server, $username, $password, $database) or exit;
-          } else {
-            self::$_links[$link] = mysqli_connect($server, $username, $password, $database) or exit;
-          }
-
-        } else {
-
-          if (in_array(strtolower(DB_PERSISTENT_CONNECTIONS), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-            self::$_links[$link] = mysql_pconnect($server, $username, $password, 65536) or exit;
-          } else {
-            self::$_links[$link] = mysql_connect($server, $username, $password, false, 65536) or exit;
-          }
-
-          mysql_select_db($database) or self::_error(false, mysql_errno(), mysql_error());
-        }
-
-        $execution_time_stop = microtime(true);
-        $execution_time_duration = $execution_time_stop - $execution_time_start;
-
-        if ($execution_time_duration > 1) {
-          error_log('Warning: A MySQL connection established in '. number_format($execution_time_duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'performance.log');
+        if (($duration = microtime(true) - $measure_start) > 1) {
+          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'performance.log');
         }
 
         if (class_exists('stats', false)) {
-          stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+          stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
         }
       }
 
@@ -93,7 +42,13 @@
       return self::$_links[$link];
     }
 
+    public static function set_charset($charset, $link='default') {
+      return self::$_links[$link]->set_charset($charset);
+    }
+
     public static function set_encoding($charset, $collation=null, $link='default') {
+
+      if (!isset(self::$_links[$link])) self::connect($link);
 
       if (empty($charset)) return false;
 
@@ -123,15 +78,15 @@
         'windows-1257' => 'cp1257',
       );
 
-      if (empty($charset_to_mysql_character_set[$charset])) {
+      $charset = strtr($charset, $charset_to_mysql_character_set);
+
+      if (!self::set_charset($charset)) {
         trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
         return false;
       }
 
       if (!empty($collation)) {
-        self::query("set names '". database::input($charset_to_mysql_character_set[$charset]) ."' collate '". database::input($collation) ."';", $link);
-      } else {
-        self::query("set names '". database::input($charset_to_mysql_character_set[$charset]) ."';", $link);
+        self::query("set collation_connection = ". database::input($collation));
       }
 
       return true;
@@ -147,14 +102,10 @@
 
       $errors = false;
       foreach (array_keys($links) as $link) {
-        if (!is_resource($link)) {
+        if (!is_object($link)) {
           $errors = true;
         } else {
-          if (self::$_type == 'mysqli') {
-            mysqli_close(self::$_links[$link]);
-          } else {
-            mysql_close(self::$_links[$link]);
-          }
+          self::$_links[$link]->close();
           unset(self::$_links[$link]);
         }
       }
@@ -164,26 +115,21 @@
 
     public static function query($query, $link='default') {
 
-      if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
+      if (!isset(self::$_links[$link])) self::connect($link);
 
-      $execution_time_start = microtime(true);
+      $measure_start = microtime(true);
 
-      if (self::$_type == 'mysqli') {
-        $result = mysqli_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]));
-      } else {
-        $result = mysql_query($query, self::$_links[$link]) or exit;
+      if (!$result = self::$_links[$link]->query($query)) {
+        self::_error($query, self::$_links[$link]);
       }
 
-      $execution_time_stop = microtime(true);
-      $execution_time_duration = $execution_time_stop - $execution_time_start;
-
-      if ($execution_time_duration > 3) {
-        error_log('Warning: A MySQL query executed in '. number_format($execution_time_duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'performance.log');
+      if (($duration = microtime(true) - $measure_start) > 3) {
+        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'performance.log');
       }
 
       if (class_exists('stats', false)) {
         stats::set('database_queries', stats::get('database_queries') + 1);
-        stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
       }
 
       return $result;
@@ -191,95 +137,62 @@
 
     public static function multi_query($query, $link='default') {
 
-      if (!isset(self::$_links[$link]) || is_resource(self::$_links[$link])) self::connect($link);
+      if (!isset(self::$_links[$link])) self::connect($link);
 
-      if (self::$_type == 'mysqli') {
-        if (mysqli_multi_query(self::$_links[$link], $query) or self::_error($query, mysqli_errno(self::$_links[$link]), mysqli_error(self::$_links[$link]))) {
-          do {
-            if ($result = mysqli_use_result(self::$_links[$link])) {
-              while ($row = mysqli_fetch_row($result)) {
-              }
-              mysqli_free_result($result);
+      if (self::$_links[$link]->multi_query($query)) {
+        do {
+          if ($result = self::$_links[$link]->use_result()) {
+            while ($row = $result->fetch_row($result)) {
             }
+            self::free($result);
           }
-          while (mysqli_next_result(self::$_links[$link]));
         }
+        while (self::$_links[$link]->next_result());
       } else {
-        self::query($query, self::$_links[$link]); // don't pick up results - we're not supporting it
+        self::_error($query, self::$_links[$link]);
       }
-
-      return;
     }
 
     public static function fetch($result) {
 
-      $execution_time_start = microtime(true);
+      $measure_start = microtime(true);
 
-      if (self::$_type == 'mysqli') {
-        $array = mysqli_fetch_assoc($result);
-      } else {
-        $array = mysql_fetch_assoc($result);
-      }
+      $array = $result->fetch_assoc();
 
-      $execution_time_stop = microtime(true);
-      $execution_time_duration = $execution_time_stop - $execution_time_start;
+      $duration = microtime(true) - $measure_start;
 
       if (class_exists('stats', false)) {
-        stats::set('database_execution_time', stats::get('database_execution_time') + $execution_time_duration);
+        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
       }
 
       return $array;
     }
 
     public static function seek($result, $offset) {
-      if (self::$_type == 'mysqli') {
-        return mysqli_data_seek($result, $offset);
-      } else {
-        return mysql_data_seek($result, $offset);
-      }
+      return $result->data_seek($offset);
     }
 
     public static function num_rows($result) {
-      if (self::$_type == 'mysqli') {
-        return mysqli_num_rows($result);
-      } else {
-        return mysql_num_rows($result);
-      }
+      return $result->num_rows;
     }
 
     public static function free($result) {
-      if (self::$_type == 'mysqli') {
-        return mysqli_free_result($result);
-      } else {
-        return mysql_free_result($result);
-      }
+      return $result->close();
     }
 
     public static function insert_id($link='default') {
-      if (self::$_type == 'mysqli') {
-        return mysqli_insert_id(self::$_links[$link]);
-      } else {
-        return mysql_insert_id(self::$_links[$link]);
-      }
+      return self::$_links[$link]->insert_id;
     }
 
     public static function affected_rows($link='default') {
-      if (self::$_type == 'mysqli') {
-        return mysqli_affected_rows(self::$_links[$link]);
-      } else {
-        return mysql_affected_rows(self::$_links[$link]);
-      }
+      return self::$_links[$link]->affected_rows;
     }
 
     public static function info($link='default') {
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      if (self::$_type == 'mysqli') {
-        return mysqli_info(self::$_links[$link]);
-      } else {
-        return mysql_info(self::$_links[$link]);
-      }
+      return self::$_links[$link]->info;
     }
 
     public static function input($string, $allowable_tags=false, $link='default') {
@@ -297,15 +210,14 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      if (self::$_type == 'mysqli') {
-        return mysqli_real_escape_string(self::$_links[$link], $string);
-      } else {
-        return mysql_real_escape_string($string, self::$_links[$link]);
-      }
+      return self::$_links[$link]->escape_string($string);
     }
 
-    private static function _error($query, $errno, $error) {
-      trigger_error('MySQL Error '. $errno .': '. str_replace("\r\n", ' ', $error) ."\r\n  ". str_replace("\r\n", "\r\n  ", $query), E_USER_ERROR);
+    private static function _error($query, $object) {
+
+      $query = preg_replace('#^\s+#m', '', $query) . PHP_EOL;
+
+      trigger_error($object->errno .' - '. preg_replace('#\r#', ' ', $object->error) . PHP_EOL . $query, E_USER_ERROR);
     }
   }
 
