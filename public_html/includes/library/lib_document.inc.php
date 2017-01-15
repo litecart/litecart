@@ -64,6 +64,18 @@
 
     // Get template settings
       self::$settings = unserialize(settings::get('store_template_catalog_settings'));
+
+    // LiteCart JavaScript Environment
+      $config = array(
+        'platform' => array(
+          'url' => document::ilink(''),
+        ),
+        'template' => array(
+          'url' => document::link(WS_DIR_TEMPLATE),
+          'settings' => self::$settings,
+        ),
+      );
+      self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, null) .";</script>";
     }
 
     //public static function after_capture() {
