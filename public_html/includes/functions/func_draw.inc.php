@@ -65,7 +65,7 @@
       $sticker = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
     }
 
-    list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
+    list($width, $height) = functions::image_scale_by_width(256, settings::get('product_image_ratio'));
 
     $listing_product->snippets = array(
       'listing_type' => $listing_type,
@@ -83,12 +83,19 @@
         ),
       ),
       'sticker' => $sticker,
-      'manufacturer_name' => $product['manufacturer_name'],
+      'manufacturer' => array(),
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
       'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
     );
+
+    if (!empty($product['manufacturer_id'])) {
+      $listing_product->snippets['manufacturer'] = array(
+        'id' => $product['manufacturer_id'],
+        'name' => $product['manufacturer_name'],
+      );
+    }
 
   // Watermark Original Image
     if (settings::get('product_image_watermark')) {
@@ -96,6 +103,11 @@
     }
 
     return $listing_product->stitch('views/listing_product');
+  }
+
+  function draw_fancybox($selector='a.fancybox', $params=array()) {
+    trigger_error('draw_fancybox() is deprecated. Use instead draw_lightbox()', E_USER_DEPRECATED);
+    return functions::draw_lightbox($selector, $params);
   }
 
   function draw_lightbox($selector='*[data-toggle="lightbox"]', $params=array()) {
@@ -165,7 +177,7 @@
 
     if ($pages < 2) return false;
 
-    if (empty($_GET['page']) && $_GET['page'] < 2) $_GET['page'] = 1;
+    if (empty($_GET['page']) || $_GET['page'] < 2) $_GET['page'] = 1;
 
     if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
