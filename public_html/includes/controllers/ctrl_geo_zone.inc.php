@@ -63,6 +63,7 @@
       database::query(
         "update ". DB_TABLE_GEO_ZONES ."
         set
+          code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
