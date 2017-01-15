@@ -1,4 +1,9 @@
 <?php
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    document::$layout = 'ajax';
+    header('X-Robots-Tag: noindex');
+  }
+
   if (!empty($_GET['product_id'])) {
     $product = reference::product($_GET['product_id']);
   }
@@ -353,5 +358,9 @@
 
   document::$snippets['foot_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json) .'</script>';
 
-  echo $_page->stitch('pages/product');
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    echo $_page->stitch('pages/product.ajax');
+  } else {
+    echo $_page->stitch('pages/product');
+  }
 ?>
