@@ -3,31 +3,12 @@
   class ctrl_order {
     public $data;
 
-    public function __construct($action='new', $order_id='') {
+    public function __construct($order_id=null) {
 
-      switch ($action) {
-        case 'load':
-          if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
-          $this->load((int)$order_id);
-          break;
-
-        case 'import_session':
-          if (!isset(session::$data['order'])) session::$data['order'] = array();
-          $this->data = &session::$data['order'];
-          $this->import_session();
-          break;
-
-        case 'resume':
-          if (!isset(session::$data['order'])) session::$data['order'] = array();
-          $this->data = &session::$data['order'];
-          break;
-
-        case 'new':
-          $this->reset();
-          break;
-
-        default:
-          trigger_error('Unknown action for first argument', E_USER_ERROR);
+      if (!empty($order_id)) {
+        $this->load((int)$order_id);
+      } else {
+        $this->reset();
       }
     }
 
