@@ -27,7 +27,8 @@
         'sensor' => 'false',
       );
 
-      $response = functions::http_fetch('http://maps.googleapis.com/maps/api/geocode/xml?'. http_build_query($params));
+      $client = http_client();
+      $response = $client->call(document::link('http://maps.googleapis.com/maps/api/geocode/xml', ($params)));
 
       if (empty($response)) return;
       $response = simplexml_load_string($response);
