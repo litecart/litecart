@@ -27,6 +27,8 @@
       'add_product' => 'add_product.inc.php',
       'add_custom_item' => 'add_custom_item.inc.php',
       'get_address.json' => 'get_address.json.inc.php',
+      'printable_order_copy' => 'printable_order_copy.inc.php',
+      'printable_packing_slip' => 'printable_packing_slip.inc.php',
     ),
   );
 

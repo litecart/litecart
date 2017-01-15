@@ -1,7 +1,4 @@
 <?php
-  require_once '../../includes/app_header.inc.php';
-  user::require_login();
-
   document::$template = settings::get('store_template_catalog');
   document::$layout = 'printable';
 
