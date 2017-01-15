@@ -2,7 +2,6 @@
 
   class document {
 
-    private static $_cache = array();
     public static $template = '';
     public static $layout = 'default';
     public static $snippets = array();
@@ -43,10 +42,15 @@
 
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">' . PHP_EOL;
 
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
 
+    // CDN content
+      //self::$snippets['head_tags']['dns-prefetch-jsdelivr'] = '<link rel="dns-prefetch" href="//cdn.jsdelivr.net">';
+      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
+      //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/g/jquery@3.1.1"></script>';
+
+    // Local content
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-3.1.1.min.js"></script>';
-      //self::$snippets['foot_tags']['jquery'] = '<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -77,8 +81,8 @@
     // Prepare styles
       if (!empty(self::$snippets['style'])) {
         self::$snippets['style'] = '<style>' . PHP_EOL
-                                  . implode(PHP_EOL . PHP_EOL, self::$snippets['style']) . PHP_EOL
-                                  . '</style>' . PHP_EOL;
+                                 . implode(PHP_EOL . PHP_EOL, self::$snippets['style']) . PHP_EOL
+                                 . '</style>' . PHP_EOL;
       }
 
     // Prepare javascript
@@ -99,7 +103,7 @@
       if (!function_exists('replace_first_occurrence')) {
         function replace_first_occurrence($search, $replace, $subject) {
           if (strlen($search) > 4096) {
-            return preg_replace('#'. preg_quote(mb_substr($search, 0, 1024, language::$selected['charset']), '#') .'.*?'. preg_quote(mb_substr($search, -1024, null, language::$selected['charset']), '#') .'#s', $replace, $subject, 1);
+            return preg_replace('#'. preg_quote(mb_substr($search, 0, 2048), '#') .'.*?'. preg_quote(mb_substr($search, -2048), '#') .'#s', $replace, $subject, 1);
           } else {
             return preg_replace('#'. preg_quote($search, '#') .'#', $replace, $subject, 1);
           }
@@ -182,7 +186,7 @@
         $content = $matches[1];
 
         $javascript = array();
-        if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?[^>]*>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
+        if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
             if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
@@ -193,7 +197,9 @@
           if (!empty($javascript)) {
             $javascript = '<script>' . PHP_EOL
                         . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                        . '$(document).ready(function(){' . PHP_EOL
                         . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
+                        . '});' . PHP_EOL
                         . '/*]]>*/-->' . PHP_EOL
                         . '</script>' . PHP_EOL;
 

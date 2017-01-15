@@ -16,11 +16,11 @@
     // Is there incoming ajax data that needs decoding?
       if (!empty($_POST) && strtolower(language::$selected['charset']) != 'utf-8') {
 
-        $flag_unicoded = false;
-        if (strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset=utf-8') !== false) $flag_unicoded = true;
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' && strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset') === false) $flag_unicoded = true;
+        $unicoded_content = false;
+        if (strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset=utf-8') !== false) $unicoded_content = true;
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset') === false) $flag_unicoded = true;
 
-        if ($flag_unicoded) {
+        if ($unicoded_content) {
           function utf8_decode_recursive($input) {
             $return = array();
             foreach ($input as $key => $val) {

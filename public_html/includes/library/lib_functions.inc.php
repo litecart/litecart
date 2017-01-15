@@ -2,9 +2,6 @@
 
   class functions {
 
-    public static function construct() {
-    }
-
     public static function __callstatic($function, $arguments) {
       $file = 'func_' . substr($function, 0, (int)strpos($function, '_')) .'.inc.php';
       if (!function_exists($function)) {
