@@ -100,6 +100,9 @@
   define('DB_TABLE_ZONES',                             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'zones`');
   define('DB_TABLE_ZONES_TO_GEO_ZONES',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'zones_to_geo_zones`');
 
+// Database tables (Add-ons)
+  /* Your added tables here ... */
+
 ######################################################################
 ## Application #######################################################
 ######################################################################

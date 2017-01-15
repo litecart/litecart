@@ -73,7 +73,7 @@ ErrorDocument 500 "Internal Server Error"
 
 # GZip compress external content
 <IfModule mod_deflate.c>
-  <FilesMatch "\.(css|js)$">
+  <FilesMatch "\.(css|js|svg)$">
     SetOutputFilter DEFLATE
   </FilesMatch>
 </IfModule>

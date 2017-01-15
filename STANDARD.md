@@ -58,7 +58,7 @@
   
   Naming of CSS classes and IDs
   
-    <div id="box-hello" class="semi-transparent">
+    <div id="box-hello" class="box white">
   
   
 ## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
