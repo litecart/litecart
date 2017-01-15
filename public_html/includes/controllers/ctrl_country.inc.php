@@ -24,6 +24,9 @@
     }
 
     public function load($country_code) {
+
+      if (!preg_match('#[A-Z]{2}#', $country_code)) trigger_error('Invalid country code ('. $country_code .')', E_USER_ERROR);
+
       $country_query = database::query(
         "select * from ". DB_TABLE_COUNTRIES ."
         where iso_code_2 = '". database::input($country_code) ."'

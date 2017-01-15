@@ -24,6 +24,9 @@
     }
 
     public function load($language_code) {
+
+      if (!preg_match('#[a-z]{2}#', $language_code)) trigger_error('Invalid language code ('. $language_code .')', E_USER_ERROR);
+
       $language_query = database::query(
         "select * from ". DB_TABLE_LANGUAGES ."
         where code='". database::input($language_code) ."'

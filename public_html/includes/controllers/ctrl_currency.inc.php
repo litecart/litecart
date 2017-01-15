@@ -24,6 +24,9 @@
     }
 
     public function load($currency_code) {
+
+      if (!preg_match('#[A-Z]{3}#', $currency_code)) trigger_error('Invalid currency code ('. $currency_code .')', E_USER_ERROR);
+
       $currency_query = database::query(
         "select * from ". DB_TABLE_CURRENCIES ."
         where code='". database::input($currency_code) ."'
