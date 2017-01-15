@@ -5,7 +5,7 @@
    * @description Main Object used
    */
   abstract class VQMod {
-    public static $_vqversion = '2.5.2';        // Current version number
+  public static $_vqversion = '2.6.1';            // Current version number
 
     private static $_modFileList = array();     // Array of xml files
     private static $_mods = array();            // Array of modifications to apply
@@ -15,7 +15,6 @@
     private static $_folderChecks = false;      // Flag for already checked log/cache folders exist
     private static $_cachePathFull = '';        // Full cache folder path
     private static $_lastModifiedTime = 0;      // Integer representing the last time anything was modified
-    private static $_devMode = false;           // Flag for developer mode - disables caching while true
 
     public static $vqCachePath = 'vqmod/vqcache/';             // Relative path to cache file directory
     public static $modCache = 'vqmod/mods.cache';              // Relative path to serialized mods array cache file
@@ -84,8 +83,8 @@
         return $sourceFile;
       }
 
-      $stripped_filename = preg_replace('~^' . preg_quote(self::getCwd(), '~i') . '~', '', $sourcePath);
-      $cacheFile = self::$_cachePathFull . 'vq2-' . preg_replace('~[/\\\\]+~', '_', $stripped_filename);
+      $stripped_filename = preg_replace('#^' . preg_quote(self::getCwd(), '#') . '#i', '', $sourcePath);
+      $cacheFile = self::$_cachePathFull . 'vq2-' . preg_replace('#[/\\\\]+#', '_', $stripped_filename);
       $file_last_modified = filemtime($sourcePath);
 
       if (file_exists($cacheFile) && filemtime($cacheFile) >= self::$_lastModifiedTime && filemtime($cacheFile) >= $file_last_modified) {
@@ -191,7 +190,7 @@
       }
 
       $modCache = self::path(self::$modCache);
-      if (self::$_devMode || !file_exists($modCache)) {
+      if (isset($_GET['debug']) || !file_exists($modCache)) {
         self::$_lastModifiedTime = time();
       } elseif (file_exists($modCache) && filemtime($modCache) >= self::$_lastModifiedTime) {
         $mods = file_get_contents($modCache);
@@ -317,6 +316,7 @@
       if (!file_exists($file)) return false;
 
       $path = str_replace("\\", '/', realpath($file));
+      if (!$path) return false;
 
       if (is_dir($path)) {
         $path = rtrim($path, '/') . '/';
@@ -360,9 +360,9 @@
             if ($part === '*') {
               continue;
             } elseif (strpos($part, '*') !== false) {
-              $part = preg_replace_callback('~([^*]+)~', array('self', '_quotePath'), $part);
+              $part = preg_replace_callback('#([^*]+)#', array('self', '_quotePath'), $part);
               $part = str_replace('*', '[^/]*', $part);
-              $part = (bool) preg_match('~^' . $part . '$~', $checkParts[$k]);
+              $part = (bool) preg_match('#^' . $part . '$#', $checkParts[$k]);
 
               if ($part) {
                 continue;
@@ -392,7 +392,7 @@
      * @description apply's preg_quote to string from callback
      */
     private static function _quotePath($matches) {
-      return preg_quote($matches[1], '~');
+      return preg_quote($matches[1], '#');
     }
   }
 
@@ -472,6 +472,15 @@
 
         $tmp = preg_split('#\R#', $tmp);
         $lineMax = count($tmp) - 1;
+
+      // <add> tag attributes - Override <search> attributes if set
+      foreach (array_keys((array)$mod['search']) as $key) {
+        if ($key == "\x0VQNode\x0_content") { continue; }
+        if ($key == "trim") { continue; }
+        if (isset($mod['add']->$key) && $mod['add']->$key) {
+          $mod['search']->$key = $mod['add']->$key;
+        }
+      }
 
         switch($mod['search']->position) {
           case 'top':
@@ -685,8 +694,8 @@
    * @description Basic node object blueprint
    */
   class VQNode {
+  public $regex = 'false';
     public $trim = 'false';
-
     private $_content = '';
 
     /**
@@ -758,4 +767,9 @@
    * @description Object for the <add> xml tags
    */
   class VQAddNode extends VQNode {
+    public $position = false;
+    public $offset = false;
+    public $index = false;
+    public $regex = false;
+    public $trim = 'false';
   }
