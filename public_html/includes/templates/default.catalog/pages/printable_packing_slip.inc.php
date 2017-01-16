@@ -1,4 +1,4 @@
-<div id="page" style="width: 640px; margin: 0px auto;">
+<div id="page" style="max-width: 21cm; margin: 0px auto; font: 14px/20px Arial, Helvetica, sans-serif;">
 
   <header id="header" style="margin-bottom: 10px;">
     <table cellspacing="0" cellpadding="0" style="width: 100%;">
@@ -14,7 +14,7 @@
   </header>
 
   <main id="body">
-    <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc;">
+    <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc; font: inherit;">
       <tr>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></strong><br />
         <?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></td>
@@ -23,7 +23,7 @@
       </tr>
     </table>
 
-    <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
+    <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc; font: inherit;">
       <tr style="font-weight: bold; background-color: #f0f0f0;">
         <th style="padding: 10px 10px 10px 20px; border-bottom: 1px solid #ccc; text-align: center; width: 30px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
         <th style="padding: 10px; border-bottom: 1px solid #ccc; text-align: left;"><?php echo language::translate('title_item', 'Item'); ?></th>
@@ -55,8 +55,8 @@
     </table>
   </main>
 
-  <footer id="footer" style="width: 640px; margin: 0px auto;">
-    <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
+  <footer id="footer" style="position: absolute; left: 0; right: 0; bottom: 0; font-size: 12px;">
+    <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px; font: inherit;">
       <tr>
         <td style="vertical-align: top;">
           <strong><?php echo language::translate('title_address', 'Address'); ?></strong><br />

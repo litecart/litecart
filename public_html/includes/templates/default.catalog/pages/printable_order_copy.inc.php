@@ -1,4 +1,4 @@
-<div id="page" style="width: 640px; margin: 0px auto;">
+<div id="page" style="max-width: 21cm; height: 29.7cm; box-sizing: border-box; margin: 0px auto; font: 14px/20px Arial, Helvetica, sans-serif;">
 
   <header id="header" style="margin-bottom: 10px;">
     <table cellspacing="0" cellpadding="0" style="width: 100%;">
@@ -14,12 +14,12 @@
   </header>
 
   <main id="body">
-    <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc;">
+    <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc; font: inherit;">
       <tr>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></strong><br />
-        <?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></td>
+        <?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></td>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_address', 'Payment Address'); ?></strong><br />
-        <?php echo nl2br(functions::format_address($order['customer'])); ?></td>
+        <?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer'])); ?></td>
       </tr>
       <tr>
         <td colspan="2" style="padding-top: 20px;"></td>
@@ -49,7 +49,7 @@
       </tr>
     </table>
 
-    <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
+    <table id="items" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc; font: inherit;">
       <tr style="font-weight: bold; background-color: #f0f0f0;">
         <th style="padding: 10px 10px 10px 20px; border-bottom: 1px solid #ccc; text-align: center; width: 30px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
         <th style="padding: 10px; border-bottom: 1px solid #ccc; text-align: left;"><?php echo language::translate('title_item', 'Item'); ?></th>
@@ -80,29 +80,29 @@
         </td>
         <td><?php echo $item['sku']; ?></td>
       <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
-        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['price'] + $item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
-        <td style="padding: 10px 20px 10px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
+        <td style="padding: 10px 20px 10px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
       <?php } else { ?>
-        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['price'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['tax'], false, false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
-        <td style="padding: 10px 20px 10px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['quantity'] * $item['price'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
+        <td style="padding: 10px 20px 10px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($item['quantity'] * $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
       <?php } ?>
       </tr>
       <?php } ?>
     </table>
 
-    <table id="order-total" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding-right: 10px; border: none;">
+    <table id="order-total" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding-right: 10px; border: none; font: inherit;">
       <?php foreach ($order['order_total'] as $ot_row) { ?>
       <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
       <tr>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?></td>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } else { ?>
       <tr>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo $ot_row['title']; ?></td>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($ot_row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
       <?php } ?>
@@ -110,13 +110,13 @@
       <?php if (!empty($order['tax_total']) && $order['tax_total'] != 0) { ?>
       <tr>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?></td>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
 
       <tr>
         <td style="padding: 5px 10px; white-space: nowrap; text-align: right;"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?></strong></td>
-        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><strong><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></strong></td>
+        <td style="padding: 5px 10px; white-space: nowrap; text-align: right; width: 100px;"><strong><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
       </tr>
     </table>
 
@@ -129,7 +129,7 @@
     }
     if ($has_comments) {
 ?>
-  <table id="comments" cellspacing="0" cellpadding="0" style="width: 100%; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc;">
+  <table id="comments" cellspacing="0" cellpadding="0" style="width: 100%; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; font: inherit;">
     <tr>
       <td style="padding: 5px 20px;"><strong><?php echo language::translate('title_comments', 'Comments'); ?></strong></td>
     </tr>
@@ -150,27 +150,30 @@
 ?>
   </main>
 
-  <footer id="footer" style="width: 640px; margin: 0px auto;">
-    <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
+  <footer id="footer" style="position: absolute; left: 0; right: 0; bottom: 0; font-size: 12px;">
+    <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px; font: inherit;">
       <tr>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_address', 'Address'); ?></strong><br />
-          <?php echo nl2br(settings::get('store_postal_address')); ?>
+          <p><strong><?php echo language::translate('title_address', 'Address'); ?></strong><br />
+          <?php echo nl2br(settings::get('store_postal_address')); ?></p>
         </td>
         <?php if (settings::get('store_phone')) { ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
-            <?php echo settings::get('store_phone'); ?><br />
+          <p><strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
+            <?php echo settings::get('store_phone'); ?></p>
         </td>
         <?php } ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
-            <?php echo settings::get('store_email'); ?>
+          <p><strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
+            <?php echo settings::get('store_email'); ?></p>
+
+          <p><strong><?php echo language::translate('title_website', 'Website'); ?></strong><br />
+            <?php echo htmlspecialchars(document::ilink('')); ?></p>
         </td>
           <?php if (settings::get('store_tax_id')) { ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></strong><br />
-          <?php echo settings::get('store_tax_id'); ?>
+          <p><strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></strong><br />
+            <?php echo settings::get('store_tax_id'); ?></p>
         </td>
         <?php } ?>
       </tr>
