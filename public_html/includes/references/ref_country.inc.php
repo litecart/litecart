@@ -1,6 +1,6 @@
 <?php
 
-  class ref_category {
+  class ref_country {
 
     private $_country_code;
     private $_cache_id;
@@ -9,7 +9,9 @@
 
     function __construct($country_code) {
 
-      $this->_country_code = (int)$country_code;
+      if (!preg_match('#[A-Z]{2}#', $country_code)) trigger_error('Invalid country code ('. $country_code .')', E_USER_ERROR);
+
+      $this->_country_code = $country_code;
       $this->_cache_id = cache::cache_id('country_'.(int)$country_code);
 
       if ($cache = cache::get($this->_cache_id, 'file')) {
