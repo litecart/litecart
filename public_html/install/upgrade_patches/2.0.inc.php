@@ -29,6 +29,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery.animate_from_to-1.0.min.js',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery.cookie.min.js',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery.tabs.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'select2/',
     FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_account.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_search.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/',
