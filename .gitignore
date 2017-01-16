@@ -1,9 +1,12 @@
 #################
 # Project files #
 #################
+node_modules/
 public_html/includes/config.inc.php
 public_html/data/backups/*
 public_html/cache/*
+public_html/vqmod/vqcache/*
+public_html/vqmod/xml/*
 
 *.bak
 *.000
@@ -32,10 +35,3 @@ ehthumbs.db
 Thumbs.db
 error_log
 .ftpquota
-
-##############################
-# Exclude from ignore-filter #
-##############################
-!.htaccess
-!public_html/images/*.html
-!public_html/includes/templates/default*
