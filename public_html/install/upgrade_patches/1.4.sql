@@ -1,2 +1,0 @@
-INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('images', 'local', 'Product Images: Trim Whitespace', 'Trim whitespace in generated thumbnail images.', 'product_image_trim', '0', 'toggle("y/n")', '33', NOW(), NOW());
