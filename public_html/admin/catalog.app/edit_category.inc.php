@@ -24,6 +24,8 @@
     if (!empty($category->data['id']) && $category->data['parent_id'] == $category->data['id']) notices::add('errors', language::translate('error_cannot_mount_category_to_self', 'Cannot mount category to itself'));
 
     if (empty(notices::$data['errors'])) {
+      
+      if (!isset($_POST['dock'])) $_POST['dock'] = array();
 
       $fields = array(
         'status',
@@ -248,6 +250,6 @@ foreach (array_keys(language::$languages) as $language_code) {
 
 <?php if (!empty($category->data['id'])) { ?>
 <script>
-$('select[name="parent_id]" option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
+  $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
 </script>
 <?php } ?>
