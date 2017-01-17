@@ -99,7 +99,7 @@
     'head_title' => !empty($product->head_title[language::$selected['code']]) ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']],
     'meta_description' => !empty($product->meta_description[language::$selected['code']]) ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']],
     'keywords' => $product->keywords,
-    'attributes' => !empty($product->attributes[language::$selected['code']]) ? mb_split('/\R+/', $product->attributes[language::$selected['code']]) : array(),
+    'attributes' => !empty($product->attributes[language::$selected['code']]) ? mb_split('(\r|\n)+', $product->attributes[language::$selected['code']]) : array(),
     'image' => array(
       'original' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
       'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width, $height, settings::get('product_image_clipping')),
