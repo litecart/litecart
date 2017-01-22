@@ -247,6 +247,11 @@ INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decim
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
+INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
+(1, 'ot_subtotal', 'order_total', 1, 1, '{"status":"1","priority":"1"}', '', NOW(), NOW()),
+(2, 'ot_shipping_fee', 'order_total', 1, 20, '{"status":"1","free_shipping_amount":"0","priority":"20"}', '', NOW(), NOW()),
+(3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW());
+-- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
 (2, 'fa-clock-o', '#d7d96f', 1, 0, 2, NOW(), NOW()),

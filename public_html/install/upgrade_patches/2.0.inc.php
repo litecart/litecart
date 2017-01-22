@@ -1,17 +1,5 @@
 <?php
 
-// Copy new files
-  $copy_files = array(
-    'data/default/public_html/data/bad_urls.txt' => FS_DIR_HTTP_ROOT . WS_DIR_DATA,
-    'data/default/public_html/images/no_image.png' => FS_DIR_HTTP_ROOT . WS_DIR_IMAGES,
-  );
-
-  foreach ($copy_files as $source => $destination) {
-    if (!file_xcopy($source, $destination)) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
-
 // Delete old files
   $deleted_files = array(
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/printable_packing_slip.php',
@@ -19,6 +7,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'sales.widget/',
     FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'errors.log',
     FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'performance.log',
+    FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png',
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'icons/',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'fancybox/',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jqplot/',
@@ -33,6 +22,8 @@
     FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_search.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/',
     FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/',
+    FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'mod_order_action.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'mod_order_success.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/images/fancybox/',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/images/loader.png',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/styles/',
@@ -68,6 +59,18 @@
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
+      die('<span class="error">[Error]</span></p>');
+    }
+  }
+
+// Copy new files
+  $copy_files = array(
+    'data/default/public_html/data/bad_urls.txt' => FS_DIR_HTTP_ROOT . WS_DIR_DATA,
+    'data/default/public_html/images/no_image.png' => FS_DIR_HTTP_ROOT . WS_DIR_IMAGES,
+  );
+
+  foreach ($copy_files as $source => $destination) {
+    if (!file_xcopy($source, $destination)) {
       die('<span class="error">[Error]</span></p>');
     }
   }
