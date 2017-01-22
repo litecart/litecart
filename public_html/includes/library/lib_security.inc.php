@@ -2,9 +2,9 @@
 
   class security {
 
+    private static $_bad_urls;
     private static $_blacklist;
     private static $_whitelist;
-    private static $_bad_urls;
     private static $_ban_time = '12 hours';
     private static $_trigger;
 
@@ -13,9 +13,9 @@
       if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt', '');
       if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt', '');
 
+      self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt';
       self::$_blacklist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt';
       self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt';
-      self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt';
     }
 
     //public static function load_dependencies() {

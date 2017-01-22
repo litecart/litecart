@@ -1,7 +1,7 @@
 <main id="content">
   <!--snippet:notices-->
 
-  <?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process')); ?>
 
   <div id="box-checkout">
     <div class="cart wrapper">

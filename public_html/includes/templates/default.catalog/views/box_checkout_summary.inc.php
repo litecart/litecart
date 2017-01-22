@@ -15,8 +15,8 @@
 
         <?php if ($tax_total) { ?>
         <tr>
-          <td style="color: #999999;" colspan="5"><?php echo $incl_excl_tax; ?>:</td>
-          <td style="color: #999999;"><?php echo $tax_total; ?></td>
+          <td class="text-right" style="color: #999999;" colspan="5"><?php echo $incl_excl_tax; ?>:</td>
+          <td class="text-right" style="color: #999999;"><?php echo $tax_total; ?></td>
         </tr>
         <?php } ?>
       </tbody>

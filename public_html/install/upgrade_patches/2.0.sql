@@ -14,9 +14,11 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   KEY `status` (`status`)
 ) ENGINE=MyISAM;
 -- --------------------------------------------------------
-ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`;
--- --------------------------------------------------------
 ALTER TABLE `lc_categories_info` ADD UNIQUE INDEX `category_info` (`category_id`, `language_code`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_countries` CHANGE COLUMN `postcode_required` `postcode_required` TINYINT(1) NOT NULL COMMENT 'Deprecated, use instead postcode_format' AFTER `postcode_format`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_delivery_statuses_info` ADD UNIQUE INDEX `delivery_status_info` (`delivery_status_id`, `language_code`);
 -- --------------------------------------------------------

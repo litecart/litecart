@@ -669,7 +669,7 @@
 
       $printable_order_copy = new view();
       $printable_order_copy->snippets['order'] = $this->data;
-      $output = $printable_order_copy->stitch('views/printable_order_copy');
+      $output = $printable_order_copy->stitch('pages/printable_order_copy');
 
       language::set($session_language);
 
@@ -683,7 +683,7 @@
 
       $printable_packing_slip = new view();
       $printable_packing_slip->snippets['order'] = $this->data;
-      $output = $printable_packing_slip->stitch('views/printable_packing_slip');
+      $output = $printable_packing_slip->stitch('pages/printable_packing_slip');
 
       language::set($session_language);
 

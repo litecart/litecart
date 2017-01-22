@@ -1,5 +1,5 @@
 <?php
-  document::$template = settings::get('store_template_catalog');
+  ob_clean();
   document::$layout = 'printable';
 
   if (empty($_GET['order_id'])) die('Missing order ID');
@@ -8,5 +8,5 @@
 
   echo $order->draw_printable_packing_slip();
 
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  exit;
 ?>

@@ -1,7 +1,7 @@
-<div id="page" style="max-width: 21cm; height: 29.7cm; box-sizing: border-box; margin: 0px auto; font: 14px/20px Arial, Helvetica, sans-serif;">
+<div id="page" style="position: relative; max-width: 21cm; height: 29.7cm; box-sizing: border-box; margin: 0px auto; font: 14px/20px Arial, Helvetica, sans-serif;">
 
   <header id="header" style="margin-bottom: 10px;">
-    <table cellspacing="0" cellpadding="0" style="width: 100%;">
+    <table cellspacing="0" cellpadding="0" style="width: 100%; font: inherit;">
       <tr>
         <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 50px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
         <td style="text-align: right;">
