@@ -48,13 +48,14 @@
           $this->_data['zones'] = array();
 
           $query = database::query(
-            "select id from ". DB_TABLE_ZONES ."
+            "select * from ". DB_TABLE_ZONES ."
             where country_code = '". database::input($this->_country_code) ."'
             order by name;"
           );
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
+              if ($key == 'country_code') continue;
               $this->_data['zones'][$row['code']] = $row;
             }
           }
