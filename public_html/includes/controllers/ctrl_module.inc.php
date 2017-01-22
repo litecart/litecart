@@ -77,17 +77,17 @@
 
       if (empty($this->data['id'])) {
 
-        database::query(
-          "insert into ". DB_TABLE_MODULES ."
-          (module_id, type, date_created)
-          values ('". database::input($this->data['module_id']) ."', '". database::input($type) ."', '". date('Y-m-d H:i:s') ."');"
-        );
-
-        $this->data['id'] = database::insert_id();
-
         if (method_exists($this->_module, 'uninstall')) {
           $this->_module->uninstall();
         }
+
+        database::query(
+          "insert into ". DB_TABLE_MODULES ."
+          (module_id, type, date_created)
+          values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". date('Y-m-d H:i:s') ."');"
+        );
+
+        $this->data['id'] = database::insert_id();
 
         if (method_exists($this->_module, 'install')) {
           $this->_module->install();

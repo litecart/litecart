@@ -60,11 +60,11 @@
         $this->modules[$object->id] = $object;
       }
 
-    // Sort modules
+    // Sort modules by priority
       if (!empty($this->modules)) {
         uasort($this->modules, function($a, $b) {
           if ((int)$a->priority == (int)$b->priority) {
-            return ($a->name < $b->name) ? -1 : 1;
+            return ($a->name < $b->name) ? 1 : -1;
           } else if ((int)$a->priority > (int)$b->priority) {
             return 1;
           } else {

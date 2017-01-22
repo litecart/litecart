@@ -32,25 +32,14 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
-  $modules_query = database::query(
-    "select * from ". DB_TABLE_MODULES ."
-    where type = '". database::input($type) ."'
-    and module_id = '". database::input($module_id) ."'
-    limit 1;"
-  );
-  $module = database::fetch($modules_query);
+  $module = new ctrl_module($module_id);
+  $object = new $module_id();
 
-  $is_installed = $module ? true : false;
-
-  $object = new $module_id;
-
-  if (empty($_POST)) {
-    if ($is_installed) {
-      if ($settings = json_decode($module['settings'], true)) {
-        foreach ($settings as $key => $value) {
+  if (!$_POST) {
+    if (!empty($module->data)) {
+      foreach ($module->data['settings'] as $key => $value) {
           $_POST[$key] = $value;
         }
-      }
     } else {
       foreach ($object->settings() as $setting) {
         $_POST[$setting['key']] = $setting['default_value'];
@@ -60,16 +49,14 @@
 
   if (isset($_POST['save'])) {
 
-    $ctrl_module = new ctrl_module($module_id);
-
     $fields = array_column($object->settings(), 'key');
 
     foreach ($fields as $field) {
       if (in_array($field, array('id', 'date_updated', 'date_created'))) continue;
-      if (isset($_POST[$field])) $ctrl_module->data['settings'][$field] = $_POST[$field];
+      if (isset($_POST[$field])) $module->data['settings'][$field] = $_POST[$field];
     }
 
-    $ctrl_module->save();
+    $module->save();
 
     header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
     exit;
@@ -77,24 +64,22 @@
 
   if (isset($_POST['uninstall'])) {
 
-    $ctrl_module = new ctrl_module($module_id);
-
-    $ctrl_module->delete();
+    $module->delete();
 
     header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
     exit;
   }
 
-  breadcrumbs::add($is_installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
+  breadcrumbs::add(!empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
 
-  if (empty($_POST) && !$is_installed) {
+  if (empty($_POST) && !empty($module->data['id'])) {
     notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
   }
 
 ?>
-<h1 style="margin-top: 0;"><?php echo $app_icon; ?> <?php echo $is_installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo !empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
 
-<h2 style="margin-top: 0;"><?php echo $object->name; ?></h2>
+<h2><?php echo $object->name; ?></h2>
 
 <?php echo !empty($object->author) ? '<p style="font-style: italic;"><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>' : false; ?>
 
@@ -107,8 +92,8 @@
       <?php foreach ($object->settings() as $setting) { ?>
       <tr>
         <td class="col-md-6">
-          <label><?php echo $setting['title']; ?></label>
-          <?php echo !empty($setting['description']) ? '<p>'. $setting['description'] .'</p>' : ''; ?>
+          <strong><?php echo $setting['title']; ?></strong>
+          <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
         </td>
         <td class="col-md-6">
           <?php echo functions::form_draw_function($setting['function'], $setting['key'], true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
@@ -120,7 +105,7 @@
           <label><?php echo language::translate('title_translations', 'Translations'); ?></label>
         </td>
         <td>
-          <a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $object_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
+          <a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
         </td>
       </tr>
     </tbody>
@@ -134,7 +119,7 @@
 
 <?php echo functions::form_draw_form_end(); ?>
 
-<?php if (!empty($module['last_log'])) { ?>
+<?php if (!empty($module->data['last_log'])) { ?>
 <div class="form-group">
   <label><?php echo language::translate('title_last_log', 'Last Log'); ?></label>
   <pre><?php echo $module['last_log']; ?></pre>
