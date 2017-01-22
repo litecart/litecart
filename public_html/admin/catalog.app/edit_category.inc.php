@@ -24,6 +24,8 @@
 
     if (empty(notices::$data['errors'])) {
 
+      if (!isset($_POST['dock'])) $_POST['dock'] = array();
+
       $fields = array(
         'status',
         'parent_id',
@@ -231,6 +233,6 @@
 
 <?php if (!empty($category->data['id'])) { ?>
 <script>
-  $('select[name="parent_id]" option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
+  $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
 </script>
 <?php } ?>
