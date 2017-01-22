@@ -1,7 +1,7 @@
 <?php
 
 // Rename module settings keys
-  $query = $database->query(
+  $query = database::query(
     "select * from ". DB_TABLE_SETTINGS ."
     where (
       `key` like 'customer_module_%'
@@ -13,12 +13,12 @@
       or `key` like 'order_total_module_%'
     );"
   );
-  while($row = $database->fetch($query)) {
+  while($row = database::fetch($query)) {
     $new_key = preg_replace('#^((customer|jobs|shipping|payment|order_action|order_success|order_total)_module_)#', '', $row['key']);
-    $database->query(
+    database::query(
       "update  ". DB_TABLE_SETTINGS ."
-      set `key` = '". $database->input($new_key) ."'
-      where `key` = '". $database->input($row['key']) ."'
+      set `key` = '". database::input($new_key) ."'
+      where `key` = '". database::input($row['key']) ."'
       limit 1;"
     );
   }

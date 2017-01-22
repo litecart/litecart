@@ -1,23 +1,23 @@
 <?php
 
-  $products_query =  $database->query(
+  $products_query =  database::query(
     "select id, categories from ". DB_TABLE_PRODUCTS .";"
   );
 
-  while ($product = $database->fetch($products_query)) {
+  while ($product = database::fetch($products_query)) {
     $categories = explode( ',', $product['categories']);
 
     $is_first = true;
     foreach ($categories as $category_id) {
       if ($is_first) {
-        $database->query(
+        database::query(
           "update ". DB_TABLE_PRODUCTS ." set
           default_category_id = ". (int)$category_id . "
           where id = '". (int)$product['id'] ."'
           limit 1;"
         );
       }
-      $database->query(
+      database::query(
         "insert into `". DB_TABLE_PREFIX ."products_to_categories`
         (product_id, category_id)
         values ('". (int)$product['id'] ."', '". (int)$category_id ."');"
@@ -26,7 +26,7 @@
     }
   }
 
-  $database->query(
+  database::query(
     "alter table ". DB_TABLE_PRODUCTS ." drop `categories`;"
   );
 
