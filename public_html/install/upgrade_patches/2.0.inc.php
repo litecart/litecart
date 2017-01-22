@@ -20,7 +20,6 @@
     FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'errors.log',
     FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'performance.log',
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'icons/',
-    FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'fancybox/',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jqplot/',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'responsiveslider/',
@@ -93,13 +92,12 @@
                  . "  define('DB_TABLE_MODULES',                           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'modules`');",
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTT_HOME . '.htaccess',
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
       'search'  => '<FilesMatch "\.(css|js)$">',
       'replace' => '<FilesMatch "\.(css|js|svg)$">',
     ),
-
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTT_HOME . '.htaccess',
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
       'search'  => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">',
       'replace' => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
     )

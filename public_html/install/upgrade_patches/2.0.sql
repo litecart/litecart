@@ -44,8 +44,6 @@ ALTER TABLE `lc_products_options_stock` ADD UNIQUE INDEX `product_option_stock` 
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_prices` ADD UNIQUE INDEX `product_price` (`product_id`);
 -- --------------------------------------------------------
-ALTER TABLE `lc_products_stock` ADD UNIQUE INDEX `stock_item` (`product_id`, `warehouse_id`, `option_combination`);
--- --------------------------------------------------------
 ALTER TABLE `lc_products_to_categories` ADD UNIQUE INDEX `mapping` (`product_id`, `category_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_product_groups_info` ADD UNIQUE INDEX `product_group_info` (`product_group_id`, `language_code`);

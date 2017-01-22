@@ -67,4 +67,4 @@ span.warning {
 <body>
 <div id="body-wrapper">
   <div id="body">
-    <img src="data/default/public_html/images/logotype.svg" alt="" style="float: right; height: 60px" />
+    <img src="data/default/public_html/images/logotype.png" alt="" style="float: right; height: 60px" />
