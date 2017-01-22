@@ -60,8 +60,14 @@
 
           $class_name = 'ref_'.$resource;
 
-          $reflector = new ReflectionClass($class_name);
-          self::$_cache[$resource][$checksum] = $reflector->newInstanceArgs($arguments);
+          //self::$_cache[$resource][$checksum] = new $class_name(...$arguments); // As of PHP 5.6
+          self::$_cache[$resource][$checksum] = new $class_name(
+            isset($arguments[0]) ? $arguments[0] : null,
+            isset($arguments[1]) ? $arguments[1] : null,
+            isset($arguments[2]) ? $arguments[2] : null
+          );
+
+          call_user_func_array(array(self::$_cache[$resource][$checksum], '__construct'), $arguments);
 
           return self::$_cache[$resource][$checksum];
 
