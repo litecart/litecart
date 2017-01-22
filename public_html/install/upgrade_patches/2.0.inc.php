@@ -1,17 +1,5 @@
 <?php
 
-// Copy new files
-  $copy_files = array(
-    'data/default/public_html/data/bad_urls.txt' => FS_DIR_HTTP_ROOT . WS_DIR_DATA,
-    'data/default/public_html/images/no_image.png' => FS_DIR_HTTP_ROOT . WS_DIR_IMAGES,
-  );
-
-  foreach ($copy_files as $source => $destination) {
-    if (!file_xcopy($source, $destination)) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
-
 // Delete old files
   $deleted_files = array(
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/printable_packing_slip.php',
@@ -19,6 +7,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'sales.widget/',
     FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'errors.log',
     FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'performance.log',
+    FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png',
     FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'icons/',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'fancybox/',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jqplot/',
@@ -33,6 +22,8 @@
     FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_search.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/',
     FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/',
+    FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'mod_order_action.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'mod_order_success.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/images/fancybox/',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/images/loader.png',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/styles/',
@@ -68,6 +59,18 @@
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
+      die('<span class="error">[Error]</span></p>');
+    }
+  }
+
+// Copy new files
+  $copy_files = array(
+    'data/default/public_html/data/bad_urls.txt' => FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt',
+    'data/default/public_html/images/no_image.png' => FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png',
+  );
+
+  foreach ($copy_files as $source => $destination) {
+    if (!file_xcopy($source, $destination)) {
       die('<span class="error">[Error]</span></p>');
     }
   }
@@ -135,14 +138,13 @@
     where `key` = 'jobs_modules';"
   );
 
-  $settings_query = database::query(
+  $installed_modules_query = database::query(
     "select * from ". DB_TABLE_SETTINGS ."
-    where `key` in ('job_modules', 'customer_modules', 'order_modules', 'shipping_modules', 'payment_modules', 'order_total_modules');"
+    where `key` in ('job_modules', 'customer_modules', 'order_modules', 'order_total_modules', 'shipping_modules', 'payment_modules');"
   );
 
-  while($module_type = database::fetch($settings_query)) {
-
-    foreach (explode(';', $module_type['value']) as $module) {
+  while($installed_modules = database::fetch($installed_modules_query)) {
+    foreach (explode(';', $installed_modules['value']) as $module) {
 
       $module_query = database::query(
         "select * from ". DB_TABLE_SETTINGS ."
@@ -150,21 +152,33 @@
         limit 1;"
       );
 
-      if (!database::num_rows($module_query)) continue;
-
       $module = database::fetch($module_query);
 
-      $type = preg_replace('#^.*(_modules)$#', '', $module_type['key']);
-      $settings = unserialize($module['value']);
-      $status = in_array(strtolower($settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? 1 : 0;
-      $priority = (int)$settings['priority'];
+      if (empty($module)) continue;
 
-      mb_convert_variables('UTF-8', null, $settings);
+      $type = preg_replace('#^(.*)_modules$#', '$1', $installed_modules['key']);
+      $module['settings'] = unserialize($module['value']);
+
+      if (isset($module['settings']['status'])) {
+        $status = in_array(strtolower($module['settings']['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? 1 : 0;
+      } else {
+        $status = 1;
+      }
+
+      if (isset($module['settings']['priority'])) {
+        $priority = (int)$module['settings']['priority'];
+      } else if (isset($module['settings']['sort_order'])) {
+        $priority = (int)$module['settings']['sort_order'];
+      } else {
+        $priority = 0;
+      }
+
+      mb_convert_variables('UTF-8', null, $module['settings']);
 
       database::query(
         "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "modules`
         (module_id, type, status, settings, priority, date_updated, date_created)
-        values ('". database::input($module['key']) ."', '". database::input($type) ."', ". (int)$status .", '". database::input(json_encode($settings)) ."', ". (int)$priority .", '". $module['date_updated'] ."', '". $module['date_created'] ."');"
+        values ('". database::input($module['key']) ."', '". database::input($type) ."', ". (int)$status .", '". database::input(json_encode($module['settings'])) ."', ". (int)$priority .", '". $module['date_updated'] ."', '". $module['date_created'] ."');"
       );
 
       database::query(
@@ -173,12 +187,6 @@
         limit 1;"
       );
     }
-
-    database::query(
-      "delete from ". DB_TABLE_SETTINGS ."
-      where `key` = '". database::input($module_type['key']) ."'
-      limit 1;"
-    );
   }
 
 ?>

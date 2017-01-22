@@ -73,6 +73,7 @@
   define('DB_DATABASE_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
 
+  define('DB_CONNECTION_CHARSET', 'utf8');
   require_once('../includes/library/lib_database.inc.php');
 
   echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
