@@ -8,9 +8,9 @@
 
     public function process($order) {
 
-      if (empty($this->modules)) return;
-
       $output = array();
+
+      if (empty($this->modules)) return $output;
 
       foreach ($this->modules as $module_id => $module) {
         if ($rows = $module->process($order)) {
