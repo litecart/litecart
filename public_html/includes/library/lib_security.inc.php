@@ -13,7 +13,7 @@
       if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt', '');
       if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt', '');
 
-      self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt';
+      self::$_bad_urls = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt';
       self::$_blacklist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt';
       self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt';
     }
