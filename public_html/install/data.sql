@@ -238,7 +238,12 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (236, 1, 'Serbia', '', '381', 'RS', 'SRB', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'sr', 'RSD', '381', NOW(), NOW()),
 (237, 1, 'Democratic Republic of Congo', '', '180', 'CD', 'COD', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'fr', 'XAF', '243', NOW(), NOW()),
 (238, 1, 'Zambia', '', '894', 'ZM', 'ZMB', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '\\d{5}', 0, 'en', 'ZMW', '260', NOW(), NOW()),
-(239, 1, 'Zimbabwe', '', '716', 'ZW', 'ZWE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'ZWD', '263', NOW(), NOW());
+(239, 1, 'Zimbabwe', '', '716', 'ZW', 'ZWE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'ZWD', '263', NOW(), NOW()),
+(240, 1, 'Guernsey', '', '831', 'GG', 'GGY', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
+(241, 1, 'Montenegro', '', '499', 'ME', 'MNE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '382', NOW(), NOW()),
+(242, 1, 'Jersey', '', '832', 'JE', 'JEY', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
+(243, 1, 'Isle of Man', '', '833', 'IM', 'IMN', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
+(244, 1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'EUR', '358', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
@@ -317,8 +322,10 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Latest Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_latest_products_num_items', '10', 'int()', 17, NOW(), NOW()),
 ('listings', 'local', 'Most Popular Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_most_popular_products_num_items', '10', 'int()', 18, NOW(), NOW()),
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_campaign_products_num_items', '5', 'int()', 19, NOW(), NOW()),
+('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'int()', 20, NOW(), NOW()),
 ('listings', 'local', 'Auto Decimals', 'Show only decimals if there are any to display.', 'auto_decimals', '1', 'toggle("e/d")', 20, NOW(), NOW()),
 ('images', 'local', 'Category Images: Aspect Ratio', 'The aspect ratio of the category thumbnails', 'category_image_ratio', '16:9', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '10', NOW(), NOW()),
+('images', 'local', 'Category Images: Clipping Method', 'The clipping method used for scaled category thumbnails.', 'category_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '11', NOW(), NOW()),
 ('images', 'local', 'Product Images: Aspect Ratio', 'The aspect ratio of the product thumbnails', 'product_image_ratio', '1:1', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '30', NOW(), NOW()),
 ('images', 'local', 'Product Images: Clipping Method', 'The clipping method used for scaled product thumbnails.', 'product_image_clipping', 'FIT_USE_WHITESPACING', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '31', NOW(), NOW()),
 ('images', 'local', 'Product Images: Trim Whitespace', 'Trim whitespace in generated thumbnail images.', 'product_image_trim', '0', 'toggle("y/n")', '33', NOW(), NOW()),
