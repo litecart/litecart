@@ -679,7 +679,8 @@ CREATE TABLE `lc_suppliers` (
   `link` varchar(256) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_tax_classes` (
