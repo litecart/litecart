@@ -2,19 +2,11 @@
 
 ----------------------------------------------------------------------
 
-LiteCart is an e-commerce platform for online merchants developed in PHP, HTML 5, and CSS 3.
+LiteCart is a lightweight e-commerce platform for online merchants. Developed in PHP, HTML 5, and CSS 3.
 
 LiteCart is a registered trademark, property of founder T. Almroth - [TiM International](http://www.tim-international.net).
 
-# Installation Instructions
-
-  1. Copy the contents of the folder public_html/ to your web directory.
-
-  2. Point your web browser to the subfolder install/:
-
-      E.g. http://www.mysite.com/path/to/install
-
-  Good luck!
+### [Installation Instructions] https://wiki.litecart.net/doku.php?id=how_to_install
 
 ### [Home Page](http://www.litecart.net)
 
