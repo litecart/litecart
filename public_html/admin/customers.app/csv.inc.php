@@ -34,6 +34,15 @@
             limit 1;"
           );
           $customer = database::fetch($customers_query);
+
+        } else if (!empty($row['code'])) {
+          $customers_query = database::query(
+            "select id from ". DB_TABLE_CUSTOMERS ."
+            where code = '". database::input($row['code']) ."'
+            limit 1;"
+          );
+          $customer = database::fetch($customers_query);
+
         } else if (!empty($row['email'])) {
           $customers_query = database::query(
             "select id from ". DB_TABLE_CUSTOMERS ."
@@ -50,6 +59,7 @@
         }
 
         $fields = array(
+          'code',
           'email',
           'tax_id',
           'company',
@@ -62,7 +72,8 @@
           'country_code',
           'zone_code',
           'phone',
-          'newsletter'
+          'newsletter',
+          'notes',
         );
 
         foreach ($fields as $field) {
@@ -94,6 +105,7 @@
     while ($customer = database::fetch($customers_query)) {
       $csv[] = array(
         'id' => $customer['id'],
+        'code' => $customer['code'],
         'email' => $customer['email'],
         'tax_id' => $customer['tax_id'],
         'company' => $customer['company'],
@@ -108,6 +120,7 @@
         'phone' => $customer['phone'],
         'mobile' => $customer['mobile'],
         'newsletter' => $customer['newsletter'],
+        'notes' => $customer['notes'],
       );
     }
 
