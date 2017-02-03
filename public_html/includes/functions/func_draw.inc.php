@@ -63,7 +63,7 @@
     $listing_product = new view();
 
     $sticker = '';
-    if ($product['campaign_price']) {
+    if ((float)$product['campaign_price']) {
       $sticker = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
     } else if ($product['date_created'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
       $sticker = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
@@ -91,7 +91,7 @@
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
       'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
-      'campaign_price' => $product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
+      'campaign_price' => (float)$product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
     );
 
     if (!empty($product['manufacturer_id'])) {

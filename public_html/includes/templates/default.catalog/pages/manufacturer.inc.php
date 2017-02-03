@@ -7,7 +7,7 @@
   <!--snippet:breadcrumbs-->
 
   <div id="box-manufacturer" class="box">
-    <div class="btn-group pull-right">
+    <div class="btn-group pull-right hidden-xs">
 <?php
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {

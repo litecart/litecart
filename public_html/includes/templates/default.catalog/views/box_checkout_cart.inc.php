@@ -20,7 +20,8 @@
           <td><a href="<?php echo htmlspecialchars($item['link']); ?>" class="image-wrapper shadow"><img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" height="48" /></a></td>
           <td>
             <div><strong><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
-            <?php if (!empty($item['options'])) echo '<p>'. implode('<br />', $item['options']) .'</p>'; ?>
+            <?php if (!empty($item['options'])) echo '<div class="options">'. implode('<br />', $item['options']) .'</div>'; ?>
+            <?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
           </td>
           <td><?php echo currency::format($item['display_price']); ?></td>
           <td>

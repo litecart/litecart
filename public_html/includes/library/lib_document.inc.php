@@ -114,16 +114,12 @@
 
       if (!function_exists('replace_first_occurrence')) {
         function replace_first_occurrence($search, $replace, $subject) {
-          if (strlen($search) > 4096) {
-            return preg_replace('#'. preg_quote(mb_substr($search, 0, 2048), '#') .'.*?'. preg_quote(mb_substr($search, -2048), '#') .'#s', $replace, $subject, 1);
-          } else {
-            return preg_replace('#'. preg_quote($search, '#') .'#', $replace, $subject, 1);
-          }
+          return implode($replace, explode($search, $subject, 2));
         }
       }
 
     // Extract and group in content stylesheets
-      if (preg_match('#^.*<html(?:[^>]+)?>(.*)</html>.*$#is', $GLOBALS['output'], $matches)) {
+      if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
         $stylesheets = array();
@@ -145,7 +141,7 @@
       }
 
     // Extract and group in content styling
-      if (preg_match('#^.*<html(?:[^>]+)?>(.*)</html>.*$#is', $GLOBALS['output'], $matches)) {
+      if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
         $styles = array();
@@ -171,7 +167,7 @@
       }
 
     // Extract and group javascript resources
-      if (preg_match('#^.*<body(?:[^>]+)?>(.*)</body>.*$#is', $GLOBALS['output'], $matches)) {
+      if (preg_match('#<body(?:[^>]+)?>(.*)</body>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
         $js_resources = array();
@@ -194,7 +190,7 @@
       }
 
     // Extract and group inline javascript
-      if (preg_match('#^.*<body(?:[^>]+)?>(.*)</body>.*$#is', $GLOBALS['output'], $matches)) {
+      if (preg_match('#<body(?:[^>]+)?>(.*)</body>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
         $javascript = array();

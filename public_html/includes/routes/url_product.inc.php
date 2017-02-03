@@ -15,7 +15,7 @@
 
   	function rewrite($parsed_link, $language_code) {
 
-      if (!isset($parsed_link['query']['product_id'])) return false;
+      if (!isset($parsed_link['query']['product_id'])) return;
 
       $product = reference::product($parsed_link['query']['product_id'], $language_code);
 

@@ -29,6 +29,7 @@
       'tax_class_id' => $item['tax_class_id'],
       'quantity' => (float)$item['quantity'],
       'quantity_unit' => $item['quantity_unit'],
+      'error' => $item['error'],
     );
     if (!empty($item['options'])) {
       foreach ($item['options'] as $k => $v) {

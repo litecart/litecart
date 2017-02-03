@@ -8,7 +8,7 @@
 
   <div class="row">
     <div class="col-md-halfs">
-      <div id="box-login" class="box">
+      <div class="box-login" class="box">
 
         <h2 class="title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 

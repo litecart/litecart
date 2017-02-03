@@ -39,7 +39,7 @@
           <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php } else { ?>
           <p class="terms-of-purchase text-center" style="font-size: 1.25em; margin-top: 0.5em;">
-            <?php echo language::translate('checkout_summary:terms_of_purchase', 'By proceeding you hereby confirm and accept the Conditions and Terms of Purchase.'); ?>
+            <?php echo language::translate('checkout_summary:terms_of_purchase', 'By proceeding you hereby confirm and accept the Terms and Conditions of Purchase.'); ?>
           </p>
         <?php } ?>
       </div>

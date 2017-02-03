@@ -1,14 +1,14 @@
 <style>
-#box-create-account .form-group.optional {
-  opacity: 0.25;
-}
-#box-create-account .form-group.optional:hover {
-  opacity: 1;
+.form-group:hover, .form-group:focus {
+  opacity: 1 !important;
 }
 </style>
 
 <aside id="sidebar">
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
+  <div id="column-left">
+    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_account_links.inc.php'); ?>
+  </div>
 </aside>
 
 <main id="content">
@@ -22,7 +22,7 @@
     <?php echo functions::form_draw_form_begin('customer_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
-        <div class="form-group optional col-md-halfs">
+        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
           <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
@@ -46,24 +46,24 @@
       </div>
 
       <div class="row">
-        <div class="form-group optional col-md-halfs">
+        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
           <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?>
         </div>
 
-        <div class="form-group optional col-md-halfs">
+        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
           <?php echo functions::form_draw_text_field('address2', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group optional col-md-halfs">
+        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
           <?php echo functions::form_draw_text_field('postcode', true); ?>
         </div>
 
-        <div class="form-group optional col-md-halfs">
+        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_city', 'City'); ?></label>
           <?php echo functions::form_draw_text_field('city', true); ?>
         </div>
@@ -87,9 +87,9 @@
           <?php echo functions::form_draw_email_field('email', true, 'required="required"'); ?>
         </div>
 
-        <div class="form-group optional col-md-halfs">
+        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-          <?php echo functions::form_draw_phone_field('phone', true, 'required="required"'); ?>
+          <?php echo functions::form_draw_phone_field('phone', true); ?>
         </div>
       </div>
 
@@ -106,7 +106,7 @@
       </div>
 
       <div class="row">
-        <div class="form-group optional col-md-halfs">
+        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
           <div class="checkbox">
             <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
@@ -116,7 +116,7 @@
         <?php if (settings::get('captcha_enabled')) { ?>
         <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-          <?php echo functions::captcha_generate(100, 40, 4, 'create_account', 'numbers', 'align="absbottom"') .' '. functions::form_draw_text_field('captcha', '', 'style="width: 90px; height: 30px; font-size: 24px; text-align: center;"'); ?>
+          <?php echo functions::form_draw_captcha_field('captcha', 'create_account', 'required="required"'); ?>
         </div>
         <?php } ?>
       </div>
@@ -132,8 +132,10 @@
 </main>
 
 <script>
-  $('#box-create-account .view-all').click(function() {
-    $('#box-create-account .form-group.optional').css('opacity', '1');
+  $('#box-create-account :input:not([type="hidden"]):not([required])').closest('.form-group').css('opacity', '0.25');
+  $('#box-create-account .view-all').click(function(e) {
+    e.preventDefault();
+    $('#box-create-account .form-group').css('opacity', '');
   });
 
   $('#box-create-account').on('input propertychange', ':input', function() {

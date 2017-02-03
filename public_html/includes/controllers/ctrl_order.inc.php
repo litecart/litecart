@@ -576,7 +576,6 @@
           } else {
             list($module_id, $option_id) = explode(':', $GLOBALS['shipping']->data['selected']['id']);
             if (empty($GLOBALS['shipping']->data['options'][$module_id]['options'][$option_id])) {
-              var_dump($options);
               return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
             }
           }

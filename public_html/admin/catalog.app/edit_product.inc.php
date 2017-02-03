@@ -299,7 +299,7 @@
               <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
               <div class="input-group">
                 <?php echo functions::form_draw_decimal_field('quantity', true, 4, null, null, 'style="text-align: center;"'); ?>
-                <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false, 'style="width: auto;"'); ?>
+                <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false, 'style="width: 25%;"'); ?>
               </div>
             </div>
 
@@ -307,16 +307,16 @@
               <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
               <div class="input-group" style="width: 100%;">
                 <?php echo functions::form_draw_decimal_field('weight', true, 3, 0, null, 'style="text-align: center;"'); ?>
-                <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?>
+                <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: 25%;"'); ?>
               </div>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_width_height_length', 'Width x Height x Length'); ?></label>
               <div class="input-group">
-                <?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'text-align: center;"'); ?>
-                <?php echo functions::form_draw_decimal_field('dim_y', true, 2, 0, null, 'text-align: center;"'); ?>
-                <?php echo functions::form_draw_decimal_field('dim_z', true, 2, 0, null, 'text-align: center;"'); ?>
+                <?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'style="text-align: center;"'); ?>
+                <?php echo functions::form_draw_decimal_field('dim_y', true, 2, 0, null, 'style="text-align: center;"'); ?>
+                <?php echo functions::form_draw_decimal_field('dim_z', true, 2, 0, null, 'style="text-align: center;"'); ?>
                 <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
               </div>
             </div>
@@ -393,14 +393,7 @@
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '</label>';
-  echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true);
-  $use_br = true;
-}
-?>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
           </div>
         </div>
 
@@ -736,9 +729,10 @@ foreach (currency::$currencies as $currency) {
     e.preventDefault();
     var output = '<tr>'
                + '  <td><div class="thumbnail"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>'
-               + '  <td><?php echo functions::form_draw_file_field('new_images[]'); ?></td>'
-               + '    <div class="actions">'
-               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '  <td>'
+               + '    <div class="input-group">'
+               + '      <?php echo functions::form_draw_file_field('new_images[]'); ?>'
+               + '      <a class="input-group-btn btn btn-default remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
                + '    </div>'
                + '  </td>'
                + '</tr>';
@@ -816,7 +810,7 @@ foreach (currency::$currencies as $currency) {
     }
   }
 
-  $('select[name="tax_class_id"], input[name^="prices"]').bind('change keyup', function() {
+  $('select[name="tax_class_id"], input[name^="prices"]').bind('input propertyChange', function() {
 
     var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
     var price = Number($(this).val());
@@ -862,7 +856,7 @@ foreach (currency::$currencies as $currency) {
     });
   });
 
-  $('input[name^="gross_prices"]').bind('change keyup', function() {
+  $('input[name^="gross_prices"]').bind('input propertyChange', function() {
 
     var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
     var price = Number($(this).val()) / (1+(get_tax_rate()/100));
@@ -911,8 +905,8 @@ foreach (currency::$currencies as $currency) {
   });
 
 // Initiate Prices
-  $('input[name^="prices"]').trigger('change');
-  $('input[name^="gross_prices"]').trigger('change');
+  $('input[name^="prices"]').trigger('propertyChange');
+  $('input[name^="gross_prices"]').trigger('propertyChange');
 
   $('#price-incl-tax-tooltip').click(function(e) {
     e.preventDefault;

@@ -212,7 +212,7 @@
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, ''); ?>
+          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
         </div>
 
         <div class="form-group col-md-6">
@@ -233,6 +233,6 @@
 
 <?php if (!empty($category->data['id'])) { ?>
 <script>
-  $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
+  $('select[name="parent_id]" option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
 </script>
 <?php } ?>
