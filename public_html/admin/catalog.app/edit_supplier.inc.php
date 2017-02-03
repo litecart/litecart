@@ -23,6 +23,7 @@
       if (!isset($_POST['status'])) $_POST['status'] = '0';
 
       $fields = array(
+        'code',
         'name',
         'description',
         'email',
@@ -60,6 +61,12 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label>
+        <?php echo language::translate('title_code', 'Code'); ?></label>
+        <?php echo functions::form_draw_text_field('code', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label>
         <?php echo language::translate('title_name', 'Name'); ?></label>
         <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
@@ -68,7 +75,7 @@
   <div class="row">
     <div class="form-group col-md">
       <label>
-        <?php echo language::translate('title_description', 'description'); ?></label>
+        <?php echo language::translate('title_description', 'Description'); ?></label>
         <?php echo functions::form_draw_textarea('description', true); ?>
     </div>
   </div>

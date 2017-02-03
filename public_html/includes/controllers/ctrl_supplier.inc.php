@@ -46,6 +46,7 @@
 
       database::query(
         "update ". DB_TABLE_SUPPLIERS ." set
+        code = '". database::input($this->data['code']) ."',
         name = '". database::input($this->data['name']) ."',
         description = '". database::input($this->data['description'], true) ."',
         email = '". database::input($this->data['email']) ."',

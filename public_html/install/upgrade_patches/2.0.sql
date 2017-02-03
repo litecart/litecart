@@ -70,3 +70,5 @@ INSERT INTO `lc_countries` (`status`, `name`, `domestic_name`, `iso_code_1`, `is
 (1, 'Jersey', '', '832', 'JE', 'JEY', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
 (1, 'Isle of Man', '', '833', 'IM', 'IMN', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
 (1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'EUR', '358', NOW(), NOW());
+-- --------------------------------------------------------
+ALTER TABLE `lc_suppliers` ADD COLUMN `code` VARCHAR(64) NOT NULL AFTER `id`,	ADD INDEX `code` (`code`);

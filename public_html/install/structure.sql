@@ -671,6 +671,7 @@ CREATE TABLE `lc_sold_out_statuses_info` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_suppliers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` VARCHAR(64) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` text NOT NULL,
   `email` varchar(128) NOT NULL,
