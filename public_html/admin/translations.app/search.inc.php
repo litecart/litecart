@@ -74,15 +74,22 @@ ul.filter li {
 }
 </style>
 
+<?php if (count($selected_languages) > 1) { ?>
+<div class="pull-right">
+  <button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button>
+</div>
+<?php } ?>
+
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
+
 <?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
 <?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
-<ul class="filter list-inline pull-right">
+<ul class="filter list-inline pull-right" style="margin: 0 auto;">
   <li>
-    <?php echo language::translate('title_find', 'Find'); ?>
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword') .'"'); ?>
   </li>
 
-  <li><?php echo language::translate('text_in', 'in'); ?>
+  <li>
 <?php
   $pages_query = database::query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
   $pages = array();
@@ -127,15 +134,9 @@ ul.filter li {
 </ul>
 <?php echo functions::form_draw_form_end(); ?>
 
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
-
-<?php if (count($selected_languages) > 1) { ?>
-<p><button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button></p>
-<?php } ?>
-
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped">
     <thead>
       <tr>
         <th><?php echo language::translate('title_code', 'Code');?></th>
@@ -170,7 +171,7 @@ ul.filter li {
           <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
         </td>
         <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
-      <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+        <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
       </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -195,87 +196,86 @@ ul.filter li {
 <?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <?php if (count($selected_languages) > 1) { ?>
-
-<div class="modal fade" id="translator-tool" style="max-width: 980px;">
+<div id="translator-tool" style="display: none;">
   <h2><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></h2>
 
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
 <?php
   $options = array(array('-- '. language::translate('title_select', 'Select') .' --'));
   foreach ($selected_languages as $language) {
     $options[] = array($language['name'], $language['code']);
   }
 ?>
-          <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>
-        </div>
-        <div class="form-group">
-          <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
-          <?php echo functions::form_draw_select_field('to_language_code', $options); ?>
-        </div>
-        <div class="form-group">
-          <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
-          <textarea class="form-control" name="source" style="height: 320px;" readonly="readonly"></textarea>
-        </div>
+        <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
-          <textarea class="form-control" name="result" style="height: 455px;"></textarea>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
+        <?php echo functions::form_draw_select_field('to_language_code', $options); ?>
+      </div>
+      <div class="form-group">
+        <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
+        <textarea class="form-control" name="source" style="height: 320px;" readonly="readonly"></textarea>
       </div>
     </div>
-    <ul class="list-unstyled">
-      <li><a href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a></li>
-      <li><a href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a></li>
-    </ul>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
+        <textarea class="form-control" name="result" style="height: 455px;"></textarea>
+      </div>
+    </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" data-dismiss="modal" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
-    <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo language::translate('title_cancel', 'Cancel'); ?></button>
-  </div>
+
+  <ul class="list-unstyled">
+    <li><a href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a></li>
+    <li><a href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a></li>
+  </ul>
+
+  <p>
+    <button type="button" class="btn btn-primary" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
+  </p>
 
 </div>
 
 <script>
   var delimiter = "\r\n----------\r\n";
 
-  $('#translator-tool select[name="from_language_code"]').change(function(e){
+  $('#translator-tool select').change(function(e){
 
-    var selected_language_code = $(this).val();
+    var box = $(this).closest('.row');
+    var from_language_code = $(this).closest('.row').find('select[name="from_language_code"]').val();
+    var to_language_code = $(this).closest('.row').find('select[name="to_language_code"]').val();
     var translations = [];
 
-    if ($('#translator-tool select[name="to_language_code"]').val() == '') return;
+    if (!from_language_code || !to_language_code) return;
 
-    $.each($('textarea[name$="[text_'+ $(this).val() +']"]'), function(i){
-      var target = $(this).closest('tr').find('textarea[name$="[text_'+ $('#translator-tool select[name="to_language_code"]').val() +']"]');
-      if ($(this).val() != '' && $(target).val() == '') {
-        translations.push('{{'+ i +'}} = ' + $(this).val());
+    $.each($(':input[name$="[text_'+ from_language_code +']"]'), function(i){
+      var source = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ from_language_code +']"]');
+      var target = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]');
+
+      if ($(source).val() && !$(target).val()) {
+        translations.push('{{'+ i +'}} = ' + $(source).val());
       }
     });
 
     translations = translations.join(delimiter);
 
-    $('#translator-tool textarea[name="source"]').val(translations);
-  }).trigger('change');
+    $(box).find(':input[name="source"]').val(translations);
+  });
 
-  $('#translator-tool textarea[name="source"]').focus(function(e){
+  $('#translator-tool :input[name="source"]').focus(function(e){
     $(this).select();
   });
 
-  $('#translator-tool select[name="to_language_code"]').change(function(e){
-    $('#translator-tool select[name="from_language_code"]').trigger('change');
-  });
-
   $('#translator-tool button[name="prefill_fields"]').click(function(){
+    var box = $(this).closest('div');
 
-    var translated = $('#translator-tool textarea[name="result"]').val();
+    var translated = $(box).find(':input[name="result"]').val();
     translated = translated.split(delimiter.trim());
 
-    if ($('#translator-tool select[name="to_language_code"]').val() == '') {
+    if ($(box).find('select[name="to_language_code"]').val() == '') {
       alert('You must specify which language you are translating');
       return false;
     }
@@ -285,8 +285,10 @@ ul.filter li {
       var index = matches[1];
       var translation = matches[2].trim();
 
-      $('textarea[name$="[text_'+ $('#translator-tool select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
+      $(':input[name$="[text_'+ $(box).find('select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
     });
+
+    $.featherlight.close();
   });
 
   $('.delete').click(function(e){
