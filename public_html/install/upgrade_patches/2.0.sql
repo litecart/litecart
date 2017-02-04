@@ -74,3 +74,5 @@ INSERT IGNORE INTO `lc_countries` (`status`, `name`, `domestic_name`, `iso_code_
 (1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'EUR', '358', NOW(), NOW());
 -- --------------------------------------------------------
 ALTER TABLE `lc_suppliers` ADD COLUMN `code` VARCHAR(64) NOT NULL AFTER `id`,	ADD INDEX `code` (`code`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_users` ADD COLUMN `permissions` VARCHAR(4096) NOT NULL AFTER `password`;

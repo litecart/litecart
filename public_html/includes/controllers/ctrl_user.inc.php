@@ -36,6 +36,8 @@
 
       if (empty($this->data)) trigger_error('Could not find user (ID: '. (int)$user_id .') in database.', E_USER_ERROR);
 
+      $this->data['permissions'] = @json_decode($this->data['permissions'], true);
+
       foreach(file(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd') as $row) {
         $row = explode(':', trim($row));
         if ($this->data['username'] == $row[0]) {
@@ -84,6 +86,7 @@
         set
           status = '". (empty($this->data['status']) ? 0 : 1) ."',
           username = '". database::input($this->data['username']) ."',
+          permissions = '". database::input(json_encode($this->data['permissions'])) ."',
           date_blocked = '". database::input($this->data['date_blocked']) ."',
           date_expires = '". database::input($this->data['date_expires']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'

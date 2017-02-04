@@ -116,6 +116,8 @@
       );
       $user = database::fetch($user_query);
 
+      $user['permissions'] = @json_decode($user['permissions'], true);
+
       session::$data['user'] = $user;
     }
 

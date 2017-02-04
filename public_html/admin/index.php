@@ -12,6 +12,9 @@
     $box_apps_menu->snippets['apps'] = array();
 
     foreach (functions::admin_get_apps() as $app) {
+
+      if (!empty(user::$data['permissions']) && empty(user::$data['permissions'][$app['code']]['status'])) continue;
+
       $box_apps_menu->snippets['apps'][$app['code']] = array(
         'code' => $app['code'],
         'name' => $app['name'],
@@ -26,6 +29,8 @@
 
       if (!empty($app['menu'])) {
         foreach ($app['menu'] as $item) {
+
+          if (!empty(user::$data['permissions']) && (empty(user::$data['permissions'][$app['code']]['status']) || !in_array($item['doc'], user::$data['permissions'][$app['code']]['docs']))) continue;
 
           $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['doc']), $item['params']) : array('app' => $app['code'], 'doc' => $item['doc']);
 
@@ -86,6 +91,8 @@
   // App content
     } else {
 
+      if (empty(user::$data['permissions']) || (!empty(user::$data['permissions'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['permissions'][$_GET['app']]['docs']))) {
+
       require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
 
       if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
@@ -122,6 +129,10 @@
         echo $_page->stitch('pages/doc');
       } else {
         echo $_page->snippets['doc'];
+        }
+
+      } else {
+        echo '<p>'. language::translate('title_access_denied', 'Access Denied') .'</p>';
       }
     }
 

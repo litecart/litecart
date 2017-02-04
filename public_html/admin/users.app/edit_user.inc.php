@@ -28,11 +28,13 @@
     if (empty(notices::$data['errors'])) {
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
+      if (empty($_POST['permissions'])) $_POST['permissions'] = array();
 
       $fields = array(
         'status',
         'username',
         'password',
+        'permissions',
         'date_blocked',
         'date_expires',
       );
@@ -131,17 +133,19 @@
 
     <div class="col-md-4">
       <div class="form-group">
-        <label><?php echo language::translate('title_permissions', 'Permissions'); ?></label>
+        <label><?php echo functions::form_draw_checkbox('permissions_toggle', '1', !empty($_POST['permissions']) ? '1' : '0'); ?> <?php echo language::translate('title_permissions', 'Permissions'); ?></label>
         <div class="form-control" style="height: 400px; overflow-y: scroll;">
           <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
-    echo '  <li><label class="">'. functions::form_draw_checkbox('app['.$app['code'].']', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
+    echo '  <li>' . PHP_EOL
+       //. '    ' . functions::draw_fonticon('fa-check-square-o checkbox-toggle') . PHP_EOL
+       . '    <label>'. functions::form_draw_checkbox('permissions['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '    <ul class="">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '      <li><label class="">'. functions::form_draw_checkbox('docs['.$app['code'].']['.$doc.']', '1', true) .' '. $doc .'</label>' . PHP_EOL;
+        echo '      <li><label>'. functions::form_draw_checkbox('permissions['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }
       echo '    </ul>' . PHP_EOL;
     }
@@ -163,11 +167,19 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
-  $('input[name^="app["]').change(function(){
+  $('input[name="permissions_toggle"]').change(function(){
     if ($(this).is(':checked')) {
-      $(this).closest('li').find('input[name^="docs["]').removeAttr('disabled');
+      $(this).closest('.form-group').find('input[name^="permissions"][name$="[status]"]').removeAttr('disabled');
     } else {
-      $(this).closest('li').find('input[name^="docs["]').attr('disabled', 'disabled');
+      $(this).closest('.form-group').find('input[name^="permissions"][name$="[status]"]').attr('disabled', 'disabled').prop('checked', false).trigger('change');
+    }
+  }).trigger('change');
+
+  $('input[name^="permissions"][name$="[status]"]').change(function(){
+    if ($(this).is(':checked')) {
+      $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').removeAttr('disabled').prop('checked', true);
+    } else {
+      $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').attr('disabled', 'disabled').prop('checked', false);
     }
   }).trigger('change');
 </script>

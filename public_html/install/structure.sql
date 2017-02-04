@@ -730,6 +730,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `status` tinyint(1) NOT NULL,
   `username` varchar(32) NOT NULL,
   `password` varchar(128) NOT NULL,
+  `permissions` VARCHAR(4096) NOT NULL,
   `last_ip` varchar(15) NOT NULL,
   `last_host` varchar(64) NOT NULL,
   `login_attempts` int(11) NOT NULL,
