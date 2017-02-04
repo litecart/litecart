@@ -153,7 +153,7 @@
     $output = '';
 
     if ($category_id == 0) {
-      $output .= '<div id="category-id-'. $category_id .'"><label style="font-weight: normal;">'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cccc66;"') .' ['. language::translate('title_root', 'Root') .']</label></div>' . PHP_EOL;
+      $output .= '<div class="checkbox" id="category-id-'. $category_id .'"><label>'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cccc66;"') .' ['. language::translate('title_root', 'Root') .']</label></div>' . PHP_EOL;
     }
 
   // Output categories
@@ -168,7 +168,7 @@
     while ($category = database::fetch($categories_query)) {
       $count++;
 
-      $output .= '  <div><label style="font-weight: normal;">'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label></div>' . PHP_EOL;
+      $output .= '  <div class="checkbox"><label>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label></div>' . PHP_EOL;
 
       if (database::num_rows(database::query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
         $output .= custom_catalog_tree($category['id'], $depth+1, $count);
@@ -187,22 +187,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_default_category', 'Default Category'); ?></label>
-<?php
-	$options = array();
-
-	$category_name_query = database::query(
-	  "select category_id as id, name from ". DB_TABLE_CATEGORIES ." c
-    left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-	  where c.id in ('". implode("', '", database::input($product->data['categories'])) ."');"
-	);
-
-	while ($category = database::fetch($category_name_query)) {
-	  $options[] = array($category['name'], $category['id']);
-	}
-
-  echo functions::form_draw_select_field('default_category_id', $options, true);
-?>
-
+              <?php echo functions::form_draw_select_field('default_category_id', array(), true); ?>
             </div>
 
             <div class="form-group">
@@ -217,7 +202,8 @@
     );
     if (database::num_rows($product_groups_query)) {
       while ($product_group = database::fetch($product_groups_query)) {
-        echo '<div><strong>'. $product_group['name'] .'</strong></div>' . PHP_EOL;
+        echo '<div class="form-group">' . PHP_EOL
+           . '  <label>'. $product_group['name'] .'</label>' . PHP_EOL;
         $product_groups_values_query = database::query(
           "select pgv.id, pgvi.name from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." pgv
           left join ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ." pgvi on (pgvi.product_group_value_id = pgv.id and pgvi.language_code = '". language::$selected['code'] ."')
@@ -225,8 +211,9 @@
           order by pgvi.name asc;"
         );
         while ($product_group_value = database::fetch($product_groups_values_query)) {
-        echo '<div class="checkbox"><label>'. functions::form_draw_checkbox('product_groups[]', $product_group['id'].'-'.$product_group_value['id'], true) .' '. $product_group_value['name'] .'</label></div>' . PHP_EOL;
+          echo '  <div class="checkbox"><label>'. functions::form_draw_checkbox('product_groups[]', $product_group['id'].'-'.$product_group_value['id'], true) .' '. $product_group_value['name'] .'</label></div>' . PHP_EOL;
         }
+        echo '</div>' . PHP_EOL;
       }
     } else {
 ?>
@@ -270,6 +257,11 @@
             </div>
 
             <div class="form-group">
+              <label><?php echo language::translate('title_name', 'Name'); ?></label>
+              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+            </div>
+
+            <div class="form-group">
               <div class="input-group">
                 <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('sku', true); ?>
@@ -288,11 +280,6 @@
                 <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('taric', true); ?>
               </div>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_name', 'Name'); ?></label>
-              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
             </div>
 
             <div class="form-group">
@@ -353,11 +340,14 @@
                   <?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
                   <tr>
                     <td><div class="thumbnail"><?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>
-                    <td><?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
-                      <div class="actions">
+                    <td><?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
+                      <div class="input-group">
+                        <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
+                        <div class="input-group-addon">
                         <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                      </div>
                       </div>
                     </td>
                   </tr>
@@ -366,9 +356,12 @@
                 <tbody>
                   <tr>
                     <td><div class="thumbnail"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>
-                    <td><?php echo functions::form_draw_file_field('new_images[]'); ?>
-                      <div class="actions">
+                    <td>
+                      <div class="input-group">
+                        <?php echo functions::form_draw_file_field('new_images[]'); ?>
+                        <div class="input-group-addon">
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                      </div>
                       </div>
                     </td>
                   </tr>
@@ -443,7 +436,7 @@
         <div id="prices" style="max-width: 640px;">
           <h2><?php echo language::translate('title_prices', 'Prices'); ?></h2>
 
-          <div class="row">
+          <div class="row half-gutter">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
               <div class="input-group">
@@ -461,8 +454,8 @@
           <table class="table table-striped data-table">
             <thead>
               <tr>
-                <th class="col-md-6"><?php echo language::translate('title_price', 'Price'); ?></th>
-                <th class="col-md-6"><?php echo language::translate('title_price_incl_tax', 'Price Incl. Tax'); ?> (<a id="price-incl-tax-tooltip" href="#">?</a>)</th>
+                <td class="col-md-6"><?php echo language::translate('title_price', 'Price'); ?></td>
+                <td class="col-md-6"><?php echo language::translate('title_price_incl_tax', 'Price Incl. Tax'); ?> (<a id="price-incl-tax-tooltip" href="#">?</a>)</td>
               </tr>
             </thead>
             <tbody>
@@ -732,7 +725,9 @@ foreach (currency::$currencies as $currency) {
                + '  <td>'
                + '    <div class="input-group">'
                + '      <?php echo functions::form_draw_file_field('new_images[]'); ?>'
-               + '      <a class="input-group-btn btn btn-default remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '      <div class="input-group-addon">'
+               + '        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '      </div>'
                + '    </div>'
                + '  </td>'
                + '</tr>';

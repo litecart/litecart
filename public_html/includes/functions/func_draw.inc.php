@@ -45,8 +45,8 @@
       'link' => document::ilink('category', array('category_id' => $category['id'])),
       'image' => array(
         'original' => WS_DIR_IMAGES . $category['image'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width, $height, 'CROP'),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width*2, $height*2, 'CROP'),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width, $height, settings::get('category_image_clipping')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width*2, $height*2, settings::get('category_image_clipping')),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
