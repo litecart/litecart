@@ -9,7 +9,8 @@ body {
 
   background: rgb(184, 211, 244);
 
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.3333;
   font-family: Arial, Helvetica,sans-serif;
   color: #333;
 }

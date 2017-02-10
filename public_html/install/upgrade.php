@@ -4,6 +4,7 @@
   ob_start();
 
   require_once('../includes/config.inc.php');
+  require_once('../includes/error_handler.inc.php');
   require_once('../includes/library/lib_database.inc.php');
   require_once('includes/header.inc.php');
   require_once('includes/functions.inc.php');
@@ -143,7 +144,7 @@
       <td>Select the <?php echo PLATFORM_NAME; ?> version you are migrating from:<br />
         <select name="from_version">
           <option value="">-- Select Version --</option>
-          <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'">'. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
+          <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_POST['from_version']) && $_POST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
         </select>
       </td>
     </tr>
