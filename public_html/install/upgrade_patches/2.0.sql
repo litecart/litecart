@@ -18,7 +18,7 @@ ALTER TABLE `lc_categories_info` ADD UNIQUE INDEX `category_info` (`category_id`
 -- --------------------------------------------------------
 ALTER TABLE `lc_countries` CHANGE COLUMN `postcode_required` `postcode_required` TINYINT(1) NOT NULL COMMENT 'Deprecated, use instead postcode_format' AFTER `postcode_format`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`;
+ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`, ADD COLUMN `password_reset_token` VARCHAR(128) NOT NULL AFTER `notes`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_delivery_statuses_info` ADD UNIQUE INDEX `delivery_status_info` (`delivery_status_id`, `language_code`);
 -- --------------------------------------------------------

@@ -232,7 +232,7 @@
       if (!empty(self::$data['id'])) return true;
     }
 
-    public static function password_reset($email) {
+    public static function password_reset($email, $new_password=null) {
 
       if (empty($email)) {
         notices::add('errors', language::translate('error_password_reset_missing_email', 'To reset your password you must provide an email address.'));
@@ -252,16 +252,17 @@
         return;
       }
 
-      $new_password = functions::password_generate(6);
+      if (empty($new_password)) $new_password = functions::password_generate(6);
 
-      $customer_query = database::query(
+      database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set password = '". functions::password_checksum($email, $new_password) ."'
         where email = '". database::input($email) ."'
         limit 1;"
       );
 
-      $message = strtr(language::translate('email_body_password_reset', "We have set a new password for your account at %store_link. Use your email %email and new password %password to log in."), array(
+      $message = language::translate('email_body_password_reset', 'We have set a new password for your account at %store_link. Use your email %email and new password %password to log in.');
+      $message = strtr($message, array(
         '%email' => $email,
         '%password' => $new_password,
         '%store_link' => document::ilink(''),

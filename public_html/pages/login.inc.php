@@ -18,10 +18,6 @@
     customer::login($_POST['email'], $_POST['password'], $_POST['redirect_url'], $_POST['remember_me']);
   }
 
-  if (!empty($_POST['lost_password'])) {
-    customer::password_reset($_POST['email']);
-  }
-
   $_page = new view();
   echo $_page->stitch('pages/login');
 ?>

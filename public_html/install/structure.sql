@@ -134,6 +134,7 @@ CREATE TABLE `lc_customers` (
   `shipping_zone_code` varchar(8) NOT NULL,
   `newsletter` tinyint(1) NOT NULL DEFAULT '1',
   `notes` TEXT NOT NULL,
+  `password_reset_token` VARCHAR(128) NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
