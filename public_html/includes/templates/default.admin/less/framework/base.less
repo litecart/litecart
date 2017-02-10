@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font: @default-text-size @default-text-font;
+  line-height: @default-line-height;
+  color: @default-text-color;
+}
+
+html, body {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+}
+
+h1{
+  font-weight: normal;
+  color: @default-title-color;
+}
+h2{
+  font-weight: normal;
+  color: @default-title-color;
+}
+h3 {
+  font-weight: normal;
+  color: @default-title-color;
+}
+h4 {
+  font-weight: normal;
+  color: @default-title-color;
+}
+
+a {
+  &:link, &:visited {
+    color: @default-link-color;
+    text-decoration: none;
+  }
+  &:hover, &:active {
+    color: @default-link-color;
+    text-decoration: underline;
+  }
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid @default-border-color;
+}

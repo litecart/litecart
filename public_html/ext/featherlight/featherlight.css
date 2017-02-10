@@ -1,0 +1,155 @@
+/**
+ * Featherlight – ultra slim jQuery lightbox
+ * Version 1.7.0 - http://noelboss.github.io/featherlight/
+ *
+ * Copyright 2016, Noël Raoul Bossart (http://www.noelboss.com)
+ * MIT Licensed.
+**/
+@media all {
+
+  body.featherlight-open {
+    /* prevent scrolling */
+    overflow: hidden;
+    padding-right: 15px;
+  }
+
+  body.featherlight-open > *:not(.featherlight):not(#animated-cart-item) {
+    /* blur backdrop */
+    filter: blur(3px);
+  }
+
+	.featherlight {
+		display: none;
+
+		/* dimensions: spanning the background from edge to edge */
+		position: fixed;
+		top: 0; right: 0; bottom: 0; left: 0;
+
+		overflow-y: auto;
+
+		/* position: centering content */
+		text-align: center;
+
+		/* insures that the ::before pseudo element doesn't force wrap with fixed width content; */
+		white-space: nowrap;
+
+		/* styling */
+		cursor: pointer;
+		background: #333;
+		/* IE8 "hack" for nested featherlights */
+		background: rgba(0, 0, 0, 0);
+	}
+
+	.featherlight * { /* See https://github.com/noelboss/featherlight/issues/42 */
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	/* support for nested featherlights. Does not work in IE8 (use JS to fix) */
+	.featherlight.active {
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	.featherlight:before {
+		/* position: trick to center content vertically */
+		content: '';
+		display: inline-block;
+		height: 100%;
+		vertical-align: middle;
+	}
+
+	.featherlight .featherlight-content {
+		/* make content container for positioned elements (close button) */
+		position: relative;
+
+		/* position: centering vertical and horizontal */
+		text-align: left;
+		vertical-align: middle;
+		display: inline-block;
+
+		/* dimensions: cut off images */
+		padding: 15px;
+		border-radius: 0.25em;
+
+		/* dimensions: handling large content */
+		margin: 30px;
+
+		/* styling */
+		background: #fff;
+		cursor: auto;
+		box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+
+		/* reset white-space wrapping */
+		white-space: normal;
+	}
+
+	.featherlight .featherlight-close-icon {
+		/* position: centering vertical and horizontal */
+		position: absolute;
+		z-index: 9999;
+		top: 0;
+		right: 0;
+
+		/* dimensions: 25px x 25px */
+		line-height: 25px;
+		width: 25px;
+
+		/* styling */
+		cursor: pointer;
+		text-align: center;
+		font-family: Arial, sans-serif;
+		background: #fff; /* Set the background in case it overlaps the content */
+		background: rgba(255, 255, 255, 0.3);
+		color: #000;
+		border: none;
+		padding: 0;
+	}
+
+	/* See http://stackoverflow.com/questions/16077341/how-to-reset-all-default-styles-of-the-html5-button-element */
+	.featherlight .featherlight-close-icon::-moz-focus-inner {
+		border: 0;
+		padding: 0;
+	}
+
+	.featherlight-content h1 {
+		margin-top: 0;
+	}
+
+	.featherlight-content > img {
+		/* styling */
+		max-width: 100%;
+	}
+
+	.featherlight-content > iframe {
+		/* styling */
+		border: none;
+    width: 100%;
+    height: 100%;
+	}
+
+	/* stacked modals */
+	.featherlight {
+		perspective: 2048px;
+	}
+	.featherlight .featherlight-content {
+		transition: all 0.25s linear;
+		transform: -400px;
+		transform: scale(0.8) rotateY(45deg) translateZ(-400px);
+		transform-style: preserve-3d;
+    filter: blur(2px);
+	}
+	.featherlight.active .featherlight-content {
+		transform: none !important;
+    filter: none !important;
+	}
+}
+
+/* handling phones and small screens */
+@media only screen and (max-width: 1024px) {
+	.featherlight .featherlight-content {
+		/* dimensions: maximize lightbox with for small screens */
+		margin: 30px 15px;
+		padding: 15px;
+	}
+}

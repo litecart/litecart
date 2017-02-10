@@ -1,0 +1,128 @@
+@image-whitespace-color: #ffffff;
+
+#view-full-page {
+  float: right;
+  display: inline-block;
+  padding: @default-gutter-size/2 @default-gutter-size;
+}
+
+#box-product {
+  ul.codes {
+    opacity: 0.75;
+    margin-top: -1.5em;
+    li {
+      &:not(:first-child):before {
+        content: '\b7\a0';
+        margin-left: -2px;
+      }
+      &:first-child {
+          content: none;
+        }
+      }
+    }
+  .image-wrapper {
+    position: relative;
+    text-align: center;
+    margin-bottom: 1em;
+    overflow: hidden;
+    box-shadow: 0 0px 2px rgba(0,0,0,0.15);
+    img {
+      max-width: 100%;
+    }
+    .sticker {
+      color: #ffffff;
+      font-size: 0.75em;
+      font-weight: bold;
+      top: 1em;
+      left: -2em;
+      padding: 0.25em;
+      position: absolute;
+      text-align: center;
+      text-shadow: 0px 1px 2px #666666;
+      text-transform: uppercase;
+      transform: rotate(-45deg);
+      width: 96px;
+      &.new {
+        background: rgba(191, 176, 121, 0.9);
+      }
+      &.sale {
+        background: rgba(191, 121, 121, 0.9);
+      }
+    }
+  }
+  .extra-image {
+    background: @image-whitespace-color;
+    text-align: center;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+    img {
+      max-width: 100%;
+    }
+  }
+  .price-wrapper {
+    font-size: 2em;
+  }
+  .regular-price {
+    font-size: 0.75em;
+  }
+  .campaign-price {
+    color: #cc0000;
+  }
+  .tax {
+    color: #999999;
+  }
+  .stock-available {
+    .value {
+      color: #009900;
+    }
+  }
+  .stock-partly-available {
+    .value {
+      color: #ff9900;
+    }
+  }
+  .stock-unavailable {
+    .value {
+      color: #cc0000;
+    }
+  }
+  .social-bookmarks {
+    font-size: 1.75em;
+    margin: @default-gutter-size 0;
+  }
+  .tabs {
+    clear: left;
+    white-space: normal;
+  }
+  #tab-details {
+    table {
+      max-width: 100%;
+      td {
+        padding: 5px 10px;
+      }
+      th {
+        padding: 5px 10px;
+      }
+      tr {
+        td {
+          &:first-child {
+            white-space: nowrap;
+            width: 100px;
+          }
+        }
+        th {
+          font-weight: bold;
+          text-align: left;
+        }
+      }
+      tr.odd {
+        background-color: #fcfcfc;
+      }
+      tr.even {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+  .information {
+    display: inline-block;
+  }
+}

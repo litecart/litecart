@@ -1,0 +1,89 @@
+/* Input Fields & Input Groups - Bootstrap Compatible */
+
+input, button, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  outline: 0;
+}
+
+.form-group {
+  margin-bottom: @default-gutter-size;
+  &.required label::after {
+    content: ' *';
+    color: #f00;
+  }
+}
+
+.input-field() {
+  position: relative;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid @default-border-color;
+  border-radius: 4px;
+  box-shadow: 0 0.5px 2px rgba(50,50,93,0.15);
+}
+
+.form-control {
+  .input-field();
+  display: block;
+  width: 100%;
+  min-width: 1px; // Firefox fix
+  padding: @form-input-padding;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.checkbox, .radio {
+  padding: @form-input-padding;
+}
+
+.input-group {
+  .input-field();
+  display: flex;
+  .form-control {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+    margin-left: -1px;
+  }
+  .input-group-addon {
+    flex: 1 0 auto;
+    vertical-align: middle;
+    padding: @form-input-padding;
+    font-weight: normal;
+    color: #555;
+    text-align: center;
+    background-color: @default-button-color;
+    border-left: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1;
+    margin: 0 -1px;
+  }
+  .input-group-btn {
+    flex: 1 0 auto;
+    .btn {
+      border-top: 0;
+      border-bottom: 0;
+      padding: 7px 12px;
+    }
+  }
+  .form-control:first-child,
+  .input-group-addon:first-child,
+  .input-group-btn:first-child > .btn,
+  .input-group-btn:first-child > .btn-group > .btn,
+  .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+    border-radius: 4px 0 0 4px;
+  }
+  .form-control:last-child,
+  .input-group-addon:last-child,
+  .input-group-btn:last-child > .btn,
+  .input-group-btn:last-child > .btn-group > .btn,
+  .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+    margin-right: -1px;
+    border-radius: 0 4px 4px 0;
+  }
+}

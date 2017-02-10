@@ -1,0 +1,70 @@
+/*! http://responsiveslides.com v1.55 by @viljamis */
+
+.rslides {
+  position: relative;
+  overflow: hidden;
+  .slide {
+    -webkit-backface-visibility: hidden;
+    position: absolute;
+    display: none;
+    width: 100%;
+    left: 0;
+    top: 0;
+    &:first-child {
+      position: relative;
+      display: block;
+      float: left;
+    }
+    img {
+      display: block;
+      height: auto;
+      float: left;
+      width: 100%;
+      border: 0;
+    }
+    .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0.5em;
+      background: rgba(0,0,0,0.15);
+      color: #fff;
+      @media(min-width: 640px) {
+        padding: 1em;
+        font-size: 1.5em;
+      }
+    }
+  }
+  .nav {
+    position: absolute;
+    z-index: 99;
+    padding: 0px 20px;
+    margin-top: -1em;
+
+    font-size: 2em;
+    color: #000 !important;
+    text-shadow: 1px 1px #fff;
+
+    opacity: 0;
+    -moz-transition: opacity .1s ease-in;
+    -o-transition: opacity .1s ease-in;
+    -webkit-transition: opacity .1s ease-in;
+    transition: opacity .1s ease-in;
+    &.prev {
+      left: 0px;
+      top: 50%;
+    }
+    &.next {
+      position: absolute;
+      right: 0px;
+      top: 50%;
+    }
+  }
+  &:hover .nav {
+    opacity: 0.15;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}

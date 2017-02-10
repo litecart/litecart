@@ -1,0 +1,164 @@
+/* Boxes */
+
+.twelve-eighty {
+  min-width: 280px;
+  max-width: 1280px;
+  margin: 0px auto;
+}
+
+.box {
+	margin-bottom: @default-gutter-size;
+  > .content {
+  }
+}
+
+#box-logotypes {
+	margin-bottom: 20px;
+	.content {
+		font: 0;
+		height: 35px;
+		overflow: hidden;
+		text-align: center;
+	}
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+#box-search {
+	.content {
+		position: relative;
+		img {
+			opacity: 0.6;
+			position: absolute;
+		}
+		.input-wrapper {
+			display: block;
+			white-space: nowrap;
+		}
+		input {
+			display: inline-block;
+			max-width: 100%;
+		}
+	}
+}
+
+#box-slides {
+  position: relative;
+  &:hover {
+    .rslides_nav {
+      opacity: 0.25;
+      .rslides_nav:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+  .rslides_nav {
+    position: absolute;
+    z-index: 99;
+    padding: 0px 20px;
+    margin-top: -1em;
+
+    font-size: 2em;
+    color: #000 !important;
+    text-shadow: 1px 1px #fff;
+
+    opacity: 0;
+    -moz-transition: opacity .1s ease-in;
+    -o-transition: opacity .1s ease-in;
+    -webkit-transition: opacity .1s ease-in;
+    transition: opacity .1s ease-in;
+    &.prev {
+      left: 0px;
+      top: 50%;
+    }
+    &.next {
+      position: absolute;
+      right: 0px;
+      top: 50%;
+    }
+  }
+  .rslides .caption {
+    position: absolute;
+    width: 100%;
+    padding: 10px;
+    bottom: 0px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    text-shadow: -1px -1px #000;
+    font-size: 1.5em;
+    opacity: 0.5;
+    @media (max-width: 640px) {
+      font-size: 1em;
+    }
+  }
+}
+
+#box-campaigns, #box-latest-products, #box-most-popular, #box-similar-products, #box-also-purchased-products {
+	.title {
+		font-weight: normal;
+		font: 2em 'Open Sans', sans-serif;
+		margin: 0 0 @default-gutter-size 0;
+		padding-bottom: @default-gutter-size/2;
+		border-bottom: 2px solid @default-title-border-color;
+	}
+}
+
+
+
+#box-information {
+	li {
+		a {
+			color: inherit;
+			line-height: 175%;
+      &.active {
+        color: @default-link-color;
+      }
+		  &:hover {
+			  color: @default-link-color;
+		  }
+		}
+	}
+}
+
+#box-filter {
+	.manufacturers {
+		ul {
+			max-height: 200px;
+			overflow-y: auto;
+		}
+	}
+}
+
+#box-recently-viewed-products {
+	img {
+		border: 1px solid #eeeeee;
+		max-height: 100%;
+		max-width: 100%;
+		&:hover {
+			border-color: @default-link-color;
+		}
+	}
+}
+
+#box-category {
+	.heading {
+		h1 {
+			display: inline-block;
+			float: left;
+		}
+	}
+	.filter {
+		float: right;
+	}
+}
+
+#box-manufacturers-list {
+	margin: 0;
+}
+
+#box-customer-service {
+	.content > h1 {
+		margin-top: 0;
+	}
+}

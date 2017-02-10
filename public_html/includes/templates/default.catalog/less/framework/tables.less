@@ -1,0 +1,62 @@
+/* Tables - Bootstrap Compatible */
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+  background-color: transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+  &.table-bordered {
+    border: 1px solid @default-border-color;
+  }
+  &.data-table {
+    white-space: nowrap;
+  }
+  &.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+  &.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #fff;
+  }
+  > * > tr > td {
+    padding: 6px 12px;
+    line-height: @default-line-height;
+    vertical-align: top;
+    border-top: 1px solid @default-border-color;
+    &.border-top {
+      border-top: 1px solid @default-border-color;
+    }
+    &.border-left {
+      border-left: 1px solid @default-border-color;
+    }
+    &.border-right {
+      border-right: 1px solid @default-border-color;
+    }
+    &.border-bottom {
+      border-bottom: 1px solid @default-border-color;
+    }
+  }
+  > thead > tr > th {
+    padding: 8px;
+    text-align: left;
+    vertical-align: bottom;
+    border-bottom: 2px solid @default-border-color;
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+  > .table {
+    margin-bottom: 0;
+  }
+}
+
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > th,
+.table > caption + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > td,
+.table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}

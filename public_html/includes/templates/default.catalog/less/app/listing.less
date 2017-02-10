@@ -1,0 +1,200 @@
+/* Categories */
+
+.categories.row {
+  padding: 0;
+  margin: 0 0 2em 0;
+  > *[class^=col-] {
+    padding: @default-gutter-size/2;
+  }
+  .category {
+    position: relative;
+    background: rgb(255, 255, 255);
+    a.link {
+      display: block;
+      color: inherit;
+      display: block;
+      padding: 5px;
+      text-decoration: none;
+    }
+    .thumbnail {
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+    .caption {
+      background: rgba(100, 100, 100, 0.5);
+      bottom: 0;
+      display: block;
+      padding: 5px;
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      * {color: #fff;}
+    }
+    .title {
+      font-weight: 700;
+    }
+  }
+}
+
+/* Manufacturers */
+
+.manufacturers.row {
+  padding: 0;
+  margin: 0 0 2em 0;
+  > *[class^=col-] {
+    padding: @default-gutter-size/2;
+  }
+  > .manufacturer {
+    background: rgb(255, 255, 255);
+    text-align: center;
+    a.link {
+      color: inherit;
+      display: block;
+      padding: 5px;
+      text-decoration: none;
+    }
+    .image-wrapper {
+      img {
+        height: auto;
+        width: 100%;
+      }
+    }
+    .title {
+      background: rgba(100, 100, 100, 0.5);
+      color: #ffffff;
+      display: block;
+      padding: 5px 0;
+      width: 100%;
+    }
+  }
+}
+
+/* Products */
+
+.products.row {
+  > *[class^=col-] {
+    padding: @default-gutter-size/2;
+  }
+  .product {
+    overflow: hidden;
+    position: relative;
+    border-radius: @default-gutter-size/4;
+    transition: all 50ms linear;
+    a.link {
+      display: block;
+      margin: 0;
+      padding: @default-gutter-size/4;
+      background: #fff;
+      color: inherit;
+      text-align: left;
+      text-decoration: none;
+    }
+    .image-wrapper {
+      text-align: center;
+      .image {
+        width: 100%;
+        height: auto;
+      }
+    }
+    .sticker {
+      color: #fff;
+      font-size: 0.75em;
+      font-weight: bold;
+      top: 1em;
+      left: -2em;
+      padding: 0.25em;
+      position: absolute;
+      text-align: center;
+      text-shadow: 0 1px 2px #666;
+      text-transform: uppercase;
+      transform: rotate(-45deg);
+      width: 96px;
+      &.new {
+        background: rgba(191, 176, 121, 0.9);
+      }
+      &.sale {
+        background: rgba(191, 121, 121, 0.9);
+      }
+    }
+    .info {
+      padding: @default-gutter-size/4;
+      margin-bottom: @default-gutter-size*2;
+    }
+    .name {
+      line-height: 1.5em;
+      color: #333333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .manufacturer {
+      color: lighten(@default-text-color, 25%);
+      font-size: 0.9em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .price-wrapper {
+      .price {
+        font-size: 1.25em;
+        font-weight: bold;
+        color: #333;
+        white-space: nowrap;
+      }
+      .regular-price {
+        color: @default-text-color;
+        font-size: 0.8em;
+        font-weight: normal;
+        white-space: nowrap;
+      }
+      .campaign-price {
+        font-size: 1.25em;
+        font-weight: bold;
+        color: #cc0000;
+        white-space: nowrap;
+      }
+    }
+    &.column {
+      //height: 275px;
+      .image-wrapper {
+        margin-bottom: @default-gutter-size/2;
+      }
+      .info {
+        text-align: center;
+      }
+      .price-wrapper {
+        position: absolute;
+        bottom: @default-gutter-size/2;
+        left: @default-gutter-size/2;
+        right: @default-gutter-size/2;
+        text-align: center;
+      }
+    }
+    &:not(.column) {
+      display: block;
+      padding: 0;
+      position: relative;
+      .image-wrapper {
+        display: inline-block;
+        img {
+          width: 160px;
+          height: auto;
+        }
+      }
+      .info {
+        padding: @default-gutter-size/4;
+        left: 160px + @default-gutter-size;
+        position: absolute;
+        top: 20px;
+      }
+      .price-wrapper {
+        margin-top: @default-gutter-size;
+      }
+    }
+  }
+}

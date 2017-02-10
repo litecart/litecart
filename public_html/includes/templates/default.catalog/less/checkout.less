@@ -1,0 +1,78 @@
+.loader-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  text-align: center;
+
+  margin-top: -128px;
+  opacity: 0.1;
+  z-index: 999999;
+}
+
+#header {
+  margin: 0;
+  padding: 1em;
+  .customer-service {
+    float: right;
+    text-align: right;
+    line-height: 125%;
+    @media(min-width: 640px) {
+      font-size: 1.5em;
+    }
+    .title {
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+}
+
+#box-checkout-cart {
+  tr td:first-child a {
+    display: inline-block;
+  }
+  tr td:last-child {
+    text-align: right;
+  }
+  .error {
+    color: #f00;
+  }
+  .subtotal {
+    font-size: 1.75em;
+  }
+}
+
+#box-checkout-shipping, #box-checkout-payment {
+  .option {
+    &.btn {
+      padding: 12px;
+    }
+    &:not(.active):not(.disabled) {
+      opacity: 0.75;
+      -webkit-transition: all 0.25s ease;
+      -moz-transition: all 0.25s ease;
+      -o-transition: all 0.25s ease;
+      transition: all 0.25s ease;
+      .content {
+        max-height: 0;
+        overflow-y: hidden;
+      }
+    }
+    .content {
+      -webkit-transition: all 0.25s ease;
+      -moz-transition: all 0.25s ease;
+      -o-transition: all 0.25s ease;
+      transition: all 0.25s ease;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  }
+}
+
+#box-checkout-customer {
+  button[type=submit]:not([disabled]) {
+    font-weight: bold;
+    color: rgba(255,0,0,1);
+    animation: flasher 1s linear infinite;
+  }
+}
