@@ -32,6 +32,8 @@ ALTER TABLE `lc_option_groups_info`	ADD UNIQUE INDEX `option_group_info` (`group
 -- --------------------------------------------------------
 ALTER TABLE `lc_option_values_info` ADD UNIQUE INDEX `option_value_info` (`value_id`, `language_code`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_order_items` CHANGE COLUMN `options` `options` VARCHAR(4096) NOT NULL AFTER `option_stock_combination`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses_info` ADD UNIQUE INDEX `order_status_info` (`order_status_id`, `language_code`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_pages_info` ADD UNIQUE INDEX `page_info` (`page_id`, `language_code`);

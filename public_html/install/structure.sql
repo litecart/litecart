@@ -342,7 +342,7 @@ CREATE TABLE `lc_orders_items` (
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `option_stock_combination` varchar(32) NOT NULL,
-  `options` varchar(512) NOT NULL,
+  `options` varchar(4096) NOT NULL,
   `name` varchar(128) NOT NULL,
   `sku` varchar(64) NOT NULL,
   `quantity` decimal(11,4) NOT NULL,
