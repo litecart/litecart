@@ -4,11 +4,9 @@
   ob_start();
 
   require_once('../includes/config.inc.php');
+  require_once('../includes/library/lib_database.inc.php');
   require_once('includes/header.inc.php');
   require_once('includes/functions.inc.php');
-
-  define('DB_CONNECTION_CHARSET', 'utf8');
-  require_once('../includes/library/lib_database.inc.php');
 
 // Turn on errors
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '>=') ? E_ALL & ~E_STRICT : E_ALL);
