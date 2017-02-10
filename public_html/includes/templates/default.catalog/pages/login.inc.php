@@ -8,7 +8,7 @@
 
   <div class="row">
     <div class="col-md-halfs">
-      <div class="box-login" class="box">
+      <div class="box-login" class="box" style="padding: 0 3em;">
 
         <h2 class="title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 
@@ -27,8 +27,12 @@
             <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
           </div>
 
-          <p class="btn-grup">
+          <p class="btn-group btn-block">
             <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
+          </p>
+
+          <p class="text-center">
+            <a href="<?php echo document::ilink('reset_password', array('email' => !empty($_POST['email']) ? $_POST['email'] : '')); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
           </p>
 
         <?php echo functions::form_draw_form_end(); ?>
@@ -37,7 +41,7 @@
 
     <div class="col-md-halfs">
 
-      <div id="box-login-create" class="box">
+      <div id="box-login-create" class="box" style="padding: 0 3em;">
 
         <h2 class="title"><?php echo language::translate('title_create_an_account', 'Create an Account'); ?></h2>
 

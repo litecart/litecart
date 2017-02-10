@@ -99,7 +99,7 @@ form[name="filter_form"] li {
         <td class="border-left text-right"><?php echo currency::format($orders['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
         <td class="border-left text-right"><?php echo currency::format($orders['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
         <td class="border-left text-right"><strong><?php echo currency::format($orders['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
-        <td style="text-align: right;"><?php echo currency::format($orders['total_tax'], false, settings::get('store_currency_code')); ?></td>
+        <td class="text-right"><?php echo currency::format($orders['total_tax'], false, settings::get('store_currency_code')); ?></td>
       </tr>
 <?php
     if (!isset($total)) $total = array();
@@ -115,12 +115,12 @@ form[name="filter_form"] li {
 ?>
   <tfoot>
     <tr>
-      <td style="text-align: right;"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
+      <td class="text-right"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
       <td class="border-left text-right"><?php echo currency::format($total['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
       <td class="border-left text-right"><?php echo currency::format($total['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
       <td class="border-left text-right"><?php echo currency::format($total['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
       <td class="border-left text-right"><strong><?php echo currency::format($total['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
-      <td style="text-align: right;"><?php echo currency::format($total['total_tax'], false, settings::get('store_currency_code')); ?></td>
+      <td class="text-right"><?php echo currency::format($total['total_tax'], false, settings::get('store_currency_code')); ?></td>
     </tr>
   </tfoot>
 <?php

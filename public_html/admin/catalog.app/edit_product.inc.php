@@ -266,16 +266,12 @@
                 <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('sku', true); ?>
               </div>
-            </div>
 
-            <div class="form-group">
               <div class="input-group">
                 <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('gtin', true); ?>
               </div>
-            </div>
 
-            <div class="form-group">
               <div class="input-group">
                 <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('taric', true); ?>
@@ -284,15 +280,19 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-              <div class="input-group">
+              <div class="row">
+                <div class="col-md-6">
                 <?php echo functions::form_draw_decimal_field('quantity', true, 4, null, null, 'style="text-align: center;"'); ?>
-                <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false, 'style="width: 25%;"'); ?>
+                </div>
+                <div class="col-md-6">
+                  <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
+                </div>
               </div>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
-              <div class="input-group" style="width: 100%;">
+              <div class="input-group">
                 <?php echo functions::form_draw_decimal_field('weight', true, 3, 0, null, 'style="text-align: center;"'); ?>
                 <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: 25%;"'); ?>
               </div>
@@ -436,7 +436,7 @@
         <div id="prices" style="max-width: 640px;">
           <h2><?php echo language::translate('title_prices', 'Prices'); ?></h2>
 
-          <div class="row half-gutter">
+          <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
               <div class="input-group">

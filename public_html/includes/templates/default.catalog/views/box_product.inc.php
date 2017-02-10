@@ -24,7 +24,14 @@
     </div>
 
     <div class="col-sm-halfs col-md-thirds">
-      <h1 class="page-title"><?php echo $name; ?></h1>
+      <h1 class="title"><?php echo $name; ?></h1>
+
+      <?php if ($sku || $gtin) { ?>
+      <ul class="codes list-inline">
+        <?php if ($sku) { ?><li class="sku"><?php echo $sku; ?></li><?php } ?>
+        <?php if ($gtin) { ?><li class="gtin"><?php echo $gtin; ?></li><?php } ?>
+      </ul>
+      <?php } ?>
 
       <?php if ($description) { ?>
       <div class="description">
@@ -116,7 +123,7 @@
             <div style="display: flex">
               <div class="input-group">
                 <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 1, null) : (functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1)); ?>
-                <?php echo $quantity_unit ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
+                <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
               </div>
               <div style="padding-left: 0.5em; white-space: nowrap;">
                 <?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity <= 0 && !$orderable) ? ' disabled="disabled"' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
@@ -130,20 +137,19 @@
 
         <hr />
 
-        <h4 class="social-bookmarks text-center" style="margin: 1em 0;">
+        <div class="social-bookmarks text-center">
         <?php echo language::translate('title_share', 'Share'); ?>:
           <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => $name .' - '. document::link())); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
           <a class="facebook" href="<?php echo document::href_link('http://www.facebook.com/sharer.php', array('u' => document::link())); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
           <a class="googleplus" href="<?php echo document::href_link('https://plus.google.com/share', array('url' => document::link())); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Google+'); ?>"><?php echo functions::draw_fonticon('fa-google-plus-square fa-lg', 'style="color: #dd4b39;"'); ?></a>
           <a class="pinterest" href="<?php echo document::href_link('http://pinterest.com/pin/create/button/', array('url' => document::link())); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?></a>
-        </h4>
       </div>
     </div>
   </div>
-
-  <div class="attributes row">
+  </div>
 
     <?php if ($attributes) { ?>
+  <div class="attributes row">
       <div class="col-xs-whole col-sm-halfs col-md-thirds">
         <table class="table table-striped">
 <?php
@@ -173,8 +179,8 @@
 ?>
       </table>
     </div>
-    <?php } ?>
   </div>
+  <?php } ?>
 </div>
 
 <script>

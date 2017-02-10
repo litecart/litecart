@@ -3,7 +3,7 @@
     <div class="thumbnail">
       <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" alt="" title="<?php echo htmlspecialchars($name); ?>" />
       <div class="caption">
-        <h4><?php echo $name; ?></h4>
+        <h3><?php echo $name; ?></h3>
         <p><?php echo $short_description; ?></p>
       </div>
     </div>

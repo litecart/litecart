@@ -261,7 +261,7 @@
         database::query(
           "update ". DB_TABLE_PRODUCTS_INFO ." set
           name = '". database::input($this->data['name'][$language_code]) ."',
-          short_description = '". @database::input($this->data['short_description'][$language_code]) ."',
+          short_description = '". database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',

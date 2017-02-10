@@ -2,7 +2,7 @@
 
   <?php if (empty(customer::$data['id'])) { ?>
   <div style="float:right">
-    <a href="<?php echo document::ilink('login') ?>" data-toggle="lightbox"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+    <a href="<?php echo document::ilink('login', array('redirect_url' => document::ilink('checkout'))) ?>" data-toggle="lightbox"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
   </div>
   <?php } ?>
 

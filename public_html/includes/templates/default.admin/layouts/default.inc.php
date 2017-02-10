@@ -30,10 +30,7 @@
     </div>
 
     <div id="search" class="container-fluid">
-      <div class="input-group">
-        <span class="input-group-addon"><?php echo functions::draw_fonticon('fa-search'); ?></span>
         <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;"'); ?>
-      </div>
       <div class="results"></div>
     </div>
 

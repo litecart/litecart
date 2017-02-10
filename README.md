@@ -6,9 +6,9 @@ LiteCart is a lightweight e-commerce platform for online merchants. Developed in
 
 LiteCart is a registered trademark, property of founder T. Almroth - [TiM International](http://www.tim-international.net).
 
-### [Installation Instructions] https://wiki.litecart.net/doku.php?id=how_to_install
+### [Installation Instructions] (https://wiki.litecart.net/doku.php?id=how_to_install)
 
-### [Home Page](http://www.litecart.net)
+### [Official Website](http://www.litecart.net)
 
 ### [GitHub](https://github.com/litecart/litecart)
 

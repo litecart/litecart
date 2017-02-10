@@ -1,6 +1,6 @@
 <div id="box-category-tree" class="box">
   <h2 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h2>
-  <ul class="nav nav-pills nav-stacked">
+  <ul class="nav nav-primary nav-pills nav-stacked">
 <?php
   if (!function_exists('custom_draw_category_tree')) {
     function custom_draw_category_tree($categories, $indent=0) {

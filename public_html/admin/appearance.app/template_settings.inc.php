@@ -55,7 +55,8 @@
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
       <tr>
-        <td style="white-space: normal;"><u><?php echo $setting['title']; ?></u><br /><?php echo $setting['description']; ?></td>
+        <td style="white-space: normal;"><u><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></u><br />
+          <?php echo language::translate(settings::get('store_template_catalog').':description_'.$setting['key'], $setting['description']); ?></td>
         <td><?php echo functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
         <td class="text-right">
           <div class="btn-group">
@@ -73,7 +74,7 @@
       }
 ?>
       <tr>
-        <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
+        <td><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></td>
         <td><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128).'...' : $setting['value']); ?></td>
         <td class="text-right"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>

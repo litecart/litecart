@@ -1,9 +1,9 @@
-<div id="page" style="position: relative; max-width: 21cm; height: 29.7cm; box-sizing: border-box; margin: 0px auto; font: 14px/20px Arial, Helvetica, sans-serif;">
+<div id="page" style="position: relative; height: 29.7cm; box-sizing: border-box; margin: 0px auto; font: 14px/20px Arial, Helvetica, sans-serif;">
 
   <header id="header" style="margin-bottom: 10px;">
     <table cellspacing="0" cellpadding="0" style="width: 100%; font: inherit;">
       <tr>
-        <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 50px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
+        <td style="text-align: left;"><img style="float: left; max-width: 300px; max-height: 60px; font-size: 32px;" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></td>
         <td style="text-align: right;">
           <h1 style="margin: 0; font-size: 18px;"><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
           <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
@@ -16,9 +16,9 @@
   <main id="body">
     <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; margin-bottom: 20px; padding: 15px 10px; border: 1px solid #ccc; font: inherit;">
       <tr>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></strong><br />
+        <td style="width: 50%; padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></strong><br />
         <?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></td>
-        <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_address', 'Payment Address'); ?></strong><br />
+        <td style="width: 50%; padding: 5px 10px;"><strong><?php echo language::translate('title_payment_address', 'Payment Address'); ?></strong><br />
         <?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer'])); ?></td>
       </tr>
       <tr>
