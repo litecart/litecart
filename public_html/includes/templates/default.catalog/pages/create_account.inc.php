@@ -1,9 +1,3 @@
-<style>
-.form-group:hover, .form-group:focus {
-  opacity: 1 !important;
-}
-</style>
-
 <aside id="sidebar">
   <div id="column-left">
     <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
@@ -47,30 +41,6 @@
 
       <div class="row">
         <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-          <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?>
-        </div>
-
-        <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-          <?php echo functions::form_draw_text_field('address2', true); ?>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
-          <?php echo functions::form_draw_text_field('postcode', true); ?>
-        </div>
-
-        <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_city', 'City'); ?></label>
-          <?php echo functions::form_draw_text_field('city', true); ?>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
           <?php echo functions::form_draw_countries_list('country_code', true); ?>
         </div>
@@ -88,8 +58,10 @@
         </div>
 
         <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-          <?php echo functions::form_draw_phone_field('phone', true); ?>
+          <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
+          <div class="checkbox">
+            <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
+          </div>
         </div>
       </div>
 
@@ -106,13 +78,6 @@
       </div>
 
       <div class="row">
-        <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-          <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
-          </div>
-        </div>
-
         <?php if (settings::get('captcha_enabled')) { ?>
         <div class="form-group col-md-halfs">
           <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
@@ -120,8 +85,6 @@
         </div>
         <?php } ?>
       </div>
-
-      <p><a class="view-all" href="#"><?php echo language::translate('title_view_all', 'View All'); ?></a></p>
 
       <div class="btn-group">
         <?php echo functions::form_draw_button('create_account', language::translate('title_create_account', 'Create Account')); ?>
@@ -132,12 +95,6 @@
 </main>
 
 <script>
-  $('#box-create-account :input:not([type="hidden"]):not([required])').closest('.form-group').css('opacity', '0.25');
-  $('#box-create-account .view-all').click(function(e) {
-    e.preventDefault();
-    $('#box-create-account .form-group').css('opacity', '');
-  });
-
   $('#box-create-account').on('input propertychange', ':input', function() {
     if ($(this).val() == '') return;
     $('body').css('cursor', 'wait');
