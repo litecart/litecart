@@ -1134,11 +1134,11 @@ foreach (currency::$currencies as $currency) {
       var groupElement = $(box).find(groupElement);
       var valueElement = $(box).find('select[name="'+ $(groupElement).attr('name').replace(/group_id/g, 'value_id') +'"]');
       if (valueElement.val() == '') {
-        alert('<?php echo language::translate('error_empty_option_group', 'Error: Empty option group'); ?>');
+        alert("<?php echo language::translate('error_empty_option_group', 'Error: Empty option group'); ?>");
         return false;
       }
       if (groupElement.val() == '') {
-        alert('<?php echo language::translate('error_empty_option_value', 'Error: Empty option value'); ?>');
+        alert("<?php echo language::translate('error_empty_option_value', 'Error: Empty option value'); ?>");
         return false;
       }
       if (use_coma) {

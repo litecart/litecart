@@ -233,6 +233,6 @@
 
 <?php if (!empty($category->data['id'])) { ?>
 <script>
-  $('select[name="parent_id]" option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
+  $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
 </script>
 <?php } ?>
