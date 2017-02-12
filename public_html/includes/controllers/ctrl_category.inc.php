@@ -29,6 +29,7 @@
 
       while ($field = database::fetch($categories_info_query)) {
         if (in_array($field['Field'], array('id', 'category_id', 'language_code'))) continue;
+
         $this->data[$field['Field']] = array();
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
@@ -47,15 +48,21 @@
         where id='". (int)$category_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($categories_query);
-      if (empty($this->data)) trigger_error('Could not find category (ID: '. (int)$category_id .') in database.', E_USER_ERROR);
+
+      if ($category = database::fetch($categories_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $category), $this->data);
+      } else {
+        trigger_error('Could not find category (ID: '. (int)$category_id .') in database.', E_USER_ERROR);
+      }
 
       $categories_info_query = database::query(
-        "select name, short_description, description, head_title, h1_title, meta_description, language_code from ". DB_TABLE_CATEGORIES_INFO ."
+        "select * from ". DB_TABLE_CATEGORIES_INFO ."
         where category_id = '". (int)$category_id ."';"
       );
+
       while ($category_info = database::fetch($categories_info_query)) {
         foreach ($category_info as $key => $value) {
+          if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
           $this->data[$key][$category_info['language_code']] = $value;
         }
       }

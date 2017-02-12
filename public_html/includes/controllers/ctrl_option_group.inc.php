@@ -28,9 +28,10 @@
 
       while ($field = database::fetch($info_fields_query)) {
         if (in_array($field['Field'], array('id', 'option_group_id', 'language_code'))) continue;
+
         $this->data[$field['Field']] = array();
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = '';
+          $this->data[$field['Field']][$language_code] = null;
         }
       }
 
@@ -45,13 +46,18 @@
         where id = '". (int)$group_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($option_group_query);
-      if (empty($this->data)) trigger_error('Could not find option group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
+
+      if ($option_group = database::fetch($option_group_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $option_group), $this->data);
+      } else {
+        trigger_error('Could not find option group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
+      }
 
       $option_groups_info_query = database::query(
         "select * from ". DB_TABLE_OPTION_GROUPS_INFO ."
         where group_id = '". (int)$group_id ."';"
       );
+
       while ($option_group_info = database::fetch($option_groups_info_query)) {
         foreach (array_keys($option_group_info) as $key) {
           if (in_array($key, array('id', 'group_id', 'language_code'))) continue;
@@ -64,14 +70,15 @@
         where group_id = '". (int)$group_id ."'
         order by priority;"
       );
-      while ($option_value = database::fetch($option_values_query)) {
 
+      while ($option_value = database::fetch($option_values_query)) {
         $this->data['values'][$option_value['id']] = $option_value;
 
         $option_values_info_query = database::query(
           "select * from ". DB_TABLE_OPTION_VALUES_INFO ."
           where value_id = '". (int)$option_value['id'] ."';"
         );
+
         while ($option_value_info = database::fetch($option_values_info_query)) {
           foreach (array_keys($option_value_info) as $key) {
             if (in_array($key, array('id', 'group_id', 'language_code'))) continue;

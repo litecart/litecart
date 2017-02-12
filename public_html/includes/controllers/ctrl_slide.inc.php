@@ -24,13 +24,18 @@
     }
 
     public function load($slide_id) {
+
       $slide_query = database::query(
         "select * from ". DB_TABLE_SLIDES ."
         where id = '". (int)$slide_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($slide_query);
-      if (empty($this->data)) trigger_error('Could not find slide (ID: '. (int)$slide_id .') in database.', E_USER_ERROR);
+
+      if ($slide = database::fetch($slide_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $slide), $this->data);
+      } else {
+        trigger_error('Could not find slide (ID: '. (int)$slide_id .') in database.', E_USER_ERROR);
+      }
     }
 
     public function save() {

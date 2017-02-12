@@ -32,9 +32,12 @@
         where id = '". (int)$user_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($user_query);
 
-      if (empty($this->data)) trigger_error('Could not find user (ID: '. (int)$user_id .') in database.', E_USER_ERROR);
+      if ($user = database::fetch($user_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $user), $this->data);
+      } else {
+        trigger_error('Could not find user (ID: '. (int)$user_id .') in database.', E_USER_ERROR);
+      }
 
       $this->data['permissions'] = @json_decode($this->data['permissions'], true);
 

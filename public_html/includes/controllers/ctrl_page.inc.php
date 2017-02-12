@@ -30,30 +30,38 @@
 
       while ($field = database::fetch($info_fields_query)) {
         if (in_array($field['Field'], array('id', 'page_id', 'language_code'))) continue;
+
         $this->data[$field['Field']] = array();
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = '';
+          $this->data[$field['Field']][$language_code] = null;
         }
       }
     }
 
     public function load($page_id) {
+
       $page_query = database::query(
         "select * from ". DB_TABLE_PAGES ."
         where id = '". (int)$page_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($page_query);
-      if (empty($this->data)) trigger_error('Could not find page (ID: '. (int)$page_id .') in database.', E_USER_ERROR);
+
+      if ($page = database::fetch($page_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $page), $this->data);
+      } else {
+        trigger_error('Could not find page (ID: '. (int)$page_id .') in database.', E_USER_ERROR);
+      }
 
       $this->data['dock'] = explode(',', $this->data['dock']);
 
       $page_info_query = database::query(
-        "select title, content, head_title, meta_description, language_code from ". DB_TABLE_PAGES_INFO ."
+        "select * from ". DB_TABLE_PAGES_INFO ."
         where page_id = '". (int)$this->data['id'] ."';"
       );
+
       while ($page_info = database::fetch($page_info_query)) {
         foreach ($page_info as $key => $value) {
+          if (in_array($key, array('id', 'page_id', 'language_code'))) continue;
           $this->data[$key][$page_info['language_code']] = $value;
         }
       }

@@ -28,9 +28,10 @@
 
       while ($field = database::fetch($info_fields_query)) {
         if (in_array($field['Field'], array('id', 'product_id', 'language_code'))) continue;
+
         $this->data[$field['Field']] = array();
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = '';
+          $this->data[$field['Field']][$language_code] = null;
         }
       }
 
@@ -47,16 +48,18 @@
 
       $this->reset();
 
-      if (empty($product_id)) return false;
-
     // Product
       $products_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS ."
         where id = '". (int)$product_id ."'
         limit 1;"
       );
-      $product = database::fetch($products_query);
-      if (empty($product)) trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
+
+      if ($product = database::fetch($products_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $product), $this->data);
+      } else {
+        trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
+      }
 
       foreach ($product as $key => $value) {
         $this->data[$key] = $value;
@@ -81,6 +84,7 @@
         "select * from ". DB_TABLE_PRODUCTS_INFO ."
          where product_id = '". (int)$product_id ."';"
       );
+
       while ($product_info = database::fetch($products_info_query)) {
         foreach ($product_info as $key => $value) {
           if (in_array($key, array('id', 'product_id', 'language_code'))) continue;

@@ -32,15 +32,18 @@
         where code='". database::input($language_code) ."'
         limit 1;"
       );
-      $this->data = database::fetch($language_query);
-      if (empty($this->data)) trigger_error('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.', E_USER_ERROR);
+
+      if ($language = database::fetch($language_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $language), $this->data);
+      } else {
+        trigger_error('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.', E_USER_ERROR);
+      }
     }
 
     public function save() {
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_language_code')) {
         trigger_error('You cannot disable the default language.', E_USER_ERROR);
-        return;
       }
 
       if (!empty($this->data['id'])) {

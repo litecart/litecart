@@ -26,13 +26,18 @@
     }
 
     public function load($geo_zone_id) {
+
       $geo_zone_query = database::query(
         "select * from ". DB_TABLE_GEO_ZONES ."
         where id = '". (int)$geo_zone_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($geo_zone_query);
-      if (empty($this->data)) trigger_error('Could not find geo zone (ID: '. (int)$geo_zone_id .') in database.', E_USER_ERROR);
+
+      if ($geo_zone = database::fetch($geo_zone_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $geo_zone), $this->data);
+      } else {
+        trigger_error('Could not find geo zone (ID: '. (int)$geo_zone_id .') in database.', E_USER_ERROR);
+      }
 
       $zones_to_geo_zones_query = database::query(
         "select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz

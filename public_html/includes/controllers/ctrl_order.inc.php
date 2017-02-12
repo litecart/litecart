@@ -75,9 +75,12 @@
         where id = ". (int)$order_id ."
         limit 1;"
       );
-      $order = database::fetch($order_query);
 
-      if (empty($order)) trigger_error('Could not find order in database (ID: '. (int)$order_id .')', E_USER_ERROR);
+      if ($order = database::fetch($order_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $order), $this->data);
+      } else {
+        trigger_error('Could not find order in database (ID: '. (int)$order_id .')', E_USER_ERROR);
+      }
 
       foreach($order as $field => $value) {
         if (preg_match('#^(customer|shipping|payment)_#', $field, $matches)) {
@@ -99,15 +102,7 @@
             case 'payment_due':
               $this->data['payment_due'] = $value;
               break;
-
-            default:
-              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
-              $this->data[$matches[1]][$field] = $value;
-              break;
           }
-
-        } else {
-          $this->data[$field] = $value;
         }
       }
 

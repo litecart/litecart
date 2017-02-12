@@ -28,9 +28,10 @@
 
       while ($field = database::fetch($info_fields_query)) {
         if (in_array($field['Field'], array('id', 'product_group_id', 'language_code'))) continue;
+
         $this->data[$field['Field']] = array();
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = '';
+          $this->data[$field['Field']][$language_code] = null;
         }
       }
 
@@ -44,13 +45,18 @@
         where id = '". (int)$group_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($group_query);
-      if (empty($this->data)) trigger_error('Could not find product group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
+
+      if ($group = database::fetch($group_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $group), $this->data);
+      } else {
+        trigger_error('Could not find product group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
+      }
 
       $group_info_query = database::query(
         "select name, language_code from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
         where product_group_id = '". (int)$group_id ."';"
       );
+
       while ($group = database::fetch($group_info_query)) {
         $this->data['name'][$group['language_code']] = $group['name'];
       }
@@ -59,16 +65,20 @@
         "select * from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
         where product_group_id = '". (int)$group_id ."';"
       );
-      while ($value = database::fetch($values_query)) {
 
+      while ($value = database::fetch($values_query)) {
         $this->data['values'][$value['id']] = $value;
 
         $values_info_query = database::query(
-          "select name, language_code from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
+          "select * from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
           where product_group_value_id = '". (int)$value['id'] ."';"
         );
+
         while ($value_info = database::fetch($values_info_query)) {
-          $this->data['values'][$value['id']]['name'][$value_info['language_code']] = $value_info['name'];
+          foreach ($value_info as $key => $value) {
+            if (in_array($key, array('id', 'product_group_value_id', 'language_code'))) continue;
+            $this->data['values'][$value['id']][$key][$value_info['language_code']] = $value_info['name'];
+          }
         }
       }
     }
@@ -135,6 +145,7 @@
           "select id from ". DB_TABLE_PRODUCTS ."
           where product_groups like '%". (int)$this->data['id'] ."-". (int)$value['id'] ."%';"
         );
+
         if (database::num_rows($products_query) > 0) trigger_error('Cannot delete value linked to products.', E_USER_ERROR);
 
         database::query(

@@ -24,16 +24,22 @@
     }
 
     public function load($tax_class_id) {
+
       $tax_class_query = database::query(
         "select * from ". DB_TABLE_TAX_CLASSES ."
         where id = '". (int)$tax_class_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($tax_class_query);
-      if (empty($this->data)) trigger_error('Could not find tax class (ID: '. (int)$tax_class_id .') in database.', E_USER_ERROR);
+
+      if ($tax_class = database::fetch($tax_class_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $tax_class), $this->data);
+      } else {
+        trigger_error('Could not find tax class (ID: '. (int)$tax_class_id .') in database.', E_USER_ERROR);
+      }
     }
 
     public function save() {
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_TAX_CLASSES ."

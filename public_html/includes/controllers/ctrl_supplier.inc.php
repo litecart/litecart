@@ -24,13 +24,18 @@
     }
 
     public function load($supplier_id) {
-      $suppliers_query = database::query(
+
+      $supplier_query = database::query(
         "select * from ". DB_TABLE_SUPPLIERS ."
         where id='". (int)$supplier_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($suppliers_query);
-      if (empty($this->data)) trigger_error('Could not find supplier (ID: '. (int)$supplier_id .') in database.', E_USER_ERROR);
+
+      if ($supplier = database::fetch($supplier_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $supplier), $this->data);
+      } else {
+        trigger_error('Could not find supplier (ID: '. (int)$supplier_id .') in database.', E_USER_ERROR);
+      }
     }
 
     public function save() {

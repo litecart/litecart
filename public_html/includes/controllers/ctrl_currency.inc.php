@@ -32,8 +32,12 @@
         where code='". database::input($currency_code) ."'
         limit 1;"
       );
-      $this->data = database::fetch($currency_query);
-      if (empty($this->data)) trigger_error('Could not find currency (Code: '. htmlspecialchars($currency_code) .') in database.', E_USER_ERROR);
+
+      if ($currency = database::fetch($currency_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $currency), $this->data);
+      } else {
+        trigger_error('Could not find currency (Code: '. htmlspecialchars($currency_code) .') in database.', E_USER_ERROR);
+      }
     }
 
     public function save() {

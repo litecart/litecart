@@ -28,28 +28,36 @@
 
       while ($field = database::fetch($info_fields_query)) {
         if (in_array($field['Field'], array('id', 'quantity_unit_id', 'language_code'))) continue;
+
         $this->data[$field['Field']] = array();
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = '';
+          $this->data[$field['Field']][$language_code] = null;
         }
       }
     }
 
     public function load($quantity_unit_id) {
+
       $quantity_unit_query = database::query(
         "select * from ". DB_TABLE_QUANTITY_UNITS ."
         where id = '". (int)$quantity_unit_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($quantity_unit_query);
-      if (empty($this->data)) trigger_error('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.', E_USER_ERROR);
+
+      if ($quantity_unit = database::fetch($quantity_unit_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $quantity_unit), $this->data);
+      } else {
+        trigger_error('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.', E_USER_ERROR);
+      }
 
       $quantity_unit_info_query = database::query(
-        "select name, description, language_code from ". DB_TABLE_QUANTITY_UNITS_INFO ."
+        "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
         where quantity_unit_id = '". (int)$this->data['id'] ."';"
       );
+
       while ($quantity_unit_info = database::fetch($quantity_unit_info_query)) {
         foreach ($quantity_unit_info as $key => $value) {
+          if (in_array($key, array('id', 'quantity_unit_id', 'language_code'))) continue;
           $this->data[$key][$quantity_unit_info['language_code']] = $value;
         }
       }

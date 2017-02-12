@@ -60,7 +60,7 @@
       );
 
       if ($module = database::fetch($modules_query)) {
-        $this->data = array_replace($this->data, $module);
+        $this->data = array_intersect_key(array_merge($this->data, $module), $this->data);
       }
 
       $this->data['module_id'] = $module_id;

@@ -24,16 +24,22 @@
     }
 
     public function load($tax_rate_id) {
+
       $tax_rate_query = database::query(
         "select * from ". DB_TABLE_TAX_RATES ."
         where id = '". (int)$tax_rate_id ."'
         limit 1;"
       );
-      $this->data = database::fetch($tax_rate_query);
-      if (empty($this->data)) trigger_error('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.', E_USER_ERROR);
+
+      if ($tax_rate = database::fetch($tax_rate_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $tax_rate), $this->data);
+      } else {
+        trigger_error('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.', E_USER_ERROR);
+      }
     }
 
     public function save() {
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_TAX_RATES ."

@@ -32,8 +32,12 @@
         where iso_code_2 = '". database::input($country_code) ."'
         limit 1;"
       );
-      $this->data = database::fetch($country_query);
-      if (empty($this->data)) trigger_error('Could not find country (Code: '. htmlspecialchars($country_code) .') in database.', E_USER_ERROR);
+
+      if ($country = database::fetch($country_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $country), $this->data);
+      } else {
+        trigger_error('Could not find country (Code: '. htmlspecialchars($country_code) .') in database.', E_USER_ERROR);
+      }
 
       $zones_query = database::query(
         "select * from ". DB_TABLE_ZONES ."

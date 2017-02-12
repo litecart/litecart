@@ -36,33 +36,11 @@
         where id = '". database::input($customer_id) ."'
         limit 1;"
       );
-      $customer = database::fetch($customer_query);
-      if (empty($customer)) trigger_error('Could not find customer (ID: '. (int)$customer_id .') in database.', E_USER_ERROR);
 
-      $map = array(
-        'id',
-        'code',
-        'status',
-        'email',
-        'password',
-        'tax_id',
-        'company',
-        'firstname',
-        'lastname',
-        'address1',
-        'address2',
-        'postcode',
-        'country_code',
-        'zone_code',
-        'city',
-        'phone',
-        'mobile',
-        'different_shipping_address',
-        'newsletter',
-        'notes',
-      );
-      foreach ($map as $key) {
-        $this->data[$key] = $customer[$key];
+      if ($customer = database::fetch($customer_query)) {
+        $this->data = array_intersect_key(array_merge($this->data, $customer), $this->data);
+      } else {
+        trigger_error('Could not find customer (ID: '. (int)$customer_id .') in database.', E_USER_ERROR);
       }
 
       $key_map = array(
@@ -76,6 +54,7 @@
         'shipping_country_code' => 'country_code',
         'shipping_zone_code' => 'zone_code',
       );
+
       foreach ($key_map as $skey => $tkey) {
         $this->data['shipping_address'][$tkey] = $customer[$skey];
       }
