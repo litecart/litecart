@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     less: {
-      template_admin: {
+      litecart_admin_template_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.admin/css/printable.min.css' : 'public_html/includes/templates/default.admin/less/printable.less',
         }
       },
-      template_catalog: {
+      litecart_catalog_template_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -28,7 +28,29 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/css/framework.min.css' : 'public_html/includes/templates/default.catalog/less/framework.less',
           'public_html/includes/templates/default.catalog/css/printable.min.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
         }
-      }
+      },
+      featherlight_minified: {
+        options: {
+          compress: true,
+          sourceMap: true,
+          sourceMapBasepath: 'public_html/ext/featherlight/',
+          sourceMapRootpath: '/'
+        },
+        files: {
+          'public_html/ext/featherlight/featherlight.min.css'       : 'public_html/ext/featherlight/featherlight.less',
+        }
+      },
+      responsiveslides_minified: {
+        options: {
+          compress: true,
+          sourceMap: true,
+          sourceMapBasepath: 'public_html/ext/responsiveslides/',
+          sourceMapRootpath: '/'
+        },
+        files: {
+          'public_html/ext/responsiveslides/responsiveslides.min.css'       : 'public_html/ext/responsiveslides/responsiveslides.less',
+        }
+      },
     },
 
     uglify: {

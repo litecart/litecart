@@ -1,0 +1,133 @@
+/**
+ * Featherlight – ultra slim jQuery lightbox
+ * Version 1.7.0 - http://noelboss.github.io/featherlight/
+ *
+ * Copyright 2016, Noël Raoul Bossart (http://www.noelboss.com)
+ * MIT Licensed.
+**/
+
+body.featherlight-open {
+  /* prevent scrolling */
+  overflow: hidden;
+  padding-right: 15px;
+
+  > *:not(.featherlight):not(#animated-cart-item) {
+    /* blur backdrop */
+    filter: blur(3px);
+  }
+}
+
+.featherlight {
+  display: none;
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  overflow-y: auto;
+
+  text-align: center;
+  /* insures that the ::before pseudo element doesn't force wrap with fixed width content; */
+  white-space: nowrap;
+
+  cursor: pointer;
+  background: #333;
+  /* IE8 "hack" for nested featherlights */
+  background: rgba(0, 0, 0, 0);
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* support for nested featherlights. Does not work in IE8 (use JS to fix) */
+  &.active {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  &:before {
+    /* position: trick to center content vertically */
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  .featherlight-content {
+    position: relative;
+
+    /* position: centering vertical and horizontal */
+    text-align: left;
+    vertical-align: middle;
+    display: inline-block;
+
+    margin: 30px 15px;
+    padding: 15px;
+
+    background: #fff;
+    cursor: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border-radius: 0.25em;
+
+    /* reset white-space wrapping */
+    white-space: normal;
+
+    @media only screen and (min-width: 768px) {
+      margin: 30px;
+      padding: 15px;
+    }
+  }
+
+  .featherlight-close-icon {
+    /* position: centering vertical and horizontal */
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+
+    width: 25px;
+    line-height: 25px;
+    padding: 0;
+
+    cursor: pointer;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background: rgba(255, 255, 255, 0.3);
+    color: #000;
+    border: none;
+  }
+
+  /* See http://stackoverflow.com/questions/16077341/how-to-reset-all-default-styles-of-the-html5-button-element */
+  .featherlight-close-icon::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  .featherlight-content h1 {
+    margin-top: 0;
+  }
+
+  .featherlight-content > img {
+    max-width: 100%;
+  }
+
+  .featherlight-content > iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}
+
+/* Stacked modals */
+.featherlight {
+   perspective: 2048px;
+
+  .featherlight-content {
+    transition: all 0.25s linear;
+    transform: -400px;
+    transform: scale(0.8) rotateY(45deg) translateZ(-400px);
+    transform-style: preserve-3d;
+    filter: blur(2px);
+  }
+
+  &.active .featherlight-content {
+    transform: none !important;
+    filter: none !important;
+  }
+}
