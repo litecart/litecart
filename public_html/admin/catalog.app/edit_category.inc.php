@@ -231,8 +231,20 @@
 
 <?php echo functions::form_draw_form_end(); ?>
 
-<?php if (!empty($category->data['id'])) { ?>
 <script>
+  <?php if (!empty($category->data['id'])) { ?>
   $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
+  <?php } ?>
+
+  $('input[name^="name"]').bind('input propertyChange', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    console.log($(this).val());
+    $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+    $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+
+  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
 </script>
-<?php } ?>

@@ -173,3 +173,10 @@
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<script>
+  $('input[name="name"]').bind('input propertyChange', function(e){
+    $('input[name^="head_title"]').attr('placeholder', $(this).val());
+    $('input[name^="h1_title"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+</script>

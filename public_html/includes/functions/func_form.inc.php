@@ -448,7 +448,7 @@
                                         . "    }," . PHP_EOL
                                         . "    semantic: false," . PHP_EOL
                                         . "    removeformatPasted: true," . PHP_EOL
-                                        . "    btns: [['viewHTML'], ['formatting'], 'btnGrp-design', ['link'], ['image'], 'btnGrp-justify', 'btnGrp-lists', ['foreColor', 'backColor'], ['preformatted'], ['horizontalRule'], ['fullscreen']]" . PHP_EOL
+                                        . "    btns: [['viewHTML'], ['formatting'], 'btnGrp-design', ['link'], ['image'], ['justifyLeft', 'justifyCenter', 'justifyRight'], 'btnGrp-lists', ['foreColor', 'backColor'], ['preformatted'], ['horizontalRule'], ['fullscreen']]" . PHP_EOL
                                         . "  });";
 
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';

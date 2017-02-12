@@ -94,10 +94,6 @@
                 <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
-                <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
-                <td style="text-align: right;"><?php echo (int)$stats['num_orders']; ?></td>
-              </tr>
-              <tr>
                 <td><?php echo language::translate('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>
                 <td style="text-align: right;"><?php echo (int)$stats['num_customers']; ?></td>
               </tr>
@@ -107,6 +103,10 @@
         <div class="col-md-6">
           <table class="table table-striped data-table">
             <tbody>
+              <tr>
+                <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
+                <td style="text-align: right;"><?php echo (int)$stats['num_orders']; ?></td>
+              </tr>
               <tr>
                 <td><?php echo language::translate('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders'); ?>:</td>
                 <td style="text-align: right;"><?php echo $stats['average_order_count']; ?></td>

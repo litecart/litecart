@@ -378,17 +378,6 @@
       </div>
 
       <div id="tab-information" class="tab-pane" style="max-width: 640px;">
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
-          </div>
-        </div>
 
         <div class="row">
           <div class="form-group col-md-6">
@@ -425,8 +414,20 @@
 
         <div class="row">
           <div class="form-group col-md">
-            <label><?php echo language::translate('title_attributes', 'Attributes'); ?> (<a class="attributes-hint" href="#">?</a>)</label>
+            <label><?php echo language::translate('title_attributes', 'Attributes'); ?> <a class="attributes-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
             <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'style="height: 250px;"'); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
           </div>
         </div>
       </div>
@@ -671,6 +672,20 @@ foreach (currency::$currencies as $currency) {
 
 <script>
 
+// Initiate
+
+  $('input[name^="name"]').bind('input propertyChange', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    console.log($(this).val());
+    $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+    $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+
+  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+
 // Default Category
 
   $('input[name="categories[]"]').change(function() {
@@ -760,7 +775,8 @@ foreach (currency::$currencies as $currency) {
 
 // Attributes
 
-  $('a.attributes-hint').click(function(){
+  $('a.attributes-hint').click(function(e){
+    e.preventDefault();
     alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\n\nTitle2\nProperty3: Value3...');
   });
 

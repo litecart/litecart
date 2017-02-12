@@ -91,8 +91,8 @@
     '@context' => 'http://schema.org/',
     '@type' => 'Product',
     'name' => $product->name,
-    'image' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
-    'description' => !empty($product->short_description) ? $product->short_description : '',
+    'image' => document::link(!empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png'),
+    'description' => !empty($product->description) ? strip_tags($product->description) : '',
     'brand' => array(),
     'offers' => array(
       '@type' => 'Offer',
