@@ -34,6 +34,7 @@
             case 'shipping_city':
             case 'shipping_country_code':
             case 'shipping_zone_code':
+            case 'shipping_phone':
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field['Field']);
               $this->data['customer']['shipping_address'][$field] = null;
               break;
@@ -95,6 +96,7 @@
             case 'shipping_city':
             case 'shipping_country_code':
             case 'shipping_zone_code':
+            case 'shipping_phone':
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
               $this->data['customer']['shipping_address'][$field] = $value;
               break;
@@ -220,6 +222,7 @@
         shipping_postcode = '". database::input($this->data['customer']['shipping_address']['postcode']) ."',
         shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
         shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
+        shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
         shipping_option_id = '". database::input($this->data['shipping']['option_id']) ."',
         shipping_option_name = '". database::input($this->data['shipping']['option_name']) ."',
         shipping_tracking_id = '". database::input($this->data['shipping']['tracking_id']) ."',

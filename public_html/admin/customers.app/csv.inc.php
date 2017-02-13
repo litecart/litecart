@@ -118,7 +118,6 @@
         'country_code' => $customer['country_code'],
         'zone_code' => $customer['zone_code'],
         'phone' => $customer['phone'],
-        'mobile' => $customer['mobile'],
         'newsletter' => $customer['newsletter'],
         'notes' => $customer['notes'],
       );

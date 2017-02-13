@@ -47,7 +47,6 @@
       'country_code',
       'zone_code',
       'phone',
-      'mobile',
       'different_shipping_address',
     );
 
@@ -66,6 +65,7 @@
       'city',
       'country_code',
       'zone_code',
+      'phone',
     );
 
     foreach ($fields as $field) {

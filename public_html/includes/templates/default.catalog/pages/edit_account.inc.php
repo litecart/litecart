@@ -92,11 +92,6 @@
           <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
           <?php echo functions::form_draw_phone_field('phone', true, 'required="required" placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
         </div>
-
-        <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_mobile_phone', 'Mobile Phone'); ?></label>
-          <?php echo functions::form_draw_phone_field('mobile', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
-        </div>
       </div>
 
       <div class="row">

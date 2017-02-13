@@ -185,6 +185,16 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-sm-halfs">
+          <div class="form-group">
+            <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+              <?php echo functions::form_draw_phone_field('shipping_address[phone]', true, 'required="required"'); ?>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

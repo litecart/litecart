@@ -22,7 +22,6 @@
     'country_code' => !empty($customer['country_code']) ? $customer['country_code'] : '',
     'zone_code' => !empty($customer['zone_code']) ? $customer['zone_code'] : '',
     'phone' => !empty($customer['phone']) ? $customer['phone'] : '',
-    'mobile' => !empty($customer['mobile']) ? $customer['mobile'] : '',
     'email' => !empty($customer['email']) ? $customer['email'] : '',
   );
 

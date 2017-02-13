@@ -68,7 +68,6 @@
         'country_code',
         'zone_code',
         'phone',
-        'mobile',
         'newsletter',
       );
 

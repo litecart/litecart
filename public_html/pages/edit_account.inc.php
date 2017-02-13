@@ -67,7 +67,6 @@
         'country_code',
         'zone_code',
         'phone',
-        'mobile',
         'different_shipping_address',
         'newsletter',
       );
@@ -86,6 +85,7 @@
         'city',
         'country_code',
         'zone_code',
+        'phone',
       );
       foreach ($fields as $field) {
         if (isset($_POST['shipping_address'][$field])) $customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field];

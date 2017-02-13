@@ -23,7 +23,6 @@
     'country_code' => isset($result['country_code']) ? $result['country_code'] : '',
     'zone_code' => isset($result['zone_code']) ? $result['zone_code'] : '',
     'phone' => isset($result['phone']) ? $result['phone'] : '',
-    'mobile' => isset($result['mobile']) ? $result['mobile'] : '',
     'email' => isset($result['email']) ? $result['email'] : '',
     'alert' => isset($result['alert']) ? $result['alert'] : '',
   );

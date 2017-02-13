@@ -53,6 +53,7 @@
         'shipping_city' => 'city',
         'shipping_country_code' => 'country_code',
         'shipping_zone_code' => 'zone_code',
+        'shipping_phone' => 'phone',
       );
 
       foreach ($key_map as $skey => $tkey) {
@@ -96,7 +97,6 @@
           country_code = '". database::input($this->data['country_code']) ."',
           zone_code = '". database::input($this->data['zone_code']) ."',
           phone = '". database::input($this->data['phone']) ."',
-          mobile = '". database::input($this->data['mobile']) ."',
           different_shipping_address = '". (!empty($this->data['different_shipping_address']) ? '1' : '0') ."',
           shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
           shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
@@ -107,6 +107,7 @@
           shipping_city = '". database::input($this->data['shipping_address']['city']) ."',
           shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
           shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
+          shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
           newsletter = '". (!empty($this->data['newsletter']) ? '1' : '0') ."',
           notes = '". database::input($this->data['notes']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'

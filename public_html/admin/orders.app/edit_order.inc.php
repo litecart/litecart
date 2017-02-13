@@ -77,7 +77,6 @@
         'postcode',
         'city',
         'phone',
-        'mobile',
         'country_code',
         'zone_code',
       );
@@ -96,9 +95,7 @@
         'city',
         'country_code',
         'zone_code',
-        'option_id',
-        'option_name',
-        'tracking_id',
+        'phone',
       );
 
       foreach ($fields as $field) {
@@ -452,6 +449,13 @@
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
                   <?php echo form_draw_zones_list(isset($_POST['customer']['shipping_address']['country_code']) ? $_POST['customer']['shipping_address']['country_code'] : null, 'customer[shipping_address][zone_code]', true); ?>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+                  <?php echo functions::form_draw_phone_field('customer[shipping_address][phone]', true); ?>
                 </div>
               </div>
             </div>
@@ -810,7 +814,7 @@
   });
 
   $('#customer-details button[name="copy_billing_address"]').click(function(){
-    fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code'];
+    fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
     $.each(fields, function(key, field){
       $('*[name="customer[shipping_address]['+ field +']"]').val($('*[name="customer['+ field +']"]').val()).trigger('change');
     });

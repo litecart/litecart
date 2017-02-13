@@ -36,7 +36,6 @@
         'country_code',
         'zone_code',
         'phone',
-        'mobile',
         'newsletter',
         'notes',
       );
@@ -185,11 +184,6 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
             <?php echo functions::form_draw_phone_field('phone', true); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_mobile', 'Mobile'); ?></label>
-            <?php echo functions::form_draw_phone_field('mobile', true); ?>
           </div>
         </div>
 

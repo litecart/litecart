@@ -67,7 +67,6 @@
             'zone_code',
             'city',
             'phone',
-            'mobile',
             'different_shipping_address',
             'newsletter',
           );
@@ -85,6 +84,7 @@
             'shipping_city' => 'city',
             'shipping_country_code' => 'country_code',
             'shipping_zone_code' => 'zone_code',
+            'shipping_phone' => 'phone',
           );
           foreach ($key_map as $skey => $tkey) {
             $this->_data['shipping_address'][$tkey] = $row[$skey];
