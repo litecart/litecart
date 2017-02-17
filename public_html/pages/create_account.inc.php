@@ -1,9 +1,5 @@
 <?php
 
-  if (empty($_POST)) {
-    $_POST['newsletter'] = '1';
-  }
-
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   document::$snippets['title'][] = language::translate('title_create_account', 'Create Account');
@@ -14,6 +10,7 @@
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
     }
+    $_POST['newsletter'] = '1';
   }
 
   if (!empty(customer::$data['id'])) {
