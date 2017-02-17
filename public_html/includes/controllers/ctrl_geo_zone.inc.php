@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($geo_zone_id=null) {
+
       if ($geo_zone_id !== null) {
         $this->load((int)$geo_zone_id);
       } else {

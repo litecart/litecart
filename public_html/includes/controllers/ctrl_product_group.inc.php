@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($group_id=null) {
+
       if ($group_id !== null) {
         $this->load((int)$group_id);
       } else {

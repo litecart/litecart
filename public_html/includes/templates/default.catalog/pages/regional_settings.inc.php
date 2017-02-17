@@ -40,7 +40,9 @@
         </div>
       </div>
 
+      <div class="btn-group btn-block">
       <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?>
+      </div>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>

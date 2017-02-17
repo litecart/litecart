@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($sold_out_status_id=null) {
+
       if ($sold_out_status_id !== null) {
         $this->load((int)$sold_out_status_id);
       } else {

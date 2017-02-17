@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($quantity_unit_id=null) {
+
       if ($quantity_unit_id !== null) {
         $this->load((int)$quantity_unit_id);
       } else {

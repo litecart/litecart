@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($slide_id=null) {
+
       if ($slide_id !== null) {
         $this->load((int)$slide_id);
       } else {

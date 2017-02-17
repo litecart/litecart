@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($supplier_id=null) {
+
       if (!empty($supplier_id)) {
         $this->load((int)$supplier_id);
       } else {

@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($page_id=null) {
+
       if ($page_id !== null) {
         $this->load((int)$page_id);
       } else {

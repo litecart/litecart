@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($manufacturer_id='') {
+
       if (!empty($manufacturer_id)) {
         $this->load($manufacturer_id);
       } else {

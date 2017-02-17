@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($order_status_id=null) {
+
       if ($order_status_id !== null) {
         $this->load((int)$order_status_id);
       } else {

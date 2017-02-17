@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($tax_class_id=null) {
+
       if ($tax_class_id !== null) {
         $this->load((int)$tax_class_id);
       } else {

@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($language_code=null) {
+
       if ($language_code !== null) {
         $this->load($language_code);
       } else {

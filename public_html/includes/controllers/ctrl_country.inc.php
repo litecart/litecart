@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($country_code=null) {
+
       if ($country_code !== null) {
         $this->load($country_code);
       } else {

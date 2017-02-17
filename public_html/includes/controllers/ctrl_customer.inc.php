@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($customer_id=null) {
+
       if ($customer_id !== null) {
         $this->load((int)$customer_id);
       } else {

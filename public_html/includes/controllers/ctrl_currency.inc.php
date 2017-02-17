@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($currency_code=null) {
+
       if ($currency_code !== null) {
         $this->load($currency_code);
       } else {

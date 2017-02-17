@@ -4,6 +4,7 @@
     public $data;
 
     public function __construct($product_id=null) {
+
       if (!empty($product_id)) {
         $this->load((int)$product_id);
       } else {
