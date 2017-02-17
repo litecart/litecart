@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_customer {
-    public $data = array();
+    public $data;
 
     public function __construct($customer_id=null) {
       if ($customer_id !== null) {
@@ -30,6 +30,8 @@
     }
 
     public function load($customer_id) {
+
+      $this->reset();
 
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."

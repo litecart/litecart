@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_slide {
-    public $data = array();
+    public $data;
 
     public function __construct($slide_id=null) {
       if ($slide_id !== null) {
@@ -24,6 +24,8 @@
     }
 
     public function load($slide_id) {
+
+      $this->reset();
 
       $slide_query = database::query(
         "select * from ". DB_TABLE_SLIDES ."

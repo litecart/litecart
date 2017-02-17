@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_geo_zone {
-    public $data = array();
+    public $data;
 
     public function __construct($geo_zone_id=null) {
       if ($geo_zone_id !== null) {
@@ -26,6 +26,8 @@
     }
 
     public function load($geo_zone_id) {
+
+      $this->reset();
 
       $geo_zone_query = database::query(
         "select * from ". DB_TABLE_GEO_ZONES ."

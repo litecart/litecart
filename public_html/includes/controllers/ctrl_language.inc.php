@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_language {
-    public $data = array();
+    public $data;
 
     public function __construct($language_code=null) {
       if ($language_code !== null) {
@@ -24,6 +24,8 @@
     }
 
     public function load($language_code) {
+
+      $this->reset();
 
       if (!preg_match('#[a-z]{2}#', $language_code)) trigger_error('Invalid language code ('. $language_code .')', E_USER_ERROR);
 

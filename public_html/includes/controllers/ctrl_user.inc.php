@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_user {
-    public $data = array();
+    public $data;
 
     public function __construct($user_id=null) {
       if ($user_id !== null) {

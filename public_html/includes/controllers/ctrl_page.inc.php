@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_page {
-    public $data = array();
+    public $data;
 
     public function __construct($page_id=null) {
       if ($page_id !== null) {
@@ -39,6 +39,8 @@
     }
 
     public function load($page_id) {
+
+      $this->reset();
 
       $page_query = database::query(
         "select * from ". DB_TABLE_PAGES ."

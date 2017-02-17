@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_manufacturer {
-    public $data = array();
+    public $data;
 
     public function __construct($manufacturer_id='') {
       if (!empty($manufacturer_id)) {
@@ -36,6 +36,8 @@
     }
 
     public function load($manufacturer_id) {
+
+      $this->reset();
 
       $manufacturers_query = database::query(
         "select * from ". DB_TABLE_MANUFACTURERS ."

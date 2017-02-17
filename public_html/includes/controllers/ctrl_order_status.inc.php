@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_order_status {
-    public $data = array();
+    public $data;
 
     public function __construct($order_status_id=null) {
       if ($order_status_id !== null) {
@@ -37,6 +37,8 @@
     }
 
     public function load($order_status_id) {
+
+      $this->reset();
 
       $order_status_query = database::query(
         "select * from ". DB_TABLE_ORDER_STATUSES ."

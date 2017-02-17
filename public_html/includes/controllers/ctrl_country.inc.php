@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_country {
-    public $data = array();
+    public $data;
 
     public function __construct($country_code=null) {
       if ($country_code !== null) {
@@ -24,6 +24,8 @@
     }
 
     public function load($country_code) {
+
+      $this->reset();
 
       if (!preg_match('#[A-Z]{2}#', $country_code)) trigger_error('Invalid country code ('. $country_code .')', E_USER_ERROR);
 

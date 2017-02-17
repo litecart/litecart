@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_quantity_unit {
-    public $data = array();
+    public $data;
 
     public function __construct($quantity_unit_id=null) {
       if ($quantity_unit_id !== null) {
@@ -37,6 +37,8 @@
     }
 
     public function load($quantity_unit_id) {
+
+      $this->reset();
 
       $quantity_unit_query = database::query(
         "select * from ". DB_TABLE_QUANTITY_UNITS ."

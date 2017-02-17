@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_product_group {
-    public $data = array();
+    public $data;
 
     public function __construct($group_id=null) {
       if ($group_id !== null) {
@@ -39,6 +39,8 @@
     }
 
     public function load($group_id) {
+
+      $this->reset();
 
       $group_query = database::query(
         "select * from ". DB_TABLE_PRODUCT_GROUPS ."

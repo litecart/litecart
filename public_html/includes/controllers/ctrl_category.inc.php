@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_category {
-    public $data = array();
+    public $data;
 
     public function __construct($category_id=null) {
 

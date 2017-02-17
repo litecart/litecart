@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_supplier {
-    public $data = array();
+    public $data;
 
     public function __construct($supplier_id=null) {
       if (!empty($supplier_id)) {
@@ -24,6 +24,8 @@
     }
 
     public function load($supplier_id) {
+
+      $this->reset();
 
       $supplier_query = database::query(
         "select * from ". DB_TABLE_SUPPLIERS ."

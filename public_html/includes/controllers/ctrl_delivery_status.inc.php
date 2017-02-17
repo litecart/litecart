@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_delivery_status {
-    public $data = array();
+    public $data;
 
     public function __construct($delivery_status_id=null) {
       if ($delivery_status_id !== null) {
@@ -37,6 +37,8 @@
     }
 
     public function load($delivery_status_id) {
+
+      $this->reset();
 
       $delivery_status_query = database::query(
         "select * from ". DB_TABLE_DELIVERY_STATUSES ."

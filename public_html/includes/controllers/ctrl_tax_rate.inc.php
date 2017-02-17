@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_tax_rate {
-    public $data = array();
+    public $data;
 
     public function __construct($tax_rate_id=null) {
       if ($tax_rate_id !== null) {
@@ -24,6 +24,8 @@
     }
 
     public function load($tax_rate_id) {
+
+      $this->reset();
 
       $tax_rate_query = database::query(
         "select * from ". DB_TABLE_TAX_RATES ."

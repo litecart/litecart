@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_currency {
-    public $data = array();
+    public $data;
 
     public function __construct($currency_code=null) {
       if ($currency_code !== null) {
@@ -24,6 +24,8 @@
     }
 
     public function load($currency_code) {
+
+      $this->reset();
 
       if (!preg_match('#[A-Z]{3}#', $currency_code)) trigger_error('Invalid currency code ('. $currency_code .')', E_USER_ERROR);
 

@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_option_group {
-    public $data = array();
+    public $data;
 
     public function __construct($group_id=null) {
       if ($group_id !== null) {
@@ -40,6 +40,8 @@
     }
 
     public function load($group_id) {
+
+      $this->reset();
 
       $option_group_query = database::query(
         "select * from ". DB_TABLE_OPTION_GROUPS ."

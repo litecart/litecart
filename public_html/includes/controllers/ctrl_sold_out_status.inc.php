@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_sold_out_status {
-    public $data = array();
+    public $data;
 
     public function __construct($sold_out_status_id=null) {
       if ($sold_out_status_id !== null) {
@@ -37,6 +37,8 @@
     }
 
     public function load($sold_out_status_id) {
+
+      $this->reset();
 
       $sold_out_status_query = database::query(
         "select * from ". DB_TABLE_SOLD_OUT_STATUSES ."

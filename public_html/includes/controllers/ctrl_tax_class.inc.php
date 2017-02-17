@@ -1,7 +1,7 @@
 <?php
 
   class ctrl_tax_class {
-    public $data = array();
+    public $data;
 
     public function __construct($tax_class_id=null) {
       if ($tax_class_id !== null) {
@@ -24,6 +24,8 @@
     }
 
     public function load($tax_class_id) {
+
+      $this->reset();
 
       $tax_class_query = database::query(
         "select * from ". DB_TABLE_TAX_CLASSES ."
