@@ -77,9 +77,9 @@
         );
 
         while ($value_info = database::fetch($values_info_query)) {
-          foreach ($value_info as $key => $value) {
+          foreach (array_keys($value_info) as $key) {
             if (in_array($key, array('id', 'product_group_value_id', 'language_code'))) continue;
-            $this->data['values'][$value['id']][$key][$value_info['language_code']] = $value_info['name'];
+            $this->data['values'][$value['id']][$key][$value_info['language_code']] = $value_info[$key];
           }
         }
       }
