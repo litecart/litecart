@@ -36,7 +36,7 @@
       if (empty($this->modules)) return;
 
       foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], $method_name)) {
+        if (method_exists($this->modules[$module_id], 'validate')) {
           if ($result = $module->validate($order)) return $result;
         }
       }
@@ -47,7 +47,7 @@
       if (empty($this->modules)) return;
 
       foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], $method_name)) $module->before_process($order);
+        if (method_exists($this->modules[$module_id], 'before_process')) $module->before_process($order);
       }
     }
 
@@ -56,7 +56,7 @@
       if (empty($this->modules)) return;
 
       foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], $method_name)) $module->after_process($order);
+        if (method_exists($this->modules[$module_id], 'after_process')) $module->after_process($order);
       }
     }
 
@@ -67,8 +67,8 @@
       $output = '';
 
       foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], $method_name)) {
-          if ($data = $module->after_process($order)) {
+        if (method_exists($this->modules[$module_id], 'success')) {
+          if ($data = $module->success($order)) {
             $output .= $data;
           }
         }
