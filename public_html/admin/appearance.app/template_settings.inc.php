@@ -4,7 +4,7 @@
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
 
 // Get settings from database
-  $settings = unserialize(settings::get('store_template_catalog_settings'));
+  $settings = json_decode(settings::get('store_template_catalog_settings'), true);
 
 // Build template settings
   foreach (array_keys($template_config) as $i) {
@@ -21,7 +21,7 @@
     database::query(
       "update ". DB_TABLE_SETTINGS ."
       set
-        `value` = '". database::input(serialize($new_settings)) ."',
+        `value` = '". database::input(json_encode($new_settings)) ."',
         date_updated = '". date('Y-m-d H:i:s') ."'
       where `key` = '". database::input('store_template_catalog_settings') ."'
       limit 1;"

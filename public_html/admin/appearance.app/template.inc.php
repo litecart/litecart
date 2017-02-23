@@ -30,7 +30,7 @@
         database::query(
           "update ". DB_TABLE_SETTINGS ."
           set
-            `value` = '". database::input(serialize($settings)) ."',
+            `value` = '". database::input(json_encode($settings)) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
           where `key` = '". database::input('store_template_catalog_settings') ."'
           limit 1;"

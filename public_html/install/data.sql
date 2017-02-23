@@ -359,6 +359,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'global', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', '', 0, NOW(), NOW()),
 ('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'templates("catalog")', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'templates("admin")', 0, NOW(), NOW()),
-('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', 0, NOW(), NOW()),
+('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"product_modal_window":"1","sidebar_parallax_effect":"1","cookie_acceptance":"1"}', '', 0, NOW(), NOW()),
 ('', 'global', 'Jobs Last Push', 'Time when background jobs where last pushed for execution.', 'jobs_last_push', NOW(), 'input()', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());

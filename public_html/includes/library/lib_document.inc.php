@@ -63,7 +63,11 @@
       }
 
     // Get template settings
-      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
+      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
+      self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
+      foreach (array_keys($template_config) as $i) {
+        if (!isset(self::$settings[$template_config[$i]['key']])) self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
+      }
 
     // LiteCart JavaScript Environment
       $config = array(
