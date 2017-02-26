@@ -6,7 +6,7 @@
   <!--snippet:notices-->
   <!--snippet:breadcrumbs-->
 
-  <div class="box-reset-password" class="box">
+  <div id="box-reset-password" class="box">
 
     <h2 class="title"><?php echo language::translate('title_reset_password', 'Reset Password'); ?></h2>
 

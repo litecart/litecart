@@ -23,6 +23,6 @@
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     echo $_page->stitch('pages/login.ajax');
   } else {
-  echo $_page->stitch('pages/login');
+    echo $_page->stitch('pages/login');
   }
 ?>
