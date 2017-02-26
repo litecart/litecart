@@ -73,7 +73,7 @@
 
     if (!$('body > .loader-wrapper').length) {
       var progress_bar = '<div class="loader-wrapper">' +
-                         '  <img class="loader" style="width: 256px; height: 256px;" alt="" />' +
+                         '  <div class="loader" style="width: 256px; height: 256px;"></div>' +
                          '</div>';
       $('body').append(progress_bar);
     }

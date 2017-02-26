@@ -24,7 +24,7 @@ $(document).ready(function(){
     if ($(this).val() != '') {
       if (!$('#search .loader-wrapper').length) {
         $('#box-apps-menu').fadeOut('fast');
-        $('#search .results').show().html('<div class="loader-wrapper text-center"><img class="loader" style="width: 48px; height: 48px;" alt="" /></div>');
+        $('#search .results').show().html('<div class="loader-wrapper text-center"><div class="loader" style="width: 48px; height: 48px;"></div></div>');
       }
       var query = $(this).val();
 

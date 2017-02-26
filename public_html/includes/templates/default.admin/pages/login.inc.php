@@ -255,7 +255,7 @@ body {
 </svg>
 
 <div class="loader-wrapper">
-  <img class="loader" style="width: 128px; height: 128px;" alt="" />
+  <div class="loader" style="width: 128px; height: 128px;"></div>
 </div>
 
 <div id="box-login-wrapper">
