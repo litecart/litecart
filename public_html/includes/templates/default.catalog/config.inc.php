@@ -14,5 +14,12 @@
       'description' => language::translate(__CLASS__.':description_sidebar_parallax_effect', 'Enables or disables the sidebar parallax effect.'),
       'function' => 'toggle("e/d")',
     ),
+    array(
+      'key' => 'cookie_acceptance',
+      'default_value' => '1',
+      'title' => language::translate(__CLASS__.':title_cookie_acceptance', 'Cookie Acceptance'),
+      'description' => language::translate(__CLASS__.':description_cookie_acceptance', 'Enables or disables the cookie acceptance notice.'),
+      'function' => 'toggle("e/d")',
+    ),
   );
 ?>

@@ -60,7 +60,7 @@ ALTER TABLE `lc_sold_out_statuses_info` ADD UNIQUE INDEX `sold_out_status_info` 
 -- --------------------------------------------------------
 ALTER TABLE `lc_zones_to_geo_zones` ADD UNIQUE INDEX `region` (`geo_zone_id`, `country_code`, `zone_code`);
 -- --------------------------------------------------------
-DELETE FROM `lc_settings` where `key` IN ('order_action_modules', 'order_success_modules');
+DELETE FROM `lc_settings` where `key` IN ('order_action_modules', 'order_success_modules', 'cookie_acceptance');
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('', 'local', 'Installed Order Modules', '', 'order_modules', '', '', 0, NOW(), NOW()),
