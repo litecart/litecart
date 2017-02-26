@@ -7,17 +7,17 @@
   system::run('after_capture');
 
 // Stitch content
-  $page = new view();
-  $page->snippets = array('content' => $content);
-  $output = $page->stitch('layouts/'.document::$layout);
+  $_page = new view();
+  $_page->snippets = array('content' => $content);
+  $output = $_page->stitch('layouts/'.document::$layout);
 
 // Prepare output
   system::run('prepare_output');
 
 // Stitch global snippets
-  $page->snippets = document::$snippets;
-  $page->html = $output;
-  $output = $page->stitch();
+  $_page->snippets = document::$snippets;
+  $_page->html = $output;
+  $output = $_page->stitch();
 
 // Run before output processes
   system::run('before_output');
