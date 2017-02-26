@@ -20,6 +20,62 @@ ALTER TABLE `lc_countries` CHANGE COLUMN `postcode_required` `postcode_required`
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`, ADD COLUMN `password_reset_token` VARCHAR(128) NOT NULL AFTER `notes`, CHANGE COLUMN `mobile` `shipping_phone` VARCHAR(24) NOT NULL AFTER `shipping_zone_code`;
 -- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(AT)?U[0-9]{8}$' WHERE iso_code_2 = 'AT' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(BE)?0[0-9]{9}$' WHERE iso_code_2 = 'BE' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(BG)?[0-9]{9,10}$' WHERE iso_code_2 = 'BG' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(CY)?[0-9]{8}L$' WHERE iso_code_2 = 'CY' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(CZ)?[0-9]{8,10}$' WHERE iso_code_2 = 'CZ' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(DE)?[0-9]{9}$' WHERE iso_code_2 = 'DE' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(DK)?[0-9]{8}$' WHERE iso_code_2 = 'DK' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(EE)?[0-9]{9}$' WHERE iso_code_2 = 'EE' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(ES)?[0-9A-Z][0-9]{7}[0-9A-Z]$' WHERE iso_code_2 = 'ES' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(FI)?[0-9]{8}$' WHERE iso_code_2 = 'FI' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(FR)?[0-9A-Z]{2}[0-9]{9}$' WHERE iso_code_2 = 'FR' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$' WHERE iso_code_2 = 'GB' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(EL|GR)?[0-9]{9}$' WHERE iso_code_2 = 'GR' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(HR)?[0-9]{11}$' WHERE iso_code_2 = 'HR' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(HU)?[0-9]{8}$' WHERE iso_code_2 = 'HU' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(IE)?[0-9]S[0-9]{5}L$' WHERE iso_code_2 = 'IE' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(IT)?[0-9]{11}$' WHERE iso_code_2 = 'IT' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(LT)?([0-9]{9}|[0-9]{12})$' WHERE iso_code_2 = 'LT' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(LU)?[0-9]{8}$' WHERE iso_code_2 = 'LU' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(LV)?[0-9]{11}$' WHERE iso_code_2 = 'LV' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(MT)?[0-9]{8}$' WHERE iso_code_2 = 'MT' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(NL)?[0-9]{9}B[0-9]{2}$' WHERE iso_code_2 = 'NL' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(PL)?[0-9]{10}$' WHERE iso_code_2 = 'PL' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(PT)?[0-9]{9}$' WHERE iso_code_2 = 'PT' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(RO)?[0-9]{2,10}$' WHERE iso_code_2 = 'RO' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(SE)?(16|19|20)?[0-9]{6}-?[0-9]{4}?(01)?$' WHERE iso_code_2 = 'SE' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(SI)?[0-9]{8}$' WHERE iso_code_2 = 'SI' AND tax_id_format != '';
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET tax_id_format = '^(SK)?[0-9]{10}$' WHERE iso_code_2 = 'SK' AND tax_id_format != '';
+-- --------------------------------------------------------
 ALTER TABLE `lc_delivery_statuses_info` ADD UNIQUE INDEX `delivery_status_info` (`delivery_status_id`, `language_code`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_geo_zones` ADD COLUMN `code` VARCHAR(32) NOT NULL AFTER `id`;
