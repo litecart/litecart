@@ -106,7 +106,6 @@ $(document).ready(function(){
   });
 
   $('[data-toggle="buttons"] [data-type="toggle"]').click(function(){
-    console.log($(this).closest('.btn').addClass('active'));
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
