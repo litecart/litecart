@@ -3,7 +3,6 @@
   class ref_country {
 
     private $_country_code;
-    private $_cache_id;
     private $_language_codes;
     private $_data = array();
 
@@ -12,11 +11,6 @@
       if (!preg_match('#[A-Z]{2}#', $country_code)) trigger_error('Invalid country code ('. $country_code .')', E_USER_ERROR);
 
       $this->_country_code = $country_code;
-      $this->_cache_id = cache::cache_id('country_'.(int)$country_code);
-
-      if ($cache = cache::get($this->_cache_id, 'file')) {
-        $this->_data = $cache;
-      }
     }
 
     public function &__get($name) {
@@ -78,8 +72,6 @@
 
           break;
       }
-
-      cache::set($this->_cache_id, 'file', $this->_data);
     }
 
     public function format_address($address) {
