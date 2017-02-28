@@ -6,7 +6,7 @@ INSERT INTO `lc_categories_info` (`id`, `category_id`, `language_code`, `name`, 
 (1, 1, 'en', 'Rubber Ducks', '', '', '', '', ''),
 (2, 2, 'en', 'Subcategory', '', '', '', '', '');
 -- --------------------------------------------------------
-INSERT INTO `lc_customers` (`id`, `code`, `status`, `email`, `password`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `phone`, `newsletter`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_customers` (`id`, `code`, `status`, `email`, `password`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `newsletter`, `date_updated`, `date_created`) VALUES
 (1, '', 1, 'user@email.com', '000000000000000000000000000000000000000000000000', '0000000000', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'XX1 X1', 'London', 'GB', '', '1-555-123-4567', 0, '', '', '', '', '', '', '', '', '', '', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
