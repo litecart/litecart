@@ -8,7 +8,7 @@
   document::$snippets['title'][] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])) : language::translate('title_search_results', 'Search Results');
 
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
-  breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all Products', 'All Products'));
+  breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all_products', 'All Products'));
 
   functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
 
