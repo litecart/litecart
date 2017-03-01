@@ -58,7 +58,7 @@
     if (!empty($icon)) {
       switch($icon) {
         case 'add':
-          $icon = functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"');
+          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
           break;
         case 'cancel':
           $icon = functions::draw_fonticon('fa-times');
@@ -208,7 +208,7 @@
     if (!empty($icon)) {
       switch($icon) {
         case 'add':
-          $icon = functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"');
+          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
           break;
         case 'cancel':
           $icon = functions::draw_fonticon('fa-times');
