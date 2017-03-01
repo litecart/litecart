@@ -34,7 +34,7 @@
       <div class="col-sm-6 col-md-4 col-lg-3">
         <ul class="list-unstyled">
           <?php foreach ($columns[$key] as $item) { ?>
-          <li style="margin-bottom: 0.5em; white-space: word-wrap; text-overflow: ellipsis;">
+          <li style="white-space: word-wrap; text-overflow: ellipsis;">
             <a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
             <span style="color: #777;"><?php echo strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></span>
           </li>

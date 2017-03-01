@@ -42,10 +42,10 @@
   <div class="panel-body">
     <div class="row">
       <?php foreach (array_keys($columns) as $key) { ?>
-      <div class="col-sm-4 col-md-3 col-lg-2">
+      <div class="col-sm-6 col-md-4 col-lg-3">
         <ul class="list-unstyled">
           <?php foreach ($columns[$key] as $item) { ?>
-          <li style="margin-bottom: 0.5em;">
+          <li style="white-space: word-wrap; text-overflow: ellipsis;">
             <?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
             <span style="color: #666;"><?php echo (string)$item->description; ?></span>
           </li>
