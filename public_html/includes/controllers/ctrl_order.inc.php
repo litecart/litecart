@@ -503,6 +503,13 @@
     // Validate items
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
 
+      foreach ($this->data['items'] as $item) {
+        if (empty($item['product_id'])) continue;
+        if ($item_error = cart::validate_product($item['product_id'], $item['options'], $item['quantity'])) {
+          return language::translate('error_cart_contians_errors', 'Your cart contains errors');
+        }
+      }
+
     // Validate customer details
       try {
         if (empty($this->data['customer']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
