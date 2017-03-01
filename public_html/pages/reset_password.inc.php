@@ -56,7 +56,7 @@
           limit 1;"
         );
 
-        $message = language::translate('email_body_reset_password', "You recently requested to reset your password for %store_name. If you did not request a password reset, please ignore this email.\r\n\r\n%link\r\n\r\nReset Token: %token");
+        $message = language::translate('email_body_reset_password', "You recently requested to reset your password for %store_name. If you did not request a password reset, please ignore this email. Visit the link below to reset your password:\r\n\r\n%link\r\n\r\nReset Token: %token");
         $message = strtr($message, array(
           '%email' => $customer['email'],
           '%store_name' => settings::get('store_name'),
@@ -87,7 +87,7 @@
         $customer = new ctrl_customer($customer['id']);
         $customer->set_password($_POST['new_password']);
 
-        notices::add('success', language::translate('success_new_password_et', 'Your new password has been set. You may now sign in.'));
+        notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
         header('Location: '. document::ilink('login', array('email' => $customer->data['email'])));
         exit;
 

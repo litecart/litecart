@@ -210,7 +210,7 @@
       );
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
-          session::$data['customer']['shipping_address'][$matches[1]] = '';
+          session::$data['customer']['shipping_address'][$matches[1]] = null;
         } else {
           session::$data['customer'][$field['Field']] = null;
         }

@@ -11,6 +11,6 @@
 }
 </style>
 
-<span style="float: right; margin-left: 10px;"><a href="<?php echo htmlspecialchars($help_link); ?>" target="_blank" title="<?php echo language::translate('title_help', 'Help'); ?>"><?php echo functions::draw_fonticon('fa-question-circle', 'style="font-size: 2em; color: #0099cc;"'); ?></a></span>
+<span style="float: right; margin-left: 10px;"><a href="<?php echo htmlspecialchars($help_link); ?>" target="_blank" title="<?php echo language::translate('title_help', 'Help'); ?>"><?php echo functions::draw_fonticon('fa-question-circle', 'style="font-size: 40px; color: #0099cc;"'); ?></a></span>
 
 <!--snippet:doc-->
