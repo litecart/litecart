@@ -84,9 +84,7 @@
       if ($this->data['parent_id'] == $this->data['id']) $this->data['parent_id'] = null;
 
       $this->data['keywords'] = explode(',', $this->data['keywords']);
-      foreach(array_keys($this->data['keywords']) as $key) {
-        $this->data['keywords'][$key] = trim($this->data['keywords'][$key]);
-      }
+      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
