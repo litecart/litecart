@@ -70,7 +70,7 @@ UPDATE `lc_countries` SET tax_id_format = '^(PT)?[0-9]{9}$' WHERE iso_code_2 = '
 -- --------------------------------------------------------
 UPDATE `lc_countries` SET tax_id_format = '^(RO)?[0-9]{2,10}$' WHERE iso_code_2 = 'RO' AND tax_id_format != '';
 -- --------------------------------------------------------
-UPDATE `lc_countries` SET tax_id_format = '^(SE)?(16|19|20)?[0-9]{6}-?[0-9]{4}?(01)?$' WHERE iso_code_2 = 'SE' AND tax_id_format != '';
+UPDATE `lc_countries` SET tax_id_format = '^(SE)?(16|19|20)?[0-9]{6}-?[0-9]{4}(01)?$' WHERE iso_code_2 = 'SE' AND tax_id_format != '';
 -- --------------------------------------------------------
 UPDATE `lc_countries` SET tax_id_format = '^(SI)?[0-9]{8}$' WHERE iso_code_2 = 'SI' AND tax_id_format != '';
 -- --------------------------------------------------------
