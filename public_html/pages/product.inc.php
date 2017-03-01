@@ -120,8 +120,8 @@
     'attributes' => !empty($product->attributes[language::$selected['code']]) ? mb_split('(\r|\n)+', $product->attributes[language::$selected['code']]) : array(),
     'image' => array(
       'original' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width, $height, settings::get('product_image_clipping')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width*2, $height*2, settings::get('product_image_clipping')),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => array(
         'width' => $width,
         'height' => $height,
@@ -152,8 +152,8 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = array(
       'original' => WS_DIR_IMAGES . $image,
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, settings::get('product_image_clipping')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width*2, $height*2, settings::get('product_image_clipping')),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => array(
         'width' => $width,
         'height' => $height,

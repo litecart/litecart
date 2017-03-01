@@ -53,7 +53,7 @@
 
       if (!empty($file)) $this->set($file);
 
-      $this->whitespace = explode(',', settings::get('image_whitespace_color'));
+      $this->_whitespace = explode(',', settings::get('image_whitespace_color'));
     }
 
     public function set($file) {
@@ -170,7 +170,7 @@
           }
 
           try {
-            $this->_image->setImageBackgroundColor('rgba('.$this->whitespace[0].','.$this->whitespace[1].','.$this->whitespace[2].',0)');
+            $this->_image->setImageBackgroundColor('rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
 
             switch(strtoupper($clipping)) {
               case 'FIT':
@@ -189,7 +189,7 @@
               case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
                 if ($this->width() <= $width && $this->height() <= $height) {
                   $_newimage = new imagick();
-                  $_newimage->newImage($width, $height, 'rgba('.$this->whitespace[0].','.$this->whitespace[1].','.$this->whitespace[2].',0)');
+                  $_newimage->newImage($width, $height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
                   $offset_x = round(($width - $this->width()) / 2);
                   $offset_y = round(($height - $this->height()) / 2);
                   $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
@@ -258,13 +258,13 @@
               ImageAlphaBlending($_resized, true);
               ImageSaveAlpha($_resized, true);
 
-              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->whitespace[0], $this->whitespace[0], $this->whitespace[0], 127));
+              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[0], $this->_whitespace[0], 127));
 
             // Perform resample
               if (($this->width() / $destination_width) > ($this->height() / $destination_height)) {
-                ImageCopyResampledFixed($_resized, $this->_image, 0, 0, ($this->width() - $destination_width * $this->height() / $destination_height) / 2, 0, $destination_width, $destination_height, $this->height() * $destination_ratio, $this->height(), $this->whitespace);
+                ImageCopyResampledFixed($_resized, $this->_image, 0, 0, ($this->width() - $destination_width * $this->height() / $destination_height) / 2, 0, $destination_width, $destination_height, $this->height() * $destination_ratio, $this->height(), $this->_whitespace);
               } else {
-                ImageCopyResampledFixed($_resized, $this->_image, 0, 0, 0, ($this->height() - $destination_height * $this->width() / $destination_width) / 2, $destination_width, $destination_height, $this->width(), $this->width() / $destination_ratio, $this->whitespace);
+                ImageCopyResampledFixed($_resized, $this->_image, 0, 0, 0, ($this->height() - $destination_height * $this->width() / $destination_width) / 2, $destination_width, $destination_height, $this->width(), $this->width() / $destination_ratio, $this->_whitespace);
               }
 
               break;
@@ -281,10 +281,10 @@
               ImageAlphaBlending($_resized, true);
               ImageSaveAlpha($_resized, true);
 
-              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 127));
+              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
             // Perform resample
-              ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height(), $this->whitespace);
+              ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height(), $this->_whitespace);
 
               break;
 
@@ -324,10 +324,10 @@
                 ImageSaveAlpha($_resized, true);
 
               // Fill with whitespace color
-                ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 127));
+                ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
               // Make whitespace color transparent
-                //ImageColorTransparent($_resized, ImageColorAllocate($_resized, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2]));
+                //ImageColorTransparent($_resized, ImageColorAllocate($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2]));
 
               // Perform resample
                 ImageCopyResampled($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());
@@ -340,10 +340,10 @@
                 ImageAlphaBlending($_resized, true);
                 ImageSaveAlpha($_resized, true);
 
-                ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 127));
+                ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
               // Perform resample
-                ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height(), $this->whitespace);
+                ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height(), $this->_whitespace);
               }
 
               break;
@@ -488,9 +488,10 @@
             return false;
           }
 
-          if (function_exists('imagecropauto')) { // PHP 5.5
-            return ImageCropAuto($this->_image, IMG_CROP_SIDES);
-          }
+          //if (function_exists('imagecropauto')) { // PHP 5.5
+          //  return ImageCropAuto($this->_image, IMG_CROP_SIDES); // Doesn't do it's job properly
+          //  return ImageCropAuto($this->_image, IMG_CROP_THRESHOLD, 100, imagecolorat($this->_image, 0, 0)); // Doesn't do it's job properly
+          //}
 
           $hexcolor = imagecolorat($this->_image, 0,0);
           $top = $left = 0;
@@ -549,17 +550,19 @@
             $code = ($width < $original_x || $height < $original_y) ? 1 : 0;
           } while (0);
 
-          $_image = ImageCreateTrueColor($width, $height);
-          ImageAlphaBlending($_image, true);
-          ImageFill($_image, 0, 0, ImageColorAllocateAlpha($_image, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 0));
+          $padding = $width * 0.1; // Set padding size in px
 
-          $result = ImageCopy($_image, $this->_image, 0, 0, $left, $top, $width, $height);
+          $_image = ImageCreateTrueColor($width + ($padding * 2), $height + ($padding * 2));
+          ImageAlphaBlending($_image, true);
+          ImageFill($_image, 0, 0, ImageColorAllocateAlpha($_image, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
+
+          $result = ImageCopy($_image, $this->_image, $padding, $padding, $left, $top, $width, $height);
 
           if ($result) {
             ImageDestroy($this->_image);
             $this->_image = $_image;
-            $this->_width = $width;
-            $this->_height = $height;
+            $this->_width = $width + ($padding*2);
+            $this->_height = $height + ($padding*2);
           }
 
           return $result;
@@ -677,7 +680,7 @@
       }
     }
 
-    public function write($destination, $type=null, $quality=90) {
+    public function write($destination, $type=null, $quality=90, $interlaced=false) {
 
       if (is_file($destination)) {
         trigger_error('Destination already exists: '. $destination, E_USER_WARNING);
@@ -723,6 +726,8 @@
 
           $this->_image->setImageCompressionQuality($quality);
 
+          if ($interlaced) $this->_image->setInterlaceScheme(Imagick::INTERLACE_PLANE);
+
           return $this->_image->writeImage($type.':'.$destination);
 
         case 'gd':
@@ -734,11 +739,13 @@
             return false;
           }
 
+          if ($interlaced) ImageInterlace($this->_image, true);
+
           switch(strtolower($type)) {
             case 'gif':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocate($_background, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2]));
+              ImageFill($_background, 0, 0, ImageColorAllocate($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2]));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);
@@ -751,7 +758,7 @@
             case 'jpg':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 0));
+              ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               $result = ImageJPEG($_background, $destination, $quality);
@@ -807,7 +814,7 @@
             case 'gif':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocate($_background, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2]));
+              ImageFill($_background, 0, 0, ImageColorAllocate($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2]));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);
@@ -820,7 +827,7 @@
             case 'jpg':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2], 0));
+              ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               $result = ImageJPEG($_background, false, $quality);

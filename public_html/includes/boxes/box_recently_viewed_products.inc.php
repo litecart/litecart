@@ -16,7 +16,7 @@
       $box_recently_viewed_products->snippets['products'][$key] = array(
         'id' => $current_product['id'],
         'name' => $current_product['name'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $current_product['image'], $width, $height, settings::get('product_image_clipping')),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $current_product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'link' => document::ilink('product', array('product_id' => $current_product['id'])),
       );
     } else {

@@ -29,6 +29,7 @@
       'clipping' => !empty($options['clipping']) ? $options['clipping'] : 'FIT_ONLY_BIGGER',
       'quality' => isset($options['quality']) ? $options['quality'] : settings::get('image_quality'),
       'trim' => !empty($options['trim']) ? $options['trim'] : false,
+      'interlaced' => !empty($options['interlaced']) ? true : false,
       'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
       'extension' => !empty($options['extension']) ? $options['extension'] : null,
     );
@@ -66,7 +67,15 @@
       }
 
       $source_webpath = str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($source)));
-      $options['destination'] .= sha1($source_webpath) . (int)$options['width'] .'x'. (int)$options['height'] . $clipping_filename_flag . (!empty($options['trim']) ? '_t' : null) . (!empty($options['watermark']) ? '_wm' : null) . '.' . pathinfo($source, PATHINFO_EXTENSION);
+      $options['destination'] .= implode('', array(
+          sha1($source_webpath),
+          !empty($options['trim']) ? '_t' : null,
+          '_'.(int)$options['width'] .'x'. (int)$options['height'],
+          $clipping_filename_flag,
+          !empty($options['watermark']) ? '_wm' : null,
+          !empty($options['interlaced']) ? '_i' : null,
+          '.' . pathinfo($source, PATHINFO_EXTENSION),
+      ));
     }
 
   // Return an already existing file
@@ -84,12 +93,12 @@
       $options['extension'] = $image->type();
     }
 
-    if ($options['width'] != 0 || $options['height'] != 0) {
-      if (!$image->resample($options['width'], $options['height'], strtoupper($options['clipping']))) return;
-    }
-
     if (!empty($options['trim'])) {
       $image->trim();
+    }
+
+    if ($options['width'] != 0 || $options['height'] != 0) {
+      if (!$image->resample($options['width'], $options['height'], strtoupper($options['clipping']))) return;
     }
 
     if (!empty($options['watermark'])) {
@@ -111,7 +120,7 @@
         break;
     }
 
-    if (!$image->write($options['destination'], $options['extension'], $options['quality'])) return;
+    if (!$image->write($options['destination'], $options['extension'], $options['quality'], !empty($options['interlaced']))) return;
 
     return str_replace(FS_DIR_HTTP_ROOT, '', str_replace('\\', '/', realpath($options['destination'])));
   }
@@ -128,7 +137,7 @@
     ));
   }
 
-  function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=null) {
+  function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=false) {
 
     return image_process($source, array(
       'destination' => FS_DIR_HTTP_ROOT . WS_DIR_CACHE,
@@ -137,6 +146,7 @@
       'clipping' => $clipping,
       'trim' => !empty($trim) ? $trim : false,
       'quality' => settings::get('image_thumbnail_quality'),
+      'interlaced' => settings::get('image_thumbnail_interlaced'),
     ));
   }
 
