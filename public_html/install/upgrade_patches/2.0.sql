@@ -139,3 +139,5 @@ ALTER TABLE `lc_suppliers` ADD COLUMN `code` VARCHAR(64) NOT NULL AFTER `id`,	AD
 ALTER TABLE `lc_users` ADD COLUMN `permissions` VARCHAR(4096) NOT NULL AFTER `password`;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `title` = 'Popular Products Box: Number of Items', `key` = 'box_popular_products_num_items' WHERE `key` = 'box_most_popular_products_num_items';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `value` = '6' WHERE `key` = 'box_recently_viewed_products_num_items';
