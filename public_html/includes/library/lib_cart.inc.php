@@ -133,6 +133,8 @@
       }
     }
 
+    public static function validate_product() {}
+
     public static function add_product($product_id, $options, $quantity=1, $silent=false, $item_key=null) {
 
       if ($quantity <= 0) {
