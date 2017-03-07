@@ -1,5 +1,9 @@
 /406.shtml
 /Abbrevsprl.php
+/administrator/
+/administrator/index.php
+/affiliate_password_forgotten.php
+/affiliate_terms.php
 /CONTRIBUTING.md
 /DJgyQ6.php
 /E.php
@@ -120,6 +124,7 @@
 /news.php
 /nktt
 /ny
+/Order_Info.php
 /phpunit.xml.dist
 /r3x.php
 /readme.htm
@@ -129,6 +134,7 @@
 /robot.php
 /robots.txt.dist
 /robots.txt.php
+/shop/affiliate_signup.php
 /shootme.php
 /show.php
 /site/tmp/cTivrC.php
@@ -157,9 +163,11 @@
 /wp-content/plugins/Fbrrchive.php
 /wp-content/plugins/SocketIasrgasfontrol.php
 /wp-content/plugins/SocketIontrol.php
+/wp-content/plugins/mailchimp-integration/readme.txt
 /wp-content/plugins/myshe.php
 /wp-content/plugins/revslider/temp/update_extract/DJgyQ6.php
 /wp-content/plugins/sql_dump.php
+/wp-content/plugins/ubh/up.php
 /wp-content/plugins/wp-cache.php
 /wp-content/plugins/wp-footers.php
 /wp-content/plugins/wpfootes.php
