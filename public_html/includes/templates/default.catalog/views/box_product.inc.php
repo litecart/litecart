@@ -237,6 +237,6 @@
 
   $('.social-bookmarks .link').click(function(e){
     e.preventDefault();
-    prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '<?php echo document::link(); ?>');
+    prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '<?php echo $link; ?>');
   });
 </script>

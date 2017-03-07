@@ -108,6 +108,7 @@
 
   $_page->snippets = array(
     'product_id' => $product->id,
+    'link' => document::ilink('product', array(), true),
     'code' => $product->code,
     'sku' => $product->sku,
     'gtin' => $product->gtin,
