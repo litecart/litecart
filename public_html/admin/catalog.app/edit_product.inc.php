@@ -282,7 +282,7 @@
               <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
               <div class="row">
                 <div class="col-md-6">
-                <?php echo functions::form_draw_decimal_field('quantity', true, 4, null, null, 'style="text-align: center;"'); ?>
+                  <?php echo functions::form_draw_decimal_field('quantity', true, 4, null, null, 'style="text-align: center;"'); ?>
                 </div>
                 <div class="col-md-6">
                   <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
@@ -344,10 +344,10 @@
                       <div class="input-group">
                         <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
                         <div class="input-group-addon">
-                        <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-                        <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
-                      </div>
+                          <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+                          <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+                          <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -360,8 +360,8 @@
                       <div class="input-group">
                         <?php echo functions::form_draw_file_field('new_images[]'); ?>
                         <div class="input-group-addon">
-                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
-                      </div>
+                          <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                        </div>
                       </div>
                     </td>
                   </tr>
