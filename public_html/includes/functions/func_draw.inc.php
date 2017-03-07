@@ -4,11 +4,11 @@
 
     switch(true) {
       case (substr($class, 0, 3) == 'fa '):
-        document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
+        //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document
         return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       case (substr($class, 0, 3) == 'fa-'):
-        document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
+        //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document
         return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       case (substr($class, 0, 3) == 'fi-'):
@@ -16,7 +16,7 @@
         return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       case (substr($class, 0, 10) == 'glyphicon-'):
-      // Not embedded in release
+        //document::$snippets['head_tags']['ionicons'] = '<link rel="stylesheet" href="'/path/to/glyphicon.css" />'; // As of Bootstrap 3 - Not embedded in release
         return '<span class="glyphicon '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></span>';
 
       case (substr($class, 0, 4) == 'ion-'):
