@@ -32,12 +32,6 @@
     include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_summary.html.inc.php');
     ob_end_clean();
 
-    if ($error_message = $order->validate()) {
-      notices::add('errors', $error_message);
-      header('Location: '. document::ilink('checkout'));
-      exit;
-    }
-
     if (!empty(notices::$data['errors'])) {
       header('Location: '. document::ilink('checkout'));
       exit;
@@ -146,10 +140,8 @@
   }
 
 // Run after process operations
-  $shipping = new mod_shipping();
   $shipping->after_process($order);
 
-  $payment = new mod_payment();
   $payment->after_process($order);
 
   $order_process = new mod_order();
