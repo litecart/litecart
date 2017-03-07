@@ -1,8 +1,8 @@
 <div id="box-checkout-shipping" class="box">
   <h2 class="title"><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
 
-  <?php echo functions::form_draw_form_begin('shipping_form', 'post'); ?>
     <div class="options btn-group-vertical">
+
       <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
       <label class="option btn btn-default btn-block<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
         <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
@@ -27,6 +27,6 @@
         <?php } ?>
       </label>
       <?php } ?>
+
     </div>
-  <?php functions::form_draw_form_end(); ?>
 </div>

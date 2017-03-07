@@ -10,36 +10,31 @@
 
     if (!empty($rss->channel->item)) {
 
-      $columns = array();
-
-      $col = 0;
-      $count = 0;
-      $total = 0;
+      $discussions = array();
       foreach ($rss->channel->item as $item) {
-        $col++;
-        if (!isset($count) || $count == 4) {
-          $count = 0;
-        }
-        $columns[$col][] = $item;
-        $count++;
-        $total++;
-        if ($total == 16) break;
+        $discussions[] = $item;
+        if (count($discussions) == 16) break;
       }
 ?>
-<div class="widget panel panel-default">
+<style>
+#widget-discussions .row [class^="col-"] > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#widget-discussions .row [class^="col-"] .description {
+  opacity: 0.85;
+}
+</style>
+
+<div id="widget-discussions" class="widget panel panel-default">
   <div class="panel-heading"><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></div>
   <div class="panel-body">
       <div class="row">
-      <?php foreach (array_keys($columns) as $key) { ?>
+      <?php foreach ($discussions as $item) { ?>
       <div class="col-sm-6 col-md-4 col-lg-3">
-        <ul class="list-unstyled">
-          <?php foreach ($columns[$key] as $item) { ?>
-          <li style="white-space: word-wrap; text-overflow: ellipsis;">
-            <a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
-            <span style="color: #777;"><?php echo strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></span>
-          </li>
-          <?php } ?>
-        </ul>
+        <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
+        <div class="description"><?php echo strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></div>
       </div>
       <?php } ?>
     </div>

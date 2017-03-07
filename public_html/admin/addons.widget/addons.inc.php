@@ -21,36 +21,31 @@
 
     if (!empty($rss->channel->item)) {
 
-      $columns = array();
-
-      $col = 0;
-      $count = 0;
-      $total = 0;
+      $addons = array();
       foreach ($rss->channel->item as $item) {
-        $col++;
-        if (!isset($count) || $count == 6) {
-          $count = 0;
-        }
-        $columns[$col][] = $item;
-        $count++;
-        $total++;
-        if ($total == 18) break;
+        $addons[] = $item;
+        if (count($addons) == 16) break;
       }
 ?>
-<div class="widget panel panel-default">
+<style>
+#widget-addons .row [class^="col-"] > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#widget-addons .row [class^="col-"] .description {
+  opacity: 0.85;
+}
+</style>
+
+<div id="widget-addons" class="widget panel panel-default">
   <div class="panel-heading"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></div>
   <div class="panel-body">
     <div class="row">
-      <?php foreach (array_keys($columns) as $key) { ?>
+      <?php foreach ($addons as $item) { ?>
       <div class="col-sm-6 col-md-4 col-lg-3">
-        <ul class="list-unstyled">
-          <?php foreach ($columns[$key] as $item) { ?>
-          <li style="white-space: word-wrap; text-overflow: ellipsis;">
-            <?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
-            <span style="color: #666;"><?php echo (string)$item->description; ?></span>
-          </li>
-          <?php } ?>
-        </ul>
+        <div class="title"><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
+        <div class="description"><?php echo (string)$item->description; ?></div>
       </div>
       <?php } ?>
     </div>

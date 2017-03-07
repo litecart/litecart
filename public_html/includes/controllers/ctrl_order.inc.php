@@ -452,23 +452,28 @@
 
     public function add_item($item) {
 
-      $item = array(
-        'id' => '',
-        'product_id' => $item['product_id'],
-        'options' => $item['options'],
-        'option_stock_combination' => $item['option_stock_combination'],
-        'name' => $item['name'],
-        'sku' => $item['sku'],
-        'price' => $item['price'],
-        'tax' => $item['tax'],
-        'quantity' => $item['quantity'],
-        'weight' => isset($item['weight']) ? $item['weight'] : '',
-        'weight_class' => isset($item['weight_class']) ? $item['weight_class'] : '',
+      $fields = array(
+        'id',
+        'product_id',
+        'options',
+        'option_stock_combination',
+        'name',
+        'sku',
+        'price',
+        'tax',
+        'quantity',
+        'weight',
+        'weight_class',
+        'error',
       );
 
       $i = 1;
       while (isset($this->data['items']['new_'.$i])) $i++;
-      $this->data['items']['new_'.$i] = $item;
+      $item_key = 'new_'.$i;
+
+      foreach($fields as $field) {
+        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
+      }
 
       $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
       $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
@@ -504,10 +509,7 @@
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
 
       foreach ($this->data['items'] as $item) {
-        if (empty($item['product_id'])) continue;
-        if ($item_error = cart::validate_product($item['product_id'], $item['options'], $item['quantity'])) {
-          return language::translate('error_cart_contians_errors', 'Your cart contains errors');
-        }
+        if (!empty($item['error'])) return language::translate('error_cart_contians_errors', 'Your cart contains errors');
       }
 
     // Validate customer details
@@ -519,6 +521,8 @@
         if (empty($this->data['customer']['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
         if (empty($this->data['customer']['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter your email address.'));
         if (empty($this->data['customer']['phone'])) throw new Exception(language::translate('error_missing_phone', 'You must enter your phone number.'));
+
+        if (!filter_var($this->data['customer']['email'], FILTER_VALIDATE_EMAIL)) throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
 
         if (reference::country($this->data['customer']['country_code'])->postcode_format) {
           if (!empty($this->data['customer']['postcode'])) {

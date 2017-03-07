@@ -23,7 +23,7 @@
       <tfoot>
         <tr class="footer">
           <td class="text-right" colspan="5"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
-          <td class="text-right"><strong><?php echo $payment_due; ?></strong></td>
+          <td class="text-right" style="width: 25%;"><strong><?php echo $payment_due; ?></strong></td>
         </tr>
       </tfoot>
     </table>

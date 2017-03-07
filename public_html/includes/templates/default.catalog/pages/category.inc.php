@@ -22,7 +22,7 @@
 
     <h1><?php echo $h1_title; ?></h1>
 
-    <?php if ($_GET['page'] == 1 && $description) { ?>
+    <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
     <p class="description"><?php echo $description; ?></p>
     <?php } ?>
 
@@ -34,7 +34,7 @@
 
     <?php if ($products) { ?>
     <div class="products row half-gutter">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
+      <?php foreach ($products as $product) {echo functions::draw_listing_product($product, $product['listing_type']);} ?>
     </div>
     <?php } ?>
 

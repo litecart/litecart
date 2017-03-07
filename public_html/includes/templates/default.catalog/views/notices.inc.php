@@ -22,5 +22,5 @@
 </div>
 
 <script>
-  setTimeout(function(){$('#notices').fadeOut();}, 30000);
+  setTimeout(function(){$('#notices').fadeOut();}, 20000);
 </script>

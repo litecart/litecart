@@ -204,7 +204,7 @@
 
           while ($product_option = database::fetch($products_options_query)) {
 
-          // Groups
+          // Group
             if (!isset($this->_data['options'][$product_option['group_id']]['id'])) {
               $option_group_query = database::query(
                 "select * from ". DB_TABLE_OPTION_GROUPS ."
@@ -260,6 +260,7 @@
               }
             }
 
+          // Price Adjust
             $product_option['price_adjust'] = 0;
 
             if ((isset($product_option[$this->_currency_code]) && $product_option[$this->_currency_code] != 0) || (isset($product_option[settings::get('store_currency_code')]) && $product_option[settings::get('store_currency_code')] != 0)) {

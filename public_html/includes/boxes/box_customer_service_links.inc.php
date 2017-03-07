@@ -9,6 +9,7 @@
         'id' => 0,
         'title' => language::translate('title_contact_us', 'Contact Us'),
         'link' => document::href_ilink('customer_service'),
+        'active' => empty($_GET['page_id']) ? true : false,
       ),
     );
 

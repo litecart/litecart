@@ -31,6 +31,7 @@
       'quantity_unit' => $item['quantity_unit'],
       'error' => $item['error'],
     );
+
     if (!empty($item['options'])) {
       foreach ($item['options'] as $k => $v) {
         $box_checkout_cart->snippets['items'][$key]['options'][] = $k .': '. $v;

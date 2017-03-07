@@ -69,11 +69,13 @@
 
     if (empty($filter['categories'])) $filter['categories'] = array();
     if (empty($filter['manufacturers'])) $filter['manufacturers'] = array();
+    if (empty($filter['products'])) $filter['products'] = array();
     if (empty($filter['product_groups'])) $filter['product_groups'] = array();
 
     if (!empty($filter['category_id'])) $filter['categories'][] = $filter['category_id'];
     if (!empty($filter['manufacturer_id'])) $filter['manufacturers'][] = $filter['manufacturer_id'];
     if (!empty($filter['product_group_id'])) $filter['product_groups'][] = $filter['product_group_id'];
+    if (!empty($filter['product_id'])) $filter['products'][] = $filter['product_id'];
 
     $filter['categories'] = array_filter($filter['categories']);
     $filter['manufacturers'] = array_filter($filter['manufacturers']);
