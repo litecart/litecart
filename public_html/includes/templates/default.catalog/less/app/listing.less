@@ -1,39 +1,40 @@
 /* Categories */
 
 .categories.row {
-  padding: 0;
-  margin: 0 0 2em 0;
   > *[class^=col-] {
     padding: @default-gutter-size/2;
   }
   .category {
-    position: relative;
     background: rgb(255, 255, 255);
     a.link {
+      position: relative;
       display: block;
       color: inherit;
       display: block;
       padding: 5px;
       text-decoration: none;
-    }
-    .thumbnail {
-      overflow: hidden;
-      position: relative;
       text-align: center;
-      img {
-        max-height: 100%;
-        max-width: 100%;
-      }
+    }
+    img {
+      max-height: 100%;
+      max-width: 100%;
     }
     .caption {
       background: rgba(100, 100, 100, 0.5);
       bottom: 0;
+      left: 0;
+      right: 0;
       display: block;
-      padding: 5px;
+      padding: @default-gutter-size / 2;
       position: absolute;
       text-align: center;
-      width: 100%;
-      * {color: #fff;}
+      * {
+        color: #fff;
+        margin: 0;
+      }
+      .title {
+
+      }
     }
     .title {
       font-weight: 700;
@@ -103,17 +104,17 @@
     }
     .sticker {
       color: #fff;
-      font-size: 0.75em;
+      font-size: 11px;
       font-weight: bold;
-      top: 1em;
-      left: -2em;
-      padding: 0.25em;
+      top: 15px;
+      left: -35px;
+      padding: 3px;
       position: absolute;
       text-align: center;
       text-shadow: 0 1px 2px #666;
       text-transform: uppercase;
       transform: rotate(-45deg);
-      width: 96px;
+      width: 125px;
       &.new {
         background: rgba(191, 176, 121, 0.9);
       }

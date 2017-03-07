@@ -20,10 +20,12 @@ input, button, select, textarea {
 }
 
 .form-group {
-  margin-bottom: @default-gutter-size;
   &.required label::after {
     content: ' *';
     color: #f00;
+  }
+  &:not([class*=col-]) {
+    margin-bottom: @default-gutter-size;
   }
 }
 

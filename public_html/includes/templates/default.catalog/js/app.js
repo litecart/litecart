@@ -11,17 +11,14 @@ $(document).ready(function(){
 
 // Sidebar parallax effect
   if (window.config.template.settings.sidebar_parallax_effect) {
+    var column = $('#column-left'), sidebar = $('#sidebar');
+    var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
+
     $(window).bind('resize scroll', function(e){
-      var sidebar_max_offset = $('#sidebar').height() - $('#column-left').height();
-
       if (sidebar_max_offset) {
-
-        var column = $('#column-left');
-        var sidebar = $('#sidebar');
         var parallax_rate = 0.4;
 
-        if ($(window).width() >= 768 && ($(column).height() < $(sidebar).height())) {
-
+        if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
           var offset = $(this).scrollTop() * parallax_rate;
           if (offset > sidebar_max_offset) offset = sidebar_max_offset;
           $(column).css('margin-top', offset + 'px');
@@ -116,7 +113,6 @@ $(document).ready(function(){
   } else {
     $('.nav-tabs .active a').trigger('click');
   }
-
 
   /*
    * jQuery Animate From To plugin 1.0
