@@ -32,7 +32,7 @@
 
       $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code') . $currency_code .'=X'));
 
-      $client = http_client();
+      $client = new http_client();
       $response = @$client->call($url);
 
       if (empty($response)) {
