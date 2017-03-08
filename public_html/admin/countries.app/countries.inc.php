@@ -2,16 +2,28 @@
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
 
     if (!empty($_POST['countries'])) {
-      foreach ($_POST['countries'] as $key => $value) $_POST['countries'][$key] = database::input($value);
-      database::query(
-        "update ". DB_TABLE_COUNTRIES ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['countries']) ."');"
-      );
-    }
 
-    header('Location: '. document::link());
-    exit;
+      $countries = array();
+      foreach ($_POST['countries'] as $country_code) {
+
+        if (!empty($_POST['disable']) && $country_code == settings::get('default_country_code')) {
+          notices::add('errors', language::translate('error_cannot_disable_default_country', 'You cannot disable the default country'));
+          continue;
+        }
+
+        if (!empty($_POST['disable']) && $country_code == settings::get('store_country_code')) {
+          notices::add('errors', language::translate('error_cannot_disable_store_country', 'You cannot disable the store country'));
+          continue;
+        }
+
+        $country = new ctrl_country($country_code);
+        $country->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $country->save();
+      }
+
+      header('Location: '. document::link());
+      exit;
+    }
   }
 ?>
 <ul class="list-inline pull-right">
@@ -46,7 +58,7 @@
     while ($country = database::fetch($countries_query)) {
 ?>
     <tr class="<?php echo empty($country['status']) ? 'semi-transparent' : null; ?>">
-      <td><?php echo functions::form_draw_checkbox('countries['. $country['id'] .']', $country['id']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($country['status']) ? '#99cc66' : '#ff6666') .'";'); ?></td>
       <td><?php echo $country['id']; ?></td>
       <td><?php echo $country['iso_code_2']; ?></td>
