@@ -104,6 +104,11 @@
             case 'payment_due':
               $this->data['payment_due'] = $value;
               break;
+
+            default:
+              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
+              $this->data[$matches[1]][$field] = $value;
+              break;
           }
         }
       }
