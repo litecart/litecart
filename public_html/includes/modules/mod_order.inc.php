@@ -1,7 +1,6 @@
 <?php
 
   class mod_order extends module {
-    public $actions = array();
 
     public function __construct() {
       $this->load('order');
@@ -9,7 +8,7 @@
 
     public function actions() {
 
-      $this->actions = array();
+      $actions = array();
 
       if (empty($this->modules)) return;
 
@@ -21,16 +20,16 @@
 
         if (empty($actions)) continue;
 
-        $this->data['actions'][$module->id] = $actions;
-        $this->data['actions'][$module->id]['id'] = $module->id;
-        $this->data['actions'][$module->id]['actions'] = array();
+        $actions[$module->id] = $actions;
+        $actions[$module->id]['id'] = $module->id;
+        $actions[$module->id]['actions'] = array();
 
         foreach ($actions as $option) {
-          $this->data['actions'][$module->id]['actions'][$option['id']] = $option;
+          $actions[$module->id]['actions'][$option['id']] = $option;
         }
       }
 
-      return $this->data['actions'];
+      return $actions;
     }
 
     public function validate($order) {
