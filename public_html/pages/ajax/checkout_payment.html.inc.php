@@ -12,7 +12,7 @@
   $payment = new mod_payment();
   $options = $payment->options();
 
-  if (file_get_contents('php://input') != '') {
+  if (file_get_contents('php://input') != '' && !empty($_POST['payment'])) {
     list($module_id, $option_id) = explode(':', $_POST['payment']['option_id']);
     $result = $payment->run('before_select', $module_id, $option_id, $_POST);
     if (!empty($result) && (is_string($result) || !empty($result['error']))) {
