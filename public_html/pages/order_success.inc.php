@@ -16,12 +16,6 @@
 
   cart::reset();
 
-  functions::draw_lightbox('a.lightbox-iframe', array(
-    'type' => 'iframe',
-    'iframeWidth' => 640,
-    'iframeHeight' => 800,
-  ));
-
   $_page = new view();
 
   $_page->snippets = array(

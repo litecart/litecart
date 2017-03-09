@@ -1,5 +1,4 @@
 <?php
-  ob_clean();
   document::$layout = 'printable';
 
   if (empty($_GET['order_id'])) die('Missing order ID');
@@ -8,5 +7,6 @@
 
   echo $order->draw_printable_copy();
 
+  require_once('../includes/app_footer.inc.php');
   exit;
 ?>

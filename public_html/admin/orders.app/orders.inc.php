@@ -2,8 +2,6 @@
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 
-  functions::draw_lightbox();
-
   if (!empty($_POST['order_action'])) {
     if (!empty($_POST['orders'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
@@ -134,8 +132,8 @@
       <td class="text-center"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
       <td class="text-right"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
       <td>
-        <a data-toggle="lightbox" data-type="iframe" data-width="21cm" data-height="29.7cm" href="<?php echo document::href_link('', array('doc' => 'printable_packing_slip', 'order_id' => $order['id'], 'media' => 'print'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-        <a data-toggle="lightbox" data-type="iframe" data-width="21cm" data-height="29.7cm" href="<?php echo document::href_link('', array('doc' => 'printable_order_copy', 'order_id' => $order['id'], 'media' => 'print'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+        <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_packing_slip', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+        <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_order_copy', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-print'); ?></a>
         <a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id'], 'redirect' => $_SERVER['REQUEST_URI']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
       </td>
     </tr>
