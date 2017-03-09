@@ -38,9 +38,9 @@
     <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 500, 'FIT_ONLY_BIGGER'); ?>" alt="" />
   </div>
 
-    <div class="form-group">
-      <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
-      <?php echo functions::form_draw_file_field('image', ''); ?>
+  <div class="form-group">
+    <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
+    <?php echo functions::form_draw_file_field('image', ''); ?>
   </div>
 
   <p class="btn-group">

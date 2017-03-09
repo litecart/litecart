@@ -383,27 +383,10 @@
         }
       }
 
-    // Send update notice email
-      if (empty($previous_order_status['id']) || (isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id'])) {
+    // Send order status email notification
+      if ((isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id'])) {
         if (!empty($current_order_status['notify'])) {
-
-        // Prepare email body
-          if (empty($current_order_status['email_message']) || trim(strip_tags($current_order_status['email_message'])) == '') {
-            $email_body = $this->draw_printable_copy();
-          } else {
-            $email_body = $this->inject_email_message($current_order_status['email_message']);
-          }
-
-          functions::email_send(
-            null,
-            $this->data['customer']['email'],
-            strtr(language::translate('email_subject_order_updated', 'Order %order_id has updated to %order_status', $this->data['language_code']), array(
-              '%order_id' => (int)$this->data['id'],
-              '%order_status' => $current_order_status['name'],
-            )),
-            $email_body,
-            true
-          );
+          $this->send_email_notification();
         }
       }
 
@@ -616,15 +599,9 @@
       return false;
     }
 
-    public function inject_email_message($html) {
+    public function send_email_notification() {
 
-      $order_status_query = database::query(
-        "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
-        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
-        where os.id = ". (int)$this->data['order_status_id'] ."
-        limit 1;"
-      );
-      $order_status = database::fetch($order_status_query);
+      $order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
 
       $aliases = array(
         '%order_id' => $this->data['id'],
@@ -633,15 +610,24 @@
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
-        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))),
-        '%order_status' => $order_status['name'],
+        '%order_status' => $order_status->name,
       );
 
-      $html = strtr($html, $aliases);
+      $subject = strtr($order_status->email_subject, $aliases);
+      $message = strtr($order_status->email_message, $aliases);
 
-      return $html;
+      if (empty($subject)) $subject = $order_status->name;
+      if (empty($message)) $message = sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $order_status->name);
+
+      functions::email_send(
+        null,
+        $this->data['customer']['email'],
+        $subject,
+        $message,
+        true
+      );
     }
 
     public function email_order_copy($email) {
