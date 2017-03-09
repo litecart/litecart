@@ -281,7 +281,6 @@ CREATE TABLE `lc_option_values_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders` (
-  `customer_mobile` varchar(24) NOT NULL,
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(13) NOT NULL,
   `order_status_id` INT(11) NOT NULL,
@@ -307,6 +306,7 @@ CREATE TABLE `lc_orders` (
   `shipping_postcode` VARCHAR(8) NOT NULL,
   `shipping_country_code` VARCHAR(2) NOT NULL,
   `shipping_zone_code` VARCHAR(8) NOT NULL,
+  `shipping_phone` VARCHAR(24) NOT NULL,
   `shipping_option_id` VARCHAR(32) NOT NULL,
   `shipping_option_name` VARCHAR(64) NOT NULL,
   `shipping_tracking_id` VARCHAR(128) NOT NULL,
