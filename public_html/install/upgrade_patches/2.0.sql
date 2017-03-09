@@ -92,7 +92,7 @@ ALTER TABLE `lc_orders` CHANGE COLUMN `customer_mobile` `shipping_phone` VARCHAR
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items` CHANGE COLUMN `options` `options` VARCHAR(4096) NOT NULL AFTER `option_stock_combination`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_order_statuses_info` ADD UNIQUE INDEX `order_status_info` (`order_status_id`, `language_code`);
+ALTER TABLE `lc_order_statuses_info` ADD COLUMN `email_subject` VARCHAR(128) NOT NULL AFTER `description`, ADD UNIQUE INDEX `order_status_info` (`order_status_id`, `language_code`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_pages_info` ADD UNIQUE INDEX `page_info` (`page_id`, `language_code`);
 -- --------------------------------------------------------

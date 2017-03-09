@@ -33,6 +33,7 @@
         'priority',
         'name',
         'description',
+        'email_subject',
         'email_message',
       );
 
@@ -67,6 +68,17 @@
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
       <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 360px"'); ?>
     </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></label>
+      </div>
+
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived');?></label>
+      </div>
+    </div>
   </div>
 
   <div class="row">
@@ -90,35 +102,40 @@
 
   <div class="row">
     <div class="form-group col-md-6">
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></label>
-      </div>
-
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived');?></label>
-      </div>
-
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('text_notify_customer', 'Notify customer');?></label>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_email_message', 'Email Message'); ?></label>
-      <p><?php echo language::translate('description_order_status_email_message', 'Compose a message that will be used as email body or leave blank to display the order copy.'); ?></p>
-      <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>%order_id, %firstname, %lastname, %billing_address, %shipping_address, %order_copy_url</em></p>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'email_message['. $language_code .']', true, 'style="height: 170px;"'); ?>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-md-6">
       <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
         <?php echo functions::form_draw_number_field('priority', true); ?>
-    </div>
+      </div>
+      </div>
+
+  <fieldset>
+    <legend>
+      <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('title_email_notification', 'Email Notification');?></label>
+    </legend>
+
+    <ul class="nav nav-tabs">
+      <?php foreach (language::$languages as $language) { ?>
+        <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+      <?php } ?>
+    </ul>
+
+    <div class="tab-content">
+      <?php foreach (array_keys(language::$languages) as $language_code) { ?>
+      <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
+        <div class="form-group">
+          <label><?php echo language::translate('title_subject', 'Subject'); ?></label>
+          <?php echo functions::form_draw_regional_input_field($language_code, 'email_subject['. $language_code .']', true); ?>
   </div>
+
+        <div class="form-group">
+          <label><?php echo language::translate('title_message', 'Message'); ?></label>
+          <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'email_message['. $language_code .']', true); ?>
+        </div>
+    </div>
+      <?php } ?>
+  </div>
+
+    <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %order_copy_url</code></p>
+  </fieldset>
 
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>

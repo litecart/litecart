@@ -114,6 +114,7 @@
           set
             name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."',
+            email_subject = '". database::input($this->data['email_subject'][$language_code], true) ."',
             email_message = '". database::input($this->data['email_message'][$language_code], true) ."'
           where id = '". (int)$order_status_info['id'] ."'
           and order_status_id = '". (int)$this->data['id'] ."'
