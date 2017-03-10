@@ -611,7 +611,7 @@
             <tfoot>
               <tr>
                 <td colspan="7">
-                  <a class="btn btn-default add-product" href="<?php echo document::href_link('', array('doc' => 'add_product'), array('app'), array()); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', array('doc' => 'add_product'), array('app'), array()); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                  <a class="btn btn-default add-product" href="<?php echo document::href_link('', array('doc' => 'product_picker'), array('app'), array()); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', array('doc' => 'product_picker'), array('app'), array()); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   <a class="btn btn-default add-custom-item" href="<?php echo document::href_link('', array('doc' => 'add_custom_item'), array('app'), array()); ?>" data-toggle="lightbox" data-width="640px" data-href="<?php echo document::href_link('', array('doc' => 'add_custom_item'), array('app'), array()); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
                 </td>
               </tr>
