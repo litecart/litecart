@@ -35,7 +35,7 @@
         }
 
       } else if (!empty($product->manufacturer)) {
-        $parsed_link['path'] = functions::general_path_friendly($product->manufacturer['name'], $language_code) .'-m-'. $product->manufacturer['id'] .'/';
+        $parsed_link['path'] = functions::general_path_friendly($product->manufacturer->name, $language_code) .'-m-'. $product->manufacturer->id .'/';
       }
 
       $parsed_link['path'] .= functions::general_path_friendly($product->name, $language_code) .'-p-'. $product->id;
