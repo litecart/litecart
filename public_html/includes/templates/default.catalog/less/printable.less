@@ -42,43 +42,45 @@
 @media screen {
   html {
     background: #e6e9ed;
+    padding: 5mm;
   }
   body[data-size="A4"] {
     position: relative;
     max-width: 21cm;
     min-height: 29.7cm;
-    margin: 5mm auto;
+    margin: 0 auto;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
     padding: 15mm;
     background: #fff;
     font-size: 9pt;
     font-family: Arial, Helvetica,sans-serif;
     color: #000;
+    margin-bottom: 5mm;
   }
 
   .page-break  {
-    border: 1px #ccc dashed;
+    border-bottom: 1px #ccc dashed;
+    margin: 15mm -15mm;
+    line-height: 0;
   }
 
   button[name="print"] {
     display: none;
   }
 
-  body:hover button[name="print"] {
-    position: absolute;
+  html:hover button[name="print"] {
+    position: fixed;
+    top: 0cm;
+    right: 1cm;
+    padding: 0.5em;
+    font-size: 10mm;
     display: block;
     margin: 5mm auto;
     z-index: 999999;
+    border-radius: 0.25em;
   }
 }
 
 * {
   line-height: 125%;
-}
-
-#footer {
-  position: absolute;
-  bottom: 0px;
-  font-size: 8pt;
-  width: 100%;
 }
