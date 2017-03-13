@@ -186,7 +186,7 @@
 
           $this->_data['manufacturer'] = array();
 
-          if (empty($this->_manufacturer_id)) return;
+          if (empty($this->_data['manufacturer_id'])) return;
 
           $this->_data['manufacturer'] = reference::manufacturer($this->manufacturer_id);
 

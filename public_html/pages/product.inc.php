@@ -49,7 +49,7 @@
       document::$snippets['title'][] = $category_name;
     }
   } else if (!empty($product->manufacturer)) {
-    document::$snippets['title'][] = $product->manufacturer['name'];
+    document::$snippets['title'][] = $product->manufacturer->name;
   }
 
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
@@ -67,7 +67,7 @@
     }
   } else if (!empty($product->manufacturer)) {
     breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-    breadcrumbs::add($product->manufacturer['name'], document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])));
+    breadcrumbs::add($product->manufacturer->name, document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer->id)));
   }
   breadcrumbs::add($product->name);
 
@@ -178,20 +178,20 @@
   }
 
 // Manufacturer
-  if (!empty($product->manufacturer['id'])) {
-    $schema_json['brand']['name'] = $product->manufacturer['name'];
+  if (!empty($product->manufacturer)) {
+    $schema_json['brand']['name'] = $product->manufacturer->name;
     $_page->snippets['manufacturer'] = array(
-      'id' => $product->manufacturer['id'],
-      'name' => $product->manufacturer['name'],
+      'id' => $product->manufacturer->id,
+      'name' => $product->manufacturer->name,
       'image' => array(),
-      'link' => document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])),
+      'link' => document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer->id)),
     );
 
-    if (!empty($product->manufacturer['image'])) {
+    if (!empty($product->manufacturer->image)) {
       $_page->snippets['manufacturer']['image'] = array(
-        'original' => WS_DIR_IMAGES . $product->manufacturer['image'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 400, 120),
+        'original' => WS_DIR_IMAGES . $product->manufacturer->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer->image, 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer->image, 400, 120),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
