@@ -83,31 +83,33 @@
 
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
 
+    $sql_inner_sort = array();
+    $sql_outer_sort = array();
+
+    if (!empty($filter['campaigns_first'])) {
+      $sql_outer_sort[] = "if(pc.campaign_price, 0, 1)";
+    }
+
     switch ($filter['sort']) {
       case 'name':
-        $sql_inner_sort = "";
-        $sql_outer_sort = "order by name asc";
+        $sql_outer_sort[] = "name asc";
         break;
-      case 'price':
-        $sql_inner_sort = "";
-        $sql_outer_sort = "order by final_price asc";
+        $sql_outer_sort[] = "if(pc.campaign_price, 0, 1), final_price asc";
         break;
       case 'date':
-        $sql_inner_sort = "order by p.date_created desc";
-        $sql_outer_sort = "order by p.date_created desc";
+        $sql_inner_sort[] = "p.date_created desc";
+        $sql_outer_sort[] = "p.date_created desc";
         break;
       case 'occurrences':
-        $sql_inner_sort = "";
-        $sql_outer_sort = "order by occurrences desc";
+        $sql_outer_sort[] = "occurrences desc";
         break;
       case 'rand':
-        $sql_inner_sort = "";
-        $sql_outer_sort = "order by rand()";
+        $sql_outer_sort[] = "rand()";
         break;
       case 'popularity':
       default:
-        $sql_inner_sort = "order by (p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
-        $sql_outer_sort = "order by (p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+        $sql_inner_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+        $sql_outer_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
         break;
     }
 
@@ -157,19 +159,19 @@
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
         where p.status
           and (id
-          ". (!empty($filter['products']) ? "$sql_andor p.id in ('". implode("', '", database::input($filter['products'])) ."')" : false) ."
-          ". (!empty($filter['categories']) ? "$sql_andor ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : false) ."
-          ". (!empty($filter['manufacturers']) ? "$sql_andor manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : false) ."
-          ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : false) ."
-          ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : false) ."
-          ". (!empty($filter['purchased']) ? "$sql_andor p.purchases" : false) ."
+          ". (!empty($filter['products']) ? "$sql_andor p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
+          ". (!empty($filter['categories']) ? "$sql_andor ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
+          ". (!empty($filter['manufacturers']) ? "$sql_andor manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
+          ". (!empty($filter['keywords']) ? "$sql_andor (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
+          ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : null) ."
+          ". (!empty($filter['purchased']) ? "$sql_andor p.purchases" : null) ."
         )
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
-        ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : false) ."
+        ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
         group by ptc.product_id
-        ". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? $sql_inner_sort : '') ."
-        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : "") ."
+        ". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : null) ."
+        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
       ) p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
@@ -185,13 +187,13 @@
         order by end_date asc
       ) pc on (pc.product_id = p.id)
       where (p.id
-        ". (!empty($filter['sql_where']) ? "$sql_andor (". $filter['sql_where'] .")" : false) ."
-        ". (!empty($filter['product_name']) ? "$sql_andor pi.name like '%". database::input($filter['product_name']) ."%'" : false) ."
-        ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : false) ."
-        ". (!empty($sql_where_prices) ? $sql_where_prices : false) ."
+        ". (!empty($filter['sql_where']) ? "$sql_andor (". $filter['sql_where'] .")" : null) ."
+        ". (!empty($filter['product_name']) ? "$sql_andor pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
+        ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : null) ."
+        ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
       )
-      ". $sql_outer_sort ."
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : false) ."". (int)$filter['limit'] : false) .";
+      order by ". implode(",", $sql_outer_sort) ."
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";
     ";
 
     $products_query = database::query($query);

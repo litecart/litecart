@@ -61,6 +61,7 @@
       'manufacturer_id' => $manufacturer->id,
       'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
       'sort' => $_GET['sort'],
+      'campaigns_first' => true,
     ));
 
     if (database::num_rows($products_query) > 0) {

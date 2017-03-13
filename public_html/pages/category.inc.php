@@ -83,6 +83,7 @@
         'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
         'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
         'sort' => $_GET['sort'],
+        'campaigns_first' => true,
       )
     );
 
