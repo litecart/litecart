@@ -80,7 +80,6 @@ body {
       position: absolute;
       right: 0px;
       max-height: 52px;
-      margin-right: @default-gutter-size/2;
       vertical-align: bottom;
     }
     .content {
@@ -192,6 +191,7 @@ body {
   background: #f9f9f9;
   border: 1px solid darken(#f9f9f9, 5%);
   border-radius: @default-gutter-size 0;
+  margin-bottom: @default-gutter-size;
   .toggle {
     float: left;
     padding: @default-gutter-size/2 @default-gutter-size 0 0;
@@ -216,6 +216,7 @@ body {
       flex-wrap: nowrap;
       min-height: 400px;
       > #sidebar {
+        margin-bottom: 0;
         position: relative;
         flex: 0 0 @default-sidebar-width;
         padding: 0;

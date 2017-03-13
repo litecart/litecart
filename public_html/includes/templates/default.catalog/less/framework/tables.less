@@ -9,6 +9,9 @@
   border-collapse: collapse;
   &.table-bordered {
     border: 1px solid @default-border-color;
+    > * > tr > td {
+      border-top: 1px solid @default-border-color;
+    }
   }
   &.data-table {
     white-space: nowrap;
@@ -23,7 +26,7 @@
     padding: 6px 12px;
     line-height: @default-line-height;
     vertical-align: top;
-    border-top: 1px solid @default-border-color;
+
     &.border-top {
       border-top: 1px solid @default-border-color;
     }
