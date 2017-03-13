@@ -526,8 +526,7 @@ foreach (currency::$currencies as $currency) {
           <table id="table-options" class="table table-striped data-table">
             <thead>
               <tr>
-                <th>&nbsp;</th>
-                <th><?php echo language::translate('title_group', 'Group'); ?></th>
+                <th style="min-width: 400px;"><?php echo language::translate('title_group', 'Group'); ?></th>
                 <th><?php echo language::translate('title_value', 'Value'); ?></th>
                 <th><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>
                 <th><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>
@@ -548,7 +547,6 @@ foreach (currency::$currencies as $currency) {
     foreach (array_keys($_POST['options']) as $key) {
 ?>
             <tr>
-              <td><a class="add" href="#" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a><?php echo functions::form_draw_hidden_field('options['.$key.'][id]', true); ?></td>
               <td><?php echo functions::form_draw_option_groups_list('options['.$key.'][group_id]', true); ?></td>
               <td><?php echo functions::form_draw_option_values_list($_POST['options'][$key]['group_id'], 'options['.$key.'][value_id]', true); ?></td>
               <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$key.'][price_operator]', array('+','%','*'), $_POST['options'][$key]['price_operator'], false); ?></td>
@@ -570,7 +568,7 @@ foreach (currency::$currencies as $currency) {
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="<?php echo 6 + count(currency::$currencies); ?>"><a class="add" href="#" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
+                <td colspan="<?php echo 5 + count(currency::$currencies); ?>"><a class="add" href="#" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
               </tr>
             </tfoot>
           </table>
@@ -580,10 +578,10 @@ foreach (currency::$currencies as $currency) {
       <div id="tab-stock-options" class="tab-pane">
         <h2><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h2>
         <div class="table-responsive">
-          <table id="table-stock-options" class="table table-striped data-table" style="max-width: 960px;">
+          <table id="table-stock-options" class="table table-striped data-table">
             <thead>
               <tr>
-                <th><?php echo language::translate('title_option', 'Option'); ?></th>
+                <th style="min-width: 400px;"><?php echo language::translate('title_option', 'Option'); ?></th>
                 <th class=" text-center"><?php echo language::translate('title_sku', 'SKU'); ?></th>
                 <th class="text-center"><?php echo language::translate('title_qty', 'Qty'); ?></th>
                 <th class="text-center"><?php echo language::translate('title_weight', 'Weight'); ?></th>
@@ -1053,7 +1051,6 @@ foreach (currency::$currencies as $currency) {
   $('#table-options').on('click', '.add', function(e) {
     e.preventDefault();
     var output = '<tr>'
-               + '  <td><a class="add" href="#" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"')); ?></a><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_option_i][id]', '')); ?></td>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_option_groups_list('options[new_option_i][group_id]', '')); ?></td>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
                + '  <td class="text-center"><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_option_i][price_operator]', array('+','*'), '+', false)); ?></td>'

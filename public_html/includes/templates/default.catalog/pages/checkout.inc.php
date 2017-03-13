@@ -137,6 +137,7 @@
     e.preventDefault();
     var data = $(this).closest('td').find(':input').serialize() + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
+    queueUpdateTask('customer', null, true);
     queueUpdateTask('shipping', null, true);
     queueUpdateTask('payment', null, true);
     queueUpdateTask('summary', null, true);
@@ -146,6 +147,7 @@
     e.preventDefault();
     var data = $(this).closest('td').find(':input').serialize() + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
+    queueUpdateTask('customer', null, true);
     queueUpdateTask('shipping', null, true);
     queueUpdateTask('payment', null, true);
     queueUpdateTask('summary', null, true);

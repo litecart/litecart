@@ -33,12 +33,12 @@
     if (empty(notices::$data['errors'])) {
 
       foreach ($_POST['products'] as $product_id) {
-        $old_product = new ctrl_product($product_id);
+        $original = new ctrl_product($product_id);
         $product = new ctrl_product();
 
-        $product->data = $old_product->data;
-
+        $product->data = $original->data;
         $product->data['id'] = null;
+        $product->data['status'] = 0;
         $product->data['categories'] = array($_POST['category_id']);
         $product->data['image'] = null;
         $product->data['images'] = array();
@@ -50,8 +50,8 @@
           }
         }
 
-        if (!empty($old_product->data['images'])) {
-          foreach ($old_product->data['images'] as $image) {
+        if (!empty($original->data['images'])) {
+          foreach ($original->data['images'] as $image) {
             $product->add_image(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename']);
           }
         }

@@ -5,13 +5,11 @@
     <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::ilink('')); ?>
 
     <div class="form-group">
-      <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-      <?php echo functions::form_draw_email_field('email', true, 'required="required"'); ?>
+      <?php echo functions::form_draw_email_field('email', true, 'required="required" placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
     </div>
 
     <div class="form-group">
-      <label><?php echo language::translate('title_password', 'Password'); ?></label>
-      <?php echo functions::form_draw_password_field('password', ''); ?>
+      <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
     </div>
 
     <div class="btn-group btn-block">

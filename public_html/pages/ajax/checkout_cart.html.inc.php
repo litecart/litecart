@@ -16,7 +16,6 @@
   $box_checkout_cart->snippets['items'] = array();
   foreach (cart::$items as $key => $item) {
     $box_checkout_cart->snippets['items'][$key] = array(
-      'id' => $item['id'],
       'product_id' => $item['product_id'],
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
       'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], 320, 320, 'FIT_USE_WHITESPACING'),

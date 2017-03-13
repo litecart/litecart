@@ -124,17 +124,17 @@
         <div class="form-group">
           <label><?php echo language::translate('title_subject', 'Subject'); ?></label>
           <?php echo functions::form_draw_regional_input_field($language_code, 'email_subject['. $language_code .']', true); ?>
-  </div>
+        </div>
 
         <div class="form-group">
           <label><?php echo language::translate('title_message', 'Message'); ?></label>
           <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'email_message['. $language_code .']', true); ?>
         </div>
     </div>
-      <?php } ?>
+    <?php } ?>
   </div>
 
-    <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %order_copy_url</code></p>
+    <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %order_copy_url, %store_name, %store_url</code></p>
   </fieldset>
 
   <p class="btn-group">

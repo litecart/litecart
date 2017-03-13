@@ -21,8 +21,7 @@ $(document).ready(function(){
         if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
           var offset = $(this).scrollTop() * parallax_rate;
           if (offset > sidebar_max_offset) offset = sidebar_max_offset;
-          $(column).css('margin-top', offset + 'px');
-
+          if (offset > 0) $(column).css('margin-top', offset + 'px');
         } else {
           $(column).css('margin', 0);
         }

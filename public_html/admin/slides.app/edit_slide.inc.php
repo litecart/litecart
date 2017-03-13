@@ -86,7 +86,7 @@
     <div class="form-group col-md">
       <label><?php echo language::translate('title_caption', 'Caption'); ?></label>
       <?php echo functions::form_draw_textarea('caption', true, 'style="height: 240px;"'); ?><br />
-      <div><?php echo language::translate('title_example', 'Example'); ?>: <em><?php echo htmlspecialchars('<div class="carousel-caption">Lorem ipsum dolor</div>'); ?></em></div>
+      <div><?php echo language::translate('title_example', 'Example'); ?>: <em><?php echo htmlspecialchars('<div class="bottom">Lorem ipsum dolor</div>'); ?></em></div>
     </div>
   </div>
 
