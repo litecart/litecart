@@ -604,7 +604,22 @@
       return false;
     }
 
-    public function send_email_notification() {
+    public function email_order_copy($email) {
+
+      if (empty($email)) return;
+
+      $session_language = language::$selected['code'];
+      language::set($this->data['language_code']);
+
+      /*
+      $action_button = '<div itemscope itemtype="https://schema.org/EmailMessage" style="display:none">' . PHP_EOL
+                     . '  <div itemprop="potentialAction" itemscope itemtype="https://schema.org/ViewAction">' . PHP_EOL
+                     . '    <link itemprop="target url" href="'. document::href_ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))) .'" />' . PHP_EOL
+                     . '    <meta itemprop="name" content="'. htmlspecialchars(language::translate('title_view_order', 'View Order')) .'" />' . PHP_EOL
+                     . '  </div>' . PHP_EOL
+                     . '  <meta itemprop="description" content="'. htmlspecialchars(language::translate('title_view_printable_order_copy', 'View printable order copy')) .'" />' . PHP_EOL
+                     . '</div>';
+      */
 
       $order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
 
@@ -616,8 +631,65 @@
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
+        '%order_items' => null,
+        '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']), 'media' => 'print')),
+        '%order_status' => $order_status->name,
+        '%store_name' => settings::get('store_name'),
+        '%store_url' => document::ilink(''),
+      );
+
+      foreach($this->data['items'] as $item) {
+        $product = catalog::product($item['product_id']);
+
+        $options = array();
+        if (!empty($item['options'])) {
+          foreach ($item['options'] as $k => $v) {
+            $options[] = $k .': '. $v;
+          }
+        }
+
+        $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+      }
+
+      $aliases['%order_items'] = trim($aliases['%order_items']);
+
+      $message = "Thank you for your purchase!\r\n\r\n"
+               . "Your order #%order_id has successfully been created with a total of %payment_due for the following ordered items:\r\n\r\n"
+               . "%order_items\r\n\r\n"
+               . "A printable order copy is available here:\r\n"
+               . "%order_copy_url\r\n\r\n"
+               . "Regards,\r\n"
+               . "%store_name\r\n"
+               . "%store_url\r\n";
+
+      $message = language::translate('email_order_confirmation', $message);
+
+      functions::email_send(
+        null,
+        $email,
+        language::translate('title_order', 'Order') .' #'. $this->data['id'],
+        strtr($message, $aliases),
+        false
+      );
+
+      language::set($session_language);
+    }
+
+    public function send_email_notification() {
+
+      $aliases = array(
+        '%order_id' => $this->data['id'],
+        '%firstname' => $this->data['customer']['firstname'],
+        '%lastname' => $this->data['customer']['lastname'],
+        '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
+        '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
+        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
+        '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))),
         '%order_status' => $order_status->name,
+        '%store_name' => settings::get('store_name'),
+        '%store_url' => document::ilink(''),
       );
 
       $subject = strtr($order_status->email_subject, $aliases);
@@ -633,32 +705,6 @@
         $message,
         true
       );
-    }
-
-    public function email_order_copy($email) {
-
-      if (empty($email)) return;
-
-      $session_language = language::$selected['code'];
-      language::set($this->data['language_code']);
-
-      $action_button = '<div itemscope itemtype="https://schema.org/EmailMessage" style="display:none">' . PHP_EOL
-                     . '  <div itemprop="potentialAction" itemscope itemtype="https://schema.org/ViewAction">' . PHP_EOL
-                     . '    <link itemprop="target url" href="'. document::href_ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))) .'" />' . PHP_EOL
-                     . '    <meta itemprop="name" content="'. htmlspecialchars(language::translate('title_view_order', 'View Order')) .'" />' . PHP_EOL
-                     . '  </div>' . PHP_EOL
-                     . '  <meta itemprop="description" content="'. htmlspecialchars(language::translate('title_view_printable_order_copy', 'View printable order copy')) .'" />' . PHP_EOL
-                     . '</div>';
-
-      functions::email_send(
-        null,
-        $email,
-        language::translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
-        $this->draw_printable_copy() . $action_button,
-        true
-      );
-
-      language::set($session_language);
     }
 
     public function draw_printable_copy() {
