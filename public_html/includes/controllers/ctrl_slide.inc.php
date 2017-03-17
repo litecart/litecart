@@ -22,6 +22,21 @@
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
+
+      $info_fields_query = database::query(
+        "show fields from ". DB_TABLE_SLIDES_INFO .";"
+      );
+
+      $this->data['languages'] = array();
+
+      while ($field = database::fetch($info_fields_query)) {
+        if (in_array($field['Field'], array('id', 'slide_id', 'language_code'))) continue;
+
+        $this->data[$field['Field']] = array();
+        foreach (array_keys(language::$languages) as $language_code) {
+          $this->data[$field['Field']][$language_code] = null;
+        }
+      }
     }
 
     public function load($slide_id) {
@@ -39,18 +54,23 @@
       } else {
         trigger_error('Could not find slide (ID: '. (int)$slide_id .') in database.', E_USER_ERROR);
       }
+
+      $this->data['languages'] = explode(',', $this->data['languages']);
+
+      $slide_info_query = database::query(
+        "select * from ". DB_TABLE_SLIDES_INFO ."
+        where slide_id = '". (int)$this->data['id'] ."';"
+        );
+
+      while ($slide_info = database::fetch($slide_info_query)) {
+        foreach ($slide_info as $key => $value) {
+          if (in_array($key, array('id', 'slide_id', 'language_code'))) continue;
+          $this->data[$key][$slide_info['language_code']] = $value;
+        }
+      }
     }
 
     public function save() {
-
-      if (!empty($this->data['id'])) {
-        $slides_query = database::query(
-          "select * from ". DB_TABLE_SLIDES ."
-          where id = '". (int)$this->data['id'] ."'
-          limit 1;"
-        );
-        $slide = database::fetch($slides_query);
-      }
 
       if (empty($this->data['id'])) {
         database::query(
@@ -65,10 +85,8 @@
         "update ". DB_TABLE_SLIDES ."
         set
           status = '". (int)$this->data['status'] ."',
-          language_code = '". database::input($this->data['language_code']) ."',
+          languages = '". database::input(implode(',', database::input($this->data['languages']))) ."',
           name = '". database::input($this->data['name']) ."',
-          caption = '". database::input($this->data['caption'], true) ."',
-          link = '". database::input($this->data['link']) ."',
           ". (!empty($this->data['image']) ? "image = '" . database::input($this->data['image']) . "'," : '') ."
           priority = '". (int)$this->data['priority'] ."',
           date_valid_from = '". database::input($this->data['date_valid_from']) ."',
@@ -78,7 +96,37 @@
         limit 1;"
       );
 
-      cache::clear_cache('slider');
+      foreach (array_keys(language::$languages) as $language_code) {
+
+        $slide_info_query = database::query(
+          "select * from ". DB_TABLE_SLIDES_INFO ."
+          where slide_id = '". (int)$this->data['id'] ."'
+          and language_code = '". database::input($language_code) ."'
+          limit 1;"
+        );
+        $slide_info = database::fetch($slide_info_query);
+
+        if (empty($slide_info['id'])) {
+          database::query(
+            "insert into ". DB_TABLE_SLIDES_INFO ."
+            (slide_id, language_code)
+            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+          );
+          $slide_info['id'] = database::insert_id();
+        }
+
+        database::query(
+          "update ". DB_TABLE_SLIDES_INFO ."
+          set
+            caption = '". database::input($this->data['caption'][$language_code], true) ."',
+            link = '". database::input($this->data['link'][$language_code]) ."'
+          where id = '". (int)$slide_info['id'] ."'
+          and slide_id = '". (int)$this->data['id'] ."'
+          and language_code = '". $language_code ."'
+          limit 1;"
+        );
+      }
+
       cache::clear_cache('slides');
     }
 
@@ -111,6 +159,11 @@
     public function delete() {
 
       database::query(
+        "delete from ". DB_TABLE_SLIDES_INFO ."
+        where slide_id = '". (int)$this->data['id'] ."';"
+      );
+
+      database::query(
         "delete from ". DB_TABLE_SLIDES ."
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
@@ -118,7 +171,6 @@
 
       if (!empty($this->data['image']) && file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
 
-      cache::clear_cache('slider');
       cache::clear_cache('slides');
 
       $this->data['id'] = null;

@@ -641,8 +641,6 @@ CREATE TABLE `lc_slides` (
   `status` TINYINT(1) NOT NULL,
   `language_code` VARCHAR(8) NOT NULL,
   `name` VARCHAR(128) NOT NULL,
-  `caption` VARCHAR(512) NOT NULL,
-  `link` VARCHAR(256) NOT NULL,
   `image` VARCHAR(64) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
   `date_valid_from` DATETIME NOT NULL,
@@ -650,6 +648,18 @@ CREATE TABLE `lc_slides` (
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_slides_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `slide_id` int(11) NOT NULL,
+  `language_code` varchar(2) NOT NULL,
+  `caption` TEXT NOT NULL,
+  `link` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slide_info` (`slide_id`,`language_code`),
+  KEY `slide_id` (`slide_id`),
+  KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_sold_out_statuses` (

@@ -6,12 +6,13 @@
   if (cache::capture($box_slides_cache_id, 'file')) {
 
     $slides_query = database::query(
-      "select * from ". DB_TABLE_SLIDES ."
-      where status
-      and (language_code = '' or language_code = '". database::input(language::$selected['code']) ."')
-      and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
-      and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
-      order by priority asc;"
+      "select s.*, si.caption, si.link from ". DB_TABLE_SLIDES ." s
+      left join ". DB_TABLE_SLIDES_INFO ." si on (s.id = si.slide_id and si.language_code = '". database::input(language::$selected['code']) ."')
+      where s.status
+      and (s.languages = '' or find_in_set('". database::input(language::$selected['code']) ."', s.languages))
+      and (s.date_valid_from <= '". date('Y-m-d H:i:s') ."')
+      and (year(s.date_valid_to) < '1971' or s.date_valid_to >= '". date('Y-m-d H:i:s') ."')
+      order by s.priority, s.name;"
     );
 
     if (database::num_rows($slides_query)) {

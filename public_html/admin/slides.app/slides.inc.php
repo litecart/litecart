@@ -31,7 +31,7 @@
         <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th><?php echo language::translate('title_language', 'Language'); ?></th>
+        <th><?php echo language::translate('title_languages', 'Languages'); ?></th>
         <th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
         <th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
         <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
@@ -42,7 +42,7 @@
 <?php
   $slides_query = database::query(
     "select * from ". DB_TABLE_SLIDES ."
-    order by language_code asc, priority asc;"
+    order by priority, name;"
   );
 
   if (database::num_rows($slides_query) > 0) {
@@ -57,10 +57,10 @@
         <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
         <td><?php echo $slide['id']; ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
-        <td><?php echo $slide['language_code']; ?></td>
+        <td class="text-right"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
         <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
         <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
-        <td class="text-center"><?php echo $slide['priority']; ?></td>
+        <td class="text-right"><?php echo $slide['priority']; ?></td>
         <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php

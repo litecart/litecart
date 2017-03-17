@@ -191,4 +191,27 @@
     }
   }
 
+  $slides_query = database::query(
+    "select * from ". DB_TABLE_SLIDES .";"
+  );
+
+  while($slide = database::fetch($slides_query)) {
+
+    if (!empty($slide['language_code'])) {
+      $languages = array($slide['language_code']);
+    } else {
+      $languages = array_keys(language::$languages);
+    }
+
+    foreach ($languages as $language_code) {
+      database::query(
+        "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "slides_info
+        (slide_id, language_code, caption, link)
+        values (". (int)$slide['id'] .", '". database::input($language_code) ."', '". database::input($slide['caption']) ."', '". database::input($slide['link']) ."');"
+      );
+    }
+  }
+
+  database::query("alter table ". DB_TABLE_SLIDES ." change column `language_code` `languages` varchar(32) not null, drop column `caption`, drop column `link`;");
+
 ?>

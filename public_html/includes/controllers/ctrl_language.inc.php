@@ -79,6 +79,7 @@
               DB_TABLE_PRODUCT_GROUPS_VALUES_INFO,
               DB_TABLE_PRODUCTS_INFO,
               DB_TABLE_QUANTITY_UNITS_INFO,
+              DB_TABLE_SLIDES_INFO,
               DB_TABLE_SOLD_OUT_STATUSES_INFO,
             );
 
@@ -191,6 +192,7 @@
         DB_TABLE_PRODUCT_GROUPS_VALUES_INFO,
         DB_TABLE_PRODUCTS_INFO,
         DB_TABLE_QUANTITY_UNITS_INFO,
+        DB_TABLE_SLIDES_INFO,
         DB_TABLE_SOLD_OUT_STATUSES_INFO,
       );
       foreach ($info_tables as $table) {

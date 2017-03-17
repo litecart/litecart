@@ -21,10 +21,11 @@
     if (empty(notices::$data['errors'])) {
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
+      if (empty($_POST['languages'])) $_POST['languages'] = array();
 
       $fields = array(
         'status',
-        'language_code',
+        'languages',
         'name',
         'caption',
         'link',
@@ -59,8 +60,6 @@
 ?>
 <h1><?php echo $app_icon; ?> <?php echo !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'); ?></h1>
 
-<?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" alt="" /></p>'; ?>
-
 <?php echo functions::form_draw_form_begin('slide_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
@@ -68,10 +67,17 @@
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
       <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
     </div>
+  </div>
 
+  <div class="row">
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_language', 'Language'); ?></label>
-      <?php echo functions::form_draw_languages_list('language_code', true); ?> <em><?php echo language::translate('text_leave_blank_for_all_languages', 'Leave blank for all languages'); ?></em>
+      <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
+      <div></div>
+      <div class="form-control">
+        <?php foreach (language::$languages as $language) { ?>
+        <div><label><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code'], true); ?> <?php echo $language['name']; ?></label></div>
+        <?php } ?>
+      </div>
     </div>
   </div>
 
@@ -82,20 +88,7 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_caption', 'Caption'); ?></label>
-      <?php echo functions::form_draw_textarea('caption', true, 'style="height: 240px;"'); ?><br />
-      <div><?php echo language::translate('title_example', 'Example'); ?>: <em><?php echo htmlspecialchars('<div class="bottom">Lorem ipsum dolor</div>'); ?></em></div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_link', 'Link'); ?></label>
-      <?php echo functions::form_draw_url_field('link', true); ?>
-    </div>
-  </div>
+  <?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" alt="" class="img-responsive" /></p>'; ?>
 
   <div class="row">
     <div class="form-group col-md">
@@ -103,6 +96,28 @@
         <?php echo functions::form_draw_file_field('image'); ?>
         <?php echo (!empty($slide->data['image'])) ? '</label>' . $slide->data['image'] : ''; ?>
     </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+  <?php foreach (language::$languages as $language) { ?>
+    <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+  <?php } ?>
+  </ul>
+
+  <div class="tab-content">
+    <?php foreach (array_keys(language::$languages) as $language_code) { ?>
+    <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
+      <div class="form-group">
+        <label><?php echo language::translate('title_caption', 'Caption'); ?></label>
+        <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'caption['. $language_code .']', true, 'style="height: 240px;"'); ?>
+  </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_link', 'Link'); ?></label>
+        <?php echo functions::form_draw_regional_input_field($language_code, 'link['. $language_code .']', true, ''); ?>
+    </div>
+    </div>
+    <?php } ?>
   </div>
 
   <div class="row">

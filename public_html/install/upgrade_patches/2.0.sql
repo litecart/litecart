@@ -14,6 +14,18 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   KEY `status` (`status`)
 ) ENGINE=MyISAM;
 -- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_slides_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `slide_id` int(11) NOT NULL,
+  `language_code` varchar(2) NOT NULL,
+  `caption` TEXT NOT NULL,
+  `link` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slide_info` (`slide_id`,`language_code`),
+  KEY `slide_id` (`slide_id`),
+  KEY `language_code` (`language_code`)
+) ENGINE=MyISAM;
+-- --------------------------------------------------------
 ALTER TABLE `lc_categories_info` ADD UNIQUE INDEX `category_info` (`category_id`, `language_code`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_countries` CHANGE COLUMN `postcode_required` `postcode_required` TINYINT(1) NOT NULL COMMENT 'Deprecated, use instead postcode_format' AFTER `postcode_format`;
