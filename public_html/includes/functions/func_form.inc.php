@@ -124,7 +124,7 @@
                                                                         . '  });';
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals']+2, '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? round($value, currency::$currencies[$currency_code]['decimals']+2) : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
          . '  <strong class="input-group-addon" style="opacity: 0.75;">'. $currency_code .'</strong>' . PHP_EOL
          . '</div>';
   }
@@ -169,7 +169,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon">@</span>' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-at fa-fw') .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />'
          . '</div>';
   }

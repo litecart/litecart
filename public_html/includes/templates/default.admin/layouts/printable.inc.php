@@ -16,9 +16,7 @@
 <button name="print"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button>
 <?php } ?>
 
-<main>
-  <!--snippet:content-->
-</main>
+<!--snippet:content-->
 
 <!--snippet:foot_tags-->
 <!--snippet:javascript-->

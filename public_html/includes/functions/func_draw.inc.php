@@ -65,7 +65,7 @@
       $sticker = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
     }
 
-    list($width, $height) = functions::image_scale_by_width(256, settings::get('product_image_ratio'));
+    list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
     $listing_product->snippets = array(
       'listing_type' => $listing_type,
