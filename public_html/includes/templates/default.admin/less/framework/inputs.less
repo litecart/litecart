@@ -22,10 +22,17 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 }
 
 .form-group {
+  &.required label::after {
+    content: ' *';
+    color: #f00;
+  }
+  &:not([class*=col-]) {
   margin-bottom: @default-gutter-size;
+  }
 }
 
 .input-field() {
+  position: relative;
   color: #555;
   background-color: #fff;
   background-image: none;
@@ -38,10 +45,14 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   .input-field();
   display: block;
   width: 100%;
+  min-width: 1px; // Firefox fix
   padding: @form-input-padding;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   &[disabled] {
     opacity: 0.5;
+  }
+  &[readonly] {
+    color: #999;
   }
 }
 
@@ -90,8 +101,8 @@ select.form-control {
   .input-group-btn {
     flex: 1 0 auto;
     .btn {
-      border-top: 0;
-      border-bottom: 0;
+      border-top: none;
+      border-bottom: none;
       padding: 7px 12px;
     }
   }

@@ -225,8 +225,6 @@ body {
         background: transparent;
         & + #content {
           margin-left: @default-gutter-size * 2;
-          position: relative;
-          flex: 0 1 100%;
         }
       }
       #navigation .toggle {
@@ -237,6 +235,11 @@ body {
       }
     }
   }
+}
+
+#content {
+  position: relative;
+  flex: 1 1 100%;
 }
 
 #footer {

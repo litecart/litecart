@@ -105,8 +105,8 @@ select.form-control {
   .input-group-btn {
     flex: 1 0 auto;
     .btn {
-      border-top: 0;
-      border-bottom: 0;
+      border-top: none;
+      border-bottom: none;
       padding: 7px 12px;
     }
   }
@@ -124,5 +124,8 @@ select.form-control {
   .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
     margin-right: -1px;
     border-radius: 0 4px 4px 0;
+  }
+  + .input-group {
+    margin-top: -1px;
   }
 }
