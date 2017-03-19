@@ -27,7 +27,7 @@
         'sensor' => 'false',
       );
 
-      $client = http_client();
+      $client = new http_client();
       $response = $client->call(document::link('http://maps.googleapis.com/maps/api/geocode/xml', ($params)));
 
       if (empty($response)) return;
