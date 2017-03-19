@@ -7,7 +7,7 @@
     public $destination = array();
 
     public function __construct() {
-      $this->load('jobs');
+      $this->load('job');
     }
 
     public function process($modules=null, $force=false) {
@@ -42,8 +42,7 @@
 
         database::query(
           "update ". DB_TABLE_MODULES ."
-          set last_log = '". database::input($log) ."',
-              date_last_run = '". database::input($start_time) ."'
+          set last_log = '". database::input($log) ."'
           where type = 'job'
           and module_id = '". database::input($module_id) ."';"
         );
