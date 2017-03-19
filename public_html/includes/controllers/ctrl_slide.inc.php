@@ -87,7 +87,7 @@
           status = '". (int)$this->data['status'] ."',
           languages = '". database::input(implode(',', database::input($this->data['languages']))) ."',
           name = '". database::input($this->data['name']) ."',
-          ". (!empty($this->data['image']) ? "image = '" . database::input($this->data['image']) . "'," : '') ."
+          image = '" . database::input($this->data['image']) . "',
           priority = '". (int)$this->data['priority'] ."',
           date_valid_from = '". database::input($this->data['date_valid_from']) ."',
           date_valid_to = '". database::input($this->data['date_valid_to']) ."',

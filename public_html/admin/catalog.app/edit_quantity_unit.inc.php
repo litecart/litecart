@@ -71,14 +71,13 @@
   </div>
 
   <div class="row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
       <?php echo functions::form_draw_number_field('decimals', true); ?>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-8">
+      <br />
       <div class="checkbox">
         <label><?php echo functions::form_draw_checkbox('separate', '1', true); ?> <?php echo language::translate('text_separate_added_cart_items', 'Separate added cart items'); ?></label>
       </div>
@@ -86,7 +85,7 @@
   </div>
 
   <div class="row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
       <?php echo functions::form_draw_number_field('priority', true); ?>
     </div>

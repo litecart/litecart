@@ -140,13 +140,13 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(serialize(array($product_id, $options)));
+          $item_key = md5(serialize(array($product->id, $options)));
         }
       }
 
       $item = array(
         'id' => null,
-        'product_id' => (int)$product_id,
+        'product_id' => (int)$product->id,
         'options' => $options,
         'option_stock_combination' => '',
         'image' => $product->image,

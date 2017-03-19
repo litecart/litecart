@@ -72,7 +72,6 @@
         <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
         <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
         <th class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
         <th><?php echo language::translate('title_date', 'Date'); ?></th>
         <th>&nbsp;</th>
       </tr>
