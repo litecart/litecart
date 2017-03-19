@@ -129,8 +129,11 @@ INSERT INTO `lc_product_groups_values_info` (`id`, `product_group_value_id`, `la
 (2, 2, 'en', 'Female'),
 (3, 3, 'en', 'Unisex');
 -- --------------------------------------------------------
-INSERT INTO `lc_slides` (`id`, `status`, `language_code`, `name`, `caption`, `link`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, 'en', 'Lonely Duck', '', 'http://www.canstockphoto.com/?r=282295', 'slides/1-lonely-duck.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
+(1, 1, 'en', 'Lonely Duck', 'slides/1-lonely-duck.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
+(1, 1, 'en', '', 'http://www.canstockphoto.com/?r=282295');
 -- --------------------------------------------------------
 INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
 (1, 1, NOW(), NOW()),
