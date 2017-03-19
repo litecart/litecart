@@ -205,7 +205,7 @@
 
     foreach ($languages as $language_code) {
       database::query(
-        "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "slides_info
+        "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "slides_info`
         (slide_id, language_code, caption, link)
         values (". (int)$slide['id'] .", '". database::input($language_code) ."', '". database::input($slide['caption']) ."', '". database::input($slide['link']) ."');"
       );
