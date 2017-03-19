@@ -639,7 +639,7 @@ CREATE TABLE `lc_settings_groups` (
 CREATE TABLE `lc_slides` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
-  `language_code` VARCHAR(8) NOT NULL,
+  `languages` VARCHAR(32) NOT NULL,
   `name` VARCHAR(128) NOT NULL,
   `image` VARCHAR(64) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
