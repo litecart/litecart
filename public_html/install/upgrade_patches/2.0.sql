@@ -153,3 +153,6 @@ ALTER TABLE `lc_users` ADD COLUMN `permissions` VARCHAR(4096) NOT NULL AFTER `pa
 UPDATE `lc_settings` SET `title` = 'Popular Products Box: Number of Items', `key` = 'box_popular_products_num_items' WHERE `key` = 'box_most_popular_products_num_items';
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = '6' WHERE `key` = 'box_recently_viewed_products_num_items';
+-- --------------------------------------------------------
+INSERT IGNORE INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
+VALUES ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"product_modal_window":"1","sidebar_parallax_effect":"1","cookie_acceptance":"1"}', 'smalltext()', 0, NOW(), NOW());
