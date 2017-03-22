@@ -44,7 +44,7 @@
 
         <p><?php echo functions::form_draw_button('send', language::translate('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?></p>
 
-    <?php echo functions::form_draw_form_end(); ?>
+      <?php echo functions::form_draw_form_end(); ?>
     </div>
 
     <div class="col-md-6">

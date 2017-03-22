@@ -41,7 +41,7 @@
   </div>
 </div>
 <?php
-      }
+    }
     cache::end_capture($widget_discussions_cache_id);
   }
 ?>
