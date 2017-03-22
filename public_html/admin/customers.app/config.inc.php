@@ -32,5 +32,3 @@
       'newsletter' => 'newsletter.inc.php',
     ),
   );
-
-?>

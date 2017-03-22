@@ -30,11 +30,11 @@
 
       if (!empty($this->settings['free_shipping_table'])) {
 
-        // Calculate cart total
-          $subtotal = 0;
-          foreach ($order->data['items'] as $item) {
-            $subtotal += $item['quantity'] * $item['price'];
-          }
+      // Calculate cart total
+        $subtotal = 0;
+        foreach ($order->data['items'] as $item) {
+          $subtotal += $item['quantity'] * $item['price'];
+        }
 
         $free_shipping_table = functions::csv_decode($this->settings['free_shipping_table'], ',');
 

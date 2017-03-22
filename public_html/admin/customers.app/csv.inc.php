@@ -125,7 +125,7 @@
     ob_clean();
 
     if ($_POST['output'] == 'screen') {
-      header('Content-type: text/plain; charset='. $_POST['charset']);
+      header('Content-Type: text/plain; charset='. $_POST['charset']);
     } else {
       header('Content-Type: application/csv; charset='. $_POST['charset']);
       header('Content-Disposition: attachment; filename=customers.csv');

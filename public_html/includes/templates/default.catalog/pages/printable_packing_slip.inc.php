@@ -77,8 +77,8 @@ hr {
 
       <div class="col-xs-6 text-right">
         <h1><?php echo language::translate('title_packing_slip', 'Packing Slip'); ?></h1>
-          <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
-          <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>
+        <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
+        <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>
       </div>
     </div>
   </header>
@@ -137,7 +137,7 @@ hr {
           <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
           <th><?php echo language::translate('title_item', 'Item'); ?></th>
           <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-      </tr>
+        </tr>
       </thead>
       <tbody>
 <?php
@@ -159,10 +159,10 @@ hr {
       }
     }
 ?>
-        </td>
-        <td><?php echo $item['sku']; ?></td>
-      </tr>
-      <?php } ?>
+          </td>
+          <td><?php echo $item['sku']; ?></td>
+        </tr>
+        <?php } ?>
       </tbody>
     </table>
 
@@ -203,12 +203,12 @@ hr {
         <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
       </div>
 
-        <?php if (settings::get('store_phone')) { ?>
+      <?php if (settings::get('store_phone')) { ?>
       <div class="column">
         <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
         <div class="value"><?php echo settings::get('store_phone'); ?></div>
       </div>
-        <?php } ?>
+      <?php } ?>
 
       <div class="column">
         <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
@@ -218,13 +218,13 @@ hr {
         <div class="value"><?php echo htmlspecialchars(document::ilink('')); ?></div>
       </div>
 
-          <?php if (settings::get('store_tax_id')) { ?>
+      <?php if (settings::get('store_tax_id')) { ?>
       <div class="column">
         <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
         <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
       </div>
-        <?php } ?>
-  </div>
+      <?php } ?>
+    </div>
   </footer>
   <?php } ?>
 </div>

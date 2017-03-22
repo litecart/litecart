@@ -38,8 +38,8 @@
   if (!$_POST) {
     if (!empty($module->data)) {
       foreach ($module->data['settings'] as $key => $value) {
-          $_POST[$key] = $value;
-        }
+        $_POST[$key] = $value;
+      }
     } else {
       foreach ($object->settings() as $setting) {
         $_POST[$setting['key']] = $setting['default_value'];

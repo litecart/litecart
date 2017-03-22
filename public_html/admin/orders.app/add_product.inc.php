@@ -5,7 +5,7 @@
   if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('store_currency_code');
   if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
 
-    $product = reference::product($_GET['product_id'], $_GET['currency_code']);
+  $product = reference::product($_GET['product_id'], $_GET['currency_code']);
   if (empty($product->id)) return;
 ?>
 <div id="modal-add-product" style="width: 640px;">
@@ -181,36 +181,36 @@
           </div>
         </div>
       </div>
-        </div>
+    </div>
 
     <div class="form-group">
-        <?php if (!empty($product->options_stock)) {?>
-          <table class="table table-default table-striped data-table">
-            <tbody>
-              <tr>
-                <td><strong><?php echo language::translate('title_stock_option', 'Stock Option'); ?></strong></td>
-                <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong></td>
-                <td class="text-right"><strong><?php echo language::translate('title_in_stock', 'In Stock'); ?></strong></td>
-              </tr>
-              <?php foreach ($product->options_stock as $stock_option) { ?>
-              <tr>
-                <td><?php echo $stock_option['name']; ?></td>
-                <td><?php echo $stock_option['sku']; ?></td>
-                <td class="text-right"><?php echo (float)$stock_option['quantity']; ?></td>
-              </tr>
-              <?php } ?>
-            </tbody>
-            <tfoot>
-              <tr>
-            <td colspan="2"></td>
-                <td class="text-right"><strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?></td>
-              </tr>
-            </tfoot>
-          </table>
+      <?php if (!empty($product->options_stock)) {?>
+      <table class="table table-default table-striped data-table">
+        <tbody>
+          <tr>
+            <td><strong><?php echo language::translate('title_stock_option', 'Stock Option'); ?></strong></td>
+            <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong></td>
+            <td class="text-right"><strong><?php echo language::translate('title_in_stock', 'In Stock'); ?></strong></td>
+          </tr>
+          <?php foreach ($product->options_stock as $stock_option) { ?>
+          <tr>
+            <td><?php echo $stock_option['name']; ?></td>
+            <td><?php echo $stock_option['sku']; ?></td>
+            <td class="text-right"><?php echo (float)$stock_option['quantity']; ?></td>
+          </tr>
           <?php } ?>
-          </div>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"></td>
+            <td class="text-right"><strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?></td>
+          </tr>
+        </tfoot>
+      </table>
+      <?php } ?>
+    </div>
 
-      <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>
 
 <script>

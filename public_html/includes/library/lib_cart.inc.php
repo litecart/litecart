@@ -185,7 +185,7 @@
 
         if ($product->date_valid_from > date('Y-m-d H:i:s')) {
           throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from)))));
-      }
+        }
 
         if ($product->date_valid_to > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
           throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to)))));
@@ -219,7 +219,7 @@
         // Check values
           switch ($option['function']) {
 
-              case 'checkbox':
+            case 'checkbox':
 
               $matched_values = array();
               foreach($option['values'] as $value) {
@@ -228,34 +228,34 @@
                 if (!empty($matched_value)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
-                  }
                 }
-                break;
+              }
+              break;
 
-              case 'input':
-              case 'textarea':
+            case 'input':
+            case 'textarea':
 
               $matched_value = $options[$matched_group];
-                $item['extras'] += $value['price_adjust'];
-                break;
+              $item['extras'] += $value['price_adjust'];
+              break;
 
-              case 'radio':
-              case 'select':
+            case 'radio':
+            case 'select':
 
               foreach($option['values'] as $value) {
                 $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
                 $matched_value = @reset(array_intersect(array($options[$matched_group]), array_values($possible_values)));
                 if (!empty($matched_value)) {
-                    $item['extras'] += $value['price_adjust'];
+                  $item['extras'] += $value['price_adjust'];
                   break;
                 }
-                }
-                break;
-            }
+              }
+              break;
+          }
 
           if (empty($matched_value) && !empty($option['required'])) {
             throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
-      }
+          }
 
           if (empty($matched_group) && (empty($matched_values) && empty($matched_value))) continue;
 
@@ -266,7 +266,7 @@
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           );
-      }
+        }
 
       // Options stock
         foreach ($product->options_stock as $option_stock) {
@@ -299,7 +299,7 @@
         }
 
       } catch(Exception $e) {
-          $item['error'] = $e->getMessage();
+        $item['error'] = $e->getMessage();
         if (!$force) {
           notices::add('errors', $e->getMessage());
           return false;
@@ -331,14 +331,14 @@
       }
 
       if (!empty(self::$items[$item_key]['id'])) {
-          database::query(
-            "update ". DB_TABLE_CART_ITEMS ."
-            set quantity = ". (float)self::$items[$item_key]['quantity'] .",
-            date_updated = '". date('Y-m-d H:i:s') ."'
-            where cart_uid = '". database::input(self::$data['uid']) ."'
-            and `key` = '". database::input($item_key) ."'
-            limit 1;"
-          );
+        database::query(
+          "update ". DB_TABLE_CART_ITEMS ."
+          set quantity = ". (float)self::$items[$item_key]['quantity'] .",
+          date_updated = '". date('Y-m-d H:i:s') ."'
+          where cart_uid = '". database::input(self::$data['uid']) ."'
+          and `key` = '". database::input($item_key) ."'
+          limit 1;"
+        );
       } else {
         if (!$force) {
           database::query(
@@ -350,7 +350,7 @@
         }
       }
 
-        self::_calculate_total();
+      self::_calculate_total();
 
       if (!$force) {
         notices::add('success', language::translate('success_product_added_to_cart', 'Your product was successfully added to the cart.'));
@@ -392,7 +392,7 @@
 
       if (!isset(self::$items[$item_key])) return;
 
-        unset(self::$items[$item_key]);
+      unset(self::$items[$item_key]);
 
       database::query(
         "delete from ". DB_TABLE_CART_ITEMS ."
@@ -404,9 +404,9 @@
       self::_calculate_total();
 
       if (!$force) {
-      header('Location: '. document::ilink());
-      exit;
-    }
+        header('Location: '. document::ilink());
+        exit;
+      }
     }
 
     private static function _calculate_total() {
@@ -430,5 +430,3 @@
       }
     }
   }
-
-?>

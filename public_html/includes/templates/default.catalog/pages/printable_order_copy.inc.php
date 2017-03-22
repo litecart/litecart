@@ -105,29 +105,29 @@ hr {
       </div>
     </div>
 
-      <div class="row">
-        <div class="col-xs-3">
-          <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
-          <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
+        <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
 
-          <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-          <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
-        </div>
+        <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
+        <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
+      </div>
 
-        <div class="col-xs-3">
-          <div class="label"><?php echo language::translate('title_payment_option', 'Payment Option'); ?></div>
-          <div class="value"><?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></div>
+      <div class="col-xs-3">
+        <div class="label"><?php echo language::translate('title_payment_option', 'Payment Option'); ?></div>
+        <div class="value"><?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></div>
 
-          <div class="label"><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></div>
-          <div class="value"><?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></div>
-        </div>
+        <div class="label"><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></div>
+        <div class="value"><?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></div>
+      </div>
 
-        <div class="col-xs-6">
-          <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
+      <div class="col-xs-6">
+        <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+        <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
 
-          <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></div>
+        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+        <div class="value"><?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></div>
       </div>
     </div>
 

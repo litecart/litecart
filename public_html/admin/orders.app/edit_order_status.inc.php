@@ -104,8 +104,8 @@
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
         <?php echo functions::form_draw_number_field('priority', true); ?>
-      </div>
-      </div>
+    </div>
+  </div>
 
   <fieldset>
     <legend>
@@ -130,9 +130,9 @@
           <label><?php echo language::translate('title_message', 'Message'); ?></label>
           <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'email_message['. $language_code .']', true); ?>
         </div>
+      </div>
+      <?php } ?>
     </div>
-    <?php } ?>
-  </div>
 
     <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %order_copy_url, %store_name, %store_url</code></p>
   </fieldset>

@@ -13,4 +13,3 @@
   }
 
   echo 'File not found';
-?>
