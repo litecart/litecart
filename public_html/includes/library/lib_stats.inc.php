@@ -75,5 +75,3 @@
       if (isset(self::$_data[$key])) return self::$_data[$key];
     }
   }
-
-?>

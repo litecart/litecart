@@ -16,4 +16,3 @@
 
     echo $box_account_login->stitch('views/box_account_login');
   }
- ?>

@@ -198,5 +198,3 @@
       $this->data['image'] = $filename;
     }
   }
-
-?>

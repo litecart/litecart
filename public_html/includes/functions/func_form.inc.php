@@ -1102,5 +1102,3 @@
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
-
-?>

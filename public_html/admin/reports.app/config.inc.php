@@ -30,5 +30,3 @@
       'most_shopping_customers' => 'most_shopping_customers.inc.php',
     ),
   );
-
-?>

@@ -45,4 +45,3 @@
   }
 
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
-?>

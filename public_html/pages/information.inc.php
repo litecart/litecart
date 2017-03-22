@@ -36,4 +36,3 @@
   );
 
   echo $_page->stitch('pages/information');
-?>

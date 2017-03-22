@@ -5,5 +5,3 @@ $widget_config = array(
   'file' => 'discussions.inc.php',
   'priority' => 4,
 );
-
-?>

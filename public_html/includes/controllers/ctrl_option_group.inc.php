@@ -282,5 +282,3 @@
       $this->data['id'] = null;
     }
   }
-
-?>

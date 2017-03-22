@@ -36,4 +36,3 @@
 
     cache::end_capture($manufacturers_cache_id);
   }
-?>

@@ -144,5 +144,3 @@
       cache::clear_cache('pages');
     }
   }
-
-?>

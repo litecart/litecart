@@ -44,5 +44,3 @@
       return self::$_loaded_modules;
     }
   }
-
-?>

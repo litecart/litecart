@@ -29,4 +29,3 @@
 
     cache::end_capture($box_information_links_cache_id);
   }
-?>

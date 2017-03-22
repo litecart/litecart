@@ -360,5 +360,3 @@
       return false;
     }
   }
-
-?>

@@ -25,4 +25,3 @@
   } else {
     echo $_page->stitch('pages/login');
   }
-?>

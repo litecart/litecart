@@ -17,5 +17,3 @@
     $contents = preg_replace('#'. preg_quote($search, '#') .'#', $replace, $contents);
     file_put_contents($file, $contents);
   }
-
-?>

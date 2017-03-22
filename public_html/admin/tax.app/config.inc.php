@@ -26,5 +26,3 @@
       'edit_tax_rate' => 'edit_tax_rate.inc.php',
     ),
   );
-
-?>

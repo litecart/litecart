@@ -31,4 +31,3 @@
 
   $box_contact_us = new view();
   echo $box_contact_us->stitch('views/box_contact_us');
-?>

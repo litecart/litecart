@@ -4,4 +4,3 @@
 
   $redirect_url = document::ilink('');
   customer::logout($redirect_url);
-?>

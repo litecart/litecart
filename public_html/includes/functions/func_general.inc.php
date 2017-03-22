@@ -155,5 +155,3 @@
 
     return $checksum;
   }
-
-?>

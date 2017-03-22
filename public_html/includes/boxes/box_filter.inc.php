@@ -93,4 +93,3 @@
 
     cache::end_capture($box_filter_cache_id);
   }
-?>

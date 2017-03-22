@@ -13,5 +13,3 @@
       'edit_user' => 'edit_user.inc.php',
     ),
   );
-
-?>

@@ -47,4 +47,3 @@
 
     cache::end_capture($box_category_tree_cache_id);
   }
-?>

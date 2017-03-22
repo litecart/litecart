@@ -46,5 +46,3 @@
       return $parsed_link;
     }
   }
-
-?>

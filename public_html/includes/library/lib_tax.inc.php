@@ -214,5 +214,3 @@
       return false;
     }
   }
-
-?>

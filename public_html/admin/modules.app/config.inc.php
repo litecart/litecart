@@ -49,5 +49,3 @@
       'run_job' => 'run_job.inc.php',
     ),
   );
-
-?>

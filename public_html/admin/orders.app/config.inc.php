@@ -32,5 +32,3 @@
       'product_picker' => 'product_picker.inc.php',
     ),
   );
-
-?>

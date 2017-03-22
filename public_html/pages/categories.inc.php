@@ -24,4 +24,3 @@
   }
 
   echo $_page->stitch('pages/categories');
-?>

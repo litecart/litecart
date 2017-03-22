@@ -146,5 +146,3 @@
       cache::clear_cache('users');
     }
   }
-
-?>

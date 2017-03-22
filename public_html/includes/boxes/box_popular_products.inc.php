@@ -31,4 +31,3 @@
 
     cache::end_capture($box_popular_products_cache_id);
   }
-?>

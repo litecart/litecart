@@ -39,4 +39,3 @@
   echo $json;
 
   exit;
-?>

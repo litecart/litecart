@@ -22,4 +22,3 @@
 
     cache::end_capture($box_campaign_products_cache_id);
   }
-?>

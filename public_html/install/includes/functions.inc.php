@@ -98,5 +98,3 @@
 
     return empty($errors) ? true : false;
   }
-
-?>

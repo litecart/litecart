@@ -5,5 +5,3 @@
     'file' => 'stats.inc.php',
     'priority' => 1,
   );
-
-?>

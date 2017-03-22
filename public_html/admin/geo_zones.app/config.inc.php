@@ -13,5 +13,3 @@
       'edit_geo_zone' => 'edit_geo_zone.inc.php',
     ),
   );
-
-?>

@@ -10,4 +10,3 @@
   $_page = new view();
 
   echo $_page->stitch('pages/index');
-?>

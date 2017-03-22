@@ -232,5 +232,3 @@
       return self::$_links_cache[$language_code][$link];
     }
   }
-
-?>

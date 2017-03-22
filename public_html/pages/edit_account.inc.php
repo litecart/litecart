@@ -122,4 +122,3 @@
 
   $_page = new view();
   echo $_page->stitch('pages/edit_account');
-?>

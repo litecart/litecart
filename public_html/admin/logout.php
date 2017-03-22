@@ -5,5 +5,3 @@
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
   user::logout();
-
-?>

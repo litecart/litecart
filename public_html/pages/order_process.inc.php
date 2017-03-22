@@ -149,4 +149,3 @@
 
   header('Location: '. document::ilink('order_success'));
   exit;
-?>

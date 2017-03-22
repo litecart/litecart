@@ -36,4 +36,3 @@
 
     cache::end_capture($box_similar_products_cache_id);
   }
-?>

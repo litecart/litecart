@@ -86,5 +86,3 @@
       cache::clear_cache('tax');
     }
   }
-
-?>

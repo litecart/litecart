@@ -35,4 +35,3 @@
 
     cache::end_capture($box_slides_cache_id);
   }
-?>

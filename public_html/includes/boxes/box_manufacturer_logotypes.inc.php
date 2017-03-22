@@ -29,4 +29,3 @@
 
     cache::end_capture($box_manufacturer_logotypes_cache_id);
   }
-?>

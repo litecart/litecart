@@ -271,5 +271,3 @@
       cache::clear_cache('product_groups');
     }
   }
-
-?>

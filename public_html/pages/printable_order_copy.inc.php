@@ -19,4 +19,3 @@
   }
 
   echo $order->draw_printable_copy();
-?>

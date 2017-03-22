@@ -23,5 +23,3 @@
     );
     $app_config['docs'][$group['key']] = 'settings.inc.php';
   }
-
-?>

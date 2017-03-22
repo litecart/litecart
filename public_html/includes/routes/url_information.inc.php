@@ -34,5 +34,3 @@
       return $parsed_link;
     }
   }
-
-?>

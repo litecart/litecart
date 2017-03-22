@@ -735,5 +735,3 @@
       return $output;
     }
   }
-
-?>

@@ -115,4 +115,3 @@
 
     cache::end_capture($box_category_cache_id);
   }
-?>

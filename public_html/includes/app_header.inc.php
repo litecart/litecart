@@ -39,4 +39,3 @@
 
 // Run operations before capture
   system::run('before_capture');
-?>

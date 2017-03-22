@@ -11,4 +11,3 @@
       die('<span class="error">[Error]</span></p>');
     }
   }
-?>

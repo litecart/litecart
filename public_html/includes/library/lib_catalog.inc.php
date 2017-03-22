@@ -7,5 +7,3 @@
       return forward_static_call(array('reference', $resource), $arguments);
     }
   }
-
-?>

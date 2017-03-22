@@ -141,5 +141,3 @@
       cache::clear_cache('sold_out_statuses');
     }
   }
-
-?>

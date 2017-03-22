@@ -5,5 +5,3 @@
     'file' => 'orders.inc.php',
     'priority' => 2,
   );
-
-?>

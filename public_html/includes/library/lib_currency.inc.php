@@ -212,5 +212,3 @@
       return (round($value / $step) * $step) - $subtract;
     }
   }
-
-?>

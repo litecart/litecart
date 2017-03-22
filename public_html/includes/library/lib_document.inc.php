@@ -273,5 +273,3 @@
       return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
     }
   }
-
-?>

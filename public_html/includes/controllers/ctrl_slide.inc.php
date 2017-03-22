@@ -176,5 +176,3 @@
       $this->data['id'] = null;
     }
   }
-
-?>

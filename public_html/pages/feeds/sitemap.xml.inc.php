@@ -80,4 +80,3 @@
 
   echo $output;
   exit;
-?>

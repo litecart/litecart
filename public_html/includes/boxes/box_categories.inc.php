@@ -19,4 +19,3 @@
     }
     cache::end_capture($box_categories_cache_id);
   }
-?>

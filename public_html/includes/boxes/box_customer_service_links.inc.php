@@ -36,4 +36,3 @@
 
     cache::end_capture($box_customer_service_links_cache_id);
   }
-?>

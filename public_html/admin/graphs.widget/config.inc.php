@@ -5,5 +5,3 @@
     'file' => 'graphs.inc.php',
     'priority' => 0,
   );
-
-?>

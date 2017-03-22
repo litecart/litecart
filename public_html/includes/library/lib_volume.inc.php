@@ -157,5 +157,3 @@
       return number_format($value, self::$classes[$class]['decimals'], language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
     }
   }
-
-?>

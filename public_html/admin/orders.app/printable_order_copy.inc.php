@@ -9,4 +9,3 @@
 
   require_once('../includes/app_footer.inc.php');
   exit;
-?>

@@ -82,4 +82,3 @@
 
     cache::end_capture($manufacturer_cache_id);
   }
-?>

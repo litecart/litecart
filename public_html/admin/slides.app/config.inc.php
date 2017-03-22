@@ -14,5 +14,3 @@
       'edit_slide' => 'edit_slide.inc.php',
     ),
   );
-
-?>

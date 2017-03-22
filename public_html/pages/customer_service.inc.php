@@ -51,4 +51,3 @@
   }
 
   echo $_page->stitch('pages/customer_service');
-?>

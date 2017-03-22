@@ -139,4 +139,3 @@
   $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
 
   echo $_page->stitch('pages/search_results');
-?>

@@ -13,5 +13,3 @@
       'vqmods' => 'vqmods.inc.php',
     ),
   );
-
-?>

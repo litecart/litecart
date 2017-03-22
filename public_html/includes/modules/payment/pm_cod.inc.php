@@ -120,5 +120,3 @@
 
     public function uninstall() {}
   }
-
-?>

@@ -47,5 +47,3 @@
     trigger_error(__METHOD__.' is deprecated. Use instead reference::country($code)->phone_code', E_USER_DEPRECATED);
     return '+'. reference::country($country_code)->phone_code;
   }
-
-?>

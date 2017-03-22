@@ -61,5 +61,3 @@
 
     public function uninstall() {}
   }
-
-?>

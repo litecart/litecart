@@ -220,5 +220,3 @@
       trigger_error($object->errno .' - '. preg_replace('#\r#', ' ', $object->error) . PHP_EOL . $query, E_USER_ERROR);
     }
   }
-
-?>

@@ -76,5 +76,3 @@
       'products.json' => 'products.json.inc.php',
     ),
   );
-
-?>

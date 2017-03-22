@@ -29,4 +29,3 @@
   echo $json;
 
   exit;
-?>

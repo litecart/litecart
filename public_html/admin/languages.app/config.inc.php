@@ -25,5 +25,3 @@
       'storage_encoding' => 'storage_encoding.inc.php',
     ),
   );
-
-?>

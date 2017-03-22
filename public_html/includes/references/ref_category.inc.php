@@ -154,5 +154,3 @@
       cache::set($this->_cache_id, 'file', $this->_data);
     }
   }
-
-?>

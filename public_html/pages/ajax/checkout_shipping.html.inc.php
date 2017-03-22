@@ -57,4 +57,3 @@
   );
 
   echo $box_checkout_shipping->stitch('views/box_checkout_shipping');
-?>

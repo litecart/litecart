@@ -39,4 +39,3 @@
         break;
     }
   }, false, true);
-?>

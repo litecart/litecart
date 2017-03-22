@@ -28,4 +28,3 @@
       return $parsed_link;
     }
   }
-?>

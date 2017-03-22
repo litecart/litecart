@@ -9,4 +9,3 @@
   );
 
   echo $box_cart->stitch('views/box_cart');
-?>

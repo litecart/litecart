@@ -74,5 +74,3 @@
       self::$_cache[$key] = $value;
     }
   }
-
-?>

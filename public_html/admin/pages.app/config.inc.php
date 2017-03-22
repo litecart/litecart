@@ -13,5 +13,3 @@
       'edit_page' => 'edit_page.inc.php',
     ),
   );
-
-?>

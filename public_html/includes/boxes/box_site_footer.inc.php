@@ -98,4 +98,3 @@
 
     cache::end_capture($box_site_footer_cache_id);
   }
-?>

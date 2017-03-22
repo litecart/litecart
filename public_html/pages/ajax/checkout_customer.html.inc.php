@@ -140,4 +140,3 @@
   $box_checkout_customer->snippets['account_exists'] = $account_exists;
 
   echo $box_checkout_customer->stitch('views/box_checkout_customer');
-?>

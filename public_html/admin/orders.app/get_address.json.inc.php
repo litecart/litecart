@@ -32,4 +32,3 @@
   echo $json;
 
   exit;
-?>

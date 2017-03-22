@@ -79,5 +79,3 @@
       cache::clear_cache('tax_classes');
     }
   }
-
-?>

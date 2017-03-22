@@ -24,4 +24,3 @@
   http_response_code($_GET['code']);
   header('Refresh: 0; url='. document::ilink(''));
   exit;
-?>

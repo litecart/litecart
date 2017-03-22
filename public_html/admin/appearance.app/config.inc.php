@@ -25,5 +25,3 @@
       'template_settings' => 'template_settings.inc.php',
     ),
   );
-
-?>

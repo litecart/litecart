@@ -95,5 +95,3 @@
       cache::clear_cache('suppliers');
     }
   }
-
-?>

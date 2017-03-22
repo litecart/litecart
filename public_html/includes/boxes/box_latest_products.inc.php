@@ -21,4 +21,3 @@
 
     cache::end_capture($box_latest_products_cache_id);
   }
-?>

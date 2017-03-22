@@ -41,4 +41,3 @@
   $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page')));
 
   echo $_page->stitch('pages/order_history');
-?>

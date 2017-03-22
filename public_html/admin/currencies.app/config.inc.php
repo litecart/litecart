@@ -14,5 +14,3 @@
       'edit_currency' => 'edit_currency.inc.php',
     ),
   );
-
-?>

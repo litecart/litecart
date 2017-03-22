@@ -13,5 +13,3 @@
       'edit_country' => 'edit_country.inc.php',
     ),
   );
-
-?>

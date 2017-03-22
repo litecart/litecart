@@ -77,5 +77,3 @@
   // Output key and image
     return '<input type="hidden" name="captcha_id" value="'. $id .'"><img src="data:image/gif;base64,'. $base64_image .'" alt="" style="width: '. $width .'px; height: '. $height .'px"'. (($parameters) ? ' ' . $parameters : '') .' />';
   }
-
-?>

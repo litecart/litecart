@@ -34,5 +34,3 @@
       return hash('sha256', strtolower($login) . $password[0] . PASSWORD_SALT . $password[1]);
     }
   }
-
-?>

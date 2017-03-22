@@ -29,4 +29,3 @@
 
     cache::end_capture($box_also_purchased_products_cache_id);
   }
-?>

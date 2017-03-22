@@ -285,5 +285,3 @@
       unset(self::$_recorders[$cache_id]);
     }
   }
-
-?>

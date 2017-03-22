@@ -88,4 +88,3 @@
 
     cache::end_capture($box_site_menu_cache_id);
   }
-?>

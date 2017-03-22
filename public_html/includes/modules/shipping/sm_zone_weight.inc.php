@@ -231,5 +231,3 @@
 
     public function uninstall() {}
   }
-
-?>

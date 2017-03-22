@@ -16,5 +16,3 @@
 
     return reference::country($address['country_code'])->format_address($address);
   }
-
-?>

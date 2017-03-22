@@ -34,7 +34,7 @@
       'name' => $product['name'],
       'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'link' => document::ilink('product', array('product_id' => $product['id'])),
-      );
+    );
     if (++$count >= settings::get('box_recently_viewed_products_num_items')) break;
   }
 
@@ -48,4 +48,3 @@
 
 // Output
   echo $box_recently_viewed_products->stitch('views/box_recently_viewed_products');
-?>

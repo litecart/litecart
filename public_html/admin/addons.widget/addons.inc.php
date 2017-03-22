@@ -55,4 +55,3 @@
     }
     cache::end_capture($widget_addons_cache_id);
   }
-?>

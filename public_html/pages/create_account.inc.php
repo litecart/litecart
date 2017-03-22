@@ -110,4 +110,3 @@
 
   $_page = new view();
   echo $_page->stitch('pages/create_account');
-?>

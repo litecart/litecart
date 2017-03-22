@@ -27,4 +27,3 @@
   echo $_page->stitch('pages/order_success');
 
   //$order->reset();
-?>

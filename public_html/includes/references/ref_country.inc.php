@@ -97,5 +97,3 @@
       return trim($output);
     }
   }
-
-?>

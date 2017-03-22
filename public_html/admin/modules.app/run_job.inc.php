@@ -11,4 +11,3 @@
     echo $jobs->process(null, true);
   }
   echo '</pre>';
-?>

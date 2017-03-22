@@ -39,4 +39,3 @@
   }
 
   echo $box_checkout_cart->stitch('views/box_checkout_cart');
-?>
