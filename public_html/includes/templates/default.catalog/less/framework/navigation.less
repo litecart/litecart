@@ -38,7 +38,7 @@
       border: 1px solid transparent;
       border-radius: @default-border-radius;
       color: inherit;
-        text-decoration: none;
+      text-decoration: none;
     }
     &.disabled > a {
       color: fade(#777, 25%);
@@ -96,21 +96,21 @@
     }
   }
 
-    &.nav-justified {
-      border-bottom: 0;
-      > li {
+  &.nav-justified {
+    border-bottom: 0;
+    > li {
       flex: 1 0 auto;
-        > a {
-          margin-right: 0;
-          border-bottom: 1px solid #ddd;
-          border-radius: 4px 4px 0 0;
-          text-align: center;
-          @media (min-width: 768px) {
-            margin-bottom: 0;
-          }
+      > a {
+        margin-right: 0;
+        border-bottom: 1px solid #ddd;
+        border-radius: 4px 4px 0 0;
+        text-align: center;
+        @media (min-width: 768px) {
+          margin-bottom: 0;
         }
       }
     }
+  }
 
   &.nav-stacked {
     display: flex;
