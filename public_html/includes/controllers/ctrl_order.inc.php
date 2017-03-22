@@ -640,7 +640,7 @@
       );
 
       foreach($this->data['items'] as $item) {
-        $product = catalog::product($item['product_id']);
+        $product = reference::product($item['product_id']);
 
         $options = array();
         if (!empty($item['options'])) {
