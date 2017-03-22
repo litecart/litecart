@@ -71,4 +71,4 @@
     <?php echo (isset($delivery_status->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
 
-<?php echo functions::form_draw_form_end(); ?></td>
+<?php echo functions::form_draw_form_end(); ?>
