@@ -77,6 +77,13 @@
   }
 
 ?>
+<style>
+pre.last-log {
+  max-height: 800px;
+  overflow-y: auto;
+}
+</style>
+
 <h1><?php echo $app_icon; ?> <?php echo !empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
 
 <h2><?php echo $object->name; ?></h2>
@@ -122,6 +129,6 @@
 <?php if (!empty($module->data['last_log'])) { ?>
 <div class="form-group">
   <label><?php echo language::translate('title_last_log', 'Last Log'); ?></label>
-  <pre><?php echo $module['last_log']; ?></pre>
+  <pre class="last-log form-control"><?php echo $module->data['last_log']; ?></pre>
 </div>
 <?php } ?>
