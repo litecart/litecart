@@ -41,14 +41,6 @@
       }
 
       $this->data['permissions'] = @json_decode($this->data['permissions'], true);
-
-      foreach(file(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd') as $row) {
-        $row = explode(':', trim($row));
-        if ($this->data['username'] == $row[0]) {
-          $user->data['htpasswd'] = true;
-          break;
-        }
-      }
     }
 
     public function save() {
