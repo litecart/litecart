@@ -43,6 +43,7 @@
     }
 
     for ($timestamp=time(); strtotime('-12 months') < $timestamp; $timestamp = strtotime('-1 month', $timestamp)) {
+      $monthly_sales[date('m', $timestamp)]['month'] = date('Y-m', $timestamp);
       $monthly_sales[date('m', $timestamp)]['label'] = language::strftime('%b', $timestamp);
       if (!isset($monthly_sales[date('m', $timestamp)]['total_sales'])) $monthly_sales[date('m', $timestamp)]['total_sales'] = 0;
       if (!isset($monthly_sales[date('m', $timestamp)]['total_sales_last_year'])) $monthly_sales[date('m', $timestamp)]['total_sales_last_year'] = 0;
@@ -50,7 +51,7 @@
 
     $monthly_sales[date('m')]['label'] = '★'.$monthly_sales[date('m')]['label'];
 
-    ksort($monthly_sales);
+    uasort($monthly_sales, function($a, $b) { return $a['month'] > $b['month'] ? 1 : -1; });
 
   // Daily Sales
 
