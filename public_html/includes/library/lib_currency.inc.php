@@ -168,10 +168,13 @@
       if ($fraction == 0 && $auto_decimals && settings::get('auto_decimals')) {
         $decimals = 0;
       } else {
-        $decimals = (int)self::$currencies[$currency_code]['decimals'];
+        $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
       }
 
-      return self::$currencies[$currency_code]['prefix'] . number_format($value * $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . self::$currencies[$currency_code]['suffix'];
+      $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
+      $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : ' ' . $currency_code;
+
+      return $prefix . number_format($value * $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
     }
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
