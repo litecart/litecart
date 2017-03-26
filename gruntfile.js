@@ -7,7 +7,8 @@ module.exports = function(grunt) {
           compress: true,
           sourceMap: true,
           sourceMapBasepath: 'public_html/includes/templates/default.admin/less/',
-          sourceMapRootpath: '../less/'
+          sourceMapRootpath: '../less/',
+          relativeUrls: true
         },
         files: {
           'public_html/includes/templates/default.admin/css/app.min.css'       : 'public_html/includes/templates/default.admin/less/app.less',
@@ -20,7 +21,8 @@ module.exports = function(grunt) {
           compress: true,
           sourceMap: true,
           sourceMapBasepath: 'public_html/includes/templates/default.catalog/less/',
-          sourceMapRootpath: '../less/'
+          sourceMapRootpath: '../less/',
+          relativeUrls: true
         },
         files: {
           'public_html/includes/templates/default.catalog/css/app.min.css'       : 'public_html/includes/templates/default.catalog/less/app.less',
@@ -34,7 +36,8 @@ module.exports = function(grunt) {
           compress: true,
           sourceMap: true,
           sourceMapBasepath: 'public_html/ext/featherlight/',
-          sourceMapRootpath: '/'
+          sourceMapRootpath: '/',
+          relativeUrls: true
         },
         files: {
           'public_html/ext/featherlight/featherlight.min.css'       : 'public_html/ext/featherlight/featherlight.less',
@@ -45,7 +48,8 @@ module.exports = function(grunt) {
           compress: true,
           sourceMap: true,
           sourceMapBasepath: 'public_html/ext/responsiveslides/',
-          sourceMapRootpath: '/'
+          sourceMapRootpath: '/',
+          relativeUrls: true
         },
         files: {
           'public_html/ext/responsiveslides/responsiveslides.min.css'       : 'public_html/ext/responsiveslides/responsiveslides.less',
