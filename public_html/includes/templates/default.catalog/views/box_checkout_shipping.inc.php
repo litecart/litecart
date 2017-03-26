@@ -22,7 +22,8 @@
       <?php if (empty($option['error']) && (!empty($option['description']) || !empty($option['fields']))) { ?>
       <div class="content">
         <hr />
-        <p class="description text-left"><?php echo $option['fields'] . $option['description']; ?></p>
+        <?php if (!empty($option['description'])) { ?><p class="description text-left"><?php echo $option['description']; ?></p><?php } ?>
+        <?php if (!empty($option['fields'])) { ?><div class="fields text-left"><?php echo $option['fields']; ?></div><?php } ?>
       </div>
       <?php } ?>
     </label>
@@ -30,3 +31,8 @@
 
   </div>
 </div>
+
+<script>
+  $('#box-checkout-shipping .option.active :input').prop('disabled', false);
+  $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
+</script>

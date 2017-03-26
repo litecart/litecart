@@ -350,6 +350,10 @@
     $('#box-checkout-shipping .option').removeClass('active');
     $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
     $(this).addClass('active');
+
+    $('#box-checkout-shipping .option.active :input').prop('disabled', false);
+    $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
+
     var data = $('#box-checkout-shipping .option.active :input').serialize();
     queueUpdateTask('shipping', data, false);
     queueUpdateTask('payment', null, true);
@@ -362,6 +366,10 @@
     $('#box-checkout-payment .option').removeClass('active');
     $(this).find('input[name="payment[option_id]"]').prop('checked', true);
     $(this).addClass('active');
+
+    $('#box-checkout-payment .option.active :input').prop('disabled', false);
+    $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
+
     var data = $('#box-checkout-payment .option.active :input').serialize();
     queueUpdateTask('payment', data, false);
     queueUpdateTask('summary', null, true);
