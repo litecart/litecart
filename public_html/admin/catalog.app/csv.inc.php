@@ -69,21 +69,6 @@
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
-      if (empty($_POST['delimiter'])) {
-        preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
-        if (strpos($matches[1], ',') !== false) {
-          $_POST['delimiter'] = ',';
-        } elseif (strpos($matches[1], ';') !== false) {
-          $_POST['delimiter'] = ';';
-        } elseif (strpos($matches[1], "\t") !== false) {
-          $_POST['delimiter'] = "\t";
-        } elseif (strpos($matches[1], '|') !== false) {
-          $_POST['delimiter'] = '|';
-        } else {
-          trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
-        }
-      }
-
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
 
       $line = 0;
@@ -258,21 +243,6 @@
          . "----------\r\n";
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
-
-      if (empty($_POST['delimiter'])) {
-        preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
-        if (strpos($matches[1], ',') !== false) {
-          $_POST['delimiter'] = ',';
-        } elseif (strpos($matches[1], ';') !== false) {
-          $_POST['delimiter'] = ';';
-        } elseif (strpos($matches[1], "\t") !== false) {
-          $_POST['delimiter'] = "\t";
-        } elseif (strpos($matches[1], '|') !== false) {
-          $_POST['delimiter'] = '|';
-        } else {
-          trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
-        }
-      }
 
       $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
 

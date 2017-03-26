@@ -16,6 +16,7 @@
     }
 
     $output = '';
+
     rewind($fp);
     while(!feof($fp)) $output .= fgets($fp);
     fclose($fp);
@@ -25,7 +26,7 @@
     return preg_replace('/(\r\n|\r|\n)/', $eol, $output);
   }
 
-  function csv_decode($string, $delimiter=',', $enclosure='"', $escape='"', $charset='utf-8') {
+  function csv_decode($string, $delimiter='', $enclosure='"', $escape='"', $charset='utf-8') {
 
     $output = array();
 
@@ -34,16 +35,36 @@
 
     $string = mb_convert_encoding($string, language::$selected['charset'], $charset);
 
+    if (empty($delimiter)) {
+      preg_match('/^([^(\r|\n)]+)/', $string, $matches);
+      foreach(array(',', ';', "\t", '|') as $char) {
+        if (strpos($matches[1], $char) !== false) {
+          $delimiter = $char;
+        }
+      }
+
+      if (empty($delimiter)) trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
+    }
+
     $fp = fopen('php://temp', 'r+');
     fputs($fp, $string);
     rewind($fp);
 
+    $line = 0;
     while ($row = fgetcsv($fp, 0, $delimiter, $enclosure, $escape)) {
+      $line++;
+
       if (empty($headers)) {
         $headers = $row;
-      } else {
-        $output[] = array_combine($headers, $row);
+        continue;
       }
+
+      if (count($headers) != count($row)) {
+        trigger_error('Inconsistent amount of columns on line '. $line, E_USER_WARNING);
+        return false;
+      }
+
+      $output[] = array_combine($headers, $row);
     }
 
     fclose($fp);
