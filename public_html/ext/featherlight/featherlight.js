@@ -1,6 +1,6 @@
 /**
  * Featherlight - ultra slim jQuery lightbox
- * Version 1.7.0 - http://noelboss.github.io/featherlight/
+ * Version 1.7.1 - http://noelboss.github.io/featherlight/
  *
  * Copyright 2017, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
@@ -88,8 +88,8 @@
 		closeTrigger:   'click',               /* Event that triggers the closing of the lightbox */
 		filter:         null,                  /* Selector to filter events. Think $(...).on('click', filter, eventHandler) */
 		root:           'body',                /* Where to append featherlights */
-		openSpeed:      0,                     /* Duration of opening animation */
-		closeSpeed:     1,                     /* Duration of closing animation */
+		openSpeed:      250,                   /* Duration of opening animation */
+		closeSpeed:     250,                   /* Duration of closing animation */
 		closeOnClick:   'background',          /* Close lightbox on click ('background', 'anywhere' or false) */
 		closeOnEsc:     true,                  /* Close lightbox when pressing esc */
 		closeIcon:      '',                    /* Close icon */
@@ -216,8 +216,11 @@
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
 		open: function(event){
+      if (event.ctrlKey || event.shiftKey) return false;
+
 			var self = this;
 			self.$instance.hide().appendTo(self.root);
+
 			if ((!event || !event.isDefaultPrevented())
 				&& (self.beforeOpen(event) !== false)) {
 
@@ -279,7 +282,7 @@
 
 				$('.featherlight:not(.active)').filter(':last').addClass('active');
 
-				if ($('.featherlight').length == 1) {
+				if ($('.featherlight').length === 1) {
 					$('body').removeClass('featherlight-open');
 				}
 			}
@@ -302,7 +305,7 @@
 
 	$.extend(Featherlight, {
 		id: 0,                                    /* Used to id single featherlight instances */
-		autoBind:       '[data-toggle="lightbox"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
+		autoBind:       '[data-toggle="lightbox"][data-target]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
 		defaults:       Featherlight.prototype,   /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
 		/* Contains the logic to determine content */
 		contentFilters: {
@@ -427,8 +430,7 @@
 			var namespace = config.namespace || Klass.defaults.namespace,
 				tempConfig = $.extend({}, Klass.defaults, Klass.readElementConfig($source[0]), config),
 				sharedPersist;
-
-			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, function(event) {
+			var handler = function(event) {
 				/* ... since we might as well compute the config on the actual target */
 				var elemConfig = $.extend(
 					{$source: $source, $currentTarget: $(this)},
@@ -443,8 +445,11 @@
 				}
 				elemConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
 				fl.open(event);
-			});
-			return $source;
+			};
+
+			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, handler);
+
+			return handler;
 		},
 
 		current: function() {
@@ -475,14 +480,13 @@
 				});
 				/* If a click propagates to the document level, then we have an item that was added later on */
 				$(document).on('click', Klass.autoBind, function(evt) {
-					if (evt.isDefaultPrevented() || evt.namespace === 'featherlight') {
+					if (evt.isDefaultPrevented()) {
 						return;
 					}
-					evt.preventDefault();
 					/* Bind featherlight */
-					Klass.attach($(evt.currentTarget));
-					/* Click again; this time our binding will catch it */
-					$(evt.target).trigger('click.featherlight');
+					var handler = Klass.attach($(evt.currentTarget));
+					/* Dispatch event directly */
+					handler(evt);
 				});
 			}
 		},
@@ -551,7 +555,8 @@
 
 	/* bind jQuery elements to trigger featherlight */
 	$.fn.featherlight = function($content, config) {
-		return Featherlight.attach(this, $content, config);
+		Featherlight.attach(this, $content, config);
+		return this;
 	};
 
 	/* bind featherlight on ready if config autoBind is set */
