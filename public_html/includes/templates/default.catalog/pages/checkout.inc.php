@@ -1,33 +1,24 @@
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process')); ?>
 
   <div id="box-checkout">
-    <div class="cart wrapper">
-      {snippet:box_checkout_cart}
-    </div>
+    <div class="cart wrapper"></div>
 
     <div class="row">
       <div class="col-md-halfs">
-        <div class="customer wrapper">
-         {snippet:box_checkout_customer}
-        </div>
+        <div class="customer wrapper"></div>
       </div>
 
       <div class="col-md-halfs">
-        <div class="shipping wrapper">
-        </div>
+        <div class="shipping wrapper"></div>
 
-        <div class="payment wrapper">
-          {snippet:box_checkout_payment}
-        </div>
+        <div class="payment wrapper"></div>
       </div>
     </div>
 
-    <div class="summary wrapper">
-      {snippet:box_checkout_summary}
-    </div>
+    <div class="summary wrapper"></div>
   </div>
 
   <?php echo functions::form_draw_form_end(); ?>

@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
-<!--snippet:head_tags-->
+{snippet:head_tags}
 <link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
-<!--snippet:style-->
+{snippet:style}
 </head>
 <body>
 
@@ -33,18 +33,18 @@
 
   <div id="main">
     <div class="top">
-      <!--snippet:top-->
+      {snippet:top}
     </div>
 
     <div class="middle">
 
-      <!--snippet:content-->
+      {snippet:content}
 
       <div style="clear: both;"></div>
     </div>
 
     <div class="bottom">
-      <!--snippet:bottom-->
+      {snippet:bottom}
     </div>
   </div>
 
@@ -55,9 +55,9 @@
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
-<!--snippet:foot_tags-->
+{snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>
-<!--snippet:javascript-->
+{snippet:javascript}
 <script>
   $(window).scroll(function(){
     if ($(this).scrollTop() > 100) {

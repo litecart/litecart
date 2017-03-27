@@ -271,7 +271,7 @@ body {
       <div class="content">
         <?php echo functions::form_draw_hidden_field('redirect_url', $action); ?>
 
-        <!--snippet:notices-->
+        {snippet:notices}
 
         <div class="form-group">
           <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>

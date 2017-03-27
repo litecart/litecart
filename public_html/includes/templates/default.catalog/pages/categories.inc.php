@@ -1,5 +1,5 @@
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <div id="box-categories" class="box">
     <h1><?php echo language::translate('title_categories', 'Categories'); ?></h1>

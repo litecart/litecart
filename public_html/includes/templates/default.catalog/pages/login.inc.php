@@ -3,8 +3,8 @@
 </aside>
 
 <main id="content">
-  <!--snippet:notices-->
-  <!--snippet:breadcrumbs-->
+  {snippet:notices}
+  {snippet:breadcrumbs}
 
   <div class="row">
     <div class="col-md-halfs">

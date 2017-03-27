@@ -4,10 +4,10 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
-<!--snippet:head_tags-->
+{snippet:head_tags}
 <link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
-<!--snippet:style-->
+{snippet:style}
 </head>
 <body>
 
@@ -34,7 +34,7 @@
       <div class="results"></div>
     </div>
 
-    <!--snippet:box_apps_menu-->
+    {snippet:box_apps_menu}
 
     <div id="languages" class="text-center">
       <?php foreach (language::$languages as $language) { ?>
@@ -50,14 +50,14 @@
   </div>
 
   <main id="main">
-    <!--snippet:notices-->
-    <!--snippet:content-->
+    {snippet:notices}
+    {snippet:content}
   </main>
 
 </div>
 
-<!--snippet:foot_tags-->
+{snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>
-<!--snippet:javascript-->
+{snippet:javascript}
 </body>
 </html>

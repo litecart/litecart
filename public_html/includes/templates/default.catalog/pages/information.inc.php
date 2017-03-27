@@ -3,7 +3,7 @@
 </aside>
 
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <div id="box-information" class="box">
     <?php echo $content; ?>

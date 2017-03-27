@@ -3,8 +3,8 @@
 </aside>
 
 <main id="content">
-  <!--snippet:notices-->
-  <!--snippet:breadcrumbs-->
+  {$notices}
+  {$breadcrumbs}
 
   <div id="box-category" class="box">
     <div class="btn-group pull-right hidden-xs">

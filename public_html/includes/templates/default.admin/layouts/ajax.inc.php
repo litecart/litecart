@@ -1,3 +1,3 @@
-<!--snippet:style-->
-<!--snippet:notices-->
-<!--snippet:content-->
+{snippet:style}
+{snippet:notices}
+{snippet:content}

@@ -1,6 +1,6 @@
-<!--snippet:style-->
-<!--snippet:notices-->
+{snippet:style}
+{snippet:notices}
 
-<!--snippet:content-->
+{snippet:content}
 
-<!--snippet:javascript-->
+{snippet:javascript}

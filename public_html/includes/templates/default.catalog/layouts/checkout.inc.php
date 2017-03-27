@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="{snippet:template_path}css/checkout.min.css" media="all" />
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
-<!--snippet:head_tags-->
-<!--snippet:style-->
+{snippet:head_tags}
+{snippet:style}
 </head>
 <body>
 
@@ -33,14 +33,14 @@
   <div id="main" class="twelve-eighty">
 
     <main id="content">
-      <!--snippet:content-->
+      {snippet:content}
     </main>
 
   </div>
 </div>
 
-<!--snippet:foot_tags-->
+{snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>
-<!--snippet:javascript-->
+{snippet:javascript}
 </body>
 </html>

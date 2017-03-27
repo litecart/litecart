@@ -6,7 +6,7 @@
 </aside>
 
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <div id="box-edit-account" class="box">
     <h1 class="title"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></h1>

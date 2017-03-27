@@ -1,5 +1,5 @@
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <div id="box-search-results" class="box">
     <nav class="filter" style="float: right;">

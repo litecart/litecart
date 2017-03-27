@@ -3,8 +3,8 @@
 </aside>
 
 <main id="content">
-  <!--snippet:notices-->
-  <!--snippet:breadcrumbs-->
+  {snippet:notices}
+  {snippet:breadcrumbs}
 
   <div id="box-reset-password" class="box">
 

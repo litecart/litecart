@@ -1,5 +1,5 @@
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <div id="box-manufacturers" class="box">
 

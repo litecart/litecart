@@ -28,7 +28,6 @@
         foreach (array_keys($this->snippets) as $key) {
           if (!is_string($this->snippets[$key])) continue;
           $search_replace['<!--snippet:'.$key.'-->'] = &$this->snippets[$key];
-          $search_replace['{$'.$key.'}'] = &$this->snippets[$key];
           $search_replace['{snippet:'.$key.'}'] = &$this->snippets[$key];
         }
 

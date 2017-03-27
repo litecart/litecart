@@ -3,7 +3,7 @@
 </aside>
 
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_slides.inc.php'); ?>
 

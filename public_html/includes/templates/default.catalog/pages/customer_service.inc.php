@@ -6,7 +6,7 @@
 </aside>
 
 <main id="content">
-  <!--snippet:notices-->
+  {snippet:notices}
 
   <div id="box-customer-service" class="box">
     <?php echo $content; ?>
