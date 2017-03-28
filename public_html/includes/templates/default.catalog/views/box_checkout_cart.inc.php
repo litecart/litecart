@@ -42,15 +42,14 @@
         </tr>
         <?php } ?>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"></th>
+          <td colspan="3" class="subtotal text-right">
+            <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo currency::format(cart::$total['value']); ?></strong>
+          </td>
+        </tr>
+      </tfoot>
     </table>
-  </div>
-
-  <div class="row">
-    <div class="col-md-halfs">
-      &nbsp;
-    </div>
-    <div class="subtotal col-md-halfs text-right">
-      <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo currency::format(cart::$total['value']); ?></strong>
-    </div>
   </div>
 </div>

@@ -28,11 +28,14 @@
 }
 
 #box-checkout-cart {
-  tr td:first-child a {
-    display: inline-block;
-  }
-  tr td:last-child {
-    text-align: right;
+  tr td {
+    vertical-align: middle;
+    &:first-child a {
+      display: inline-block;
+    }
+    &:last-child {
+      text-align: right;
+    }
   }
   .error {
     color: #f00;

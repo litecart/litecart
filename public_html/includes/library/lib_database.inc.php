@@ -147,7 +147,7 @@
             self::free($result);
           }
         }
-        while (self::$_links[$link]->next_result());
+        while (@self::$_links[$link]->next_result());
       } else {
         self::_error($query, self::$_links[$link]);
       }
