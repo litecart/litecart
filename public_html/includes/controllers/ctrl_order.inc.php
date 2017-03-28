@@ -622,7 +622,9 @@
                      . '</div>';
       */
 
-      $order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
+      if (!empty($this->data['order_status_id'])) {
+        $order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
+      }
 
       $aliases = array(
         '%order_id' => $this->data['id'],
@@ -635,7 +637,7 @@
         '%order_items' => null,
         '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']), 'media' => 'print')),
-        '%order_status' => $order_status->name,
+        '%order_status' => !empty($order_status) ? $order_status->name : null,
         '%store_name' => settings::get('store_name'),
         '%store_url' => document::ilink(''),
       );
