@@ -441,7 +441,6 @@
     public function add_item($item) {
 
       $fields = array(
-        'id',
         'product_id',
         'options',
         'option_stock_combination',
@@ -458,6 +457,8 @@
       $i = 1;
       while (isset($this->data['items']['new_'.$i])) $i++;
       $item_key = 'new_'.$i;
+
+      $this->data['items']['new_'.$i]['id'] = null;
 
       foreach($fields as $field) {
         $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
