@@ -301,7 +301,7 @@
         </li>
       </ul>
     </li>
-    <li>Apacahe 2 compatible HTTP daemon
+    <li>Apache 2 compatible HTTP daemon
       <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
       <ul>
         <li>Allow, Deny</li>
