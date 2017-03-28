@@ -21,7 +21,7 @@
     if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
 
   // Validate
-    if (!empty($_POST['create_account']) && settings::get('fields_customer_password')) {
+    if (!empty($_POST['create_account'])) {
       if (isset($_POST['email']) && !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
       if (empty($_POST['password']))
         notices::add('errors', language::translate('error_missing_password', 'You must enter a password.'));

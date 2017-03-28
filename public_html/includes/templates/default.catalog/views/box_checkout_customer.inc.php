@@ -170,7 +170,6 @@
 
     <div id="account-container"<?php echo (empty($_POST['create_account'])) ? ' style="display: none;"' : false; ?>>
 
-      <?php if (settings::get('fields_customer_password')) { ?>
       <div class="row">
         <div class="col-sm-halfs">
           <div class="form-group">
@@ -186,7 +185,6 @@
           </div>
         </div>
       </div>
-      <?php } ?>
 
     </div>
     <?php } ?>
