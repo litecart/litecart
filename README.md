@@ -6,29 +6,27 @@ LiteCart is a lightweight e-commerce platform for online merchants. Developed in
 
 LiteCart is a registered trademark, property of founder T. Almroth - [TiM International](http://www.tim-international.net).
 
-### [Installation Instructions]
+# How To Install
 
   What you need:
 
   * An Apache2 web server running PHP 5.3 or higher
   * A MySQL 5.5+ account
 
-  Please note: Windows machines are not recommended as Windows have limitations that can be a problem down the road.
-
-  If you don't have a web hotel and want to try LiteCart on your local machine, check out AMPPS which can install LiteCart with one click via Softaculous apps library which comes presintalled in AMPPS.
+  If you don't have access to a web server and want to try LiteCart on your local machine, check out [AMPPS] (http://www.ampps.com/). AMPPS is an Apache web server suite that offers LiteCart for installation with one click using Softaculous.
 
   Instructions
   ------------
 
   1. Connect to your web host via FTP using your favourite FTP software.
 
-  2. Open the downloaded ZIP-archive and copy the contents of the folder public_html/ (yes the contents inside it - not the folder itself) to your web site root directory.
+  2. Transfer the contents of the folder public_html/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
 
-  Example:
+      Example:
 
-  /var/www/
-  /home/username/public_html/
-  C:\xampp\htdocs\
+      /var/www/
+      /home/username/public_html/
+      C:\xampp\htdocs\
 
   Paths are machine specific, so talk to your web host if you are uncertain where this folder is.
 
@@ -36,16 +34,16 @@ LiteCart is a registered trademark, property of founder T. Almroth - [TiM Intern
 
   4. Pay attention to the information on the page and make sure everything seems okay. Fill in your details for database, region, etc. Click the Install button when you are ready.
 
-  If everything went well LiteCart should now be successfully installed.
+  If everything went well LiteCart should be successfully installed.
 
   For community written installation instructions see https://wiki.litecart.net/doku.php?id=how_to_install.
 
-### [Official Website](http://www.litecart.net)
+## [Official Website](http://www.litecart.net)
 
-### [GitHub Repository](https://github.com/litecart/litecart)
+## [GitHub Repository](https://github.com/litecart/litecart)
 
-### [Issue Tracker](https://github.com/litecart/litecart/issues)
+## [Issue Tracker](https://github.com/litecart/litecart/issues)
 
-### [Community Forums](http://www.litecart.net/forums/)
+## [Community Forums](http://www.litecart.net/forums/)
 
-### [Community Wiki](http://wiki.litecart.net/)
+## [Community Wiki](http://wiki.litecart.net/)
