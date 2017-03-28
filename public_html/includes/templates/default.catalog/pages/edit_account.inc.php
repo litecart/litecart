@@ -112,7 +112,7 @@
 </main>
 
 <script>
-  $('form[name="customer_form"]').on('input propertyChange', ':input', function(){
+  $('form[name="customer_form"]').on('input propertyChange', ':input', function() {
     if ($(this).val() == '') return;
     $('body').css('cursor', 'wait');
     $.ajax({
@@ -131,8 +131,8 @@
           return;
         }
         $.each(data, function(key, value) {
-          console.log(key +" "+ value);
-          if ($(':input[name="'+key+'"]').length && $(':input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key]);
+          console.log(key +' '+ value);
+          if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key]);
         });
       },
       complete: function() {
@@ -141,27 +141,24 @@
     });
   });
 
-  $('select[name="country_code"]').change(function(){
-    if ($(this).find('option:selected').data('tax-id-format') != '') {
-      $(this).closest('table').find('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+  $('select[name="country_code"]').change(function(e) {
+
+    if ($(this).find('option:selected').data('tax-id-format')) {
+      $('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
     } else {
-      $(this).closest('table').find('input[name="tax_id"]').removeAttr('pattern');
+      $('input[name="tax_id"]').removeAttr('pattern');
     }
 
-    if ($(this).find('option:selected').data('postcode-format') != '') {
-      $(this).closest('table').find('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
-      $(this).closest('table').find('input[name="postcode"]').attr('required', 'required');
-      $(this).closest('table').find('input[name="postcode"]').closest('td').find('.required').show();
+    if ($(this).find('option:selected').data('postcode-format')) {
+      $('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
     } else {
-      $(this).closest('table').find('input[name="postcode"]').removeAttr('pattern');
-      $(this).closest('table').find('input[name="postcode"]').removeAttr('required');
-      $(this).closest('table').find('input[name="postcode"]').closest('td').find('.required').hide();
+      $('input[name="postcode"]').removeAttr('pattern');
     }
 
-    if ($(this).find('option:selected').data('phone-code') != '') {
-      $(this).closest('table').find('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+    if ($(this).find('option:selected').data('phone-code')) {
+      $('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
     } else {
-      $(this).closest('table').find('input[name="phone"]').removeAttr('placeholder');
+      $('input[name="phone"]').removeAttr('placeholder');
     }
 
     $('body').css('cursor', 'wait');
@@ -175,16 +172,14 @@
         if (console) console.warn(errorThrown.message);
       },
       success: function(data) {
-        $('select[name="zone_code"]').html('');
+        $("select[name='zone_code']").html('');
         if (data.length) {
-          $('select[name="zone_code"]').removeAttr('disabled');
-          $('select[name="zone_code"]').closest('td').css('opacity', 1);
+          $('select[name="zone_code"]').prop('disabled', false);
           $.each(data, function(i, zone) {
             $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="zone_code"]').attr('disabled', 'disabled');
-          $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
+          $('select[name="zone_code"]').prop('disabled', true);
         }
       },
       complete: function() {
@@ -193,33 +188,21 @@
     });
   });
 
-  if ($('select[name="country_code"]').find('option:selected').data('tax-id-format') != '') {
-    $('select[name="country_code"]').closest('table').find('input[name="tax_id"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('tax-id-format'));
+  if ($('select[name="country_code"] option:selected').data('tax-id-format')) {
+    $('input[name="tax_id"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'));
   } else {
-    $('select[name="country_code"]').closest('table').find('input[name="tax_id"]').removeAttr('pattern');
+    $('input[name="tax_id"]').removeAttr('pattern');
   }
 
-  if ($('select[name="country_code"]').find('option:selected').data('postcode-format') != '') {
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('postcode-format'));
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('required', 'required');
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').show();
+  if ($('select[name="country_code"] option:selected').data('postcode-format')) {
+    $('input[name="postcode"]').attr('pattern', $('select[name="country_code"] option:selected').data('postcode-format'));
   } else {
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('pattern');
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('required');
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').hide();
+    $('input[name="postcode"]').removeAttr('pattern');
   }
 
-  if ($('select[name="country_code"]').find('option:selected').data('phone-code') != '') {
-    $('select[name="country_code"]').closest('table').find('input[name="phone"]').attr('placeholder', '+' + $('select[name="country_code"]').find('option:selected').data('phone-code'));
+  if ($('select[name="country_code"] option:selected').data('phone-code')) {
+    $('input[name="phone"]').attr('placeholder', '+' + $('select[name="country_code"] option:selected').data('phone-code'));
   } else {
-    $('select[name="country_code"]').closest('table').find('input[name="phone"]').removeAttr('placeholder');
+    $('input[name="phone"]').removeAttr('placeholder');
   }
-
-  if ($('select[name="shipping_address[country_code]"]').find('option:selected').data('postcode-format') != '') {
-    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"]').find('option:selected').data('postcode-format'));
-  } else {
-    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').removeAttr('pattern');
-  }
-
-  if ($('select[name="zone_code"] option').length == 0) $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
 </script>

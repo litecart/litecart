@@ -302,9 +302,10 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-md-6 customer-details">
+              <h3><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h3>
+
               <div class="row">
                 <div class="form-group col-md">
-                  <label><?php echo language::translate('title_account', 'Account'); ?></label>
                   <div class="input-group">
                     <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                     <div class="selected-account form-control disabled"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#" data-toggle="lightbox" data-target="#modal-customer-picker" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
@@ -786,6 +787,25 @@
   });
 
   $('#customer-details select[name="customer[country_code]"]').change(function() {
+
+    if ($(this).find('option:selected').data('tax-id-format')) {
+      $('input[name="customer[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+    } else {
+      $('input[name="customer[tax_id]"]').removeAttr('pattern');
+    }
+
+    if ($(this).find('option:selected').data('postcode-format')) {
+      $('input[name="customer[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+    } else {
+      $('input[name="customer[postcode]"]').removeAttr('pattern');
+    }
+
+    if ($(this).find('option:selected').data('phone-code')) {
+      $('input[name="customer[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+    } else {
+      $('input[name="customer[phone]"]').removeAttr('placeholder');
+    }
+
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -821,6 +841,19 @@
   });
 
   $('#customer-details select[name="customer[shipping_address][country_code]"]').change(function(){
+
+    if ($(this).find('option:selected').data('postcode-format')) {
+      $('input[name="customer[shipping_address][postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+    } else {
+      $('input[name="customer[shipping_address][postcode]"]').removeAttr('pattern');
+    }
+
+    if ($(this).find('option:selected').data('phone-code')) {
+      $('input[name="customer[shipping_address][phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+    } else {
+      $('input[name="customer[shipping_address][phone]"]').removeAttr('placeholder');
+    }
+
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -847,6 +880,36 @@
       }
     });
   });
+
+  if ($('select[name="customer[country_code]"] option:selected').data('tax-id-format')) {
+    $('input[name="customer[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'));
+  } else {
+    $('input[name="customer[tax_id]"]').removeAttr('pattern');
+  }
+
+  if ($('select[name="customer[country_code]"] option:selected').data('postcode-format')) {
+    $('input[name="customer[postcode]"]').attr('pattern', $('select[name="customer[country_code]"] option:selected').data('postcode-format'));
+  } else {
+    $('input[name="customer[postcode]"]').removeAttr('pattern');
+  }
+
+  if ($('select[name="customer[country_code]"] option:selected').data('phone-code')) {
+    $('input[name="customer[phone]"]').attr('placeholder', '+' + $('select[name="customer[country_code]"] option:selected').data('phone-code'));
+  } else {
+    $('input[name="customer[phone]"]').removeAttr('placeholder');
+  }
+
+  if ($('select[name="customer[shipping_address][country_code]"] option:selected').data('postcode-format')) {
+    $('input[name="customer[shipping_address][postcode]"]').attr('pattern', $('select[name="customer[shipping_address][country_code]"] option:selected').data('postcode-format'));
+  } else {
+    $('input[name="customer[shipping_address][postcode]"]').removeAttr('pattern');
+  }
+
+  if ($('select[name="customer[shipping_address][country_code]"] option:selected').data('phone-code')) {
+    $('input[name="customer[shipping_address][phone]"]').attr('placeholder', '+' + $('select[name="customer[shipping_address][country_code]"] option:selected').data('phone-code'));
+  } else {
+    $('input[name="customer[shipping_address][phone]"]').removeAttr('placeholder');
+  }
 
   $(':input[name^="customer"]').bind('input propertyChange', function(){
     var params = {
