@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
   breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all_products', 'All Products'));
 
-  functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
+  functions::draw_lightbox();
 
   $_page = new view();
   $_page->snippets = array(

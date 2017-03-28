@@ -6,7 +6,7 @@
     exit;
   }
 
-  functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
+  functions::draw_lightbox();
 
   $manufacturer = reference::manufacturer($_GET['manufacturer_id']);
 

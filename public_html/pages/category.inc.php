@@ -32,7 +32,7 @@
   }
   breadcrumbs::add($category->name);
 
-  functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
+  functions::draw_lightbox();
 
   $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
