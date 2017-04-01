@@ -41,12 +41,12 @@
 
       <div class="row">
         <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+          <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
           <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?>
         </div>
 
         <div class="form-group col-md-halfs">
-          <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+          <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
           <?php echo functions::form_draw_text_field('lastname', true, 'required="required"'); ?>
         </div>
       </div>

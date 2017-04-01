@@ -43,7 +43,7 @@
 
     switch($_GET['template']) {
       case 'csv':
-        $output .= 'First Name;Last Name;Email Address' . PHP_EOL;
+        $output .= 'Firstname;Lastname;Email Address' . PHP_EOL;
         break;
     }
 
@@ -77,7 +77,7 @@
 
     switch($_GET['template']) {
       case 'csv':
-        $output .= 'First Name;Last Name;Email Address' . PHP_EOL;
+        $output .= 'Firstname;Lastname;Email Address' . PHP_EOL;
         break;
     }
 
