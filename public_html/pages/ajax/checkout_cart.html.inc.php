@@ -13,7 +13,12 @@
 
   $box_checkout_cart = new view();
 
-  $box_checkout_cart->snippets['items'] = array();
+  $box_checkout_cart->snippets = array(
+    'items' => array(),
+    'subtotal' => cart::$total['value'],
+    'subtotal_tax' => cart::$total['tax'],
+  );
+
   foreach (cart::$items as $key => $item) {
     $box_checkout_cart->snippets['items'][$key] = array(
       'product_id' => $item['product_id'],

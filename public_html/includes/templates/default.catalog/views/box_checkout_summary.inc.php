@@ -9,7 +9,7 @@
         <?php foreach ($order_total as $row) { ?>
         <tr>
           <td class="text-right" colspan="5"><strong><?php echo $row['title']; ?>:</strong></td>
-          <td class="text-right"><?php echo $row['value']; ?></td>
+          <td class="text-right"><?php echo !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false); ?></td>
         </tr>
         <?php } ?>
 
@@ -23,7 +23,7 @@
       <tfoot>
         <tr class="footer">
           <td class="text-right" colspan="5"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
-          <td class="text-right" style="width: 25%;"><strong><?php echo $payment_due; ?></strong></td>
+          <td class="text-right" style="width: 25%;"><strong><?php echo currency::format($payment_due, false); ?></strong></td>
         </tr>
       </tfoot>
     </table>

@@ -62,9 +62,9 @@
   $box_checkout_summary->snippets = array(
     'items' => array(),
     'order_total' => array(),
-    'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : '',
+    'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : null,
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
-    'payment_due' => currency::format($order->data['payment_due'], false),
+    'payment_due' => $order->data['payment_due'],
     'error' => $order->validate(),
     'selected_shipping' => null,
     'selected_payment' => null,
@@ -77,8 +77,8 @@
       'name' => $item['name'],
       'sku' => $item['sku'],
       'options' => $item['options'],
-      'price' => !empty(customer::$data['display_prices_including_tax']) ? currency::format($item['price'] + $item['tax'], false) : currency::format($item['price'], false),
-      'tax' => currency::format($item['tax'], false),
+      'price' => $item['price'],
+      'tax' => $item['tax'],
       'sum' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(($item['price'] + $item['tax']) * $item['quantity'], false) : currency::format($item['price'] * $item['quantity'], false),
       'quantity' => (float)$item['quantity'],
     );
@@ -101,8 +101,8 @@
   foreach ($order->data['order_total'] as $row) {
     $box_checkout_summary->snippets['order_total'][] = array(
       'title' => $row['title'],
-      'value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false),
-      'tax' => currency::format($row['tax'], false)
+      'value' => $row['value'],
+      'tax' => $row['tax'],
     );
   }
 
