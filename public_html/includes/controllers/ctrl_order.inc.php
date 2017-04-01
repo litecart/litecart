@@ -430,11 +430,10 @@
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
 
-      foreach ($this->data['order_total'] as $order_total) {
-        if (!empty($order_total['calculate'])) {
-          $this->data['payment_due'] += ($item['price'] + $item['tax']);
-          $this->data['tax_total'] += $item['tax'];
-        }
+      foreach ($this->data['order_total'] as $row) {
+        if (empty($row['calculate'])) continue;
+        $this->data['payment_due'] += ($row['value'] + $row['tax']);
+        $this->data['tax_total'] += $row['tax'];
       }
     }
 
