@@ -21,6 +21,10 @@ INSERT INTO `lc_manufacturers` (`id`, `status`, `code`, `name`, `keywords`, `ima
 INSERT INTO `lc_manufacturers_info` (`id`, `manufacturer_id`, `language_code`, `short_description`, `description`, `h1_title`, `head_title`, `meta_description`, `link`) VALUES
 (1, 1, 'en', '', '', '', '', '', '');
 -- --------------------------------------------------------
+INSERT INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
+('sm_zone_weight', 'shipping', 0, 0, '{"status":"1","icon":"","weight_class":"kg","geo_zone_id_1":"","weight_rate_table_1":"","geo_zone_id_2":"","weight_rate_table_2":"","geo_zone_id_3":"","weight_rate_table_3":"","weight_rate_table_x":"5:8.95;10:15.95","method":">=","handling_fee":"0.00","tax_class_id":"1","priority":"0"}', '', NOW(), NOW()),
+('pm_cod', 'payment', 0, 0, '{"status":"1","icon":"","fee":"5.00","tax_class_id":"1","order_status_id":"2","geo_zone_id":"","priority":"0"}', '', NOW(), NOW());
+-- --------------------------------------------------------
 INSERT INTO `lc_option_groups` (`id`, `function`, `required`, `sort`, `date_updated`, `date_created`) VALUES
 (1, 'select', 1, 'priority', NOW(), NOW());
 -- --------------------------------------------------------
