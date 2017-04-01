@@ -7,18 +7,20 @@
   flex-direction: row;
   &.half-gutter {
     margin: 0 -@default-gutter-size/2;
-    *[class*=col-] {
+    > *[class*=col-] {
       padding: 0 @default-gutter-size/2 @default-gutter-size/2 @default-gutter-size/2;
     }
   }
   &.columns {
     flex-direction: column;
   }
+  > *[class*=col-] {
+    padding: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
+  }
 }
 
 *[class*=col-] {
   position: relative;
-  padding: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
   width: 100%;
   &.td {
     width: initial;
