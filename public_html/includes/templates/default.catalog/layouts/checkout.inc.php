@@ -32,9 +32,7 @@
 <div id="page" class="shadow">
   <div id="main" class="twelve-eighty">
 
-    <main id="content">
-      {snippet:content}
-    </main>
+    {snippet:content}
 
   </div>
 </div>
