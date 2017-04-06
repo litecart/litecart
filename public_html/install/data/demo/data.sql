@@ -7,7 +7,7 @@ INSERT INTO `lc_categories_info` (`id`, `category_id`, `language_code`, `name`, 
 (2, 2, 'en', 'Subcategory', '', '', '', '', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_customers` (`id`, `code`, `status`, `email`, `password`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `newsletter`, `date_updated`, `date_created`) VALUES
-(1, '', 1, 'user@email.com', '000000000000000000000000000000000000000000000000', '0000000000', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'XX1 X1', 'London', 'GB', '', '1-555-123-4567', 0, '', '', '', '', '', '', '', '', '', '', 0, NOW(), NOW());
+(1, '', 1, 'user@email.com', '000000000000000000000000000000000000000000000000', '0000000000', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', '12345', 'Newtown', 'US', 'CA', '1-555-123-4567', 0, '', '', '', '', '', '', '', '', '', '', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
 (1, NOW(), NOW());
@@ -42,7 +42,7 @@ INSERT INTO `lc_option_values_info` (`id`, `value_id`, `language_code`, `name`) 
 (3, 3, 'en', 'Large');
 -- --------------------------------------------------------
 INSERT INTO `lc_orders` (`id`, `uid`, `order_status_id`, `customer_id`, `customer_company`, `customer_firstname`, `customer_lastname`, `customer_email`, `customer_phone`, `customer_tax_id`, `customer_address1`, `customer_address2`, `customer_city`, `customer_postcode`, `customer_country_code`, `customer_zone_code`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `shipping_option_id`, `shipping_option_name`, `shipping_tracking_id`, `payment_option_id`, `payment_option_name`, `payment_transaction_id`, `language_code`, `weight_total`, `weight_class`, `currency_code`, `currency_value`, `payment_due`, `tax_total`, `client_ip`, `date_updated`, `date_created`) VALUES
-(1, '585753da00024', 2, 1, 'ACME Corp.', 'John', 'Doe', 'user@email.com', '1-555-123-4567', '', 'Longway Street 1', '', 'London', 'XX1 X1', 'US', 'CA', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'London', 'XX1 X1', 'US', 'CA', '', 'sm_vendor:parcel', 'Domestic Parcel', '1112223334', 'pm_vendor:card', 'Card Payment', '123456789', 'en', '1.0000', 'kg', 'USD', 1, 7.2, 0, '0.0.0.0', NOW(), NOW());
+(1, '585753da00024', 2, 1, 'ACME Corp.', 'John', 'Doe', 'user@email.com', '1-555-123-4567', '', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', '', 'sm_vendor:parcel', 'Domestic Parcel', '1112223334', 'pm_vendor:card', 'Card Payment', '123456789', 'en', '1.0000', 'kg', 'USD', 1, 7.2, 0, '0.0.0.0', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, `date_created`) VALUES
 (1, 1, 'customer', 'This is a message to the store crew.', 0, NOW()),
