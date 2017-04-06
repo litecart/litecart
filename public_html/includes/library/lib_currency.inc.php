@@ -172,7 +172,9 @@
       }
 
       $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
-      $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : ' ' . $currency_code;
+      $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
+
+      if (empty(self::$currencies[$currency_code])) $suffix = ' ' . $currency_code;
 
       return $prefix . number_format($value * $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
     }
