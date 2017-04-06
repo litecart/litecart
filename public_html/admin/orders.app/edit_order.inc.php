@@ -231,7 +231,23 @@
   color: inherit;
 }
 
-#comments .private {
+#comments .notify  {
+  position: absolute;
+  top: 0.5em;
+  right: 3.25em;
+  cursor: pointer;
+}
+#comments .notify input[name$="[notify]"] {
+  display: none;
+}
+#comments .notify input[name$="[notify]"] + .fa {
+  opacity: 0.5;
+}
+#comments .notify input[name$="[notify]"]:checked + .fa {
+  opacity: 1;
+}
+
+#comments .private  {
   position: absolute;
   top: 0.5em;
   right: 1.75em;
@@ -239,6 +255,12 @@
 }
 #comments .private input[name$="[hidden]"] {
   display: none;
+}
+#comments .private input[name$="[hidden]"] + .fa {
+  opacity: 0.5;
+}
+#comments .private input[name$="[hidden]"]:checked + .fa {
+  opacity: 1;
 }
 
 #comments .semi-transparent {
@@ -939,13 +961,14 @@
 // Comments
 
   var new_comment_index = 0;
-  $('#comments .add').click(function(event) {
-    event.preventDefault();
+  $('#comments .add').click(function(e) {
+    e.preventDefault();
     while ($('input[name="comments['+new_comment_index+'][id]"]').length) new_comment_index++;
     var output = '  <li class="comment staff">'
                + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('comments[new_comment_index][id]', '') . functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff') . functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime']))); ?>'
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
                + '    <div class="text"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '')); ?></div>'
+               + '    <label class="notify" title="<?php echo htmlspecialchars(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][notify]', 1, true); ?> <?php echo functions::draw_fonticon('fa-envelope'); ?></label>'
                + '    <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye'); ?></label>'
                + '    <div class="date"><?php echo strftime(language::$selected['format_datetime']); ?></div>'
                + '  </li>';
@@ -955,12 +978,20 @@
     new_comment_index++;
   });
 
-  $('#comments').on('click', '.remove', function(event) {
-    event.preventDefault();
+  $('#comments').on('click', ':input[name$="[hidden]"]', function(e) {
+    $(this).closest('li').find(':input[name$="[notify]"]').prop('checked', false).trigger('change');
+  });
+
+  $('#comments').on('click', ':input[name$="[notify]"]', function(e) {
+    $(this).closest('li').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change');
+  });
+
+  $('#comments').on('click', '.remove', function(e) {
+    e.preventDefault();
     $(this).closest('li').remove();
   });
 
-  $('#comments').on('click', 'input[name^="comments"][name$="[hidden]"]', function(event) {
+  $('#comments').on('change', 'input[name^="comments"][name$="[hidden]"]', function(e) {
     if ($(this).is(':checked')) {
       $(this).closest('li').addClass('semi-transparent');
     } else {

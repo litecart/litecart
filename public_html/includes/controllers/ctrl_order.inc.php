@@ -366,6 +366,11 @@
 
     // Insert/update comments
       if (!empty($this->data['comments'])) {
+
+        $notify_comments = array();
+
+        if (empty($this->data['comments'][$key]['author'])) $this->data['comments'][$key]['author'] = 'system';
+
         foreach (array_keys($this->data['comments']) as $key) {
           if (empty($this->data['comments'][$key]['id'])) {
             database::query(
@@ -375,6 +380,10 @@
             );
             $this->data['comments'][$key]['id'] = database::insert_id();
             $this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
+
+            if ($this->data['comments'][$key]['author'] == 'staff' && !empty($this->data['comments'][$key]['notify']) && empty($this->data['comments'][$key]['hidden'])) {
+              $notify_comments[] = $this->data['comments'][$key];
+            }
           }
           database::query(
             "update ". DB_TABLE_ORDERS_COMMENTS ."
@@ -384,6 +393,21 @@
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['comments'][$key]['id'] ."'
             limit 1;"
+          );
+        }
+
+        if (!empty($notify_comments)) {
+
+          $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order') . ":\r\n\r\n";
+          foreach ($notify_comments as $comment) {
+            $message .= language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])) ." – ". trim($comment['text']) . "\r\n\r\n";
+          }
+
+          functions::email_send(
+            '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
+            $this->data['customer']['email'],
+            '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added'),
+            $message
           );
         }
       }
@@ -670,7 +694,7 @@
       functions::email_send(
         null,
         $email,
-        language::translate('title_order', 'Order') .' #'. $this->data['id'],
+        '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation'),
         strtr($message, $aliases),
         false
       );
@@ -697,8 +721,8 @@
       $subject = strtr($order_status->email_subject, $aliases);
       $message = strtr($order_status->email_message, $aliases);
 
-      if (empty($subject)) $subject = $order_status->name;
-      if (empty($message)) $message = sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $order_status->name);
+      if (empty($subject)) $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] '. $order_status->name;
+      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_s', 'Order status changed to '), array('%s' => $order_status->name));
 
       functions::email_send(
         null,
