@@ -72,7 +72,7 @@ hr {
   <header id="header">
     <div class="row">
       <div class="col-xs-6">
-        <img src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img id="logotype" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </div>
 
       <div class="col-xs-6 text-right">
