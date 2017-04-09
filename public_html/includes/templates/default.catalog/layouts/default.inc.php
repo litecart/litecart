@@ -58,19 +58,5 @@
 {snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>
 {snippet:javascript}
-<script>
-  $(window).scroll(function(){
-    if ($(this).scrollTop() > 100) {
-      $('#scroll-up').fadeIn();
-    } else {
-      $('#scroll-up').fadeOut();
-    }
-  });
-
-  $('#scroll-up').click(function(){
-    $("html, body").animate({scrollTop: 0}, 1000, 'swing');
-    return false;
-  });
-</script>
 </body>
 </html>

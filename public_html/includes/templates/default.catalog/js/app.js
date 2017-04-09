@@ -49,6 +49,20 @@ $(document).ready(function(){
   });
 });
 
+// Scroll Up
+  $(window).scroll(function(){
+    if ($(this).scrollTop() > 100) {
+      $('#scroll-up').fadeIn();
+    } else {
+      $('#scroll-up').fadeOut();
+    }
+  });
+
+  $('#scroll-up').click(function(){
+    $('html, body').animate({scrollTop: 0}, 1000, 'swing');
+    return false;
+  });
+
 // Update cart / Keep alive
   window.updateCart = function(data) {
     if (data) $('*').css('cursor', 'wait');
