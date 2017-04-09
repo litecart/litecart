@@ -30,6 +30,8 @@
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/styles/',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/views/doc.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.admin/views/login.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/fonts/',
+    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/cursors/',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/images/fancybox/',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/images/cart.png',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/images/cart_filled.png',
