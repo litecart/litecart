@@ -107,7 +107,7 @@ body {
   border-radius: @default-border-radius;
   box-shadow: 0 1px 3px rgba(0,0,0,0.15), 0 1px 0 rgba(0,0,0,0.02);
   ul {
-    display: inline-table;
+    display: flex;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -118,7 +118,7 @@ body {
       display: block;
     }
     li {
-      display: inline-block;
+      flex: 0 1 auto;
       margin: 0;
       &:hover {
         background: rgba(255,255,255,0.3);
@@ -161,7 +161,7 @@ body {
           border-bottom: 1px rgba(0,0,0,0.05) solid;
           border-top: 1px rgba(255,255,255,0.25) solid;
           border: none;
-          width: 200px;
+          max-width: 300px;
         }
         &:first-child {
           box-shadow: inset 0 4px 2px -3px @default-shadow-color;
