@@ -84,32 +84,50 @@
       }
 
       foreach($order as $field => $value) {
-        if (preg_match('#^(customer|shipping|payment)_#', $field, $matches)) {
 
-          switch ($field) {
-            case 'shipping_company':
-            case 'shipping_firstname':
-            case 'shipping_lastname':
-            case 'shipping_address1':
-            case 'shipping_address2':
-            case 'shipping_postcode':
-            case 'shipping_city':
-            case 'shipping_country_code':
-            case 'shipping_zone_code':
-            case 'shipping_phone':
-              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
-              $this->data['customer']['shipping_address'][$field] = $value;
-              break;
+        switch ($field) {
+          case 'customer_id':
+          case 'customer_email':
+          case 'customer_tax_id':
+          case 'customer_company':
+          case 'customer_firstname':
+          case 'customer_lastname':
+          case 'customer_address1':
+          case 'customer_address2':
+          case 'customer_postcode':
+          case 'customer_city':
+          case 'customer_country_code':
+          case 'customer_zone_code':
+          case 'customer_phone':
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
+            break;
 
-            case 'payment_due':
-              $this->data['payment_due'] = $value;
-              break;
+          case 'shipping_company':
+          case 'shipping_firstname':
+          case 'shipping_lastname':
+          case 'shipping_address1':
+          case 'shipping_address2':
+          case 'shipping_postcode':
+          case 'shipping_city':
+          case 'shipping_country_code':
+          case 'shipping_zone_code':
+          case 'shipping_phone':
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
+            break;
 
-            default:
-              $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
-              $this->data[$matches[1]][$field] = $value;
-              break;
-          }
+          case 'payment_option_id':
+          case 'payment_option_name':
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field)] = $value;
+            break;
+
+          case 'shipping_option_id':
+          case 'shipping_option_name':
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field)] = $value;
+            break;
+
+          default:
+            $this->data[$field] = $value;
+            break;
         }
       }
 
@@ -228,12 +246,12 @@
         shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
         shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
         shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
-        shipping_option_id = '". database::input($this->data['shipping']['option_id']) ."',
-        shipping_option_name = '". database::input($this->data['shipping']['option_name']) ."',
-        shipping_tracking_id = '". database::input($this->data['shipping']['tracking_id']) ."',
-        payment_option_id = '". database::input($this->data['payment']['option_id']) ."',
-        payment_option_name = '". database::input($this->data['payment']['option_name']) ."',
-        payment_transaction_id = '". database::input($this->data['payment']['transaction_id']) ."',
+        shipping_option_id = '". database::input($this->data['shipping_option']['id']) ."',
+        shipping_option_name = '". database::input($this->data['shipping_option']['name']) ."',
+        shipping_tracking_id = '". database::input($this->data['shipping_tracking_id']) ."',
+        payment_option_id = '". database::input($this->data['payment_option']['id']) ."',
+        payment_option_name = '". database::input($this->data['payment_option']['name']) ."',
+        payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
         language_code = '". database::input($this->data['language_code']) ."',
         currency_code = '". database::input($this->data['currency_code']) ."',
         currency_value = ". (float)$this->data['currency_value'] .",
