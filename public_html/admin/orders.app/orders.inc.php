@@ -173,6 +173,8 @@
 <?php echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <script>
+  $('select[name="order_status_id"] option[value=""]').text('-- <?php echo language::translate('title_order_status', ''); ?> --');
+
   $('input[name="query"]').keypress(function(e) {
     if (e.which == 13) {
       e.preventDefault();

@@ -124,8 +124,6 @@
     }
 
     $default_params = array(
-      'openSpeed'   => 50,
-      'closeSpeed'  => 50,
       'loading'     => '',
       'closeIcon'   => '',
       'targetAttr'  => 'data-target',

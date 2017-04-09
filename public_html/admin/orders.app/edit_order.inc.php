@@ -223,7 +223,7 @@
   display: none;
 }
 #comments .notify input[name$="[notify]"] + .fa {
-  opacity: 0.5;
+  opacity: 0.25;
 }
 #comments .notify input[name$="[notify]"]:checked + .fa {
   opacity: 1;
@@ -239,7 +239,7 @@
   display: none;
 }
 #comments .private input[name$="[hidden]"] + .fa {
-  opacity: 0.5;
+  opacity: 0.25;
 }
 #comments .private input[name$="[hidden]"]:checked + .fa {
   opacity: 1;
@@ -538,7 +538,7 @@
           <?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?>
           <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
           <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
-          <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye'); ?></label>
+          <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
           <div class="date"><?php echo strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
         </li>
         <?php } ?>
@@ -951,7 +951,7 @@
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>'
                + '    <div class="text"><?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '')); ?></div>'
                + '    <label class="notify" title="<?php echo htmlspecialchars(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][notify]', 1, true); ?> <?php echo functions::draw_fonticon('fa-envelope'); ?></label>'
-               + '    <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye'); ?></label>'
+               + '    <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>'
                + '    <div class="date"><?php echo strftime(language::$selected['format_datetime']); ?></div>'
                + '  </li>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);

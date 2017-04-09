@@ -68,15 +68,19 @@
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
       <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 360px"'); ?>
     </div>
+  </div>
 
-    <div class="form-group col-md-6">
+  <div class="row">
+    <div class="form-group col-md-12">
       <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?></label>
+        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?><br />
+        <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
       </div>
 
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived');?></label>
+        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived');?><br />
+        <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
       </div>
     </div>
   </div>
@@ -134,7 +138,7 @@
       <?php } ?>
     </div>
 
-    <p><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %order_copy_url, %store_name, %store_url</code></p>
+    <div><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %order_copy_url, %store_name, %store_url</code></div>
   </fieldset>
 
   <p class="btn-group">
