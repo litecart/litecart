@@ -38,7 +38,7 @@
           if (is_file($file)) unlink($file);
         }
 
-        if (user::check_login(()) {
+        if (user::check_login()) {
           notices::add('success', 'Cache cleared');
         }
       }
@@ -57,7 +57,7 @@
           limit 1;"
         );
 
-        if (user::check_login(()) {
+        if (user::check_login()) {
           notices::add('success', 'Image thumbnails cache cleared');
         }
       }
