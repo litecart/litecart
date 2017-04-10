@@ -106,8 +106,8 @@
 		onResize:       $.noop,                /* Called after new content and when a window is resized */
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the targetAttrs value. */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
-		width:          'auto',                /* Specify width of lightbox. */
-		height:         'auto',                /* Specify width of lightbox. */
+		width:          '',                    /* Specify width of lightbox. */
+		height:         '',                    /* Specify width of lightbox. */
 
 		/*** methods ***/
 		/* setup iterates over a single instance of featherlight and prepares the background and binds the events */
@@ -251,9 +251,8 @@
 					return $.when($content)
 						.always(function($content){
 							self.setContent($content);
-							self.$content.parent()
-								.css('width', self.width)
-								.css('height', self.height);
+							if (self.width) self.$content.parent().css('width', self.width);
+							if (self.height) self.$content.parent().css('height', self.height);
 							self.afterContent(event);
 						})
 						.then(self.$instance.promise())
