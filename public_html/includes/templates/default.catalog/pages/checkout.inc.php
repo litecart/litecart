@@ -104,7 +104,7 @@
         jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
+        if (console) console.warn('Error');
         $('#box-checkout .'+ task.component +'.wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(html) {
@@ -126,7 +126,9 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
     e.preventDefault();
-    var data = $(this).closest('td').find(':input').serialize() + '&remove_cart_item=' + $(this).val();
+    var data = 'token=' + $(this).closest('form').find(':input[name="token"]').val()
+             + '&' + $(this).closest('td').find(':input').serialize()
+             + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', null, true);
     queueUpdateTask('shipping', null, true);
@@ -136,7 +138,9 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
     e.preventDefault();
-    var data = $(this).closest('td').find(':input').serialize() + '&update_cart_item=' + $(this).val();
+    var data = 'token=' + $(this).closest('form').find(':input[name="token"]').val()
+             + '&' + $(this).closest('td').find(':input').serialize()
+             + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', null, true);
     queueUpdateTask('shipping', null, true);
@@ -170,7 +174,8 @@
     $.ajax({
       url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
-      data: $('.billing-address :input').serialize(),
+      data: 'token=' + $(this).closest('form').find(':input[name="token"]').val()
+             + '&' + $('.billing-address :input').serialize(),
       cache: false,
       async: true,
       dataType: 'json',
@@ -221,7 +226,7 @@
         if (console) console.warn(errorThrown.message);
       },
       success: function(data) {
-        $("select[name='zone_code']").html('');
+        $('select[name="zone_code"]').html('');
         if (data.length) {
           $('select[name="zone_code"]').prop('disabled', false);
           $.each(data, function(i, zone) {
@@ -301,7 +306,8 @@
         if (!$(this).is(':focus')) {
           if (window.customer_form_changed) {
             if (console) console.log('Autosaving customer details');
-            var data = $('#box-checkout-customer :input').serialize();
+            var data = 'token=' + $(this).closest('form').find(':input[name="token"]').val()
+                     + '&' + $('#box-checkout-customer :input').serialize();
             queueUpdateTask('customer', data, true);
             queueUpdateTask('cart', null, true);
             queueUpdateTask('shipping', null, true);
@@ -321,7 +327,9 @@
 
   $('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e){
     e.preventDefault();
-    var data = $('#box-checkout-customer :input').serialize() + '&save_customer_details=true';
+    var data = 'token=' + $(this).closest('form').find(':input[name="token"]').val()
+             + '&' + $('#box-checkout-customer :input').serialize()
+             + '&save_customer_details=true';
     queueUpdateTask('customer', data, true);
     queueUpdateTask('cart', null, true);
     queueUpdateTask('shipping', null, true);
@@ -341,7 +349,8 @@
     $('#box-checkout-shipping .option.active :input').prop('disabled', false);
     $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
 
-    var data = $('#box-checkout-shipping .option.active :input').serialize();
+    var data = 'token=' + $(this).closest('form').find(':input[name="token"]').val()
+             + '&' + $('#box-checkout-shipping .option.active :input').serialize();
     queueUpdateTask('shipping', data, false);
     queueUpdateTask('payment', null, true);
     queueUpdateTask('summary', null, true);
@@ -357,7 +366,8 @@
     $('#box-checkout-payment .option.active :input').prop('disabled', false);
     $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
 
-    var data = $('#box-checkout-payment .option.active :input').serialize();
+    var data = 'token=' + $(this).closest('form').find(':input[name="token"]').val()
+             + '&' + $('#box-checkout-payment .option.active :input').serialize();
     queueUpdateTask('payment', data, false);
     queueUpdateTask('summary', null, true);
   });
