@@ -125,7 +125,7 @@
 
     $default_params = array(
       'loading'     => '<div class="loader" style="width: 256px; height: 256px; opacity: 0.5;"></div>',
-      'closeIcon'   => '',
+      'closeIcon'   => '&#x2716;',
       'targetAttr'  => 'data-target',
     );
 

@@ -92,7 +92,7 @@
 		closeSpeed:     50,                    /* Duration of closing animation */
 		closeOnClick:   'background',          /* Close lightbox on click ('background', 'anywhere' or false) */
 		closeOnEsc:     true,                  /* Close lightbox when pressing esc */
-		closeIcon:      '',                    /* Close icon */
+		closeIcon:      '&#x2716;',            /* Close icon */
 		loading:        '',                    /* Content to show while initial content is loading */
 		persist:        false,                 /* If set, the content will persist and will be shown again when opened again. 'shared' is a special value when binding multiple elements for them to share the same content */
 		otherClose:     null,                  /* Selector for alternate close buttons (e.g. "a.close") */
@@ -123,9 +123,6 @@
 				$background = $(self.background || [
 					'<div class="'+css+'-loading '+css+'">',
 						'<div class="'+css+'-content">',
-							self.closeIcon ? '<button class="'+css+'-close-icon '+ self.namespace + '-close" aria-label="Close">' : null,
-								self.closeIcon ? self.closeIcon : null,
-							self.closeIcon ? '</button>' : null,
 							'<div class="'+self.namespace+'-inner">' + self.loading + '</div>',
 						'</div>',
 					'</div>'].join('')),
@@ -207,8 +204,16 @@
 
 			self.$instance.removeClass(self.namespace+'-loading');
 
-      self.$content = $content.show();
-      self.$instance.find('.'+self.namespace+'-content').html(self.$content);
+			self.$content = $content.show();
+			self.$instance.find('.'+self.namespace+'-content').html(self.$content);
+
+			if (self.closeIcon) {
+				self.$instance.find('.'+self.namespace+'-content').prepend(
+					'<button class="'+ self.namespace +'-close-icon '+ self.namespace + '-close" aria-label="Close">' +
+					self.closeIcon +
+					'</button>'
+				);
+			}
 
 			return self;
 		},
@@ -216,7 +221,7 @@
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
 		open: function(event){
-      if (event.ctrlKey || event.shiftKey) return false;
+			if (event.ctrlKey || event.shiftKey) return false;
 
 			var self = this;
 			self.$instance.hide().appendTo(self.root);
