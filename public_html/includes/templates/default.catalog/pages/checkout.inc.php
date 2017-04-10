@@ -63,10 +63,10 @@
     if (console) console.log('Processing ' + task.component);
 
     if (!$('body > .loader-wrapper').length) {
-      var progress_bar = '<div class="loader-wrapper">' +
-                         '  <div class="loader" style="width: 256px; height: 256px;"></div>' +
-                         '</div>';
-      $('body').append(progress_bar);
+      var loader = '<div class="loader-wrapper">'
+                 + '  <div class="loader" style="width: 256px; height: 256px;"></div>'
+                 + '</div>';
+      $('body').append(loader);
     }
 
     if (task.refresh) {
