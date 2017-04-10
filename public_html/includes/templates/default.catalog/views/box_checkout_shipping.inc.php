@@ -8,7 +8,7 @@
       <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-sm-fourths thumbnail" style="margin: 0;">
-          <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 100, 40, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" />
+          <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" />
         </div>
         <div class="col-sm-5 text-left">
           <h4 class="title" style="margin: 0.5em 0 0 0;"><?php echo $module['title']; ?></h4>
