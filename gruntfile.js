@@ -64,6 +64,11 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/js/app.min.js' : ['public_html/includes/templates/default.catalog/js/app.js'],
         }
       },
+      featherlight: {
+        files: {
+          'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
+        }
+      },
     }
   });
 

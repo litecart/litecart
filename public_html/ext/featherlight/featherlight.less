@@ -114,16 +114,23 @@ body.featherlight-open {
   }
 }
 
+.featherlight-loading {
+  .featherlight-content {
+    background: none;
+    box-shadow: none;
+  }
+}
+
 /* Stacked modals */
 .featherlight {
    perspective: 2048px;
 
   .featherlight-content {
-    transition: all 0.25s linear;
+    transition: transform 0.25s linear, filter 0.25s linear;
     transform: -400px;
     transform: scale(0.8) rotateY(45deg) translateZ(-400px);
     transform-style: preserve-3d;
-    filter: blur(2px);
+    filter: blur(5px);
   }
 
   &.active .featherlight-content {

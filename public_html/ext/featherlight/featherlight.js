@@ -88,8 +88,8 @@
 		closeTrigger:   'click',               /* Event that triggers the closing of the lightbox */
 		filter:         null,                  /* Selector to filter events. Think $(...).on('click', filter, eventHandler) */
 		root:           'body',                /* Where to append featherlights */
-		openSpeed:      250,                   /* Duration of opening animation */
-		closeSpeed:     250,                   /* Duration of closing animation */
+		openSpeed:      50,                    /* Duration of opening animation */
+		closeSpeed:     50,                    /* Duration of closing animation */
 		closeOnClick:   'background',          /* Close lightbox on click ('background', 'anywhere' or false) */
 		closeOnEsc:     true,                  /* Close lightbox when pressing esc */
 		closeIcon:      '',                    /* Close icon */
