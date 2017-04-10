@@ -387,9 +387,10 @@
 
         $notify_comments = array();
 
-        if (empty($this->data['comments'][$key]['author'])) $this->data['comments'][$key]['author'] = 'system';
-
         foreach (array_keys($this->data['comments']) as $key) {
+
+          if (empty($this->data['comments'][$key]['author'])) $this->data['comments'][$key]['author'] = 'system';
+
           if (empty($this->data['comments'][$key]['id'])) {
             database::query(
               "insert into ". DB_TABLE_ORDERS_COMMENTS ."
@@ -403,6 +404,7 @@
               $notify_comments[] = $this->data['comments'][$key];
             }
           }
+
           database::query(
             "update ". DB_TABLE_ORDERS_COMMENTS ."
             set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
