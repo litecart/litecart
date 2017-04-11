@@ -21,15 +21,12 @@
 
     <h1 class="title"><?php echo $title; ?></h1>
 
-    <div class="content">
-
-      <?php if ($products) { ?>
-      <ul class="products row half-gutter">
-        <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
-      </ul>
-      <?php } ?>
-
-      <?php echo $pagination; ?>
+    <?php if ($products) { ?>
+    <div class="products row half-gutter">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
     </div>
+    <?php } ?>
+
+    <?php echo $pagination; ?>
   </div>
 </main>
