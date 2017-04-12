@@ -115,7 +115,8 @@ INSERT INTO `lc_products_prices` (`id`, `product_id`, `USD`) VALUES
 (1, 1, 20.0000),
 (2, 2, 20.0000),
 (3, 3, 20.0000),
-(4, 4, 20.0000);
+(4, 4, 20.0000),
+(5, 5, 20.0000);
 -- --------------------------------------------------------
 INSERT INTO `lc_product_groups` (`id`, `status`, `date_updated`, `date_created`) VALUES
 (1, 0, NOW(), NOW());
