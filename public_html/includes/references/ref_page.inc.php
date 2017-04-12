@@ -74,7 +74,7 @@
         default:
 
           $query = database::query(
-            "select from ". DB_TABLE_PAGES ."
+            "select * from ". DB_TABLE_PAGES ."
             where id = '". (int)$this->_id ."'
             limit 1;"
           );
