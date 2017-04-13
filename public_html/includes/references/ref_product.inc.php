@@ -499,32 +499,29 @@
         default:
 
           $query = database::query(
-            "select p.*, group_concat(pc.category_id) as categories
-            from ". DB_TABLE_PRODUCTS ." p
-            left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on (pc.product_id = ". (int)$this->_id .")
+            "select * from ". DB_TABLE_PRODUCTS ."
             where id = ". (int)$this->_id ."
-            group by p.id
             limit 1;"
           );
           $row = database::fetch($query);
 
           if (database::num_rows($query) == 0) return;
 
-          if (!empty($row['categories'])) {
-            $row['category_ids'] = explode(',', $row['categories']);
-          } else {
-            $row['category_ids'] = array();
-          }
-          unset($row['categories']);
+          foreach ($row as $key => $value) {
+            switch($key) {
+              case 'product_groups':
+                $row['product_group_ids'] = explode(',', $row['product_groups']);
+                break;
 
-          if (!empty($row['product_groups'])) {
-            $row['product_group_ids'] = explode(',', $row['product_groups']);
-          } else {
-            $row['product_group_ids'] = array();
-          }
-          unset($row['product_groups']);
+              case 'keywords':
+                $row[$key] = explode(',', $row[$key]);
+                break;
 
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+              default:
+                $this->_data[$key] = $value;
+                break;
+            }
+          }
 
           break;
       }

@@ -17,7 +17,7 @@
           'parent_id' => $category->parent_id,
           'code' => $category->code,
           'name' => $category->name,
-          'keywords' => $category->keywords,
+          'keywords' => implode(',', $product->keywords),
           'short_description' => $category->short_description,
           'description' => $category->description,
           'meta_description' => $category->meta_description,
@@ -120,8 +120,10 @@
           continue;
         }
 
+        if (isset($row['dock'])) $row['dock'] = explode(',', $row['dock']);
+
       // Set default category data
-        if (empty($category->data['id'])) {
+        if (empty($category->data['id']) & empty($row['dock'])) {
           $category->data['dock'][] = 'tree';
         }
 
@@ -183,7 +185,7 @@
           'name' => $product->name,
           'short_description' => $product->short_description,
           'description' => $product->description,
-          'keywords' => $product->keywords,
+          'keywords' => implode(',', $product->keywords),
           'attributes' => $product->attributes,
           'head_title' => $product->head_title,
           'meta_description' => $product->meta_description,

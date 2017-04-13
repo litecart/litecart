@@ -146,7 +146,17 @@
 
           if (database::num_rows($query) == 0) return;
 
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+          foreach ($row as $key => $value) {
+            switch($key) {
+              case 'keywords':
+                $row[$key] = explode(',', $row[$key]);
+                break;
+
+              default:
+                $this->_data[$key] = $value;
+                break;
+            }
+          }
 
           break;
       }
