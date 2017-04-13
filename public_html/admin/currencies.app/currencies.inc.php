@@ -26,42 +26,45 @@
 
   if (!empty($_POST['update_rates'])) {
 
-    foreach (array_keys(currency::$currencies) as $currency_code) {
+    if (!empty($_POST['currencies'])) {
+      foreach (array_keys($_POST['currencies']) as $currency_code) {
 
-      if ($currency_code == settings::get('store_currency_code')) continue;
+        if ($currency_code == settings::get('store_currency_code')) continue;
 
-      $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code') . $currency_code .'=X'));
+        try {
 
-      $client = new http_client();
-      $response = @$client->call($url);
+          $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code') . $currency_code .'=X'));
 
-      if (empty($response)) {
-        trigger_error('Could not update currency value for '. $currency_code .': No data ('. $url .')', E_USER_ERROR);
-        continue;
+          $client = new http_client();
+          $response = @$client->call($url);
+
+          if (empty($response)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
+
+          $value = (float)trim($response) * currency::$currencies[settings::get('store_currency_code')]['value'];
+
+          if (empty($value)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
+
+          database::query(
+            "update ". DB_TABLE_CURRENCIES ."
+            set value = '". (float)$value ."'
+            where code = '". database::input($currency_code) ."'
+            limit 1;"
+          );
+
+          notices::$data['success'][] = strtr(language::translate('success_currency_rates_updated_for_currency', 'Currency rates updated for %currency_code'), array('%currency_code' => $currency_code));
+
+        } catch (Exception $e) {
+          notices::$data['errors'][] = $e->getMessage();
+        }
       }
 
-      $value = (float)trim($response) * currency::$currencies[settings::get('store_currency_code')]['value'];
 
-      if (empty($value)) {
-        trigger_error('Could not update currency value for '. $currency_code .': No value ('. $url .')', E_USER_ERROR);
-        continue;
-      }
-
-      database::query(
-        "update ". DB_TABLE_CURRENCIES ."
-        set value = '". (float)$value ."'
-        where code = '". database::input($currency_code) ."'
-        limit 1;"
-      );
+      header('Location: '. document::link());
+      exit;
     }
-
-    notices::$data['success'][] = language::translate('success_currency_rates_updated', 'Currency rates updated');
-    header('Location: '. document::link());
-    exit;
   }
 ?>
 <ul class="list-inline pull-right">
-  <li><?php echo functions::form_draw_form_begin() . functions::form_draw_button('update_rates', language::translate('title_update_rates', 'Update Rates'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'fa-refresh') . functions::form_draw_form_end(); ?></li>
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_currency'), true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
 </ul>
 
@@ -125,9 +128,15 @@
     </tfoot>
   </table>
 
-  <p class="btn-group">
-    <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-    <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-  </p>
+  <ul class="list-inline">
+    <li>
+      <div class="btn-group">
+        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+      </div>
+    </li>
+
+    <li><?php echo functions::form_draw_button('update_rates', language::translate('title_update_rates', 'Update Rates'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'fa-refresh'); ?></li>
+  </ul>
 
 <?php echo functions::form_draw_form_end(); ?>

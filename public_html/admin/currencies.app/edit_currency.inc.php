@@ -158,7 +158,7 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_value', 'Value'); ?></label>
-      <?php echo functions::form_draw_decimal_field('value', true); ?>
+      <?php echo functions::form_draw_decimal_field('value', true, 4); ?>
     </div>
 
     <div class="form-group col-md-6">
