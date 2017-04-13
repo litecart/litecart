@@ -117,20 +117,23 @@
 
           $this->_data['categories'] = array();
 
-          if (count($this->category_ids)) {
-            foreach ($this->category_ids as $category_id) {
-              $query = database::query(
-                "select * from ". DB_TABLE_CATEGORIES_INFO ."
-                where category_id = '". (int)$category_id ."'
-                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
+          $products_to_categories_query = database::query(
+            "select * from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+            where product_id = ". (int)$this->_id .";"
+          );
 
-              while ($row = database::fetch($query)) {
-                foreach ($row as $key => $value) {
-                  if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
-                  if (empty($this->_data['categories'][$category_id])) $this->_data['categories'][$category_id] = $value;
-                }
+          while ($product_to_category = database::fetch($products_to_categories_query)) {
+            $categories_info_query = database::query(
+              "select * from ". DB_TABLE_CATEGORIES_INFO ."
+              where category_id = '". (int)$product_to_category['category_id'] ."'
+              and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+              order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+            );
+
+            while ($row = database::fetch($categories_info_query)) {
+              foreach ($row as $key => $value) {
+                if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
+                if (empty($this->_data['categories'][$product_to_category['category_id']])) $this->_data['categories'][$product_to_category['category_id']] = $value;
               }
             }
           }
@@ -392,7 +395,6 @@
 
           break;
 
-        case 'product_group_ids':
         case 'product_groups':
 
           $this->_data['product_groups'] = array();
