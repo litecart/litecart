@@ -11,6 +11,11 @@ body {
 #header {
   position: relative;
   margin-bottom: 1em;
+  @media (max-width: 374px) {
+    .logotype img {
+      max-width: 220px !important;
+    }
+  }
 }
 
 #region-wrapper {
@@ -140,9 +145,8 @@ body {
       &:last-child {
         border-right: 1px rgba(255,255,255,0.25) solid;
       }
-      &:hover>ul {
-        display: inline-block;
-        max-width: 800px;
+      &:hover > ul {
+        display: block;
       }
     }
     ul {
@@ -157,6 +161,7 @@ body {
         border-right: none !important;
         display: block;
         position: relative;
+        width: 175px;
         a {
           border-bottom: 1px rgba(0,0,0,0.05) solid;
           border-top: 1px rgba(255,255,255,0.25) solid;

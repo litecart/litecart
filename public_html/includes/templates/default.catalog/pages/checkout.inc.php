@@ -1,4 +1,4 @@
-<main id="content">
+<main id="content" class="twelve-eighty">
   {snippet:notices}
 
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process')); ?>

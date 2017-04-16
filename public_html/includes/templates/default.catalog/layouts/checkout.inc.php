@@ -15,14 +15,14 @@
 </head>
 <body>
 
-<div class="twelve-eighty">
-  <header id="header" class="<?php echo !empty(document::$settings['fixed_header']) ? ' fixed' : ''; ?>">
+<div id="header-wrapper">
+  <header id="header" class="twelve-eighty">
 
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
       <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
     </a>
 
-    <div class="customer-service">
+    <div class="customer-service hidden-xs">
       <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>
       <div class="phone"><?php echo settings::get('store_phone'); ?></div>
     </div>
@@ -30,7 +30,7 @@
 </div>
 
 <div id="page" class="shadow">
-  <div id="main" class="twelve-eighty">
+  <div id="main">
 
     {snippet:content}
 
