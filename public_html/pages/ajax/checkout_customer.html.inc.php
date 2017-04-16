@@ -19,6 +19,8 @@
 
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
+    if (!isset($_POST['zone_code'])) $_POST['zone_code'] = '';
+    if (!isset($_POST['shipping_address']['zone_code'])) $_POST['shipping_address']['zone_code'] = '';
 
   // Validate
     if (!empty($_POST['create_account'])) {
