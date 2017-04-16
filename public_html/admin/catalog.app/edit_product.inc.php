@@ -103,19 +103,22 @@
   functions::draw_lightbox();
 ?>
 <style>
-#table-images .thumbnail {
+#images .thumbnail {
   margin: 0;
 }
-#table-images img {
+#images .image {
+  overflow: hidden;
+}
+#images .thumbnail {
+  margin-right: 15px;
+}
+#images img {
   max-width: 50px;
   max-height: 50px;
 }
-#table-images .actions {
+#images .actions {
   text-align: right;
   padding: 0.25em 0;
-}
-#table-images td {
-  border: none;
 }
 </style>
 
@@ -326,52 +329,58 @@
 <?php
   if (isset($product->data['id']) && !empty($product->data['images'])) {
     $image = current($product->data['images']);
-    echo '<img class="main-image img-thumbnail" src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping')) .'" alt="" />';
+    echo '<img class="main-image" src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping')) .'" alt="" />';
     reset($product->data['images']);
   } else {
-    echo '<img class="main-image img-thumbnail" src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')) .'" alt="" />';
+    echo '<img class="main-image" src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')) .'" alt="" />';
   }
 ?>
               </div>
             </div>
 
-              <table id="table-images" class="table">
-                <tbody>
-                  <?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
-                  <tr>
-                    <td><div class="thumbnail"><?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>
-                    <td><?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
-                      <div class="input-group">
-                        <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
-                        <div class="input-group-addon">
-                          <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-                          <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                          <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <?php } ?>
-                </tbody>
-                <tbody>
-                  <tr>
-                    <td><div class="thumbnail"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>
-                    <td>
-                      <div class="input-group">
-                        <?php echo functions::form_draw_file_field('new_images[]'); ?>
-                        <div class="input-group-addon">
-                          <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colspan="3"><a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
-                  </tr>
-                </tfoot>
-              </table>
+            <div id="images">
+
+              <div class="images">
+                <?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
+                <div class="image form-group">
+                  <?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
+
+                  <div class="thumbnail pull-left">
+                    <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" />
+                  </div>
+
+                  <div class="input-group">
+                    <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
+                    <div class="input-group-addon">
+                      <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+                      <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+                      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                    </div>
+                  </div>
+                </div>
+                <?php } ?>
+              </div>
+
+              <div class="new-images">
+                <div class="image form-group">
+                  <div class="thumbnail pull-left">
+                    <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" />
+                  </div>
+
+                  <div class="input-group">
+                    <?php echo functions::form_draw_file_field('new_images[]'); ?>
+                    <div class="input-group-addon">
+                      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -713,9 +722,9 @@ foreach (currency::$currencies as $currency) {
 
 // Images
 
-  $('#table-images').on('click', '.move-up, .move-down', function(e) {
+  $('#images').on('click', '.move-up, .move-down', function(e) {
     e.preventDefault();
-    var row = $(this).closest('tr');
+    var row = $(this).closest('.form-group');
 
     if ($(this).is('.move-up') && $(row).prevAll().length > 0) {
       $(row).insertBefore(row.prev());
@@ -725,31 +734,32 @@ foreach (currency::$currencies as $currency) {
     refreshMainImage();
   });
 
-  $('#table-images').on('click', '.remove', function(e) {
+  $('#images').on('click', '.remove', function(e) {
     e.preventDefault();
-    $(this).closest('tr').remove();
+    $(this).closest('.form-group').remove();
     refreshMainImage();
   });
 
-  $('#table-images .add').click(function(e) {
+  $('#images .add').click(function(e) {
     e.preventDefault();
-    var output = '<tr>'
-               + '  <td><div class="thumbnail"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>'
-               + '  <td>'
-               + '    <div class="input-group">'
-               + '      <?php echo functions::form_draw_file_field('new_images[]'); ?>'
-               + '      <div class="input-group-addon">'
-               + '        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
-               + '      </div>'
+    var output = '<div class="image form-group">'
+               + '  <div class="thumbnail pull-left">'
+               + '    <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" />'
+               + '  </div>'
+               + '  '
+               + '  <div class="input-group">'
+               + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
+               + '    <div class="input-group-addon">'
+               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
                + '    </div>'
-               + '  </td>'
-               + '</tr>';
-    $('#table-images tbody:last').append(output);
+               + '  </div>'
+               + '</div>';
+    $('#images .new-images').append(output);
     refreshMainImage();
   });
 
-  $('#table-images').on('change', 'input[type="file"]', function(e) {
-    var img = $(this).closest('tr').find('img');
+  $('#images').on('change', 'input[type="file"]', function(e) {
+    var img = $(this).closest('.form-group').find('img');
 
     var oFReader = new FileReader();
     oFReader.readAsDataURL(this.files[0]);
@@ -762,9 +772,9 @@ foreach (currency::$currencies as $currency) {
   });
 
   function refreshMainImage() {
-    console.log($('#table-images img:first').attr('src'));
-    if ($('#table-images img:first').length) {
-      $('#tab-general .main-image').attr('src', $('#table-images img:first').attr('src'));
+    console.log($('#images img:first').attr('src'));
+    if ($('#images img:first').length) {
+      $('#tab-general .main-image').attr('src', $('#images img:first').attr('src'));
       return;
     }
 
