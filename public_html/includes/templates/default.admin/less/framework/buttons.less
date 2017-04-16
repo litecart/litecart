@@ -50,8 +50,14 @@
     border-radius: 0;
     font-size: inherit;
     margin-left: -1px;
-    &:first-child { border-top-left-radius: @default-border-radius; border-bottom-left-radius: @default-border-radius; }
-    &:last-child { border-top-right-radius: @default-border-radius; border-bottom-right-radius: @default-border-radius; }
+    &:first-child {
+      border-top-left-radius: @default-border-radius;
+      border-bottom-left-radius: @default-border-radius;
+    }
+    &:last-child {
+      border-top-right-radius: @default-border-radius;
+      border-bottom-right-radius: @default-border-radius;
+    }
   }
 }
 
@@ -61,7 +67,13 @@
     border-radius: 0;
     font-size: inherit;
     margin-top: -1px;
-    &:first-child { border-radius: 3px 3px 0 0; }
-    &:last-child { border-radius: 0 0 3px 3px; }
+    &:first-child {
+      border-top-left-radius: @default-border-radius;
+      border-top-right-radius: @default-border-radius;
+    }
+    &:last-child {
+      border-bottom-left-radius: @default-border-radius;
+      border-bottom-right-radius: @default-border-radius;
+    }
   }
 }

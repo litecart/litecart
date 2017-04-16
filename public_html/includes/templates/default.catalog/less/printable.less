@@ -1,18 +1,18 @@
 @import "variables.less";
 
+body {
+  font-size: 9pt;
+  font-family: Arial, Helvetica,sans-serif;
+  color: #000;
+  margin: 0px;
+  padding: 0px;
+}
+
 @media print {
   @page {
     size: A4; /* auto is the initial value */
     margin: 15mm;
     zoom: 100%;
-    padding: 0px;
-  }
-
-  body {
-    font-size: 9pt;
-    font-family: Arial, Helvetica,sans-serif;
-    color: #000;
-    margin: 0px;
     padding: 0px;
   }
 
@@ -44,6 +44,7 @@
     background: #e6e9ed;
     padding: 5mm;
   }
+
   body[data-size="A4"] {
     position: relative;
     max-width: 21cm;
@@ -52,9 +53,6 @@
     box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
     padding: 15mm;
     background: #fff;
-    font-size: 9pt;
-    font-family: Arial, Helvetica,sans-serif;
-    color: #000;
     margin-bottom: 5mm;
   }
 
