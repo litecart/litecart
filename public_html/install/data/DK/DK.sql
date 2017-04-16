@@ -1,3 +1,8 @@
+INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `currency_code`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'da', 'dan', 'Danske', 'da_DK.utf8,da_DK.UTF-8,danish', 'UTF-8', 'Y-m-d', 'H:i', 'Y-m-d H:i', '%b %e %Y', '%H:%M', '%b %e %Y %H:%M', ',', ' ', '', 0, NOW(), NOW());
+-- --------------------------------------------------------
+ALTER TABLE `lc_translations` ADD `text_da` text NOT NULL AFTER `text_en`;
+-- --------------------------------------------------------
 INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'DKK', '208', 'Danske kroner', 1.00, 2, 'kr. ', '', 0, NOW(), NOW());
 -- --------------------------------------------------------
@@ -12,11 +17,6 @@ UPDATE `lc_settings` SET `value` = 'DKK' WHERE `key` in ('store_currency_code', 
 UPDATE `lc_currencies` SET `value` = 0.1425 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_currencies` SET `value` = 0.1345 WHERE `code` = 'EUR' LIMIT 1;
--- --------------------------------------------------------
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `currency_code`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'da', 'dan', 'Danske', 'da_DK.utf8,da_DK.UTF-8,danish', 'UTF-8', 'Y-m-d', 'H:i', 'Y-m-d H:i', '%b %e %Y', '%H:%M', '%b %e %Y %H:%M', ',', ' ', '', 0, NOW(), NOW());
--- --------------------------------------------------------
-ALTER TABLE `lc_translations` ADD `text_da` text NOT NULL AFTER `text_en`;
 -- --------------------------------------------------------
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('DK VAT Zone', '', NOW(), NOW());

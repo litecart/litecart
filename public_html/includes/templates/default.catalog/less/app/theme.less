@@ -1,11 +1,11 @@
 body {
-	background-color: @site-background-color;
+  background-color: @site-background-color;
 }
 
 #page {
-	background-color: @page-background-color;
-	border-bottom: 1px solid @default-border-color;
-	padding: 20px;
+  background-color: @page-background-color;
+  border-bottom: 1px solid @default-border-color;
+  padding: 20px;
 }
 
 #header {
@@ -19,13 +19,13 @@ body {
 }
 
 #region-wrapper {
-	display: inline-block;
-	left: 50%;
-	margin: 0px -200px;
-	position: absolute;
-	text-align: center;
-	top: 10px;
-	width: 400px;
+  display: inline-block;
+  left: 50%;
+  margin: 0px -200px;
+  position: absolute;
+  text-align: center;
+  top: 10px;
+  width: 400px;
   #region {
     background: @site-background-color;
     border-bottom: 1px solid #ffffff;
@@ -69,10 +69,10 @@ body {
 }
 
 #cart {
-	top: 0;
-	right: 0;
-	display: inline-block;
-	position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  position: absolute;
   > a {
     display: block;
     position: relative;
@@ -249,74 +249,62 @@ body {
 }
 
 #footer {
-	table {
-		border-collapse: separate;
-		border-top: 1px solid #e5e5e5;
-		margin: 5px 0px;
-		padding-top: 15px;
-		width: 100%;
-		td {
-			padding: 5px 20px;
-			vertical-align: top;
-			&:first-child {
-				border-left: none;
-			}
-			&:last-child {
-				border-right: none;
-			}
-		}
-	}
-	* {
-		color: @default-text-color;
-	}
-	a {
-		&:hover {
-			color: @default-link-color;
-		}
-	}
-	.title {
-		font-size: 1.5em;
-		margin: 0px 0px 0.75em 0px;
-	}
-	ul.list-vertical {
-		li {
-			padding: 0px;
-		}
-	}
-	.contact {
-		p {
-			margin: 0;
-		}
-	}
-  @media (max-width: 640px) {
-    .categories, .manufacturers, .contact {
-      display: none;
+  .row {
+    border-top: 1px solid #e5e5e5;
+    margin: 5px 0px;
+    padding-top: 15px;
+    [class*="col-"] {
+      padding: 5px 20px;
+      &:first-child {
+        border-left: none;
+      }
+      &:last-child {
+        border-right: none;
+      }
+    }
+    > * {
+      flex-grow: 1;
+    }
+  }
+  * {
+    color: @default-text-color;
+  }
+  a:hover {
+    color: @default-link-color;
+  }
+  .title {
+    font-size: 1.5em;
+    margin: 0px 0px 0.75em 0px;
+  }
+  ul.list-vertical {
+    li {
+      padding: 0px;
     }
   }
 }
 
 #copyright {
-	p {
-		color: @default-text-color;
-		font-size: 0.9em;
-		padding: 0px 20px;
-		text-align: center;
-	}
+  .notice {
+    color: @default-text-color;
+    font-size: 0.9em;
+    padding: 0px 20px;
+    text-align: center;
+  }
 }
 
 #cookies-acceptance {
-	border: 1px @default-border-color solid;
-	margin-bottom: 20px;
-	padding: 5px 0px;
-	text-align: center;
+  border: 1px @default-border-color solid;
+  margin-bottom: 20px;
+  padding: 5px 0px;
+  text-align: center;
 }
 
 #scroll-up {
-	bottom: 30px;
-	display: none;
-	height: 48px;
-	opacity: 0.3;
-	position: fixed;
-	right: 30px;
-	width: 48px;
+  bottom: 30px;
+  display: none;
+  height: 48px;
+  opacity: 0.3;
+  position: fixed;
+  right: 30px;
+  width: 48px;
 }
