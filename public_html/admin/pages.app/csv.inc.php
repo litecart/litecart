@@ -12,7 +12,7 @@
 
       $pages_query = database::query("select id from ". DB_TABLE_PAGES ." order by id;");
       while ($page = database::fetch($pages_query)) {
-        $page = catalog::page($page['id']);
+        $page = reference::page($page['id']);
 
         $csv[] = array(
           'id' => $page->id,
