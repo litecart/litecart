@@ -119,6 +119,13 @@
 
       <div class="row">
         <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <?php echo functions::form_draw_google_taxonomy_categories_list('google_taxonomy_id', true); ?>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
           <div class="checkbox">
             <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label><br/>
