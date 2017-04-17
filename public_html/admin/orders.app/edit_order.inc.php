@@ -312,7 +312,7 @@
                 <div class="form-group col-md">
                   <div class="input-group">
                     <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
-                    <div class="selected-account form-control disabled"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#" data-toggle="lightbox" data-target="#modal-customer-picker" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+                    <div class="selected-account form-control disabled"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#modal-customer-picker" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                     <span class="input-group-btn">
                       <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
                     </span>
