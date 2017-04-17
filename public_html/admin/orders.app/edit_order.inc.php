@@ -139,12 +139,16 @@
 ?>
 <style>
 #comments {
-  height: 860px;
   overflow-y: auto;
   border: 1px #ddd dashed;
   padding: 2em;
   background: #fcfcfc;
   border-radius: 0.5em;
+}
+@media screen and (min-width: 1200px) {
+  #comments {
+    height: 900px;
+  }
 }
 #comments .comment {
   position: relative;
