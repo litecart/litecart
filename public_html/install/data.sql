@@ -364,7 +364,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, 'en', 'Flying Cart', 'slides/1-flying-cart.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+(1, 1, '', 'Flying Cart', 'slides/1-flying-cart.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
 (1, 1, 'en', '', '');
