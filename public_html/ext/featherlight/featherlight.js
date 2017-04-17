@@ -221,7 +221,7 @@
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
 		open: function(event){
-			if (event.ctrlKey || event.shiftKey) return false;
+			if (event && (event.ctrlKey || event.shiftKey)) return false;
 
 			var self = this;
 			self.$instance.hide().appendTo(self.root);
