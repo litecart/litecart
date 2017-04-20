@@ -117,10 +117,10 @@ $(document).ready(function(){
     return false;
   });
 
-  $('.data-table tbody tr').click(function(event) {
-    if ($(event.target).is('input:checkbox')) return;
-    if ($(event.target).is('a, a *')) return;
-    if ($(event.target).is('th')) return;
+  $('.data-table tbody tr').click(function(e) {
+    if ($(e.target).is(':input')) return;
+    if ($(e.target).is('a, a *')) return;
+    if ($(e.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 
