@@ -199,6 +199,19 @@
     }
   }
 
+// Collect all languages
+  $languages_query = database::query(
+    "select * from ". DB_TABLE_LANGUAGES ."
+    where status
+    order by priority, name;"
+  );
+
+  $all_languages = array();
+  while ($row = database::fetch($languages_query)) {
+    $all_languages[] = $row['code'];
+  }
+
+// Update slides
   $slides_query = database::query(
     "select * from ". DB_TABLE_SLIDES .";"
   );
@@ -208,7 +221,7 @@
     if (!empty($slide['language_code'])) {
       $languages = array($slide['language_code']);
     } else {
-      $languages = array_keys(language::$languages);
+      $languages = $all_languages;
     }
 
     foreach ($languages as $language_code) {
