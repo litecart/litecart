@@ -28,7 +28,7 @@
       }
 
       if (!empty($parsed_link['query']['category_id']) && !empty($product->default_category_id)) {
-        $category_trail = functions::catalog_category_trail($parsed_link['query']['category_id']);
+        $category_trail = functions::catalog_category_trail($parsed_link['query']['category_id'], $language_code);
 
         if (!empty($category_trail)) {
           foreach ($category_trail as $category_id => $category_name) $parsed_link['path'] .= functions::general_path_friendly($category_name, $language_code) .'-c-'. $category_id .'/';
