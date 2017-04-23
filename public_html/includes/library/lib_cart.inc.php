@@ -157,7 +157,7 @@
         'taric' =>  $product->taric,
         'price' => (!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price,
         'extras' => 0,
-        'tax' => tax::get_tax(!empty($product->campaign && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
+        'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
         'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
         'quantity_unit' => array(
