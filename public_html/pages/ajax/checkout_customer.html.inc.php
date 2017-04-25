@@ -74,15 +74,15 @@
       if (!empty(customer::$data['different_shipping_address'])) {
         if (isset($_POST['shipping_address'][$field])) {
           customer::$data['shipping_address'][$field] = $_POST['shipping_address'][$field];
-	    } else {
-	      customer::$data['shipping_address'][$field] = null;
-	    }
+        } else {
+          customer::$data['shipping_address'][$field] = null;
+        }
       } else {
         if (isset($_POST[$field])) {
-	      customer::$data['shipping_address'][$field] = $_POST[$field];
-	    } else {
-	      customer::$data['shipping_address'][$field] = null;
-	    }
+          customer::$data['shipping_address'][$field] = $_POST[$field];
+        } else {
+          customer::$data['shipping_address'][$field] = null;
+        }
       }
     }
 

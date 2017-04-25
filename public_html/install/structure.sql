@@ -155,7 +155,7 @@ CREATE TABLE `lc_delivery_statuses_info` (
   `name` VARCHAR(64) NOT NULL,
   `description` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`id`),
- UNIQUE INDEX `delivery_status` (`delivery_status_id`, `language_code`),
+  UNIQUE INDEX `delivery_status` (`delivery_status_id`, `language_code`),
   KEY `delivery_status_id` (`delivery_status_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};

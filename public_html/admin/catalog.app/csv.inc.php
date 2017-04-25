@@ -14,6 +14,7 @@
 
         $csv[] = array(
           'id' => $category->id,
+          'status' => $category->status,
           'parent_id' => $category->parent_id,
           'code' => $category->code,
           'name' => $category->name,
@@ -24,7 +25,6 @@
           'head_title' => $category->head_title,
           'h1_title' => $category->h1_title,
           'image' => $category->image,
-          'status' => $category->status,
           'priority' => $category->priority,
           'language_code' => $_POST['language_code'],
         );
@@ -175,9 +175,9 @@
 
         $csv[] = array(
           'id' => $product->id,
+          'status' => $product->status,
           'categories' => implode(',', array_keys($product->categories)),
           'manufacturer_id' => $product->manufacturer_id,
-          'status' => $product->status,
           'code' => $product->code,
           'sku' => $product->sku,
           'gtin' => $product->gtin,
@@ -341,9 +341,9 @@
         }
 
         $fields = array(
+          'status',
           'categories',
           'manufacturer_id',
-          'status',
           'code',
           'sku',
           'gtin',

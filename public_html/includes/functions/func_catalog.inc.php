@@ -95,7 +95,7 @@
         $sql_outer_sort[] = "name asc";
         break;
       case 'price':
-        $sql_outer_sort[] = "if(pc.campaign_price, 0, 1), final_price asc";
+        $sql_outer_sort[] = "final_price asc";
         break;
       case 'date':
         $sql_inner_sort[] = "p.date_created desc";

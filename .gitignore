@@ -21,6 +21,7 @@ public_html/vqmod/xml/*
 *.009
 *.old
 *.ignore
+*.cmd
 
 ######################
 # OS generated files #
