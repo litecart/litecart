@@ -1,7 +1,7 @@
 <?php
   if (settings::get('box_campaign_products_num_items') == 0) return;
 
-  functions::draw_lightbox('a.lightbox[data-lightbox-group="product-listing"]');
+  functions::draw_lightbox();
 
   $box_campaign_products_cache_id = cache::cache_id('box_campaign_products', array('language', 'currency', 'prices'));
   if (cache::capture($box_campaign_products_cache_id, 'file')) {
