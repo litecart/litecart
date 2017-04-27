@@ -16,16 +16,25 @@
 
         if (!method_exists($module, 'actions')) continue;
 
-        $actions = $module->actions();
+        $result = $module->actions();
 
-        if (empty($actions)) continue;
+        if (empty($result)) continue;
 
-        $actions[$module->id] = $actions;
-        $actions[$module->id]['id'] = $module->id;
-        $actions[$module->id]['actions'] = array();
+        $actions[$module->id] = array(
 
-        foreach ($actions as $option) {
-          $actions[$module->id]['actions'][$option['id']] = $option;
+          'id' => $result['id'],
+          'name' => $result['name'],
+          'description' => @$result['description'],
+          'actions' => array(),
+        );
+
+        foreach ($result['actions'] as $action) {
+          $actions[$module->id]['actions'][$action['id']] = array(
+            'id' => $action['id'],
+            'title' => $action['title'],
+            'description' => @$action['description'],
+            'function' => $action['function'],
+          );
         }
       }
 

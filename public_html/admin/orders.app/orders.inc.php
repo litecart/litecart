@@ -4,17 +4,18 @@
 
   if (!empty($_POST['order_action'])) {
     if (!empty($_POST['orders'])) {
-      list($module_id, $option_id) = explode(':', $_POST['order_action']);
+      list($module_id, $action_id) = explode(':', $_POST['order_action']);
+
       $order_action = new mod_order();
 
       $actions = $order_action->actions();
 
-      if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['options'][$option_id]['function'])) {
+      if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
         notices::$data['errors'][] = language::translate('error_method_doesnt_exist', 'The method doesn\'t exist');
-      return;
+        return;
       }
 
-      echo call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['options'][$option_id]['function']), $_POST['orders']);
+      echo call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
       return;
 
     } else {
@@ -154,14 +155,19 @@
 <?php
   $order_action = new mod_order();
 
-  if ($actions = $order_action->actions()) {
-    foreach (array_keys($actions) as $module_id) {
-      echo '<li><fieldset>' . PHP_EOL
-         . '  <legend>'. $actions[$module_id]['name'] .'</legend>' . PHP_EOL;
-      foreach (array_keys($actions[$module_id]['options']) as $option_id) {
-        echo '<button name="order_action" value="'. $module_id.':'.$option_id .'" type="submit" formtarget="'. (!empty($actions[$module_id]['options'][$option_id]['target']) ? $actions[$module_id]['options'][$option_id]['target'] : '_self') .'">'. $actions[$module_id]['options'][$option_id]['title'] .'</button>' . PHP_EOL;
+  if ($modules = $order_action->actions()) {
+    foreach ($modules as $module) {
+      echo '<li>' . PHP_EOL
+         . '  <fieldset title="'. htmlspecialchars($module['description']) .'">' . PHP_EOL
+
+         . '    <legend>'. $module['name'] .'</legend>' . PHP_EOL
+         . '    <div class="btn-group">' . PHP_EOL;
+      foreach ($module['actions'] as $action) {
+        echo '      ' . functions::form_draw_button('order_action', array($module['id'].':'.$action['id'], $action['title']), 'submit', 'formtarget="'. (!empty($action['target']) ? $action['target'] : '_self') .'"') . PHP_EOL;
       }
-      echo '</fieldset></li>' . PHP_EOL;
+      echo '    </div>' . PHP_EOL
+         . '  </fieldset>' . PHP_EOL
+         . '</li>' . PHP_EOL;
     }
   }
 ?>
