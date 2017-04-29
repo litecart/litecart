@@ -31,7 +31,9 @@
 
     public static function after_capture() {
 
-      if (!empty(array_filter(notices::$data))) {
+      notices::$data = array_filter(notices::$data);
+
+      if (!empty(notices::$data)) {
         $notices = new view();
         $notices->snippets['notices'] = notices::$data;
         document::$snippets['notices'] = $notices->stitch('views/notices');
