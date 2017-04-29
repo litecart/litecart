@@ -159,7 +159,6 @@
     foreach ($modules as $module) {
       echo '<li>' . PHP_EOL
          . '  <fieldset title="'. htmlspecialchars($module['description']) .'">' . PHP_EOL
-
          . '    <legend>'. $module['name'] .'</legend>' . PHP_EOL
          . '    <div class="btn-group">' . PHP_EOL;
       foreach ($module['actions'] as $action) {
