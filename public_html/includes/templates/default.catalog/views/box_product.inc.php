@@ -150,9 +150,8 @@
   </div>
 
   <?php if ($attributes) { ?>
-  <div class="attributes row">
-      <div class="col-xs-whole col-sm-halfs col-md-thirds">
-        <table class="table table-striped">
+  <div class="attributes">
+    <table class="table table-striped">
 <?php
   for ($i=0; $i<count($attributes); $i++) {
     if (strpos($attributes[$i], ':') !== false) {
@@ -171,9 +170,6 @@
     } else {
       echo ' </tbody>' . PHP_EOL
          . '</table>' . PHP_EOL
-         . '</div>' . PHP_EOL
-         . PHP_EOL
-         . '<div class="col-xs-whole col-sm-halfs col-md-thirds">' . PHP_EOL
          . '<table class="table table-striped">' . PHP_EOL;
     }
   }
