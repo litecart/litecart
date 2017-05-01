@@ -89,40 +89,15 @@
     font-size: 1.75em;
     margin: @default-gutter-size 0;
   }
-  .tabs {
-    clear: left;
-    white-space: normal;
-  }
-  #tab-details {
+  .attributes {
+    columns: auto 2;
     table {
-      max-width: 100%;
-      td {
-        padding: 5px 10px;
-      }
-      th {
-        padding: 5px 10px;
-      }
-      tr {
-        td {
-          &:first-child {
-            white-space: nowrap;
-            width: 100px;
-          }
-        }
-        th {
-          font-weight: bold;
-          text-align: left;
-        }
-      }
-      tr.odd {
-        background-color: #fcfcfc;
-      }
-      tr.even {
-        background-color: #f5f5f5;
+      -webkit-column-break-inside: avoid;
+      -moz-column-break-inside: avoid;
+      break-inside: avoid-column;
+      td:first-child {
+        width: 50%;
       }
     }
-  }
-  .information {
-    display: inline-block;
   }
 }
