@@ -21,7 +21,6 @@
         if (empty($result)) continue;
 
         $actions[$module->id] = array(
-
           'id' => $result['id'],
           'name' => $result['name'],
           'description' => @$result['description'],
