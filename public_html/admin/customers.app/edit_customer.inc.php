@@ -247,7 +247,7 @@
         $.each(data, function(key, value) {
           if (console) console.log('  ' + key +": "+ value);
           if ($('form[name="customer_form"] *[name="'+key+'"]').length && $('form[name="customer_form"] *[name="'+key+'"]').val() == '') {
-            $("form[name="customer_form"] *[name='"+key+"']").val(value);
+            $('form[name="customer_form"] *[name="'+key+'"]').val(value);
           }
         });
       },
