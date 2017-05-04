@@ -166,7 +166,7 @@
 
         <div class="form-group">
           <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-          <?php echo functions::form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1')), true, false); ?>
+          <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8', false); ?>
         </div>
 
       <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
@@ -199,7 +199,7 @@
 
         <div class="form-group">
           <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-          <?php echo functions::form_draw_select_field('charset', array(array('UTF-8'), array('ISO-8859-1')), true, false); ?>
+          <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8', false); ?>
         </div>
 
         <div class="form-group">

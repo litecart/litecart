@@ -690,6 +690,58 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
+  function form_draw_encodings_list($name, $input=true, $multiple=false, $parameters='') {
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    $encodings = array(
+      'BIG-5',
+      'CP50220',
+      'CP50221',
+      'CP50222',
+      'CP51932',
+      'CP850',
+      'CP932',
+      'EUC-CN',
+      'EUC-JP',
+      'EUC-KR',
+      'EUC-TW',
+      'GB18030',
+      'ISO-8859-1',
+      'ISO-8859-2',
+      'ISO-8859-3',
+      'ISO-8859-4',
+      'ISO-8859-5',
+      'ISO-8859-6',
+      'ISO-8859-7',
+      'ISO-8859-8',
+      'ISO-8859-9',
+      'ISO-8859-10',
+      'ISO-8859-13',
+      'ISO-8859-14',
+      'ISO-8859-15',
+      'ISO-8859-16',
+      'KOI8-R',
+      'KOI8-U',
+      'SJIS',
+      'UTF-8',
+      'UTF-16',
+      'Windows-1251',
+      'Windows-1252',
+      'Windows-1254',
+    );
+
+    foreach ($encodings as $encoding) {
+      $options[] = array($encoding);
+    }
+
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+
   function form_draw_geo_zones_list($name, $input=true, $multiple=false, $parameters='') {
 
     $geo_zones_query = database::query(
@@ -986,7 +1038,6 @@
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
-
 
   function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
 
