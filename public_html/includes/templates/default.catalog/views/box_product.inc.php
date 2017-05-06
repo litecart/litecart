@@ -174,8 +174,7 @@
     }
   }
 ?>
-      </table>
-    </div>
+    </table>
   </div>
   <?php } ?>
 </div>
