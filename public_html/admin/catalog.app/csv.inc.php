@@ -324,7 +324,6 @@
           continue;
         }
 
-      // Append manufacturer id
         if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
           $manufacturers_query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS ."
@@ -338,6 +337,22 @@
             $manufacturer->data['name'] = $row['manufacturer_name'];
             $manufacturer->save();
             $row['manufacturer_id'] = $manufacturer->data['id'];
+          }
+        }
+
+        if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
+          $suppliers_query = database::query(
+            "select * from ". DB_TABLE_SUPPLIERS ."
+            where name = '". database::input($row['supplier_name']) ."'
+            limit 1;"
+          );
+          if ($supplier = database::fetch($suppliers_query)) {
+            $row['supplier_id'] = $supplier['id'];
+          } else {
+            $supplier = new ctrl_supplier();
+            $supplier->data['name'] = $row['supplier_name'];
+            $supplier->save();
+            $row['supplier_id'] = $supplier->data['id'];
           }
         }
 
