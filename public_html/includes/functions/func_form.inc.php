@@ -654,15 +654,13 @@
 
     $options = array();
 
-    if (!empty($input)) {
-      $customers_query = database::query(
-        "select id, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
-        order by email;"
-      );
+    $customers_query = database::query(
+      "select id, email, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
+      order by email;"
+    );
 
-      while($customer = database::fetch($customers_query)) {
-        $options[] = array($customer['email'], $customer['id']);
-      }
+    while($customer = database::fetch($customers_query)) {
+      $options[] = array($customer['email'], $customer['id']);
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
