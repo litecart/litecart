@@ -280,7 +280,6 @@ INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`,
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('store_info', 'Store Info', 'Store information', 10),
 ('defaults', 'Defaults', 'Store default settings', 20),
-('general', 'General', 'Store default settings', 30),
 ('listings', 'Listings', 'Settings for the catalog listing', 40),
 ('images', 'Images', 'Settings for graphical elements', 50),
 ('checkout', 'Checkout', 'Checkout settings', 60),
