@@ -234,14 +234,11 @@
       customer::$data
     );
     if (!empty($cheapest_shipping)) {
-      $_page->snippets['cheapest_shipping'] = null;
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
       if (empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
         $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
         $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-        $_page->snippets['cheapest_shipping'] = strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'), array(
-          '%price' => currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)),
-        ));
+        $_page->snippets['cheapest_shipping_fee'] = tax::get_price($shipping_cost, $shipping_tax_class_id);
       }
     }
   }
