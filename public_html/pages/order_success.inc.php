@@ -14,8 +14,6 @@
 
   $order_module = new mod_order();
 
-  cart::reset();
-
   $_page = new view();
 
   $_page->snippets = array(
@@ -25,5 +23,3 @@
   );
 
   echo $_page->stitch('pages/order_success');
-
-  //$order->reset();
