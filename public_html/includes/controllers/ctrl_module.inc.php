@@ -46,6 +46,8 @@
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
+
+      $this->data['settings'] = array();
     }
 
     public function load($module_id, $type) {
@@ -99,6 +101,14 @@
           $this->_module->update();
         }
       }
+
+      if (isset($this->data['settings']['status']) && in_array(strtolower($this->data['settings']['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+        $this->data['status'] = 1;
+      } else {
+        $this->data['status'] = 0;
+      }
+
+      $this->data['priority'] = (int)$this->data['settings']['priority'];
 
       database::query(
         "update ". DB_TABLE_MODULES ."
