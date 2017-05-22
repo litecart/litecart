@@ -36,6 +36,7 @@
         'tax_id_format',
         'address_format',
         'postcode_format',
+        'language_code',
         'currency_code',
         'phone_code',
         'zones',
@@ -72,34 +73,29 @@
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
       <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
     </div>
+  </div>
 
+  <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('iso_code_2', true, 'required="required" pattern="[A-Z]{2}"'); ?>
     </div>
-  </div>
 
-  <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('iso_code_3', true, 'required="required" pattern="[A-Z]{3}"'); ?>
     </div>
-
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_name', 'Name'); ?></label>
-      <?php echo functions::form_draw_text_field('name', true); ?>
-    </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_domestic_name', 'Domestic Name'); ?></label>
-      <?php echo functions::form_draw_text_field('domestic_name', true); ?>
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+      <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('tax_id_format', true); ?>
+      <label><?php echo language::translate('title_domestic_name', 'Domestic Name'); ?></label>
+      <?php echo functions::form_draw_text_field('domestic_name', true); ?>
     </div>
   </div>
 
@@ -123,9 +119,21 @@
   </div>
 
   <div class="row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <?php echo functions::form_draw_text_field('tax_id_format', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
       <label><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('postcode_format', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label><?php echo language::translate('title_language_code', 'Language Code'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <?php echo functions::form_draw_text_field('language_code', true); ?>
     </div>
 
     <div class="form-group col-md-4">
@@ -184,7 +192,7 @@
   var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
   $('form[name="country_form"] .add').click(function(event) {
     event.preventDefault();
-    if ($("select[name='country[code]']").find("option:selected").val() == "") return;
+    if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
     new_zone_i++;
     var output = '    <tr>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'

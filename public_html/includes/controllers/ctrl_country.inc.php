@@ -75,6 +75,7 @@
           tax_id_format = '". database::input($this->data['tax_id_format']) ."',
           address_format = '". database::input($this->data['address_format']) ."',
           postcode_format = '". database::input($this->data['postcode_format']) ."',
+          language_code = '". database::input($this->data['language_code']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
           phone_code = '". database::input($this->data['phone_code']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
