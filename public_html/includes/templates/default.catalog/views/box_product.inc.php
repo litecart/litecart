@@ -35,14 +35,14 @@
 
       <?php if ($description) { ?>
       <div class="description">
-        <p><?php echo $description; ?></p>
+        <?php echo $description; ?>
       </div>
       <?php } ?>
 
       <?php if ($manufacturer) { ?>
       <div class="manufacturer" style="font-size: 1.5em;">
         <?php if ($manufacturer['image']) { ?>
-        <p><a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><img src="<?php echo functions::image_thumbnail($manufacturer['image']['thumbnail'], 0, 48); ?>" srcset="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" itemprop="image" /></a></p>
+        <p><a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><img src="<?php echo functions::image_thumbnail($manufacturer['image']['thumbnail'], 0, 48); ?>" srcset="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" /></a></p>
         <?php } else { ?>
         <p><a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><?php echo $manufacturer['name']; ?></a></p>
         <?php } ?>
