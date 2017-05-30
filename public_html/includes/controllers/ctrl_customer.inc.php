@@ -149,6 +149,12 @@
     public function delete() {
 
       database::query(
+        "update ". DB_TABLE_ORDERS ."
+        set customer_id = 0
+        where id = '". (int)$this->data['id'] ."';"
+      );
+
+      database::query(
         "delete from ". DB_TABLE_CUSTOMERS ."
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
