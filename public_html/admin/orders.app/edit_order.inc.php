@@ -578,7 +578,7 @@
 ?>
               <tr class="item">
                 <td>
-                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?></div>
+                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('product', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?></div>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
