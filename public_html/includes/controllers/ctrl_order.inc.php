@@ -205,7 +205,7 @@
         if (!empty($this->data['id'])) {
           $this->data['comments'][] = array(
             'author' => 'system',
-            'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $current_order_status['name']),
+            'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => $current_order_status['name'])),
             'hidden' => 1,
           );
         }
@@ -756,7 +756,7 @@
       $message = strtr($order_status->email_message, $aliases);
 
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] '. $order_status->name;
-      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_s', 'Order status changed to '), array('%s' => $order_status->name));
+      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => $order_status->name));
 
       functions::email_send(
         null,
