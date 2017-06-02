@@ -31,11 +31,11 @@
 </div>
 
 <script>
-  $("form[name='filter_form'] input[name='manufacturers[]']").click(function(){
-    $(this).closest("form").submit();
+  $('form[name="filter_form"] input[name="manufacturers[]"]').click(function(){
+    $(this).closest('form').submit();
   });
 
-  $("form[name='filter_form'] input[name='product_groups[]']").click(function(){
-    $(this).closest("form").submit();
+  $('form[name="filter_form"] input[name="product_groups[]"]').click(function(){
+    $(this).closest('form').submit();
   });
 </script>
