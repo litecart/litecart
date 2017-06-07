@@ -609,10 +609,10 @@
 ?>
                 </td>
                 <td><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
-                <td class="text-center"><div class="input-group"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, 2, 0, null, 'style="width: 60%"'); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: 40%"'); ?></div></td>
-                <td class="text-center"><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
-                <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
-                <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
+                <td><div class="input-group"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, 2, 0, null, 'style="width: 60%"'); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: 40%"'); ?></div></td>
+                <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
+                <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
+                <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
                 <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
               </tr>
             </tbody>
