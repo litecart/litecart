@@ -7,3 +7,5 @@ DELETE FROM `lc_settings_groups` WHERE `key` = 'general';
 UPDATE `lc_settings` SET setting_group_key = 'store_info' WHERE setting_group_key = 'general';
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` IN ('job_modules', 'customer_modules', 'shipping_modules', 'payment_modules', 'order_modules', 'order_total_modules');
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET title = 'Order Copy Recipients' WHERE `key` = 'email_order_copy';
