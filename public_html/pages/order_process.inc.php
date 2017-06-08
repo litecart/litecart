@@ -135,8 +135,9 @@
 
 // Send e-mails
   $order->email_order_copy($order->data['customer']['email']);
+
   foreach (explode(';', settings::get('email_order_copy')) as $email) {
-    $order->email_order_copy($email);
+    $order->email_order_copy($email, settings::get('store_language_code'));
   }
 
 // Run after process operations
