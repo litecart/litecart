@@ -216,7 +216,6 @@
         }
       }
 
-      session::$data['customer']['different_shipping_address'] = false;
       session::$data['customer']['display_prices_including_tax'] = null;
     }
 
@@ -282,6 +281,8 @@
 
     public static function load($customer_id) {
 
+      self::reset();
+
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
         where id = '". (int)$customer_id ."'
@@ -289,29 +290,17 @@
       );
       $customer = database::fetch($customer_query);
 
-      session::$data['customer'] = $customer;
-
-      $key_map = array(
-        'shipping_company' => 'company',
-        'shipping_firstname' => 'firstname',
-        'shipping_lastname' => 'lastname',
-        'shipping_address1' => 'address1',
-        'shipping_address2' => 'address2',
-        'shipping_postcode' => 'postcode',
-        'shipping_city' => 'city',
-        'shipping_country_code' => 'country_code',
-        'shipping_zone_code' => 'zone_code',
-      );
+      foreach ($customer as $field => $value) {
+        if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
+          session::$data['customer']['shipping_address'][$matches[1]] = $value;
+        } else {
+          session::$data['customer'][$field] = $value;
+        }
+      }
 
       if (!empty(self::$data['different_shipping_address'])) {
-        foreach ($key_map as $skey => $tkey){
-        self::$data['shipping_address'][$tkey] = self::$data[$skey];
-        unset(self::$data[$skey]);
-        }
-      } else {
-        foreach ($key_map as $skey => $tkey){
-          self::$data['shipping_address'][$tkey] = self::$data[$tkey];
-          unset(self::$data[$skey]);
+        foreach (array_keys(self::$data['shipping_address']) as $key) {
+          self::$data['shipping_address'][$key] = self::$data[$key];
         }
       }
     }

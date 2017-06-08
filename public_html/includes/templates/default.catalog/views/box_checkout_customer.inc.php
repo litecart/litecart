@@ -191,7 +191,9 @@
   </div>
   <?php } ?>
 
-  <p><button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button></p>
+  <div>
+    <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
+  </div>
 
 </div>
 
