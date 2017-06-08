@@ -110,8 +110,7 @@
       if (!empty($_POST['email_order_copy'])) {
         $order->email_order_copy($order->data['customer']['email']);
         foreach (explode(';', settings::get('email_order_copy')) as $email) {
-          if (!$email) continue;
-          $order->email_order_copy($email);
+          $order->email_order_copy($email, settings::get('store_language_code'));
         }
       }
 
