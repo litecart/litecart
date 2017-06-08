@@ -150,6 +150,8 @@
 
     private function _decode_settings($data) {
 
+      if (empty($data)) return;
+
       $data = json_decode($data, true);
 
       mb_convert_variables(language::$selected['charset'], 'UTF-8', $data);
