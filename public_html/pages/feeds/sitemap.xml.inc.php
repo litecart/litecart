@@ -8,18 +8,17 @@
   $hreflangs = '';
   if (settings::get('seo_links_language_prefix')) {
     foreach (array_keys(language::$languages) as $language_code) {
-      if ($language_code == settings::get('store_language_code')) continue;
       $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('', array(), false, array(), $language_code) .'" />' . PHP_EOL;
     }
   }
 
   $output .= '  <url>' . PHP_EOL
-           . '    <loc>'. document::ilink('', array(), false, array(), settings::get('store_language_code')) .'</loc>' . PHP_EOL
-           . $hreflangs
-           . '    <lastmod>'. date('Y-m-d') .'</lastmod>' . PHP_EOL
-           . '    <changefreq>daily</changefreq>' . PHP_EOL
-           . '    <priority>1.0</priority>' . PHP_EOL
-           . '  </url>' . PHP_EOL;
+             . '    <loc>'. document::ilink('', array(), false, array()) .'</loc>' . PHP_EOL
+             . $hreflangs
+             . '    <lastmod>'. date('Y-m-d') .'</lastmod>' . PHP_EOL
+             . '    <changefreq>daily</changefreq>' . PHP_EOL
+             . '    <priority>1.0</priority>' . PHP_EOL
+             . '  </url>' . PHP_EOL;
 
   function custom_output_categories($parent_id=0, &$output) {
     $categories_query = functions::catalog_categories_query($parent_id);
@@ -29,7 +28,6 @@
       $hreflangs = '';
       if (settings::get('seo_links_language_prefix')) {
         foreach (array_keys(language::$languages) as $language_code) {
-          if ($language_code == settings::get('store_language_code')) continue;
           $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('category', array('category_id' => $category['id']), false, array(), $language_code) .'" />' . PHP_EOL;
         }
       }
@@ -58,7 +56,6 @@
     $hreflangs = '';
     if (settings::get('seo_links_language_prefix')) {
       foreach (array_keys(language::$languages) as $language_code) {
-        if ($language_code == settings::get('store_language_code')) continue;
         $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('product', array('product_id' => $product['id']), false, array(), $language_code) .'" />' . PHP_EOL;
       }
     }
