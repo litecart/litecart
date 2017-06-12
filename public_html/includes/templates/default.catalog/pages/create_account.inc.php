@@ -124,7 +124,7 @@
 </main>
 
 <script>
-  $('#box-create-account').on('input propertyChange', ':input', function() {
+  $('#box-create-account').on('change', ':input', function() {
     if ($(this).val() == '') return;
     $('body').css('cursor', 'wait');
     $.ajax({
