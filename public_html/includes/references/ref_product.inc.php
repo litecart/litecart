@@ -49,7 +49,7 @@
             $query = database::query(
               "select oi.product_id, sum(oi.quantity) as total_quantity from ". DB_TABLE_ORDERS_ITEMS ." oi
               left join ". DB_TABLE_PRODUCTS ." p on (p.id = oi.product_id)
-              where p.staus
+              where p.status
               and (oi.product_id != 0 and oi.product_id != ". (int)$this->_id .")
               and order_id in (
                 select distinct order_id as id from ". DB_TABLE_ORDERS_ITEMS ."
