@@ -691,10 +691,10 @@
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%order_items' => null,
         '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
-        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']), 'media' => 'print'), null, null, $language_code),
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']), 'media' => 'print'), false, array(), $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
         '%store_name' => settings::get('store_name'),
-        '%store_url' => document::ilink('', null, null, null, $language_code),
+        '%store_url' => document::ilink('', array(), false, array(), $language_code),
       );
 
       foreach($this->data['items'] as $item) {
@@ -749,7 +749,7 @@
         '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])), false, array(), $this->data['language_code']),
         '%order_status' => $order_status->name,
         '%store_name' => settings::get('store_name'),
-        '%store_url' => document::ilink('', null, null, null, $this->data['language_code']),
+        '%store_url' => document::ilink('', array(), false, array(), $this->data['language_code']),
       );
 
       $subject = strtr($order_status->email_subject, $aliases);
