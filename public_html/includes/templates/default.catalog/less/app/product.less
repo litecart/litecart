@@ -90,7 +90,6 @@
     margin: @default-gutter-size 0;
   }
   .attributes {
-    columns: auto 2;
     table {
       -webkit-column-break-inside: avoid;
       -moz-column-break-inside: avoid;
@@ -98,6 +97,9 @@
       td:first-child {
         width: 50%;
       }
+    }
+    @media(min-width: 768px) {
+      columns: auto 2;
     }
   }
 }
