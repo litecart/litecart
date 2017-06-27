@@ -17,8 +17,10 @@
 
       if (empty($this->settings['status'])) return;
 
+      $country_code = !empty($customer['shipping_address']['country_code']) ? $customer['shipping_address']['country_code'] : $customer['country_code'];
+
       if (!empty($this->settings['geo_zone_id'])) {
-        if (functions::reference_in_geo_zone($this->settings['geo_zone_id'], $customer['country_code'], $customer['zone_code']) != true) return;
+        if (functions::reference_in_geo_zone($this->settings['geo_zone_id'], $country_code, $customer['zone_code']) != true) return;
       }
 
       $method = array(
@@ -28,7 +30,7 @@
           array(
             'id' => 'cod',
             'icon' => $this->settings['icon'],
-            'name' => reference::country(customer::$data['shipping_address']['country_code'])->name,
+            'name' => reference::country($country_code)->name,
             'description' => '',
             'fields' => '',
             'cost' => $this->settings['fee'],
