@@ -225,9 +225,9 @@
       where (
         p.id = '". database::input($_GET['query']) ."'
         or pi.name like '%". database::input($_GET['query']) ."%'
-        or p.code like '%". database::input($_GET['query']) ."%'
-        or p.sku like '%". database::input($_GET['query']) ."%'
-        or p.gtin like '%". database::input($_GET['query']) ."%'
+        or p.code regexp '^". database::input(implode('[ -]?', str_split(preg_replace('#[ -]+#', '', $_GET['query'])))) ."$'
+        or p.sku regexp '^". database::input(implode('[ -]?', str_split(preg_replace('#[ -]+#', '', $_GET['query'])))) ."$'
+        or p.gtin regexp '^". database::input(implode('[ -]?', str_split(preg_replace('#[ -]+#', '', $_GET['query'])))) ."$'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
         or m.name like '%". database::input($_GET['query']) ."%'
