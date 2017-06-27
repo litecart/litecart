@@ -7,30 +7,24 @@
 
       <?php echo functions::form_draw_form_begin('contact_form', 'post'); ?>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php echo functions::form_draw_text_field('name', true, 'required="required"'); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-            <?php echo functions::form_draw_email_field('email', true, 'required="required"'); ?>
-          </div>
+        <div class="form-group">
+          <label><?php echo language::translate('title_name', 'Name'); ?></label>
+          <?php echo functions::form_draw_text_field('name', true, 'required="required"'); ?>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md">
-            <label><?php echo language::translate('title_subject', 'Subject'); ?></label>
-            <?php echo functions::form_draw_text_field('subject', true, 'required="required"'); ?>
-          </div>
+        <div class="form-group">
+          <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+          <?php echo functions::form_draw_email_field('email', true, 'required="required"'); ?>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md">
-            <label><?php echo language::translate('title_message', 'Message'); ?></label>
-            <?php echo functions::form_draw_textarea('message', true, 'required="required" style="height: 250px;"'); ?>
-          </div>
+        <div class="form-group">
+          <label><?php echo language::translate('title_subject', 'Subject'); ?></label>
+          <?php echo functions::form_draw_text_field('subject', true, 'required="required"'); ?>
+        </div>
+
+        <div class="form-group">
+          <label><?php echo language::translate('title_message', 'Message'); ?></label>
+          <?php echo functions::form_draw_textarea('message', true, 'required="required" style="height: 250px;"'); ?>
         </div>
 
         <?php if (settings::get('captcha_enabled')) { ?>
