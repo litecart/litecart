@@ -255,13 +255,13 @@
           <div class="col-md-4">
 
             <div class="form-group">
-              <label><?php echo language::translate('title_code', 'Code'); ?></label>
-              <?php echo functions::form_draw_text_field('code', true); ?>
+              <label><?php echo language::translate('title_name', 'Name'); ?></label>
+              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
             </div>
 
             <div class="form-group">
-              <label><?php echo language::translate('title_name', 'Name'); ?></label>
-              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+              <label><?php echo language::translate('title_code', 'Code'); ?></label>
+              <?php echo functions::form_draw_text_field('code', true); ?>
             </div>
 
             <div class="form-group">
