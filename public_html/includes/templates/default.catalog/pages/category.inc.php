@@ -11,13 +11,13 @@
     <?php if ($products) { ?>
     <div class="btn-group pull-right hidden-xs">
 <?php
-    foreach ($sort_alternatives as $key => $value) {
-      if ($_GET['sort'] == $key) {
-        echo '<span class="btn btn-default active">'. $value .'</span>';
-      } else {
-        echo '<a class="btn btn-default" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a>';
-      }
+  foreach ($sort_alternatives as $key => $value) {
+    if ($_GET['sort'] == $key) {
+      echo '<span class="btn btn-default active">'. $value .'</span>';
+    } else {
+      echo '<a class="btn btn-default" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a>';
     }
+  }
 ?>
     </div>
     <?php } ?>
