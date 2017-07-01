@@ -92,7 +92,7 @@
       );
 
       if ($order = database::fetch($order_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $order), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($order, $this->data));
       } else {
         trigger_error('Could not find order in database (ID: '. (int)$order_id .')', E_USER_ERROR);
       }
@@ -137,10 +137,6 @@
           case 'shipping_option_id':
           case 'shipping_option_name':
             $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field)] = $value;
-            break;
-
-          default:
-            $this->data[$field] = $value;
             break;
         }
       }

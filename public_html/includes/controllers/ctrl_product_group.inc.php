@@ -50,7 +50,7 @@
       );
 
       if ($group = database::fetch($group_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $group), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($group, $this->data));
       } else {
         trigger_error('Could not find product group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
       }

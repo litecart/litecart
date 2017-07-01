@@ -40,17 +40,15 @@
         limit 1;"
       );
 
-      $customer = database::fetch($customer_query);
-
-      if (empty($customer)) {
+      if ($customer = database::fetch($customer_query)) {
+        $this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
+      } else {
         trigger_error('Could not find customer (ID: '. (int)$customer_id .') in database.', E_USER_ERROR);
       }
 
       foreach ($customer as $field => $value) {
         if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
           $this->data['shipping_address'][$matches[1]] = $value;
-        } else {
-          $this->data[$field] = $value;
         }
       }
 

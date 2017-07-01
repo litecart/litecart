@@ -37,7 +37,7 @@
       );
 
       if ($country = database::fetch($country_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $country), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($country, $this->data));
       } else {
         trigger_error('Could not find country (Code: '. htmlspecialchars($country_code) .') in database.', E_USER_ERROR);
       }

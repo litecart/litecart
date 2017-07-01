@@ -35,7 +35,7 @@
       );
 
       if ($tax_class = database::fetch($tax_class_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $tax_class), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($tax_class, $this->data));
       } else {
         trigger_error('Could not find tax class (ID: '. (int)$tax_class_id .') in database.', E_USER_ERROR);
       }

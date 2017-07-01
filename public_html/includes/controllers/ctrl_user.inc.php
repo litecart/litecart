@@ -35,7 +35,7 @@
       );
 
       if ($user = database::fetch($user_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $user), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($user, $this->data));
       } else {
         trigger_error('Could not find user (ID: '. (int)$user_id .') in database.', E_USER_ERROR);
       }

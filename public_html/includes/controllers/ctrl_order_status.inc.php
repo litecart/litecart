@@ -48,7 +48,7 @@
       );
 
       if ($order_status = database::fetch($order_status_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $order_status), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
       } else {
         trigger_error('Could not find order_status (ID: '. (int)$order_status_id .') in database.', E_USER_ERROR);
       }
