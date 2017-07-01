@@ -20,7 +20,7 @@
     "select p.id, p.default_category_id, pi.name from ". DB_TABLE_PRODUCTS ." p
     left join ".  DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
     where (
-      pi.id = '". database::input($_GET['query']) ."'
+      p.id = '". database::input($_GET['query']) ."'
       or p.keywords like '%". database::input($_GET['query']) ."%'
       or pi.name like '%". database::input($_GET['query']) ."%'
     )
