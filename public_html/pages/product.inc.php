@@ -270,8 +270,7 @@
 
         case 'input':
 
-          $value_ids = array_keys($group['values']);
-          $value_id = array_shift($value_ids);
+          $value = array_shift($group['values']);
 
           $price_adjust_text = '';
           $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
@@ -326,8 +325,7 @@
 
         case 'textarea':
 
-          $value_ids = array_keys($group['values']);
-          $value_id = array_shift($value_ids);
+          $value = array_shift($group['values']);
 
           $price_adjust_text = '';
           $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
