@@ -88,12 +88,12 @@
       <div class="row">
         <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-          <?php echo functions::form_draw_password_field('password', ''); ?>
+          <?php echo functions::form_draw_password_field('password', '', 'autocomplete="off"'); ?>
         </div>
 
         <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-          <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
+          <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
         </div>
       </div>
 

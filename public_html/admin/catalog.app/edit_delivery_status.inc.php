@@ -43,7 +43,7 @@
 
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
-    exit();
+    exit;
   }
 
 ?>

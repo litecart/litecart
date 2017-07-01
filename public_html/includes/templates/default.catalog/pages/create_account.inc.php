@@ -42,7 +42,7 @@
       <div class="row">
         <div class="form-group col-sm-halfs">
           <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-          <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?>
+          <?php echo functions::form_draw_text_field('address1', true); ?>
         </div>
 
         <div class="form-group col-sm-halfs">
@@ -66,12 +66,12 @@
       <div class="row">
         <div class="form-group col-sm-halfs">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
-          <?php echo functions::form_draw_countries_list('country_code', true); ?>
+          <?php echo functions::form_draw_countries_list('country_code', true, false, 'required="required"'); ?>
         </div>
 
         <div class="form-group col-sm-halfs">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-          <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?>
+          <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, false, 'required="required"'); ?>
         </div>
       </div>
 
