@@ -56,9 +56,9 @@
     ) pc on (pc.product_id = p.id)
 
     having relevance > 0
-    or p.code regexp '^". database::input(implode('[ -]?', str_split(preg_replace('#[ -]+#', '', $_GET['query'])))) ."$'
-    or p.sku regexp '^". database::input(implode('[ -]?', str_split(preg_replace('#[ -]+#', '', $_GET['query'])))) ."$'
-    or p.gtin regexp '^". database::input(implode('[ -]?', str_split(preg_replace('#[ -]+#', '', $_GET['query'])))) ."$'
+    or p.code regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+    or p.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+    or p.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
 
     order by %sql_sort;
   ";
