@@ -31,7 +31,9 @@
         $box_similar_products->snippets['products'][] = $listing_product;
       }
 
-      echo $box_similar_products->stitch('views/box_similar_products');
+      if ($box_similar_products->snippets['products']) {
+        echo $box_similar_products->stitch('views/box_similar_products');
+      }
     }
 
     cache::end_capture($box_similar_products_cache_id);

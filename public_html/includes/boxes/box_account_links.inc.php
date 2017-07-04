@@ -10,7 +10,7 @@
 
     echo $box_account->stitch('views/box_account_links');
 
-  } else {
+  } else if (empty(route::$route['page']) || route::$route['page'] != 'login') {
 
     $box_account_login = new view();
 

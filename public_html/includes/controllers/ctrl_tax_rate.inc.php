@@ -35,7 +35,7 @@
       );
 
       if ($tax_rate = database::fetch($tax_rate_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $tax_rate), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
       } else {
         trigger_error('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.', E_USER_ERROR);
       }

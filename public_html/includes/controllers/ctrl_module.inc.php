@@ -46,6 +46,8 @@
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
+
+      $this->data['settings'] = array();
     }
 
     public function load($module_id, $type) {
@@ -60,7 +62,7 @@
       );
 
       if ($module = database::fetch($modules_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $module), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($module, $this->data));
       }
 
       $this->data['module_id'] = $module_id;
@@ -99,6 +101,14 @@
           $this->_module->update();
         }
       }
+
+      if (isset($this->data['settings']['status']) && in_array(strtolower($this->data['settings']['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+        $this->data['status'] = 1;
+      } else {
+        $this->data['status'] = 0;
+      }
+
+      $this->data['priority'] = (int)$this->data['settings']['priority'];
 
       database::query(
         "update ". DB_TABLE_MODULES ."
@@ -139,6 +149,8 @@
     }
 
     private function _decode_settings($data) {
+
+      if (empty($data)) return;
 
       $data = json_decode($data, true);
 

@@ -110,8 +110,7 @@
       if (!empty($_POST['email_order_copy'])) {
         $order->email_order_copy($order->data['customer']['email']);
         foreach (explode(';', settings::get('email_order_copy')) as $email) {
-          if (!$email) continue;
-          $order->email_order_copy($email);
+          $order->email_order_copy($email, settings::get('store_language_code'));
         }
       }
 
@@ -539,7 +538,10 @@
       <ul id="comments" class="list-unstyled">
         <?php if (!empty($_POST['comments'])) foreach (array_keys($_POST['comments']) as $key) { ?>
         <li class="comment <?php echo $_POST['comments'][$key]['author']; ?><?php echo !empty($_POST['comments'][$key]['hidden']) ? ' semi-transparent' : null; ?>">
-          <?php foreach (array_keys($_POST['comments'][$key]) as $field) echo functions::form_draw_hidden_field('comments['. $key .']['. $field .']', true); ?>
+          <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
+          <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
+          <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
+          <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
           <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
           <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
           <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
@@ -578,7 +580,7 @@
 ?>
               <tr class="item">
                 <td>
-                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_HTTP_HOME . 'product.php', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?></div>
+                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('product', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?></div>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
@@ -606,10 +608,10 @@
 ?>
                 </td>
                 <td><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
-                <td class="text-center"><div class="input-group"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, 2, 0, null, 'style="width: 60%"'); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: 40%"'); ?></div></td>
-                <td class="text-center"><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
-                <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
-                <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
+                <td><div class="input-group"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, 2, 0, null, 'style="width: 60%"'); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: 40%"'); ?></div></td>
+                <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
+                <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
+                <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
                 <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
               </tr>
             </tbody>

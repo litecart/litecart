@@ -22,9 +22,10 @@
   }
   .image-wrapper {
     position: relative;
-    text-align: center;
     margin-bottom: 1em;
     overflow: hidden;
+    background: @image-whitespace-color;
+    text-align: center;
     box-shadow: 0 0px 2px rgba(0,0,0,0.15);
     img {
       max-width: 100%;
@@ -90,7 +91,6 @@
     margin: @default-gutter-size 0;
   }
   .attributes {
-    columns: auto 2;
     table {
       -webkit-column-break-inside: avoid;
       -moz-column-break-inside: avoid;
@@ -98,6 +98,9 @@
       td:first-child {
         width: 50%;
       }
+    }
+    @media(min-width: 768px) {
+      columns: auto 2;
     }
   }
 }

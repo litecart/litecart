@@ -7,6 +7,7 @@
   {snippet:breadcrumbs}
 
   <div id="box-manufacturer" class="box">
+    <?php if ($products) { ?>
     <div class="btn-group pull-right hidden-xs">
 <?php
   foreach ($sort_alternatives as $key => $value) {
@@ -18,6 +19,7 @@
   }
 ?>
     </div>
+    <?php } ?>
 
     <h1 class="title"><?php echo $title; ?></h1>
 

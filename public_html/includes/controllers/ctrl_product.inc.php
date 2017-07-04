@@ -57,7 +57,7 @@
       );
 
       if ($product = database::fetch($products_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $product), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($product, $this->data));
       } else {
         trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
       }

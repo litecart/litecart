@@ -35,7 +35,7 @@
       );
 
       if ($supplier = database::fetch($supplier_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $supplier), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
       } else {
         trigger_error('Could not find supplier (ID: '. (int)$supplier_id .') in database.', E_USER_ERROR);
       }

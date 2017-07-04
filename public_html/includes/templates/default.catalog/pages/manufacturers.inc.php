@@ -14,7 +14,7 @@
             <div class="image-wrapper">
               <img class="img-responsive" src="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
             </div>
-            <div class="caption text-center"><?php echo $manufacturer['name']; ?></div>
+            <div class="caption"><?php echo $manufacturer['name']; ?></div>
           </a>
         </div>
       </div>

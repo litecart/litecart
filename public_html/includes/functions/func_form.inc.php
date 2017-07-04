@@ -169,7 +169,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-at fa-fw') .'</span>' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-envelope-o fa-fw') .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />'
          . '</div>';
   }
@@ -654,15 +654,13 @@
 
     $options = array();
 
-    if (!empty($input)) {
-      $customers_query = database::query(
-        "select id, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
-        order by email;"
-      );
+    $customers_query = database::query(
+      "select id, email, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
+      order by email;"
+    );
 
-      while($customer = database::fetch($customers_query)) {
-        $options[] = array($customer['email'], $customer['id']);
-      }
+    while($customer = database::fetch($customers_query)) {
+      $options[] = array($customer['email'], $customer['id']);
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);

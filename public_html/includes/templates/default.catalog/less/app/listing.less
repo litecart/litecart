@@ -5,7 +5,6 @@
     padding: @default-gutter-size/2;
   }
   .category {
-    background: rgb(255, 255, 255);
     a.link {
       position: relative;
       display: block;
@@ -14,6 +13,7 @@
       padding: 5px;
       text-decoration: none;
       text-align: center;
+      background: @image-whitespace-color;
     }
     img {
       max-height: 100%;
@@ -21,12 +21,7 @@
     }
     .caption {
       background: rgba(100, 100, 100, 0.5);
-      bottom: 0;
-      left: 0;
-      right: 0;
-      display: block;
       padding: @default-gutter-size / 2;
-      position: absolute;
       text-align: center;
       * {
         color: #fff;
@@ -51,13 +46,13 @@
     padding: @default-gutter-size/2;
   }
   > .manufacturer {
-    background: rgb(255, 255, 255);
     text-align: center;
     a.link {
-      color: inherit;
       display: block;
       padding: 5px;
+      background: @image-whitespace-color;
       text-decoration: none;
+      color: inherit;
     }
     .image-wrapper {
       img {
@@ -66,11 +61,10 @@
       }
     }
     .title {
+      padding: @default-gutter-size / 2;
       background: rgba(100, 100, 100, 0.5);
       color: #ffffff;
-      display: block;
-      padding: 5px 0;
-      width: 100%;
+      text-align: center;
     }
   }
 }
@@ -90,7 +84,7 @@
       display: block;
       margin: 0;
       padding: @default-gutter-size/4;
-      background: #fff;
+      background: @image-whitespace-color;
       color: inherit;
       text-align: left;
       text-decoration: none;
@@ -103,17 +97,17 @@
       }
     }
     .sticker {
+      position: absolute;
+      top: 15px;
+      left: -35px;
+      width: 125px;
+      padding: 3px;
       color: #fff;
       font-size: 11px;
       font-weight: bold;
-      top: 15px;
-      left: -35px;
-      padding: 3px;
-      position: absolute;
       text-align: center;
       text-transform: uppercase;
       transform: rotate(-45deg);
-      width: 125px;
       &.new {
         background: rgba(251, 184, 41, 0.85);
       }
@@ -177,8 +171,8 @@
     }
     &:not(.column) {
       display: block;
-      padding: 0;
       position: relative;
+      padding: 0;
       .image-wrapper {
         display: inline-block;
         img {
@@ -187,10 +181,10 @@
         }
       }
       .info {
-        padding: @default-gutter-size/4;
-        left: 160px + @default-gutter-size;
         position: absolute;
         top: 20px;
+        left: 160px + @default-gutter-size;
+        padding: @default-gutter-size/4;
       }
       .price-wrapper {
         margin-top: @default-gutter-size;

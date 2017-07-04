@@ -3,7 +3,7 @@
 
 ## Character Encoding
 
-  Foreign characters should not be present in the source code. If such do, the script must be compatible with character set UTF-8 w/o Byte Order Mark (BOM).
+  Foreign characters should not be present in the source code. If such do, the script must be encoded with character set UTF-8 w/o Byte Order Mark (BOM).
   
   
 ## Indentation
@@ -91,6 +91,19 @@
     <img src='' />
   
 
+## Translating Variables
+
+  When translating variables in strings we use strtr to avoid cryptic coding.
+
+  Correct:
+
+    $string = strtr('Text with %b %a', array('%a' => $a, '%b' => $b));
+
+  Incorrect:
+
+    $string = sprintf('Text with %2$s %1$s', $b, $a);
+
+
 ## File Naming
   
   The filename of the files must be all lowercase characters and contain no more
@@ -157,6 +170,21 @@
   	$_POST['name'] = trim($_POST['name']);
 
 
+## PHP Arrays
+
+Inline arrays
+
+    my_function(array('this', 'that'));
+
+Defining a variable with more than a handful of values
+
+    $variable = array(
+      'this',
+      'that',
+      ...
+      'last', // <-- Make note of the ending coma
+    );
+
 ## Outputting Line Breaks
 
   Use the PHP_EOL constant for outputting line breaks in PHP.
@@ -164,7 +192,7 @@
   Correct:
 
     echo 'Hello World!' . PHP_EOL
-         . 'This is a new row';
+       . 'This is a new row';
 
   Incorrect, unless it's JavaScript
 

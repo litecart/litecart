@@ -280,54 +280,55 @@
 
   <h1>Installer</h1>
 
-  <h2>System Requirements</h2>
-  <ul>
-    <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
-      <ul>
-        <li>Settings
-          <ul>
-            <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-            <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-            <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-          </ul>
-        </li>
-        <li>Extensions
-          <ul>
-            <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mysqli <?php echo extension_loaded('mysqli') ? '<span class="ok">[OK]</span>' : (extension_loaded('mysql') ? '<span class="warning">[Warning] Obsolete extension mysql, install mysqli instead</span>' : '<span class="error">[Missing]</span>'); ?></li>
-            <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li>Apache 2 compatible HTTP daemon
-      <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
-      <ul>
-        <li>Allow, Deny</li>
-        <li>Options -Indexes</li>
-        <li>Modules
-          <ul>
-            <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li>MySQL 5.5+</li>
-  </ul>
+  <div class="row">
+    <div class="col-md-6">
+      <h2>System Requirements</h2>
 
-  <h2>Client Requirements</h2>
-  <ul>
-    <li>HTML 5</li>
-    <li>CSS 3 (IE9+)</li>
-  </ul>
+      <ul class="list-unstyled">
+        <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
+          <ul>
+            <li>Settings
+              <ul>
+                <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+                <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+                <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+              </ul>
+            </li>
+            <li>Extensions
+              <ul>
+                <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+                <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+                <li>mysqli <?php echo extension_loaded('mysqli') ? '<span class="ok">[OK]</span>' : (extension_loaded('mysql') ? '<span class="warning">[Warning] Obsolete extension mysql, install mysqli instead</span>' : '<span class="error">[Missing]</span>'); ?></li>
+                <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>Apache 2 compatible HTTP daemon
+          <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
+          <ul>
+            <li>Allow, Deny</li>
+            <li>Options -Indexes</li>
+            <li>Modules
+              <ul>
+                <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+                <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+                <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+                <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+                <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>MySQL 5.5+</li>
+      </ul>
+    </div>
 
-  <h2>Writables</h2>
-    <ul>
+    <div class="col-md-6">
+
+      <h2>Writables</h2>
+
+      <ul class="list-unstyled">
 <?php
   $paths = array(
     'admin/.htaccess',
@@ -345,113 +346,138 @@
   );
   foreach($paths as $path) {
     if (file_exists($path) && is_writable('../' . $path)) {
-      echo '      <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
-      echo '      <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '      <li>~/'. $path .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. $path .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
   }
 ?>
-  </ul>
+      </ul>
+    </div>
+  </div>
 
   <h2>Installation Parameters</h2>
 
-<?php
-  if (file_exists('../includes/config.inc.php')) {
-    echo '<p style="color: #f00; font-weight: bold;">Attention: An existing installation has been detected. If you continue the existing installation will be overwritten. <a href="upgrade.php">Upgraders click here to for the upgrade tool.</a></p>';
-  }
-?>
+  <?php if (file_exists('../includes/config.inc.php')) { ?>
+  <p class="alert alert-danger">
+    Attention: An existing installation has been detected. The existing installation <strong>WILL BE DELETED</strong> if you continue! <a href="upgrade.php">Upgraders click here to for the upgrade tool</a>.
+  </p>
+  <?php } ?>
 
   <form name="installation_form" method="post" action="install.php">
+
+    <input class="form-control" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+
     <h3>File System</h3>
-    <table>
-      <tr>
-        <td><strong>Installation Path</strong><br />
-          <?php echo $document_root; ?></td>
-      </tr>
-    </table>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Installation Path</label>
+        <div class="form-control"><?php echo $document_root; ?></div>
+      </div>
+    </div>
+
     <h3>MySQL</h3>
-    <table>
-      <tr>
-        <td><strong>Type</strong><br />
-          <select name="db_type" required="required">
-            <option value="mysql">MySQL</option>
-          </select>
-        </td>
-        <td><strong>Hostname</strong><br />
-          <input name="db_server" type="text" placeholder="localhost" />
-        </td>
-      </tr>
-      <tr>
-        <td><strong>Database</strong><br />
-          <input type="text" name="db_database" required="required" /></td>
-        <td><strong>Collation</strong><br />
-          <select name="db_collation" required="required">
-            <option>utf8_bin</option>
-            <option>utf8_general_ci</option>
-            <option>utf8_unicode_ci</option>
-            <option>utf8_icelandic_ci</option>
-            <option>utf8_latvian_ci</option>
-            <option>utf8_romanian_ci</option>
-            <option>utf8_slovenian_ci</option>
-            <option>utf8_polish_ci</option>
-            <option>utf8_estonian_ci</option>
-            <option>utf8_spanish_ci</option>
-            <option selected="selected">utf8_swedish_ci</option>
-            <option>utf8_turkish_ci</option>
-            <option>utf8_czech_ci</option>
-            <option>utf8_danish_ci</option>
-            <option>utf8_lithuanian_ci</option>
-            <option>utf8_slovak_ci</option>
-            <option>utf8_spanish2_ci</option>
-            <option>utf8_roman_ci</option>
-            <option>utf8_persian_ci</option>
-            <option>utf8_esperanto_ci</option>
-            <option>utf8_hungarian_ci</option>
-            <option>utf8_sinhala_ci</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td><strong>Username</strong><br />
-          <input type="text" name="db_username" required="required" /></td>
-        <td><strong>Password</strong><br />
-          <input type="password" name="db_password" /></td>
-      </tr>
-      <tr>
-        <td><strong>Table Prefix</strong><br />
-          <input name="db_table_prefix" type="text" value="lc_" style="width: 75px;" /></td>
-        <td><strong>Demo Data</strong><br />
-          <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled="disabled"' : ''; ?> /> Install demo data</label></td>
-      </tr>
-    </table>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+      <label>Type</label>
+        <select class="form-control" name="db_type" required="required">
+          <option value="mysql">MySQL</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Hostname</label>
+        <input class="form-control" name="db_server" type="text" placeholder="localhost" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Database</label>
+        <input class="form-control" type="text" name="db_database" required="required" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Collation</label>
+        <select class="form-control" name="db_collation" required="required">
+          <option>utf8_bin</option>
+          <option>utf8_general_ci</option>
+          <option>utf8_unicode_ci</option>
+          <option>utf8_icelandic_ci</option>
+          <option>utf8_latvian_ci</option>
+          <option>utf8_romanian_ci</option>
+          <option>utf8_slovenian_ci</option>
+          <option>utf8_polish_ci</option>
+          <option>utf8_estonian_ci</option>
+          <option>utf8_spanish_ci</option>
+          <option selected="selected">utf8_swedish_ci</option>
+          <option>utf8_turkish_ci</option>
+          <option>utf8_czech_ci</option>
+          <option>utf8_danish_ci</option>
+          <option>utf8_lithuanian_ci</option>
+          <option>utf8_slovak_ci</option>
+          <option>utf8_spanish2_ci</option>
+          <option>utf8_roman_ci</option>
+          <option>utf8_persian_ci</option>
+          <option>utf8_esperanto_ci</option>
+          <option>utf8_hungarian_ci</option>
+          <option>utf8_sinhala_ci</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Username</label>
+        <input class="form-control" type="text" name="db_username" required="required" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Password</label>
+        <input class="form-control" type="password" name="db_password" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Table Prefix</label>
+        <input class="form-control" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Demo Data</label>
+        <div class="checkbox">
+          <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled="disabled"' : ''; ?> /> Install demo data</label>
+        </div>
+      </div>
+    </div>
+
     <h3>Store Information</h3>
-    <table>
-      <tr>
-        <td><strong>Store Name</strong><br />
-          <input name="store_name" type="text" value="My Store" required="required" /></td>
-        <td><strong>Store Email</strong><br />
-          <input name="store_email" type="text" value="store@email.com" required="required" /></td>
-      </tr>
-      <tr>
-        <td colspan="2"><strong>Country</strong><br />
-          <select name="country_code" required="required">
-            <option value="">-- Select --</option>
-            <?php foreach ($countries as $code => $name) echo '<option value="'. $code .'">'. $name .'</option>' . PHP_EOL; ?>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2"><strong>Time Zone</strong><br />
-          <select name="store_time_zone" required="required">
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Store Name</label>
+        <input class="form-control" name="store_name" type="text" value="My Store" required="required" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Store Email</label>
+        <input class="form-control" name="store_email" type="text" value="store@email.com" required="required" />
+      </div>
+
+
+      <div class="form-group col-md-6">
+        <label>Country</label>
+        <select class="form-control" name="country_code" required="required">
+          <option value="">-- Select --</option>
+          <?php foreach ($countries as $code => $name) echo '<option value="'. $code .'">'. $name .'</option>' . PHP_EOL; ?>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Time Zone<br />
+        <select class="form-control" name="store_time_zone" required="required">
 <?php
-  $zones = timezone_identifiers_list();
-
-  foreach ($zones as $zone) {
+  foreach (timezone_identifiers_list() as $zone) {
     $zone = explode('/', $zone); // 0 => Continent, 1 => City
-
-    // Only use "friendly" continent names
     if (in_array($zone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) {
       if (!empty($zone[1])) {
         echo '<option>'. $zone[0]. '/' . $zone[1]  .'</option>';
@@ -459,32 +485,36 @@
     }
   }
 ?>
-        </select></td>
-      </tr>
-    </table>
-    <h3>Administration</h3>
-    <table>
-      <tr>
-        <td><strong>Folder Name</strong><br />
-          <input name="admin_folder" type="text" value="admin" required="required" /></td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td><strong>Username</strong><br />
-          <input name="username" type="text" id="username" value="admin" required="required" /></td>
-        <td><strong>Password</strong><br />
-          <input name="password" type="text" id="password" required="required" /></td>
-      </tr>
-    </table>
-    <h3>Errors</h3>
-    <input name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+        </select>
+      </div>
+    </div>
 
-    <p>Errors will be hidden for all visitors except you, determined by IP <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong>. Some web host providers may not allow  overriding PHP error settings. Blank pages are usually the result of an error and you might need to contact your web host provider how to turn PHP error messages on.</p>
-    <p>If your IP address changes, or if you need to add more, these settings can be found in the configuration file.</p>
+    <h3>Administration</h3>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Folder Name</label>
+        <input class="form-control" name="admin_folder" type="text" value="admin" required="required" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Username</label>
+        <input class="form-control" name="username" type="text" id="username" value="admin" required="required" />
+      </div>
+
+      <div class="form-group col-md-6">
+        <label>Password</label>
+        <input class="form-control" name="password" type="text" id="password" required="required" />
+      </div>
+    </div>
 
     <hr />
 
-    <p style="text-align: center;"><strong>By installing this software you agree to the <a href="http://www.litecart.net/license" target="_blank">terms and conditions</a>.</strong></p>
-    <p style="text-align: center;"><input type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" /></p>
+    <p class="text-center">
+      This software is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/" target="blank">Creative Commons BY-ND 4.0</a>.<br />
+      By installing this software you agree to the terms and conditions.
+    </p>
+
+    <input class="btn btn-default btn-block" type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
   </form>
 <?php require('includes/footer.inc.php'); ?>

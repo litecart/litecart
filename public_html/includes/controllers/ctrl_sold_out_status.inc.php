@@ -48,7 +48,7 @@
       );
 
       if ($sold_out_status = database::fetch($sold_out_status_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $sold_out_status), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($sold_out_status, $this->data));
       } else {
         trigger_error('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.', E_USER_ERROR);
       }

@@ -95,7 +95,7 @@
     $product->delete();
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0])));
-    exit();
+    exit;
   }
 
   list($product_image_width, $product_image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
@@ -255,13 +255,13 @@
           <div class="col-md-4">
 
             <div class="form-group">
-              <label><?php echo language::translate('title_code', 'Code'); ?></label>
-              <?php echo functions::form_draw_text_field('code', true); ?>
+              <label><?php echo language::translate('title_name', 'Name'); ?></label>
+              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
             </div>
 
             <div class="form-group">
-              <label><?php echo language::translate('title_name', 'Name'); ?></label>
-              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+              <label><?php echo language::translate('title_code', 'Code'); ?></label>
+              <?php echo functions::form_draw_text_field('code', true); ?>
             </div>
 
             <div class="form-group">

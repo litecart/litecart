@@ -50,7 +50,7 @@
       );
 
       if ($page = database::fetch($page_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $page), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($page, $this->data));
       } else {
         trigger_error('Could not find page (ID: '. (int)$page_id .') in database.', E_USER_ERROR);
       }

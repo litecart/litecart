@@ -156,8 +156,8 @@
         </div>
 
         <div class="form-group">
-          <label class="checkbox"><?php echo functions::form_draw_checkbox('insert', '1', isset($_POST['insert']) ? $_POST['insert'] : '1'); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label><br />
-          <label class="checkbox"><?php echo functions::form_draw_checkbox('overwrite', '1', isset($_POST['insert']) ? $_POST['insert'] : ''); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label>
+          <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', isset($_POST['insert']) ? true : '1'); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
+          <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', isset($_POST['insert']) ? true : ''); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
         </div>
 
         <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>

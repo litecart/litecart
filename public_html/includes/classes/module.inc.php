@@ -54,7 +54,7 @@
           $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
         $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) ? 1 : 0;
-        $object->priority = isset($object->settings[$setting['key']]) ? (int)$object->settings[$setting['key']] : 0;
+        $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 
       // Add module to list
         $this->modules[$object->id] = $object;

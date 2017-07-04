@@ -48,7 +48,7 @@
       );
 
       if ($quantity_unit = database::fetch($quantity_unit_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $quantity_unit), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($quantity_unit, $this->data));
       } else {
         trigger_error('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.', E_USER_ERROR);
       }

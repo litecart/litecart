@@ -50,7 +50,7 @@
       );
 
       if ($slide = database::fetch($slide_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $slide), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($slide, $this->data));
       } else {
         trigger_error('Could not find slide (ID: '. (int)$slide_id .') in database.', E_USER_ERROR);
       }

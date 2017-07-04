@@ -28,7 +28,7 @@
 
   $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
-    match(p.code, p.sku, p.gtin, pi.name, pi.short_description, pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) as relevance
+    match(pi.name, pi.short_description, pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) as relevance
 
     from (
       select id, code, gtin, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
@@ -56,6 +56,9 @@
     ) pc on (pc.product_id = p.id)
 
     having relevance > 0
+    or p.code regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+    or p.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+    or p.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
 
     order by %sql_sort;
   ";

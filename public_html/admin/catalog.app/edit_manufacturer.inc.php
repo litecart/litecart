@@ -64,7 +64,7 @@
 
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'manufacturers'), array('app')));
-    exit();
+    exit;
   }
 ?>
 

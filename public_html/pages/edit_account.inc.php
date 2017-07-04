@@ -12,7 +12,7 @@
 
   $customer = new ctrl_customer(customer::$data['id']);
 
-  if (!$_POST) {
+  if (empty($_POST)) {
     foreach ($customer->data as $key => $value) {
       $_POST[$key] = $value;
     }

@@ -47,23 +47,23 @@
           $this->_data['also_purchased_products'] = array();
 
             $query = database::query(
-              "select product_id, sum(quantity) as total_quantity from ". DB_TABLE_ORDERS_ITEMS ."
-              where (product_id != ". (int)$this->_id ." and product_id not like '". database::input($this->_id) .":%')
+              "select oi.product_id, sum(oi.quantity) as total_quantity from ". DB_TABLE_ORDERS_ITEMS ." oi
+              left join ". DB_TABLE_PRODUCTS ." p on (p.id = oi.product_id)
+              where p.status
+              and (oi.product_id != 0 and oi.product_id != ". (int)$this->_id .")
               and order_id in (
                 select distinct order_id as id from ". DB_TABLE_ORDERS_ITEMS ."
-                where (product_id = ". (int)$this->_id ." or product_id like '". database::input($this->_id) .":%')
+                where product_id = ". (int)$this->_id ."
               )
-              group by product_id
+              group by oi.product_id
               order by total_quantity desc;"
             );
 
             while ($row = database::fetch($query)) {
-              $product_id = preg_replace('#^[0-9]+(:.*)?$#', '', $row['product_id']);
               $this->_data['also_purchased_products'][$row['product_id']] = reference::product($row['product_id']);
             }
 
           break;
-
 
         case 'name':
         case 'short_description':

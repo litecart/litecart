@@ -37,7 +37,7 @@
       );
 
       if ($currency = database::fetch($currency_query)) {
-        $this->data = array_intersect_key(array_merge($this->data, $currency), $this->data);
+        $this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
       } else {
         trigger_error('Could not find currency (Code: '. htmlspecialchars($currency_code) .') in database.', E_USER_ERROR);
       }
