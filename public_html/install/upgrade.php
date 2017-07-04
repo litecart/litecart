@@ -135,21 +135,21 @@
   }
 
 ?>
-<p>Upgrade from an old installation to <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?>.</p>
-<p><strong style="color: #f00;">Backup your files and database before you continue!<br />Selecting the wrong version might damage your data.</strong></p>
+<p>Upgrade to <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?> from any older version listed.</p>
+<p class="alert alert-danger"><strong>Backup your files and database before you continue!</strong> Selecting the wrong version will most likely damage your data.</p>
+
 <form name="upgrade_form" method="post">
-  <h3>Version Migrating From</h3>
-  <table>
-    <tr>
-      <td>Select the <?php echo PLATFORM_NAME; ?> version you are migrating from:<br />
-        <select name="from_version">
-          <option value="">-- Select Version --</option>
-          <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_POST['from_version']) && $_POST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
-        </select>
-      </td>
-    </tr>
-  </table>
-  <p><input type="submit" name="upgrade" value="Upgrade To <?php echo PLATFORM_VERSION; ?>" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" /></p>
+  <h3>Installed Version</h3>
+
+  <div class="form-group">
+    <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
+    <select class="form-control" name="from_version">
+      <option value="">-- Select Version --</option>
+      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_POST['from_version']) && $_POST['from_version'] == $version) ? 'selected="selected"' : '') .'>LiteCart '. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
+    </select>
+  </div>
+
+  <button class="btn btn-default btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" />Upgrade To <?php echo PLATFORM_VERSION; ?></button>
 </form>
 <?php
   require('includes/footer.inc.php');
