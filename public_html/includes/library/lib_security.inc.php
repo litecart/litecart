@@ -250,7 +250,7 @@
               . '  URI: '. $_SERVER['REQUEST_URI'] . PHP_EOL
               . '  Address: '. $_SERVER['REMOTE_ADDR'] .' ('. $hostname .')' . PHP_EOL
               . '  Agent: '. $_SERVER['HTTP_USER_AGENT']
-              . '  Date: '. date('r')
+              . '  Date: '. date('r') . PHP_EOL
               , 0);
 
       $row = $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'] .' '
