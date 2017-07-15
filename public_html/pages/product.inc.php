@@ -90,6 +90,9 @@
   $schema_json = array(
     '@context' => 'http://schema.org/',
     '@type' => 'Product',
+    'productID' => $product->id,
+    'sku' => $product->sku,
+    'gtin14' => $product->gtin,
     'name' => $product->name,
     'image' => document::link(!empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png'),
     'description' => !empty($product->description) ? strip_tags($product->description) : '',
