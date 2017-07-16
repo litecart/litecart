@@ -113,6 +113,14 @@
       return $link;
     }
 
+    public static function local_link($url) {
+
+      $path = parse_url($url, PHP_URL_PATH);
+      $query = parse_url($url, PHP_URL_QUERY);
+
+      return $path . ($query ? '?' . $query : '');
+    }
+
     public static function full_link($link) {
 
       $parts = self::explode_link($link);

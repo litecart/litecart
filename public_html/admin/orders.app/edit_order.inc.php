@@ -114,8 +114,14 @@
         }
       }
 
+      if (!empty($_GET['redirect_url'])) {
+        $redirect_url = link::local_link($_GET['redirect_url']);
+      } else {
+        $redirect_url = document::link('', array('app' => $_GET['app'], 'doc' => 'orders'));
+      }
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
+      header('Location: '. $redirect_url);
       exit;
     }
   }
@@ -124,7 +130,14 @@
   if (isset($_POST['delete']) && !empty($order->data['id'])) {
     $order->delete();
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
+
+    if (!empty($_GET['redirect_url'])) {
+      $redirect_url = link::local_link($_GET['redirect_url']);
+    } else {
+      $redirect_url = document::link('', array('app' => $_GET['app'], 'doc' => 'orders'));
+    }
+
+    header('Location: '. $redirect_url);
     exit;
   }
 

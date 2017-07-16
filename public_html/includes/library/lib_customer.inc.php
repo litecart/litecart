@@ -353,7 +353,11 @@
         setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       }
 
-      if (empty($redirect_url)) $redirect_url = document::ilink('');
+      if (!empty($redirect_url)) {
+        $redirect_url = link::local_link($redirect_url);
+      } else {
+        $redirect_url = document::ilink('');
+      }
 
       notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
         '%firstname' => self::$data['firstname'],
