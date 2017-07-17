@@ -39,7 +39,7 @@
     setcookie('display_prices_including_tax', $_POST['display_prices_including_tax'], time() + (60*60*24*365), WS_DIR_HTTP_HOME);
 
     if (!empty($_GET['redirect_url'])) {
-      $redirect_url = link::local_link($_GET['redirect_url'])
+      $redirect_url = link::local_link($_GET['redirect_url']);
     } else {
       $redirect_url = document::ilink('', array(), null, null, $_POST['language_code']);
     }
