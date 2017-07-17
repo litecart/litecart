@@ -1,4 +1,5 @@
 <div id="box-checkout-customer" class="box">
+  <?php echo functions::form_draw_hidden_field('customer_details', 'true'); ?>
 
   <?php if (empty(customer::$data['id'])) { ?>
   <div style="float:right">

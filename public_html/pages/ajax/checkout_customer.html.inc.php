@@ -15,7 +15,7 @@
     }
   }
 
-  if (file_get_contents('php://input') != '') {
+  if (!empty($_POST['customer_details'])) {
 
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
