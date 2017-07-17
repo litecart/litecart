@@ -1,5 +1,5 @@
 <?php
-  functions::draw_lightbox('a.lightbox');
+  functions::draw_lightbox();
 
   $box_region = new view();
 
