@@ -1,4 +1,5 @@
 <?php
+  require('../includes/compatibility.inc.php');
   require('includes/header.inc.php');
 
   ini_set('display_errors', 'On');

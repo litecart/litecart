@@ -1,8 +1,9 @@
 <?php
   ob_start();
 
-  require_once('includes/header.inc.php');
+  require_once('../includes/compatibility.inc.php');
   require_once('includes/functions.inc.php');
+  require_once('includes/header.inc.php');
 
   echo '<h1>Installer</h1>' . PHP_EOL;
 
