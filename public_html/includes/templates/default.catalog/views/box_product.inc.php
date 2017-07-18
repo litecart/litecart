@@ -33,9 +33,9 @@
       </ul>
       <?php } ?>
 
-      <?php if ($description) { ?>
-      <div class="description">
-        <?php echo $description; ?>
+      <?php if ($short_description) { ?>
+      <div class="short-description">
+        <?php echo $short_description; ?>
       </div>
       <?php } ?>
     </div>
