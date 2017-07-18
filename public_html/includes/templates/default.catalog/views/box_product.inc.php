@@ -149,9 +149,19 @@
   </div>
 
   <?php if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
-  <?php if ($attributes) { ?>
-  <div class="attributes">
-    <table class="table table-striped">
+  <ul class="nav nav-tabs">
+    <?php if ($description) { ?><li><a data-toggle="tab" href="#description"><?php echo language::translate('title_description', 'Description'); ?></a></li><?php } ?>
+    <?php if ($attributes) { ?><li><a data-toggle="tab" href="#attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li><?php } ?>
+  </ul>
+
+  <div class="tab-content">
+    <div id="description" class="tab-pane">
+      <?php echo $description; ?>
+    </div>
+
+    <div id="attributes" class="tab-pane">
+      <div class="attributes">
+        <table class="table table-striped">
 <?php
   for ($i=0; $i<count($attributes); $i++) {
     if (strpos($attributes[$i], ':') !== false) {
@@ -174,10 +184,12 @@
     }
   }
 ?>
-    </table>
+        </table>
+      </div>
+    </div>
   </div>
   <?php } ?>
-  <?php } ?>
+
 </div>
 
 <script>
