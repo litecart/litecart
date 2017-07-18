@@ -90,12 +90,10 @@
 
   <?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" alt="" class="img-responsive" /></p>'; ?>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_image', 'Image'); ?></label>
-        <?php echo functions::form_draw_file_field('image'); ?>
-        <?php echo (!empty($slide->data['image'])) ? '</label>' . $slide->data['image'] : ''; ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_image', 'Image'); ?></label>
+    <?php echo functions::form_draw_file_field('image'); ?>
+    <?php echo (!empty($slide->data['image'])) ? '</label>' . $slide->data['image'] : ''; ?>
   </div>
 
   <ul class="nav nav-tabs">

@@ -60,45 +60,37 @@
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label>
-        <?php echo language::translate('title_code', 'Code'); ?></label>
-        <?php echo functions::form_draw_text_field('code', true); ?>
+      <label><?php echo language::translate('title_code', 'Code'); ?></label>
+      <?php echo functions::form_draw_text_field('code', true); ?>
     </div>
 
     <div class="form-group col-md-6">
-      <label>
-        <?php echo language::translate('title_name', 'Name'); ?></label>
-        <?php echo functions::form_draw_text_field('name', true); ?>
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+      <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label>
-        <?php echo language::translate('title_description', 'Description'); ?></label>
-        <?php echo functions::form_draw_textarea('description', true); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_description', 'Description'); ?></label>
+    <?php echo functions::form_draw_textarea('description', true); ?>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label>
-        <?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-        <?php echo functions::form_draw_email_field('email', true, 'email', ''); ?>
+      <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+      <?php echo functions::form_draw_email_field('email', true, 'email', ''); ?>
     </div>
 
     <div class="form-group col-md-6">
-      <label>
-        <?php echo language::translate('title_phone', 'Phone'); ?></label>
-        <?php echo functions::form_draw_text_field('phone', true); ?>
+      <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+      <?php echo functions::form_draw_text_field('phone', true); ?>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label>
-        <?php echo language::translate('title_link', 'Link'); ?></label>
-        <?php echo functions::form_draw_text_field('link', true); ?>
+      <label><?php echo language::translate('title_link', 'Link'); ?></label>
+      <?php echo functions::form_draw_text_field('link', true); ?>
     </div>
   </div>
 

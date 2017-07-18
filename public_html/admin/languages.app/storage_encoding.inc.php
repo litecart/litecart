@@ -37,9 +37,8 @@
 
 <?php echo functions::form_draw_form_begin('mysql_collation_form', 'post', false, false, 'style="width: 640px;"'); ?>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_database_tables', 'Database Tables'); ?></label>
+  <div class="form-group">
+    <label><?php echo language::translate('title_database_tables', 'Database Tables'); ?></label>
 <?php
   $options = array();
 
@@ -56,21 +55,16 @@
   echo functions::form_draw_select_field('tables[]', $options, true, true, 'style="height: 200px;"');
 ?>
 
-    </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_collation', 'Collation'); ?></label>
-      <?php echo functions::form_draw_mysql_collations_list('collation'); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_collation', 'Collation'); ?></label>
+    <?php echo functions::form_draw_mysql_collations_list('collation'); ?>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('set_database_default', 'true'); ?> <?php echo language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)'); ?></label>
-      </div>
+  <div class="form-group">
+    <div class="checkbox">
+      <label><?php echo functions::form_draw_checkbox('set_database_default', 'true'); ?> <?php echo language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)'); ?></label>
     </div>
   </div>
 

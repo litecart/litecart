@@ -64,11 +64,9 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php echo functions::form_draw_text_field('description', true); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_description', 'Description'); ?></label>
+    <?php echo functions::form_draw_text_field('description', true); ?>
   </div>
 
   <p class="btn-group">
