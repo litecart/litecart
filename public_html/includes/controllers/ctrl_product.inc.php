@@ -183,22 +183,23 @@
         }
       }
 
-    // Cleanup empty elements in categories
-      if (!empty($this->data['categories'])) {
-        foreach(array_keys($this->data['categories']) as $key){
-          if ($this->data['categories'][$key] == '') unset($this->data['categories'][$key]);
-        }
-        $this->data['categories'] = array_unique($this->data['categories']);
-      }
+      $this->data['categories'] = array_map('trim', $this->data['categories']);
+      $this->data['categories'] = array_filter($this->data['categories']);
+      $this->data['categories'] = array_unique($this->data['categories']);
+
+      $this->data['product_groups'] = array_map('trim', $this->data['product_groups']);
+      $this->data['product_groups'] = array_filter($this->data['product_groups']);
+      $this->data['product_groups'] = array_unique($this->data['product_groups']);
+
+      $this->data['keywords'] = explode(',', $this->data['keywords']);
+      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
+      $this->data['keywords'] = array_filter($this->data['keywords']);
+      $this->data['keywords'] = array_unique($this->data['keywords']);
+      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);
       }
-
-      $this->data['keywords'] = explode(',', $this->data['keywords']);
-      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
-      $this->data['keywords'] = array_unique($this->data['keywords']);
-      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
         "update ". DB_TABLE_PRODUCTS ." set
