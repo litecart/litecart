@@ -764,7 +764,6 @@ foreach (currency::$currencies as $currency) {
   });
 
   function refreshMainImage() {
-    console.log($('#images img:first').attr('src'));
     if ($('#images img:first').length) {
       $('#tab-general .main-image').attr('src', $('#images img:first').attr('src'));
       return;
