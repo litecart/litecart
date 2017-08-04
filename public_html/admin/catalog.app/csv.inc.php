@@ -177,6 +177,7 @@
           'id' => $product->id,
           'status' => $product->status,
           'categories' => implode(',', array_keys($product->categories)),
+          'product_groups' => implode(',', array_keys($product->product_groups)),
           'manufacturer_id' => $product->manufacturer_id,
           'supplier_id' => $product->supplier_id,
           'code' => $product->code,
@@ -358,7 +359,6 @@
 
         $fields = array(
           'status',
-          'categories',
           'manufacturer_id',
           'supplier_id',
           'code',
@@ -384,7 +384,8 @@
           if (isset($row[$field])) $product->data[$field] = $row[$field];
         }
 
-        if (isset($row['categories'])) $product->data['categories'] = explode(',', str_replace(' ', '', $product->data['categories']));
+        if (isset($row['categories'])) $product->data['categories'] = explode(',', $row['categories']);
+        if (isset($row['product_groups'])) $product->data['product_groups'] = explode(',', $row['product_groups']);
 
       // Set price
         if (!empty($row['currency_code'])) {
