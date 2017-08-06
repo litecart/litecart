@@ -33,6 +33,7 @@
             'title' => $action['title'],
             'description' => @$action['description'],
             'function' => $action['function'],
+            'target' => !empty($action['target']) ? $action['target'] : '_self',
           );
         }
       }
