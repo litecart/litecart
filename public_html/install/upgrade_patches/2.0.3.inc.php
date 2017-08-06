@@ -7,7 +7,7 @@
     and description != '';"
   );
 
-  while($product_info = database::fetch($products_query)) {
+  while($product_info = database::fetch($products_info_query)) {
 
     $short_description = strip_tags($product_info['description']);
     $short_description = preg_replace('#\R#s', ' ', $short_description);
