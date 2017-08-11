@@ -16,7 +16,7 @@
       'manufacturers' => array($product->manufacturer_id),
       'product_groups' => $product->product_group_ids,
       'exclude_products' => $product->id,
-      'keywords' => explode(',', $product->keywords),
+      'keywords' => $product->keywords,
       'sort' => 'occurrences',
       'limit' => settings::get('box_similar_products_num_items'),
     ));
