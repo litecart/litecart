@@ -298,6 +298,10 @@
 
       if ($timestamp === null) $timestamp = time();
 
+      if (in_array(strtoupper(substr(PHP_OS, 0, 3)), array('WIN', 'MAC'))) {
+        $format = preg_replace('#(?<!%)((?:%%)*)%P#', '\1%p', $format);
+      }
+
       if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
         $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
 
