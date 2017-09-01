@@ -174,12 +174,16 @@
         ". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : null) ."
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
       ) p
+
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
+
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
         from ". DB_TABLE_PRODUCTS_PRICES ."
       ) pp on (pp.product_id = p.id)
+
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
         from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
@@ -187,12 +191,14 @@
         and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
         order by end_date asc
       ) pc on (pc.product_id = p.id)
+
       where (p.id
         ". (!empty($filter['sql_where']) ? "$sql_andor (". $filter['sql_where'] .")" : null) ."
         ". (!empty($filter['product_name']) ? "$sql_andor pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
         ". (!empty($filter['campaign']) ? "$sql_andor campaign_price > 0" : null) ."
         ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
       )
+
       order by ". implode(",", $sql_outer_sort) ."
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";
     ";
