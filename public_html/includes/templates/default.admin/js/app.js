@@ -99,13 +99,15 @@ $(document).ready(function(){
   }
 
 // Bootstrap Comaptible (data-toggle="buttons")
-  $('[data-toggle="buttons"]').each(function(){
-    if (!$(this).find('.btn.active').length) {
-      $(this).find(':checked').closest('btn').addClass('active');
+  $('[data-toggle="buttons"] input[type="checkbox"]').click(function(){
+    if ($(this).is(':checked')) {
+      $(this).closest('.btn').addClass('active');
+    } else {
+      $(this).closest('.btn').removeClass('active');
     }
   });
 
-  $('[data-toggle="buttons"] [data-type="toggle"]').click(function(){
+  $('[data-toggle="buttons"] input[type="radio"]').click(function() {
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
