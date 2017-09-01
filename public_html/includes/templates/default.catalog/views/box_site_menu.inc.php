@@ -1,18 +1,24 @@
-<nav id="site-menu" class="twelve-eighty">
-  <?php
-    if (!function_exists('custom_draw_site_menu')) {
-      function custom_draw_site_menu($items, $indent=0) {
-        echo '<ul>' . PHP_EOL;
-        foreach ($items as $item) {
-          echo '  <li class="'. $item['type'] .'-'. $item['id'] .'"><a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>';
-          if (!empty($item['subitems'])) {
-            echo PHP_EOL . custom_draw_site_menu($item['subitems'], $indent+1);
-          }
-          echo '  </li>' . PHP_EOL;
+<?php
+  if (!function_exists('custom_draw_site_menu_item')) {
+    function custom_draw_site_menu_item($items, $indent=0) {
+      $output = '';
+      foreach ($items as $item) {
+        $output .= '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'"><a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>';
+        if (!empty($item['subitems'])) {
+          $output .= '<ul>' . PHP_EOL
+                   . custom_draw_site_menu_item($item['subitems'], $indent+1)
+                   . '</ul>' . PHP_EOL;
         }
-        echo '</ul>' . PHP_EOL;
+        $output .= '  </li>' . PHP_EOL;
       }
+      return $output;
     }
-    custom_draw_site_menu($items);
-  ?>
+  }
+?>
+<nav id="site-menu" class="twelve-eighty">
+  <ul>
+    <li class="home"><a href="<?php echo document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-home'); ?></a></li>
+    <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
+    <?php foreach ($pages as $item) echo custom_draw_site_menu_item($item); ?>
+  </ul>
 </nav>

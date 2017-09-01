@@ -4,20 +4,16 @@
 
     $box_site_menu = new view();
 
-    $box_site_menu->snippets['items'][] = array(
-      'type' => 'general',
-      'id' => 0,
-      'title' => functions::draw_fonticon('fa-home', 'title="'. htmlspecialchars(language::translate('title_home', 'Home')) .'"'),
-      'link' => document::ilink(''),
-      'image' => null,
-      'subitems' => array(),
+    $box_site_menu->snippets = array(
+      'categories' => array(),
+      'pages' => array(),
     );
 
     if (!function_exists('custom_site_menu_category_tree')) {
       function custom_site_menu_category_tree($parent_id=0, $depth=0, &$output) {
 
         $categories_query = database::query(
-          "select c.id, c.image, ci.name
+          "select c.id, c.image, c.priority, ci.name
           from ". DB_TABLE_CATEGORIES ." c
           left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
           where status
@@ -29,21 +25,21 @@
 
           if ($parent_id == 0) {
             $output[$category['id']] = array(
-              'type' => 'category',
               'id' => $category['id'],
               'title' => $category['name'],
               'link' => document::ilink('category', array('category_id' => $category['id'])),
               'image' => null,
               'subitems' => array(),
+              'priority' => $category['priority'],
             );
           } else {
             $output[$category['id']] = array(
-              'type' => 'category',
               'id' => $category['id'],
               'title' => $category['name'],
               'link' => document::ilink('category', array('category_id' => $category['id'])),
               'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 24, 24, 'CROP'),
               'subitems' => array(),
+              'priority' => $category['priority'],
             );
           }
 
@@ -64,23 +60,24 @@
       }
     }
 
-    custom_site_menu_category_tree(0, 0, $box_site_menu->snippets['items']);
+    custom_site_menu_category_tree(0, 0, $box_site_menu->snippets['categories']);
 
     $pages_query = database::query(
-      "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+      "select p.id, p.priority, pi.title from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
       where status
       and find_in_set('menu', dock)
       order by p.priority, pi.title;"
     );
+
     while ($page = database::fetch($pages_query)) {
-      $box_site_menu->snippets['items'][] = array(
-        'type' => 'page',
+      $box_site_menu->snippets['pages'][$page['id']] = array(
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),
         'image' => null,
         'subitems' => array(),
+        'priority' => $page['priority'],
       );
     }
 
