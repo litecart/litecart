@@ -21,7 +21,7 @@
     </div>
   </div>
 <?php } else if ($listing_type == 'row') { ?>
-  <div class="col-xs-whole">
+  <div class="col-xs">
     <div class="product shadow hover-light">
       <a class="link"<?php echo !empty(document::$settings['product_modal_window']) ? ' data-toggle="lightbox"' : ''; ?> href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
         <div class="image-wrapper">

@@ -1,4 +1,4 @@
-<div class="category category-<?php echo $category_id; ?> col-xs-whole col-sm-halfs col-md-thirds">
+<div class="category category-<?php echo $category_id; ?> col-xs col-sm-halfs col-md-thirds">
   <a class="link shadow hover-light" href="<?php echo htmlspecialchars($link); ?>">
     <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" alt="" title="<?php echo htmlspecialchars($name); ?>" />
     <div class="caption">
