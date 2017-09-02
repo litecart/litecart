@@ -64,6 +64,28 @@
 
     custom_site_menu_category_tree(0, 0, $box_site_menu->snippets['categories']);
 
+  // Manufacturers
+
+    $pages_query = database::query(
+      "select id, priority, name from ". DB_TABLE_MANUFACTURERS ."
+      where status
+      order by priority, name;"
+    );
+
+    while ($manufacturer = database::fetch($pages_query)) {
+      $box_site_menu->snippets['manufacturers'][$manufacturer['id']] = array(
+        'type' => 'manufacturer',
+        'id' => $manufacturer['id'],
+        'title' => $manufacturer['name'],
+        'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
+        'image' => null,
+        'subitems' => array(),
+        'priority' => $manufacturer['priority'],
+      );
+    }
+
+  // Information pages
+
     $pages_query = database::query(
       "select p.id, p.priority, pi.title from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
@@ -71,6 +93,7 @@
       and find_in_set('menu', dock)
       order by p.priority, pi.title;"
     );
+
     while ($page = database::fetch($pages_query)) {
       $box_site_menu->snippets['pages'][$page['id']] = array(
         'type' => 'page',
