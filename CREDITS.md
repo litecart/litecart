@@ -18,15 +18,14 @@ TrueType Fonts
 --------------
 * (captcha) Reprobate TTF - Handwriting of Mike Sedillo - Free for commercial use - http://www.apostrophiclab.com/
 
-JavaScript
-----------
+JavaScripts
+-----------
 * Featherlight - MIT License - https://github.com/noelboss/featherlight
 * Chartist - MIT and WTFPL License - https://gionkunz.github.io/chartist-js/
 * jQuery by jQuery Foundation - MIT License - https://www.jquery.com/
 * jQuery Animate From To by Emil Stenström - MIT and GPL - http://friendlybit.com/
 * ResponsiveSlides by Viljami Salminen - MIT License - http://responsiveslides.com/
 * Trumbowyg by Alex-D - MIT license - http://alex-d.github.io/Trumbowyg/
-* jQuery Cookie Plugin by Klaus Hartl - MIT License - https://github.com/carhartl/jquery-cookie/
 
 PHP
 ---
