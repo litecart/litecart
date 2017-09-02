@@ -25,6 +25,7 @@
 
           if ($parent_id == 0) {
             $output[$category['id']] = array(
+              'type' => 'category',
               'id' => $category['id'],
               'title' => $category['name'],
               'link' => document::ilink('category', array('category_id' => $category['id'])),
@@ -34,6 +35,7 @@
             );
           } else {
             $output[$category['id']] = array(
+              'type' => 'category',
               'id' => $category['id'],
               'title' => $category['name'],
               'link' => document::ilink('category', array('category_id' => $category['id'])),
@@ -69,9 +71,9 @@
       and find_in_set('menu', dock)
       order by p.priority, pi.title;"
     );
-
     while ($page = database::fetch($pages_query)) {
       $box_site_menu->snippets['pages'][$page['id']] = array(
+        'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),

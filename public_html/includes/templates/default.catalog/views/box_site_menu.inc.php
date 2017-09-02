@@ -1,16 +1,16 @@
 <?php
   if (!function_exists('custom_draw_site_menu_item')) {
-    function custom_draw_site_menu_item($items, $indent=0) {
-      $output = '';
-      foreach ($items as $item) {
-        $output .= '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'"><a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>';
-        if (!empty($item['subitems'])) {
-          $output .= '<ul>' . PHP_EOL
-                   . custom_draw_site_menu_item($item['subitems'], $indent+1)
-                   . '</ul>' . PHP_EOL;
+    function custom_draw_site_menu_item($item, $indent=0) {
+      $output = '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+              . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>';
+      if (!empty($item['subitems'])) {
+        $output .= '  <ul>' . PHP_EOL;
+        foreach ($item['subitems'] as $subitem) {
+          $output .= custom_draw_site_menu_item($subitem, $indent+1);
         }
-        $output .= '  </li>' . PHP_EOL;
+        $output .= '  </ul>' . PHP_EOL;
       }
+      $output .= '</li>' . PHP_EOL;
       return $output;
     }
   }
