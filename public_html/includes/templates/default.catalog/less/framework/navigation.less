@@ -30,11 +30,14 @@
   list-style: none;
   li {
     position: relative;
-    flex: 0 0 auto;
+    flex: 0 0 100%;
+    @media(min-width: 768px) {
+      flex: 0 0 auto;
+    }
     > a {
       position: relative;
       display: block;
-      padding: @default-gutter-size/2 @default-gutter-size;
+      padding: @default-gutter-size;
       border: 1px solid transparent;
       border-radius: @default-border-radius;
       color: inherit;
@@ -57,13 +60,13 @@
       list-style: none;
       padding: 0;
       > li > a {
-        padding-left: 30px;
+        padding-left: @default-gutter-size * 2;
       }
       > li > ul > li > a {
-        padding-left: 45px;
+        padding-left: @default-gutter-size * 3;
       }
       > li > ul > li > ul > li > a {
-        padding-left: 60px;
+        padding-left: @default-gutter-size * 4;
       }
     }
   }
@@ -134,25 +137,141 @@
 }
 
 /* Navbar - Bootstrap Compatible */
-/*
-.navbar(@background=#f8f8f8, @color=@default-text-color) {
-  background-color: @background;
-  border-color: transparent;
-  color: @color;
 
+.collapsing {
+  transition: height 0.5s;
 }
 
-navbar {
+.navbar-collapse {
+  overflow-x: visible;
+  //padding-right: @default-gutter-size;
+  //padding-left: @default-gutter-size;
+  border-top: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  -webkit-overflow-scrolling: touch;
+  &.collapse {
+    display: none;
+  }
+  &.in {
+    display: block;
+    overflow-y: auto;
+  }
+  @media (min-width: 768px) {
+    width: auto;
+    border-top: 0;
+    box-shadow: none;
+    &.collapse {
+      display: block !important;
+      height: auto !important;
+      padding-bottom: 0;
+      overflow: visible !important;
+    }
+    &.in {
+      overflow-y: visible;
+    }
+  }
+}
+
+.navbar-header {
+  display: flex;
+  @media (min-width: 768px) {
+    float: left;
+    width: @default-sidebar-width + @default-gutter-size*2;
+  }
+  > * {
+    flex: 1 1 auto;
+  }
+
+  .navbar-brand {
+    padding: @default-gutter-size;
+    font-size: 18px;
+    &:hover, &:focus {
+      text-decoration: none;
+    }
+    > img {
+      display: block;
+    }
+  }
+
+  .navbar-toggle {
+    position: relative;
+    flex: 0 1 auto;
+    padding: @default-gutter-size/4 @default-gutter-size;
+    margin: @default-gutter-size/4 @default-gutter-size/2 @default-gutter-size/4 0;
+    background-color: transparent;
+    background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+    border: 1px solid @default-border-color;
+    border-radius: @default-border-radius;
+    &:focus {
+      outline: 0;
+    }
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+}
+.navbar(@background: #f8f8f8, @color: @default-text-color) {
+  background-color: @background;
+  color: @color;
+  //border: 1px solid darken(@background, 5%);
+  border: 1px solid #ccc;
+  border-radius: @default-border-radius;
+  li a:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.navbar {
   position: relative;
+  margin-bottom: @default-gutter-size;
   min-height: 50px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15), 0 1px 0 rgba(0,0,0,0.02);
 
   .navbar-nav > li > a {
     color: inherit;
   }
 
-  &.navbar-default { .navbar(); }
+  @media (max-width: 767px) {
+    .open .dropdown-menu {
+      position: static;
+      float: none;
+      width: auto;
+      margin-top: 0;
+      background-color: transparent;
+      border: 0;
+      -webkit-box-shadow: none;
+              box-shadow: none;
+    }
+    .open .dropdown-menu > li > a,
+    .open .dropdown-menu .dropdown-header {
+      padding: 5px 15px 5px 25px;
+    }
+    .open .dropdown-menu > li > a {
+      line-height: 20px;
+    }
+    .open .dropdown-menu > li > a:hover,
+    .open .dropdown-menu > li > a:focus {
+      background-image: none;
+    }
+  }
+
+  &.navbar-default { .navbar(@menu-background-color, @default-text-color); }
 }
-*/
+
+@media (min-width: 768px) {
+  .navbar-right {
+    float: right;
+    margin-right: @default-gutter-size;
+  }
+}
+
+.nav-item {
+  padding: @default-gutter-size;
+  border: 1px solid transparent;
+}
+
+.navbar-form {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  margin: @default-gutter-size/2 @default-gutter-size;
+}
