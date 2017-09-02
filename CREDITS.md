@@ -20,6 +20,7 @@ TrueType Fonts
 
 JavaScripts
 -----------
+* Bootstrap Collapse.js - MIT License - https://getbootstrap.com/
 * Featherlight - MIT License - https://github.com/noelboss/featherlight
 * Chartist - MIT and WTFPL License - https://gionkunz.github.io/chartist-js/
 * jQuery by jQuery Foundation - MIT License - https://www.jquery.com/
