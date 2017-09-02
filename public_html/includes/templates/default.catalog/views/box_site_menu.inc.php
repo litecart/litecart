@@ -4,7 +4,7 @@
       $output = '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
               . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>';
       if (!empty($item['subitems'])) {
-        $output .= '  <ul class="list-untyled">' . PHP_EOL;
+        $output .= '  <ul class="list-unstyled">' . PHP_EOL;
         foreach ($item['subitems'] as $subitem) {
           $output .= custom_draw_site_menu_item($subitem, $indent+1);
         }
@@ -40,7 +40,7 @@
 	        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_categories', 'Categories'); ?> <b class="caret"></b></a>
 	        <div class="dropdown-menu" style="width: 250px;">
 	          <ul class="list-unstyled">
-              <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
+                <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
 	          </ul>
 	        </div>
 	      </li>
@@ -51,7 +51,7 @@
 	        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
 	        <div class="dropdown-menu" style="width: 250px;">
 	          <ul class="list-unstyled">
-              <?php foreach ($manufacturers as $item) echo custom_draw_site_menu_item($item); ?>
+                <?php foreach ($manufacturers as $item) echo custom_draw_site_menu_item($item); ?>
 	          </ul>
 	        </div>
 	      </li>
@@ -62,8 +62,8 @@
 	        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?><b class="caret"></b></a>
 	        <div class="dropdown-menu" style="width: 640px;">
 	          <ul class="list-unstyled">
-              <?php foreach ($pages as $item) echo custom_draw_site_menu_item($item); ?>
-            </ul>
+                <?php foreach ($pages as $item) echo custom_draw_site_menu_item($item); ?>
+              </ul>
 	        </div>
 	      </li>
         <?php } ?>
