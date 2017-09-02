@@ -13,7 +13,7 @@
 
 <div class="page">
 
-  <div id="sidebar">
+  <div id="sidebar" class="hidden-print">
 
     <div id="logotype">
       <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">
