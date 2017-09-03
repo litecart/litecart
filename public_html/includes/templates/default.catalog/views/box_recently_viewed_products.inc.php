@@ -5,7 +5,7 @@
   <div class="products row half-gutter">
 
     <?php foreach ($products as $product) { ?>
-    <div class="col-xs-thirds">
+    <div class="col-xs-3">
       <a href="<?php echo htmlspecialchars($product['link']); ?>"<?php echo !empty(document::$settings['product_modal_window']) ? ' data-toggle="lightbox"' : ''; ?>>
         <img class="img-thumbnail" src="<?php echo htmlspecialchars($product['thumbnail']); ?>" alt="" />
         </a>
