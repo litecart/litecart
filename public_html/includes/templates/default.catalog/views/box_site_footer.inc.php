@@ -48,10 +48,10 @@
       <p><?php echo nl2br(settings::get('store_postal_address')); ?></p>
 
       <?php if (settings::get('store_phone')) { ?>
-      <p><a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></a><p>
+      <p><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a><p>
       <?php } ?>
 
-      <p><a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></a></p>
+      <p><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
     </div>
   </div>
 </footer>
