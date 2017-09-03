@@ -137,25 +137,25 @@
     foreach ($params as $key => $value) {
       switch (gettype($params[$key])) {
         case 'NULL':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': null,' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': null,' . PHP_EOL;
           break;
         case 'boolean':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
           break;
         case 'integer':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. $value .',' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
           break;
         case 'string':
           if (preg_match('#^function\s?\(#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. $value .',' . PHP_EOL;
+            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
           } else if (preg_match('#^undefined$#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': undefined,' . PHP_EOL;
+            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': undefined,' . PHP_EOL;
           } else {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
           }
           break;
         case 'array':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
           break;
       }
     }
