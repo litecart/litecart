@@ -25,58 +25,6 @@
   }
 }
 
-#box-slides {
-  position: relative;
-  border-radius: @default-border-radius;
-  &:hover {
-    .rslides_nav {
-      opacity: 0.25;
-      .rslides_nav:hover {
-        opacity: 0.5;
-      }
-    }
-  }
-  .rslides_nav {
-    position: absolute;
-    z-index: 99;
-    padding: 0px 20px;
-    margin-top: -1em;
-
-    font-size: 2em;
-    color: #000 !important;
-    text-shadow: 1px 1px #fff;
-
-    opacity: 0;
-    -moz-transition: opacity .1s ease-in;
-    -o-transition: opacity .1s ease-in;
-    -webkit-transition: opacity .1s ease-in;
-    transition: opacity .1s ease-in;
-    &.prev {
-      left: 0px;
-      top: 50%;
-    }
-    &.next {
-      position: absolute;
-      right: 0px;
-      top: 50%;
-    }
-  }
-  .rslides .caption {
-    position: absolute;
-    width: 100%;
-    padding: 10px;
-    bottom: 0px;
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    text-shadow: -1px -1px #000;
-    font-size: 1.5em;
-    opacity: 0.5;
-    @media (max-width: 640px) {
-      font-size: 1em;
-    }
-  }
-}
-
 #box-campaign-products, #box-latest-products, #box-popular-products, #box-similar-products, #box-also-purchased-products {
 	.title {
 		font-weight: normal;
