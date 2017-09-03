@@ -23,6 +23,7 @@ JavaScripts
 * Bootstrap Carousel.js by Twitter - MIT License - https://getbootstrap.com/
 * Bootstrap Collapse.js by Twitter - MIT License - https://getbootstrap.com/
 * Bootstrap Dropdown.js by Twitter - MIT License - https://getbootstrap.com/
+* Bootstrap Transition.js by Twitter - MIT License - https://getbootstrap.com/
 * Featherlight by Noël Raoul Bossart - MIT License - https://github.com/noelboss/featherlight
 * Chartist by Gion Kunz - MIT and WTFPL License - https://gionkunz.github.io/chartist-js/
 * jQuery by jQuery Foundation - MIT License - https://www.jquery.com/
