@@ -20,6 +20,7 @@ TrueType Fonts
 
 JavaScripts
 -----------
+* Bootstrap Carousel.js by Twitter - MIT License - https://getbootstrap.com/
 * Bootstrap Collapse.js by Twitter - MIT License - https://getbootstrap.com/
 * Bootstrap Dropdown.js by Twitter - MIT License - https://getbootstrap.com/
 * Featherlight by Noël Raoul Bossart - MIT License - https://github.com/noelboss/featherlight
