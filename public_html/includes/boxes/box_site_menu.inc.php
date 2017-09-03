@@ -67,9 +67,9 @@
   // Manufacturers
 
     $pages_query = database::query(
-      "select id, priority, name from ". DB_TABLE_MANUFACTURERS ."
+      "select id, name from ". DB_TABLE_MANUFACTURERS ."
       where status
-      order by priority, name;"
+      order by name;"
     );
 
     while ($manufacturer = database::fetch($pages_query)) {
@@ -80,7 +80,7 @@
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
         'image' => null,
         'subitems' => array(),
-        'priority' => $manufacturer['priority'],
+        'priority' => 0,
       );
     }
 
