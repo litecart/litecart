@@ -306,6 +306,30 @@ Defining a variable with more than a handful of values
     }
 
 
+## Matryoshka Dolls
+
+  Avoid conditional conditions inside iterators:
+
+    foreach ($array => $node) {
+      if ($node['first'] == 'a') {
+        if ($node['second'] == 'b') {
+          if ($node['third'] == 'c') {
+            return true;
+          }
+        }
+      }
+    }
+
+  Do instead:
+
+    foreach ($array => $node) {
+      if ($node['first'] != 'a') continue;
+      if ($node['second'] != 'b') continue;
+      if ($node['third'] != 'c') continue;
+      return true;
+    }
+
+
 ## Code Compliance
 
  - PHP code must comply with PHP 5.3+ using E_STRICT.
