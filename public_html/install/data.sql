@@ -221,7 +221,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (219, 1, 'Uganda', '', '800', 'UG', 'UGA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'UGX', '256', NOW(), NOW()),
 (220, 1, 'Ukraine', '', '804', 'UA', 'UKR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'uk', 'UAH', '380', NOW(), NOW()),
 (221, 1, 'United Arab Emirates', '', '784', 'AE', 'ARE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'ar', 'AED', '971', NOW(), NOW()),
-(222, 1, 'United Kingdom', '', '826', 'GB', 'GBR', '^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 1, 'en', 'GBP', '44', NOW(), NOW()),
+(222, 1, 'United Kingdom', '', '826', 'GB', 'GBR', '^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]? ?[0-9][a-zA-Z]{2}', 1, 'en', 'GBP', '44', NOW(), NOW()),
 (223, 1, 'United States', '', '840', 'US', 'USA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}([ \\-][0-9]{4})?', 0, 'en', 'USD', '1', NOW(), NOW()),
 (224, 1, 'United States Minor Outlying Islands', '', '581', 'UM', 'UMI', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'USD', '1', NOW(), NOW()),
 (225, 1, 'Uruguay', '', '858', 'UY', 'URY', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'es', 'UYU', '598', NOW(), NOW()),
@@ -255,7 +255,8 @@ INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charse
 INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
 (1, 'ot_subtotal', 'order_total', 1, 1, '{"status":"1","priority":"1"}', '', NOW(), NOW()),
 (2, 'ot_shipping_fee', 'order_total', 1, 20, '{"status":"1","free_shipping_amount":"0","priority":"20"}', '', NOW(), NOW()),
-(3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW());
+(3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW()),
+(4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","report_frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
@@ -334,7 +335,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('images', 'local', 'Thumbnail Quality', 'The JPEG quality for thumbnail images (0-100). Default: 65', 'image_thumbnail_quality', '65', 'int()', '41', NOW(), NOW()),
 ('images', 'local', 'Interlaced Thumbnails', 'Generate interlaced thumbnail images for progressive loading. Increases the filesize by 10-20% but improves user experience.', 'image_thumbnail_interlaced', '0', 'toggle()', '42', NOW(), NOW()),
 ('images', 'local', 'Whitespace Color', 'Set the color of any generated whitespace to the given RGB value. Default: 255,255,255', 'image_whitespace_color', '255,255,255', 'smallinput()', '43', NOW(), NOW()),
-('checkout', 'local', 'Register Guests', 'Automatically create accounts for all guests.', 'register_guests', '0', 'toggle()', 10, NOW(), NOW()),
+('checkout', 'local', 'Register Guests', 'Force guests to create an account.', 'register_guests', '0', 'toggle()', 10, NOW(), NOW()),
 ('checkout', 'local', 'Order Copy Recipients', 'Send order copies to the following e-mail addresses. Separate by semi-colons.', 'email_order_copy', '{STORE_EMAIL}', 'mediumtext()', 12, NOW(), NOW()),
 ('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '1', 'toggle()', 13, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '0', 'toggle()', 10, NOW(), NOW()),
