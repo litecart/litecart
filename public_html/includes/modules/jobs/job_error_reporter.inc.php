@@ -16,6 +16,11 @@
       $last_run = settings::get(__CLASS__.':last_run');
 
       if (empty($force)) {
+        if (!empty($this->settings['working_hours'])) {
+          list($from_time, $to_time) = explode(',', $this->settings['working_hours']);
+          if (time() < strtotime("Today $from_time") || time() > strtotime("Today $to_time")) return;
+        }
+
         switch ($this->settings['report_frequency']) {
           case 'Immediately':
             break;
@@ -70,6 +75,13 @@
           'title' => language::translate(__CLASS__.':title_report_frequency', 'Report Frequency'),
           'description' => language::translate(__CLASS__.':description_report_frequency', 'How often the reports should be sent.'),
           'function' => 'radio("Immediately","Hourly","Daily","Weekly","Monthly")',
+        ),
+        array(
+          'key' => 'working_hours',
+          'default_value' => '07:00-21:00',
+          'title' => language::translate(__CLASS__.':title_working_hours', 'Working Hours'),
+          'description' => language::translate(__CLASS__.':description_working_hours', 'During what hours of the day the job would operate e.g. 07:00-21:00.'),
+          'function' => 'input()',
         ),
         array(
           'key' => 'email_receipient',
