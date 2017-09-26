@@ -22,6 +22,7 @@
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . 'url_*.inc.php');
 
       foreach($files as $file) {
+        $file = str_replace("\\", '/', $file); // Convert windows paths
         $route_name = preg_replace('#^.*/url_(.*)\.inc\.php$#', '$1', $file);
         $class_name = preg_replace('#^.*/(url_.*)\.inc\.php$#', '$1', $file);
 
