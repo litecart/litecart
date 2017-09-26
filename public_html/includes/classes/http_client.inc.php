@@ -74,8 +74,8 @@
           if ($this->_config['asynchronous']) break;
           $response_body .= $row;
         } else {
-          if ($this->_config['follow_redirects'] && stristr($row, "location:") != false) {
-            $redirect_url = preg_replace("/location:/i", "", trim($row));
+          if ($this->_config['follow_redirects'] && stristr($row, 'location:') != false) {
+            $redirect_url = preg_replace('#location:#i', '', trim($row));
             if (empty($redirect_url)) $redirect_url = $url;
             $redirect_url = trim($url);
             return $this->call($redirect_url, $post_data, $headers);
@@ -89,7 +89,7 @@
       $this->last_response['headers'] = $response_head;
 
     // Make sure HTTP 200 OK
-      preg_match('/HTTP\/1\.(1|0)\s(\d{3})/', $response_head, $matches);
+      preg_match('#HTTP/1\.(1|0)\s(\d{3})#', $response_head, $matches);
       if (!isset($matches[2]) || $matches[2] != '200') return false;
 
       $this->last_response['status_code'] = $matches[2];
@@ -97,7 +97,7 @@
       if ($this->_config['asynchronous']) return true;
 
     // Decode chunked data
-      if (preg_match('/Transfer-Encoding: chunked/i', $response_head)) {
+      if (preg_match('#Transfer-Encoding: chunked#i', $response_head)) {
         $response_body = $this->http_decode_chunked_data($response_body);
       }
 

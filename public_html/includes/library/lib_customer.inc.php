@@ -3,8 +3,8 @@
   class customer {
     public static $data;
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
       self::$data = &session::$data['customer'];

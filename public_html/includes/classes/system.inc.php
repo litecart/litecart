@@ -16,7 +16,7 @@
   // Load library objects
     public static function load($file) {
 
-      $module = preg_replace('/^lib_(.*)\.inc\.php$/', '$1', basename($file));
+      $module = preg_replace('#^lib_(.*)\.inc\.php$#', '$1', basename($file));
 
       if (in_array($module, self::$_loaded_modules)) {
         trigger_error("Module '$module' is already loaded", E_USER_WARNING);

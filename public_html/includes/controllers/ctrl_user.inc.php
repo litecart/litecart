@@ -65,14 +65,14 @@
 
     // Rename .htpasswd user
       if (!empty($old_user) && $old_user['username'] != $this->data['username']) {
-        $htpasswd = preg_replace('/^(?:(#)+)?('. preg_quote($old_user['username'], '/') .')?:(.*)$/m', '${1}'.$this->data['username'].':${3}', $htpasswd);
+        $htpasswd = preg_replace('#^(?:(\#)+)?('. preg_quote($old_user['username'], '#') .')?:(.*)$#m', '${1}'.$this->data['username'].':${3}', $htpasswd);
       }
 
     // Set .htpasswd user status
       if (!empty($this->data['status'])) {
-        $htpasswd = preg_replace('/^(?:#+)?('. preg_quote($this->data['username'], '/') .'):(.*)$/m', '${1}:${2}', $htpasswd);
+        $htpasswd = preg_replace('#^(?:\#+)?('. preg_quote($this->data['username'], '#') .'):(.*)$#m', '${1}:${2}', $htpasswd);
       } else {
-        $htpasswd = preg_replace('/^(?:#+)?('. preg_quote($this->data['username'], '/') .'):(.*)$/m', '#${1}:${2}', $htpasswd);
+        $htpasswd = preg_replace('#^(?:\#+)?('. preg_quote($this->data['username'], '#') .'):(.*)$#m', '#${1}:${2}', $htpasswd);
       }
 
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
@@ -112,8 +112,8 @@
 
       $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
 
-      if (preg_match('/^(?:#+)?('. preg_quote($this->data['username'], '/') .'):(.*)$/m', $htpasswd)) {
-        $htpasswd = preg_replace('/^(?:(#)+)?('. preg_quote($this->data['username'], '/') .'):.*(?:(\r|\n)+)?$/m', '${1}${2}:{SHA}'.base64_encode(sha1($password, true)) . PHP_EOL, $htpasswd);
+      if (preg_match('#^(?:\#+)?('. preg_quote($this->data['username'], '#') .'):(.*)$#m', $htpasswd)) {
+        $htpasswd = preg_replace('#^(?:(\#)+)?('. preg_quote($this->data['username'], '#') .'):.*(?:(\r|\n)+)?$#m', '${1}${2}:{SHA}'.base64_encode(sha1($password, true)) . PHP_EOL, $htpasswd);
       } else {
         $htpasswd .= $this->data['username'] .':{SHA}'. base64_encode(sha1($password, true)) . PHP_EOL;
       }
@@ -124,7 +124,7 @@
     public function delete() {
 
       $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
-      $htpasswd = preg_replace('/^(?:#+)?'. preg_quote($this->data['username'], '/') .':.*(?:\r?\n?)+/m', '', $htpasswd);
+      $htpasswd = preg_replace('#^(?:\#+)?'. preg_quote($this->data['username'], '#') .':.*(?:\r?\n?)+#m', '', $htpasswd);
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
 
       database::query(

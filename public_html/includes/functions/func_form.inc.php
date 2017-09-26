@@ -40,8 +40,8 @@
 
         if ($key == $name) return $value;
 
-        if (preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $key) == preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $name)) {
-          if (preg_match('/\[([0-9]+)?\]$/', $key)) {
+        if (preg_replace('#(.*)\[([^\]]+)?\]$#', "$1", $key) == preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $name)) {
+          if (preg_match('#\[([0-9]+)?\]$#', $key)) {
             if ($value == $array_value) {
               return $value;
             }
@@ -458,7 +458,7 @@
 
   function form_draw_function($function, $name, $input=true) {
 
-    preg_match('/(\w*)(?:\()(.*?)(?:\))/i', $function, $matches);
+    preg_match('#(\w*)(?:\()(.*?)(?:\))#i', $function, $matches);
 
     if (!isset($matches[1])) trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
 
@@ -771,7 +771,7 @@
 
       if (empty($response)) return functions::form_draw_number_field($name, $input);
 
-      $response = preg_replace('/^(\#.*\R)$/', '', $response);
+      $response = preg_replace('#^(\#.*\R)$#', '', $response);
       cache::set($cache_id, 'file', $response);
     }
 

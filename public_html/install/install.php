@@ -157,7 +157,7 @@
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-    $query = preg_replace('/--.*\s/', '', $query);
+    $query = preg_replace('#--.*\s#', '', $query);
     database::query($query);
   }
 
@@ -179,7 +179,7 @@
   }
 
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-    $query = preg_replace('/--.*\s/', '', $query);
+    $query = preg_replace('#--.*\s#', '', $query);
     database::query($query);
   }
 
@@ -206,7 +206,7 @@
   $sql = explode('-- --------------------------------------------------------', $sql);
 
   foreach ($sql as $query) {
-    $query = preg_replace('/--.*\s/', '', $query);
+    $query = preg_replace('#--.*\s#', '', $query);
     database::query($query);
   }
 
@@ -374,7 +374,7 @@
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
           foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-            $query = preg_replace('/--.*\s/', '', $query);
+            $query = preg_replace('#--.*\s#', '', $query);
             database::query($query);
           }
         }
@@ -401,7 +401,7 @@
       $sql = explode('-- --------------------------------------------------------', $sql);
 
       foreach ($sql as $query) {
-        $query = preg_replace('/--.*\s/', '', $query);
+        $query = preg_replace('#--.*\s#', '', $query);
         database::query($query);
       }
     }

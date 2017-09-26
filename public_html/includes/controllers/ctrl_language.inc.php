@@ -159,7 +159,7 @@
       }
 
       if ($this->data['code'] == settings::get('default_language_code')) {
-        trigger_error('Cannot delete the store default language', E_USER_ERROR);
+        trigger_error('Cannot delete the default language', E_USER_ERROR);
         return;
       }
 

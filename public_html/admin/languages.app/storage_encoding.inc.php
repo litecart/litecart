@@ -46,6 +46,7 @@
     "select * from `information_schema`.`TABLES`
     where TABLE_SCHEMA = '". DB_DATABASE ."';"
   );
+
   while ($table = database::fetch($tables_query)) {
     if (in_array($table['TABLE_NAME'], $defined_tables)) {
       $options[] = array($table['TABLE_NAME'] .' -- '. $table['TABLE_COLLATION'], $table['TABLE_NAME']);

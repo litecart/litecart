@@ -114,13 +114,13 @@
 
     public function delete() {
 
-      if ($this->data['code'] == settings::get('system_country')) {
-        trigger_error('Cannot delete the store system country', E_USER_ERROR);
+      if ($this->data['code'] == settings::get('store_country_code')) {
+        trigger_error('Cannot delete the store country', E_USER_ERROR);
         return;
       }
 
       if ($this->data['code'] == settings::get('default_country_code')) {
-        trigger_error('Cannot delete the store default country', E_USER_ERROR);
+        trigger_error('Cannot delete the default country', E_USER_ERROR);
         return;
       }
 

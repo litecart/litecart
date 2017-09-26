@@ -3,8 +3,8 @@
   class compression {
 
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     //public static function load_dependencies() {
     //}
@@ -28,7 +28,7 @@
 
     // Initialize GZIP compression to reduce bandwidth.
       if (!headers_sent() && settings::get('gzip_enabled')) {
-        ob_start("ob_gzhandler");
+        ob_start('ob_gzhandler');
       }
     }
 

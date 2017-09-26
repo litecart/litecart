@@ -6,6 +6,7 @@
 
     $box_site_menu->snippets = array(
       'categories' => array(),
+      'manufacturers' => array(),
       'pages' => array(),
     );
 

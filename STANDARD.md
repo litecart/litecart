@@ -4,46 +4,46 @@
 ## Character Encoding
 
   Foreign characters should not be present in the source code. If such do, the script must be encoded with character set UTF-8 w/o Byte Order Mark (BOM).
-  
-  
+
+
 ## Indentation
-  
+
   Indentation of logic should be 2 whitespace characters.
-  
+
 	Level 1
 	  Level 2
 	    Level 3
 	      Level 4
-  
+
   TABs should not be used.
-  
+
 	Level 1
 		Level 2
 			Level 3
 				Level 4
-  
+
   Indentation of comments is subtracted one level:
-  
+
     // This is a comment
       echo 'Hello World!';
-  
+
   Indentation of code after opening a PHP tag:
-  
+
     <?php
       dosomething();
       ..
     ?>
-  
-  
+
+
 ## Line Breaks
 
   Do not use more than one empty line for separating logic.
-  
-  
+
+
 ## Naming of Variables and Elements
 
   Don't make up shortenings. Always use full words unless they are annoyingly long. Don't mix languages, use english only for code and comments. Don't mix lower and upper cases.
-  
+
   Correct:
 
 	  $customer_address
@@ -55,41 +55,41 @@
 	  $kund_adress // Foreign language
 	  $customerAddress // Mixed cases
 	  $customer['customer_address'] // Duplicate prefix
-  
+
   Naming of CSS classes and IDs
-  
+
     <div id="box-hello" class="box white">
-  
-  
+
+
 ## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
 
   Single quote characters should be used for PHP and javascript code unless parsing data or simply inconvenient.
-  
+
   Use double quotes for all HTML element parameters in accordance with SGML.
-  
+
   Correct:
-    
+
     echo '<a href="http://www.site.com">Hello World</a>';
 
     database::query("select * from Table where id = 'string'");
-    
+
     <img src="" />
-    
+
     $('.myclass').html();
 
   When it can be compromised:
-    
+
     echo "Hello y'all";
     echo "Hello $name\r\n";
-    
+
     $('input[name="field"]').val();
 
   Incorrect:
 
     echo "Hello World!";
-    
+
     <img src='' />
-  
+
 
 ## Translating Variables
 
@@ -105,30 +105,30 @@
 
 
 ## File Naming
-  
+
   The filename of the files must be all lowercase characters and contain no more
   than 31 characters to be Apple/Mac compatible. Word separation by underscore.
-  
+
   Name files that are grouped with a prefix e.g:
 
     box_background_red.png
     box_background_green.png
     box_background_blue.png
-  
-  
+
+
 ## File Extensions
-  
+
   Non-HTML PHP output scripts should be named by their output format extension like the following:
-    
+
     script_name.xml.php
     script_name.rss.php
     script_name.json.php
-    
+
   Included files should be named:
-    
+
     script_name.inc.php
-  
-  
+
+
 ## Beginning & Ending PHP Logic
 
   When starting PHP logic, the tag should be written as "<?php", not in the
@@ -137,9 +137,9 @@
   Inline PHP code:
 
     <?php echo "Hello World!"; ?>
-  
+
   PHP Code Block:
-  
+
     <?php
       echo "Hello World!";
       ...
@@ -211,8 +211,8 @@ Defining a variable with more than a handful of values
       public function my_public_method() {
       }
     }
-  
-  
+
+
 ## Database Queries in PHP
 
   Database queries should be line breaked, indented, and presented in lowercases.
@@ -226,7 +226,7 @@ Defining a variable with more than a handful of values
 
   Unlike displaying strings, double quote characters are wrapped around the sql query.
 
-  
+
 ## Incoming PHP Data
 
   To see if a variable exists, use the following structure:
@@ -236,7 +236,7 @@ Defining a variable with more than a handful of values
   Don't just assume it exists:
 
     if ($_POST['variable'])
-    
+
   Always assume incoming data is insecure by escaping the input:
 
     databas::query(
@@ -245,10 +245,10 @@ Defining a variable with more than a handful of values
       where foo = 'bar'
       limit 1;"
     );
-    
+
     echo htmlspecialchars($_POST['variable']);
-  
-  
+
+
 ## Function Results in PHP
 
   General functions shall always return data, not output data to buffer.
@@ -309,9 +309,9 @@ Defining a variable with more than a handful of values
 ## Code Compliance
 
  - PHP code must comply with PHP 5.3+ using E_STRICT.
-  
+
  - HTML code must be compliant with HTML 5.
-  
+
  - Style definitions must be compliant with CSS 3.
-  
+
  - Any use of javascript must dedicate the jQuery framework.

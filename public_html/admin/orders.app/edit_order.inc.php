@@ -324,7 +324,7 @@
             <div class="col-md-6 customer-details">
               <h3><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h3>
 
-                <div class="form-group">
+              <div class="form-group">
                 <div class="input-group">
                   <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                   <div class="selected-account form-control disabled"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#modal-customer-picker" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
