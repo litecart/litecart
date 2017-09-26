@@ -23,17 +23,12 @@
 
   $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
 
-  function return_bytes($val) {
-    $val = trim($val);
-    switch(strtolower($val[strlen($val)-1])) {
-      case 'g':
-        $val *= 1024;
-      case 'm':
-        $val *= 1024;
-      case 'k':
-        $val *= 1024;
+  function return_bytes($string) {
+    sscanf($string, '%u%c', $number, $suffix);
+    if (isset($suffix)) {
+      $number = $number * pow(1024, strpos(' KMG', strtoupper($suffix)));
     }
-    return $val;
+    return $number;
   }
 
   $countries = array(
