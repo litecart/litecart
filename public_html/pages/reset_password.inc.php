@@ -56,20 +56,21 @@
           limit 1;"
         );
 
-        $message = language::translate('email_body_reset_password', "You recently requested to reset your password for %store_name. If you did not request a password reset, please ignore this email. Visit the link below to reset your password:\r\n\r\n%link\r\n\r\nReset Token: %token");
-        $message = strtr($message, array(
+        $aliases = array(
           '%email' => $customer['email'],
           '%store_name' => settings::get('store_name'),
           '%token' => $reset_token['token'],
           '%link' => document::ilink('reset_password', array('email' => $customer['email'], 'reset_token' => $reset_token['token'])),
-        ));
-
-        functions::email_send(
-          null,
-          $customer['email'],
-          language::translate('title_reset_password', 'Reset Password'),
-          $message
         );
+
+        $subject = language::translate('title_reset_password', 'Reset Password');
+        $message = strtr(language::translate('email_body_reset_password', "You recently requested to reset your password for %store_name. If you did not request a password reset, please ignore this email. Visit the link below to reset your password:\r\n\r\n%link\r\n\r\nReset Token: %token"), $aliases);
+
+        $email = new email();
+        $email->add_recipient($customer['email'], $customer['firstname'] .' '. $customer['lastname'])
+              ->set_subject($subject)
+              ->add_body($message)
+              ->send();
 
         notices::add('success', language::translate('success_reset_password_email_sent', 'An email with instructions has been sent to your email address.'));
         header('Location: '. document::ilink('reset_password', array('email' => $_REQUEST['email'], 'reset_token' => '')));
