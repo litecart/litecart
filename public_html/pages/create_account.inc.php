@@ -76,9 +76,7 @@
 
       $customer->set_password($_POST['password']);
 
-      $email_message = language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
-
-      $translations = array(
+      $aliases = array(
         '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
         '%customer_firstname' => $_POST['firstname'],
@@ -87,16 +85,14 @@
         '%customer_password' => $_POST['password']
       );
 
-      foreach ($translations as $needle => $replace) {
-        $email_message = str_replace($needle, $replace, $email_message);
-      }
+      $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
+      $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
 
-      functions::email_send(
-        null,
-        $_POST['email'],
-        language::translate('email_subject_customer_account_created', 'Customer Account Created'),
-        $email_message
-      );
+      $email = new email();
+      $email->add_recipient($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
+            ->set_subject($subject)
+            ->add_body($message)
+            ->send();
 
       notices::add('success', language::translate('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
 

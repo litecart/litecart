@@ -104,6 +104,18 @@ body {
   }
 }
 
+#site-menu li a {
+  border-left: 1px rgba(255,255,255,0.25) solid;
+  border-right: 1px rgba(0,0,0,0.05) solid;
+}
+#site-menu li:first-child a {
+ /* border-left: none;*/
+}
+#site-menu li:last-child a {
+  border-right: 1px rgba(255,255,255,0.25) solid;
+}
+
+/*
 #site-menu {
   margin-bottom: 20px;
   background-color: #f9f9f9;
@@ -187,10 +199,8 @@ body {
       }
     }
   }
-  @media (max-width: 639px) {
-    display: none;
-  }
 }
+*/
 
 #sidebar {
   padding: @default-gutter-size;

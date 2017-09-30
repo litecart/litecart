@@ -1,5 +1,4 @@
 <?php
-  if (empty(document::$settings['cookie_acceptance'])) return;
   if (!empty($_COOKIE['cookies_accepted'])) return;
 ?>
 <div id="cookies-acceptance" class="text-center">
@@ -9,6 +8,7 @@
 <script>
   $('button[name="accept_cookies"]').click(function(){
     $('#cookies-acceptance').fadeOut();
-    $.cookie('cookies_accepted', '1', {path: '<?php echo WS_DIR_HTTP_HOME; ?>', expires: 365});
+    var expires = new Date(expires.getTime() + (365 * 24 * 60 * 60 * 1000));
+    document.cookie = 'cookies_accepted=1;expires=' + expires.toUTCString();
   });
 </script>

@@ -324,7 +324,7 @@
             <div class="col-md-6 customer-details">
               <h3><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h3>
 
-                <div class="form-group">
+              <div class="form-group">
                 <div class="input-group">
                   <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                   <div class="selected-account form-control disabled"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#modal-customer-picker" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
@@ -621,11 +621,11 @@
             <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
             <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
           </tr>
-        </tbody>
 <?php
     }
   }
 ?>
+        </tbody>
         <tfoot>
           <tr>
             <td colspan="7">
@@ -1006,6 +1006,7 @@
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
                + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '  </tr>';
+
     output = output.replace(/new_item_index/g, 'new_' + new_item_index);
     $('#order-items tbody').append(output);
 

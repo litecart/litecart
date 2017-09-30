@@ -3,8 +3,8 @@
   class customer {
     public static $data;
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
       self::$data = &session::$data['customer'];
@@ -267,12 +267,11 @@
         '%store_link' => document::ilink(''),
       ));
 
-      functions::email_send(
-        null,
-        $email,
-        language::translate('email_subject_new_password', 'New Password'),
-        $message
-      );
+      $email = new email();
+      $email->add_recipient($email, $customer['firstname'] .' '. $customer['lastname'])
+            ->set_subject(language::translate('email_subject_new_password', 'New Password'))
+            ->set_message($message)
+            ->send();
 
       notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your email address.'));
       header('Location: '. $_SERVER['REQUEST_URI']);

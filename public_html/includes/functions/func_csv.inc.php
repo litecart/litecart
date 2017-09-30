@@ -23,7 +23,7 @@
 
     $output = mb_convert_encoding($output, $charset, language::$selected['charset']);
 
-    return preg_replace('/(\r\n|\r|\n)/', $eol, $output);
+    return preg_replace('#(\r\n|\r|\n)#', $eol, $output);
   }
 
   function csv_decode($string, $delimiter='', $enclosure='"', $escape='"', $charset='utf-8') {
@@ -36,8 +36,8 @@
     $string = mb_convert_encoding($string, language::$selected['charset'], $charset);
 
     if (empty($delimiter)) {
-      preg_match('/^([^(\r|\n)]+)/', $string, $matches);
-      foreach(array(',', ';', "\t", '|') as $char) {
+      preg_match('#^([^(\R)]+)#', $string, $matches);
+      foreach (array(',', ';', "\t", '|', chr(124)) as $char) {
         if (strpos($matches[1], $char) !== false) {
           $delimiter = $char;
         }

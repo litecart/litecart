@@ -12,12 +12,12 @@
 
     if (empty(notices::$data['errors'])) {
 
-      $result = functions::email_send(
-        '"'. $_POST['name'] .'" <'. $_POST['email'] .'>',
-        settings::get('store_email'),
-        $_POST['subject'],
-        $_POST['message']
-      );
+      $email = new email();
+      $email->add_recipient($_POST['email'], $_POST['name'])
+            ->set_subject($_POST['subject'])
+            ->add_body($_POST['message']);
+
+      $result = $email->send();
 
       if ($result) {
         notices::add('success', language::translate('success_your_email_was_sent', 'Your email has successfully been sent'));

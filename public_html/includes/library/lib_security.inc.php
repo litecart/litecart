@@ -160,21 +160,21 @@
 
       foreach (array_keys($rows) as $key) {
 
-        if (preg_match('/^(?:[\s]+)?$/', $rows[$key], $matches)) continue;
-        if (preg_match('/^(?:[\s]+)?#/', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?$#', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?\##', $rows[$key], $matches)) continue;
 
-        if (preg_match('/\[expires="(.*)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[expires="(.*)"\]#', $rows[$key], $matches)) {
           if ($matches[1] < date('Y-m-d H:i:s')) {
             continue;
           }
         }
 
-        if (preg_match('/\[ip="'. $_SERVER['REMOTE_ADDR'] .'"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[ip="'. $_SERVER['REMOTE_ADDR'] .'"\]#', $rows[$key], $matches)) {
           $blacklisted = true;
           break;
         }
 
-        if (preg_match('/\[hostname="'. $hostname .'"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[hostname="'. $hostname .'"\]#', $rows[$key], $matches)) {
           $blacklisted = true;
           break;
         }
@@ -195,29 +195,29 @@
       foreach (array_keys($rows) as $key) {
         $has_rules = false;
 
-        if (preg_match('/^(?:[\s]+)?$/', $rows[$key], $matches)) continue;
-        if (preg_match('/^(?:[\s]+)?#/', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?$#', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?\##', $rows[$key], $matches)) continue;
 
-        if (preg_match('/\[expires="(.*)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[expires="(.*)"\]#', $rows[$key], $matches)) {
           if ($matches[1] < date('Y-m-d H:i:s')) {
             continue;
           }
         }
 
-        if (preg_match('/\[ip="([^\]]+)-([^\]]+)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[ip="([^\]]+)-([^\]]+)"\]#', $rows[$key], $matches)) {
           $has_rules = true;
           if ($longip < ip2long($matches[1]) || $longip > ip2long($matches[2])) continue;
-        } else if (preg_match('/\[ip="([^\]]+)"\]/', $rows[$key], $matches)) {
+        } else if (preg_match('#\[ip="([^\]]+)"\]#', $rows[$key], $matches)) {
           $has_rules = true;
           if ($matches[1] != $_SERVER['REMOTE_ADDR']) continue;
         }
 
-        if (preg_match('/\[hostname="([^\]]+)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[hostname="([^\]]+)"\]#', $rows[$key], $matches)) {
           $has_rules = true;
           if (substr($hostname, 0 - strlen($matches[1])) != $matches[1]) continue;
         }
 
-        if (preg_match('/\[agent="([^\]]+)"\]/i', $rows[$key], $matches)) {
+        if (preg_match('#\[agent="([^\]]+)"\]#i', $rows[$key], $matches)) {
           $has_rules = true;
           if (isset($_SERVER['HTTP_USER_AGENT']) && stripos($_SERVER['HTTP_USER_AGENT'], $matches[1]) === false) continue;
         }

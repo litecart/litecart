@@ -7,11 +7,11 @@
     <div class="cart wrapper"></div>
 
     <div class="row">
-      <div class="col-md-halfs">
+      <div class="col-md-6">
         <div class="customer wrapper"></div>
       </div>
 
-      <div class="col-md-halfs">
+      <div class="col-md-6">
         <div class="shipping wrapper"></div>
 
         <div class="payment wrapper"></div>

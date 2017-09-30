@@ -41,8 +41,8 @@
 
 // List supported upgrades
   $supported_versions = array('1.0' => '1.0');
-  foreach (glob("upgrade_patches/*") as $file) {
-    preg_match('/\/(.*).(inc.php|sql)$/', $file, $matches);
+  foreach (glob('upgrade_patches/*') as $file) {
+    preg_match('#\/(.*).(inc.php|sql)$#', $file, $matches);
     $supported_versions[$matches[1]] = $matches[1];
   }
   usort($supported_versions, function($a, $b) {
@@ -67,7 +67,7 @@
             $sql = explode('-- --------------------------------------------------------', $sql);
 
             foreach ($sql as $query) {
-              $query = preg_replace('/--.*\s/', '', $query);
+              $query = preg_replace('#--.*\s#', '', $query);
               database::query($query);
             }
           echo '<span class="ok">[OK]</span></p>' . PHP_EOL;

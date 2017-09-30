@@ -43,18 +43,6 @@ module.exports = function(grunt) {
           'public_html/ext/featherlight/featherlight.min.css'       : 'public_html/ext/featherlight/featherlight.less',
         }
       },
-      responsiveslides_minified: {
-        options: {
-          compress: true,
-          sourceMap: true,
-          sourceMapBasepath: 'public_html/ext/responsiveslides/',
-          sourceMapRootpath: '/',
-          relativeUrls: true
-        },
-        files: {
-          'public_html/ext/responsiveslides/responsiveslides.min.css'       : 'public_html/ext/responsiveslides/responsiveslides.less',
-        }
-      },
     },
 
     uglify: {

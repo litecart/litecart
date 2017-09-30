@@ -1,6 +1,4 @@
 <?php
-  document::$snippets['head_tags']['responsiveslides'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'responsiveslides/responsiveslides.min.css" media="screen" />';
-  document::$snippets['foot_tags']['responsiveslides'] = '<script src="'. WS_DIR_EXT .'responsiveslides/responsiveslides.min.js"></script>';
 
   $box_slides_cache_id = cache::cache_id('box_slides', array('language'));
   if (cache::capture($box_slides_cache_id, 'file')) {

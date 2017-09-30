@@ -24,7 +24,7 @@
       )));
     } else {
       http_response_code(503);
-      include(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'pages/maintenance_mode.inc.php');
+      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'pages/maintenance_mode.inc.php');
       require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
       exit;
     }

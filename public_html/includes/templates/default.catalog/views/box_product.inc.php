@@ -34,23 +34,25 @@
       <?php } ?>
 
       <?php if ($short_description) { ?>
-      <div class="short-description">
+      <p class="short-description">
         <?php echo $short_description; ?>
+      </p>
+      <?php } ?>
+
+      <?php if (!empty($manufacturer)) { ?>
+      <div class="manufacturer">
+        <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>">
+          <?php if ($manufacturer['image']) { ?>
+          <img src="<?php echo functions::image_thumbnail($manufacturer['image']['thumbnail'], 0, 48); ?>" srcset="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
+          <?php } else { ?>
+          <h3><?php echo $manufacturer['name']; ?></h3>
+          <?php } ?>
+        </a>
       </div>
       <?php } ?>
     </div>
 
     <div class="col-sm-halfs col-md-thirds">
-
-      <?php if (!empty($manufacturer['image'])) { ?>
-      <div class="manufacturer" style="font-size: 1.5em;">
-        <?php if ($manufacturer['image']) { ?>
-        <p><a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><img src="<?php echo functions::image_thumbnail($manufacturer['image']['thumbnail'], 0, 48); ?>" srcset="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" /></a></p>
-        <?php } else { ?>
-        <p><a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><?php echo $manufacturer['name']; ?></a></p>
-        <?php } ?>
-      </div>
-      <?php } ?>
 
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>

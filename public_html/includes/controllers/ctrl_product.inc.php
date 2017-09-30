@@ -79,6 +79,7 @@
       }
 
       $this->data['product_groups'] = explode(',', $this->data['product_groups']);
+      $this->data['keywords'] = explode(',', $this->data['keywords']);
 
     // Info
       $products_info_query = database::query(
@@ -191,11 +192,9 @@
       $this->data['product_groups'] = array_filter($this->data['product_groups']);
       $this->data['product_groups'] = array_unique($this->data['product_groups']);
 
-      $this->data['keywords'] = explode(',', $this->data['keywords']);
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_filter($this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
-      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);
@@ -210,7 +209,7 @@
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'].",
         product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
-        keywords = '". database::input($this->data['keywords']) ."',
+        keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
         quantity = ". (float)$this->data['quantity'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",

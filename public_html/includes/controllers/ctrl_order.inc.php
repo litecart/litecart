@@ -428,17 +428,18 @@
 
         if (!empty($notify_comments)) {
 
+          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added');
+
           $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order') . ":\r\n\r\n";
           foreach ($notify_comments as $comment) {
             $message .= language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])) ." – ". trim($comment['text']) . "\r\n\r\n";
           }
 
-          functions::email_send(
-            '"'. settings::get('store_name') .'" <'. settings::get('store_email') .'>',
-            $this->data['customer']['email'],
-            '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added'),
-            $message
-          );
+          $email = new email();
+          $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+                ->set_subject($subject)
+                ->add_body($message)
+                ->send();
         }
       }
 
@@ -708,6 +709,8 @@
 
       $aliases['%order_items'] = trim($aliases['%order_items']);
 
+      $subject = '['. language::translate('title_order', 'Order', $language_code) .' #'. $this->data['id'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation', $language_code);
+
       $message = "Thank you for your purchase!\r\n\r\n"
                . "Your order #%order_id has successfully been created with a total of %payment_due for the following ordered items:\r\n\r\n"
                . "%order_items\r\n\r\n"
@@ -717,15 +720,13 @@
                . "%store_name\r\n"
                . "%store_url\r\n";
 
-      $message = language::translate('email_order_confirmation', $message, $language_code);
+      $message = strtr(language::translate('email_order_confirmation', $message, $language_code), $aliases);
 
-      functions::email_send(
-        null,
-        $email,
-        '['. language::translate('title_order', 'Order', $language_code) .' #'. $this->data['id'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation', $language_code),
-        strtr($message, $aliases),
-        false
-      );
+      $email = new email();
+      $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+            ->set_subject($subject)
+            ->add_body($message)
+            ->send();
     }
 
     public function send_email_notification() {
@@ -754,13 +755,11 @@
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
       if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), array('%new_status' => $order_status->name));
 
-      functions::email_send(
-        null,
-        $this->data['customer']['email'],
-        $subject,
-        $message,
-        true
-      );
+      $email = new email();
+      $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+            ->set_subject($subject)
+            ->add_body($message)
+            ->send();
     }
 
     public function draw_printable_copy() {

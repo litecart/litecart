@@ -3,8 +3,8 @@
   class settings {
     private static $_cache;
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
 
@@ -40,8 +40,8 @@
     //public static function prepare_output() {
     //}
 
-    public static function before_output() {
-    }
+    //public static function before_output() {
+    //}
 
     //public static function shutdown() {
     //}

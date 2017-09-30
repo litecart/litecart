@@ -1,17 +1,5 @@
 /* Input Fields & Input Groups - Bootstrap Compatible */
 
-/*
-fieldset {
-  padding: @default-gutter-size;
-  border-color: @default-border-color;
-  border-radius: @default-border-radius;
-  > legend {
-    font-size: 1.25em;
-    padding: 0.25em 0.5em;
-  }
-}
-*/
-
 input, button, select, textarea {
   font-family: inherit;
   font-size: inherit;
@@ -66,16 +54,6 @@ select.form-control {
   background: #fff url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64"%3E%3Cpath d="m31.3 44 11.9-13.1h-24.3z" fill="#404040"/%3E%3C/svg%3E') top right no-repeat;
 }
 
-/*
-.input-unstyled {
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  color: inherit;
-}
-*/
-
 .checkbox, .radio {
   padding: @form-input-padding;
 }
@@ -92,7 +70,6 @@ select.form-control {
   }
   .input-group-addon {
     flex: 1 0 auto;
-    vertical-align: middle;
     padding: @form-input-padding;
     font-weight: normal;
     color: #555;
@@ -101,6 +78,11 @@ select.form-control {
     border-left: 1px solid @default-border-color;
     border-right: 1px solid @default-border-color;
     margin: 0 -1px;
+  }
+  .input-group-icon {
+    flex: 1 0 auto;
+    padding: @form-input-padding;
+    margin-right: -12px;
   }
   .input-group-btn {
     flex: 1 0 auto;

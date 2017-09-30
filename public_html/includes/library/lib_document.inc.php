@@ -35,7 +35,7 @@
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['charset'] = language::$selected['charset'];
       self::$snippets['home_path'] = WS_DIR_HTTP_HOME;
-      self::$snippets['template_path'] = WS_DIR_TEMPLATES . self::$template .'/';
+      self::$snippets['template_path'] = WS_DIR_TEMPLATE;
 
       self::$snippets['title'] = array(settings::get('store_name'));
 

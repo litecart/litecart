@@ -63,7 +63,7 @@
     foreach ($vqmods as $vqmod) {
 
       $xml = simplexml_load_file($vqmod);
-      $enabled = preg_match('/\.xml$/', $vqmod) ? true : false;
+      $enabled = preg_match('#\.xml$#', $vqmod) ? true : false;
 ?>
     <tr class="<?php echo empty($enabled) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
