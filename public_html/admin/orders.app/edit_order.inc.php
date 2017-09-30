@@ -621,11 +621,11 @@
             <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
             <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
           </tr>
-        </tbody>
 <?php
     }
   }
 ?>
+        </tbody>
         <tfoot>
           <tr>
             <td colspan="7">
@@ -1006,6 +1006,7 @@
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
                + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '  </tr>';
+
     output = output.replace(/new_item_index/g, 'new_' + new_item_index);
     $('#order-items tbody').append(output);
 
