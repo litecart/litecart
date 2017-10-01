@@ -565,7 +565,7 @@
         if (empty($this->data['customer']['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter your email address.'));
         if (empty($this->data['customer']['phone'])) throw new Exception(language::translate('error_missing_phone', 'You must enter your phone number.'));
 
-        if (!filter_var($this->data['customer']['email'], FILTER_VALIDATE_EMAIL)) throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
+        if (!functions::email_validate_address($this->data['customer']['email'])) throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
 
         if (reference::country($this->data['customer']['country_code'])->postcode_format) {
           if (!empty($this->data['customer']['postcode'])) {
