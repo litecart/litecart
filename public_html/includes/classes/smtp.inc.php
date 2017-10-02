@@ -107,7 +107,6 @@
       $this->write("QUIT\r\n");
 
       fclose($this->_socket);
-      var_dump($this->_socket);
 
       return $this;
     }
