@@ -55,6 +55,10 @@
     > a > img {
       max-width: none;
     }
+    li > a {
+      padding-top: @default-gutter-size/2;
+      padding-bottom: @default-gutter-size/2;
+    }
     > ul {
       list-style: none;
       padding: 0;
@@ -68,6 +72,10 @@
         padding-left: @default-gutter-size * 4;
       }
     }
+    .dropdown-menu {
+      padding-top: @default-gutter-size/2;
+      padding-bottom: @default-gutter-size/2;
+    }
   }
 
   .nav();
@@ -77,6 +85,8 @@
   &.nav-pills {
     display: inline-flex;
     li a {
+      padding-top: @default-gutter-size/2;
+      padding-bottom: @default-gutter-size/2;
       border-radius: @default-border-radius;
     }
     li + li > a {
@@ -142,6 +152,7 @@
 
 .collapsing {
   transition: height 0.5s;
+  overflow: hidden;
 }
 
 .navbar-collapse {
@@ -199,11 +210,11 @@
   .navbar-toggle {
     position: relative;
     flex: 0 1 auto;
-    padding: @default-gutter-size/4 @default-gutter-size;
-    margin: @default-gutter-size/4 @default-gutter-size/2 @default-gutter-size/4 0;
-    background-color: transparent;
+    padding: @default-gutter-size/4 @default-gutter-size/2;
+    margin: @default-gutter-size/2 @default-gutter-size/2 @default-gutter-size/2 0;
+    background-color: rgba(0, 0, 0, 0.05);
     background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-    border: 1px solid @default-border-color;
+    border: none;
     border-radius: @default-border-radius;
     &:focus {
       outline: 0;
@@ -231,6 +242,12 @@
 
   .navbar-nav > li > a {
     color: inherit;
+  }
+
+  @media (min-width: 768px) {
+    .navbar-nav {
+      float: left;
+    }
   }
 
   @media (max-width: 767px) {
@@ -262,7 +279,7 @@
 
 @media (min-width: 768px) {
   .navbar-right {
-    float: right;
+    float: right !important;
     margin-right: @default-gutter-size;
   }
 }
@@ -277,4 +294,39 @@
   border-bottom: 1px solid transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   margin: @default-gutter-size/2 @default-gutter-size;
+}
+
+.navbar-toggle {
+  .icon-bar {
+    position: relative;
+    background-color: #888;
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    transition: all 250ms ease-in-out;
+    + .icon-bar {
+      margin-top: 4px;
+    }
+  }
+  .icon-bar:nth-of-type(2) {
+    top: 1px;
+  }
+  .icon-bar:nth-of-type(3) {
+    top: 2px;
+  }
+}
+
+.navbar-toggle:not(.collapsed) {
+  .icon-bar:nth-of-type(1) {
+    top: 6px;
+    transform: rotate(45deg);
+  }
+  .icon-bar:nth-of-type(2) {
+    background-color: transparent;
+  }
+  .icon-bar:nth-of-type(3) {
+    top: -6px;
+    transform: rotate(-45deg);
+  }
 }
