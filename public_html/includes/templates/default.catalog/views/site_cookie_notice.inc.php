@@ -1,4 +1,5 @@
 <?php
+  if (empty(document::$settings['cookie_acceptance'])) return;
   if (!empty($_COOKIE['cookies_accepted'])) return;
 ?>
 <div id="cookies-acceptance" class="text-center">
