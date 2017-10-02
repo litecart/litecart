@@ -13,7 +13,7 @@
   }
 
   $output .= '  <url>' . PHP_EOL
-           . '    <loc>'. document::ilink('', array(), false, array()) .'</loc>' . PHP_EOL
+           . '    <loc>'. document::ilink('') .'</loc>' . PHP_EOL
            . $hreflangs
            . '    <lastmod>'. date('Y-m-d') .'</lastmod>' . PHP_EOL
            . '    <changefreq>daily</changefreq>' . PHP_EOL
