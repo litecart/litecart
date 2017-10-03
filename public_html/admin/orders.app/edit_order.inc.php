@@ -212,7 +212,7 @@
 }
 
 #comments .text {
-  margin-right: 2em;
+  margin-right: 50px;
 }
 
 #comments .date {
@@ -266,13 +266,12 @@
 }
 
 #comments textarea {
-  margin-right: 2em;
   height: 4em;
+  padding: 0;
   box-sizing: border-box;
   color: inherit;
   background: transparent;
   border: none;
-  padding: none;
   outline: none;
   box-shadow: none;
 }
