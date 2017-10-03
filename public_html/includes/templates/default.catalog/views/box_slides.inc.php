@@ -1,9 +1,5 @@
 <div id="box-slides" class="carousel slide" data-ride="carousel">
 
-  <ol class="carousel-indicators">
-    <?php foreach($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'.  $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
-  </ol>
-
   <div class="carousel-inner">
 <?php
   foreach($slides as $key => $slide) {
@@ -16,13 +12,17 @@
     }
 
     if (!empty($slide['caption'])) {
-      echo '<div class="caption">'. $slide['caption'] .'</div>' . PHP_EOL;
+      echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;
     }
 
     echo '</div>' . PHP_EOL;
   }
 ?>
   </div>
+
+  <ol class="carousel-indicators">
+    <?php foreach($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'.  $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
+  </ol>
 
   <a class="left carousel-control" href="#box-slides" data-slide="prev">
     <span class="icon-prev"><?php echo functions::draw_fonticon('fa-chevron-left'); ?></span>
