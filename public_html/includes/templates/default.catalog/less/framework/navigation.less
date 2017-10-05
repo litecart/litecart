@@ -277,6 +277,21 @@
   &.navbar-default { .navbar(@menu-background-color, @default-text-color); }
 }
 
+.navbar-nav {
+  > li {
+    > a {
+      border-left: 1px rgba(255,255,255,0.25) solid;
+      border-right: 1px rgba(0,0,0,0.05) solid;
+    }
+    &:first-child > a {
+     /* border-left: none;*/
+    }
+    &:last-child > a {
+      border-right: 1px rgba(255,255,255,0.25) solid;
+    }
+  }
+}
+
 @media (min-width: 768px) {
   .navbar-right {
     float: right !important;
