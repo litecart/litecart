@@ -1,25 +1,26 @@
 {
 	"name": "litecart",
 	"title": "LiteCart\u2713",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"author": {
 		"name": "T. Almroth",
 		"url": "https://www.litecart.net/"
 	},
-  "license": "LicenseRef-LICENSE",
-  "homepage": "https://www.litecart.net/",
-  "download": "https://www.litecart.net/download",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/litecart/litecart.git"
-  },
-  "bugs": {
-    "url": "https://github.com/litecart/litecart/issues"
-  },
+	"license": "LicenseRef-LICENSE",
+	"homepage": "https://www.litecart.net/",
+	"download": "https://www.litecart.net/download",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/litecart/litecart.git"
+	},
+	"bugs": {
+		"url": "https://github.com/litecart/litecart/issues"
+	},
 	"devDependencies": {
 		"grunt": "^1.0.0",
 		"grunt-contrib-less": ">=1.4.0",
 		"grunt-contrib-uglify": ">=2.0.0",
+		"grunt-contrib-watch": "^1.0.0",
 		"less-plugin-clean-css": ">=1.5.1"
 	},
 	"scripts": {

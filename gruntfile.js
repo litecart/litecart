@@ -57,11 +57,29 @@ module.exports = function(grunt) {
           'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
         }
       },
+    },
+
+    watch: {
+      css: {
+        files: [
+          'public_html/includes/templates/*/less/framework/*.less',
+          'public_html/includes/templates/*/less/*.less',
+          'public_html/ext/featherlight/featherlight.less'
+        ],
+        tasks: ['less']
+      },
+      javascripts: {
+        files: [
+          'public_html/includes/templates/*/js/app.js',
+        ],
+        tasks: ['uglify']
+      },
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['less', 'uglify']);
 };
