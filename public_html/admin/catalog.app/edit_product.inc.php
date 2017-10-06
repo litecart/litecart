@@ -688,8 +688,12 @@ foreach (currency::$currencies as $currency) {
 // Default Category
 
   $('input[name="categories[]"]').change(function() {
-    if ($(this).is(":checked")) {
-      $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ $(this).data('name') +'</option>');
+    if ($(this).is(':checked')) {
+      if ($(this).val() == '<?php echo $product->data['default_category_id']; ?>') {
+        $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'" selected="selected">'+ $(this).data('name') +'</option>');
+      } else {
+        $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ $(this).data('name') +'</option>');
+      }
     } else {
       $('select[name="default_category_id"] option[value="'+ $(this).val() +'"]').remove();
     }
