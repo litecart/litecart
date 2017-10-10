@@ -51,9 +51,6 @@ hr {
   bottom: 15mm;
 }
 @media print {
-  body {
-    margin-bottom: 100px;
-  }
   #footer {
     position: absolute;
     left: 0;
@@ -67,8 +64,8 @@ hr {
   padding: 0 15px;
 }
 </style>
-<div id="page">
 
+<section id="page">
   <header id="header">
     <div class="row">
       <div class="col-xs-6">
@@ -269,4 +266,4 @@ hr {
     </div>
   </footer>
   <?php } ?>
-</div>
+</section>
