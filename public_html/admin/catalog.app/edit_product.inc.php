@@ -11,6 +11,7 @@
       $_POST[$key] = $value;
     }
 
+    $_POST['keywords'] = implode(',', $_POST['keywords']);
     if (isset($_GET['category_id']) && empty($_POST['categories'])) $_POST['categories'][] = $_GET['category_id'];
   }
 
@@ -27,6 +28,7 @@
 
     if (empty(notices::$data['errors'])) {
 
+      $_POST['keywords'] = explode(',', $_POST['keywords']);
       if (!isset($_POST['images'])) $_POST['images'] = array();
       if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
       if (!isset($_POST['options'])) $_POST['options'] = array();
