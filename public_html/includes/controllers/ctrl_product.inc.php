@@ -38,6 +38,7 @@
 
       $this->data['categories'] = array();
       $this->data['product_groups'] = array();
+      $this->data['keywords'] = array();
       $this->data['images'] = array();
       $this->data['prices'] = array();
       $this->data['campaigns'] = array();
