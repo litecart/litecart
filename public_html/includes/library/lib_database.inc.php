@@ -10,7 +10,7 @@
         $measure_start = microtime(true);
 
         self::$_links[$link] = new mysqli($server, $username, $password, $database) or exit;
-        //self::$_links[$link]->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+
         self::set_encoding($charset);
 
         if (($duration = microtime(true) - $measure_start) > 1) {
@@ -27,15 +27,14 @@
       }
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;");
-      $sql_mode = self::fetch($sql_mode_query);
+      $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
+      $sql_mode = preg_split('# ?, ?#', $sql_mode);
 
-      if (strpos($sql_mode['@@SESSION.sql_mode'], 'STRICT_TRANS_TABLES') !== false) {
-        $sql_mode['@@SESSION.sql_mode'] = str_replace($sql_mode['@@SESSION.sql_mode'], 'STRICT_TRANS_TABLES', '');
+      if (($key = array_search('STRICT_TRANS_TABLES', $sql_mode)) !== false) {
+        unset($sql_mode[$key]);
       }
 
-      $sql_mode['@@SESSION.sql_mode'] = trim($sql_mode['@@SESSION.sql_mode']);
-
-      self::query("SET @@session.sql_mode = '". database::input($sql_mode['@@SESSION.sql_mode']) ."';");
+      self::query("SET @@session.sql_mode = '". database::input($sql_mode) ."';");
 
       self::query("set names '". database::input($charset) ."';", $link);
 
@@ -153,7 +152,7 @@
       }
     }
 
-    public static function fetch($result) {
+    public static function fetch($result, $column='') {
 
       $measure_start = microtime(true);
 
@@ -164,6 +163,8 @@
       if (class_exists('stats', false)) {
         stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
       }
+
+      if ($column != '') return $array[$columns];
 
       return $array;
     }
