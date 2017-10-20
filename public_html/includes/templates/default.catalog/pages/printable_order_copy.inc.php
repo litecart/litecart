@@ -140,15 +140,7 @@ hr {
         </tr>
       </thead>
       <tbody>
-<?php
-  $rowclass = '';
-  foreach ($order['items'] as $item) {
-    if ($rowclass == 'odd') {
-      $rowclass = 'even';
-    } else {
-      $rowclass = 'odd';
-    }
-?>
+        <?php foreach ($order['items'] as $item) { ?>
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
           <td><?php echo $item['name']; ?>
@@ -161,15 +153,15 @@ hr {
 ?>
           </td>
           <td><?php echo $item['sku']; ?></td>
-        <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
+          <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
           <td class="text-right"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
           <td class="text-right"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
-        <?php } else { ?>
+          <?php } else { ?>
           <td class="text-right"><?php echo currency::format($item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
           <td class="text-right"><?php echo currency::format($item['quantity'] * $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
-        <?php } ?>
+          <?php } ?>
         </tr>
         <?php } ?>
       </tbody>
@@ -207,12 +199,7 @@ hr {
 
 <?php
   if (!empty($order['comments'])) {
-    $has_comments = false;
-    foreach ($order['comments'] as $comment) {
-      if (empty($comment['hidden'])) $has_comments = true;
-      break;
-    }
-    if ($has_comments) {
+    if (in_array('0', array_column($order['comments'], 'hidden'))) {
 ?>
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
   <ul id="comments" class="list-unstyled">

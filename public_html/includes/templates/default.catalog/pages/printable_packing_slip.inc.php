@@ -140,15 +140,7 @@ hr {
         </tr>
       </thead>
       <tbody>
-<?php
-  $rowclass = '';
-  foreach ($order['items'] as $item) {
-    if ($rowclass == 'odd') {
-      $rowclass = 'even';
-    } else {
-      $rowclass = 'odd';
-    }
-?>
+        <?php foreach ($order['items'] as $item) { ?>
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
           <td><?php echo $item['name']; ?>
@@ -168,12 +160,7 @@ hr {
 
 <?php
   if (!empty($order['comments'])) {
-    $has_comments = false;
-    foreach ($order['comments'] as $comment) {
-      if (empty($comment['hidden'])) $has_comments = true;
-      break;
-    }
-    if ($has_comments) {
+    if (in_array('0', array_column($order['comments'], 'hidden'))) {
 ?>
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
   <ul id="comments" class="list-unstyled">
