@@ -34,7 +34,7 @@
         unset($sql_mode[$key]);
       }
 
-      self::query("SET @@session.sql_mode = '". database::input($sql_mode) ."';");
+      self::query("SET @@session.sql_mode = '". database::input(implode(',', $sql_mode)) ."';");
 
       self::query("set names '". database::input($charset) ."';", $link);
 
@@ -164,7 +164,7 @@
         stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
       }
 
-      if ($column != '') return $array[$columns];
+      if ($column != '') return $array[$column];
 
       return $array;
     }
