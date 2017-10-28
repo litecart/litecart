@@ -241,12 +241,12 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-              <div><?php echo strftime('%e %b %Y %H:%M', strtotime($product->data['date_updated'])); ?></div>
+              <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_updated'])); ?></div>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-              <div><?php echo strftime('%e %b %Y %H:%M', strtotime($product->data['date_created'])); ?></div>
+              <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_created'])); ?></div>
             </div>
           </div>
           <?php } ?>
