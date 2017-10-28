@@ -109,7 +109,7 @@
 <script>
   var new_value_index = 1;
   $('form[name="product_group_form"]').on('click', '.add', function(e) {
-    event.preventDefault();
+    e.preventDefault();
     while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
     $name_fields = '';
