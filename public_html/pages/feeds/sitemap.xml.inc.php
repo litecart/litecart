@@ -73,7 +73,7 @@
 
   $output = language::convert_characters($output, language::$selected['charset'], 'UTF-8');
 
-  header('Content-type: application/xml; charset='. language::$selected['charset']);
+  header('Content-type: application/xml; charset=UTF-8');
 
   echo $output;
   exit;
