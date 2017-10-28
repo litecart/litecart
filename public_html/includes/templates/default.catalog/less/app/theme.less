@@ -106,16 +106,14 @@ body {
 
 #main {
   @media (min-width: 640px) {
-    > .middle {
-      display: flex;
-      flex-wrap: nowrap;
-      min-height: 400px;
-      > #sidebar {
-        position: relative;
-        flex: 0 0 @default-sidebar-width;
-        & + #content {
-          margin-left: 20px;
-        }
+    display: flex;
+    flex-wrap: nowrap;
+    min-height: 400px;
+    > #sidebar {
+      position: relative;
+      flex: 0 0 @default-sidebar-width;
+      & + #content {
+        margin-left: 20px;
       }
     }
   }

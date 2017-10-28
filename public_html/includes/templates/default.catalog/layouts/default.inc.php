@@ -30,19 +30,8 @@
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
 
   <div id="main">
-    <div class="top">
-      {snippet:top}
-    </div>
-
     <div class="middle">
-
       {snippet:content}
-
-      <div style="clear: both;"></div>
-    </div>
-
-    <div class="bottom">
-      {snippet:bottom}
     </div>
   </div>
 
