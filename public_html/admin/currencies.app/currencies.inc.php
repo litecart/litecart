@@ -26,41 +26,39 @@
 
   if (!empty($_POST['update_rates'])) {
 
-    if (!empty($_POST['currencies'])) {
+    try {
+      if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
+
       foreach (array_keys($_POST['currencies']) as $currency_code) {
 
         if ($currency_code == settings::get('store_currency_code')) continue;
 
-        try {
+        $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code') . $currency_code .'=X'));
 
-          $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code') . $currency_code .'=X'));
+        $client = new http_client();
+        $response = @$client->call($url);
 
-          $client = new http_client();
-          $response = @$client->call($url);
+        if (empty($response)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
 
-          if (empty($response)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
+        $value = (float)trim($response) * currency::$currencies[settings::get('store_currency_code')]['value'];
 
-          $value = (float)trim($response) * currency::$currencies[settings::get('store_currency_code')]['value'];
+        if (empty($value)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
 
-          if (empty($value)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
+        database::query(
+          "update ". DB_TABLE_CURRENCIES ."
+          set value = '". (float)$value ."'
+          where code = '". database::input($currency_code) ."'
+          limit 1;"
+        );
 
-          database::query(
-            "update ". DB_TABLE_CURRENCIES ."
-            set value = '". (float)$value ."'
-            where code = '". database::input($currency_code) ."'
-            limit 1;"
-          );
-
-          notices::$data['success'][] = strtr(language::translate('success_currency_rates_updated_for_currency', 'Currency rates updated for %currency_code'), array('%currency_code' => $currency_code));
-
-        } catch (Exception $e) {
-          notices::$data['errors'][] = $e->getMessage();
-        }
+        notices::$data['success'][] = strtr(language::translate('success_currency_rates_updated_for_currency', 'Currency rates updated for %currency_code'), array('%currency_code' => $currency_code));
       }
-
 
       header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::$data['errors'][] = $e->getMessage();
     }
   }
 ?>
