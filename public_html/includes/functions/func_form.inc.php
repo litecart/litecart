@@ -526,6 +526,24 @@
       case 'order_status':
       case 'order_statuses':
         return functions::form_draw_order_status_list($name, $input);
+      case 'regional_input':
+        $output = '';
+        foreach (array_keys(language::$languages) as $language_code) {
+          $output .= functions::form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input);
+        }
+        return $output;
+      case 'regional_textarea':
+        $output = '';
+        foreach (array_keys(language::$languages) as $language_code) {
+          $output .= functions::form_draw_regional_textarea($language_code, $name.'['. $language_code.']', $input);
+        }
+        return $output;
+      case 'regional_wysiwyg':
+        $output = '';
+        foreach (array_keys(language::$languages) as $language_code) {
+          $output .= functions::form_draw_regional_wysiwyg_field($language_code, $name.'['. $language_code.']', $input);
+        }
+        return $output;
       case 'page':
       case 'pages':
         return functions::form_draw_pages_list($name, $input);

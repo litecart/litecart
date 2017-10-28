@@ -65,14 +65,25 @@
         $this->data = array_replace($this->data, array_intersect_key($module, $this->data));
       }
 
+      $this->_module = new $module_id;
       $this->data['module_id'] = $module_id;
       $this->data['type'] = $type;
+
       $this->data['settings'] = $this->_decode_settings($this->data['settings']);
 
-      $this->_module = new $module_id;
       foreach ($this->_module->settings() as $structure) {
-        if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
+
+        if (substr($structure['function'], 0, 8) == 'regional') {
+          foreach (array_keys(language::$languages) as $language_code) {
+            if (!isset($this->data['settings'][$structure['key']][$language_code])) $this->data['settings'][$structure['key']][$language_code] = $structure['default_value'];
+          }
+
+        } else {
+          if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
+        }
       }
+
+
     }
 
     public function save() {

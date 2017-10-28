@@ -36,24 +36,14 @@
   $object = new $module_id();
 
   if (!$_POST) {
-    if (!empty($module->data)) {
-      foreach ($module->data['settings'] as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    } else {
-      foreach ($object->settings() as $setting) {
-        $_POST[$setting['key']] = $setting['default_value'];
-      }
-    }
+    $_POST['settings'] = $module->data['settings'];
   }
 
   if (isset($_POST['save'])) {
 
-    $fields = array_column($object->settings(), 'key');
-
-    foreach ($fields as $field) {
-      if (in_array($field, array('id', 'date_updated', 'date_created'))) continue;
-      if (isset($_POST[$field])) $module->data['settings'][$field] = $_POST[$field];
+    foreach (array_keys($_POST['settings']) as $key) {
+      if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
+      if (isset($module->data['settings'][$key])) $module->data['settings'][$key] = $_POST['settings'][$key];
     }
 
     $module->save();
@@ -103,7 +93,7 @@ pre.last-log {
           <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
         </td>
         <td class="col-md-6">
-          <?php echo functions::form_draw_function($setting['function'], $setting['key'], true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+          <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
         </td>
       </tr>
       <?php } ?>
