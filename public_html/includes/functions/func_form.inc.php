@@ -577,6 +577,8 @@
       case 'weight_class':
       case 'weight_classes':
         return functions::form_draw_weight_classes_list($name, $input);
+      case 'wysiwyg':
+        return functions::form_draw_regional_wysiwyg_field($name, $input);
       case 'zone':
       case 'zones':
         $option = !empty($options) ? $options[0] : '';
