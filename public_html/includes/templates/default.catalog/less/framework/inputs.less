@@ -46,12 +46,24 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   }
 }
 
-select.form-control {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding-right: 32px;
-  background: #fff url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64"%3E%3Cpath d="m31.3 44 11.9-13.1h-24.3z" fill="#404040"/%3E%3C/svg%3E') top right no-repeat;
+.select-wrapper {
+  position: relative;
+  &:after {
+    content: ' ';
+    position: absolute;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000;
+  }
+  select.form-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 32px;
+  }
 }
 
 .checkbox, .radio {
