@@ -102,7 +102,7 @@
             $data = @json_decode(file_get_contents($cache_file), true);
 
             if (strtolower(language::$selected['charset']) != 'utf-8') {
-              mb_convert_variables(language::$selected['charset'], 'UTF-8', $data);
+              $data = language::convert_characters($data, 'UTF-8', language::$selected['charset']);
             }
 
             return $data;
@@ -135,7 +135,7 @@
           $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $cache_id;
 
           if (strtolower(language::$selected['charset']) != 'utf-8') {
-            mb_convert_variables('UTF-8', language::$selected['charset'], $data);
+            $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
           }
 
           return @file_put_contents($cache_file, json_encode($data));

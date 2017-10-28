@@ -154,7 +154,7 @@
 
     private function _encode_settings($data) {
 
-      mb_convert_variables('UTF-8', language::$selected['charset'], $data);
+      language::convert_characters($data, 'UTF-8', language::$selected['charset']);
 
       return json_encode($data);
     }
@@ -165,7 +165,7 @@
 
       $data = json_decode($data, true);
 
-      mb_convert_variables(language::$selected['charset'], 'UTF-8', $data);
+      language::convert_characters($data, language::$selected['charset'], 'UTF-8');
 
       return $data;
     }

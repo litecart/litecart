@@ -71,7 +71,7 @@
 
   $output .= '</urlset>';
 
-  mb_convert_variables(language::$selected['charset'], 'UTF-8', $output);
+  $output = language::convert_characters($output, language::$selected['charset'], 'UTF-8');
 
   header('Content-type: application/xml; charset='. language::$selected['charset']);
 
