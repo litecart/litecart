@@ -208,9 +208,7 @@
           if (!empty($javascript)) {
             $javascript = '<script>' . PHP_EOL
                         . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                        . '$(document).ready(function(){' . PHP_EOL
                         . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
-                        . '});' . PHP_EOL
                         . '/*]]>*/-->' . PHP_EOL
                         . '</script>' . PHP_EOL;
 

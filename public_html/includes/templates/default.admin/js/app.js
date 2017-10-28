@@ -1,5 +1,3 @@
-$(document).ready(function(){
-
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();
@@ -125,5 +123,3 @@ $(document).ready(function(){
     if ($(e.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
-
-});

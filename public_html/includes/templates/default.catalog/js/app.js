@@ -1,5 +1,3 @@
-$(document).ready(function(){
-
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();
@@ -47,7 +45,54 @@ $(document).ready(function(){
       }
     });
   });
-});
+
+// Bootstrap Comaptible (data-toggle="tab")
+  $('[data-toggle="tab"]').click(function(e) {
+    e.preventDefault();
+    $(this).closest('ul').find('li').removeClass('active');
+    $(this).closest('li').addClass('active');
+    $($(this).attr('href')).show().siblings().hide();
+  });
+
+  $('.nav-tabs').each(function(){
+    if (!$(this).find('.active').length) {
+      $(this).find('li:first').addClass('active');
+    }
+  });
+
+  if (window.location.hash != '') {
+    $('a[href="' + window.location.hash + '"]').click();
+  } else {
+    $('.nav-tabs .active a').trigger('click');
+  }
+
+// Bootstrap Comaptible (data-toggle="buttons")
+  $('[data-toggle="buttons"] input[type="checkbox"]').click(function(){
+    if ($(this).is(':checked')) {
+      $(this).closest('.btn').addClass('active');
+    } else {
+      $(this).closest('.btn').removeClass('active');
+    }
+  });
+
+  $('[data-toggle="buttons"] input[type="radio"]').click(function() {
+    $(this).closest('.btn').addClass('active').siblings().removeClass('active');
+  });
+
+// Data-Table Toggle Checkboxes
+  $('.data-table *[data-toggle="checkbox-toggle"]').click(function() {
+    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
+      $(this).prop('checked', !$(this).prop('checked'));
+    });
+    return false;
+  });
+
+  $('.data-table tbody tr').click(function(e) {
+    if ($(e.target).is(':input')) return;
+    if ($(e.target).is('a, a *')) return;
+    if ($(e.target).is('th')) return;
+    $(this).find('input:checkbox').trigger('click');
+  });
 
 // Scroll Up
   $(window).scroll(function(){
@@ -106,26 +151,6 @@ $(document).ready(function(){
   }
 
   var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
-
-// Bootstrap Comaptible (data-toggle="tab")
-  $('[data-toggle="tab"]').click(function(e) {
-    e.preventDefault();
-    $(this).closest('ul').find('li').removeClass('active');
-    $(this).closest('li').addClass('active');
-    $($(this).attr('href')).show().siblings().hide();
-  });
-
-  $('.nav-tabs').each(function(){
-    if (!$(this).find('.active').length) {
-      $(this).find('li:first').addClass('active');
-    }
-  });
-
-  if (window.location.hash != '') {
-    $('a[href="' + window.location.hash + '"]').click();
-  } else {
-    $('.nav-tabs .active a').trigger('click');
-  }
 
 /*
  * jQuery Animate From To plugin 1.0
