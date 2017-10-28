@@ -145,7 +145,7 @@
     </tbody>
     <tfoot>
       <tr>
-    <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+        <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
       </tr>
     </tfoot>
   </table>
