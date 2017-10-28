@@ -34,8 +34,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 .input-field() {
   position: relative;
   color: #555;
-  background-color: #fff;
-  background-image: none;
+  background: @form-input-background-color;
   border: 1px solid @default-border-color;
   border-radius: 4px;
   box-shadow: 0 0.5px 2px rgba(50,50,93,0.15);
@@ -46,7 +45,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   display: block;
   width: 100%;
   min-width: 1px; // Firefox fix
-  padding: @form-input-padding;
+  padding: @form-input-padding @form-input-padding * 2;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   &[disabled] {
     opacity: 0.5;
@@ -56,12 +55,28 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   }
 }
 
-select.form-control {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding-right: 32px;
-  background: #fff url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64"%3E%3Cpath d="m31.3 44 11.9-13.1h-24.3z" fill="#404040"/%3E%3C/svg%3E') top right no-repeat;
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  background: @form-input-background-color;
+  &:before {
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    right: @form-input-padding * 2;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000;
+  }
+  select.form-control {
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 32px;
+  }
 }
 
 .input-unstyled {
@@ -73,7 +88,7 @@ select.form-control {
 }
 
 .checkbox, .radio {
-  padding: @form-input-padding;
+  padding: @form-input-padding @form-input-padding * 2;
 }
 
 .input-group {
@@ -88,7 +103,7 @@ select.form-control {
   }
   .input-group-addon {
     flex: 1 0 auto;
-    padding: @form-input-padding;
+    padding: @form-input-padding @form-input-padding * 2;
     font-weight: normal;
     color: #555;
     text-align: center;
@@ -96,10 +111,22 @@ select.form-control {
     border-left: 1px solid @default-border-color;
     border-right: 1px solid @default-border-color;
     margin: 0 -1px;
+    .select-wrapper {
+      background: none;
+      margin: -@form-input-padding -@form-input-padding * 2;
+      &:before {
+        right: -@form-input-padding * 2;
+      }
+    }
+    select {
+      width: auto;
+      background: none;
+      border: none;
+    }
   }
   .input-group-icon {
     flex: 1 0 auto;
-    padding: @form-input-padding;
+    padding: @form-input-padding @form-input-padding * 2;
     margin-right: -12px;
   }
   .input-group-btn {
@@ -128,4 +155,9 @@ select.form-control {
   + .input-group {
     margin-top: -1px;
   }
+}
+
+[data-toggle="buttons"] input[type="checbox"],
+[data-toggle="buttons"] input[type="radio"] {
+  display: none;
 }
