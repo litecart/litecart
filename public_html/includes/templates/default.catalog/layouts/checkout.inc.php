@@ -29,9 +29,7 @@
 
 <div id="page" class="shadow">
   <div id="main">
-
     {snippet:content}
-
   </div>
 </div>
 

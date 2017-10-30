@@ -30,9 +30,7 @@
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
 
   <div id="main">
-    <div class="middle">
-      {snippet:content}
-    </div>
+    {snippet:content}
   </div>
 
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>

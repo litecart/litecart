@@ -15,7 +15,7 @@
     }
   }
 ?>
-<div id="site-menu" class="twelve-eighty">
+<div id="site-menu">
   <nav class="navbar navbar-default">
 
     <div class="navbar-header">
