@@ -210,7 +210,7 @@
 
           if (empty($matched_group)) {
             if (!empty($option['required'])) {
-              throw new Exception(language::translate('error_set_product_options', 'Please set your product options') . ' ('. $option_group_names[language::$selected['code']] .')');
+              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
             } else {
               continue;
             }
