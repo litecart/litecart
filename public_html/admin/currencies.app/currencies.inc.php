@@ -29,30 +29,29 @@
     try {
       if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
 
-      foreach (array_keys($_POST['currencies']) as $currency_code) {
+      $url = document::link('https://api.fixer.io/latest', array('base' => settings::get('store_currency_code'), 'symbols' => implode(',', $_POST['currencies'])));
 
-        if ($currency_code == settings::get('store_currency_code')) continue;
+      $client = new http_client();
+      $response = $client->call($url);
 
-        $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code') . $currency_code .'=X'));
+      if (empty($response)) {
+        throw new Exception(language::translate('error_no_response_from_remote_machine', 'No response from remote machine'));
+      }
 
-        $client = new http_client();
-        $response = @$client->call($url);
+      if (!$response = json_decode($response, true)) {
+         throw new Exception(language::translate('error_invalid_response_from_remote_machine', 'Invalid response from remote machine'));
+      }
 
-        if (empty($response)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
-
-        $value = (float)trim($response) * currency::$currencies[settings::get('store_currency_code')]['value'];
-
-        if (empty($value)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
-
+      foreach ($response['rates'] as $currency_code => $rate) {
         database::query(
           "update ". DB_TABLE_CURRENCIES ."
-          set value = '". (float)$value ."'
+          set value = '". (float)$rate ."'
           where code = '". database::input($currency_code) ."'
           limit 1;"
         );
-
-        notices::$data['success'][] = strtr(language::translate('success_currency_rates_updated_for_currency', 'Currency rates updated for %currency_code'), array('%currency_code' => $currency_code));
       }
+
+      notices::$data['success'][] = language::translate('success_currency_rates_updated', 'Currency rates updated');
 
       header('Location: '. document::link());
       exit;
