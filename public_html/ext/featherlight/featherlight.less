@@ -1,8 +1,8 @@
 /**
- * Featherlight – ultra slim jQuery lightbox
- * Version 1.7.0 - http://noelboss.github.io/featherlight/
+ * Featherlight (LiteCart Edition) – ultra slim jQuery lightbox
+ * Version 1.7.9 - http://noelboss.github.io/featherlight/
  *
- * Copyright 2016, Noël Raoul Bossart (http://www.noelboss.com)
+ * Copyright 2017, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
 **/
 
@@ -31,6 +31,8 @@ body.featherlight-open {
   background: #333;
   /* IE8 "hack" for nested featherlights */
   background: rgba(0, 0, 0, 0);
+
+  animation: featherlight-fadein 0.1s linear;
 
   * {
     box-sizing: border-box;
@@ -67,10 +69,11 @@ body.featherlight-open {
 
     /* reset white-space wrapping */
     white-space: normal;
+
+    animation: featherlight-fadein 0.5s linear;
   }
 
   .featherlight-close-icon {
-    /* position: centering vertical and horizontal */
     position: absolute;
     top: -10px;
     right: -10px;
@@ -78,7 +81,6 @@ body.featherlight-open {
 
     width: 25px;
     line-height: 25px;
-    padding: 0;
 
     background: #c00;
     border-radius: 4px;
@@ -89,12 +91,6 @@ body.featherlight-open {
     cursor: pointer;
     text-align: center;
     font-family: Arial, sans-serif;
-  }
-
-  /* See http://stackoverflow.com/questions/16077341/how-to-reset-all-default-styles-of-the-html5-button-element */
-  .featherlight-close-icon::-moz-focus-inner {
-    border: 0;
-    padding: 0;
   }
 
   .featherlight-content h1 {
@@ -114,6 +110,15 @@ body.featherlight-open {
 }
 
 .featherlight-loading {
+  .featherlight-loader {
+    border: 15px solid #f3f3f3;
+    border-top: 15px solid #c00;
+    border-radius: 50%;
+    width: 128px;
+    height: 128px;
+    animation: featherlight-spin 2s linear infinite;
+    opacity: 0.25;
+  }
   .featherlight-content {
     background: none;
     box-shadow: none;
@@ -136,4 +141,14 @@ body.featherlight-open {
     transform: none !important;
     filter: none !important;
   }
+}
+
+@keyframes featherlight-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes featherlight-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
