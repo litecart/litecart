@@ -88,7 +88,7 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: [
-          'public_html/includes/templates/*/less/framework/*.less',
+          'public_html/includes/templates/*/less/*/*.less',
           'public_html/includes/templates/*/less/*.less',
           'public_html/ext/featherlight/featherlight.less'
         ],
