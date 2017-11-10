@@ -115,6 +115,7 @@
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
 		width:          '',                    /* Specify width of lightbox. */
 		height:         '',                    /* Specify width of lightbox. */
+		requireWindowWidth: null,              /* Minimum scren width in pixels to enable the Featherlight. Otherwise bypass it.  */
 
 		/*** methods ***/
 		/* setup iterates over a single instance of featherlight and prepares the background and binds the events */
@@ -232,11 +233,16 @@
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
 		open: function(event){
+			var self = this;
+
 			if (event && (event.ctrlKey || event.shiftKey)) {
 				return false;
 			}
 
-			var self = this;
+			if (self.requireWindowWidth && self.requireWindowWidth > $(window).width()) {
+				return false;
+			}
+
 			self.$instance.hide().appendTo(self.root);
 
 			if ((!event || !event.isDefaultPrevented())
@@ -324,7 +330,7 @@
 
 	$.extend(Featherlight, {
 		id: 0,                                      /* Used to id single featherlight instances */
-		autoBind:       '[data-toggle="lightbox"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
+		autoBind:       '[data-toggle="featherlight"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
 		defaults:       Featherlight.prototype,     /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
 		/* Contains the logic to determine content */
 		contentFilters: {
