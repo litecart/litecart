@@ -1,10 +1,10 @@
 <?php
   if (!function_exists('custom_draw_site_menu_item')) {
     function custom_draw_site_menu_item($item, $indent=0) {
-      $output = '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+      $output = '<li'. (!empty($item['subitems']) ? ' class="dropdown-submenu"' : '') .' data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
               . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>';
       if (!empty($item['subitems'])) {
-        $output .= '  <ul class="list-unstyled">' . PHP_EOL;
+        $output .= '  <ul class="dropdown-menu">' . PHP_EOL;
         foreach ($item['subitems'] as $subitem) {
           $output .= custom_draw_site_menu_item($subitem, $indent+1);
         }
@@ -38,7 +38,7 @@
         </li>
 
         <?php if ($categories) { ?>
-        <li class="dropdown">
+        <li class="categories dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_categories', 'Categories'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
@@ -47,7 +47,7 @@
         <?php } ?>
 
         <?php if ($manufacturers) { ?>
-        <li class="dropdown">
+        <li class="manufacturers dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <?php foreach ($manufacturers as $item) echo custom_draw_site_menu_item($item); ?>
@@ -56,7 +56,7 @@
         <?php } ?>
 
         <?php if ($pages) { ?>
-        <li class="dropdown">
+        <li class="information dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <?php foreach ($pages as $item) echo custom_draw_site_menu_item($item); ?>
@@ -66,7 +66,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
+        <li class="account dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <?php if (!empty(customer::$data['id'])) { ?>

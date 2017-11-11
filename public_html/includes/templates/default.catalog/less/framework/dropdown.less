@@ -14,9 +14,11 @@
 .dropdown {
   position: relative;
 }
+
 .dropdown-toggle:focus {
   outline: 0;
 }
+
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -79,6 +81,34 @@
     background-image: none;
     filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
     cursor: not-allowed;
+  }
+}
+
+.dropdown-submenu {
+  position: relative;
+  > .dropdown-menu {
+    top: -@default-gutter-size/2;
+    left: 100%;
+  }
+  &:hover > .dropdown-menu {
+    display: block;
+  }
+  > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    display: inline-block;
+    margin: @default-gutter-size/2 -@default-gutter-size/2 0 0;
+    border-left: 4px dashed;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+  }
+  &.pull-left {
+    float: none;
+    > .dropdown-menu {
+      left: -100%;
+      margin-left: 10px;
+    }
   }
 }
 
