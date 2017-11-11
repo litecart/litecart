@@ -2,8 +2,8 @@
 
   class link {
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     //public static function load_dependencies() {
     //}
@@ -30,16 +30,6 @@
     //}
 
     ######################################################################
-
-    public static function get_physical_link() {
-      $link = $_SERVER['SCRIPT_NAME'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-
-      return self::full_link($link);
-    }
-
-    public static function get_logical_link() {
-      return self::full_link($_SERVER['REQUEST_URI']);
-    }
 
     public static function create_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
 
@@ -111,30 +101,6 @@
       }
 
       return $link;
-    }
-
-    public static function local_link($url) {
-
-      $path = parse_url($url, PHP_URL_PATH);
-      $query = parse_url($url, PHP_URL_QUERY);
-
-      return $path . ($query ? '?' . $query : '');
-    }
-
-    public static function full_link($link) {
-
-      $parts = self::explode_link($link);
-      $link = self::implode_link($parts);
-
-      return $link;
-    }
-
-    public static function relpath($link) {
-      $parts = self::explode_link($link);
-
-      if (substr($parts['path'], 0, strlen(WS_DIR_HTTP_HOME)) == WS_DIR_HTTP_HOME) $parts['path'] = substr($parts['path'], strlen(WS_DIR_HTTP_HOME));
-
-      return $parts['path'] . (!empty($parts['query']) ? '?'. http_build_query($parts['query'], '', '&') : '');
     }
 
     public static function fullpath($path) {
