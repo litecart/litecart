@@ -15,7 +15,7 @@
 
   	function rewrite($parsed_link, $language_code) {
 
-      if (!isset($parsed_link['query']['manufacturer_id'])) return;
+      if (empty($parsed_link['query']['manufacturer_id'])) return;
 
       $manufacturer_query = database::query(
         "select id, name from ". DB_TABLE_MANUFACTURERS ."

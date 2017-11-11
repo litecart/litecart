@@ -15,11 +15,11 @@
 
   	function rewrite($parsed_link, $language_code) {
 
-      if (!isset($parsed_link['query']['product_id'])) return;
+      if (empty($parsed_link['query']['product_id'])) return;
 
       $product = reference::product($parsed_link['query']['product_id'], $language_code);
 
-      if (!$product->id) return $parsed_link;
+      if (empty($product->id)) return $parsed_link;
 
       $parsed_link['path'] = '';
 

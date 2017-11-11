@@ -14,7 +14,7 @@
 
     function rewrite($parsed_link, $language_code) {
 
-      if (!isset($parsed_link['query']['category_id'])) return;
+      if (empty($parsed_link['query']['category_id'])) return;
 
       $category_trail = functions::catalog_category_trail($parsed_link['query']['category_id'], $language_code);
 
