@@ -9,6 +9,7 @@
 
 // Sidebar parallax effect
   if (window.config.template.settings.sidebar_parallax_effect == true) {
+
     var column = $('#column-left'), sidebar = $('#sidebar');
     var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
