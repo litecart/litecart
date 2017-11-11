@@ -9,15 +9,14 @@
     &.open > a,
     &.open > a:hover,
     &.open > a:focus {
-      background-color: #f5f5f5;
-      color: inherit;
+      background-color: @background;
+      color: @color;
     }
     &.active > a,
     &.active > a:hover,
     &.active > a:focus {
       background-color: @background;
       color: @color;
-      //border: 1px solid darken(@background, 5%);
     }
   }
 }
@@ -38,7 +37,6 @@
       position: relative;
       display: block;
       padding: @default-gutter-size;
-      border: 1px solid transparent;
       color: inherit;
       text-decoration: none;
     }
@@ -72,19 +70,17 @@
         padding-left: @default-gutter-size * 4;
       }
     }
-    .dropdown-menu {
-      padding-top: @default-gutter-size/2;
-      padding-bottom: @default-gutter-size/2;
-    }
   }
 
   .nav();
-  &.nav-default { .nav(@background: #f5f5f5) }
-  &.nav-primary { .nav(@background: @primary-button-color, #fff) }
+  &.nav-default { .nav(@background: @menu-background, @color: @default-text-color) }
+  &.nav-primary { .nav(@background: @primary-color, #fff) }
 
   &.nav-pills {
     display: inline-flex;
     li a {
+      margin: 1px 0;
+      background: #f3f3f3;
       padding-top: @default-gutter-size/2;
       padding-bottom: @default-gutter-size/2;
       border-radius: @default-border-radius;
@@ -95,30 +91,26 @@
   }
 
   &.nav-tabs {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid @default-border-color;
     > li {
-      margin-bottom: -1px;
       > a {
         margin-right: 2px;
         line-height: 1.42857143;
-        border: 1px solid transparent;
         border-radius: @default-border-radius @default-border-radius 0 0;
       }
       &.active a {
-        border-color: @default-border-color;
+        margin-bottom: -1px;
+        border: 1px solid @default-border-color;
         border-bottom-color: #fff;
       }
     }
   }
 
   &.nav-justified {
-    border-bottom: 0;
     > li {
       flex: 1 0 auto;
       > a {
         margin-right: 0;
-        border-bottom: 1px solid #ddd;
-        border-radius: 4px 4px 0 0;
         text-align: center;
         @media (min-width: 768px) {
           margin-bottom: 0;
@@ -227,21 +219,38 @@
 .navbar(@background: #f8f8f8, @color: @default-text-color) {
   background: @background;
   color: @color;
-  //border: 1px solid darken(@background, 5%);
   border: 1px solid #e8e8e8;
-  border-radius: @default-border-radius;
   li a:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: lighter(@background, 15%);
   }
 }
 
 .navbar {
   position: relative;
   margin-bottom: @default-gutter-size;
-  min-height: 53px;
+  min-height: 52px;
+  border-radius: @default-border-radius;
 
-  .navbar-nav > li > a {
-    color: inherit;
+  .navbar-nav {
+    border-left: 1px rgba(0,0,0,0.05) solid;
+    > li {
+      > a {
+        color: inherit;
+        transition: all 125ms linear;
+        border-left: 1px rgba(255,255,255,0.25) solid;
+        border-right: 1px rgba(0,0,0,0.05) solid;
+      }
+    }
+    &.navbar-right > li:last-child a {
+      border-right: none;
+    }
+  }
+
+  .dropdown-menu {
+    padding: @default-gutter-size/2;
+    li > a {
+      padding: @default-gutter-size/2 @default-gutter-size;
+    }
   }
 
   @media (min-width: 768px) {
@@ -274,40 +283,17 @@
     }
   }
 
-  &.navbar-default { .navbar(@menu-background-color, @default-text-color); }
-}
-
-.navbar-nav {
-  > li {
-    > a {
-      border-left: 1px rgba(255,255,255,0.25) solid;
-      border-right: 1px rgba(0,0,0,0.05) solid;
-    }
-    &:first-child > a {
-     /* border-left: none;*/
-    }
-    &:last-child > a {
-      border-right: 1px rgba(255,255,255,0.25) solid;
-    }
-  }
+  &.navbar-default { .navbar(@menu-background, @default-text-color); }
 }
 
 @media (min-width: 768px) {
   .navbar-right {
     float: right !important;
-    margin-right: @default-gutter-size;
   }
-}
-
-.nav-item {
-  padding: @default-gutter-size;
-  border: 1px solid transparent;
 }
 
 .navbar-form {
   border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   margin: @default-gutter-size/2 @default-gutter-size;
 }
 

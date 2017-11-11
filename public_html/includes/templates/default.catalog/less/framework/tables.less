@@ -3,28 +3,16 @@
 .table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: @default-gutter-size;
   background-color: transparent;
   border-spacing: 0;
   border-collapse: collapse;
-  &.table-bordered {
-    border: 1px solid @default-border-color;
-    > * > tr > td {
-      border-top: 1px solid @default-border-color;
-    }
+
+  td, th {
+    padding: @default-gutter-size/2 @default-gutter-size;
   }
-  &.data-table {
-    white-space: nowrap;
-  }
-  &.table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #f6f6f6;
-  }
-  &.table-striped > tbody > tr:nth-of-type(even) {
-    background-color: #fff;
-  }
+
   > * > tr > td {
-    padding: 6px 12px;
-    line-height: @default-line-height;
     vertical-align: top;
 
     &.border-top {
@@ -40,8 +28,8 @@
       border-bottom: 1px solid @default-border-color;
     }
   }
+
   > thead > tr > th {
-    padding: 6px 12px;
     text-align: left;
     vertical-align: bottom;
     border-bottom: 2px solid @default-border-color;
@@ -49,10 +37,30 @@
       width: 100%;
     }
   }
+
   > tfoot {
-    padding: 6px 12px;
     text-align: left;
     border-top: 1px solid @default-border-color;
+  }
+
+  &.table-bordered {
+    border: 1px solid @default-border-color;
+    > * > tr > td {
+      border-top: 1px solid @default-border-color;
+    }
+  }
+
+  &.data-table {
+    white-space: nowrap;
+  }
+
+  &.table-striped {
+    > tbody > tr:nth-of-type(odd) {
+      background: @table-striped-row-background-odd;
+    }
+    > tbody > tr:nth-of-type(even) {
+      background: @table-striped-row-background-even;
+    }
   }
 }
 

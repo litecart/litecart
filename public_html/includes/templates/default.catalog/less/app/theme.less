@@ -1,11 +1,11 @@
 body {
-  background-color: @site-background-color;
+  background: @site-background;
 }
 
 #page {
   min-height: 100%;
   padding: @default-gutter-size;
-  background-color: @page-background-color;
+  background: @page-background;
   border-bottom: 1px solid @default-border-color;
 }
 
@@ -28,7 +28,7 @@ body {
   top: 10px;
   width: 400px;
   #region {
-    background: @site-background-color;
+    background: @site-background;
     border-bottom: 1px solid #ffffff;
     border-collapse: collapse;
     border-radius: 4px;
@@ -114,7 +114,7 @@ body {
       position: relative;
       flex: 0 0 @default-sidebar-width;
       & + #content {
-        margin-left: 20px;
+        margin-left: @default-gutter-size;
       }
     }
   }
@@ -128,10 +128,10 @@ body {
 #footer {
   .row {
     border-top: 1px solid #e5e5e5;
-    margin: 5px 0px;
-    padding-top: 15px;
+    margin: @default-gutter-size/2 0;
+    padding-top: @default-gutter-size;
     [class*="col-"] {
-      padding: 5px 20px;
+      padding: @default-gutter-size/2 @default-gutter-size;
       &:first-child {
         border-left: none;
       }
@@ -164,14 +164,14 @@ body {
   .notice {
     color: @default-text-color;
     font-size: 0.9em;
-    padding: 0px 20px;
+    padding: @default-gutter-size;
     text-align: center;
   }
 }
 
 #cookies-acceptance {
   border: 1px @default-border-color solid;
-  margin-bottom: 20px;
+  margin-bottom: @default-gutter-size;
   padding: 5px 0px;
   text-align: center;
 }
