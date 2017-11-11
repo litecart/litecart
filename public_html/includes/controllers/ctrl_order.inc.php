@@ -581,6 +581,19 @@
           if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
         }
 
+        if (empty($this->data['customer']['id'])) {
+          $customer_query = database::query(
+            "select id from ". DB_TABLE_CUSTOMERS ."
+            where email = '". database::input($this->data['customer']['email']) ."'
+            and status = 0
+            limit 1;"
+          );
+
+          if (database::num_rows($customer_query)) {
+            throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
+          }
+        }
+
       } catch (Exception $e) {
         return language::translate('title_customer_details', 'Customer Details') .': '. $e->getMessage();
       }
