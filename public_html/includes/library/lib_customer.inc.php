@@ -352,9 +352,7 @@
         setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       }
 
-      if (!empty($redirect_url)) {
-        $redirect_url = link::local_link($redirect_url);
-      } else {
+      if (empty($redirect_url)) {
         $redirect_url = document::ilink('');
       }
 

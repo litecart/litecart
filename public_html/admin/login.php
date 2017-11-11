@@ -5,7 +5,7 @@
   document::$layout = 'login';
 
   if (!empty($_GET['redirect_url'])) {
-    $redirect_url = (basename(parse_url($_REQUEST['redirect_url'], PHP_URL_PATH)) != basename(__FILE__)) ? link::local_link($_REQUEST['redirect_url']) : document::link(WS_DIR_ADMIN);
+    $redirect_url = (basename(parse_url($_REQUEST['redirect_url'], PHP_URL_PATH)) != basename(__FILE__)) ? $_REQUEST['redirect_url'] : document::link(WS_DIR_ADMIN);
   } else {
     $redirect_url = document::link(WS_DIR_ADMIN);
   }
