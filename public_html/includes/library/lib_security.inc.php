@@ -73,10 +73,10 @@
         if (!function_exists('sanitize_string')) {
           function sanitize_string(&$item, &$key) {
             $filter_list = array(
-              //'/<script(.*?)>(.*?)<\/script>/s' => '',  // Enabling this will prevent administrators from storing javascripts in the WYSIWYG editor
-              '/eval(?:[\s]+)?\((.*)\)/s' => '',
-              '/base64_/' => '',
-              '/union(?:[\s]+)?select/s' => '',
+              //'/<script(.*?)>(.*?)<\/script>/is' => '',  // Enabling this will prevent administrators from storing javascripts in the WYSIWYG editor
+              '/eval(?:[\s]+)?\((.*)\)/is' => '',
+              '/base64_/is' => '',
+              '/union(?:[\s]+)?select/is' => '',
             );
 
             $item = preg_replace(array_keys($filter_list), array_values($filter_list), $item);
