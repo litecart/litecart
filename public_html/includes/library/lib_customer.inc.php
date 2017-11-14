@@ -257,7 +257,7 @@
       }
     }
 
-    public static function login($login, $password, $redirect_url='', $customer_remember_me=false) {
+    public static function login($login, $password, $redirect_url='', $remember_me=false) {
 
       setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
 
@@ -275,7 +275,7 @@
 
       if (empty($customer) || (!empty($customer['password']) && $customer['password'] != functions::password_checksum($customer['email'], $password))) {
         sleep(3);
-        notices::add('errors', language::translate('error_login_invalid', 'Wrong password or the account is disabled, or does not exist'));
+        notices::add('errors', language::translate('error_login_invalid', 'Wrong password or the account does not exist'));
         return;
       }
 
@@ -298,11 +298,9 @@
 
       session::regenerate_id();
 
-      if ($customer_remember_me) {
+      if ($remember_me) {
         $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
-      } else {
-        setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       }
 
       if (empty($redirect_url)) {

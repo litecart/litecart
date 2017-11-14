@@ -82,8 +82,6 @@
           if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
         }
       }
-
-
     }
 
     public function save() {

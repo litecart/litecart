@@ -782,6 +782,7 @@
 
       $printable_order_copy = new view();
       $printable_order_copy->snippets['order'] = $this->data;
+
       $output = $printable_order_copy->stitch('pages/printable_order_copy');
 
       language::set($session_language);
