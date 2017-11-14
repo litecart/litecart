@@ -46,10 +46,8 @@
     // Append default routes
       $routes = array(
         '#^(?:index\.php)?$#'                  => array('page' => 'index',          'params' => '',  'redirect' => true),
-        '#^ajax/(.*)(?:\.php)?$#'              => array('page' => 'ajax/$1',        'params' => '',  'redirect' => true),
-        '#^feeds/(.*)(?:\.php)?$#'             => array('page' => 'feeds/$1',       'params' => '',  'redirect' => true),
         '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false, 'post_security' => false),
-        '#^([0-9|a-z|_|/]+)(?:\.php)?$#'       => array('page' => '$1',             'params' => '',  'redirect' => true),
+        '#^([0-9a-z_/\.]+)(?:\.php)?$#'        => array('page' => '$1',             'params' => '',  'redirect' => true),
         // See ~/includes/routes/ folder for more advanced routes
       );
 
