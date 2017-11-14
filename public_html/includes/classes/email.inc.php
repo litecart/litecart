@@ -103,11 +103,9 @@
         'X-Mailer' => PLATFORM_NAME .' '. PLATFORM_VERSION,
       );
 
-      if (count($this->_multiparts) > 1) {
-        $multipart_boundary = true;
-        $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
-        $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
-      }
+      $multipart_boundary = true;
+      $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
+      $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
 
       array_walk($headers,
         function (&$v, $k) {
