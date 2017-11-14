@@ -34,7 +34,7 @@
 
       <ul class="nav navbar-nav">
         <li class="hidden-xs">
-          <a href="<?php echo document::ilink(''); ?>" class="navbar-brand"><i class="fa fa-home"></i></a>
+          <a href="<?php echo document::ilink(''); ?>" class="navbar-brand"><?php echo functions::draw_fonticon('fa-home'); ?></a>
         </li>
 
         <?php if ($categories) { ?>
