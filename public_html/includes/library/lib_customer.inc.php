@@ -231,53 +231,6 @@
       if (!empty(self::$data['id'])) return true;
     }
 
-    public static function password_reset($email, $new_password=null) {
-
-      if (empty($email)) {
-        notices::add('errors', language::translate('error_password_reset_missing_email', 'To reset your password you must provide an email address.'));
-        return;
-      }
-
-      $customer_query = database::query(
-        "select * from ". DB_TABLE_CUSTOMERS ."
-        where email = '". database::input($email) ."'
-        limit 1;"
-      );
-      $customer = database::fetch($customer_query);
-
-      if (empty($customer)) {
-        sleep(rand(3, 10));
-        notices::add('errors', language::translate('error_email_not_in_database', 'The email address does not exist in our database.'));
-        return;
-      }
-
-      if (empty($new_password)) $new_password = functions::password_generate(6);
-
-      database::query(
-        "update ". DB_TABLE_CUSTOMERS ."
-        set password = '". functions::password_checksum($email, $new_password) ."'
-        where email = '". database::input($email) ."'
-        limit 1;"
-      );
-
-      $message = language::translate('email_body_password_reset', 'We have set a new password for your account at %store_link. Use your email %email and new password %password to log in.');
-      $message = strtr($message, array(
-        '%email' => $email,
-        '%password' => $new_password,
-        '%store_link' => document::ilink(''),
-      ));
-
-      $email = new email();
-      $email->add_recipient($email, $customer['firstname'] .' '. $customer['lastname'])
-            ->set_subject(language::translate('email_subject_new_password', 'New Password'))
-            ->set_message($message)
-            ->send();
-
-      notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your email address.'));
-      header('Location: '. $_SERVER['REQUEST_URI']);
-      exit;
-    }
-
     public static function load($customer_id) {
 
       self::reset();
