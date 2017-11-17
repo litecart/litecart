@@ -35,7 +35,8 @@
 
       $url = 'http://maps.googleapis.com/maps/api/geocode/json?'. http_build_query($params);
 
-      $response = functions::http_fetch($url);
+      $client = new http_client();
+      $response = $client->call('GET', $url);
 
       if (empty($response)) return;
 
