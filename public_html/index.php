@@ -40,9 +40,10 @@
 
     if (preg_match('#\.[a-z]{2,4}$#', route::$request)) exit;
 
+    file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'not_found.log', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . PHP_EOL, FILE_APPEND);
+
     echo '<h1>HTTP 404 - File Not Found</h1>';
     echo '<p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>';
-    file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'not_found.log', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
   }
 
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
