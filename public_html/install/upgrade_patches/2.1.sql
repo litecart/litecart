@@ -20,3 +20,12 @@ CHANGE COLUMN `shipping_postcode` `shipping_postcode` VARCHAR(16) NOT NULL;
 ALTER TABLE `lc_orders`
 CHANGE COLUMN `customer_postcode` `customer_postcode` VARCHAR(16) NOT NULL,
 CHANGE COLUMN `shipping_postcode` `shipping_postcode` VARCHAR(16) NOT NULL;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products`
+CHANGE COLUMN `code` `code` VARCHAR(32) NOT NULL,
+CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL,
+ADD COLUMN `mpn` VARCHAR(32) NOT NULL AFTER `sku`,
+ADD INDEX `sku` (`sku`),
+ADD INDEX `mpn` (`mpn`),
+ADD INDEX `gtin` (`gtin`),
+ADD INDEX `taric` (`taric`);

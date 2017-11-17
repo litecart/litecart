@@ -114,6 +114,7 @@
     'link' => document::ilink('product', array(), true),
     'code' => $product->code,
     'sku' => $product->sku,
+    'mpn' => $product->mpn,
     'gtin' => $product->gtin,
     'name' => $product->name,
     'short_description' => !empty($product->short_description) ? $product->short_description : '',

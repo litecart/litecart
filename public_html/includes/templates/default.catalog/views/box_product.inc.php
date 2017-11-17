@@ -26,9 +26,10 @@
     <div class="col-sm-halfs col-md-thirds">
       <h1 class="title"><?php echo $name; ?></h1>
 
-      <?php if ($sku || $gtin) { ?>
+      <?php if ($sku || $mpn || $gtin) { ?>
       <ul class="codes list-inline">
         <?php if ($sku) { ?><li class="sku"><?php echo $sku; ?></li><?php } ?>
+        <?php if ($mpn) { ?><li class="mpn"><?php echo $mpn; ?></li><?php } ?>
         <?php if ($gtin) { ?><li class="gtin"><?php echo $gtin; ?></li><?php } ?>
       </ul>
       <?php } ?>
