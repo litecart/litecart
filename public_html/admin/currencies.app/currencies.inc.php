@@ -32,7 +32,7 @@
       $url = document::link('https://api.fixer.io/latest', array('base' => settings::get('store_currency_code'), 'symbols' => implode(',', $_POST['currencies'])));
 
       $client = new http_client();
-      $response = $client->call($url);
+      $response = $client->call('GET', $url);
 
       if (empty($response)) {
         throw new Exception(language::translate('error_no_response_from_remote_machine', 'No response from remote machine'));

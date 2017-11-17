@@ -793,7 +793,7 @@
     if (!$response = cache::get($cache_id, 'file', 2592000, true)) {
 
       $client = new http_client();
-      $response = $client->call('http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt');
+      $response = $client->call('GET', 'http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt');
 
       if (empty($response)) return functions::form_draw_number_field($name, $input);
 

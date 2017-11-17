@@ -5,7 +5,7 @@
     $url = document::link('https://www.litecart.net/feeds/discussions.rss');
 
     $client = new http_client();
-    $response = @$client->call($url);
+    $response = @$client->call('GET', $url);
     $rss = @simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {

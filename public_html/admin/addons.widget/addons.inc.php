@@ -16,7 +16,7 @@
     );
 
     $client = new http_client();
-    $response = @$client->call($url, $store_info);
+    $response = @$client->call('POST', $url, $store_info);
     $rss = @simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {
