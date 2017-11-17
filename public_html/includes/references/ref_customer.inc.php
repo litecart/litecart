@@ -3,17 +3,10 @@
   class ref_customer {
 
     private $_id;
-    private $_cache_id;
     private $_data = array();
 
     function __construct($customer_id) {
-
       $this->_id = (int)$customer_id;
-      //$this->_cache_id = cache::cache_id('customer_'.(int)$customer_id);
-
-      //if ($cache = cache::get($this->_cache_id, 'file')) {
-        //$this->_data = $cache;
-      //}
     }
 
     public function &__get($name) {
@@ -92,7 +85,5 @@
 
           break;
       }
-
-      //cache::set($this->_cache_id, 'file', $this->_data);
     }
   }
