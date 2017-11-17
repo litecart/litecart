@@ -126,7 +126,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-              <?php echo functions::form_draw_google_taxonomy_categories_list('google_taxonomy_id', true); ?>
+              <?php echo functions::form_draw_number_field('google_taxonomy_id', true); // Alternatively form_draw_google_taxonomy_categories_list() is available  ?>
             </div>
           </div>
 
