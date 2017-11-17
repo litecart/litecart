@@ -791,7 +791,9 @@
     $cache_id = cache::cache_id('google_taxonomy_categories', array('language'));
 
     if (!$response = cache::get($cache_id, 'file', 2592000, true)) {
-      $response = file_get_contents('http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt');
+
+      $client = new http_client();
+      $response = $client->call('http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt');
 
       if (empty($response)) return functions::form_draw_number_field($name, $input);
 
