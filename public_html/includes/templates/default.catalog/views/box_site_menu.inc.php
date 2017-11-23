@@ -65,15 +65,6 @@
           </ul>
         </li>
         <?php } ?>
-
-        <?php if ($customer_service) { ?>
-        <li class="customer-service dropdown">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_customer_service', 'Customer Service'); ?> <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <?php foreach ($customer_service as $item) echo custom_draw_site_menu_item($item); ?>
-          </ul>
-        </li>
-        <?php } ?>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
