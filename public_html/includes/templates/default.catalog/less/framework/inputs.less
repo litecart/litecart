@@ -45,7 +45,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   }
 }
 
-.select-wrapper {
+.select-wrapper:not(.multiple) {
   position: relative;
   width: 100%;
   background: @form-input-background;
@@ -65,7 +65,15 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding-right: 32px;
+  }
+}
+
+.select-wrapper.multiple {
+  .form-control {
+    padding: 0;
+  }
+  option {
+    padding: 6px 12px;
   }
 }
 

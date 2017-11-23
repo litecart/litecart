@@ -316,7 +316,7 @@
   function form_draw_select_optgroup_field($name, $groups=array(), $input=true, $multiple=false, $parameters='') {
     if (!is_array($groups)) $groups = array($groups);
 
-    $html = '<div class="select-wrapper">' . PHP_EOL
+    $html = '<div class="select-wrapper'. ($multiple ? ' multiple' : '') .'">' . PHP_EOL
           . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
@@ -342,7 +342,7 @@
 
     if (!is_array($options)) $options = array($options);
 
-    $html = '<div class="select-wrapper">' . PHP_EOL
+    $html = '<div class="select-wrapper'. ($multiple ? ' multiple' : '') .'">' . PHP_EOL
           . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
