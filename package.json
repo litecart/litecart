@@ -18,8 +18,8 @@
 	},
 	"devDependencies": {
 		"grunt": "^1.0.0",
-		"grunt-contrib-less": ">=1.4.0",
-		"grunt-contrib-uglify": ">=2.0.0",
+		"grunt-contrib-less": "^1.4.1",
+		"grunt-contrib-uglify": "^3.1.0",
 		"grunt-contrib-watch": "^1.0.0",
 		"grunt-text-replace": "^0.3.12",
 		"less-plugin-clean-css": ">=1.5.1"
