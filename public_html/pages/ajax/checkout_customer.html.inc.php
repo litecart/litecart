@@ -38,9 +38,6 @@
       }
     }
 
-  // Keep first error only
-    if (!empty(notices::$data['errors'])) notices::$data['errors'] = array(array_shift(notices::$data['errors']));
-
   // Billing address
     $fields = array(
       'email',
