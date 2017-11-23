@@ -41,29 +41,41 @@
 
   if (isset($_POST['save'])) {
 
-    foreach (array_keys($_POST['settings']) as $key) {
-      if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
-      if (isset($module->data['settings'][$key])) $module->data['settings'][$key] = $_POST['settings'][$key];
+    try {
+      foreach (array_keys($_POST['settings']) as $key) {
+        if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
+        if (isset($module->data['settings'][$key])) $module->data['settings'][$key] = $_POST['settings'][$key];
+      }
+
+      $module->save();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
-
-    $module->save();
-
-    header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
-    exit;
   }
 
   if (isset($_POST['uninstall'])) {
 
-    $module->delete();
+    try {
+      $module->delete();
 
-    header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
   breadcrumbs::add(!empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
 
   if (empty($_POST) && !empty($module->data['id'])) {
-    notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
+    notices::add('notices', language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation'));
   }
 
 ?>

@@ -1,19 +1,26 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['slides'])) {
+    try {
+      if (empty($_POST['slides'])) throw new Exception(language::translate('error_must_select_slides', 'You must select slides'));
+
       foreach ($_POST['slides'] as $key => $value) $_POST['slides'][$key] = database::input($value);
+
       database::query(
         "update ". DB_TABLE_SLIDES ."
         set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
         where id in ('". implode("', '", $_POST['slides']) ."');"
       );
-    }
 
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 ?>
 <ul class="list-inline pull-right">

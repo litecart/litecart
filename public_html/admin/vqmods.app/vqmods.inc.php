@@ -1,7 +1,9 @@
 <?php
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['vqmods'])) {
+    try {
+      if (empty($_POST['vqmods'])) throw new Exception(language::translate('error_must_select_vqmods', 'You must select vQmods'));
+
       foreach ($_POST['vqmods'] as $key => $value) {
         if (!empty($_POST['enable'])) {
           rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($value, PATHINFO_BASENAME), FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($value, PATHINFO_FILENAME) .'.xml');
@@ -9,31 +11,53 @@
           rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($value, PATHINFO_BASENAME), FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($value, PATHINFO_FILENAME) .'.disabled');
         }
       }
-    }
 
-    header('Location: '. document::ilink());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::ilink());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
-  if (!empty($_POST['delete'])) {
+  if (isset($_POST['delete'])) {
 
-    if (!empty($_POST['vqmods'])) {
+    try {
+      if (empty($_POST['vqmods'])) throw new Exception(language::translate('error_must_select_vqmods', 'You must select vQmods'));
+
       foreach ($_POST['vqmods'] as $key => $value) {
         unlink(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($value, PATHINFO_BASENAME));
       }
-    }
 
-    header('Location: '. document::ilink());
-    exit;
-  }
-
-  if (!empty($_POST['upload'])) {
-    if (empty($_FILES['vqmod']) || !in_array($_FILES['vqmod']['type'], array('text/xml', 'application/xml'))) notices::add('errors', language::translate('error_must_provide_vqmod', 'You must provide a valid vQmod file'));
-
-    if (empty(notices::$data['errors'])) {
-      move_uploaded_file($_FILES['vqmod']['tmp_name'], FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. $_FILES['vqmod']['name']);
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::ilink());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['upload'])) {
+
+    try {
+      if (!isset($_FILES['vqmod']['tmp_name']) || !is_uploaded_file($_FILES['vqmod']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
+
+      if (!in_array($_FILES['vqmod']['type'], array('text/xml', 'application/xml'))) {
+        throw new Exception(language::translate('error_must_provide_vqmod', 'You must provide a valid vQmod file'));
+      }
+
+      move_uploaded_file($_FILES['vqmod']['tmp_name'], FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. $_FILES['vqmod']['name']);
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::ilink());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>

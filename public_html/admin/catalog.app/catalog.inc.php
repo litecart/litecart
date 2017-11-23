@@ -1,36 +1,41 @@
 <?php
   if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['categories'])) {
-      foreach ($_POST['categories'] as $category_id) {
-        $category = new ctrl_category($category_id);
-        $category->data['status'] = !empty($_POST['enable']) ? 1 : 0;
-        $category->save();
+    try {
+      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception('error_must_select_categories_or_products', 'You must select categories or products');
+      if (!empty($_POST['categories'])) {
+        foreach ($_POST['categories'] as $category_id) {
+          $category = new ctrl_category($category_id);
+          $category->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+          $category->save();
+        }
       }
-    }
 
-    if (!empty($_POST['products'])) {
-      foreach ($_POST['products'] as $product_id) {
-        $product = new ctrl_product($product_id);
-        $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
-        $product->save();
+      if (!empty($_POST['products'])) {
+        foreach ($_POST['products'] as $product_id) {
+          $product = new ctrl_product($product_id);
+          $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+          $product->save();
+        }
       }
-    }
 
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
-// Duplicate products
   if (isset($_POST['duplicate'])) {
 
-    if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
-    if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
-    if (empty($_POST['category_id'])) notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
         $original = new ctrl_product($product_id);
@@ -67,17 +72,18 @@
       notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
       header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-// Copy products
   if (isset($_POST['copy'])) {
 
-    if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_cant_copy_category', 'You can\'t copy a category'));
-    if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
-    if (isset($_POST['category_id']) && $_POST['category_id'] == '') notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_copy_category', 'You can\'t copy a category'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
@@ -88,26 +94,27 @@
       notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
       header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Move categories or products
   if (isset($_POST['move'])) {
 
-    if (empty($_POST['categories']) && empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_category_or_product', 'You must select a category or product'));
-    if (isset($_POST['category_id']) && $_POST['category_id'] == '') notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
-    if (isset($_POST['category_id']) && isset($_POST['categories']) && in_array($_POST['category_id'], $_POST['categories'])) notices::add('errors', language::translate('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
+    try {
+      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+      if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      if (isset($_POST['category_id']) && isset($_POST['categories']) && in_array($_POST['category_id'], $_POST['categories'])) throw new Exception(language::translate('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
 
-    if (isset($_POST['category_id']) && isset($_POST['categories'])) {
-      foreach ($_POST['categories'] as $category_id) {
-        if (in_array($_POST['category_id'], array_keys(functions::catalog_category_descendants($category_id)))) {
-          notices::add('errors', language::translate('error_cant_move_category_to_descendant', 'You can\'t move a category to a descendant'));
-          break;
+      if (isset($_POST['category_id']) && isset($_POST['categories'])) {
+        foreach ($_POST['categories'] as $category_id) {
+          if (in_array($_POST['category_id'], array_keys(functions::catalog_category_descendants($category_id)))) {
+            throw new Exception(language::translate('error_cant_move_category_to_descendant', 'You can\'t move a category to a descendant'));
+            break;
+          }
         }
       }
-    }
-
-    if (empty(notices::$data['errors'])) {
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
@@ -129,16 +136,17 @@
 
       header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Unmount
   if (isset($_POST['unmount'])) {
 
-    if (empty($_POST['categories']) && empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_category_or_product', 'You must select a category or product'));
-    if (empty($_GET['category_id'])) notices::add('errors', language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+      if (empty($_GET['category_id'])) throw new Exception(language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
@@ -168,16 +176,18 @@
 
       header('Location: '. document::link('', array(), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Delete products
   if (isset($_POST['delete'])) {
 
-    if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
-    if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
 
-    if (empty(notices::$data['errors'])) {
       foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
         $product->delete();
@@ -186,6 +196,9 @@
       notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
       header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>

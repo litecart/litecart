@@ -2,12 +2,11 @@
   if (empty($_GET['setting_group_key'])) $_GET['setting_group_key'] = 'store_info';
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
     try {
 
       foreach (array_keys($_POST['settings']) as $key) {
-
         $settings_query = database::query(
           "select * from ". DB_TABLE_SETTINGS ."
           where `key` = '". database::input($key) ."';"
@@ -46,8 +45,7 @@
         );
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array(), true, array('action')));
       exit;
 

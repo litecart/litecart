@@ -19,15 +19,14 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'][language::$selected['code']])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    if (empty($_POST['categories'])) notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
+    try {
+      if (empty($_POST['name'][language::$selected['code']])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      if (empty($_POST['categories'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
-    if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) notices::add('warnings', language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
-    if (!empty($_POST['sku']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and sku = '". database::input($_POST['sku']) ."' limit 1;"))) notices::add('warnings', language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
-    if (!empty($_POST['mpn']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;"))) notices::add('warnings', language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
-    if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) notices::add('warnings', language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
-
-    if (empty(notices::$data['errors'])) {
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) notices::add('warnings', language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['sku'])  && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and sku = '". database::input($_POST['sku']) ."' limit 1;")))   notices::add('warnings', language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+      if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   notices::add('warnings', language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
+      if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) notices::add('warnings', language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 
       $_POST['keywords'] = explode(',', $_POST['keywords']);
       if (!isset($_POST['images'])) $_POST['images'] = array();
@@ -89,17 +88,29 @@
 
       $product->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0])));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (isset($_POST['delete']) && $product) {
-    $product->delete();
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0])));
-    exit;
+  if (isset($_POST['delete'])) {
+
+    try {
+      if (empty($product->data['id'])) throw new Exception(language::translate('error_must_provide_product', 'You must provide a product'));
+
+      $product->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0])));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
   list($product_image_width, $product_image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
@@ -278,7 +289,7 @@
             </div>
 
             <div class="input-group">
-              <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_barcode', 'Barcode'); ?> / <?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+              <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
               <?php echo functions::form_draw_text_field('gtin', true); ?>
             </div>
 

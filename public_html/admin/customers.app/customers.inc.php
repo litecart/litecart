@@ -1,18 +1,24 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['customers'])) {
+    try {
+      if (empty($_POST['customers'])) throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+
       foreach ($_POST['customers'] as $key => $value) {
         $customer = new ctrl_customer($_POST['customers'][$key]);
         $customer->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $customer->save();
       }
-    }
 
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 ?>
 <ul class="list-inline pull-right">

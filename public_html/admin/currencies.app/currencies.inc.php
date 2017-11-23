@@ -1,7 +1,9 @@
 <?php
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['currencies'])) {
+    try {
+      if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
+
       foreach (array_keys($_POST['currencies']) as $currency_code) {
 
         if (!empty($_POST['disable']) && $currency_code == settings::get('default_currency_code')) {
@@ -18,13 +20,17 @@
         $currency->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $currency->save();
       }
-    }
 
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
-  if (!empty($_POST['update_rates'])) {
+  if (isset($_POST['update_rates'])) {
 
     try {
       if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
@@ -51,13 +57,12 @@
         );
       }
 
-      notices::$data['success'][] = language::translate('success_currency_rates_updated', 'Currency rates updated');
-
+      notices::add('success', language::translate('success_currency_rates_updated', 'Currency rates updated'));
       header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
-      notices::$data['errors'][] = $e->getMessage();
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>

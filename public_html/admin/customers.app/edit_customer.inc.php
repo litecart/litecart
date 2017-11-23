@@ -16,8 +16,7 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty(notices::$data['errors'])) {
-
+    try {
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
       $fields = array(
@@ -48,26 +47,38 @@
 
       if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $customer->delete();
+    try {
+      if (empty($customer->data['id'])) throw new Exception(language::translate('error_must_provide_customer', 'You must provide a customer'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
-    exit;
+      $customer->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
   if (!empty($customer->data['id'])) {
+
     $order_statuses = array();
     $orders_status_query = database::query(
       "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
     );
+
     while ($order_status = database::fetch($orders_status_query)) {
       $order_statuses[] = (int)$order_status['id'];
     }
@@ -82,6 +93,7 @@
       where o.order_status_id in ('". implode("', '", $order_statuses) ."')
       and (o.customer_id = '". (int)$customer->data['id'] ."' or o.customer_email = '". database::input($customer->data['email']) ."');"
     );
+
     $orders = database::fetch($orders_query);
   }
 

@@ -15,7 +15,7 @@
 
   if (!empty(user::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
 
-  if (!empty($_POST['login'])) {
+  if (isset($_POST['login'])) {
     user::login($_POST['username'], $_POST['password'], $redirect_url, isset($_POST['remember_me']) ? $_POST['remember_me'] : false);
   }
 

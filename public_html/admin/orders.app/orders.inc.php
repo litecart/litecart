@@ -3,7 +3,10 @@
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
   if (!empty($_POST['order_action'])) {
-    if (!empty($_POST['orders'])) {
+
+    try {
+      if (empty($_POST['orders'])) throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
+
       list($module_id, $action_id) = explode(':', $_POST['order_action']);
 
       $order_action = new mod_order();
@@ -11,15 +14,14 @@
       $actions = $order_action->actions();
 
       if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
-        notices::$data['errors'][] = language::translate('error_method_doesnt_exist', 'The method doesn\'t exist');
-        return;
+        throw new Exception(language::translate('error_method_doesnt_exist', 'The method doesn\'t exist'));
       }
 
       echo call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
       return;
 
-    } else {
-      notices::$data['errors'][] = language::translate('error_must_select_orders', 'You must select orders to perform the operation');
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

@@ -7,7 +7,7 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <?php
-  if (!empty($_POST['scan'])) {
+  if (isset($_POST['scan'])) {
 
     echo '<hr />';
 

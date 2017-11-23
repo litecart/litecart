@@ -20,25 +20,29 @@
     }
   }
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-    foreach (array_keys($_POST['settings']) as $key) {
-      if (isset($settings[$key])) $settings[$key] = $_POST['settings'][$key];
+    try {
+      foreach (array_keys($_POST['settings']) as $key) {
+        if (isset($settings[$key])) $settings[$key] = $_POST['settings'][$key];
+      }
+
+      database::query(
+        "update ". DB_TABLE_SETTINGS ."
+        set
+          `value` = '". database::input(json_encode($settings)) ."',
+          date_updated = '". date('Y-m-d H:i:s') ."'
+        where `key` = '". database::input('store_template_catalog_settings') ."'
+        limit 1;"
+      );
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+
+      header('Location: '. document::link('', array(), true, array('action')));
+      exit;
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
-
-    database::query(
-      "update ". DB_TABLE_SETTINGS ."
-      set
-        `value` = '". database::input(json_encode($settings)) ."',
-        date_updated = '". date('Y-m-d H:i:s') ."'
-      where `key` = '". database::input('store_template_catalog_settings') ."'
-      limit 1;"
-    );
-
-    notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-
-    header('Location: '. document::link('', array(), true, array('action')));
-    exit;
   }
 
 ?>

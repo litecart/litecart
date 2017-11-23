@@ -30,11 +30,10 @@
 // Save data to database
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['items'])) $_POST['items'] = array();
-    if (empty($_POST['order_total'])) $_POST['order_total'] = array();
-    if (empty($_POST['comments'])) $_POST['comments'] = array();
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['items'])) $_POST['items'] = array();
+      if (empty($_POST['order_total'])) $_POST['order_total'] = array();
+      if (empty($_POST['comments'])) $_POST['comments'] = array();
 
       if (!empty($_POST['items'])) {
         foreach (array_keys($_POST['items']) as $key) {
@@ -106,7 +105,6 @@
 
       $order->save();
 
-    // Send e-mails
       if (!empty($_POST['email_order_copy'])) {
         $order->email_order_copy($order->data['customer']['email']);
         foreach (explode(';', settings::get('email_order_copy')) as $email) {
@@ -120,23 +118,33 @@
         $redirect_url = document::link('', array('app' => $_GET['app'], 'doc' => 'orders'));
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. $redirect_url);
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Delete from database
-  if (isset($_POST['delete']) && !empty($order->data['id'])) {
-    $order->delete();
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
+  if (isset($_POST['delete'])) {
 
-    if (empty($_GET['redirect_url'])) {
-      $_GET['redirect_url'] = document::link('', array('app' => $_GET['app'], 'doc' => 'orders'));
+    try {
+      if (empty($order->data['id'])) throw new Exception(language::translate('error_must_provide_order', 'You must provide an order'));
+
+      $order->delete();
+
+      if (empty($_GET['redirect_url'])) {
+        $_GET['redirect_url'] = document::link('', array('app' => $_GET['app'], 'doc' => 'orders'));
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. $_GET['redirect_url']);
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
-
-    header('Location: '. $_GET['redirect_url']);
-    exit;
   }
 
   functions::draw_lightbox();

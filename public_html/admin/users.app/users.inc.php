@@ -1,9 +1,10 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['users'])) {
+    try {
+      if (empty($_POST['users'])) throw new Exception(language::translate('error_must_select_users', 'You must select users'));
 
       foreach ($_POST['users'] as $user_id) {
 
@@ -12,8 +13,12 @@
         $user->save();
       }
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>

@@ -1,10 +1,9 @@
 <?php
 
-  if (!empty($_POST['export_categories'])) {
+  if (isset($_POST['export_categories'])) {
 
-    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
       $csv = array();
 
@@ -53,12 +52,18 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['import_categories'])) {
+  if (isset($_POST['import_categories'])) {
 
-    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
 
       ob_clean();
 
@@ -154,14 +159,17 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['export_products'])) {
+  if (isset($_POST['export_products'])) {
 
-    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
+    try {
 
-    if (empty(notices::$data['errors'])) {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
       $csv = array();
 
@@ -170,6 +178,7 @@
         left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
         order by pi.name;"
       );
+
       while ($product = database::fetch($products_query)) {
         $product = new ref_product($product['id'], $_POST['language_code'], $_POST['currency_code']);
 
@@ -232,12 +241,19 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['import_products'])) {
+  if (isset($_POST['import_products'])) {
 
-    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+    try {
+
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
 
       ob_clean();
 
@@ -442,6 +458,9 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

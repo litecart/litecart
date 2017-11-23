@@ -23,7 +23,7 @@
 
     cache::clear_cache('translations');
 
-    notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+    notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
 
     header('Location: '. document::link('', array(), true));
     exit;

@@ -16,13 +16,12 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-    if (empty($_POST['notify'])) $_POST['notify'] = 0;
-    if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
-    if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
-
-    if (empty(notices::$data['errors'])) {
+      if (empty($_POST['notify'])) $_POST['notify'] = 0;
+      if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
+      if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
       $fields = array(
         'icon',
@@ -43,19 +42,29 @@
 
       $order_status->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $order_status->delete();
+    try {
+      if (empty($order_status->data['id'])) throw new Exception(language::translate('error_must_provide_order_status', 'You must provide an order status'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
-    exit;
+      $order_status->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>

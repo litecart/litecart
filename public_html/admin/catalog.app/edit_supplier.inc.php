@@ -16,9 +16,8 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
 
       if (!isset($_POST['status'])) $_POST['status'] = '0';
 
@@ -37,20 +36,29 @@
 
       $supplier->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'suppliers'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Delete from database
-  if (isset($_POST['delete']) && $supplier) {
+  if (isset($_POST['delete'])) {
 
-    $supplier->delete();
+    try {
+      if (empty($supplier->data['id'])) throw new Exception(language::translate('error_must_provide_supplier', 'You must provide a supplier'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'suppliers'), array('app')));
-    exit;
+      $supplier->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'suppliers'), array('app')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>

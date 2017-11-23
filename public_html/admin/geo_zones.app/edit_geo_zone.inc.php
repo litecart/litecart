@@ -16,8 +16,7 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty(notices::$data['errors'])) {
-
+    try {
       $fields = array(
         'code',
         'name',
@@ -31,19 +30,29 @@
 
       $geo_zone->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $geo_zone->delete();
+    try {
+      if (empty($geo_zone->data['id'])) throw new Exception(language::translate('error_must_provide_geo_zone', 'You must provide a geo zone'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
-    exit;
+      $geo_zone->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>

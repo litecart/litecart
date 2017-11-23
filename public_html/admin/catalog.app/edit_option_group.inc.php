@@ -14,12 +14,12 @@
 
   breadcrumbs::add(!empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'));
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-    if (empty($_POST['required'])) $_POST['required'] = 0;
-    if (empty($_POST['values'])) $_POST['values'] = array();
+    try {
+      if (empty($_POST['required'])) $_POST['required'] = 0;
+      if (empty($_POST['values'])) $_POST['values'] = array();
 
-    if (empty($errors)) {
       $fields = array(
         'name',
         'description',
@@ -35,18 +35,28 @@
 
       $option_group->save();
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['delete'])) {
+  if (isset($_POST['delete'])) {
 
-    if (empty($errors)) {
+    try {
+      if (empty($option_group->data['id'])) throw new Exception(language::translate('error_must_provide_option_group', 'You must provide an option group'));
+
       $option_group->delete();
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

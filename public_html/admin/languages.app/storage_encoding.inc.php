@@ -6,13 +6,12 @@
     }
   }
 
-  if (!empty($_POST['convert'])) {
+  if (isset($_POST['convert'])) {
 
-    if (empty($_POST['tables'])) notices::$data['errors'][] = language::translate('error_must_select_tables', 'You must select at least one table');
+    try {
+      if (empty($_POST['tables'])) throw new Exception(language::translate('error_must_select_tables', 'You must select tables'));
 
-    $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
-
-    if (empty(notices::$data['errors'])) {
+      $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
 
       if (!empty($_POST['set_database_default'])) {
         database::query("alter database `". DB_DATABASE ."` default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate = ". database::input($_POST['collation']) .";");
@@ -22,10 +21,12 @@
         database::query("alter table `". DB_DATABASE ."`.`". $table ."` convert to character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";");
       }
 
-      notices::$data['success'][] = language::translate('success_changes_saved', 'Changes saved');
-
-      header('Location: '. document::ilink());
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

@@ -16,9 +16,8 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
       $fields = array(
         'name',
@@ -31,19 +30,29 @@
 
       $delivery_status->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $delivery_status->delete();
+    try {
+      if (empty($delivery_status->data['id'])) throw new Exception(language::translate('error_must_provide_delivery_status', 'You must provide a delivery status'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
-    exit;
+      $delivery_status->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>

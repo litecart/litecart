@@ -14,11 +14,29 @@
 
   breadcrumbs::add(!empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'));
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-    if (empty($_POST['code'])) notices::add('errors', language::translate('error_must_enter_code', 'You must enter a code'));
+    try {
+      if (empty($_POST['code'])) throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-    if (!empty($_POST['code']) && empty($language->data['id'])) {
+      if (!empty($_POST['code']) && empty($language->data['id'])) {
+          $languages_query = database::query(
+            "select id from ". DB_TABLE_LANGUAGES ."
+            where code = '". database::input($_POST['code']) ."'
+            limit 1;"
+          );
+
+          if (database::num_rows($languages_query)) {
+            throw new Exception(language::translate('error_language_already_exists', 'The language already exists in the database'));
+          }
+      }
+
+      if (!empty($_POST['code']) && !empty($language->data['id']) && $language->data['code'] != $_POST['code']) {
+        if ($language->data['code'] == 'en') {
+          throw new Exception(language::translate('error_cannot_rename_framework_language', 'You cannot not rename the framework language, but you can disable it'));
+        }
+
         $languages_query = database::query(
           "select id from ". DB_TABLE_LANGUAGES ."
           where code = '". database::input($_POST['code']) ."'
@@ -26,62 +44,44 @@
         );
 
         if (database::num_rows($languages_query)) {
-          notices::add('errors', language::translate('error_language_already_exists', 'The language already exists in the database'));
+          throw new Exception(language::translate('error_language_already_exists', 'The language already exists in the database'));
         }
-    }
-
-    if (!empty($_POST['code']) && !empty($language->data['id']) && $language->data['code'] != $_POST['code']) {
-      if ($language->data['code'] == 'en') {
-        notices::add('errors', language::translate('error_cannot_rename_framework_language', 'You cannot not rename the framework language, but you can disable it'));
       }
 
-      $languages_query = database::query(
-        "select id from ". DB_TABLE_LANGUAGES ."
-        where code = '". database::input($_POST['code']) ."'
-        limit 1;"
-      );
-
-      if (database::num_rows($languages_query)) {
-        notices::add('errors', language::translate('error_language_already_exists', 'The language already exists in the database'));
+      if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
+        throw new Exception(language::translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
       }
-    }
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
+      if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code')) {
+        throw new Exception(language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
+      }
 
-    if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
-      notices::add('errors', language::translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
-    }
+      if (empty($_POST['set_default']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code') && $language->data['code'] != $_POST['code']) {
+        throw new Exception(language::translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
+      }
 
-    if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code')) {
-      notices::add('errors', language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
-    }
+      if (empty($_POST['set_store']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code') && $language->data['code'] != $_POST['code']) {
+        throw new Exception(language::translate('error_cannot_rename_store_language', 'You must change the store language before renaming it.'));
+      }
 
-    if (empty($_POST['set_default']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code') && $language->data['code'] != $_POST['code']) {
-      notices::add('errors', language::translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
-    }
+      if (!empty($_POST['set_default']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
+        throw new Exception(language::translate('error_cannot_set_disabled_default_language', 'You cannot set a disabled language as default language.'));
+      }
 
-    if (empty($_POST['set_store']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code') && $language->data['code'] != $_POST['code']) {
-      notices::add('errors', language::translate('error_cannot_rename_store_language', 'You must change the store language before renaming it.'));
-    }
+      if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code')) {
+        throw new Exception(language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
+      }
 
-    if (!empty($_POST['set_default']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
-      notices::add('errors', language::translate('error_cannot_set_disabled_default_language', 'You cannot set a disabled language as default language.'));
-    }
+      if (!preg_grep('#'. preg_quote($_POST['charset'], '#') .'#i', mb_list_encodings())) {
+        throw new Exception(strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), array('%charset' => !empty($_POST['charset']) ? $_POST['charset'] : 'NULL')));
+      }
 
-    if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code')) {
-      notices::add('errors', language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
-    }
+      if (!setlocale(LC_ALL,  explode(',', $_POST['locale']))) {
+        throw new Exception(strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), array('%locale' => !empty($_POST['locale']) ? $_POST['locale'] : 'NULL')));
+      }
+      setlocale(LC_ALL, explode(',', language::$selected['locale']));
 
-    if (!preg_grep('#'. preg_quote($_POST['charset'], '#') .'#i', mb_list_encodings())) {
-      notices::add('errors', strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), array('%charset' => !empty($_POST['charset']) ? $_POST['charset'] : 'NULL')));
-    }
-
-    if (!setlocale(LC_ALL,  explode(',', $_POST['locale']))) {
-      notices::add('errors', strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), array('%locale' => !empty($_POST['locale']) ? $_POST['locale'] : 'NULL')));
-    }
-    setlocale(LC_ALL, explode(',', language::$selected['locale']));
-
-    if (empty(notices::$data['errors'])) {
+      ##########
 
       $_POST['code'] = strtolower($_POST['code']);
       $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
@@ -120,33 +120,40 @@
         database::query("update ". DB_TABLE_SETTINGS ." set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_language_code' limit 1;");
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'languages'), true, array('action', 'language_code')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['delete'])) {
+  if (isset($_POST['delete'])) {
 
-    if ($language->data['code'] == 'en') {
-      notices::add('errors', language::translate('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
-    }
+    try {
+      if (empty($language->data['id'])) throw new Exception(language::translate('error_must_provide_language', 'You must provide a language'));
 
-    if ($language->data['code'] == settings::get('default_language_code')) {
-      notices::add('errors', language::translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
-    }
+      if ($language->data['code'] == 'en') {
+        throw new Exception(language::translate('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
+      }
 
-    if ($language->data['code'] == settings::get('store_language_code')) {
-      notices::add('errors', language::translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
-    }
+      if ($language->data['code'] == settings::get('default_language_code')) {
+        throw new Exception(language::translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
+      }
 
-    if (empty(notices::$data['errors'])) {
+      if ($language->data['code'] == settings::get('store_language_code')) {
+        throw new Exception(language::translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
+      }
 
       $language->delete();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'languages'), true, array('action', 'language_code')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

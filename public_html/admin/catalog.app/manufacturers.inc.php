@@ -1,18 +1,25 @@
 <?php
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['manufacturers'])) {
+    try {
+      if (empty($_POST['manufacturers'])) throw new Exception(language::translate('error_must_select_manufacturers', 'You must select manufacturers'));
+
       foreach ($_POST['manufacturers'] as $key => $value) $_POST['manufacturers'][$key] = database::input($value);
+
       database::query(
         "update ". DB_TABLE_MANUFACTURERS ."
         set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
         where id in ('". implode("', '", $_POST['manufacturers']) ."');"
       );
-    }
 
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>

@@ -16,11 +16,10 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_name_missing', 'You must enter a name.'));
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
 
-    if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) notices::add('errors', language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
-
-    if (empty(notices::$data['errors'])) {
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
 
       if (!empty($_POST['remove_image']) && !empty($manufacturer->data['image'])) {
         functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image']);
@@ -51,20 +50,29 @@
         $manufacturer->save_image($_FILES['image']['tmp_name']);
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'manufacturers'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Delete from database
-  if (isset($_POST['delete']) && $manufacturer) {
+  if (isset($_POST['delete'])) {
 
-    $manufacturer->delete();
+    try {
+      if (empty($manufacturer->data['id'])) throw new Exception(language::translate('error_must_provide_manufacturer', 'You must provide a manufacturer'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'manufacturers'), array('app')));
-    exit;
+      $manufacturer->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'manufacturers'), array('app')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 ?>
 
