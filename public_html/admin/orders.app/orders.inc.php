@@ -1,6 +1,6 @@
 <?php
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
   if (!empty($_POST['order_action'])) {
     if (!empty($_POST['orders'])) {

@@ -1,5 +1,5 @@
 <?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
 

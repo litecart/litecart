@@ -1,6 +1,6 @@
 <?php
   if (!isset($_GET['query'])) $_GET['query'] = '';
-  if (empty($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['languages'])) $_GET['languages'] = array_keys(language::$languages);
 
   if (isset($_POST['save']) && !empty($_POST['translations'])) {
