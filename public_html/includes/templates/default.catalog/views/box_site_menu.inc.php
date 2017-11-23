@@ -1,16 +1,25 @@
 <?php
   if (!function_exists('custom_draw_site_menu_item')) {
     function custom_draw_site_menu_item($item, $indent=0) {
-      $output = '<li'. (!empty($item['subitems']) ? ' class="dropdown-submenu"' : '') .' data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
-              . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>';
+
       if (!empty($item['subitems'])) {
-        $output .= '  <ul class="dropdown-menu">' . PHP_EOL;
+        $output = '<li class="dropdown" data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+                . '  <a href="'. htmlspecialchars($item['link']) .'" class="dropdown-toggle" data-toggle="dropdown">'. $item['title'] .' <b class="caret"></b></a>'
+                . '  <ul class="dropdown-menu">' . PHP_EOL;
+
         foreach ($item['subitems'] as $subitem) {
           $output .= custom_draw_site_menu_item($subitem, $indent+1);
         }
-        $output .= '  </ul>' . PHP_EOL;
+
+        $output .= '  </ul>' . PHP_EOL
+                 . '</li>' . PHP_EOL;
+
+      } else {
+        $output = '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+                . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>'
+                . '</li>' . PHP_EOL;
       }
-      $output .= '</li>' . PHP_EOL;
+
       return $output;
     }
   }
@@ -37,14 +46,7 @@
           <a href="<?php echo document::ilink(''); ?>" class="navbar-brand"><?php echo functions::draw_fonticon('fa-home'); ?></a>
         </li>
 
-        <?php if ($categories) { ?>
-        <li class="categories dropdown">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_categories', 'Categories'); ?> <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
-          </ul>
-        </li>
-        <?php } ?>
+        <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
 
         <?php if ($manufacturers) { ?>
         <li class="manufacturers dropdown">
@@ -60,6 +62,15 @@
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <?php foreach ($pages as $item) echo custom_draw_site_menu_item($item); ?>
+          </ul>
+        </li>
+        <?php } ?>
+
+        <?php if ($customer_service) { ?>
+        <li class="customer-service dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_customer_service', 'Customer Service'); ?> <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <?php foreach ($customer_service as $item) echo custom_draw_site_menu_item($item); ?>
           </ul>
         </li>
         <?php } ?>
@@ -107,3 +118,13 @@
     </div>
   </nav>
 </div>
+
+<script>
+$(document).ready(function(){
+  $('#site-menu .dropdown .dropdown a[data-toggle="dropdown"]').on('click', function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).next('ul').toggle();
+  });
+});
+</script>
