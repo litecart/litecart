@@ -156,6 +156,9 @@
         limit 1;"
       );
 
+      $customer_modules = new mod_customer();
+      $customer_modules->delete($this->data);
+
       cache::clear_cache('customers');
 
       $this->data['id'] = null;
