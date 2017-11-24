@@ -450,12 +450,18 @@
         }
       }
 
+      $order_modules = new mod_order();
+      $order_modules->update($this->data);
+
       cache::clear_cache('order');
-      cache::clear_cache('product');
     }
 
     public function delete() {
+
       if (empty($this->data['id'])) return;
+
+      $order_modules = new mod_order();
+      $order_modules->delete($this->data);
 
     // Empty order first..
       $this->data['items'] = array();
@@ -469,6 +475,8 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
+
+      cache::clear_cache('order');
     }
 
     public function refresh_total() {
