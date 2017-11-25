@@ -5,13 +5,11 @@
     try {
       if (empty($_POST['manufacturers'])) throw new Exception(language::translate('error_must_select_manufacturers', 'You must select manufacturers'));
 
-      foreach ($_POST['manufacturers'] as $key => $value) $_POST['manufacturers'][$key] = database::input($value);
-
-      database::query(
-        "update ". DB_TABLE_MANUFACTURERS ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['manufacturers']) ."');"
-      );
+      foreach ($_POST['manufacturers'] as $manufacturer_id) {
+        $manufacturer = new ctrl_manufacturer($manufacturer_id);
+        $manufacturer->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $manufacturer->save();
+      }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link());

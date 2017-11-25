@@ -6,8 +6,8 @@
     try {
       if (empty($_POST['customers'])) throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
 
-      foreach ($_POST['customers'] as $key => $value) {
-        $customer = new ctrl_customer($_POST['customers'][$key]);
+      foreach ($_POST['customers'] as $customer_id) {
+        $customer = new ctrl_customer($customer_id);
         $customer->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $customer->save();
       }

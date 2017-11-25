@@ -6,10 +6,10 @@
     try {
       if (empty($_POST['pages'])) throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
 
-      foreach ($_POST['pages'] as $key => $value) {
-        $currency = new ctrl_page($_POST['pages'][$key]);
-        $currency->data['status'] = !empty($_POST['enable']) ? 1 : 0;
-        $currency->save();
+      foreach ($_POST['pages'] as $page_id) {
+        $page = new ctrl_page($page_id);
+        $page->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $page->save();
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));

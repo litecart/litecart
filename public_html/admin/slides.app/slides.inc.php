@@ -6,13 +6,11 @@
     try {
       if (empty($_POST['slides'])) throw new Exception(language::translate('error_must_select_slides', 'You must select slides'));
 
-      foreach ($_POST['slides'] as $key => $value) $_POST['slides'][$key] = database::input($value);
-
-      database::query(
-        "update ". DB_TABLE_SLIDES ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['slides']) ."');"
-      );
+      foreach ($_POST['slides'] as $slide_id) {
+        $slide = new ctrl_slide($slide_id);
+        $slide->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $slide->save();
+      }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link());
