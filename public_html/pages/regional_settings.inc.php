@@ -39,7 +39,7 @@
       setcookie('zone_code', $_POST['zone_code'], time() + (60*60*24*365), WS_DIR_HTTP_HOME);
       setcookie('display_prices_including_tax', $_POST['display_prices_including_tax'], time() + (60*60*24*365), WS_DIR_HTTP_HOME);
 
-      if (!empty($_GET['redirect_url'])) {
+      if (empty($_GET['redirect_url'])) {
         $_GET['redirect_url'] = document::ilink('', array(), null, array(), $_POST['language_code']);
       }
 
