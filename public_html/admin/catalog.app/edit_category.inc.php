@@ -95,28 +95,61 @@
     <div id="tab-general" class="tab-pane active" style="max-width: 980px;">
 
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label><?php echo language::translate('title_status', 'Status'); ?></label>
+            <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '0', 'e/d'); ?>
+          </div>
 
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_status', 'Status'); ?></label>
-              <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '0', 'e/d'); ?>
-            </div>
+          <div class="form-group">
+            <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
+            <?php echo functions::form_draw_categories_list('parent_id', true); ?>
+          </div>
 
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_code', 'Code'); ?></label>
-              <?php echo functions::form_draw_text_field('code', true); ?>
+          <div class="form-group">
+            <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+            <?php echo functions::form_draw_google_taxonomy_categories_list('google_taxonomy_id', true); ?>
+          </div>
+
+          <div class="form-group">
+            <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
+            <div class="checkbox">
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label><br/>
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', (file_get_contents('php://input') != '') ? true : 'tree'); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
             </div>
           </div>
 
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_name', 'Name'); ?></label>
-              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
-            </div>
+          <?php if (!empty($category->data['id'])) { ?>
+          <div class="form-group">
+            <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+            <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
+          </div>
 
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_list_style', 'List Style'); ?></label>
+          <div class="form-group">
+            <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+            <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+          </div>
+          <?php } ?>
+
+          <div class="form-group">
+            <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+              <?php echo functions::form_draw_number_field('priority', true); ?>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label><?php echo language::translate('title_name', 'Name'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+          </div>
+
+          <div class="form-group">
+            <label><?php echo language::translate('title_code', 'Code'); ?></label>
+            <?php echo functions::form_draw_text_field('code', true); ?>
+          </div>
+
+          <div class="form-group">
+            <label><?php echo language::translate('title_list_style', 'List Style'); ?></label>
 <?php
   $options = array(
     array(language::translate('title_columns', 'Columns'), 'columns'),
@@ -124,55 +157,15 @@
   );
   echo functions::form_draw_select_field('list_style', $options, true);
 ?>
-            </div>
           </div>
 
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
-              <?php echo functions::form_draw_categories_list('parent_id', true); ?>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-              <?php echo functions::form_draw_number_field('google_taxonomy_id', true); // Alternatively form_draw_google_taxonomy_categories_list() is available  ?>
-            </div>
+          <div class="form-group">
+            <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
+            <?php echo functions::form_draw_text_field('keywords', true); ?>
           </div>
-
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label><br/>
-                <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', (file_get_contents('php://input') != '') ? true : 'tree'); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-                <?php echo functions::form_draw_number_field('priority', true); ?>
-            </div>
-          </div>
-
-          <?php if (!empty($category->data['id'])) { ?>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-              <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-              <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
-            </div>
-          </div>
-          <?php } ?>
         </div>
 
         <div class="col-md-4">
-
           <div id="image">
             <div class="thumbnail" style="margin-bottom: 15px;">
               <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping')); ?>" alt="" />
@@ -239,7 +232,6 @@
 
   $('input[name^="name"]').bind('input propertyChange', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-    console.log($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
