@@ -179,7 +179,7 @@
           foreach ($row as $key => $value) {
             switch($key) {
               case 'keywords':
-                $row[$key] = explode(',', $row[$key]);
+                $this->_data[$key] = explode(',', $row[$key]);
                 break;
 
               default:
