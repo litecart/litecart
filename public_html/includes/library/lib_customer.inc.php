@@ -32,7 +32,7 @@
           if ($checksum == $key) $do_login = true;
         }
 
-        if ($do_login) {
+        if ($do_login && !empty($customer['id'])) {
           self::load($customer['id']);
         } else {
           setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
