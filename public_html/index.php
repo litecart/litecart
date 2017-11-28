@@ -40,7 +40,11 @@
 
     if (preg_match('#\.[a-z]{2,4}$#', route::$request)) exit;
 
-    file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'not_found.log', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . PHP_EOL, FILE_APPEND);
+    $log_file = FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'not_found.log';
+    $line = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . PHP_EOL;
+    if (!is_file($log_file) || !preg_match('#^'. preg_quote($line) .'$#m', file_get_contents($log_file))) {
+      file_put_contents($log_file, $line, FILE_APPEND);
+    }
 
     echo '<h1>HTTP 404 - File Not Found</h1>';
     echo '<p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>';
