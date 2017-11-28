@@ -26,14 +26,6 @@
     <div class="col-sm-halfs col-md-thirds">
       <h1 class="title"><?php echo $name; ?></h1>
 
-      <?php if ($sku || $mpn || $gtin) { ?>
-      <ul class="codes list-inline">
-        <?php if ($sku) { ?><li class="sku"><?php echo $sku; ?></li><?php } ?>
-        <?php if ($mpn) { ?><li class="mpn"><?php echo $mpn; ?></li><?php } ?>
-        <?php if ($gtin) { ?><li class="gtin"><?php echo $gtin; ?></li><?php } ?>
-      </ul>
-      <?php } ?>
-
       <?php if ($short_description) { ?>
       <p class="short-description">
         <?php echo $short_description; ?>
@@ -74,6 +66,14 @@
       <?php if ($cheapest_shipping_fee !== null) { ?>
       <div class="cheapest-shipping" style="margin: 1em 0;">
         <?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), array('%price' => currency::format($cheapest_shipping_fee))); ?>
+      </div>
+      <?php } ?>
+
+      <?php if ($sku || $mpn || $gtin) { ?>
+      <div class="codes" style="margin: 1em 0;">
+        <?php if ($sku) { ?><div class="sku"><?php echo $sku; ?></div><?php } ?>
+        <?php if ($mpn) { ?><div class="mpn"><?php echo $mpn; ?></div><?php } ?>
+        <?php if ($gtin) { ?><div class="gtin"><?php echo $gtin; ?></div><?php } ?>
       </div>
       <?php } ?>
 

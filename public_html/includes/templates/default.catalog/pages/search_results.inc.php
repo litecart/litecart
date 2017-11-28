@@ -4,8 +4,11 @@
 
 <main id="content">
   {snippet:notices}
+  {snippet:breadcrumbs}
 
   <div id="box-search-results" class="box">
+
+    <?php if ($products) { ?>
     <div class="btn-group pull-right hidden-xs">
 <?php
   $separator = false;
@@ -18,6 +21,7 @@
   }
 ?>
     </div>
+    <?php } ?>
 
     <h1 class="title"><?php echo $title; ?></h1>
 

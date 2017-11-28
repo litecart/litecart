@@ -29,3 +29,9 @@ ADD INDEX `sku` (`sku`),
 ADD INDEX `mpn` (`mpn`),
 ADD INDEX `gtin` (`gtin`),
 ADD INDEX `taric` (`taric`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_translations`
+CHANGE COLUMN `date_accessed` `date_accessed` DATETIME NOT NULL AFTER `pages`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_settings`
+CHANGE COLUMN `key` `key` VARCHAR(64) NOT NULL AFTER `type`;

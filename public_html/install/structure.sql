@@ -618,9 +618,9 @@ CREATE TABLE `lc_settings` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `setting_group_key` VARCHAR(64) NOT NULL,
   `type` enum('global','local') NOT NULL DEFAULT 'local',
+  `key` VARCHAR(64) NOT NULL,
   `title` VARCHAR(128) NOT NULL,
   `description` VARCHAR(512) NOT NULL,
-  `key` VARCHAR(64) NOT NULL,
   `value` VARCHAR(8192) NOT NULL,
   `function` VARCHAR(128) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
@@ -735,9 +735,9 @@ CREATE TABLE `lc_translations` (
   `text_en` TEXT NOT NULL,
   `html` TINYINT(1) NOT NULL,
   `pages` TEXT NOT NULL,
+  `date_accessed` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,
-  `date_accessed` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
