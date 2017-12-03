@@ -103,7 +103,6 @@
         'X-Mailer' => PLATFORM_NAME .' '. PLATFORM_VERSION,
       );
 
-      $multipart_boundary = true;
       $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
       $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
 
@@ -125,10 +124,8 @@
     // Prepare body
       $body = '';
       foreach ($this->_multiparts as $multipart) {
-        if (!empty($multipart_boundary)) {
-          $body .= '--'. $multipart_boundary_string . "\r\n";
-        }
-        $body .= $multipart . "\r\n\r\n";
+          $body .= '--'. $multipart_boundary_string . "\r\n"
+                 . $multipart . "\r\n\r\n";
       }
 
     // Deliver via SMTP
