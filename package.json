@@ -1,17 +1,18 @@
 {
 	"name": "litecart",
 	"title": "LiteCart",
+	"description": "Lightweight e-commerce platform built with PHP, jQuery and HTML.",
 	"version": "2.1",
 	"author": {
 		"name": "T. Almroth",
 		"url": "https://www.litecart.net/"
 	},
-	"license": "LicenseRef-LICENSE",
+	"license": "CC-BY-ND-4.0",
 	"homepage": "https://www.litecart.net/",
 	"download": "https://www.litecart.net/download",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/litecart/litecart.git"
+		"url": "git://github.com/litecart/litecart.git"
 	},
 	"bugs": {
 		"url": "https://github.com/litecart/litecart/issues"
@@ -19,10 +20,10 @@
 	"devDependencies": {
 		"grunt": "^1.0.0",
 		"grunt-contrib-less": "^1.4.1",
-		"grunt-contrib-uglify": "^3.1.0",
+		"grunt-contrib-uglify": "^3.2.1",
 		"grunt-contrib-watch": "^1.0.0",
 		"grunt-text-replace": "^0.3.12",
-		"less-plugin-clean-css": ">=1.5.1"
+		"less-plugin-clean-css": ">=1.5.1",
 	},
 	"scripts": {
 		"build": "grunt"
