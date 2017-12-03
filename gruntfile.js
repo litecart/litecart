@@ -85,6 +85,15 @@ module.exports = function(grunt) {
       },
     },
 
+    phplint: {
+      options: {
+        //phpCmd: 'C:/xampp/php/php.exe', // Defaults to php
+        limit: 10,
+        stdout: false
+      },
+      files: 'public_html/**/*.php'
+    },
+
     watch: {
       css: {
         files: [
@@ -109,4 +118,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('default', ['replace', 'less', 'uglify']);
+
+  require('phplint').gruntPlugin(grunt);
+  grunt.registerTask('test', ['phplint']);
 };
