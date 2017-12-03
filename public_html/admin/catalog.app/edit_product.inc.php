@@ -561,9 +561,7 @@ foreach (currency::$currencies as $currency) {
       <div class="row" style="max-width: 960px;">
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
-          <div class="input-group">
-            <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
-          </div>
+          <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
         </div>
 
         <div class="form-group col-md-4">
@@ -1015,14 +1013,6 @@ foreach (currency::$currencies as $currency) {
     new_campaign_i++;
   });
 
-// Quantity Unit
-
-  $('select[name="quantity_unit_id"]').change(function(){
-    var value = parseFloat($('input[name="quantity"]').val());
-    $('input[name="quantity"]').val(value.toFixed($(this).data('decimals')));
-  }).trigger('change');
-
-
 // Options
 
   $('#table-options').on('click', '.remove', function(e) {
@@ -1091,6 +1081,22 @@ foreach (currency::$currencies as $currency) {
     $('#table-options tbody').append(output);
     new_option_i++;
   });
+
+// Quantity Unit
+
+  $('select[name="quantity_unit_id"]').change(function(){
+    if ($('option:selected', this).data('decimals') === undefined) return;
+
+    var decimals = $('option:selected', this).data('decimals');
+
+    var value = parseFloat($('input[name="quantity"]').val()).toFixed(decimals);
+    $('input[name="quantity"]').val(value);
+
+    $('input[name^="option_stock"][name$="[quantity]"]').each(function(){
+      var value = parseFloat($(this).val()).toFixed(decimals);
+      $(this).val(value);
+    });
+  }).trigger('change');
 
 // Stock
 
