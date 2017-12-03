@@ -153,6 +153,7 @@
         'name' => $product->name,
         'code' => $product->code,
         'sku' => $product->sku,
+        'mpn' => $product->mpn,
         'gtin' => $product->gtin,
         'taric' => $product->taric,
         'price' => (!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price,

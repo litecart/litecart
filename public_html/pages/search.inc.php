@@ -31,7 +31,7 @@
     match(pi.name, pi.short_description, pi.description) against ('*". database::input($_GET['query']) ."*' in boolean mode) as relevance
 
     from (
-      select id, code, gtin, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
+      select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
       from ". DB_TABLE_PRODUCTS ."
       where status
       and (date_valid_from <= '". date('Y-m-d H:i:s') ."')

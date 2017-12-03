@@ -191,6 +191,7 @@
           'supplier_id' => $product->supplier_id,
           'code' => $product->code,
           'sku' => $product->sku,
+          'mpn' => $product->mpn,
           'gtin' => $product->gtin,
           'taric' => $product->taric,
           'name' => $product->name,
@@ -311,6 +312,19 @@
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
 
+        } elseif (!empty($row['mpn'])) {
+          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+            $product = new ctrl_product($product['id']);
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+          } else {
+            if (empty($_POST['insert_products'])) {
+              echo "[Skipped] New product on line $line was not inserted to database.\r\n";
+              continue;
+            }
+            $product = new ctrl_product();
+            echo 'Creating new product: '. $row['name'] . PHP_EOL;
+          }
+
         } elseif (!empty($row['gtin'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
             $product = new ctrl_product($product['id']);
@@ -379,6 +393,7 @@
           'supplier_id',
           'code',
           'sku',
+          'mpn',
           'gtin',
           'taric',
           'tax_class_id',
