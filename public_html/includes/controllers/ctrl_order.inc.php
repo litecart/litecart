@@ -493,6 +493,14 @@
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
 
+      foreach ($this->data['order_total'] as $i => $row) {
+        if ($row['module_id'] == 'ot_subtotal') {
+          $this->data['order_total'][$i]['value'] = $this->data['subtotal']['amount'];
+          $this->data['order_total'][$i]['tax'] = $this->data['subtotal']['tax'];
+          break;
+        }
+      }
+
       foreach ($this->data['order_total'] as $row) {
         if (empty($row['calculate'])) continue;
         $this->data['payment_due'] += ($row['value'] + $row['tax']);
