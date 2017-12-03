@@ -779,7 +779,7 @@
       $email = new email();
       $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
             ->set_subject($subject)
-            ->add_body($message)
+            ->add_body($message, true)
             ->send();
     }
   }
