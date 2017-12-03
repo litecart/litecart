@@ -2,7 +2,7 @@
 
   <div class="carousel-inner">
 <?php
-  foreach($slides as $key => $slide) {
+  foreach ($slides as $key => $slide) {
     echo '<div class="item'. (($key == 0) ? ' active' : '') .'">' . PHP_EOL;
 
     if ($slide['link']) {
@@ -21,7 +21,7 @@
   </div>
 
   <ol class="carousel-indicators">
-    <?php foreach($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'.  $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
+    <?php foreach ($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'.  $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
   </ol>
 
   <a class="left carousel-control" href="#box-slides" data-slide="prev">

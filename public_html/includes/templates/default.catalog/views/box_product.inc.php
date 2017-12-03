@@ -86,7 +86,7 @@
         <?php if ($delivery_status) { ?>
         <div class="stock-delivery">
           <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>:
-          <span class="value"><?php echo $delivery_status;?></span>
+          <span class="value"><?php echo $delivery_status; ?></span>
         </div>
         <?php } ?>
        <?php } else { ?>

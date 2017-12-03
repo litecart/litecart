@@ -138,7 +138,7 @@ ul.filter li {
   <table class="table table-striped">
     <thead>
       <tr>
-        <th><?php echo language::translate('title_code', 'Code');?></th>
+        <th><?php echo language::translate('title_code', 'Code'); ?></th>
         <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. $languages[$language_code]['name'] .'</th>'; ?>
         <th>&nbsp;</th>
       </tr>

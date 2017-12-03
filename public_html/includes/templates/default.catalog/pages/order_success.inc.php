@@ -3,7 +3,7 @@
 
   <div id="box-order-success" class="box">
 
-    <h1 class="title"><?php echo strtr(language::translate('title_order_completed', 'Your order %order_id is successfully completed!'), array('%order_id' => $order['id'])); ?></h1>
+    <h1 class="title"><?php echo strtr(language::translate('title_order_completed', 'Your order #%order_id is successfully completed!'), array('%order_id' => $order['id'])); ?></h1>
 
     <p><?php echo language::translate('description_order_completed', 'Thank you for shopping in our store. An order confirmation e-mail has been sent. We will process your order shortly.'); ?></p>
 

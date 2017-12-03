@@ -128,8 +128,8 @@
 
     // Options stock
       $products_options_stock_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ." po
-        where po.product_id = '". (int)$this->data['id'] ."'
+        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        where product_id = '". (int)$this->data['id'] ."'
         order by priority;"
       );
       while($option_stock = database::fetch($products_options_stock_query)) {

@@ -83,12 +83,12 @@
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?><br />
+        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
         <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
       </div>
 
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived');?><br />
+        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
         <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
       </div>
     </div>
@@ -101,12 +101,12 @@
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_icon', 'Icon');?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('icon', true, 'placeholder="fa-circle-thin"'); ?>
     </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_color', 'Color');?></label>
+      <label><?php echo language::translate('title_color', 'Color'); ?></label>
       <?php echo functions::form_draw_color_field('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
     </div>
   </div>
@@ -120,7 +120,7 @@
 
   <fieldset>
     <legend>
-      <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('title_email_notification', 'Email Notification');?></label>
+      <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('title_email_notification', 'Email Notification'); ?></label>
     </legend>
 
     <ul class="nav nav-tabs">
