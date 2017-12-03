@@ -45,11 +45,13 @@
 
 .btn-group {
   display: inline-flex;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 0.5px 2px rgba(50,50,93,0.15);
   .btn {
     flex: 1 0 auto;
     border-radius: 0;
     font-size: inherit;
     margin-left: -1px;
+    box-shadow: none;
     &:first-child {
       border-top-left-radius: @default-border-radius;
       border-bottom-left-radius: @default-border-radius;

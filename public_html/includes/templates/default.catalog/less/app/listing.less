@@ -27,12 +27,6 @@
         color: #fff;
         margin: 0;
       }
-      .title {
-
-      }
-    }
-    .title {
-      font-weight: 700;
     }
   }
 }
@@ -41,11 +35,11 @@
 
 .manufacturers.row {
   padding: 0;
-  margin: 0 0 2em 0;
+  margin: 0 0 @default-gutter-size*2 0;
   > *[class^=col-] {
     padding: @default-gutter-size/2;
   }
-  > .manufacturer {
+  .manufacturer {
     text-align: center;
     a.link {
       display: block;
@@ -54,16 +48,15 @@
       text-decoration: none;
       color: inherit;
     }
-    .image-wrapper {
-      img {
-        height: auto;
-        width: 100%;
-      }
+    img {
+      height: auto;
+      width: 100%;
     }
-    .title {
+    .name {
+      margin-top: @default-gutter-size/2;
       padding: @default-gutter-size / 2;
       background: rgba(100, 100, 100, 0.5);
-      color: #ffffff;
+      color: #fff;
       text-align: center;
     }
   }
@@ -82,17 +75,15 @@
     transition: all 50ms linear;
     a.link {
       display: block;
-      margin: 0;
-      padding: @default-gutter-size/4;
       background: @image-whitespace-color;
       color: inherit;
       text-align: left;
       text-decoration: none;
     }
     .image-wrapper {
-      text-align: center;
-      .image {
-        width: 100%;
+      display: inline-block;
+      img {
+        width: 160px;
         height: auto;
       }
     }
@@ -103,7 +94,7 @@
       width: 125px;
       padding: 3px;
       color: #fff;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: bold;
       text-align: center;
       text-transform: uppercase;
@@ -116,78 +107,66 @@
       }
     }
     .info {
+      position: absolute;
+      top: 0;
+      left: 160px + @default-gutter-size;
       padding: @default-gutter-size/4;
-      margin-bottom: @default-gutter-size*2;
     }
     .name {
-      line-height: 1.5em;
-      color: #333333;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      flex-direction: column;
+      padding: 0 @default-gutter-size/4;
+      height: @default-gutter-size * 3;
     }
     .manufacturer {
+      padding: 0 @default-gutter-size/4;
       color: lighten(@default-text-color, 25%);
       font-size: 0.9em;
       overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .description {
+      padding: 0 @default-gutter-size/4;
+      margin-top: @default-gutter-size;
     }
     .price-wrapper {
+      position: absolute;
+      right: 0;
+      padding: 0 @default-gutter-size;
+      line-height: @default-gutter-size * 3;
+      font-size: 1.25em;
       .price {
-        font-size: 1.25em;
         font-weight: bold;
         color: #333;
         white-space: nowrap;
       }
       .regular-price {
         color: @default-text-color;
-        font-size: 0.8em;
+        font-size: 0.75em;
         font-weight: normal;
         white-space: nowrap;
       }
       .campaign-price {
-        font-size: 1.25em;
         font-weight: bold;
         color: #cc0000;
         white-space: nowrap;
       }
     }
+
     &.column {
-      //height: 275px;
-      .image-wrapper {
-        margin-bottom: @default-gutter-size/2;
-      }
-      .info {
+      .link {
         text-align: center;
       }
-      .price-wrapper {
-        position: absolute;
-        bottom: @default-gutter-size/2;
-        left: @default-gutter-size/2;
-        right: @default-gutter-size/2;
-        text-align: center;
-      }
-    }
-    &:not(.column) {
-      display: block;
-      position: relative;
-      padding: 0;
-      .image-wrapper {
-        display: inline-block;
-        img {
-          width: 160px;
-          height: auto;
-        }
-      }
-      .info {
-        position: absolute;
-        top: @default-gutter-size;
-        left: 160px + @default-gutter-size;
-        padding: @default-gutter-size/4;
+      img {
+        width: 100%;
+        height: auto;
       }
       .price-wrapper {
-        margin-top: @default-gutter-size;
+        position: initial;
+        padding: 0 @default-gutter-size/4;
       }
     }
   }
