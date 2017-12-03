@@ -170,7 +170,7 @@
       }
 
     // Unset zone if not in country
-      if (!isset(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
+      if (!empty(self::$data['zone_code']) && !isset(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
         self::$data['zone_code'] = '';
       }
 
