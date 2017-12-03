@@ -14,14 +14,14 @@
     notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));
     http_response_code(410);
     header('Refresh: 0; url='. document::ilink('manufacturers'));
-    exit;
+    die('HTTP Error 410 Gone');
   }
 
   if (empty($manufacturer->status)) {
     notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
     http_response_code(404);
     header('Refresh: 0; url='. document::ilink('manufacturers'));
-    exit;
+    die('HTTP Error 404 Not Found');
   }
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => (int)$manufacturer->id), false) .'" />';
