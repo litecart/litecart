@@ -3,7 +3,7 @@
   <h2 class="title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
 
   <div class="table-responsive">
-    <table class="items table table-striped data-table" style="width: 100%;">
+    <table class="items table table-striped data-table">
       <thead>
         <tr class="item">
           <th><?php echo language::translate('title_item', 'Item'); ?></th>
