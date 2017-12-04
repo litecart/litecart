@@ -94,13 +94,17 @@
 
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 
-          if (substr($setting['function'], 0, 14) == 'regional_input') {
+        switch (true) {
+          case (substr($setting['function'], 0, 14) == 'regional_input'):
             if (!isset($_POST['settings'][$setting['key']])) {
               $_POST['settings'][$setting['key']] = @json_decode($setting['value'], true);
-            } else {
-              $_POST['settings'][$setting['key']] = $_POST['settings'][$setting['key']];
             }
-          }
+            break;
+
+          default:
+            $_POST['settings'][$setting['key']] = $setting['value'];
+            break;
+        }
 ?>
       <tr>
         <td>
