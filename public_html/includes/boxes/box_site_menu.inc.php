@@ -10,60 +10,35 @@
       'pages' => array(),
     );
 
-    if (!function_exists('custom_site_menu_category_tree')) {
-      function custom_site_menu_category_tree($parent_id=0, $depth=0, &$output) {
+  // Categories
 
-        $categories_query = database::query(
-          "select c.id, c.image, c.priority, ci.name
-          from ". DB_TABLE_CATEGORIES ." c
-          left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-          where status
-          ". (empty($parent_id) ? "and find_in_set('menu', c.dock)" : "and parent_id = '". (int)$parent_id ."'") ."
-          order by c.priority asc, ci.name asc;"
+    $categories_query = functions::catalog_categories_query(0, 'menu');
+
+    while ($category = database::fetch($categories_query)) {
+      $box_site_menu->snippets['categories'][$category['id']] = array(
+        'type' => 'category',
+        'id' => $category['id'],
+        'title' => $category['name'],
+        'link' => document::ilink('category', array('category_id' => $category['id'])),
+        'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 24, 24, 'CROP'),
+        'subitems' => array(),
+        'priority' => $category['priority'],
+      );
+
+      $subcategories_query = functions::catalog_categories_query($category['id']);
+
+      while ($subcategory = database::fetch($subcategories_query)) {
+        $box_site_menu->snippets['categories'][$category['id']]['subitems'][$subcategory['id']] = array(
+          'type' => 'category',
+          'id' => $subcategory['id'],
+          'title' => $subcategory['name'],
+          'link' => document::ilink('category', array('category_id' => $subcategory['id'])),
+          'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $subcategory['image'], 24, 24, 'CROP'),
+          'subitems' => array(),
+          'priority' => $subcategory['priority'],
         );
-
-        while ($category = database::fetch($categories_query)) {
-
-          if ($parent_id == 0) {
-            $output[$category['id']] = array(
-              'type' => 'category',
-              'id' => $category['id'],
-              'title' => $category['name'],
-              'link' => document::ilink('category', array('category_id' => $category['id'])),
-              'image' => null,
-              'subitems' => array(),
-              'priority' => $category['priority'],
-            );
-          } else {
-            $output[$category['id']] = array(
-              'type' => 'category',
-              'id' => $category['id'],
-              'title' => $category['name'],
-              'link' => document::ilink('category', array('category_id' => $category['id'])),
-              'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 24, 24, 'CROP'),
-              'subitems' => array(),
-              'priority' => $category['priority'],
-            );
-          }
-
-          $subcategories_query = database::query(
-            "select id
-            from ". DB_TABLE_CATEGORIES ." c
-            where status = 1
-            and parent_id = '". (int)$category['id'] ."'
-            limit 1;"
-          );
-
-          if (database::num_rows($subcategories_query) > 0) {
-            custom_site_menu_category_tree($category['id'], $depth+1, $output[$category['id']]['subitems']);
-          }
-        }
-
-        database::free($categories_query);
       }
     }
-
-    custom_site_menu_category_tree(0, 0, $box_site_menu->snippets['categories']);
 
   // Manufacturers
 

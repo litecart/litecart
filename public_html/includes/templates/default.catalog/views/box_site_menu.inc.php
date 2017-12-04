@@ -109,13 +109,3 @@
     </div>
   </nav>
 </div>
-
-<script>
-$(document).ready(function(){
-  $('#site-menu .dropdown .dropdown a[data-toggle="dropdown"]').on('click', function(e){
-    e.stopPropagation();
-    e.preventDefault();
-    $(this).next('ul').toggle();
-  });
-});
-</script>
