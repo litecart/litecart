@@ -175,8 +175,11 @@
   li.open > a {
     background: rgba(0, 0, 0, .15);
   }
-  li:not(.open) a:hover {
-    background: rgba(255, 255, 255, .3);
+  li:not(.open) > a:hover {
+    background: rgba(0, 0, 0, .05);
+  }
+  .dropdown-menu {
+    background: lighten(@gradient-from, 5%);
   }
 }
 
@@ -208,6 +211,7 @@
   }
 
   .dropdown-menu {
+    margin-top: -1px;
     border-top: none;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
