@@ -786,34 +786,6 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
-  function form_draw_google_taxonomy_categories_list($name, $input=true, $multiple=false, $parameters='') {
-
-    $cache_id = cache::cache_id('google_taxonomy_categories', array('language'));
-
-    if (!$response = cache::get($cache_id, 'file', 2592000, true)) {
-
-      $client = new http_client();
-      $response = $client->call('GET', 'http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt');
-
-      if (empty($response)) return functions::form_draw_number_field($name, $input);
-
-      $response = preg_replace('#^(\#.*\R)$#', '', $response);
-      cache::set($cache_id, 'file', $response);
-    }
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    foreach (preg_split('#\R#', $response) as $row) {
-      if (preg_match('#^([0-9]+) - (.*)$#', $row, $matches)) {
-        $options[] = array($matches[2], $matches[1]);
-      }
-    }
-
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  }
-
   function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
 
     $options = array();
