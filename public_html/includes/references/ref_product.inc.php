@@ -5,17 +5,19 @@
     private $_id;
     private $_currency_code;
     private $_language_codes;
+    private $_customer_id;
     private $_data = array();
 
-    function __construct($product_id, $language_code=null, $currency_code=null) {
+    function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
 
       $this->_id = (int)$product_id;
-      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
       $this->_language_codes = array_unique(array(
         !empty($language_code) ? $language_code : language::$selected['code'],
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
+      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
+      $this->_customer_id = !empty($customer_id) ? $customer_id : customer::$data['id'];
     }
 
     public function &__get($name) {
