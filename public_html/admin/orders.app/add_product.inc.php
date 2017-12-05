@@ -5,7 +5,7 @@
   if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('store_currency_code');
   if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
 
-  $product = reference::product($_GET['product_id'], $_GET['currency_code']);
+  $product = reference::product($_GET['product_id'], $_GET['language_code'], $_GET['currency_code'], $_GET['customer']['id']);
   if (empty($product->id)) return;
 ?>
 <div id="modal-add-product" style="width: 640px;">
