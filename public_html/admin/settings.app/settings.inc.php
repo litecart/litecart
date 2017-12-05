@@ -112,7 +112,12 @@
           <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
         </td>
         <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>
-        <td style="text-align: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
+        <td class="text-right">
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+            <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+          </div>
+        </td>
       </tr>
 <?php
       } else {
@@ -139,7 +144,7 @@
             <?php echo $setting['value']; ?>
           </div>
         </td>
-        <td style="text-align: right;"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        <td class="text-right"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
       }
