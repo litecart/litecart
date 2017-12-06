@@ -112,14 +112,15 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   }
   .input-group-addon {
     flex: 1 0 auto;
+    margin: 0 -1px;
     padding: @form-input-padding @form-input-padding * 2;
-    font-weight: normal;
-    color: #555;
-    text-align: center;
     background-color: @default-color;
     border-left: 1px solid @default-border-color;
     border-right: 1px solid @default-border-color;
-    margin: 0 -1px;
+    color: #555;
+    white-space: nowrap;
+    font-weight: normal;
+    text-align: center;
     .select-wrapper {
       background: none;
       margin: -@form-input-padding -@form-input-padding * 2;

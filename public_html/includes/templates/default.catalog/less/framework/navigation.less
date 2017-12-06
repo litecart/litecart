@@ -178,8 +178,10 @@
   li:not(.open) > a:hover {
     background: rgba(0, 0, 0, .05);
   }
-  .dropdown-menu {
-    background: lighten(@gradient-from, 5%);
+  @media (min-width: 768px) {
+    .dropdown-menu {
+      background: lighten(@gradient-from, 5%);
+    }
   }
 }
 
