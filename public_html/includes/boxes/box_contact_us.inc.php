@@ -13,7 +13,8 @@
       if (empty($_POST['message'])) throw new Exception(language::translate('error_must_enter_message', 'You must enter a message'));
 
       $email = new email();
-      $email->add_recipient($_POST['email'], $_POST['name'])
+      $email->set_sender($_POST['email'], $_POST['name'])
+            ->add_recipient(settings::get('store_email'), settings::get('store_name'))
             ->set_subject($_POST['subject'])
             ->add_body($_POST['message']);
 
