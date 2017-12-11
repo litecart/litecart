@@ -752,7 +752,7 @@
       $message = strtr(language::translate('email_order_confirmation', $message, $language_code), $aliases);
 
       $email = new email();
-      $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+      $email->add_recipient($email)
             ->set_subject($subject)
             ->add_body($message)
             ->send();
