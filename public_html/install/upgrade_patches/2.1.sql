@@ -35,3 +35,5 @@ CHANGE COLUMN `date_accessed` `date_accessed` DATETIME NOT NULL AFTER `pages`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
 CHANGE COLUMN `key` `key` VARCHAR(64) NOT NULL AFTER `type`;
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET `postcode_format` = '[1-9][0-9]{3} ?(?:[a-zA-Z]{2})?' WHERE `iso_code_2` = 'NL';
