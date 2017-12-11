@@ -56,15 +56,14 @@
   });
 
   $('.nav-tabs').each(function(){
-    if (!$(this).find('.active').length) {
+    if (!$(this).find('li.active').length) {
       $(this).find('li:first').addClass('active');
     }
   });
 
-  if (window.location.hash != '') {
-    $('a[href="' + window.location.hash + '"]').click();
-  } else {
-    $('.nav-tabs .active a').trigger('click');
+  $('.nav-tabs .active a').trigger('click');
+  if (document.location.hash != '') {
+    $('a[href="' + document.location.hash + '"]').click();
   }
 
 // Bootstrap Comaptible (data-toggle="buttons")

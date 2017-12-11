@@ -91,10 +91,9 @@
     }
   });
 
-  if (window.location.hash != '') {
-    $('a[href="' + window.location.hash + '"]').click();
-  } else {
-    $('.nav-tabs .active a').trigger('click');
+  $('.nav-tabs .active a').trigger('click');
+  if (document.location.hash != '') {
+    $('a[href="' + document.location.hash + '"]').click();
   }
 
 // Bootstrap Comaptible (data-toggle="buttons")
