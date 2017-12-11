@@ -105,6 +105,7 @@ module.exports = function(grunt) {
       },
       javascripts: {
         files: [
+          'public_html/ext/featherlight/featherlight.js',
           'public_html/includes/templates/*/js/app.js',
         ],
         tasks: ['uglify']
