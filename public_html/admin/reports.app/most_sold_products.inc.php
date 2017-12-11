@@ -16,9 +16,6 @@
 ?>
 
 <style>
-.border-left {
-  border-left: 1px #999 dashed;
-}
 form[name="filter_form"] li {
   vertical-align: middle;
 }
