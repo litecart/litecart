@@ -21,7 +21,7 @@
   border: 1px solid #ddd;
   border-color: @default-border-color @default-border-color darken(@default-border-color, 5%);
   border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 0.5px 2px rgba(50,50,93,0.15);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
   text-align: center;
 
   &.btn-default { .btn(@default-color, #555); }
@@ -45,13 +45,12 @@
 
 .btn-group {
   display: inline-flex;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 0.5px 2px rgba(50,50,93,0.15);
+  border-radius: @default-border-radius;
   .btn {
     flex: 1 0 auto;
     border-radius: 0;
     font-size: inherit;
     margin-left: -1px;
-    box-shadow: none;
     &:first-child {
       border-top-left-radius: @default-border-radius;
       border-bottom-left-radius: @default-border-radius;
