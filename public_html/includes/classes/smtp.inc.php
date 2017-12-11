@@ -4,7 +4,7 @@
     private $_socket = null;
     private $_host = null;
     private $_port = null;
-    private $_logfh = '';
+    private $_log_handle = '';
 
     function __construct($host, $port, $username='', $password='') {
 
@@ -20,7 +20,7 @@
 
     public function send($sender, $recipients, $data='') {
 
-      $this->_logfh = fopen(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'last_smtp.log', 'w');
+      $this->_log_handle = fopen(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'last_smtp.log', 'w');
 
       if (!is_resource($this->_socket)) $this->connect();
 
@@ -90,7 +90,7 @@
         ),
       ));
 
-      $this->_log .= "Connecting to $this->_host ...\r\n";
+      fwrite($this->_log_handle, "Connecting to $this->_host ...\r\n");
       $this->_socket = stream_socket_client($this->_host, $errno, $errstr, 3, STREAM_CLIENT_CONNECT, $stream_context);
 
       if ($errno) throw new Exception('Could not connect to socket '. $this->_host .': '. $errstr);
@@ -109,7 +109,7 @@
       $this->write("QUIT\r\n");
 
       fclose($this->_socket);
-      fclose($this->_logfh);
+      fclose($this->_log_handle);
 
       return $this;
     }
@@ -121,7 +121,7 @@
       $buffer = '';
       while (substr($buffer, 3, 1) != ' ') {
         if (!$buffer = fgets($this->_socket, 256)) throw new Exception('No response from socket');
-        fwrite($this->_logfh, "< $buffer");
+        fwrite($this->_log_handle, "< $buffer");
         $response .= $buffer;
       }
 
@@ -134,7 +134,7 @@
 
     public function write($data, $expected_response=null) {
 
-      fwrite($this->_logfh, "> $data");
+      fwrite($this->_log_handle, "> $data");
       $result = fwrite($this->_socket, $data);
 
       if ($expected_response !== null) {
