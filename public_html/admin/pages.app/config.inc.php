@@ -4,7 +4,7 @@
     'name' => language::translate('title_pages', 'Pages'),
     'default' => 'pages',
     'theme' => array(
-      'color' => '#bec6b4',
+      'color' => '#adb4a3',
       'icon' => 'fa-file-text',
     ),
     'menu' => array(

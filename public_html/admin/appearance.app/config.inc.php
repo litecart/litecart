@@ -4,7 +4,7 @@
     'name' => language::translate('title_appearance', 'Appearance'),
     'default' => 'template',
     'theme' => array(
-      'color' => '#ff387c',
+      'color' => '#ff2a72',
       'icon' => 'fa-adjust',
     ),
     'menu' => array(

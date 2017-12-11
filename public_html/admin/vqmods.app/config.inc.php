@@ -4,7 +4,7 @@
     'name' => language::translate('title_vqmods', 'vQmods'),
     'default' => 'vqmods',
     'theme' => array(
-      'color' => '#a6dad7',
+      'color' => '#77d2cd',
       'icon' => 'fa-plug',
     ),
     'menu' => array(),

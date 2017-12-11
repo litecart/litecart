@@ -4,7 +4,7 @@
     'name' => language::translate('title_currencies', 'Currencies'),
     'default' => 'currencies',
     'theme' => array(
-      'color' => '#f3be30',
+      'color' => '#f3b91c',
       'icon' => 'fa-money',
     ),
 
