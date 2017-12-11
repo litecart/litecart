@@ -4,7 +4,7 @@
     private $_socket = null;
     private $_host = null;
     private $_port = null;
-    private $_log = '';
+    private $_logfh = '';
 
     function __construct($host, $port, $username='', $password='') {
 
@@ -19,6 +19,8 @@
     }
 
     public function send($sender, $recipients, $data='') {
+
+      $this->_logfh = fopen(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'last_smtp.log', 'w');
 
       if (!is_resource($this->_socket)) $this->connect();
 
@@ -107,6 +109,7 @@
       $this->write("QUIT\r\n");
 
       fclose($this->_socket);
+      fclose($this->_logfh);
 
       return $this;
     }
@@ -118,11 +121,10 @@
       $buffer = '';
       while (substr($buffer, 3, 1) != ' ') {
         if (!$buffer = fgets($this->_socket, 256)) throw new Exception('No response from socket');
+        fwrite($this->_logfh, "< $buffer");
         $response .= $buffer;
       }
 
-      echo '< ' . $response;
-      $this->_log .= "< {$buffer}";
       $this->_last_response = $response;
 
       if (substr($response, 0, 3) != $expected_response) throw new Exception('Unexpected socket response; '. $response);
@@ -132,8 +134,7 @@
 
     public function write($data, $expected_response=null) {
 
-      echo '> ' . $data;
-      $this->_log .= "> {$data}";
+      fwrite($this->_logfh, "> $data");
       $result = fwrite($this->_socket, $data);
 
       if ($expected_response !== null) {
@@ -141,5 +142,9 @@
       }
 
       return $this;
+    }
+
+    public function get_log() {
+      return $this->_log;
     }
   }
