@@ -91,7 +91,7 @@
 ?>
     <tr class="<?php echo empty($enabled) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('vqmods['. $filename .']', $filename); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#88cc44' : '#ff6644') .';"'); ?></td>
       <td><?php echo $filename; ?></td>
       <td><?php echo $xml->id; ?></td>
       <td><?php echo $xml->version; ?></td>

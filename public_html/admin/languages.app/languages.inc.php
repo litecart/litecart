@@ -70,7 +70,7 @@
 ?>
     <tr class="<?php echo empty($language['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($language['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($language['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
       <td><?php echo $language['id']; ?></td>
       <td><?php echo $language['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>

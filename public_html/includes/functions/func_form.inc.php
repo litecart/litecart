@@ -68,10 +68,10 @@
           $icon = functions::draw_fonticon('fa-trash-o');
           break;
         case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #99cc66;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
           break;
         case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6666;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
           break;
         case 'save':
           $icon = functions::draw_fonticon('fa-floppy-o');
@@ -217,10 +217,10 @@
           $icon = functions::draw_fonticon('fa-trash-o');
           break;
         case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #99cc66;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
           break;
         case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6666;"');
+          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
           break;
         case 'save':
           $icon = functions::draw_fonticon('fa-floppy-o');
