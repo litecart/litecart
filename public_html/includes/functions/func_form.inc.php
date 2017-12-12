@@ -442,18 +442,18 @@
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>';
 
-    document::$snippets['javascript'][] = "  $('textarea[name=\"". $name ."\"]').trumbowyg({" . PHP_EOL
-                                        . "    lang: '". language::$selected["code"] ."'," . PHP_EOL
-                                        . "    btnsDef: {" . PHP_EOL
-                                        . "      image: {" . PHP_EOL
-                                        . "       dropdown: ['insertImage', 'base64']," . PHP_EOL
-                                        . "       ico: 'insertImage'" . PHP_EOL
-                                        . "      }" . PHP_EOL
-                                        . "    }," . PHP_EOL
-                                        . "    semantic: false," . PHP_EOL
-                                        . "    removeformatPasted: true," . PHP_EOL
-                                        . "    btns: [['viewHTML'], ['formatting'], 'btnGrp-design', ['link'], ['image'], ['justifyLeft', 'justifyCenter', 'justifyRight'], 'btnGrp-lists', ['foreColor', 'backColor'], ['preformatted'], ['horizontalRule'], ['fullscreen']]" . PHP_EOL
-                                        . "  });";
+    document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
+                                        . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
+                                        . '    btnsDef: {' . PHP_EOL
+                                        . '      image: {' . PHP_EOL
+                                        . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
+                                        . '       ico: "insertImage"' . PHP_EOL
+                                        . '      }' . PHP_EOL
+                                        . '    },' . PHP_EOL
+                                        . '    semantic: false,' . PHP_EOL
+                                        . '    removeformatPasted: true,' . PHP_EOL
+                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["image"], ["justifyLeft", "justifyCenter", "justifyRight"], "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]]' . PHP_EOL
+                                        . '  });';
 
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
