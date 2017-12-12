@@ -1,5 +1,12 @@
 <?php
-  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language', isset($_GET['category_id']) ? $_GET['category_id'] : 0, isset($_GET['page_id']) ? $_GET['page_id'] : 0));
+
+  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array(
+    'language',
+    isset($_GET['category_id']) ? $_GET['category_id'] : 0,
+    isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : 0,
+    isset($_GET['page_id']) ? $_GET['page_id'] : 0,
+  ));
+
   if (cache::capture($box_site_menu_cache_id, 'file')) {
 
     $box_site_menu = new view();
