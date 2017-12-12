@@ -1,5 +1,5 @@
 <?php
-  $box_manufacturer_links_cache_id = cache::cache_id('box_manufacturer_links', array('language', isset($_GET['article_id']) ? $_GET['article_id'] : ''));
+  $box_manufacturer_links_cache_id = cache::cache_id('box_manufacturer_links', array('language', isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : ''));
   if (cache::capture($box_manufacturer_links_cache_id, 'file')) {
 
     $manufacturers_query = database::query(
