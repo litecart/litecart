@@ -46,7 +46,7 @@
       file_put_contents($log_file, $line, FILE_APPEND);
     }
 
-    echo '<h1>HTTP 404 - File Not Found</h1>';
+    echo '<h1>HTTP 404 - Not Found</h1>';
     echo '<p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>';
   }
 
