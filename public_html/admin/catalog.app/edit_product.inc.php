@@ -836,98 +836,67 @@ foreach (currency::$currencies as $currency) {
     }
   }
 
-  $('select[name="tax_class_id"], input[name^="prices"]').bind('input change', function() {
-
-    var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
-    var net_price = Number($(this).val());
-    var gross_price = Number($(this).val()) * (1+(get_tax_rate()/100));
-
-  // Update gross price
-    if (net_price == 0) {
-      $('input[name="prices['+ currency_code +']"]').val('');
-    }
-
-  // Update system currency price
-    if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') return;
-
-    var currency_net_price = net_price * get_currency_value(currency_code);
-    var currency_gross_price = gross_price * get_currency_value(currency_code);
-
-    if (currency_net_price == 0) {
-      $('input[name="prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
-    }
-
-    $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', gross_price.toFixed(get_currency_decimals(currency_code)));
-
-  // Update foreign currency prices
-    $('input[name^="prices"]').each(function(){
-
-      var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
-
-      if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
-
-      var currency_net_price = net_price * get_currency_value(currency_code);
-      var currency_gross_price = gross_price * get_currency_value(currency_code);
-
-      if (currency_net_price == 0) {
-        $('input[name="prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
-        $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
-      } else {
-        $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price.toFixed(get_currency_decimals(currency_code)));
-        $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price.toFixed(get_currency_decimals(currency_code)));
-      };
-    });
+// Update prices
+  $('select[name="tax_class_id"]').change('change', function(){
+    $('input[name^="prices"]').trigger('change');
   });
 
-  $('input[name^="gross_prices"]').bind('input change', function() {
+// Update gross price
+  $('input[name^="prices"]').bind('input change', function() {
+    var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1],
+        currency_decimals = get_currency_decimals(currency_code),
+        net_field = $('input[name="prices['+ currency_code +']"]'),
+        net_price = Number($(this).val()),
+        gross_field = $('input[name="gross_prices['+ currency_code +']"]'),
+        gross_price = Number($(this).val()) * (1+(get_tax_rate()/100));
 
-    var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
-    var net_price = Number($(this).val()) / (1+(get_tax_rate()/100));
-    var gross_price = Number($(this).val());
-
-  // Update price
-    if (gross_price == 0) {
-      $('input[name="gross_prices['+ currency_code +']"]').val('');
-    }
-
-    $('input[name="net_prices['+ currency_code +']"]').val(net_price.toFixed(get_currency_decimals(currency_code)));
-
-    if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') return;
-
-  // Update system currency price
-    var currency_net_price = net_price * get_currency_value(currency_code);
-    var currency_gross_price = gross_price * get_currency_value(currency_code);
-
-    if (currency_net_price == 0) {
-      $('input[name="prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
-      $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)))
+    if (net_price != 0) {
+      $(gross_field).val(Number(gross_price).toFixed(currency_decimals));
     } else {
-      $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price.toFixed(get_currency_decimals(currency_code)));
-      $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price.toFixed(get_currency_decimals(currency_code)));
-    };
+      $(net_field).val('');
+      $(gross_field).val('');
+    }
 
-  // Update foreign currency prices
-    $('input[name^="prices"]').each(function() {
-      var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
+    update_currency_prices();
+  }).trigger('change');
 
-      if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
+// Update net price
+  $('input[name^="gross_prices"]').bind('input change', function() {
+    var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1],
+        currency_decimals = get_currency_decimals(currency_code),
+        net_field = $('input[name="prices['+ currency_code +']"]'),
+        net_price = Number($(this).val()) / (1+(get_tax_rate()/100)),
+        gross_field = $('input[name="gross_prices['+ currency_code +']"]'),
+        gross_price = Number($(this).val());
 
-      var currency_net_price = net_price * get_currency_value(currency_code);
-      var currency_gross_price = gross_price * get_currency_value(currency_code);
+    if (gross_price != 0) {
+      $(net_field).val(Number(net_price).toFixed(currency_decimals));
+    } else {
+      $(gross_price).val();
+      $(net_field).val('');
+    }
 
-      if (currency_net_price == 0) {
-        $('input[name="prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)));
-        $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', Number(0).toFixed(get_currency_decimals(currency_code)));
-      } else {
-        $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price.toFixed(get_currency_decimals(currency_code)));
-        $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price.toFixed(get_currency_decimals(currency_code)));
-      };
-    });
+    update_currency_prices();
   });
 
-// Initiate Prices
-  $('input[name^="prices"]').trigger('change');
-  $('input[name^="gross_prices"]').trigger('change');
+// Update currency price placeholders
+  function update_currency_prices() {
+    var store_currency_code = '<?php echo settings::get('store_currency_code'); ?>',
+        currencies = ['<?php echo implode("','", array_keys(currency::$currencies)); ?>'],
+        net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val(),
+        gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
+
+    $.each(currencies, function(i,currency_code){
+      if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
+
+      var currency_decimals = get_currency_decimals(currency_code),
+          currency_net_price = net_price * get_currency_value(currency_code);
+          currency_gross_price = gross_price * get_currency_value(currency_code);
+
+      $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price ? Number(currency_net_price).toFixed(currency_decimals) : '')
+      $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price ? Number(currency_gross_price).toFixed(currency_decimals) : '')
+    });
+  }
 
   $('#price-incl-tax-tooltip').click(function(e) {
     e.preventDefault;
