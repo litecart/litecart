@@ -688,9 +688,9 @@
       return false;
     }
 
-    public function email_order_copy($email, $language_code='') {
+    public function email_order_copy($recipient, $language_code='') {
 
-      if (empty($email)) return;
+      if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
 
       /*
@@ -752,7 +752,7 @@
       $message = strtr(language::translate('email_order_confirmation', $message, $language_code), $aliases);
 
       $email = new email();
-      $email->add_recipient($email)
+      $email->add_recipient($recipient)
             ->set_subject($subject)
             ->add_body($message)
             ->send();
