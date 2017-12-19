@@ -6,13 +6,17 @@
     echo '<div class="item'. (($key == 0) ? ' active' : '') .'">' . PHP_EOL;
 
     if ($slide['link']) {
-      echo '<a href="'. htmlspecialchars($slide['link']) .'"><img src="'. $slide['image'] .'" alt="" style="width: 100%;" /></a>' . PHP_EOL;
-    } else {
-      echo '<img src="'. $slide['image'] .'" alt="" style="width: 100%;" />' . PHP_EOL;
+      echo '<a href="'. htmlspecialchars($slide['link']) .'">' . PHP_EOL;
     }
+
+    echo '<img src="'. $slide['image'] .'" alt="" style="width: 100%;" /></a>' . PHP_EOL;
 
     if (!empty($slide['caption'])) {
       echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;
+    }
+
+    if ($slide['link']) {
+      echo '</a>' . PHP_EOL;
     }
 
     echo '</div>' . PHP_EOL;
