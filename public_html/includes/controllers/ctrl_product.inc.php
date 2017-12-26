@@ -544,7 +544,6 @@
         where product_id = '". (int)$this->data['id'] ."';"
       );
 
-
       cache::clear_cache('products');
 
       $this->data['id'] = null;

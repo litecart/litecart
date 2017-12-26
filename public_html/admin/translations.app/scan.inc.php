@@ -83,7 +83,6 @@
       }
     }
 
-
     if (!empty($_POST['clean'])) {
       $settings_groups_query = database::query(
         "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"

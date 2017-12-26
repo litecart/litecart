@@ -457,7 +457,6 @@
         <input class="form-control" name="store_email" type="text" value="store@email.com" required="required" />
       </div>
 
-
       <div class="form-group col-md-6">
         <label>Country</label>
         <select class="form-control" name="country_code" required="required">

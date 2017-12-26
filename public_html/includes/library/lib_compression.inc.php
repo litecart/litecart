@@ -2,7 +2,6 @@
 
   class compression {
 
-
     //public static function construct() {
     //}
 

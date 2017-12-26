@@ -77,7 +77,6 @@
 
     $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page', 20)));
 
-
     echo $_page->stitch('pages/manufacturer');
 
     cache::end_capture($manufacturer_cache_id);

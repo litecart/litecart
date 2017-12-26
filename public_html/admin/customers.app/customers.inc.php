@@ -62,7 +62,6 @@
 
   if (database::num_rows($customers_query) > 0) {
 
-
     if ($_GET['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
 
     $page_items = 0;

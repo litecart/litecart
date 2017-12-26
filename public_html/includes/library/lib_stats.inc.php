@@ -6,7 +6,6 @@
     private static $_page_parse_start;
     private static $_capture_parse_start;
 
-
     public static function construct() {
 
     // Set time stamp for execution

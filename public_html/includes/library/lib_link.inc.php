@@ -43,7 +43,6 @@
       } else if ($document == '') {
         $parsed_link = self::explode_link(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
-
       } else if (substr($document, 0, 4) == 'http' || strpos($document, '?') !== false) {
         $parsed_link = self::explode_link($document);
 

@@ -234,7 +234,6 @@
     '{ADMIN_DIR_FULL}' => $installation_path . $_REQUEST['admin_folder'],
   ));
 
-
   if (file_put_contents('../.htaccess', $htaccess)) {
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   } else {
@@ -439,7 +438,6 @@
      . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL
      . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'">administration area</a> and start configuring your store.</p>' . PHP_EOL
      . '<p>Check out our <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL;
-
 
   if (!empty($_REQUEST['redirect'])) {
     header('Location: '. $_REQUEST['redirect']);
