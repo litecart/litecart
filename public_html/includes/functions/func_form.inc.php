@@ -373,6 +373,12 @@
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
+  function form_draw_time_field($name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time"'. (($parameters) ? ' '.$parameters : false) .' />';
+  }
+
   function form_draw_toggle($name, $input=true, $type='e/d', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
@@ -408,12 +414,6 @@
          . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '</div>';
-  }
-
-  function form_draw_time_field($name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name);
-
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_url_field($name, $value=true, $parameters='') {

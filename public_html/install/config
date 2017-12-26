@@ -1,16 +1,14 @@
 <?php
 
-  //if (is_writable(__FILE__)) chmod(__FILE__, 0444);
-
 ######################################################################
-## Files and Directory  ##############################################
+## Files and Directories #############################################
 ######################################################################
 
 // File System
   define('FS_DIR_HTTP_ROOT', rtrim(str_replace("\\", '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
 
 // Web System
-  define('WS_DIR_HTTP_HOME', str_replace(FS_DIR_HTTP_ROOT, '', str_replace("\\", '/', realpath(dirname(__FILE__) . '/' . '..') . '/')));
+  define('WS_DIR_HTTP_HOME', rtrim(str_replace(FS_DIR_HTTP_ROOT, '', str_replace("\\", '/', realpath(__DIR__.'/..'), '/') . '/')));
 
   define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '{ADMIN_FOLDER}/');
   define('WS_DIR_AJAX',        WS_DIR_HTTP_HOME . 'ajax/');

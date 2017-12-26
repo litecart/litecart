@@ -2,7 +2,7 @@
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '2.1');
 
-  if (!file_exists(realpath(dirname(__FILE__)) . '/config.inc.php')) {
+  if (!file_exists(__DIR__ . '/config.inc.php')) {
     header('Location: ./install/');
     exit;
   }
@@ -11,7 +11,7 @@
   ob_start();
 
 // Get config
-  require_once realpath(dirname(__FILE__)) . '/config.inc.php';
+  require_once __DIR__ . '/config.inc.php';
 
 // Compatibility
   require_once FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php';
