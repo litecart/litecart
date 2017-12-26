@@ -36,6 +36,7 @@
         <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
         <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th><?php echo language::translate('title_email', 'Email'); ?></th>
         <th><?php echo language::translate('title_name', 'Name'); ?></th>
         <th class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
         <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
@@ -71,7 +72,8 @@
       <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($customer['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
       <td><?php echo $customer['id']; ?></td>
-      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
+      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['email']; ?></a></td>
+      <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
       <td><?php echo $customer['company']; ?></td>
       <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
       <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
@@ -84,7 +86,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="7"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
+        <td colspan="8"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
       </tr>
     </tfoot>
   </table>
