@@ -510,6 +510,14 @@ body.trumbowyg-body-fullscreen {
         cursor: move;
     }
 
+    table {
+        border: 1px dashed #999;
+        td {
+            padding: 3px;
+            border: 1px dashed #999;
+        }
+    }
+
     /*
      * lset for resetCss option
      */
