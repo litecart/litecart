@@ -393,7 +393,7 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_attributes', 'Attributes'); ?> <a class="attributes-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'style="height: 250px;"'); ?>
+        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'attributes['. $language_code .']', true, 'style="height: 200px;"'); ?>
       </div>
 
       <div class="row">
