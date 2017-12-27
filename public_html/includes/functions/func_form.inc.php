@@ -446,7 +446,8 @@
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
                                         . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
                                         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
-                                        . '    semantic: false,' . PHP_EOL
+                                        . '    autogrowOnEnter: true,' . PHP_EOL
+                                        . '    imageWidthModalEdit: true,' . PHP_EOL
                                         . '    removeformatPasted: true,' . PHP_EOL
                                         . '  });';
 
