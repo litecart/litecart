@@ -1,4 +1,4 @@
-<div id="box-product" class="box" style="max-width: 980px;" data-id="<?php echo $product_id; ?>">
+<div id="box-product" class="box" style="max-width: 980px;" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($raw_price); ?>">
   <div class="row">
     <div class="col-xs-whole col-sm-halfs col-md-thirds">
       <div class="image-wrapper">
