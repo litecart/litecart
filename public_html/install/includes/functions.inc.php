@@ -49,16 +49,16 @@
   }
 
 // Function to modify file
-  function file_modify($file, $search, $replace) {
+  function file_modify($files, $search, $replace) {
 
-    echo 'Modify '. $file . '<br />' . PHP_EOL;
+    foreach (glob($files) as $file) {
+      echo 'Modify '. $file . '<br />' . PHP_EOL;
 
-    if (!is_file($file)) return false;
-
-    $contents = file_get_contents($file);
-    $contents = preg_replace('#\R#u', PHP_EOL, $contents);
-    $contents = str_replace($search, $replace, $contents);
-    $result = file_put_contents($file, $contents);
+      $contents = file_get_contents($file);
+      $contents = preg_replace('#\R#u', PHP_EOL, $contents);
+      $contents = str_replace($search, $replace, $contents);
+      $result = file_put_contents($file, $contents);
+    }
 
     return $result;
   }
