@@ -72,6 +72,10 @@
         'platform' => array(
           'url' => document::ilink(''),
         ),
+        'session' => array(
+          'language_code' => language::$selected['code'],
+          'currency_code' => currency::$selected['code'],
+        ),
         'template' => array(
           'url' => document::link(WS_DIR_TEMPLATE),
           'settings' => self::$settings,
