@@ -560,6 +560,8 @@
       case 'template':
       case 'templates':
         return functions::form_draw_templates_list($name, $input);
+      case 'time':
+        return functions::form_draw_time_field($name, $input);
       case 'toggle':
         return functions::form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
       case 'sold_out_status':
