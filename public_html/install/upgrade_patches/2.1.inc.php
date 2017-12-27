@@ -34,3 +34,28 @@
       die('<span class="error">[Error]</span></p>');
     }
   }
+
+// Modify some files
+  $modified_files = array(
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . '*.catalog/views/listing_product.inc.php',
+      'search'  => '$price',
+      'replace' => 'currency::format($regular_price)',
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . '*.catalog/views/listing_product.inc.php',
+      'search'  => '$campaign_price',
+      'replace' => 'currency::format($campaign_price)',
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
+      'search'  => 'define(\'WS_DIR_HTTP_HOME\', str_replace(FS_DIR_HTTP_ROOT, \'\', str_replace("\\\\", \'/\', realpath(dirname(__FILE__) . \'/\' . \'..\') . \'/\')));',
+      'replace' => 'define(\'WS_DIR_HTTP_HOME\', rtrim(str_replace(FS_DIR_HTTP_ROOT, \'\', str_replace("\\\\", \'/\', realpath(__DIR__.\'/..\'), \'/\') . \'/\')));',
+    ),
+  );
+
+  foreach ($modified_files as $modification) {
+    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
+      die('<span class="error">[Error]</span></p>');
+    }
+  }
