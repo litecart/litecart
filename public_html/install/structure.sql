@@ -462,7 +462,7 @@ CREATE TABLE `lc_products` (
   KEY `sku` (`sku`),
   KEY `mpn` (`mpn`),
   KEY `gtin` (`gtin`),
-  KEY `taric` (`taric`)
+  KEY `taric` (`taric`),
   KEY `date_valid_from` (`date_valid_from`),
   KEY `date_valid_to` (`date_valid_to`),
   KEY `purchases` (`purchases`),

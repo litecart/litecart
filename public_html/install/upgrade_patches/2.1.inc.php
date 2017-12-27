@@ -49,8 +49,8 @@
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
-      'search'  => 'define(\'WS_DIR_HTTP_HOME\', str_replace(FS_DIR_HTTP_ROOT, \'\', str_replace("\\\\", \'/\', realpath(dirname(__FILE__) . \'/\' . \'..\') . \'/\')));',
-      'replace' => 'define(\'WS_DIR_HTTP_HOME\', rtrim(str_replace(FS_DIR_HTTP_ROOT, \'\', str_replace("\\\\", \'/\', realpath(__DIR__.\'/..\'), \'/\') . \'/\')));',
+      'search'  => 'define(\'WS_DIR_HTTP_HOME\', str_replace(FS_DIR_HTTP_ROOT, \'\', str_replace(\'\\\\\', \'/\', realpath(dirname(__FILE__) . \'/\' . \'..\') . \'/\')));',
+      'replace' => 'define(\'WS_DIR_HTTP_HOME\', rtrim(str_replace(FS_DIR_HTTP_ROOT, '', str_replace(\'\\\\\', \'/\', realpath(__DIR__.\'/..\'))), \'/\') . \'/\');',
     ),
   );
 
