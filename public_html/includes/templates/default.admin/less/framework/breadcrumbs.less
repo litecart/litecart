@@ -6,7 +6,6 @@ ul.breadcrumb {
   margin-bottom: @default-gutter-size;
   list-style: none;
   background-color: @breadcrumbs-background-color;
-  border: 1px solid darken(@breadcrumbs-background-color, 5%);
   border-radius: 4px;
   li {
     display: inline-block;
@@ -14,6 +13,9 @@ ul.breadcrumb {
       content: "/\00a0";
       padding: 0 5px;
       color: #ccc;
+    }
+    a {
+      color: inherit;
     }
   }
 }

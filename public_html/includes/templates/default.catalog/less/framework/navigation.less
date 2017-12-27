@@ -1,4 +1,4 @@
-/* Navigation (Tabs, Pills) - Bootstrap Compatible */
+/* Navigation (Tabs, Pills, Navbar) - Bootstrap Compatible */
 
 .nav(@background: transparent, @color: inherit) {
   li {
@@ -90,8 +90,10 @@
         margin-right: 2px;
         line-height: 1.42857143;
         border-radius: @default-border-radius @default-border-radius 0 0;
+        padding: @default-gutter-size/2 @default-gutter-size;
       }
       &.active a {
+        background: #fff;
         margin-bottom: -1px;
         border: 1px solid @default-border-color;
         border-bottom-color: #fff;
@@ -117,6 +119,9 @@
     flex-direction: column;
     li {
       display: block;
+      > a {
+        padding: @default-gutter-size/2 @default-gutter-size;
+      }
       + li > a {
         margin-left: 0;
       }
