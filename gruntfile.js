@@ -108,7 +108,7 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      css: {
+      less: {
         files: [
           'public_html/includes/templates/*/less/*/*.less',
           'public_html/includes/templates/*/less/*.less',
