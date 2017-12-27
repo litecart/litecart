@@ -434,8 +434,8 @@
         <table class="table table-striped data-table">
           <thead>
             <tr>
-              <td class="col-md-6"><?php echo language::translate('title_price', 'Price'); ?></td>
-              <td class="col-md-6"><?php echo language::translate('title_price_incl_tax', 'Price Incl. Tax'); ?> (<a id="price-incl-tax-tooltip" href="#">?</a>)</td>
+              <td style="width: 50%;"><?php echo language::translate('title_price', 'Price'); ?></td>
+              <td style="width: 50%;"><?php echo language::translate('title_price_incl_tax', 'Price Incl. Tax'); ?> (<a id="price-incl-tax-tooltip" href="#">?</a>)</td>
             </tr>
           </thead>
           <tbody>
