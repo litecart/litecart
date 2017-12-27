@@ -59,3 +59,14 @@
       die('<span class="error">[Error]</span></p>');
     }
   }
+
+// Delete old files
+  $deleted_files = array(
+    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'trumbowyg/plugins/base64/',
+  );
+
+  foreach ($deleted_files as $pattern) {
+    if (!file_delete($pattern)) {
+      die('<span class="error">[Error]</span></p>');
+    }
+  }
