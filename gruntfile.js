@@ -71,6 +71,19 @@ module.exports = function(grunt) {
       },
     },
 
+    sass: {
+      trumbowyg: {
+        options: {
+          sourceMap: true,
+          outputStyle: 'compressed',
+          compass: false
+        },
+        files: {
+          'public_html/ext/trumbowyg/ui/trumbowyg.min.css': 'public_html/ext/trumbowyg/ui/trumbowyg.scss'
+        }
+      }
+    },
+
     uglify: {
       litecart: {
         files: {
@@ -110,15 +123,22 @@ module.exports = function(grunt) {
         ],
         tasks: ['uglify']
       },
+      sass: {
+        files: [
+          'public_html/ext/trumbowyg/ui/trumbowyg.scss'
+        ],
+        tasks: ['sass']
+      },
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-text-replace');
 
-  grunt.registerTask('default', ['replace', 'less', 'uglify']);
+  grunt.registerTask('default', ['replace', 'less', 'sass', 'uglify']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);

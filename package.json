@@ -23,6 +23,7 @@
 		"grunt-contrib-uglify": "^3.2.1",
 		"grunt-contrib-watch": "^1.0.0",
 		"grunt-phplint": "^0.1.0",
+		"grunt-sass": "^2.0.0",
 		"grunt-text-replace": "^0.3.12",
 		"less-plugin-clean-css": ">=1.5.1",
 		"phplint": "^1.7.4"
