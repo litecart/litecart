@@ -143,14 +143,26 @@
         $this->save();
       }
 
-      $image = new ctrl_image($file);
+    // SVG
+      if (preg_match('#^<svg#m', file_get_contents($file))) {
+        $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.svg';
 
-      $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
+        if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/', 0777);
+        if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
 
-      if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/', 0777);
-      if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+        copy($file, FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
 
-      $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+    // Image
+      } else {
+        $image = new ctrl_image($file);
+
+        $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
+
+        if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/', 0777);
+        if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+
+        $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+      }
 
       $this->data['image'] = $filename;
       $this->save();
