@@ -487,7 +487,10 @@
     <div class="row">
       <div class="form-group col-md-6">
         <label>Folder Name</label>
-        <input class="form-control" name="admin_folder" type="text" value="admin" required="required" />
+        <div class="input-group">
+          <span class="input-group-addon">/</span>
+          <input class="form-control" name="admin_folder" type="text" value="admin" required="required" />
+        </div>
       </div>
 
       <div class="form-group col-md-6">
