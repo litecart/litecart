@@ -17,7 +17,7 @@
         <?php echo functions::form_draw_text_field('tax_id', true); ?>
       </div>
 
-      <div class="col-sm-6">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_company', 'Company'); ?></label>
         <?php echo functions::form_draw_text_field('company', true); ?>
       </div>
