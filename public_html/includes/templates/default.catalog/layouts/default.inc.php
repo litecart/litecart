@@ -14,17 +14,21 @@
 
 <div id="page" class="twelve-eighty shadow">
 
-  <header id="header">
+  <header id="header" class="row nowrap center">
 
-    <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-      <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
-    </a>
+    <div class="col-auto">
+      <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
+        <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+      </a>
+    </div>
 
-    <div id="region-wrapper">
+    <div class="col-auto text-center hidden-xs">
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
     </div>
 
-    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
+    <div class="col-auto text-right">
+      <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
+    </div>
   </header>
 
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>

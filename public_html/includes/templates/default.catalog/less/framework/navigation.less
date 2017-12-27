@@ -24,7 +24,7 @@
   li {
     position: relative;
     flex: 0 0 100%;
-    @media(min-width: 768px) {
+    @media(min-width: @media-breakpoint-sm) {
       flex: 0 0 auto;
     }
     > a {
@@ -105,7 +105,7 @@
       > a {
         margin-right: 0;
         text-align: center;
-        @media (min-width: 768px) {
+        @media (min-width: @media-breakpoint-sm) {
           margin-bottom: 0;
         }
       }
@@ -141,6 +141,7 @@
 }
 
 .navbar-collapse {
+  flex: 1 1 auto;
   overflow-x: visible;
   border-top: 1px solid transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -153,7 +154,7 @@
     display: block;
     overflow-y: auto;
   }
-  @media (min-width: 768px) {
+  @media (min-width: @media-breakpoint-sm) {
     width: auto;
     border-top: 0;
     box-shadow: none;
@@ -178,7 +179,7 @@
   li:not(.open) > a:hover {
     background: rgba(0, 0, 0, .05);
   }
-  @media (min-width: 768px) {
+  @media (min-width: @media-breakpoint-sm) {
     .dropdown-menu {
       background: lighten(@gradient-from, 5%);
     }
@@ -186,9 +187,10 @@
 }
 
 .navbar {
+  display: flex;
+  flex-direction: column;
   position: relative;
   margin-bottom: @default-gutter-size;
-  min-height: 50px;
   border-radius: @default-border-radius;
   .navbar-nav {
     > li {
@@ -223,13 +225,14 @@
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: @media-breakpoint-sm) {
+    flex-direction: row;
     .navbar-nav {
       float: left;
     }
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: (@media-breakpoint-sm - 1px)) {
     .open .dropdown-menu {
       position: static;
       float: none;
@@ -237,8 +240,7 @@
       margin-top: 0;
       background-color: transparent;
       border: 0;
-      -webkit-box-shadow: none;
-              box-shadow: none;
+      box-shadow: none;
     }
     .open .dropdown-menu > li > a,
     .open .dropdown-menu .dropdown-header {
@@ -258,7 +260,8 @@
 
 .navbar-header {
   display: flex;
-  @media (min-width: 768px) {
+  width: 100%;
+  @media (min-width: @media-breakpoint-sm) {
     float: left;
     width: @default-sidebar-width + @default-gutter-size;
   }
@@ -289,13 +292,13 @@
     &:focus {
       outline: 0;
     }
-    @media (min-width: 768px) {
+    @media (min-width: @media-breakpoint-sm) {
       display: none;
     }
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: @media-breakpoint-sm) {
   .navbar-right {
     float: right !important;
   }
