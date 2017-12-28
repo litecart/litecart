@@ -39,18 +39,28 @@
   $modified_files = array(
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . '*.catalog/views/listing_product.inc.php',
-      'search'  => '$price',
-      'replace' => 'currency::format($regular_price)',
+      'search'  => '<div class="product column shadow hover-light">',
+      'replace' => '<div class="product column shadow hover-light" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">',
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . '*.catalog/views/listing_product.inc.php',
-      'search'  => '$campaign_price',
-      'replace' => 'currency::format($campaign_price)',
+      'search'  => '<div class="product shadow hover-light">',
+      'replace' => '<div class="product shadow hover-light" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">',
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . '*.catalog/views/listing_product.inc.php',
+      'search'  => '<?php echo $price; ?>',
+      'replace' => '<?php echo currency::format($regular_price); ?>',
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . '*.catalog/views/listing_product.inc.php',
+      'search'  => '<?php echo $campaign_price; ?>',
+      'replace' => '<?php echo currency::format($campaign_price); ?>',
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
       'search'  => 'define(\'WS_DIR_HTTP_HOME\', str_replace(FS_DIR_HTTP_ROOT, \'\', str_replace(\'\\\\\', \'/\', realpath(dirname(__FILE__) . \'/\' . \'..\') . \'/\')));',
-      'replace' => 'define(\'WS_DIR_HTTP_HOME\', rtrim(str_replace(FS_DIR_HTTP_ROOT, '', str_replace(\'\\\\\', \'/\', realpath(__DIR__.\'/..\'))), \'/\') . \'/\');',
+      'replace' => 'define(\'WS_DIR_HTTP_HOME\', rtrim(str_replace(FS_DIR_HTTP_ROOT, \'\', str_replace(\'\\\\\', \'/\', realpath(__DIR__.\'/..\'))), \'/\') . \'/\');',
     ),
   );
 
