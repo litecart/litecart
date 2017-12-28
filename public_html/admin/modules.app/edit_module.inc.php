@@ -100,11 +100,11 @@ pre.last-log {
     <tbody>
       <?php foreach ($object->settings() as $setting) { ?>
       <tr>
-        <td class="col-md-6">
+        <td style="width: 50%">
           <strong><?php echo $setting['title']; ?></strong>
           <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
         </td>
-        <td class="col-md-6">
+        <td style="width: 50%">
           <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
         </td>
       </tr>
