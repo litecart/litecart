@@ -57,7 +57,7 @@
         }
       }
 
-    // Check if client is accessing a blacklisted URL
+    // Check if client is accessing a bad URL
       if (settings::get('security_bad_urls')) {
         if (self::is_accessing_bad_url()) {
           self::ban('Bad URL');
@@ -156,28 +156,34 @@
 
       $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-      $rows = file(self::$_blacklist);
+      $rows = file(self::$_blacklist, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
       foreach (array_keys($rows) as $key) {
 
-        if (preg_match('#^(?:[\s]+)?$#', $rows[$key], $matches)) continue;
-        if (preg_match('#^(?:[\s]+)?\##', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?$#', $rows[$key])) continue;
+        if (preg_match('#^(?:[\s]+)?\##', $rows[$key])) continue;
 
         if (preg_match('#\[expires="(.*)"\]#', $rows[$key], $matches)) {
           if ($matches[1] < date('Y-m-d H:i:s')) {
+            unset($rows[$key]);
+            $update_file = true;
             continue;
           }
         }
 
-        if (preg_match('#\[ip="'. $_SERVER['REMOTE_ADDR'] .'"\]#', $rows[$key], $matches)) {
+        if (preg_match('#\[ip="'. $_SERVER['REMOTE_ADDR'] .'"\]#', $rows[$key])) {
           $blacklisted = true;
           break;
         }
 
-        if (preg_match('#\[hostname="'. $hostname .'"\]#', $rows[$key], $matches)) {
+        if (preg_match('#\[hostname="'. $hostname .'"\]#', $rows[$key])) {
           $blacklisted = true;
           break;
         }
+      }
+
+      if (!empty($update_file)) {
+        file_put_contents(self::$_blacklist, $rows ? implode(PHP_EOL, $rows) . PHP_EOL : '');
       }
 
       if (self::is_whitelisted()) return false;
@@ -268,6 +274,7 @@
       session::clear();
       sleep(3);
       http_response_code(400);
-      exit;
+      header('Refresh: 0; url='. document::ilink(''));
+      die('Bad Request');
     }
   }
