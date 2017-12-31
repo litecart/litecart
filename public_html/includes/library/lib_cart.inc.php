@@ -425,8 +425,14 @@
           $num_items = 1;
         }
 
-        self::$total['value'] += $item['price'] * $item['quantity'];
-        self::$total['tax'] += tax::get_tax($item['price'], $item['tax_class_id']) * $item['quantity'];
+        if (settings::get('round_amounts')) {
+          self::$total['value'] += currency::round($item['price'], currency::$selected['code']) * $item['quantity'];
+          self::$total['tax'] += currency::round(tax::get_tax($item['price'], $item['tax_class_id']), currency::$selected['code']) * $item['quantity'];
+        } else {
+          self::$total['value'] += $item['price'] * $item['quantity'];
+          self::$total['tax'] += tax::get_tax($item['price'], $item['tax_class_id']) * $item['quantity'];
+        }
+
         self::$total['items'] += $num_items;
       }
     }
