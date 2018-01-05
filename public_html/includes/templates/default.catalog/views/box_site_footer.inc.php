@@ -1,7 +1,5 @@
 <footer id="footer">
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/site_cookie_notice.inc.php'); ?>
-
   <div class="row">
     <div class="hidden-xs col-sm-fourths col-md-fifths categories">
       <h3 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
