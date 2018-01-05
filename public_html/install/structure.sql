@@ -196,7 +196,7 @@ CREATE TABLE `lc_languages` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_manufacturers` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(4) NOT NULL,
+  `status` TINYINT(1) NOT NULL,
   `featured` TINYINT(1) NOT NULL,
   `code` VARCHAR(32) NOT NULL,
   `name` VARCHAR(64) NOT NULL,
@@ -484,7 +484,7 @@ CREATE TABLE `lc_products_campaigns` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_product_groups` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(4) NOT NULL,
+  `status` TINYINT(1) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),

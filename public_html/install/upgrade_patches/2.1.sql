@@ -38,4 +38,8 @@ CHANGE COLUMN `key` `key` VARCHAR(64) NOT NULL AFTER `type`;
 -- --------------------------------------------------------
 UPDATE `lc_countries` SET `postcode_format` = '[1-9][0-9]{3} ?[a-zA-Z]{2}' WHERE `iso_code_2` = 'NL';
 -- --------------------------------------------------------
-ALTER TABLE `lc_manufacturers` ADD COLUMN `featured` TINYINT(1) NOT NULL AFTER `status`;
+ALTER TABLE `lc_manufacturers`
+CHANGE COLUMN `status` `status` TINYINT(1) NOT NULL,
+ADD COLUMN `featured` TINYINT(1) NOT NULL AFTER `status`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_product_groups` CHANGE COLUMN `status` `status` TINYINT(1) NOT NULL;
