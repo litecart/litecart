@@ -568,7 +568,7 @@
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
 
       foreach ($this->data['items'] as $item) {
-        if (!empty($item['error'])) return language::translate('error_cart_contians_errors', 'Your cart contains errors');
+        if (!empty($item['error'])) return language::translate('error_cart_contains_errors', 'Your cart contains errors');
       }
 
     // Validate customer details
