@@ -113,7 +113,7 @@
       }
 
     // Get currency from country (via TLD)
-      if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
         $countries_query = database::query(
           "select * from ". DB_TABLE_COUNTRIES ."
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'

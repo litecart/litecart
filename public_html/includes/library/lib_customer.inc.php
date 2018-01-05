@@ -125,7 +125,7 @@
 
     // Get country from TLD
       if (empty(self::$data['country_code'])) {
-        if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+        if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
           $countries_query = database::query(
             "select * from ". DB_TABLE_COUNTRIES ."
             where status
