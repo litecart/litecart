@@ -186,11 +186,9 @@
 
     <div id="tab-information" class="tab-pane" style="max-width: 640px;">
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, ''); ?>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
+        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, ''); ?>
       </div>
 
       <div class="form-group">
