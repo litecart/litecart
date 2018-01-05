@@ -52,6 +52,7 @@
     $pages_query = database::query(
       "select id, name from ". DB_TABLE_MANUFACTURERS ."
       where status
+      and featured
       order by name;"
     );
 

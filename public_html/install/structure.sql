@@ -197,6 +197,7 @@ CREATE TABLE `lc_languages` (
 CREATE TABLE `lc_manufacturers` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(4) NOT NULL,
+  `featured` TINYINT(1) NOT NULL,
   `code` VARCHAR(32) NOT NULL,
   `name` VARCHAR(64) NOT NULL,
   `keywords` VARCHAR(256) NOT NULL,

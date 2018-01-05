@@ -29,6 +29,7 @@
 
       $fields = array(
         'status',
+        'featured',
         'code',
         'name',
         'short_description',
@@ -94,6 +95,11 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
             <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_featured', 'Featured'); ?></label>
+            <?php echo functions::form_draw_toggle('featured', isset($_POST['featured']) ? $_POST['featured'] : '1', 'y/n'); ?>
           </div>
         </div>
 

@@ -6,6 +6,7 @@
     $manufacturers_query = database::query(
       "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
       where status
+      and featured
       and image != ''
       order by rand();"
     );
