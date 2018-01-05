@@ -1,6 +1,10 @@
 // Variables
 @import "variables.less";
 
+#page {
+  padding: 0;
+}
+
 .loader-wrapper {
   position: fixed;
   top: 50%;
@@ -13,12 +17,9 @@
   z-index: 999999;
 }
 
-#header-wrapper {
-  padding: @default-gutter-size;
-}
-
 #header {
   margin: 0 auto;
+  padding: @default-gutter-size;
   .customer-service {
     float: right;
     text-align: right;

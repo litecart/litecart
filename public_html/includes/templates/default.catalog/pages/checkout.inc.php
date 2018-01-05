@@ -1,9 +1,9 @@
-<main id="content" class="box white twelve-eighty">
+<main id="content" class="twelve-eighty">
   {snippet:notices}
 
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process')); ?>
 
-  <div id="box-checkout">
+  <div id="box-checkout" class="box white">
     <div class="cart wrapper"></div>
 
     <div class="row">
