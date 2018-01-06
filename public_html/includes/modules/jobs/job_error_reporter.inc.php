@@ -86,8 +86,8 @@
         array(
           'key' => 'email_receipient',
           'default_value' => settings::get('store_email'),
-          'title' => language::translate(__CLASS__.':title_email_receipient', 'E-mail Receipient'),
-          'description' => language::translate(__CLASS__.':description_email_receipient', 'The e-mail address where reports will be sent.'),
+          'title' => language::translate(__CLASS__.':title_email_receipient', 'Email Receipient'),
+          'description' => language::translate(__CLASS__.':description_email_receipient', 'The email address where reports will be sent.'),
           'function' => 'input()',
         ),
         array(

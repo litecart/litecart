@@ -15,8 +15,8 @@ INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
 INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', '3-5 days', '');
 -- --------------------------------------------------------
-INSERT INTO `lc_manufacturers` (`id`, `status`, `code`, `name`, `keywords`, `image`, `date_updated`, `date_created`) VALUES
-(1, 1, 'acme', 'ACME Corp.', '', 'manufacturers/1-acme-corp.png', NOW(), NOW());
+INSERT INTO `lc_manufacturers` (`id`, `status`, `featured`, `code`, `name`, `keywords`, `image`, `date_updated`, `date_created`) VALUES
+(1, 1, 1, 'acme', 'ACME Corp.', '', 'manufacturers/1-acme-corp.png', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_manufacturers_info` (`id`, `manufacturer_id`, `language_code`, `short_description`, `description`, `h1_title`, `head_title`, `meta_description`, `link`) VALUES
 (1, 1, 'en', '', '', '', '', '', '');
