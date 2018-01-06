@@ -249,6 +249,14 @@ INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decim
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
 (1, 'EUR', '978', 'Euros', 0.726, 2, '', ' €', 0, NOW(), NOW());
 -- --------------------------------------------------------
+INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
+(1, NOW(), NOW()),
+(2, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', '1-3 days', ''),
+(2, 2, 'en', '3-5 days', '');
+-- --------------------------------------------------------
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
@@ -374,3 +382,13 @@ INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority
 -- --------------------------------------------------------
 INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
 (1, 1, 'en', '', '');
+-- --------------------------------------------------------
+INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
+(1, 0, NOW(), NOW()),
+(2, 1, NOW(), NOW()),
+(3, 1, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_sold_out_statuses_info` (`id`, `sold_out_status_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', 'Sold Out', ''),
+(2, 2, 'en', 'Temporary Sold Out', ''),
+(3, 3, 'en', 'Backorder Item', '');
