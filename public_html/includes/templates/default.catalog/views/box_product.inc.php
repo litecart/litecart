@@ -71,9 +71,26 @@
 
       <?php if ($sku || $mpn || $gtin) { ?>
       <div class="codes" style="margin: 1em 0;">
-        <?php if ($sku) { ?><div class="sku"><?php echo $sku; ?></div><?php } ?>
-        <?php if ($mpn) { ?><div class="mpn"><?php echo $mpn; ?></div><?php } ?>
-        <?php if ($gtin) { ?><div class="gtin"><?php echo $gtin; ?></div><?php } ?>
+        <?php if ($sku) { ?>
+        <div class="sku">
+          <?php echo language::translate('title_sku', 'SKU'); ?>:
+          <span class="value"><?php echo $sku; ?></span>
+        </div>
+        <?php } ?>
+
+        <?php if ($mpn) { ?>
+        <div class="mpn">
+          <?php echo language::translate('title_mpn', 'MPN'); ?>:
+          <span class="value"><?php echo $mpn; ?></span>
+        </div>
+        <?php } ?>
+
+        <?php if ($gtin) { ?>
+        <div class="gtin">
+          <?php echo language::translate('title_gtin', 'GTIN'); ?>:
+          <span class="value"><?php echo $gtin; ?></span>
+        </div>
+        <?php } ?>
       </div>
       <?php } ?>
 
