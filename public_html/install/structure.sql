@@ -647,7 +647,7 @@ CREATE TABLE `lc_slides` (
   `status` TINYINT(1) NOT NULL,
   `languages` VARCHAR(32) NOT NULL,
   `name` VARCHAR(128) NOT NULL,
-  `image` VARCHAR(64) NOT NULL,
+  `image` VARCHAR(256) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
   `date_valid_from` DATETIME NOT NULL,
   `date_valid_to` DATETIME NOT NULL,
