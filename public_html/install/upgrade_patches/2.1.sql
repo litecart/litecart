@@ -45,3 +45,5 @@ ADD COLUMN `featured` TINYINT(1) NOT NULL AFTER `status`;
 ALTER TABLE `lc_product_groups` CHANGE COLUMN `status` `status` TINYINT(1) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_slides` CHANGE COLUMN `image` `image` VARCHAR(256) NOT NULL;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_addresses`;

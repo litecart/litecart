@@ -1,18 +1,3 @@
-CREATE TABLE `lc_addresses` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` INT(11) NOT NULL,
-  `company` VARCHAR(64) NOT NULL,
-  `name` VARCHAR(64) NOT NULL,
-  `address1` VARCHAR(64) NOT NULL,
-  `address2` VARCHAR(64) NOT NULL,
-  `city` VARCHAR(32) NOT NULL,
-  `postcode` VARCHAR(16) NOT NULL,
-  `country_id` INT(11) NOT NULL,
-  `zone_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `customer_id` (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
 CREATE TABLE `lc_cart_items` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `customer_id` INT(11) NOT NULL,
