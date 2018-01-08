@@ -47,3 +47,7 @@ ALTER TABLE `lc_product_groups` CHANGE COLUMN `status` `status` TINYINT(1) NOT N
 ALTER TABLE `lc_slides` CHANGE COLUMN `image` `image` VARCHAR(256) NOT NULL;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_addresses`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_currencies` CHANGE COLUMN `value` `value` DECIMAL(11,6) NOT NULL AFTER `name`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders` CHANGE COLUMN `currency_value` `currency_value` DECIMAL(11,6) NOT NULL;

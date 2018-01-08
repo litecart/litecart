@@ -315,7 +315,7 @@
 
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_currency_value', 'Currency Value'); ?></label>
-          <?php echo functions::form_draw_decimal_field('currency_value', true, 4); ?>
+          <?php echo functions::form_draw_decimal_field('currency_value', true, 6); ?>
         </div>
       </div>
 
