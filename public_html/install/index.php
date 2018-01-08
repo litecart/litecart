@@ -513,4 +513,5 @@
 
     <input class="btn btn-default btn-block" type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
   </form>
+
 <?php require('includes/footer.inc.php'); ?>
