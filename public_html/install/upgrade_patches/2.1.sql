@@ -53,3 +53,5 @@ ALTER TABLE `lc_currencies` CHANGE COLUMN `value` `value` DECIMAL(11,6) NOT NULL
 ALTER TABLE `lc_orders` CHANGE COLUMN `currency_value` `currency_value` DECIMAL(11,6) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_totals` CHANGE COLUMN `value` `value` DECIMAL(11,4) NOT NULL, CHANGE COLUMN `tax` `tax` DECIMAL(11,4) NOT NULL;
+-- --------------------------------------------------------
+ALTER TABLE `lc_manufacturers` ADD INDEX(`featured`);
