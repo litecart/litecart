@@ -8,7 +8,7 @@
     <div class="manufacturers row half-gutter">
 
       <?php foreach ($manufacturers as $manufacturer) { ?>
-      <div class="col-md-fourths">
+      <div class="col-sm-2 col-md-3">
         <div class="manufacturer thumbnail shadow hover-light">
           <a class="link" href="<?php echo htmlspecialchars($manufacturer['link']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>">
             <div class="image-wrapper">

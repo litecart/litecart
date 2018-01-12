@@ -1,6 +1,6 @@
 <div id="box-product" class="box" style="max-width: 980px;" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
   <div class="row">
-    <div class="col-xs-whole col-sm-halfs col-md-thirds">
+    <div class="col-sm-6 col-md-4">
       <div class="image-wrapper">
         <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
           <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
@@ -11,7 +11,7 @@
       <?php if ($extra_images) { ?>
       <div class="extra-images row half-gutter">
         <?php foreach ($extra_images as $image) { ?>
-        <div class="col-xs-thirds">
+        <div class="col-xs-4">
           <div class="extra-image">
             <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
               <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
@@ -23,7 +23,7 @@
       <?php } ?>
     </div>
 
-    <div class="col-sm-halfs col-md-thirds">
+    <div class="col-sm-6 col-md-4">
       <h1 class="title"><?php echo $name; ?></h1>
 
       <?php if ($short_description) { ?>
@@ -45,7 +45,7 @@
       <?php } ?>
     </div>
 
-    <div class="col-sm-halfs col-md-thirds">
+    <div class="col-sm-6 col-md-4">
 
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
