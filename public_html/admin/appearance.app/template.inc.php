@@ -35,7 +35,9 @@
           limit 1;"
         );
 
-        $redirect_to_settings = true;
+        if (!empty($settings)) {
+          $redirect_to_settings = true;
+        }
       }
 
       if ($_POST['template_admin'] != settings::get('store_template_admin')) {
@@ -52,7 +54,7 @@
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
 
       if (!empty($redirect_to_settings)) {
-        $redirect_url = header('Location: '. document::link('', array('doc' => 'template_settings'), array('app')));
+        $redirect_url = document::link('', array('doc' => 'template_settings'), array('app'));
       } else {
         $redirect_url = document::link();
       }
