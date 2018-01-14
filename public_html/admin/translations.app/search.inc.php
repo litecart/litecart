@@ -67,10 +67,6 @@ ul.filter li {
   display: table-cell;
   vertical-align: middle;
 }
-
-.pagination {
-  display: inline-block;
-}
 </style>
 
 <?php if (count($selected_languages) > 1) { ?>
