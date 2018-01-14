@@ -609,7 +609,7 @@ foreach (currency::$currencies as $currency) {
                   </span>
                 </div>
               </td>
-              <td><?php echo functions::form_draw_number_field('quantity', true); ?></td>
+              <td><?php echo functions::form_draw_decimal_field('quantity', true); ?></td>
               <td></td>
             </tr>
             <?php if (!empty($_POST['options_stock'])) foreach (array_keys($_POST['options_stock']) as $key) { ?>
@@ -636,7 +636,7 @@ foreach (currency::$currencies as $currency) {
                   </span>
                 </div>
               </td>
-              <td><?php echo functions::form_draw_number_field('options_stock['.$key.'][quantity]', true); ?></td>
+              <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true); ?></td>
               <td class="text-right">
                 <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                 <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
@@ -1194,7 +1194,7 @@ foreach (currency::$currencies as $currency) {
                + '      </span>'
                + '    </div>'
                + '  </td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_number_field('options_stock[new_option_stock_i][quantity]', '0')); ?></td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity]', '0')); ?></td>'
                + '  <td class="text-right">'
                + '    <a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a>'
                + '    <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a>'
