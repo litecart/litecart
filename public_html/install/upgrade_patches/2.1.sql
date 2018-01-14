@@ -10,9 +10,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('email', 'local', 'SMTP Username', 'Username for SMTP authentication.', 'smtp_username', '', 'input()', 13, NOW(), NOW()),
 ('email', 'local', 'SMTP Password', 'Password for SMTP authentication.', 'smtp_password', '', 'input()', 14, NOW(), NOW());
 -- --------------------------------------------------------
-ALTER TABLE `lc_addresses`
-CHANGE COLUMN `postcode` `postcode` VARCHAR(16) NOT NULL;
--- --------------------------------------------------------
 ALTER TABLE `lc_customers`
 CHANGE COLUMN `postcode` `postcode` VARCHAR(16) NOT NULL,
 CHANGE COLUMN `shipping_postcode` `shipping_postcode` VARCHAR(16) NOT NULL;
