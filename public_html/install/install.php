@@ -77,7 +77,11 @@
   define('DB_CONNECTION_CHARSET', 'utf8');
   require_once('../includes/library/lib_database.inc.php');
 
-  echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
+  if (!database::connect()) {
+    die('Unable to connect <span class="error">[Error]</span></p>');
+  } else {
+    echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
 
   ### Database > Check Version ##################################
 
