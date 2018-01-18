@@ -155,7 +155,7 @@
 
       $link = parse_url($link, PHP_URL_PATH);
 
-      $link = preg_replace('#^'. WS_DIR_HTTP_HOME .'(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/?)?(.*)$#', "$4", $link);
+      $link = preg_replace('#^'. WS_DIR_HTTP_HOME .'(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $link);
 
       return $link;
     }
