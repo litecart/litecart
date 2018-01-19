@@ -29,7 +29,7 @@
 
         <?php if (settings::get('captcha_enabled')) { ?>
         <div class="row">
-          <div class="form-group col-md-halfs">
+          <div class="form-group col-md-6">
             <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
             <?php echo functions::form_draw_captcha_field('captcha', 'contact_us', 'required="required"'); ?>
           </div>

@@ -1,4 +1,4 @@
-@image-whitespace-color: #ffffff;
+@image-whitespace-color: #fff;
 
 #view-full-page {
   float: right;
@@ -22,13 +22,13 @@
   }
   .image-wrapper {
     position: relative;
-    margin-bottom: 1em;
+    margin-bottom: @default-gutter-size;
     overflow: hidden;
     background: @image-whitespace-color;
     text-align: center;
     box-shadow: 0 0px 2px rgba(0,0,0,0.15);
     img {
-      max-width: 100%;
+      width: 100%;
       min-height: 1px;
     }
     .sticker {
@@ -50,6 +50,9 @@
         background: rgba(237, 60, 50, 0.85);
       }
     }
+  }
+  .extra-images {
+    margin-bottom: 2em;
   }
   .extra-image {
     background: @image-whitespace-color;
@@ -99,7 +102,7 @@
         width: 50%;
       }
     }
-    @media(min-width: 768px) {
+    @media(min-width: @media-breakpoint-sm) {
       columns: auto 2;
     }
   }

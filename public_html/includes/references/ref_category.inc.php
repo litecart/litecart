@@ -81,6 +81,36 @@
 
           break;
 
+        case 'path':
+
+          $this->_data['path'] = array();
+          $category_index_id = $this->id;
+
+          $failsafe = 0;
+          while (true) {
+            $category_query = database::query(
+              "select id, parent_id from ". DB_TABLE_CATEGORIES ."
+              where id = ". (int)$category_index_id ."
+              limit 1;"
+            );
+
+            $category = database::fetch($category_query);
+
+            if ($category) {
+              $this->_data['path'][$category['id']] = reference::category($category['id']);
+            }
+
+            if (!empty($category['parent_id'])) {
+              $category_index_id = $category['parent_id'];
+            } else {
+              break;
+            }
+
+            if (++$failsafe == 10) die('x');
+          }
+
+          break;
+
         case 'products':
 
           $this->_data['products'] = array();
@@ -149,7 +179,7 @@
           foreach ($row as $key => $value) {
             switch($key) {
               case 'keywords':
-                $row[$key] = explode(',', $row[$key]);
+                $this->_data[$key] = explode(',', $row[$key]);
                 break;
 
               default:

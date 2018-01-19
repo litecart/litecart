@@ -33,6 +33,7 @@
             'title' => $action['title'],
             'description' => @$action['description'],
             'function' => $action['function'],
+            'target' => !empty($action['target']) ? $action['target'] : '_self',
           );
         }
       }
@@ -84,6 +85,24 @@
       }
 
       return $output;
+    }
+
+    public function update($order) {
+
+      if (empty($this->modules)) return;
+
+      foreach ($this->modules as $module_id => $module) {
+        if (method_exists($this->modules[$module_id], 'update')) $module->update($order);
+      }
+    }
+
+    public function delete($order) {
+
+      if (empty($this->modules)) return;
+
+      foreach ($this->modules as $module_id => $module) {
+        if (method_exists($this->modules[$module_id], 'delete')) $module->delete($order);
+      }
     }
 
     public function run($method_name, $module_id) {

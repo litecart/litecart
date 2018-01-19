@@ -4,7 +4,7 @@
     'name' => language::translate('title_tax', 'Tax'),
     'default' => 'tax_rates',
     'theme' => array(
-      'color' => '#ccd2af',
+      'color' => '#c0cc82',
       'icon' => 'fa-university',
     ),
     'menu' => array(

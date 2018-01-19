@@ -155,13 +155,13 @@
         $browser_locales = array();
       }
       foreach ($browser_locales as $browser_locale) {
-        if (preg_match('/('. implode('|', array_keys(self::$languages)) .')-?.*/', $browser_locale, $reg)) {
+        if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
           if (!empty($reg[1]) && isset(self::$languages[$reg[1]])) return $reg[1];
         }
       }
 
     // Return language from country (TLD)
-      if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
         $countries_query = database::query(
           "select * from ". DB_TABLE_COUNTRIES ."
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
@@ -297,6 +297,10 @@
     public static function strftime($format, $timestamp=null) {
 
       if ($timestamp === null) $timestamp = time();
+
+      if (in_array(strtoupper(substr(PHP_OS, 0, 3)), array('WIN', 'MAC'))) {
+        $format = preg_replace('#(?<!%)((?:%%)*)%P#', '\1%p', $format);
+      }
 
       if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
         $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);

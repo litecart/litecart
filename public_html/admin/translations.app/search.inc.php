@@ -1,6 +1,6 @@
 <?php
   if (!isset($_GET['query'])) $_GET['query'] = '';
-  if (empty($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['languages'])) $_GET['languages'] = array_keys(language::$languages);
 
   if (isset($_POST['save']) && !empty($_POST['translations'])) {
@@ -23,13 +23,14 @@
 
     cache::clear_cache('translations');
 
-    notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+    notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
 
     header('Location: '. document::link('', array(), true));
     exit;
   }
 
   if (isset($_POST['delete']) && !empty($_POST['translation_id'])) {
+
     database::query(
       "delete from ". DB_TABLE_TRANSLATIONS ."
       where id = '". database::input($_POST['translation_id']) ."'
@@ -38,9 +39,7 @@
 
     cache::clear_cache('translations');
 
-    notices::add('success', language::translate('success_translated_deleted', 'Translation was successfully deleted'));
-
-    header('Location: '. document::link('', array(), true));
+    echo json_encode(array('status' => 'ok'));
     exit;
   }
 
@@ -67,10 +66,6 @@
 ul.filter li {
   display: table-cell;
   vertical-align: middle;
-}
-
-.pagination {
-  display: inline-block;
 }
 </style>
 
@@ -139,7 +134,7 @@ ul.filter li {
   <table class="table table-striped">
     <thead>
       <tr>
-        <th><?php echo language::translate('title_code', 'Code');?></th>
+        <th><?php echo language::translate('title_code', 'Code'); ?></th>
         <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. $languages[$language_code]['name'] .'</th>'; ?>
         <th>&nbsp;</th>
       </tr>
@@ -195,7 +190,6 @@ ul.filter li {
 
 <?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
 
-<?php if (count($selected_languages) > 1) { ?>
 <div id="translator-tool" style="display: none;">
   <h2><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></h2>
 
@@ -296,16 +290,25 @@ ul.filter li {
 
     if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
 
-    var form = '<?php echo str_replace(array("\r", "\n"), '', functions::form_draw_form_begin('delete_translation_form', 'post')); ?>'
-             + '<?php echo str_replace(array("\r", "\n"), '', form_draw_hidden_field('translation_id', 'insert_translation_id')); ?>'
-             + '<?php echo str_replace(array("\r", "\n"), '', functions::form_draw_hidden_field('delete', 'true')); ?>'
-             + '<?php echo str_replace(array("\r", "\n"), '', functions::form_draw_form_end()); ?>';
+    var row = $(this).closest('tr');
 
-    form = form.replace(/insert_translation_id/g, $(this).closest('tr').find('input[name$="[id]"]').val());
-
-    $(document.body).append(form);
-
-    $(form).submit();
+    $.ajax({
+      type: 'post',
+      data: 'translation_id=' + $(row).find('input[name$="[id]"]').val() + '&delete=true',
+      cache: false,
+      async: true,
+      dataType: 'json',
+      beforeSend: function(jqXHR) {
+        jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert('An error occured');
+      },
+      success: function(json) {
+        if (json['status'] && json['status'] == 'ok') {
+          $(row).remove();
+        }
+      }
+    });
   });
 </script>
-<?php } ?>

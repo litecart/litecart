@@ -38,6 +38,7 @@
 
       $this->data['categories'] = array();
       $this->data['product_groups'] = array();
+      $this->data['keywords'] = array();
       $this->data['images'] = array();
       $this->data['prices'] = array();
       $this->data['campaigns'] = array();
@@ -79,6 +80,7 @@
       }
 
       $this->data['product_groups'] = explode(',', $this->data['product_groups']);
+      $this->data['keywords'] = explode(',', $this->data['keywords']);
 
     // Info
       $products_info_query = database::query(
@@ -126,8 +128,8 @@
 
     // Options stock
       $products_options_stock_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ." po
-        where po.product_id = '". (int)$this->data['id'] ."'
+        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        where product_id = '". (int)$this->data['id'] ."'
         order by priority;"
       );
       while($option_stock = database::fetch($products_options_stock_query)) {
@@ -183,22 +185,21 @@
         }
       }
 
-    // Cleanup empty elements in categories
-      if (!empty($this->data['categories'])) {
-        foreach(array_keys($this->data['categories']) as $key){
-          if ($this->data['categories'][$key] == '') unset($this->data['categories'][$key]);
-        }
-        $this->data['categories'] = array_unique($this->data['categories']);
-      }
+      $this->data['categories'] = array_map('trim', $this->data['categories']);
+      $this->data['categories'] = array_filter($this->data['categories']);
+      $this->data['categories'] = array_unique($this->data['categories']);
+
+      $this->data['product_groups'] = array_map('trim', $this->data['product_groups']);
+      $this->data['product_groups'] = array_filter($this->data['product_groups']);
+      $this->data['product_groups'] = array_unique($this->data['product_groups']);
+
+      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
+      $this->data['keywords'] = array_filter($this->data['keywords']);
+      $this->data['keywords'] = array_unique($this->data['keywords']);
 
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);
       }
-
-      $this->data['keywords'] = explode(',', $this->data['keywords']);
-      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
-      $this->data['keywords'] = array_unique($this->data['keywords']);
-      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
         "update ". DB_TABLE_PRODUCTS ." set
@@ -209,7 +210,7 @@
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'].",
         product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
-        keywords = '". database::input($this->data['keywords']) ."',
+        keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
         quantity = ". (float)$this->data['quantity'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",
@@ -217,6 +218,7 @@
         tax_class_id = '". database::input($this->data['tax_class_id']) ."',
         code = '". database::input($this->data['code']) ."',
         sku = '". database::input($this->data['sku']) ."',
+        mpn = '". database::input($this->data['mpn']) ."',
         gtin = '". database::input($this->data['gtin']) ."',
         taric = '". database::input($this->data['taric']) ."',
         dim_x = ". (float)$this->data['dim_x'] .",
@@ -541,7 +543,6 @@
         "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
         where product_id = '". (int)$this->data['id'] ."';"
       );
-
 
       cache::clear_cache('products');
 

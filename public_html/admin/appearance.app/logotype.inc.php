@@ -1,14 +1,13 @@
 <?php
   if (isset($_POST['save'])) {
 
-    if (empty($_FILES['image'])) {
-      notices::add('errors', language::translate('error_missing_image', 'You must select an image'));
-    } else {
-      $image = new ctrl_image($_FILES['image']['tmp_name']);
-      if (!$image->width()) notices::add('errors', language::translate('error_invalid_image', 'The image is invalid'));
-    }
+    try {
+      if (empty($_FILES['image'])) {
+        throw new Exception(language::translate('error_missing_image', 'You must select an image'));
+      }
 
-    if (empty(notices::$data['errors'])) {
+      $image = new ctrl_image($_FILES['image']['tmp_name']);
+      if (!$image->width()) throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
 
       $filename = 'logotype.png';
 
@@ -20,13 +19,16 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if ($image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, 'png')) {
-        notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-        header('Location: '. document::link());
-        exit;
-      } else {
-        notices::add('errors', language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
+      if (!$image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename, 'png')) {
+        throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
       }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>

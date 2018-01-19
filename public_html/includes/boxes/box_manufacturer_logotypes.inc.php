@@ -6,6 +6,7 @@
     $manufacturers_query = database::query(
       "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
       where status
+      and featured
       and image != ''
       order by rand();"
     );
@@ -20,7 +21,11 @@
         $box_manufacturer_logotypes->snippets['logotypes'][] = array(
           'title' => $manufacturer['name'],
           'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
-          'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 30, 'FIT'),
+          'image' => array(
+            'original' => WS_DIR_IMAGES . $manufacturer['image'],
+            'thumbnail_1x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 30, 'FIT'),
+            'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 60, 'FIT'),
+          ),
         );
       }
 

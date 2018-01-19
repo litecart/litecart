@@ -15,7 +15,7 @@
     }
   }
 
-  if (file_get_contents('php://input') != '') {
+  if (!empty($_POST['customer_details'])) {
 
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
@@ -25,17 +25,18 @@
   // Validate
     if (!empty($_POST['save_customer_details'])) { // <-- Button is pressed
       if (!empty($_POST['create_account'])) {
-        if (isset($_POST['email']) && !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
-        if (empty($_POST['password']))
-          notices::add('errors', language::translate('error_missing_password', 'You must enter a password.'));
-        } else {
-          if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) notices::add('errors', language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+        try {
+          if (isset($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
+          if (!functions::email_validate_address($_POST['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
+          if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+            if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
+            if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+          }
+        } catch(Exception $e) {
+          notices::add('errors', $e->getMessage());
         }
       }
     }
-
-  // Keep first error only
-    if (!empty(notices::$data['errors'])) notices::$data['errors'] = array(array_shift(notices::$data['errors']));
 
   // Billing address
     $fields = array(
@@ -106,9 +107,7 @@
               if (empty($_POST['password'])) $_POST['password'] = functions::password_generate(6);
               $customer->set_password($_POST['password']);
 
-              $email_message = language::translate('email_subject_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email and password %customer_password.\r\n\r\n%store_name\r\n\r\n%store_link");
-
-              $translations = array(
+              $aliases = array(
                 '%store_name' => settings::get('store_name'),
                 '%store_link' => document::ilink(''),
                 '%customer_firstname' => $_POST['firstname'],
@@ -117,16 +116,14 @@
                 '%customer_password' => $_POST['password']
               );
 
-              foreach ($translations as $needle => $replace) {
-                $email_message = str_replace($needle, $replace, $email_message);
-              }
+              $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
+              $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
 
-              functions::email_send(
-                null,
-                $_POST['email'],
-                language::translate('email_subject_customer_account_created', 'Customer Account Created'),
-                $email_message
-              );
+              $email = new email();
+              $email->add_recipient($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
+                    ->set_subject($subject)
+                    ->add_body($message)
+                    ->send();
 
               notices::add('success', language::translate('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
 

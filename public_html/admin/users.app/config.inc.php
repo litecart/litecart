@@ -4,7 +4,7 @@
     'name' => language::translate('title_users', 'Users'),
     'default' => 'users',
     'theme' => array(
-      'color' => '#f8af5a',
+      'color' => '#f79a2e',
       'icon' => 'fa-star',
     ),
     'menu' => array(),

@@ -1,8 +1,8 @@
-<div id="box-filter" class="box">
+<div id="box-filter">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
-  <?php if ($manufacturers) { ?>
-  <div class="manufacturers">
+  <?php if (count($manufacturers) > 1) { ?>
+  <div class="box manufacturers">
     <h2 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h2>
     <div class="form-control">
       <ul class="list-unstyled">
@@ -12,16 +12,14 @@
   </div>
   <?php } ?>
 
-  <?php if ($product_groups) { ?>
+  <?php if (count($product_groups) > 1) { ?>
   <?php foreach ($product_groups as $group) { ?>
-  <div class="product-groups">
-    <div id="product-group-<?php echo $group['id']; ?>">
-      <h2 class="title"><?php echo $group['name']; ?></h2>
-      <div class="form-control">
-        <ul class="list-unstyled">
-          <?php foreach ($group['values'] as $value) echo '<li><label>' . functions::form_draw_checkbox('product_groups[]', $group['id'].'-'.$value['id']) .' '. $value['name'].'</label></li>' . PHP_EOL; ?>
-        </ul>
-      </div>
+  <div class="box product-group" data-id="<?php echo $group['id']; ?>">
+    <h2 class="title"><?php echo $group['name']; ?></h2>
+    <div class="form-control">
+      <ul class="list-unstyled">
+        <?php foreach ($group['values'] as $value) echo '<li><label>' . functions::form_draw_checkbox('product_groups[]', $group['id'].'-'.$value['id']) .' '. $value['name'].'</label></li>' . PHP_EOL; ?>
+      </ul>
     </div>
   </div>
   <?php } ?>

@@ -86,7 +86,7 @@
 ?>
       <tr class="<?php echo empty($module->status) ? 'semi-transparent' : null; ?>">
         <td><?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
-        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#88cc44' : '#ff6644') .';"'); ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$type, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
         <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
         <td class="text-center"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>

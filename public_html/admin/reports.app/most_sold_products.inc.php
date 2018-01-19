@@ -12,13 +12,10 @@
   if ($_GET['date_from'] > date('Y-m-d H:i:s')) $_GET['date_from'] = date('Y-m-d H:i:s');
   if ($_GET['date_to'] > date('Y-m-d H:i:s')) $_GET['date_to'] = date('Y-m-d H:i:s');
 
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 ?>
 
 <style>
-.border-left {
-  border-left: 1px #999 dashed;
-}
 form[name="filter_form"] li {
   vertical-align: middle;
 }

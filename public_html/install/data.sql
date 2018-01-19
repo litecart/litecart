@@ -149,7 +149,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (147, 1, 'Namibia', '', '516', 'NA', 'NAM', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'NAD', '264', NOW(), NOW()),
 (148, 1, 'Nauru', '', '520', 'NR', 'NRU', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'na', 'AUD', '674', NOW(), NOW()),
 (149, 1, 'Nepal', '', '524', 'NP', 'NPL', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'ne', 'NPR', '977', NOW(), NOW()),
-(150, 1, 'Netherlands', '', '528', 'NL', 'NLD', '^(NL)?[0-9]{9}B[0-9]{2}$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{4} ?[a-zA-Z]{2}', 0, 'nl', 'EUR', '31', NOW(), NOW()),
+(150, 1, 'Netherlands', '', '528', 'NL', 'NLD', '^(NL)?[0-9]{9}B[0-9]{2}$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[1-9][0-9]{3} ?[a-zA-Z]{2}', 0, 'nl', 'EUR', '31', NOW(), NOW()),
 (151, 1, 'Netherlands Antilles', '', '530', 'AN', 'ANT', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'nl', 'ANG', '599', NOW(), NOW()),
 (152, 1, 'New Caledonia', '', '540', 'NC', 'NCL', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '988[0-9]{2}', 0, 'fr', 'XPF', '687', NOW(), NOW()),
 (153, 1, 'New Zealand', '', '554', 'NZ', 'NZL', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{4}', 0, 'en', 'NZD', '64', NOW(), NOW()),
@@ -221,7 +221,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (219, 1, 'Uganda', '', '800', 'UG', 'UGA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'UGX', '256', NOW(), NOW()),
 (220, 1, 'Ukraine', '', '804', 'UA', 'UKR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'uk', 'UAH', '380', NOW(), NOW()),
 (221, 1, 'United Arab Emirates', '', '784', 'AE', 'ARE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'ar', 'AED', '971', NOW(), NOW()),
-(222, 1, 'United Kingdom', '', '826', 'GB', 'GBR', '^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 1, 'en', 'GBP', '44', NOW(), NOW()),
+(222, 1, 'United Kingdom', '', '826', 'GB', 'GBR', '^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]? ?[0-9][a-zA-Z]{2}', 1, 'en', 'GBP', '44', NOW(), NOW()),
 (223, 1, 'United States', '', '840', 'US', 'USA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}([ \\-][0-9]{4})?', 0, 'en', 'USD', '1', NOW(), NOW()),
 (224, 1, 'United States Minor Outlying Islands', '', '581', 'UM', 'UMI', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'USD', '1', NOW(), NOW()),
 (225, 1, 'Uruguay', '', '858', 'UY', 'URY', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'es', 'UYU', '598', NOW(), NOW()),
@@ -249,13 +249,22 @@ INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decim
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
 (1, 'EUR', '978', 'Euros', 0.726, 2, '', ' €', 0, NOW(), NOW());
 -- --------------------------------------------------------
+INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
+(1, NOW(), NOW()),
+(2, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', '1-3 days', ''),
+(2, 2, 'en', '3-5 days', '');
+-- --------------------------------------------------------
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
 (1, 'ot_subtotal', 'order_total', 1, 1, '{"status":"1","priority":"1"}', '', NOW(), NOW()),
 (2, 'ot_shipping_fee', 'order_total', 1, 20, '{"status":"1","free_shipping_amount":"0","priority":"20"}', '', NOW(), NOW()),
-(3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW());
+(3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW()),
+(4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","report_frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
@@ -280,6 +289,7 @@ INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`,
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('store_info', 'Store Info', 'Store information', 10),
 ('defaults', 'Defaults', 'Store default settings', 20),
+('email', 'Email', 'Email and SMTP', 30),
 ('listings', 'Listings', 'Settings for the catalog listing', 40),
 ('images', 'Images', 'Settings for graphical elements', 50),
 ('checkout', 'Checkout', 'Checkout settings', 60),
@@ -309,6 +319,11 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('defaults', 'global', 'Default Quantity Unit', 'Default quantity unit that will be preset when creating new products.', 'default_quantity_unit_id', '1', 'quantity_units()', 16, NOW(), NOW()),
 ('defaults', 'global', 'Default Sold Out Status', 'Default sold out status that will be preset when creating new products.', 'default_sold_out_status_id', '1', 'sold_out_statuses()', 17, NOW(), NOW()),
 ('defaults', 'global', 'Default Delivery Status', 'Default delivery status that will be preset when creating new products.', 'default_delivery_status_id', '1', 'delivery_statuses()', 18, NOW(), NOW()),
+('email', 'local', 'SMTP Enabled', 'Wheither or not to use an SMTP server for delivering email.', 'smtp_status', '0', 'toggle("e/d")', 10, NOW(), NOW()),
+('email', 'local', 'SMTP Host', 'SMTP hostname e.g. smtp.myprovider.com.', 'smtp_host', 'localhost', 'input()', 11, NOW(), NOW()),
+('email', 'local', 'SMTP Port', 'SMTP port e.g. 25, 465 (SSL/TLS), or 587 (STARTTLS).', 'smtp_port', '25', 'number()', 12, NOW(), NOW()),
+('email', 'local', 'SMTP Username', 'Username for SMTP authentication.', 'smtp_username', '', 'input()', 13, NOW(), NOW()),
+('email', 'local', 'SMTP Password', 'Password for SMTP authentication.', 'smtp_password', '', 'input()', 14, NOW(), NOW()),
 ('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', 2, NOW(), NOW()),
 ('listings', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 1, NOW(), NOW()),
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'int()', 10, NOW(), NOW()),
@@ -317,13 +332,13 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping cost on product page.', 'display_cheapest_shipping', '1', 'toggle()', 13, NOW(), NOW()),
 ('listings', 'local', 'Max Age for New Products', 'Display the new sticker for products younger than the give age. E.g. 1 month or 14 days', 'new_products_max_age', '1 month', 'input()', 14, NOW(), NOW()),
 ('listings', 'local', 'Similar Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_similar_products_num_items', '10', 'int()', 15, NOW(), NOW()),
-('listings', 'local', 'Recently Viewed Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_recently_viewed_products_num_items', '6', 'int()', 16, NOW(), NOW()),
+('listings', 'local', 'Recently Viewed Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_recently_viewed_products_num_items', '4', 'int()', 16, NOW(), NOW()),
 ('listings', 'local', 'Latest Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_latest_products_num_items', '10', 'int()', 17, NOW(), NOW()),
 ('listings', 'local', 'Popular Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_popular_products_num_items', '10', 'int()', 18, NOW(), NOW()),
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_campaign_products_num_items', '5', 'int()', 19, NOW(), NOW()),
 ('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'int()', 20, NOW(), NOW()),
 ('listings', 'local', 'Auto Decimals', 'Show only decimals if there are any to display.', 'auto_decimals', '1', 'toggle("e/d")', 20, NOW(), NOW()),
-('images', 'local', 'Category Images: Aspect Ratio', 'The aspect ratio of the category thumbnails', 'category_image_ratio', '1:1', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '10', NOW(), NOW()),
+('images', 'local', 'Category Images: Aspect Ratio', 'The aspect ratio of the category thumbnails', 'category_image_ratio', '2:3', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '10', NOW(), NOW()),
 ('images', 'local', 'Category Images: Clipping Method', 'The clipping method used for scaled category thumbnails.', 'category_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '11', NOW(), NOW()),
 ('images', 'local', 'Product Images: Aspect Ratio', 'The aspect ratio of the product thumbnails', 'product_image_ratio', '1:1', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '30', NOW(), NOW()),
 ('images', 'local', 'Product Images: Clipping Method', 'The clipping method used for scaled product thumbnails.', 'product_image_clipping', 'FIT_USE_WHITESPACING', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '31', NOW(), NOW()),
@@ -334,7 +349,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('images', 'local', 'Thumbnail Quality', 'The JPEG quality for thumbnail images (0-100). Default: 65', 'image_thumbnail_quality', '65', 'int()', '41', NOW(), NOW()),
 ('images', 'local', 'Interlaced Thumbnails', 'Generate interlaced thumbnail images for progressive loading. Increases the filesize by 10-20% but improves user experience.', 'image_thumbnail_interlaced', '0', 'toggle()', '42', NOW(), NOW()),
 ('images', 'local', 'Whitespace Color', 'Set the color of any generated whitespace to the given RGB value. Default: 255,255,255', 'image_whitespace_color', '255,255,255', 'smallinput()', '43', NOW(), NOW()),
-('checkout', 'local', 'Register Guests', 'Automatically create accounts for all guests.', 'register_guests', '0', 'toggle()', 10, NOW(), NOW()),
+('checkout', 'local', 'Register Guests', 'Force guests to create an account.', 'register_guests', '0', 'toggle()', 10, NOW(), NOW()),
 ('checkout', 'local', 'Order Copy Recipients', 'Send order copies to the following e-mail addresses. Separate by semi-colons.', 'email_order_copy', '{STORE_EMAIL}', 'mediumtext()', 12, NOW(), NOW()),
 ('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '1', 'toggle()', 13, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '0', 'toggle()', 10, NOW(), NOW()),
@@ -363,7 +378,17 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, '', 'Flying Cart', 'slides/1-flying-cart.jpg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+(1, 1, '', 'Family At The Beach', 'slides/1-family-at-the-beach.svg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
 (1, 1, 'en', '', '');
+-- --------------------------------------------------------
+INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
+(1, 0, NOW(), NOW()),
+(2, 1, NOW(), NOW()),
+(3, 1, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_sold_out_statuses_info` (`id`, `sold_out_status_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', 'Sold Out', ''),
+(2, 2, 'en', 'Temporary Sold Out', ''),
+(3, 3, 'en', 'Backorder Item', '');

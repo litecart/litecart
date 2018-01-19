@@ -1,7 +1,9 @@
 <?php
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['currencies'])) {
+    try {
+      if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
+
       foreach (array_keys($_POST['currencies']) as $currency_code) {
 
         if (!empty($_POST['disable']) && $currency_code == settings::get('default_currency_code')) {
@@ -18,49 +20,49 @@
         $currency->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $currency->save();
       }
-    }
 
-    header('Location: '. document::link());
-    exit;
-  }
-
-  if (!empty($_POST['update_rates'])) {
-
-    if (!empty($_POST['currencies'])) {
-      foreach (array_keys($_POST['currencies']) as $currency_code) {
-
-        if ($currency_code == settings::get('store_currency_code')) continue;
-
-        try {
-
-          $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code') . $currency_code .'=X'));
-
-          $client = new http_client();
-          $response = @$client->call($url);
-
-          if (empty($response)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
-
-          $value = (float)trim($response) * currency::$currencies[settings::get('store_currency_code')]['value'];
-
-          if (empty($value)) throw new Exception(strtr(language::translate('error_failed_updating_currency', 'Could not update currency rate for %currency_code'), array('%currency_code' => $currency_code)));
-
-          database::query(
-            "update ". DB_TABLE_CURRENCIES ."
-            set value = '". (float)$value ."'
-            where code = '". database::input($currency_code) ."'
-            limit 1;"
-          );
-
-          notices::$data['success'][] = strtr(language::translate('success_currency_rates_updated_for_currency', 'Currency rates updated for %currency_code'), array('%currency_code' => $currency_code));
-
-        } catch (Exception $e) {
-          notices::$data['errors'][] = $e->getMessage();
-        }
-      }
-
-
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['update_rates'])) {
+
+    try {
+      if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
+
+      $url = document::link('https://api.fixer.io/latest', array('base' => settings::get('store_currency_code'), 'symbols' => implode(',', $_POST['currencies'])));
+
+      $client = new http_client();
+      $response = $client->call('GET', $url);
+
+      if (empty($response)) {
+        throw new Exception(language::translate('error_no_response_from_remote_machine', 'No response from remote machine'));
+      }
+
+      if (!$response = json_decode($response, true)) {
+         throw new Exception(language::translate('error_invalid_response_from_remote_machine', 'Invalid response from remote machine'));
+      }
+
+      foreach ($response['rates'] as $currency_code => $rate) {
+        database::query(
+          "update ". DB_TABLE_CURRENCIES ."
+          set value = '". (float)$rate ."'
+          where code = '". database::input($currency_code) ."'
+          limit 1;"
+        );
+      }
+
+      notices::add('success', language::translate('success_currency_rates_updated', 'Currency rates updated'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>
@@ -103,7 +105,7 @@
 ?>
     <tr class="<?php echo empty($currency['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($currency['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($currency['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
       <td><?php echo $currency['id']; ?></td>
       <td><?php echo $currency['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>

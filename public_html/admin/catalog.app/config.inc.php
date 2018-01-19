@@ -4,7 +4,7 @@
     'name' => language::translate('title_catalog', 'Catalog'),
     'default' => 'catalog',
     'theme' => array(
-      'color' => '#d0cc4f',
+      'color' => '#d0cb2b',
       'icon' => 'fa-th',
     ),
     'menu' => array(

@@ -16,7 +16,13 @@
       <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
     </div>
 
-    <p class="text-center"><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a></p>
+    <p class="text-center">
+      <a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
+    </p>
+
+    <p class="text-center">
+      <a href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
+    </p>
 
   <?php echo functions::form_draw_form_end(); ?>
 </div>

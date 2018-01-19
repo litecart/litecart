@@ -1,36 +1,41 @@
 <?php
   if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['categories'])) {
-      foreach ($_POST['categories'] as $category_id) {
-        $category = new ctrl_category($category_id);
-        $category->data['status'] = !empty($_POST['enable']) ? 1 : 0;
-        $category->save();
+    try {
+      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception('error_must_select_categories_or_products', 'You must select categories or products');
+      if (!empty($_POST['categories'])) {
+        foreach ($_POST['categories'] as $category_id) {
+          $category = new ctrl_category($category_id);
+          $category->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+          $category->save();
+        }
       }
-    }
 
-    if (!empty($_POST['products'])) {
-      foreach ($_POST['products'] as $product_id) {
-        $product = new ctrl_product($product_id);
-        $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
-        $product->save();
+      if (!empty($_POST['products'])) {
+        foreach ($_POST['products'] as $product_id) {
+          $product = new ctrl_product($product_id);
+          $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+          $product->save();
+        }
       }
-    }
 
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
-// Duplicate products
   if (isset($_POST['duplicate'])) {
 
-    if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
-    if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
-    if (empty($_POST['category_id'])) notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
         $original = new ctrl_product($product_id);
@@ -67,17 +72,18 @@
       notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
       header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-// Copy products
   if (isset($_POST['copy'])) {
 
-    if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_cant_copy_category', 'You can\'t copy a category'));
-    if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
-    if (isset($_POST['category_id']) && $_POST['category_id'] == '') notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_copy_category', 'You can\'t copy a category'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
@@ -88,26 +94,27 @@
       notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
       header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Move categories or products
   if (isset($_POST['move'])) {
 
-    if (empty($_POST['categories']) && empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_category_or_product', 'You must select a category or product'));
-    if (isset($_POST['category_id']) && $_POST['category_id'] == '') notices::add('errors', language::translate('error_must_select_category', 'You must select a category'));
-    if (isset($_POST['category_id']) && isset($_POST['categories']) && in_array($_POST['category_id'], $_POST['categories'])) notices::add('errors', language::translate('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
+    try {
+      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+      if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      if (isset($_POST['category_id']) && isset($_POST['categories']) && in_array($_POST['category_id'], $_POST['categories'])) throw new Exception(language::translate('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
 
-    if (isset($_POST['category_id']) && isset($_POST['categories'])) {
-      foreach ($_POST['categories'] as $category_id) {
-        if (in_array($_POST['category_id'], array_keys(functions::catalog_category_descendants($category_id)))) {
-          notices::add('errors', language::translate('error_cant_move_category_to_descendant', 'You can\'t move a category to a descendant'));
-          break;
+      if (isset($_POST['category_id']) && isset($_POST['categories'])) {
+        foreach ($_POST['categories'] as $category_id) {
+          if (in_array($_POST['category_id'], array_keys(functions::catalog_category_descendants($category_id)))) {
+            throw new Exception(language::translate('error_cant_move_category_to_descendant', 'You can\'t move a category to a descendant'));
+            break;
+          }
         }
       }
-    }
-
-    if (empty(notices::$data['errors'])) {
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
@@ -129,16 +136,17 @@
 
       header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Unmount
   if (isset($_POST['unmount'])) {
 
-    if (empty($_POST['categories']) && empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_category_or_product', 'You must select a category or product'));
-    if (empty($_GET['category_id'])) notices::add('errors', language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+      if (empty($_GET['category_id'])) throw new Exception(language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
@@ -168,16 +176,18 @@
 
       header('Location: '. document::link('', array(), true));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  // Delete products
   if (isset($_POST['delete'])) {
 
-    if (!empty($_POST['categories'])) notices::add('errors', language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
-    if (empty($_POST['products'])) notices::add('errors', language::translate('error_must_select_products', 'You must select products'));
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
 
-    if (empty(notices::$data['errors'])) {
       foreach ($_POST['products'] as $product_id) {
         $product = new ctrl_product($product_id);
         $product->delete();
@@ -186,6 +196,9 @@
       notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
       header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>
@@ -226,8 +239,9 @@
         p.id = '". database::input($_GET['query']) ."'
         or pi.name like '%". database::input($_GET['query']) ."%'
         or p.code regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
-        or p.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
         or p.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+        or p.mpn regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+        or p.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
         or m.name like '%". database::input($_GET['query']) ."%'
@@ -242,8 +256,8 @@
 ?>
       <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
         <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
-        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
-      <td><?php echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
+        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+        <td><?php echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
         <td></td>
         <td class="text-right"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
@@ -297,7 +311,7 @@
 
         $output .= '<tr class="'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#99cc66' : '#ff6666') .';"') .'</td>' . PHP_EOL;
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
         if (@in_array($category['id'], $category_trail)) {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else {
@@ -365,7 +379,7 @@
 
         $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"') .'</td>' . PHP_EOL;
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
 
         if ($display_images) {
           $output .= '  <td><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;

@@ -11,10 +11,17 @@
 
   if (!isset($payment)) $payment = new mod_payment();
 
-  session::$data['order'] = new ctrl_order();
-  $order = &session::$data['order'];
+
 
 // Resume incomplete order in session
+  if (!empty(session::$data['order']->data['id'])) {
+    session::$data['order'] = new ctrl_order(session::$data['order']->data['id']);
+  } else {
+    session::$data['order'] = new ctrl_order();
+  }
+
+  $order = &session::$data['order'];
+
   if (!empty($order->data['id']) && empty($order->data['order_status_id']) && strtotime($order->data['date_created']) > strtotime('-15 minutes')) {
     $resume_id = $order->data['id'];
   }

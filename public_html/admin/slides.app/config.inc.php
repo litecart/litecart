@@ -4,7 +4,7 @@
     'name' => language::translate('title_slides', 'Slides'),
     'default' => 'slides',
     'theme' => array(
-      'color' => '#b89dd9',
+      'color' => '#a880d8',
       'icon' => 'fa-picture-o',
     ),
     'menu' => array(

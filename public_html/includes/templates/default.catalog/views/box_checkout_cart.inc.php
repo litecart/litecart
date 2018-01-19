@@ -3,9 +3,9 @@
   <h2 class="title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
 
   <div class="table-responsive">
-    <table class="items table table-striped data-table" style="width: 100%;">
+    <table class="items table table-striped data-table">
       <thead>
-        <tr class="item">
+        <tr>
           <th><?php echo language::translate('title_item', 'Item'); ?></th>
           <th><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_price', 'Price'); ?></th>
@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         <?php foreach ($items as $key => $item) { ?>
-        <tr class="item">
+        <tr class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo htmlspecialchars($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
           <td><a href="<?php echo htmlspecialchars($item['link']); ?>" class="image-wrapper shadow"><img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" height="48" /></a></td>
           <td>
             <div><strong><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>

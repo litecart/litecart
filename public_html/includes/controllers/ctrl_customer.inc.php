@@ -48,6 +48,7 @@
 
       foreach ($customer as $field => $value) {
         if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
+          unset($this->data['shipping_'.$matches[1]]);
           $this->data['shipping_address'][$matches[1]] = $value;
         }
       }
@@ -146,7 +147,7 @@
       database::query(
         "update ". DB_TABLE_ORDERS ."
         set customer_id = 0
-        where id = '". (int)$this->data['id'] ."';"
+        where customer_id = '". (int)$this->data['id'] ."';"
       );
 
       database::query(
@@ -154,6 +155,9 @@
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
+
+      $customer_modules = new mod_customer();
+      $customer_modules->delete($this->data);
 
       cache::clear_cache('customers');
 

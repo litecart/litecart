@@ -16,8 +16,7 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty(notices::$data['errors'])) {
-
+    try {
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
       $fields = array(
@@ -48,26 +47,38 @@
 
       if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $customer->delete();
+    try {
+      if (empty($customer->data['id'])) throw new Exception(language::translate('error_must_provide_customer', 'You must provide a customer'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
-    exit;
+      $customer->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'customers')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
   if (!empty($customer->data['id'])) {
+
     $order_statuses = array();
     $orders_status_query = database::query(
       "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
     );
+
     while ($order_status = database::fetch($orders_status_query)) {
       $order_statuses[] = (int)$order_status['id'];
     }
@@ -82,6 +93,7 @@
       where o.order_status_id in ('". implode("', '", $order_statuses) ."')
       and (o.customer_id = '". (int)$customer->data['id'] ."' or o.customer_email = '". database::input($customer->data['email']) ."');"
     );
+
     $orders = database::fetch($orders_query);
   }
 
@@ -94,119 +106,115 @@
 
     <div class="col-md-8">
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_code', 'Code'); ?></label>
-            <?php echo functions::form_draw_text_field('code', true); ?>
-          </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_status', 'Status'); ?></label>
+          <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-            <?php echo functions::form_draw_email_field('email', true); ?>
-          </div>
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_code', 'Code'); ?></label>
+          <?php echo functions::form_draw_text_field('code', true); ?>
+        </div>
+      </div>
 
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-            <div class="checkbox">
-              <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
-            </div>
-          </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+          <?php echo functions::form_draw_email_field('email', true); ?>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-            <?php echo functions::form_draw_text_field('tax_id', true); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_company', 'Company'); ?></label>
-            <?php echo functions::form_draw_text_field('company', true); ?>
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
+          <div class="checkbox">
+            <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
           </div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
-            <?php echo functions::form_draw_text_field('firstname', true); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
-            <?php echo functions::form_draw_text_field('lastname', true); ?>
-          </div>
-          </div>
-
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-            <?php echo functions::form_draw_text_field('address1', true); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-            <?php echo functions::form_draw_text_field('address2', true); ?>
-          </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+          <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_city', 'City'); ?></label>
-            <?php echo functions::form_draw_text_field('city', true); ?>
-          </div>
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_company', 'Company'); ?></label>
+          <?php echo functions::form_draw_text_field('company', true); ?>
+        </div>
+      </div>
 
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
-            <?php echo functions::form_draw_text_field('postcode', true); ?>
-          </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
+          <?php echo functions::form_draw_text_field('firstname', true); ?>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_country', 'Country'); ?></label>
-              <?php echo functions::form_draw_countries_list('country_code', true); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_zone', 'Zone'); ?></label>
-              <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?>
-          </div>
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
+          <?php echo functions::form_draw_text_field('lastname', true); ?>
+        </div>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-            <?php echo functions::form_draw_phone_field('phone', true); ?>
-          </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
+          <?php echo functions::form_draw_text_field('address1', true); ?>
         </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></label>
-              <?php echo functions::form_draw_text_field('new_password', '', 'autocomplete="off"'); ?>
-          </div>
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
+          <?php echo functions::form_draw_text_field('address2', true); ?>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_city', 'City'); ?></label>
+          <?php echo functions::form_draw_text_field('city', true); ?>
         </div>
 
-        <p class="btn-group">
-          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-          <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-          <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        </p>
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+          <?php echo functions::form_draw_text_field('postcode', true); ?>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_country', 'Country'); ?></label>
+          <?php echo functions::form_draw_countries_list('country_code', true); ?>
+        </div>
 
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_zone', 'Zone'); ?></label>
+          <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+          <?php echo functions::form_draw_phone_field('phone', true); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></label>
+          <?php echo functions::form_draw_password_field('new_password', '', 'autocomplete="off"'); ?>
+        </div>
+      </div>
+
+      <p class="btn-group">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+      </p>
     </div>
 
     <div class="col-md-4">
       <div class="form-group">
         <label><?php echo language::translate('title_notes', 'Notes'); ?></label>
-        <?php echo functions::form_draw_textarea('notes', true, 'style="height: 480px;"'); ?>
+        <?php echo functions::form_draw_textarea('notes', true, 'style="height: 450px;"'); ?>
       </div>
 
       <?php if (!empty($customer->data['id'])) { ?>

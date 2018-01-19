@@ -1,8 +1,11 @@
 <?php
 
-  if (!empty($_POST['import'])) {
+  if (isset($_POST['import'])) {
 
-    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
@@ -71,65 +74,72 @@
       }
 
       notices::add('success', language::translate('success_customers_imported', 'Customers successfully imported.'));
-
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['export'])) {
+  if (isset($_POST['export'])) {
 
-    $customers_query = database::query(
-      "select * from ". DB_TABLE_CUSTOMERS ."
-      order by date_created asc;"
-    );
-
-    $csv = array();
-
-    while ($customer = database::fetch($customers_query)) {
-      $csv[] = array(
-        'id' => $customer['id'],
-        'code' => $customer['code'],
-        'email' => $customer['email'],
-        'tax_id' => $customer['tax_id'],
-        'company' => $customer['company'],
-        'firstname' => $customer['firstname'],
-        'lastname' => $customer['lastname'],
-        'address1' => $customer['address1'],
-        'address2' => $customer['address2'],
-        'postcode' => $customer['postcode'],
-        'city' => $customer['city'],
-        'country_code' => $customer['country_code'],
-        'zone_code' => $customer['zone_code'],
-        'phone' => $customer['phone'],
-        'newsletter' => $customer['newsletter'],
-        'notes' => $customer['notes'],
+    try {
+      $customers_query = database::query(
+        "select * from ". DB_TABLE_CUSTOMERS ."
+        order by date_created asc;"
       );
+
+      $csv = array();
+
+      while ($customer = database::fetch($customers_query)) {
+        $csv[] = array(
+          'id' => $customer['id'],
+          'code' => $customer['code'],
+          'email' => $customer['email'],
+          'tax_id' => $customer['tax_id'],
+          'company' => $customer['company'],
+          'firstname' => $customer['firstname'],
+          'lastname' => $customer['lastname'],
+          'address1' => $customer['address1'],
+          'address2' => $customer['address2'],
+          'postcode' => $customer['postcode'],
+          'city' => $customer['city'],
+          'country_code' => $customer['country_code'],
+          'zone_code' => $customer['zone_code'],
+          'phone' => $customer['phone'],
+          'newsletter' => $customer['newsletter'],
+          'notes' => $customer['notes'],
+        );
+      }
+
+      ob_clean();
+
+      if ($_POST['output'] == 'screen') {
+        header('Content-Type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-Type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=customers.csv');
+      }
+
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+          break;
+        case 'Mac':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+          break;
+        case 'Win':
+        default:
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+          break;
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
-
-    ob_clean();
-
-    if ($_POST['output'] == 'screen') {
-      header('Content-Type: text/plain; charset='. $_POST['charset']);
-    } else {
-      header('Content-Type: application/csv; charset='. $_POST['charset']);
-      header('Content-Disposition: attachment; filename=customers.csv');
-    }
-
-    switch($_POST['eol']) {
-      case 'Linux':
-        echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-        break;
-      case 'Mac':
-        echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-        break;
-      case 'Win':
-      default:
-        echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-        break;
-    }
-
-    exit;
   }
 
 ?>

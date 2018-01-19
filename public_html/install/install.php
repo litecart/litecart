@@ -1,8 +1,9 @@
 <?php
   ob_start();
 
-  require_once('includes/header.inc.php');
+  require_once('../includes/compatibility.inc.php');
   require_once('includes/functions.inc.php');
+  require_once('includes/header.inc.php');
 
   echo '<h1>Installer</h1>' . PHP_EOL;
 
@@ -76,7 +77,11 @@
   define('DB_CONNECTION_CHARSET', 'utf8');
   require_once('../includes/library/lib_database.inc.php');
 
-  echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
+  if (!database::connect()) {
+    die('Unable to connect <span class="error">[Error]</span></p>');
+  } else {
+    echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
 
   ### Database > Check Version ##################################
 
@@ -156,7 +161,7 @@
   $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-    $query = preg_replace('/--.*\s/', '', $query);
+    $query = preg_replace('#--.*\s#', '', $query);
     database::query($query);
   }
 
@@ -178,7 +183,7 @@
   }
 
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-    $query = preg_replace('/--.*\s/', '', $query);
+    $query = preg_replace('#--.*\s#', '', $query);
     database::query($query);
   }
 
@@ -205,7 +210,7 @@
   $sql = explode('-- --------------------------------------------------------', $sql);
 
   foreach ($sql as $query) {
-    $query = preg_replace('/--.*\s/', '', $query);
+    $query = preg_replace('#--.*\s#', '', $query);
     database::query($query);
   }
 
@@ -232,7 +237,6 @@
     '{BASE_DIR}' => $base_dir,
     '{ADMIN_DIR_FULL}' => $installation_path . $_REQUEST['admin_folder'],
   ));
-
 
   if (file_put_contents('../.htaccess', $htaccess)) {
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -373,7 +377,7 @@
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
           foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-            $query = preg_replace('/--.*\s/', '', $query);
+            $query = preg_replace('#--.*\s#', '', $query);
             database::query($query);
           }
         }
@@ -400,7 +404,7 @@
       $sql = explode('-- --------------------------------------------------------', $sql);
 
       foreach ($sql as $query) {
-        $query = preg_replace('/--.*\s/', '', $query);
+        $query = preg_replace('#--.*\s#', '', $query);
         database::query($query);
       }
     }
@@ -438,7 +442,6 @@
      . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL
      . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'">administration area</a> and start configuring your store.</p>' . PHP_EOL
      . '<p>Check out our <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL;
-
 
   if (!empty($_REQUEST['redirect'])) {
     header('Location: '. $_REQUEST['redirect']);

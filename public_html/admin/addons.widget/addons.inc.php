@@ -16,7 +16,7 @@
     );
 
     $client = new http_client();
-    $response = @$client->call($url, $store_info);
+    $response = @$client->call('POST', $url, $store_info);
     $rss = @simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {
@@ -44,7 +44,7 @@
     <div class="row">
       <?php foreach ($addons as $item) { ?>
       <div class="col-sm-6 col-md-4 col-lg-3">
-        <div class="title"><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
+        <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
         <div class="description"><?php echo (string)$item->description; ?></div>
       </div>
       <?php } ?>

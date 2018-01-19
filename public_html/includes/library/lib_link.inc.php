@@ -2,8 +2,8 @@
 
   class link {
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     //public static function load_dependencies() {
     //}
@@ -31,16 +31,6 @@
 
     ######################################################################
 
-    public static function get_physical_link() {
-      $link = $_SERVER['SCRIPT_NAME'] . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-
-      return self::full_link($link);
-    }
-
-    public static function get_logical_link() {
-      return self::full_link($_SERVER['REQUEST_URI']);
-    }
-
     public static function create_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
@@ -52,7 +42,6 @@
 
       } else if ($document == '') {
         $parsed_link = self::explode_link(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-
 
       } else if (substr($document, 0, 4) == 'http' || strpos($document, '?') !== false) {
         $parsed_link = self::explode_link($document);
@@ -111,22 +100,6 @@
       }
 
       return $link;
-    }
-
-    public static function full_link($link) {
-
-      $parts = self::explode_link($link);
-      $link = self::implode_link($parts);
-
-      return $link;
-    }
-
-    public static function relpath($link) {
-      $parts = self::explode_link($link);
-
-      if (substr($parts['path'], 0, strlen(WS_DIR_HTTP_HOME)) == WS_DIR_HTTP_HOME) $parts['path'] = substr($parts['path'], strlen(WS_DIR_HTTP_HOME));
-
-      return $parts['path'] . (!empty($parts['query']) ? '?'. http_build_query($parts['query'], '', '&') : '');
     }
 
     public static function fullpath($path) {

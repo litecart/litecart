@@ -1,10 +1,9 @@
 <?php
 
-  if (!empty($_POST['export'])) {
+  if (isset($_POST['export'])) {
 
-    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
       ob_clean();
 
@@ -48,12 +47,18 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['import'])) {
+  if (isset($_POST['import'])) {
 
-    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
 
       ob_clean();
 
@@ -65,7 +70,7 @@
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
       if (empty($_POST['delimiter'])) {
-        preg_match('/^([^(\r|\n)]+)/', $csv, $matches);
+        preg_match('#^([^(\r|\n)]+)#', $csv, $matches);
         if (strpos($matches[1], ',') !== false) {
           $_POST['delimiter'] = ',';
         } elseif (strpos($matches[1], ';') !== false) {
@@ -130,6 +135,9 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

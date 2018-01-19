@@ -4,7 +4,7 @@
     'name' => language::translate('title_modules', 'Modules'),
     'default' => 'jobs',
     'theme' => array(
-      'color' => '#c78dc8',
+      'color' => '#c469c5',
       'icon' => 'fa-cube',
     ),
     'menu' => array(

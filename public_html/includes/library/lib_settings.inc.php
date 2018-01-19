@@ -3,8 +3,8 @@
   class settings {
     private static $_cache;
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
 
@@ -40,8 +40,8 @@
     //public static function prepare_output() {
     //}
 
-    public static function before_output() {
-    }
+    //public static function before_output() {
+    //}
 
     //public static function shutdown() {
     //}
@@ -52,19 +52,35 @@
 
       if (isset(self::$_cache[$key])) return self::$_cache[$key];
 
-      $configuration_query = database::query(
+      $settings_query = database::query(
         "select * from ". DB_TABLE_SETTINGS ."
         where `key` = '". database::input($key) ."'
         limit 1;"
       );
 
-      if (!database::num_rows($configuration_query)) {
+      if (!database::num_rows($settings_query)) {
         if ($default === null) trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
         return $default;
       }
 
-      while ($row = database::fetch($configuration_query)) {
-        self::$_cache[$key] = $row['value'];
+      while ($setting = database::fetch($settings_query)) {
+
+        if (substr($setting['key'], 0, 8) == 'regional') {
+
+          $value = @json_decode($setting['value'], true);
+          if (isset($value[language::$selected['code']])) {
+            self::$_cache[$key] = $value[language::$selected['code']];
+
+          } else if (isset($value['en'])) {
+            self::$_cache[$key] = $value['en'];
+
+          } else {
+            self::$_cache[$key] = '';
+          }
+
+        } else {
+          self::$_cache[$key] = $setting['value'];
+        }
       }
 
       return self::$_cache[$key];

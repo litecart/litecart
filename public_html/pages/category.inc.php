@@ -1,5 +1,5 @@
 <?php
-  if (empty($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   if (empty($_GET['category_id'])) {
     header('Location: '. document::ilink('categories'));
@@ -12,14 +12,14 @@
     notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));
     http_response_code(410);
     header('Refresh: 0; url='. document::ilink('categories'));
-    exit;
+    die('HTTP Error 410 Gone');
   }
 
   if (empty($category->status)) {
     notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
     http_response_code(404);
     header('Refresh: 0; url='. document::ilink('categories'));
-    exit;
+    die('HTTP Error 404 Not Found');
   }
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $category->id), false) .'" />';

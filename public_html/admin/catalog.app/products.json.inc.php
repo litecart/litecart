@@ -12,6 +12,7 @@
       "p.code like '". database::input($_REQUEST['query']) ."%'",
       "find_in_set(p.keywords, '". database::input($_REQUEST['query']) ."')",
       "p.sku like '". database::input($_REQUEST['query']) ."%'",
+      "p.mpn like '". database::input($_REQUEST['query']) ."%'",
       "p.gtin like '". database::input($_REQUEST['query']) ."%'",
       "pi.name like '%". database::input($_REQUEST['query']) ."%'",
     );

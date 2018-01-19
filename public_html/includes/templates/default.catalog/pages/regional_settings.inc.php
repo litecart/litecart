@@ -8,30 +8,30 @@
 
       <div class="row half-gutter">
         <?php if (count(language::$languages) > 1) { ?>
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_language', 'Language'); ?></label>
           <?php echo functions::form_draw_languages_list('language_code', language::$selected['code']); ?>
         </div>
         <?php } ?>
 
         <?php if (count(currency::$currencies) > 1) { ?>
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
           <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?>
         </div>
         <?php } ?>
 
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
           <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?>
         </div>
 
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
           <?php echo functions::form_draw_zones_list(customer::$data['country_code'], 'zone_code', customer::$data['zone_code']); ?>
         </div>
 
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_display_prices', 'Display Prices'); ?></label>
           <div class="radio">
             <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>

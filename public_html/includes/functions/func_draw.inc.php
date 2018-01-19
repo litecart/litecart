@@ -72,7 +72,7 @@
       'product_id' => $product['id'],
       'code' => $product['code'],
       'name' => $product['name'],
-      'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id')),
+      'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id', 'manufacturer_id')),
       'image' => array(
         'original' => $product['image'] ? WS_DIR_IMAGES . $product['image'] : '',
         'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
@@ -86,8 +86,8 @@
       'manufacturer' => array(),
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
-      'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
-      'campaign_price' => (float)$product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
+      'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
+      'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
     );
 
     if (!empty($product['manufacturer_id'])) {
@@ -137,25 +137,25 @@
     foreach ($params as $key => $value) {
       switch (gettype($params[$key])) {
         case 'NULL':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': null,' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': null,' . PHP_EOL;
           break;
         case 'boolean':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
           break;
         case 'integer':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. $value .',' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
           break;
         case 'string':
           if (preg_match('#^function\s?\(#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': '. $value .',' . PHP_EOL;
+            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
           } else if (preg_match('#^undefined$#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': undefined,' . PHP_EOL;
+            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': undefined,' . PHP_EOL;
           } else {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
           }
           break;
         case 'array':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '      '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
           break;
       }
     }
@@ -170,7 +170,7 @@
 
     if ($pages < 2) return false;
 
-    if (empty($_GET['page']) || $_GET['page'] < 2) $_GET['page'] = 1;
+    if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
 
     if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';

@@ -16,19 +16,14 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['username'])) notices::add('errors', language::translate('error_must_enter_username', 'You must enter a username'));
-
-    if (empty($user->data['username'])) {
-      if (empty($_POST['password'])) notices::add('errors', language::translate('error_must_enter_password', 'You must enter a password'));
-      if (empty($_POST['confirmed_password'])) notices::add('errors', language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
-    }
-
-    if (!empty($_POST['password']) && !empty($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) notices::add('errors', language::translate('error_passwords_missmatch', 'The passwords did not match'));
-
-    if (empty(notices::$data['errors'])) {
-
+    try {
       if (empty($_POST['status'])) $_POST['status'] = 0;
       if (empty($_POST['permissions'])) $_POST['permissions'] = array();
+
+      if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
+      if (empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
+      if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
+      if (!empty($_POST['password']) && !empty($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 
       $fields = array(
         'status',
@@ -47,21 +42,28 @@
 
       $user->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    if (!empty($user->data['id'])) {
+    try {
+      if (empty($user->data['id'])) throw new Exception(language::translate('error_must_provide_user', 'You must provide a user'));
 
       $user->delete();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

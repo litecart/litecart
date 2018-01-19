@@ -7,7 +7,7 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <?php
-  if (!empty($_POST['scan'])) {
+  if (isset($_POST['scan'])) {
 
     echo '<hr />';
 
@@ -83,7 +83,6 @@
       }
     }
 
-
     if (!empty($_POST['clean'])) {
       $settings_groups_query = database::query(
         "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
@@ -125,5 +124,3 @@
     echo '<p>'. sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated_translations) .'</p>';
     echo '<p>'. sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) .'</p>';
   }
-
-?>

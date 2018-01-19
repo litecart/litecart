@@ -133,7 +133,7 @@
 // Clean up cart
   cart::clear();
 
-// Send e-mails
+// Send emails
   $order->email_order_copy($order->data['customer']['email']);
 
   foreach (explode(';', settings::get('email_order_copy')) as $email) {

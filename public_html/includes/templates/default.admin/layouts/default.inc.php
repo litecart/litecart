@@ -4,6 +4,7 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=1600,initial-scale=1.0">
 {snippet:head_tags}
 <link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
@@ -13,7 +14,7 @@
 
 <div class="page">
 
-  <div id="sidebar">
+  <div id="sidebar" class="hidden-print">
 
     <div id="logotype">
       <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">

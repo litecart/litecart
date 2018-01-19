@@ -1,11 +1,10 @@
 <?php
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-    if (!preg_match('#(\.catalog)$#', $_POST['template_catalog'])) notices::add('errors', language::translate('error_invalid_catalog_template', 'Not a valid catalog template'));
-    if (!preg_match('#(\.admin)$#', $_POST['template_admin'])) notices::add('errors', language::translate('error_invalid_admin_template', 'Not a valid admin template'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (!preg_match('#(\.catalog)$#', $_POST['template_catalog'])) throw new Exception(language::translate('error_invalid_catalog_template', 'Not a valid catalog template'));
+      if (!preg_match('#(\.admin)$#', $_POST['template_admin'])) throw new Exception(language::translate('error_invalid_admin_template', 'Not a valid admin template'));
 
       if ($_POST['template_catalog'] != settings::get('store_template_catalog')) {
         database::query(
@@ -36,7 +35,9 @@
           limit 1;"
         );
 
-        $redirect_to_settings = true;
+        if (!empty($settings)) {
+          $redirect_to_settings = true;
+        }
       }
 
       if ($_POST['template_admin'] != settings::get('store_template_admin')) {
@@ -50,14 +51,19 @@
         );
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
 
       if (!empty($redirect_to_settings)) {
-        header('Location: '. document::link('', array('doc' => 'template_settings'), array('app')));
+        $redirect_url = document::link('', array('doc' => 'template_settings'), array('app'));
       } else {
-        header('Location: '. document::link());
+        $redirect_url = document::link();
       }
+
+      header('Location: '. $redirect_url);
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

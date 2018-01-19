@@ -6,31 +6,43 @@
 // Get settings from database
   $settings = json_decode(settings::get('store_template_catalog_settings'), true);
 
-// Build template settings
+// Complete missing settings
   foreach (array_keys($template_config) as $i) {
-    $template_config[$i]['value'] = isset($settings[$template_config[$i]['key']]) ? $settings[$template_config[$i]['key']] : $template_config[$i]['default_value'];
+
+    if (substr($template_config[$i]['function'], 0, 8) == 'regional') {
+
+      foreach (array_keys(language::$languages) as $language_code) {
+        if (!isset($settings[$template_config[$i]['key']][$language_code])) $settings[$template_config[$i]['key']][$language_code] = $template_config[$i]['default_value'];
+      }
+
+    } else {
+      if (!isset($settings[$template_config[$i]['key']])) $settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
+    }
   }
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-    $new_settings = array();
-    foreach (array_keys($template_config) as $i) {
-      $new_settings[$template_config[$i]['key']] = isset($_POST[$template_config[$i]['key']]) ? $_POST[$template_config[$i]['key']] : $template_config[$i]['value'];
+    try {
+      foreach (array_keys($_POST['settings']) as $key) {
+        if (isset($settings[$key])) $settings[$key] = $_POST['settings'][$key];
+      }
+
+      database::query(
+        "update ". DB_TABLE_SETTINGS ."
+        set
+          `value` = '". database::input(json_encode($settings)) ."',
+          date_updated = '". date('Y-m-d H:i:s') ."'
+        where `key` = '". database::input('store_template_catalog_settings') ."'
+        limit 1;"
+      );
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+
+      header('Location: '. document::link('', array(), true, array('action')));
+      exit;
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
-
-    database::query(
-      "update ". DB_TABLE_SETTINGS ."
-      set
-        `value` = '". database::input(json_encode($new_settings)) ."',
-        date_updated = '". date('Y-m-d H:i:s') ."'
-      where `key` = '". database::input('store_template_catalog_settings') ."'
-      limit 1;"
-    );
-
-    notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-
-    header('Location: '. document::link('', array(), true, array('action')));
-    exit;
   }
 
 ?>
@@ -50,14 +62,18 @@
 <?php
   if (!empty($template_config)) {
 
-    foreach ($template_config as $setting) {
+    foreach ($template_config as $config) {
 
-      if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
+      if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $config['key']) {
+
+        $_POST['settings'][$config['key']] = $settings[$config['key']];
 ?>
       <tr>
-        <td style="white-space: normal;"><u><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></u><br />
-          <?php echo language::translate(settings::get('store_template_catalog').':description_'.$setting['key'], $setting['description']); ?></td>
-        <td><?php echo functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
+        <td style="white-space: normal;">
+          <u><?php echo language::translate(settings::get('store_template_catalog').':title_'.$config['key'], $config['title']); ?></u><br />
+          <?php echo language::translate(settings::get('store_template_catalog').':description_'.$config['key'], $config['description']); ?>
+        </td>
+        <td><?php echo functions::form_draw_function($config['function'], 'settings['.$config['key'].']', true); ?></td>
         <td class="text-right">
           <div class="btn-group">
             <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
@@ -67,16 +83,43 @@
       </tr>
 <?php
     } else {
-      if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
-        $setting['value'] = language::translate('title_true', 'True');
-      } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
-        $setting['value'] = language::translate('title_false', 'False');
+
+      switch (true) {
+
+        case (substr($config['function'], 0, 14) == 'regional_input'):
+
+          if (isset($settings[$config['key']][language::$selected['code']])) {
+            $value = $settings[$config['key']][language::$selected['code']];
+
+          } else if (isset($settings[$config['key']]['en'])) {
+            $value = $settings[$config['key']]['en'];
+
+          } else {
+            $value = '';
+          }
+
+          break;
+
+        case (substr($config['function'], 0, 6) == 'toggle'):
+
+          if (in_array(($settings[$config['key']]), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+           $value = language::translate('title_true', 'True');
+
+          } else if (in_array(($settings[$config['key']]), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
+           $value = language::translate('title_false', 'False');
+          }
+
+          break;
       }
 ?>
       <tr>
-        <td><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></td>
-        <td><?php echo nl2br((strlen($setting['value']) > 128) ? substr($setting['value'], 0, 128).'...' : $setting['value']); ?></td>
-        <td class="text-right"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        <td><?php echo language::translate(settings::get('store_template_catalog').':title_'.$config['key'], $config['title']); ?></td>
+        <td>
+          <div style="max-height: 200px; overflow-y: auto;">
+            <?php echo nl2br($value); ?>
+          </div>
+        </td>
+        <td class="text-right"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $config['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
       }

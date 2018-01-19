@@ -1,9 +1,12 @@
 <?php
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
   if (!empty($_POST['order_action'])) {
-    if (!empty($_POST['orders'])) {
+
+    try {
+      if (empty($_POST['orders'])) throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
+
       list($module_id, $action_id) = explode(':', $_POST['order_action']);
 
       $order_action = new mod_order();
@@ -11,15 +14,14 @@
       $actions = $order_action->actions();
 
       if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
-        notices::$data['errors'][] = language::translate('error_method_doesnt_exist', 'The method doesn\'t exist');
-        return;
+        throw new Exception(language::translate('error_method_doesnt_exist', 'The method doesn\'t exist'));
       }
 
       echo call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
       return;
 
-    } else {
-      notices::$data['errors'][] = language::translate('error_must_select_orders', 'You must select orders to perform the operation');
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
@@ -53,7 +55,7 @@
   <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></li>
   <li><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></li>
   <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true); ?></li>
-  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect_url' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
 </ul>
 <?php echo functions::form_draw_form_end(); ?>
 
@@ -124,17 +126,17 @@
       <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
       <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
       <td><?php echo $order['id']; ?></td>
-      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
+      <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI'])); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
       <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
       <td><?php echo $order['payment_option_name']; ?></td>
       <td class="text-right"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
       <td class="text-right"><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>
       <td class="text-center"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
-      <td class="text-right"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
+      <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
       <td>
-        <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_packing_slip', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-        <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_order_copy', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-print'); ?></a>
-        <a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id'], 'redirect' => $_SERVER['REQUEST_URI']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
+        <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_packing_slip', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+        <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_order_copy', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank" title="<?php echo language::translate('title_order_copy', 'Order Copy'); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+        <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
       </td>
     </tr>
 <?php
@@ -145,7 +147,7 @@
     </tbody>
     <tfoot>
       <tr>
-    <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+        <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
       </tr>
     </tfoot>
   </table>
@@ -162,7 +164,7 @@
          . '    <legend>'. $module['name'] .'</legend>' . PHP_EOL
          . '    <div class="btn-group">' . PHP_EOL;
       foreach ($module['actions'] as $action) {
-        echo '      ' . functions::form_draw_button('order_action', array($module['id'].':'.$action['id'], $action['title']), 'submit', 'formtarget="'. (!empty($action['target']) ? $action['target'] : '_self') .'"') . PHP_EOL;
+        echo '      ' . functions::form_draw_button('order_action', array($module['id'].':'.$action['id'], $action['title']), 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'"') . PHP_EOL;
       }
       echo '    </div>' . PHP_EOL
          . '  </fieldset>' . PHP_EOL

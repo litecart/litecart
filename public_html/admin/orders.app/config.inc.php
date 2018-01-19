@@ -4,7 +4,7 @@
     'name' => language::translate('title_orders', 'Orders'),
     'default' => 'orders',
     'theme' => array(
-      'color' => '#b2db64',
+      'color' => '#9dd238',
       'icon' => 'fa-shopping-cart',
     ),
     'menu' => array(

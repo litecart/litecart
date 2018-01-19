@@ -52,7 +52,7 @@
       $component = null;
       if (preg_match('#^(ref|ctrl)_#', $resource, $matches)) {
         $component = $matches[1];
-        $resource = preg_replace('#^'. preg_quote($component) .'_(.*)$#', '$1', $resource);
+        $resource = preg_replace('#^'. preg_quote($component, '#') .'_(.*)$#', '$1', $resource);
       }
 
       switch(true) {

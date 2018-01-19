@@ -1,9 +1,10 @@
 <?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['users'])) {
+    try {
+      if (empty($_POST['users'])) throw new Exception(language::translate('error_must_select_users', 'You must select users'));
 
       foreach ($_POST['users'] as $user_id) {
 
@@ -12,8 +13,12 @@
         $user->save();
       }
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>
@@ -50,7 +55,7 @@
 ?>
     <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
       <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>

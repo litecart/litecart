@@ -1,6 +1,6 @@
-<div id="box-product" class="box" style="max-width: 980px;" data-id="<?php echo $product_id; ?>">
+<div id="box-product" class="box" style="max-width: 980px;" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
   <div class="row">
-    <div class="col-xs-whole col-sm-halfs col-md-thirds">
+    <div class="col-sm-6 col-md-4">
       <div class="image-wrapper">
         <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
           <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
@@ -11,7 +11,7 @@
       <?php if ($extra_images) { ?>
       <div class="extra-images row half-gutter">
         <?php foreach ($extra_images as $image) { ?>
-        <div class="col-xs-thirds">
+        <div class="col-xs-4">
           <div class="extra-image">
             <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
               <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
@@ -23,34 +23,29 @@
       <?php } ?>
     </div>
 
-    <div class="col-sm-halfs col-md-thirds">
+    <div class="col-sm-6 col-md-4">
       <h1 class="title"><?php echo $name; ?></h1>
 
-      <?php if ($sku || $gtin) { ?>
-      <ul class="codes list-inline">
-        <?php if ($sku) { ?><li class="sku"><?php echo $sku; ?></li><?php } ?>
-        <?php if ($gtin) { ?><li class="gtin"><?php echo $gtin; ?></li><?php } ?>
-      </ul>
+      <?php if ($short_description) { ?>
+      <p class="short-description">
+        <?php echo $short_description; ?>
+      </p>
       <?php } ?>
 
-      <?php if ($description) { ?>
-      <div class="description">
-        <?php echo $description; ?>
+      <?php if (!empty($manufacturer)) { ?>
+      <div class="manufacturer">
+        <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>">
+          <?php if ($manufacturer['image']) { ?>
+          <img src="<?php echo functions::image_thumbnail($manufacturer['image']['thumbnail'], 0, 48); ?>" srcset="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
+          <?php } else { ?>
+          <h3><?php echo $manufacturer['name']; ?></h3>
+          <?php } ?>
+        </a>
       </div>
       <?php } ?>
     </div>
 
-    <div class="col-sm-halfs col-md-thirds">
-
-      <?php if (!empty($manufacturer['image'])) { ?>
-      <div class="manufacturer" style="font-size: 1.5em;">
-        <?php if ($manufacturer['image']) { ?>
-        <p><a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><img src="<?php echo functions::image_thumbnail($manufacturer['image']['thumbnail'], 0, 48); ?>" srcset="<?php echo htmlspecialchars($manufacturer['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" /></a></p>
-        <?php } else { ?>
-        <p><a href="<?php echo htmlspecialchars($manufacturer['link']); ?>"><?php echo $manufacturer['name']; ?></a></p>
-        <?php } ?>
-      </div>
-      <?php } ?>
+    <div class="col-sm-6 col-md-4">
 
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
@@ -74,6 +69,31 @@
       </div>
       <?php } ?>
 
+      <?php if ($sku || $mpn || $gtin) { ?>
+      <div class="codes" style="margin: 1em 0;">
+        <?php if ($sku) { ?>
+        <div class="sku">
+          <?php echo language::translate('title_sku', 'SKU'); ?>:
+          <span class="value"><?php echo $sku; ?></span>
+        </div>
+        <?php } ?>
+
+        <?php if ($mpn) { ?>
+        <div class="mpn">
+          <?php echo language::translate('title_mpn', 'MPN'); ?>:
+          <span class="value"><?php echo $mpn; ?></span>
+        </div>
+        <?php } ?>
+
+        <?php if ($gtin) { ?>
+        <div class="gtin">
+          <?php echo language::translate('title_gtin', 'GTIN'); ?>:
+          <span class="value"><?php echo $gtin; ?></span>
+        </div>
+        <?php } ?>
+      </div>
+      <?php } ?>
+
       <div class="stock-status" style="margin: 1em 0;">
        <?php if ($quantity > 0) { ?>
         <div class="stock-available">
@@ -83,7 +103,7 @@
         <?php if ($delivery_status) { ?>
         <div class="stock-delivery">
           <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>:
-          <span class="value"><?php echo $delivery_status;?></span>
+          <span class="value"><?php echo $delivery_status; ?></span>
         </div>
         <?php } ?>
        <?php } else { ?>
@@ -149,9 +169,19 @@
   </div>
 
   <?php if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
-  <?php if ($attributes) { ?>
-  <div class="attributes">
-    <table class="table table-striped">
+  <ul class="nav nav-tabs">
+    <?php if ($description) { ?><li><a data-toggle="tab" href="#description"><?php echo language::translate('title_description', 'Description'); ?></a></li><?php } ?>
+    <?php if ($attributes) { ?><li><a data-toggle="tab" href="#attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li><?php } ?>
+  </ul>
+
+  <div class="tab-content">
+    <div id="description" class="tab-pane">
+      <?php echo $description; ?>
+    </div>
+
+    <div id="attributes" class="tab-pane">
+      <div class="attributes">
+        <table class="table table-striped">
 <?php
   for ($i=0; $i<count($attributes); $i++) {
     if (strpos($attributes[$i], ':') !== false) {
@@ -174,10 +204,12 @@
     }
   }
 ?>
-    </table>
+        </table>
+      </div>
+    </div>
   </div>
   <?php } ?>
-  <?php } ?>
+
 </div>
 
 <script>

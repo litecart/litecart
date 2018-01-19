@@ -5,7 +5,7 @@
     $url = document::link('https://www.litecart.net/feeds/discussions.rss');
 
     $client = new http_client();
-    $response = @$client->call($url);
+    $response = @$client->call('GET', $url);
     $rss = @simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {
@@ -34,7 +34,7 @@
       <?php foreach ($discussions as $item) { ?>
       <div class="col-sm-6 col-md-4 col-lg-3">
         <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
-        <div class="description"><?php echo strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></div>
+        <div class="description"><?php echo language::strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></div>
       </div>
       <?php } ?>
     </div>

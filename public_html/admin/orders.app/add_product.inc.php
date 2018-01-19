@@ -5,7 +5,7 @@
   if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('store_currency_code');
   if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
 
-  $product = reference::product($_GET['product_id'], $_GET['currency_code']);
+  $product = reference::product($_GET['product_id'], $_GET['language_code'], $_GET['currency_code'], $_GET['customer']['id']);
   if (empty($product->id)) return;
 ?>
 <div id="modal-add-product" style="width: 640px;">
@@ -189,17 +189,19 @@
     <div class="form-group">
       <?php if (!empty($product->options_stock)) {?>
       <table class="table table-default table-striped data-table">
-        <tbody>
+        <thead>
           <tr>
-            <td><strong><?php echo language::translate('title_stock_option', 'Stock Option'); ?></strong></td>
-            <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong></td>
-            <td class="text-right"><strong><?php echo language::translate('title_in_stock', 'In Stock'); ?></strong></td>
+            <th><?php echo language::translate('title_stock_option', 'Stock Option'); ?></th>
+            <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+            <th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
           </tr>
+        </thead>
+        <tbody>
           <?php foreach ($product->options_stock as $stock_option) { ?>
           <tr>
             <td><?php echo $stock_option['name']; ?></td>
             <td><?php echo $stock_option['sku']; ?></td>
-            <td class="text-right"><?php echo (float)$stock_option['quantity']; ?></td>
+            <td class="text-center"><?php echo (float)$stock_option['quantity']; ?></td>
           </tr>
           <?php } ?>
         </tbody>
@@ -269,7 +271,6 @@
 
     $('#options select :selected').each(function(){
       if ($(this).val()) {
-        console.log($(this).val());
         item.price += Number($(this).data('price-adjust'));
         item.tax += Number($(this).data('tax-adjust'));
         item.options[$(this).parent().data('group')] = $(this).val();
@@ -284,7 +285,6 @@
 
     $('#options input[type!="radio"][type!="checkbox"]').each(function(){
       if ($(this).val()) {
-        console.log($(this).data('price-adjust'));
         item.price += Number($(this).data('price-adjust'));
         item.tax += Number($(this).data('tax-adjust'));
         item.options[$(this).data('group')] = $(this).val();
@@ -312,10 +312,8 @@
       });
 
       if (matched) {
-
         item.option_stock_combination = stock_option.combination;
         item.sku = stock_option.sku;
-        console.log(stock_option.weight);
         if (stock_option.weight > 0) {
           item.weight = stock_option.weight;
           item.weight_class = stock_option.weight_class;

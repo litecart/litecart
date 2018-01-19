@@ -23,7 +23,7 @@
     $i = 0;
     while ($category = database::fetch($categories_query)) {
       if (++$i < 10) {
-        $box_site_footer->snippets['categories'][] = array(
+        $box_site_footer->snippets['categories'][$category['id']] = array(
           'id' => $category['id'],
           'name' => $category['name'],
           'link' => document::href_ilink('category', array('category_id' => $category['id'])),
@@ -43,13 +43,14 @@
       "select m.id, m.name
       from ". DB_TABLE_MANUFACTURERS ." m
       where status
+      and featured
       order by m.name asc;"
     );
 
     $i = 0;
     while ($manufacturer = database::fetch($manufacturers_query)) {
       if (++$i < 10) {
-        $box_site_footer->snippets['manufacturers'][] = array(
+        $box_site_footer->snippets['manufacturers'][$manufacturer['id']] = array(
           'id' => $manufacturer['id'],
           'name' => $manufacturer['name'],
           'link' => document::href_ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
@@ -72,7 +73,7 @@
       order by p.priority, pi.title;"
     );
     while ($page = database::fetch($pages_query)) {
-      $box_site_footer->snippets['pages'][] = array(
+      $box_site_footer->snippets['pages'][$page['id']] = array(
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::href_ilink('information', array('page_id' => $page['id'])),
@@ -87,7 +88,7 @@
       order by p.priority, pi.title;"
     );
     while ($page = database::fetch($pages_query)) {
-      $box_site_footer->snippets['customer_service_pages'][] = array(
+      $box_site_footer->snippets['customer_service_pages'][$page['id']] = array(
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::href_ilink('customer_service', array('page_id' => $page['id'])),

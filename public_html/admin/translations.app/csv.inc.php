@@ -1,8 +1,11 @@
 <?php
 
-  if (!empty($_POST['import'])) {
+  if (isset($_POST['import'])) {
 
-    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
@@ -63,14 +66,16 @@
 
       header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['export'])) {
+  if (isset($_POST['export'])) {
 
-    if (empty($_POST['language_codes'])) notices::add('errors', language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['language_codes'])) throw new Exception(language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
 
       $csv = array();
 
@@ -114,6 +119,9 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

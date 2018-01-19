@@ -49,7 +49,7 @@
       if (!isset($monthly_sales[date('m', $timestamp)]['total_sales_last_year'])) $monthly_sales[date('m', $timestamp)]['total_sales_last_year'] = 0;
     }
 
-    $monthly_sales[date('m')]['label'] = '★'.$monthly_sales[date('m')]['label'];
+    $monthly_sales[date('m')]['label'] = '\u2605'.$monthly_sales[date('m')]['label'];
 
     uasort($monthly_sales, function($a, $b) { return $a['month'] > $b['month'] ? 1 : -1; });
 
@@ -87,7 +87,7 @@
       if (!isset($daily_sales[date('N', $timestamp)]['average_sales'])) $daily_sales[date('N', $timestamp)]['average_sales'] = 0;
     }
 
-    $daily_sales[date('N')]['label'] = '★'.$daily_sales[date('N')]['label'];
+    $daily_sales[date('N')]['label'] = '\u2605'.$daily_sales[date('N')]['label'];
 
     ksort($daily_sales);
 ?>

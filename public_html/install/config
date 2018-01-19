@@ -1,17 +1,15 @@
 <?php
-  
-  //if (is_writable(__FILE__)) chmod(__FILE__, 0444);
-  
+
 ######################################################################
-## Files and Directory  ##############################################
+## Files and Directories #############################################
 ######################################################################
-  
+
 // File System
-  define('FS_DIR_HTTP_ROOT', rtrim(str_replace("\\", '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
-  
+  define('FS_DIR_HTTP_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
+
 // Web System
-  define('WS_DIR_HTTP_HOME', str_replace(FS_DIR_HTTP_ROOT, '', str_replace("\\", '/', realpath(dirname(__FILE__) . '/' . '..') . '/')));
-  
+  define('WS_DIR_HTTP_HOME', rtrim(str_replace(FS_DIR_HTTP_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+
   define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '{ADMIN_FOLDER}/');
   define('WS_DIR_AJAX',        WS_DIR_HTTP_HOME . 'ajax/');
   define('WS_DIR_CACHE',       WS_DIR_HTTP_HOME . 'cache/');
@@ -21,18 +19,17 @@
   define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');
   define('WS_DIR_LOGS',        WS_DIR_HTTP_HOME . 'logs/');
   define('WS_DIR_PAGES',       WS_DIR_HTTP_HOME . 'pages/');
-  
+
   define('WS_DIR_BOXES',       WS_DIR_INCLUDES  . 'boxes/');
   define('WS_DIR_CLASSES',     WS_DIR_INCLUDES  . 'classes/');
   define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');
   define('WS_DIR_FUNCTIONS',   WS_DIR_INCLUDES  . 'functions/');
-  define('WS_DIR_JAVASCRIPTS', WS_DIR_INCLUDES  . 'javascripts/');
   define('WS_DIR_LIBRARY',     WS_DIR_INCLUDES  . 'library/');
   define('WS_DIR_MODULES',     WS_DIR_INCLUDES  . 'modules/');
   define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');
   define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');
   define('WS_DIR_TEMPLATES',   WS_DIR_INCLUDES  . 'templates/');
-  
+
 ######################################################################
 ## Database ##########################################################
 ######################################################################
@@ -44,11 +41,10 @@
   define('DB_PASSWORD', '{DB_PASSWORD}');
   define('DB_DATABASE', '{DB_DATABASE}');
   define('DB_TABLE_PREFIX', '{DB_TABLE_PREFIX}');
-  define('DB_CONNECTION_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1
+  define('DB_CONNECTION_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
-  
+
 // Database tables
-  define('DB_TABLE_ADDRESSES',                         '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'addresses`');
   define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');
   define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');
   define('DB_TABLE_CATEGORIES_INFO',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_info`');
@@ -109,7 +105,7 @@
 ######################################################################
 ## Application #######################################################
 ######################################################################
-  
+
 // Errors
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '>=') ? E_ALL & ~E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
@@ -122,8 +118,6 @@
     ini_set('display_startup_errors', 'On');
     ini_set('display_errors', 'On');
   }
-  
+
 // Password Encryption Salt
   define('PASSWORD_SALT', '{PASSWORD_SALT}');
-  
-?>

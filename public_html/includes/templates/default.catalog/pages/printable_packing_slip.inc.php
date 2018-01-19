@@ -86,20 +86,12 @@ hr {
   <main id="body">
     <div id="addresses">
       <div class="row">
-        <div class="col-xs-3 billing-address">
+        <div class="col-xs-6 billing-address">
           <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
           <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer'])); ?></div>
 
           <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
           <div class="value"><?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></div>
-        </div>
-
-        <div class="col-xs-3">
-          <div class="label"><?php echo language::translate('title_payment_option', 'Payment Option'); ?></div>
-          <div class="value"><?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></div>
-
-          <div class="label"><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></div>
-          <div class="value"><?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></div>
         </div>
 
         <div class="col-xs-6 shipping-address">
@@ -140,15 +132,7 @@ hr {
         </tr>
       </thead>
       <tbody>
-<?php
-  $rowclass = '';
-  foreach ($order['items'] as $item) {
-    if ($rowclass == 'odd') {
-      $rowclass = 'even';
-    } else {
-      $rowclass = 'odd';
-    }
-?>
+        <?php foreach ($order['items'] as $item) { ?>
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
           <td><?php echo $item['name']; ?>
@@ -168,12 +152,7 @@ hr {
 
 <?php
   if (!empty($order['comments'])) {
-    $has_comments = false;
-    foreach ($order['comments'] as $comment) {
-      if (empty($comment['hidden'])) $has_comments = true;
-      break;
-    }
-    if ($has_comments) {
+    if (in_array('0', array_column($order['comments'], 'hidden'))) {
 ?>
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
   <ul id="comments" class="list-unstyled">
