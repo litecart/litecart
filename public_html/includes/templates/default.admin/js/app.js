@@ -6,9 +6,7 @@
 
 // Set Head Title
   if ($('h1').length) {
-    if (document.title.substring(0, $('h1:first').text().length) == $('h1:first').text()) {
-      document.title = $('h1:first').text() +' | '+ document.title;
-    }
+    document.title = document.title +' – '+ $('h1:first').text();
   }
 
 // Form required asterix
