@@ -12,7 +12,7 @@
     if (empty($language_code)) $language_code = language::$selected['code'];
 
     if (strtoupper(language::$selected['charset']) != 'UTF-8') {
-      $text = mb_convert_encoding($text, 'UTF-8'); // Convert to UTF-8
+      $text = language::convert_characters($text, null, 'UTF-8'); // Convert to UTF-8
     }
 
     $text = strip_tags($text);  // Remove HTML tags
@@ -129,11 +129,11 @@
     }
 
   // Strip non printable characters
-    $text = preg_replace("/\[.*\]/U", "", $text);
+    $text = preg_replace('#\[.*\]#U', '', $text);
 
   // Keep a-z0-9 and convert symbols to -
-    $text = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $text);
-    $text = preg_replace(array('/[^a-z0-9]/i', '/[-]+/'), '-', $text);
+    $text = preg_replace('#&(amp;)?\#?[a-z0-9]+;#i', '-', $text);
+    $text = preg_replace(array('#[^a-z0-9]#i', '#[-]+#'), '-', $text);
     $text = trim($text, '-');
 
   // Convert to lowercases

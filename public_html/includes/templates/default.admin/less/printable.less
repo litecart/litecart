@@ -7,14 +7,14 @@ body {
   margin: 0px;
   padding: 0px;
 }
+
 @media print {
   @page {
-    size: A4; /* auto is the initial value */
+    size: A4;
     margin: 15mm;
     zoom: 100%;
     padding: 0px;
   }
-
 
   #page {
     min-height: 100%;
@@ -44,6 +44,7 @@ body {
     background: #e6e9ed;
     padding: 5mm;
   }
+
   body[data-size="A4"] {
     position: relative;
     max-width: 21cm;

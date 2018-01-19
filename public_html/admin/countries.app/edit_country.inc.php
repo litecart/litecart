@@ -16,13 +16,12 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['iso_code_2'])) notices::add('errors', language::translate('error_missing_code', 'You must enter a code'));
-    if (empty($_POST['iso_code_3'])) notices::add('errors', language::translate('error_missing_code', 'You must enter a code'));
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
+    try {
+      if (empty($_POST['iso_code_2'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
+      if (empty($_POST['iso_code_3'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-    if (empty($_POST['zones'])) $_POST['zones'] = array();
-
-    if (empty(notices::$data['errors'])) {
+      if (empty($_POST['zones'])) $_POST['zones'] = array();
 
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
       $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
@@ -48,19 +47,29 @@
 
       $country->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $country->delete();
+    try {
+      if (empty($country->data['id'])) throw new Exception(language::translate('error_must_provide_country', 'You must provide a country'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
-    exit;
+      $country->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>
@@ -99,23 +108,9 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_textarea('address_format', true, 'style="height: 150px;"'); ?>
-      <script>
-        $("#address-format-hint").click(function() {
-          alert(
-            "<?php echo language::translate('title_syntax', 'Syntax'); ?>:\n\n" +
-            "%company, %firstname, %lastname, \n" +
-            "%address1, %address2\n" +
-            "%postcode %city\n" +
-            "%zone_code, %zone_name\n" +
-            "%country_code_2, %country_code_3, %country_name\n"
-          );
-        });
-      </script>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+    <?php echo functions::form_draw_textarea('address_format', true, 'style="height: 150px;"'); ?>
   </div>
 
   <div class="row">
@@ -189,6 +184,17 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
+  $('#address-format-hint').click(function() {
+    alert(
+      '<?php echo language::translate('title_syntax', 'Syntax'); ?>:\n\n' +
+      '%company, %firstname, %lastname, \n' +
+      '%address1, %address2\n' +
+      '%postcode %city\n' +
+      '%zone_code, %zone_name\n' +
+      '%country_code_2, %country_code_3, %country_name\n'
+    );
+  });
+
   var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
   $('form[name="country_form"] .add').click(function(event) {
     event.preventDefault();

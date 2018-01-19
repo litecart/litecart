@@ -9,7 +9,7 @@
 .alert {
   border-radius: 3px;
   margin-bottom: @default-gutter-size;
-  padding: @form-input-padding;
+  padding: @form-input-padding @form-input-padding*2;
   .close {
     float: right;
     font-size: 1.5em;
@@ -22,18 +22,23 @@
       text-decoration: none;
     }
   }
+
   &.alert-default {
-  .alert(#fff6bf, @default-text-color);
+    .alert(#fff6bf, @default-text-color);
   }
+
   &.alert-info {
     .alert(#eeeeee, lighten(@default-text-color, 25%));
   }
+
   &.alert-success {
     .alert(#d6eca6, #567d00);
   }
+
   &.alert-warning {
     .alert(#ffcc66, #aa0000);
   }
+
   &.alert-danger {
     .alert(#ffcccc, #cc4444);
   }

@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart®
+ * LiteCart® 2.1
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -24,7 +24,7 @@
       )));
     } else {
       http_response_code(503);
-      include(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'pages/maintenance_mode.inc.php');
+      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'pages/maintenance_mode.inc.php');
       require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
       exit;
     }
@@ -40,7 +40,17 @@
 
     if (preg_match('#\.[a-z]{2,4}$#', route::$request)) exit;
 
-    echo '<h1>HTTP 404 - File Not Found</h1>';
+    $not_found_file = FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'not_found.log';
+
+    $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : array();
+    $lines[] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $lines = array_unique($lines);
+
+    sort($lines);
+
+    file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
+
+    echo '<h1>HTTP 404 - Not Found</h1>';
     echo '<p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>';
   }
 

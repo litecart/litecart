@@ -5,17 +5,19 @@
     private $_id;
     private $_currency_code;
     private $_language_codes;
+    private $_customer_id;
     private $_data = array();
 
-    function __construct($product_id, $language_code=null, $currency_code=null) {
+    function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
 
       $this->_id = (int)$product_id;
-      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
       $this->_language_codes = array_unique(array(
         !empty($language_code) ? $language_code : language::$selected['code'],
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
+      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
+      $this->_customer_id = !empty($customer_id) ? $customer_id : customer::$data['id'];
     }
 
     public function &__get($name) {
@@ -405,30 +407,24 @@
               list($group_id, $value_id) = explode('-', $pair);
 
               $query = database::query(
-                "select * from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
+                "select name from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
                 where product_group_id = '". (int)$group_id ."'
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
 
               while ($row = database::fetch($query)) {
-                foreach ($option_value_info as $key => $value) {
-                  if (in_array($key, array('id', 'product_group_id', 'language_code'))) continue;
-                  if (empty($this->_data['product_groups'][$group_id][$key])) $this->_data['product_groups'][$group_id][$key] = $value;
-                }
+                if (empty($this->_data['product_groups'][$pair]['group'])) $this->_data['product_groups'][$pair]['group'] = $row['name'];
               }
 
               $query = database::query(
-                "select * from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
+                "select name from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
                 where product_group_value_id = '". (int)$value_id ."'
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
               while ($row = database::fetch($query)) {
-                foreach ($row as $key => $value) {
-                  if (in_array($key, array('id', 'product_group_value_id', 'language_code'))) continue;
-                  if (empty($this->_data['product_groups'][$group_id]['values'][$value_id])) $this->_data['product_groups'][$group_id]['values'][$value_id] = $value;
-                }
+                if (empty($this->_data['product_groups'][$pair]['value'])) $this->_data['product_groups'][$pair]['value'] = $row['name'];
               }
             }
           }
@@ -512,11 +508,11 @@
           foreach ($row as $key => $value) {
             switch($key) {
               case 'product_groups':
-                $row['product_group_ids'] = explode(',', $row['product_groups']);
+                $this->_data['product_group_ids'] = explode(',', $row['product_groups']);
                 break;
 
               case 'keywords':
-                $row[$key] = explode(',', $row[$key]);
+                $this->_data[$key] = explode(',', $row[$key]);
                 break;
 
               default:

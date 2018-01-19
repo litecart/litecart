@@ -152,9 +152,10 @@
         'image' => $product->image,
         'name' => $product->name,
         'code' => $product->code,
-        'sku' =>  $product->sku,
-        'gtin' =>  $product->gtin,
-        'taric' =>  $product->taric,
+        'sku' => $product->sku,
+        'mpn' => $product->mpn,
+        'gtin' => $product->gtin,
+        'taric' => $product->taric,
         'price' => (!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price,
         'extras' => 0,
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
@@ -210,7 +211,7 @@
 
           if (empty($matched_group)) {
             if (!empty($option['required'])) {
-              throw new Exception(language::translate('error_set_product_options', 'Please set your product options') . ' ('. $option_group_names[language::$selected['code']] .')');
+              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
             } else {
               continue;
             }
@@ -425,7 +426,7 @@
         }
 
         self::$total['value'] += $item['price'] * $item['quantity'];
-        self::$total['tax'] += tax::get_tax($item['price'], $item['tax_class_id']) * $item['quantity'];
+        self::$total['tax'] += $item['tax'] * $item['quantity'];
         self::$total['items'] += $num_items;
       }
     }

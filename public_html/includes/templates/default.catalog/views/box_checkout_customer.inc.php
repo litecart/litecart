@@ -1,4 +1,5 @@
 <div id="box-checkout-customer" class="box">
+  <?php echo functions::form_draw_hidden_field('customer_details', 'true'); ?>
 
   <?php if (empty(customer::$data['id'])) { ?>
   <div style="float:right">
@@ -11,72 +12,72 @@
   <div class="address billing-address">
 
     <div class="row">
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
         <?php echo functions::form_draw_text_field('tax_id', true); ?>
       </div>
 
-      <div class="col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_company', 'Company'); ?></label>
         <?php echo functions::form_draw_text_field('company', true); ?>
       </div>
     </div>
 
     <div class="row">
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
         <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?>
       </div>
 
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
         <?php echo functions::form_draw_text_field('lastname', true, 'required="required"'); ?>
       </div>
     </div>
 
     <div class="row">
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
         <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?>
       </div>
 
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
         <?php echo functions::form_draw_text_field('address2', true); ?>
       </div>
     </div>
 
     <div class="row">
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
         <?php echo functions::form_draw_text_field('postcode', true); ?>
       </div>
 
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_city', 'City'); ?></label>
         <?php echo functions::form_draw_text_field('city', true); ?>
       </div>
     </div>
 
     <div class="row">
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_country', 'Country'); ?></label>
         <?php echo functions::form_draw_countries_list('country_code', true); ?>
       </div>
 
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
         <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?>
       </div>
     </div>
 
     <div class="row">
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_email', 'Email'); ?></label>
         <?php echo functions::form_draw_email_field('email', true, 'required="required"'. (!empty(customer::$data['id']) ? ' readonly="readonly"' : '')); ?>
       </div>
 
-      <div class="form-group col-sm-halfs">
+      <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
         <?php echo functions::form_draw_phone_field('phone', true, 'required="required"'); ?>
       </div>
@@ -90,62 +91,62 @@
     <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
 
       <div class="row">
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_company', 'Company'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[company]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[firstname]', true); ?>
         </div>
 
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[lastname]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[address1]', true); ?>
         </div>
 
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[address2]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[postcode]', true); ?>
         </div>
 
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_city', 'City'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[city]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
           <?php echo functions::form_draw_countries_list('shipping_address[country_code]', true); ?>
         </div>
 
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
           <?php echo functions::form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-halfs">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
           <?php echo functions::form_draw_phone_field('shipping_address[phone]', true); ?>
         </div>
@@ -171,14 +172,14 @@
     <div id="account-container"<?php echo (empty($_POST['create_account'])) ? ' style="display: none;"' : false; ?>>
 
       <div class="row">
-        <div class="col-sm-halfs">
+        <div class="col-sm-6">
           <div class="form-group">
             <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
             <?php echo functions::form_draw_password_field('password', ''); ?>
           </div>
         </div>
 
-        <div class="col-sm-halfs">
+        <div class="col-sm-6">
           <div class="form-group">
             <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
             <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>

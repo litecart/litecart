@@ -1,5 +1,5 @@
 <?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 ?>
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order_status'), true), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?></li>

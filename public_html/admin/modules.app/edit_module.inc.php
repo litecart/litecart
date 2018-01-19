@@ -36,44 +36,46 @@
   $object = new $module_id();
 
   if (!$_POST) {
-    if (!empty($module->data)) {
-      foreach ($module->data['settings'] as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    } else {
-      foreach ($object->settings() as $setting) {
-        $_POST[$setting['key']] = $setting['default_value'];
-      }
-    }
+    $_POST['settings'] = $module->data['settings'];
   }
 
   if (isset($_POST['save'])) {
 
-    $fields = array_column($object->settings(), 'key');
+    try {
+      foreach (array_keys($_POST['settings']) as $key) {
+        if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
+        if (isset($module->data['settings'][$key])) $module->data['settings'][$key] = $_POST['settings'][$key];
+      }
 
-    foreach ($fields as $field) {
-      if (in_array($field, array('id', 'date_updated', 'date_created'))) continue;
-      if (isset($_POST[$field])) $module->data['settings'][$field] = $_POST[$field];
+      $module->save();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
-
-    $module->save();
-
-    header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
-    exit;
   }
 
   if (isset($_POST['uninstall'])) {
 
-    $module->delete();
+    try {
+      $module->delete();
 
-    header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
   breadcrumbs::add(!empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
 
   if (empty($_POST) && !empty($module->data['id'])) {
-    notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
+    notices::add('notices', language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation'));
   }
 
 ?>
@@ -98,12 +100,12 @@ pre.last-log {
     <tbody>
       <?php foreach ($object->settings() as $setting) { ?>
       <tr>
-        <td class="col-md-6">
+        <td style="width: 50%">
           <strong><?php echo $setting['title']; ?></strong>
           <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
         </td>
-        <td class="col-md-6">
-          <?php echo functions::form_draw_function($setting['function'], $setting['key'], true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+        <td style="width: 50%">
+          <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
         </td>
       </tr>
       <?php } ?>

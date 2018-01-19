@@ -1,4 +1,5 @@
 <?php
+  require('../includes/compatibility.inc.php');
   require('includes/header.inc.php');
 
   ini_set('display_errors', 'On');
@@ -22,17 +23,12 @@
 
   $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
 
-  function return_bytes($val) {
-    $val = trim($val);
-    switch(strtolower($val[strlen($val)-1])) {
-      case 'g':
-        $val *= 1024;
-      case 'm':
-        $val *= 1024;
-      case 'k':
-        $val *= 1024;
+  function return_bytes($string) {
+    sscanf($string, '%u%c', $number, $suffix);
+    if (isset($suffix)) {
+      $number = $number * pow(1024, strpos(' KMG', strtoupper($suffix)));
     }
-    return $val;
+    return $number;
   }
 
   $countries = array(
@@ -372,11 +368,9 @@
 
     <h3>File System</h3>
 
-    <div class="row">
-      <div class="form-group col-md-6">
-        <label>Installation Path</label>
-        <div class="form-control"><?php echo $document_root; ?></div>
-      </div>
+    <div class="form-group">
+      <label>Installation Path</label>
+      <div class="form-control"><?php echo $document_root; ?></div>
     </div>
 
     <h3>MySQL</h3>
@@ -463,7 +457,6 @@
         <input class="form-control" name="store_email" type="text" value="store@email.com" required="required" />
       </div>
 
-
       <div class="form-group col-md-6">
         <label>Country</label>
         <select class="form-control" name="country_code" required="required">
@@ -494,7 +487,10 @@
     <div class="row">
       <div class="form-group col-md-6">
         <label>Folder Name</label>
-        <input class="form-control" name="admin_folder" type="text" value="admin" required="required" />
+        <div class="input-group">
+          <span class="input-group-addon">/</span>
+          <input class="form-control" name="admin_folder" type="text" value="admin" required="required" />
+        </div>
       </div>
 
       <div class="form-group col-md-6">
@@ -517,4 +513,5 @@
 
     <input class="btn btn-default btn-block" type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
   </form>
+
 <?php require('includes/footer.inc.php'); ?>

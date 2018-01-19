@@ -4,7 +4,7 @@
     'name' => language::translate('title_settings', 'Settings'),
     'default' => 'store_info',
     'theme' => array(
-      'color' => '#a3a3a3',
+      'color' => '#959595',
       'icon' => 'fa-cogs',
     ),
     'menu' => array(),

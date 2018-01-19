@@ -1,18 +1,24 @@
 <?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['customers'])) {
-      foreach ($_POST['customers'] as $key => $value) {
-        $customer = new ctrl_customer($_POST['customers'][$key]);
+    try {
+      if (empty($_POST['customers'])) throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+
+      foreach ($_POST['customers'] as $customer_id) {
+        $customer = new ctrl_customer($customer_id);
         $customer->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $customer->save();
       }
-    }
 
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 ?>
 <ul class="list-inline pull-right">
@@ -30,6 +36,7 @@
         <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
         <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th><?php echo language::translate('title_email', 'Email'); ?></th>
         <th><?php echo language::translate('title_name', 'Name'); ?></th>
         <th class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
         <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
@@ -56,7 +63,6 @@
 
   if (database::num_rows($customers_query) > 0) {
 
-
     if ($_GET['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
 
     $page_items = 0;
@@ -64,11 +70,12 @@
 ?>
     <tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($customer['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($customer['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
       <td><?php echo $customer['id']; ?></td>
-      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
+      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['email']; ?></a></td>
+      <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
       <td><?php echo $customer['company']; ?></td>
-      <td class="text-right"><?php echo strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
+      <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
       <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php
@@ -79,7 +86,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="7"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
+        <td colspan="8"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
       </tr>
     </tfoot>
   </table>

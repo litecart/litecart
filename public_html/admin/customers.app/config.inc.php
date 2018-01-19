@@ -4,7 +4,7 @@
     'name' => language::translate('title_customers', 'Customers'),
     'default' => 'customers',
     'theme' => array(
-      'color' => '#5ab687',
+      'color' => '#37b776',
       'icon' => 'fa-user',
     ),
     'menu' => array(

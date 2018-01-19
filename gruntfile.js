@@ -1,6 +1,32 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+
+		replace: {
+			app_header: {
+				src: ['public_html/includes/app_header.inc.php'],
+				overwrite: true,
+				replacements: [
+					{
+						from: /define\('PLATFORM_VERSION', '([0-9\.]+)'\);/,
+						to: 'define(\'PLATFORM_VERSION\', \'<%= pkg.version %>\');'
+					}
+				]
+			},
+
+      index: {
+				src: ['public_html/index.php'],
+				overwrite: true,
+				replacements: [
+					{
+						from: /LiteCart® ([0-9\.]+)/,
+						to: 'LiteCart® <%= pkg.version %>'
+					}
+				]
+			},
+		},
+
     less: {
       litecart_admin_template_minified: {
         options: {
@@ -43,18 +69,19 @@ module.exports = function(grunt) {
           'public_html/ext/featherlight/featherlight.min.css'       : 'public_html/ext/featherlight/featherlight.less',
         }
       },
-      responsiveslides_minified: {
+    },
+
+    sass: {
+      trumbowyg: {
         options: {
-          compress: true,
           sourceMap: true,
-          sourceMapBasepath: 'public_html/ext/responsiveslides/',
-          sourceMapRootpath: '/',
-          relativeUrls: true
+          outputStyle: 'compressed',
+          compass: false
         },
         files: {
-          'public_html/ext/responsiveslides/responsiveslides.min.css'       : 'public_html/ext/responsiveslides/responsiveslides.less',
+          'public_html/ext/trumbowyg/ui/trumbowyg.min.css': 'public_html/ext/trumbowyg/ui/trumbowyg.scss'
         }
-      },
+      }
     },
 
     uglify: {
@@ -69,11 +96,50 @@ module.exports = function(grunt) {
           'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
         }
       },
+    },
+
+    phplint: {
+      options: {
+        //phpCmd: 'C:/xampp/php/php.exe', // Defaults to php
+        limit: 10,
+        stdout: false
+      },
+      files: 'public_html/**/*.php'
+    },
+
+    watch: {
+      less: {
+        files: [
+          'public_html/includes/templates/*/less/*/*.less',
+          'public_html/includes/templates/*/less/*.less',
+          'public_html/ext/featherlight/featherlight.less'
+        ],
+        tasks: ['less']
+      },
+      javascripts: {
+        files: [
+          'public_html/ext/featherlight/featherlight.js',
+          'public_html/includes/templates/*/js/app.js',
+        ],
+        tasks: ['uglify']
+      },
+      sass: {
+        files: [
+          'public_html/ext/trumbowyg/ui/trumbowyg.scss'
+        ],
+        tasks: ['sass']
+      },
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-sass');
+	grunt.loadNpmTasks('grunt-text-replace');
 
-  grunt.registerTask('default', ['less', 'uglify']);
+  grunt.registerTask('default', ['replace', 'less', 'sass', 'uglify']);
+
+  require('phplint').gruntPlugin(grunt);
+  grunt.registerTask('test', ['phplint']);
 };

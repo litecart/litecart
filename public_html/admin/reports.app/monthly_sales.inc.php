@@ -14,9 +14,6 @@
 ?>
 
 <style>
-.border-left {
-  border-left: 1px #999 dashed;
-}
 form[name="filter_form"] li {
   vertical-align: middle;
 }
@@ -110,9 +107,7 @@ form[name="filter_form"] li {
   }
 ?>
   </tbody>
-<?php
-  if (!empty($total)) {
-?>
+  <?php if (!empty($total)) { ?>
   <tfoot>
     <tr>
       <td class="text-right"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
@@ -123,7 +118,5 @@ form[name="filter_form"] li {
       <td class="text-right"><?php echo currency::format($total['total_tax'], false, settings::get('store_currency_code')); ?></td>
     </tr>
   </tfoot>
-<?php
-  }
-?>
+<?php } ?>
 </table>

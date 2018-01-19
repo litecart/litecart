@@ -1,19 +1,24 @@
 <?php
-  if (!isset($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['slides'])) {
-      foreach ($_POST['slides'] as $key => $value) $_POST['slides'][$key] = database::input($value);
-      database::query(
-        "update ". DB_TABLE_SLIDES ."
-        set status = '". ((!empty($_POST['enable'])) ? 1 : 0) ."'
-        where id in ('". implode("', '", $_POST['slides']) ."');"
-      );
+    try {
+      if (empty($_POST['slides'])) throw new Exception(language::translate('error_must_select_slides', 'You must select slides'));
+
+      foreach ($_POST['slides'] as $slide_id) {
+        $slide = new ctrl_slide($slide_id);
+        $slide->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $slide->save();
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
-
-    header('Location: '. document::link());
-    exit;
   }
 ?>
 <ul class="list-inline pull-right">
@@ -54,12 +59,12 @@
 ?>
       <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : null; ?>">
         <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
-        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
         <td><?php echo $slide['id']; ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
         <td class="text-right"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
-        <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
-        <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
+        <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
+        <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
         <td class="text-right"><?php echo $slide['priority']; ?></td>
         <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>

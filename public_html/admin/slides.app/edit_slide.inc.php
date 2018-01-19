@@ -14,11 +14,10 @@
 
   breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
       if (empty($_POST['languages'])) $_POST['languages'] = array();
@@ -42,19 +41,29 @@
 
       $slide->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'slides'), true, array('action', 'slide_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['delete'])) {
+  if (isset($_POST['delete'])) {
 
-    $slide->delete();
+    try {
+      if (empty($slide->data['id'])) throw new Exception(language::translate('error_must_provide_slide', 'You must provide a slide'));
 
-    notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-    header('Location: '. document::link('', array('doc' => 'slides'), true, array('action', 'slide_id')));
-    exit;
+      $slide->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'slides'), true, array('action', 'slide_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>
@@ -90,12 +99,10 @@
 
   <?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" alt="" class="img-responsive" /></p>'; ?>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_image', 'Image'); ?></label>
-        <?php echo functions::form_draw_file_field('image'); ?>
-        <?php echo (!empty($slide->data['image'])) ? '</label>' . $slide->data['image'] : ''; ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_image', 'Image'); ?></label>
+    <?php echo functions::form_draw_file_field('image'); ?>
+    <?php echo (!empty($slide->data['image'])) ? '</label>' . $slide->data['image'] : ''; ?>
   </div>
 
   <ul class="nav nav-tabs">

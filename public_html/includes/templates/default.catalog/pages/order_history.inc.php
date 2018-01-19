@@ -23,7 +23,7 @@
       </tr>
       </thead>
       <tbody>
-      <?php if ($orders) foreach($orders as $order) { ?>
+      <?php if ($orders) foreach ($orders as $order) { ?>
       <tr>
         <td><a href="<?php echo htmlspecialchars($order['link']); ?>" class="lightbox-iframe"><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
         <td class="text-center"><?php echo $order['order_status']; ?></td>

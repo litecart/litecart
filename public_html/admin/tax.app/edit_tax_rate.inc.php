@@ -14,12 +14,11 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    if (empty($_POST['geo_zone_id'])) notices::add('errors', language::translate('error_must_select_geo_zone', 'You must select a geo zone'));
-    if (empty($_POST['tax_class_id'])) notices::add('errors', language::translate('error_must_select_tax_class', 'You must select a tax class'));
-    if (empty($_POST['rate'])) notices::add('errors', language::translate('error_must_enter_rate', 'You must enter a rate'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      if (empty($_POST['geo_zone_id'])) throw new Exception(language::translate('error_must_select_geo_zone', 'You must select a geo zone'));
+      if (empty($_POST['tax_class_id'])) throw new Exception(language::translate('error_must_select_tax_class', 'You must select a tax class'));
+      if (empty($_POST['rate'])) throw new Exception(language::translate('error_must_enter_rate', 'You must enter a rate'));
 
       $fields = array(
         'tax_class_id',
@@ -40,19 +39,29 @@
 
       $tax_rate->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $tax_rate->delete();
+    try {
+      if (empty($tax_rate->data['id'])) throw new Exception(language::translate('error_must_provide_tax_rate', 'You must provide a tax rate'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
-    exit;
+      $tax_rate->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>

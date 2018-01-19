@@ -4,7 +4,7 @@
     'name' => language::translate('title_languages', 'Languages'),
     'default' => 'languages',
     'theme' => array(
-      'color' => '#4b79a5',
+      'color' => '#4475a4',
       'icon' => 'fa-comments',
     ),
     'menu' => array(

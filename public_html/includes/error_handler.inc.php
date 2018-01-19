@@ -51,7 +51,10 @@
       );
     }
 
-    if (in_array($errno, array(E_ERROR, E_USER_ERROR))) exit;
+    if (in_array($errno, array(E_ERROR, E_USER_ERROR))) {
+      http_response_code(500);
+      exit;
+    }
   }
 
   set_error_handler('error_handler');

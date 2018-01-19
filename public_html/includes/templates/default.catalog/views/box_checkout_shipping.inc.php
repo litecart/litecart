@@ -4,17 +4,18 @@
   <div class="options btn-group-vertical">
 
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
-    <label class="option btn btn-default btn-block<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
-      <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
+    <label class="option btn btn-default btn-block<?php echo (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
+      <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
       <div class="header row" style="margin: 0;">
-        <div class="col-sm-fourths thumbnail" style="margin: 0;">
+        <div class="col-sm-3 thumbnail" style="margin: 0;">
           <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" />
         </div>
-        <div class="col-sm-5 text-left">
-          <h4 class="title" style="margin: 0.5em 0 0 0;"><?php echo $module['title']; ?></h4>
+        <div class="col-sm-6 text-left" style="padding-bottom: 0;">
+          <div class="title"><?php echo $module['title']; ?></div>
           <div class="name"><?php echo $option['name']; ?></div>
+        <?php if (!empty($option['error'])) { ?><div class="error"><?php echo $option['error']; ?></div><?php } ?>
         </div>
-        <div class="col-sm-thirds text-right">
+        <div class="col-sm-3 text-right">
           <div class="price"><?php echo (empty($option['error']) && $option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
         </div>
       </div>

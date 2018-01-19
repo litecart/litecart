@@ -1,3 +1,10 @@
+// Variables
+@import "variables.less";
+
+#page {
+  padding: 0;
+}
+
 .loader-wrapper {
   position: fixed;
   top: 50%;
@@ -10,17 +17,14 @@
   z-index: 999999;
 }
 
-#header-wrapper {
-  padding: 20px;
-}
-
 #header {
   margin: 0 auto;
+  padding: @default-gutter-size;
   .customer-service {
     float: right;
     text-align: right;
     line-height: 125%;
-    @media(min-width: 640px) {
+    @media(min-width: @media-breakpoint-sm) {
       font-size: 1.5em;
     }
     .title {
@@ -63,9 +67,6 @@
     }
     &:not(.active):not(.disabled) {
       opacity: 0.75;
-      -webkit-transition: all 0.25s ease;
-      -moz-transition: all 0.25s ease;
-      -o-transition: all 0.25s ease;
       transition: all 0.25s ease;
       .content {
         max-height: 0;
@@ -75,10 +76,13 @@
     .thumbnail {
       padding: 0 !important;
     }
+    .title {
+      margin: 0;
+    }
+    .error {
+      color: #c00;
+    }
     .content {
-      -webkit-transition: all 0.25s ease;
-      -moz-transition: all 0.25s ease;
-      -o-transition: all 0.25s ease;
       transition: all 0.25s ease;
       max-height: 200px;
       overflow-x: hidden;

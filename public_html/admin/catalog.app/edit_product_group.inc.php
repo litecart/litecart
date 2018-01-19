@@ -14,11 +14,11 @@
 
   breadcrumbs::add(!empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'));
 
-  if (!empty($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-    if (empty($_POST['values'])) $_POST['values'] = array();
+    try {
+      if (empty($_POST['values'])) $_POST['values'] = array();
 
-    if (empty($errors)) {
       $fields = array(
         'name',
         'values',
@@ -30,18 +30,28 @@
 
       $product_group->save();
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'product_groups'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['delete'])) {
+  if (isset($_POST['delete'])) {
 
-    if (empty($errors)) {
+    try {
+      if (empty($option_group->data['id'])) throw new Exception(language::translate('error_must_provide_product_group', 'You must provide a product group'));
+
       $product_group->delete();
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'product_groups'), array('app')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
@@ -109,7 +119,7 @@
 <script>
   var new_value_index = 1;
   $('form[name="product_group_form"]').on('click', '.add', function(e) {
-    event.preventDefault();
+    e.preventDefault();
     while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
     $name_fields = '';

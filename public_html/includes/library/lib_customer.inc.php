@@ -3,8 +3,8 @@
   class customer {
     public static $data;
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
       self::$data = &session::$data['customer'];
@@ -32,7 +32,7 @@
           if ($checksum == $key) $do_login = true;
         }
 
-        if ($do_login) {
+        if ($do_login && !empty($customer['id'])) {
           self::load($customer['id']);
         } else {
           setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
@@ -125,7 +125,7 @@
 
     // Get country from TLD
       if (empty(self::$data['country_code'])) {
-        if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+        if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
           $countries_query = database::query(
             "select * from ". DB_TABLE_COUNTRIES ."
             where status
@@ -170,7 +170,7 @@
       }
 
     // Unset zone if not in country
-      if (!isset(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
+      if (!empty(self::$data['zone_code']) && !isset(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
         self::$data['zone_code'] = '';
       }
 
@@ -231,54 +231,6 @@
       if (!empty(self::$data['id'])) return true;
     }
 
-    public static function password_reset($email, $new_password=null) {
-
-      if (empty($email)) {
-        notices::add('errors', language::translate('error_password_reset_missing_email', 'To reset your password you must provide an email address.'));
-        return;
-      }
-
-      $customer_query = database::query(
-        "select * from ". DB_TABLE_CUSTOMERS ."
-        where email = '". database::input($email) ."'
-        limit 1;"
-      );
-      $customer = database::fetch($customer_query);
-
-      if (empty($customer)) {
-        sleep(rand(3, 10));
-        notices::add('errors', language::translate('error_email_not_in_database', 'The email address does not exist in our database.'));
-        return;
-      }
-
-      if (empty($new_password)) $new_password = functions::password_generate(6);
-
-      database::query(
-        "update ". DB_TABLE_CUSTOMERS ."
-        set password = '". functions::password_checksum($email, $new_password) ."'
-        where email = '". database::input($email) ."'
-        limit 1;"
-      );
-
-      $message = language::translate('email_body_password_reset', 'We have set a new password for your account at %store_link. Use your email %email and new password %password to log in.');
-      $message = strtr($message, array(
-        '%email' => $email,
-        '%password' => $new_password,
-        '%store_link' => document::ilink(''),
-      ));
-
-      functions::email_send(
-        null,
-        $email,
-        language::translate('email_subject_new_password', 'New Password'),
-        $message
-      );
-
-      notices::add('success', language::translate('success_password_reset', 'A new password has been sent to your email address.'));
-      header('Location: '. $_SERVER['REQUEST_URI']);
-      exit;
-    }
-
     public static function load($customer_id) {
 
       self::reset();
@@ -305,7 +257,7 @@
       }
     }
 
-    public static function login($login, $password, $redirect_url='', $customer_remember_me=false) {
+    public static function login($login, $password, $redirect_url='', $remember_me=false) {
 
       setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
 
@@ -323,7 +275,7 @@
 
       if (empty($customer) || (!empty($customer['password']) && $customer['password'] != functions::password_checksum($customer['email'], $password))) {
         sleep(3);
-        notices::add('errors', language::translate('error_login_invalid', 'Wrong password or the account is disabled, or does not exist'));
+        notices::add('errors', language::translate('error_login_invalid', 'Wrong password or the account does not exist'));
         return;
       }
 
@@ -346,14 +298,14 @@
 
       session::regenerate_id();
 
-      if ($customer_remember_me) {
+      if ($remember_me) {
         $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
-      } else {
-        setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
       }
 
-      if (empty($redirect_url)) $redirect_url = document::ilink('');
+      if (empty($redirect_url)) {
+        $redirect_url = document::ilink('');
+      }
 
       notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
         '%firstname' => self::$data['firstname'],

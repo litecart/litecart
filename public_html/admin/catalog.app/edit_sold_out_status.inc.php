@@ -16,9 +16,8 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
       if (empty($_POST['orderable'])) $_POST['orderable'] = 0;
 
@@ -34,19 +33,29 @@
 
       $sold_out_status->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $sold_out_status->delete();
+    try {
+      if (empty($sold_out_status->data['id'])) throw new Exception(language::translate('error_must_provide_sold_out_status', 'You must provide a sold out status'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
-    exit;
+      $sold_out_status->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>
@@ -61,11 +70,9 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="height: 60px;"'); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_description', 'Description'); ?></label>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="height: 60px;"'); ?>
   </div>
 
   <div class="row">

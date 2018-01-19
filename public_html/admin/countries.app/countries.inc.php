@@ -1,7 +1,8 @@
 <?php
-  if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    if (!empty($_POST['countries'])) {
+    try {
+      if (empty($_POST['countries'])) throw new Exception(language::translate('error_must_select_countries', 'You must select countries'));
 
       $countries = array();
       foreach ($_POST['countries'] as $country_code) {
@@ -21,8 +22,12 @@
         $country->save();
       }
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 ?>
@@ -59,7 +64,7 @@
 ?>
     <tr class="<?php echo empty($country['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($country['status']) ? '#99cc66' : '#ff6666') .'";'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($country['status']) ? '#88cc44' : '#ff6644') .'";'); ?></td>
       <td><?php echo $country['id']; ?></td>
       <td><?php echo $country['iso_code_2']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><?php echo $country['name']; ?></a></td>

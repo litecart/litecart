@@ -65,13 +65,22 @@
         $this->data = array_replace($this->data, array_intersect_key($module, $this->data));
       }
 
+      $this->_module = new $module_id;
       $this->data['module_id'] = $module_id;
       $this->data['type'] = $type;
+
       $this->data['settings'] = $this->_decode_settings($this->data['settings']);
 
-      $this->_module = new $module_id;
       foreach ($this->_module->settings() as $structure) {
-        if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
+
+        if (substr($structure['function'], 0, 8) == 'regional') {
+          foreach (array_keys(language::$languages) as $language_code) {
+            if (!isset($this->data['settings'][$structure['key']][$language_code])) $this->data['settings'][$structure['key']][$language_code] = $structure['default_value'];
+          }
+
+        } else {
+          if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
+        }
       }
     }
 
@@ -143,7 +152,7 @@
 
     private function _encode_settings($data) {
 
-      mb_convert_variables('UTF-8', language::$selected['charset'], $data);
+      language::convert_characters($data, 'UTF-8', language::$selected['charset']);
 
       return json_encode($data);
     }
@@ -154,7 +163,7 @@
 
       $data = json_decode($data, true);
 
-      mb_convert_variables(language::$selected['charset'], 'UTF-8', $data);
+      language::convert_characters($data, language::$selected['charset'], 'UTF-8');
 
       return $data;
     }

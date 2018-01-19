@@ -4,7 +4,7 @@
     'name' => language::translate('title_translations', 'Translations'),
     'default' => 'search',
     'theme' => array(
-      'color' => '#cd9e9e',
+      'color' => '#cc7d7d',
       'icon' => 'fa-book',
     ),
     'menu' => array(

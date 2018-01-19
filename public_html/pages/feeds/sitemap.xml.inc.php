@@ -13,12 +13,12 @@
   }
 
   $output .= '  <url>' . PHP_EOL
-             . '    <loc>'. document::ilink('', array(), false, array()) .'</loc>' . PHP_EOL
-             . $hreflangs
-             . '    <lastmod>'. date('Y-m-d') .'</lastmod>' . PHP_EOL
-             . '    <changefreq>daily</changefreq>' . PHP_EOL
-             . '    <priority>1.0</priority>' . PHP_EOL
-             . '  </url>' . PHP_EOL;
+           . '    <loc>'. document::ilink('') .'</loc>' . PHP_EOL
+           . $hreflangs
+           . '    <lastmod>'. date('Y-m-d') .'</lastmod>' . PHP_EOL
+           . '    <changefreq>daily</changefreq>' . PHP_EOL
+           . '    <priority>1.0</priority>' . PHP_EOL
+           . '  </url>' . PHP_EOL;
 
   function custom_output_categories($parent_id=0, &$output) {
     $categories_query = functions::catalog_categories_query($parent_id);
@@ -71,9 +71,9 @@
 
   $output .= '</urlset>';
 
-  mb_convert_variables(language::$selected['charset'], 'UTF-8', $output);
+  $output = language::convert_characters($output, language::$selected['charset'], 'UTF-8');
 
-  header('Content-type: application/xml; charset='. language::$selected['charset']);
+  header('Content-type: application/xml; charset=UTF-8');
 
   echo $output;
   exit;

@@ -1,4 +1,4 @@
-![LiteCart®](https://www.litecart.net/images/logotype.png "LiteCart®")
+![LiteCart®](https://www.litecart.net/images/logotype.svg "LiteCart®")
 
 ----------------------------------------------------------------------
 

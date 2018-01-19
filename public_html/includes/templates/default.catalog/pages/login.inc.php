@@ -7,7 +7,7 @@
   {snippet:breadcrumbs}
 
   <div class="row">
-    <div class="col-md-halfs">
+    <div class="col-md-6">
       <div class="box-login" class="box" style="padding: 0 3em;">
 
         <h2 class="title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div class="col-md-halfs">
+    <div class="col-md-6">
 
       <div id="box-login-create" class="box" style="padding: 0 3em;">
 

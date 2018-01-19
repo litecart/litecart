@@ -1,5 +1,3 @@
-$(document).ready(function(){
-
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();
@@ -8,8 +6,7 @@ $(document).ready(function(){
 
 // Set Head Title
   if ($('h1').length) {
-    if (document.title.substring(0, $('h1:first').text().length) == $('h1:first').text()) return;
-    document.title = $('h1:first').text() +' | '+ document.title;
+    document.title = document.title +' – '+ $('h1:first').text();
   }
 
 // Form required asterix
@@ -18,7 +15,7 @@ $(document).ready(function(){
 // AJAX Search
   var timer_ajax_search = null;
   var xhr_search = null;
-  $('#search input[name="query"]').on('propertychange input', function(){
+  $('#search input[name="query"]').on('change input', function(){
     if (xhr_search) xhr_search.abort();
 
     if ($(this).val() != '') {
@@ -92,20 +89,21 @@ $(document).ready(function(){
     }
   });
 
-  if (window.location.hash != '') {
-    $('a[href="' + window.location.hash + '"]').click();
-  } else {
-    $('.nav-tabs .active a').trigger('click');
+  $('.nav-tabs .active a').trigger('click');
+  if (document.location.hash != '') {
+    $('a[href="' + document.location.hash + '"]').click();
   }
 
 // Bootstrap Comaptible (data-toggle="buttons")
-  $('[data-toggle="buttons"]').each(function(){
-    if (!$(this).find('.btn.active').length) {
-      $(this).find(':checked').closest('btn').addClass('active');
+  $('[data-toggle="buttons"] input[type="checkbox"]').click(function(){
+    if ($(this).is(':checked')) {
+      $(this).closest('.btn').addClass('active');
+    } else {
+      $(this).closest('.btn').removeClass('active');
     }
   });
 
-  $('[data-toggle="buttons"] [data-type="toggle"]').click(function(){
+  $('[data-toggle="buttons"] input[type="radio"]').click(function() {
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
@@ -123,5 +121,3 @@ $(document).ready(function(){
     if ($(e.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
-
-});

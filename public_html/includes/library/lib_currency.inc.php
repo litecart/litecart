@@ -4,8 +4,8 @@
     public static $currencies;
     public static $selected;
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
 
@@ -95,7 +95,7 @@
 
     // Get currency from country (via browser locale)
       if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#^([a-z]{2}-[A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        if (preg_match('/-([A-Z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+        if (preg_match('#-([A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
           if (!empty($matches[1])) $country_code = $matches[1];
         }
         if (!empty($country_code)) {
@@ -113,7 +113,7 @@
       }
 
     // Get currency from country (via TLD)
-      if (preg_match('#\.([a-z]{2})$#', $_SERVER['SERVER_NAME'], $matches)) {
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
         $countries_query = database::query(
           "select * from ". DB_TABLE_COUNTRIES ."
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'

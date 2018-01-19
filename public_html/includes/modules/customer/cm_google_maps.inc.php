@@ -14,59 +14,96 @@
 
       if (!in_array($data['trigger'], array('company', 'address1', 'postcode', 'city'))) return;
 
+      $proceed = false;
+      if (empty($data['address1'])) $proceed = true;
+      if (empty($data['city'])) $proceed = true;
+      if (empty($data['postcode'])) $proceed = true;
+      if (empty($data['country_code'])) $proceed = true;
+
       $address = array(
         !empty($data['company']) ? $data['company'] : false,
         !empty($data['address1']) ? $data['address1'] : false,
-        !empty($data['postcode']) ? $data['postcode'] : false,
+        !empty($data['country_code']) ? $data['country_code'] : false .'-'. !empty($data['postcode']) ? $data['postcode'] : false,
         !empty($data['city']) ? $data['city'] : false,
-        !empty($data['country_code']) ? $data['country_code'] : false,
+        !empty($data['country_code']) ? functions::reference_get_country_name($data['country_code']) : false,
       );
 
       $params = array(
-        'address' => implode(', ', $address),
+        'address' => implode(' ', $address),
         'sensor' => 'false',
       );
 
+      $url = 'http://maps.googleapis.com/maps/api/geocode/json?'. http_build_query($params);
+
       $client = new http_client();
-      $response = $client->call(document::link('http://maps.googleapis.com/maps/api/geocode/xml', ($params)));
+      $response = $client->call('GET', $url);
 
       if (empty($response)) return;
-      $response = simplexml_load_string($response);
 
-      if (empty($response->status) || (string)$response->status != 'OK') return;
+      $response = json_decode($response, true);
 
-      if (count($response->result) > 1) return;
+      if (empty($response['status']) || (string)$response['status'] != 'OK') return;
 
-      $output = array();
-      foreach ($response->result->address_component as $row) {
-        switch($row->type) {
-          case 'route':
-            $output['address1'] = (string)$row->long_name .' '. (isset($output['address1']) ? $output['address1'] : false);
-            break;
-          case 'street_number':
-            $output['address1'] = (isset($output['address1']) ? $output['address1'] : false) .' '. (string)$row->long_name;
-            break;
-          case 'postal_code':
-            $output['postcode'] = (string)$row->long_name;
-            break;
-          case 'locality':
-          case 'postal_town':
-            $output['city'] = (string)$row->long_name;
-            break;
-          case 'country':
-            $output['country_code'] = (string)$row->short_name;
-            break;
+      foreach ($response['results'] as $result) {
+        foreach ($result['address_components'] as $component) {
+          foreach ($component['types'] as $type) {
+            switch($type) {
+              case 'route':
+                $treasures['address1'][] = $component['long_name'];
+                break;
+              case 'street_number':
+                $treasures['street_number'][] = $component['long_name'];
+                break;
+              case 'postal_code':
+                $treasures['postcode'][] = $component['long_name'];
+                break;
+              //case 'locality':
+              case 'postal_town': // Be aware as postal_town is not always present
+                $treasures['city'][] = $component['long_name'];
+                break;
+              case 'country':
+                $treasures['country_code'][] = $component['short_name'];
+                break;
+            }
+          }
         }
       }
 
-      if (!empty($output['address1'])) $output['address1'] = str_replace('  ', ' ', $output['address1']);
+      foreach (array_keys($treasures) as $key) {
+        $treasures[$key] = array_unique($treasures[$key]);
+        $treasures[$key] = array_filter($treasures[$key]);
+        if (count($treasures[$key]) > 1) {
+          unset($treasures[$key]);
+          continue;
+        }
+
+        $treasures[$key] = implode('', $treasures[$key]);
+      }
+
+      if (!empty($data['address1']) && !empty($treasures['address1']) && !preg_match('#^'. preg_quote($treasures['address1'], '#') .'#i', $data['address1'])) return;
+      if (!empty($data['city']) && !empty($treasures['city']) && !preg_match('#^'. preg_quote($treasures['city'], '#') .'#i', $data['city'])) return;
+      if (!empty($data['postcode']) && !empty($treasures['postcode']) && preg_replace('# #', '', $treasures['postcode']) != preg_replace('# #', '', $treasures['postcode'])) return;
+      if (!empty($data['country_code']) && !empty($treasures['country_code']) && $treasures['country_code'] != $treasures['country_code']) return;
+
+      $output = array(
+        'address1' => !empty($treasures['address1']) ? $treasures['address1'] . (!empty($treasures['street_number']) ? ' ' . $treasures['street_number'] : '') : '',
+        //'address1' => !empty($treasures['address1']) ? $treasures['address1'] : '',
+        'postcode' => !empty($treasures['postcode']) ? $treasures['postcode'] : '',
+        'city' => !empty($treasures['city']) ? $treasures['city'] : '',
+        'country_code' => !empty($treasures['country_code']) ? $treasures['country_code'] : '',
+        'source' => 'Google Maps'
+      );
 
       if (strtolower(language::$selected['charset']) != 'utf-8') {
-        $output = array_map('utf8_decode', $output);
+        $output = array_walk($output, 'utf8_decode');
       }
 
       return $output;
     }
+
+    public function before_process() {}
+
+    public function after_process() {}
 
     function settings() {
       return array(

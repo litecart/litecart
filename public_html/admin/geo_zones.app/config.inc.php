@@ -4,7 +4,7 @@
     'name' => language::translate('title_geo_zones', 'Geo Zones'),
     'default' => 'geo_zones',
     'theme' => array(
-      'color' => '#6aabe8',
+      'color' => '#4398e7',
       'icon' => 'fa-globe',
     ),
     'menu' => array(),

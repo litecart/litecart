@@ -1,7 +1,5 @@
 <footer id="footer">
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/site_cookie_notice.inc.php'); ?>
-
   <div class="row">
     <div class="hidden-xs col-sm-fourths col-md-fifths categories">
       <h3 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
@@ -48,15 +46,15 @@
       <p><?php echo nl2br(settings::get('store_postal_address')); ?></p>
 
       <?php if (settings::get('store_phone')) { ?>
-      <p><a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></a><p>
+      <p><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a><p>
       <?php } ?>
 
-      <p><a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></a></p>
+      <p><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
     </div>
   </div>
 </footer>
 
 <div id="copyright" class="twelve-eighty">
-  <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without written permission is a violation. -->
-  <div class="notice">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="http://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a></div>
+  <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
+  <div class="notice">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a></div>
 </div>

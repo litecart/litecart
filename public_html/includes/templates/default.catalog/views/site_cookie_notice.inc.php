@@ -9,6 +9,8 @@
 <script>
   $('button[name="accept_cookies"]').click(function(){
     $('#cookies-acceptance').fadeOut();
-    $.cookie('cookies_accepted', '1', {path: '<?php echo WS_DIR_HTTP_HOME; ?>', expires: 365});
+    var now = new Date();
+    var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
+    document.cookie = 'cookies_accepted=1;expires=' + expires.toUTCString();
   });
 </script>

@@ -4,7 +4,7 @@
     'name' => language::translate('title_countries', 'Countries'),
     'default' => 'countries',
     'theme' => array(
-      'color' => '#69c5e7',
+      'color' => '#43bbe7',
       'icon' => 'fa-flag',
     ),
     'menu' => array(),

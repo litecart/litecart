@@ -57,7 +57,7 @@
         }
       }
 
-    // Check if client is accessing a blacklisted URL
+    // Check if client is accessing a bad URL
       if (settings::get('security_bad_urls')) {
         if (self::is_accessing_bad_url()) {
           self::ban('Bad URL');
@@ -73,10 +73,10 @@
         if (!function_exists('sanitize_string')) {
           function sanitize_string(&$item, &$key) {
             $filter_list = array(
-              //'/<script(.*?)>(.*?)<\/script>/s' => '',  // Enabling this will prevent administrators from storing javascripts in the WYSIWYG editor
-              '/eval(?:[\s]+)?\((.*)\)/s' => '',
-              '/base64_/' => '',
-              '/union(?:[\s]+)?select/s' => '',
+              //'/<script(.*?)>(.*?)<\/script>/is' => '',  // Enabling this will prevent administrators from storing javascripts in the WYSIWYG editor
+              '/eval(?:[\s]+)?\((.*)\)/is' => '',
+              '/base64_/is' => '',
+              '/union(?:[\s]+)?select/is' => '',
             );
 
             $item = preg_replace(array_keys($filter_list), array_values($filter_list), $item);
@@ -156,28 +156,34 @@
 
       $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-      $rows = file(self::$_blacklist);
+      $rows = file(self::$_blacklist, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
       foreach (array_keys($rows) as $key) {
 
-        if (preg_match('/^(?:[\s]+)?$/', $rows[$key], $matches)) continue;
-        if (preg_match('/^(?:[\s]+)?#/', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?$#', $rows[$key])) continue;
+        if (preg_match('#^(?:[\s]+)?\##', $rows[$key])) continue;
 
-        if (preg_match('/\[expires="(.*)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[expires="(.*)"\]#', $rows[$key], $matches)) {
           if ($matches[1] < date('Y-m-d H:i:s')) {
+            unset($rows[$key]);
+            $update_file = true;
             continue;
           }
         }
 
-        if (preg_match('/\[ip="'. $_SERVER['REMOTE_ADDR'] .'"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[ip="'. $_SERVER['REMOTE_ADDR'] .'"\]#', $rows[$key])) {
           $blacklisted = true;
           break;
         }
 
-        if (preg_match('/\[hostname="'. $hostname .'"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[hostname="'. $hostname .'"\]#', $rows[$key])) {
           $blacklisted = true;
           break;
         }
+      }
+
+      if (!empty($update_file)) {
+        file_put_contents(self::$_blacklist, $rows ? implode(PHP_EOL, $rows) . PHP_EOL : '');
       }
 
       if (self::is_whitelisted()) return false;
@@ -195,29 +201,29 @@
       foreach (array_keys($rows) as $key) {
         $has_rules = false;
 
-        if (preg_match('/^(?:[\s]+)?$/', $rows[$key], $matches)) continue;
-        if (preg_match('/^(?:[\s]+)?#/', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?$#', $rows[$key], $matches)) continue;
+        if (preg_match('#^(?:[\s]+)?\##', $rows[$key], $matches)) continue;
 
-        if (preg_match('/\[expires="(.*)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[expires="(.*)"\]#', $rows[$key], $matches)) {
           if ($matches[1] < date('Y-m-d H:i:s')) {
             continue;
           }
         }
 
-        if (preg_match('/\[ip="([^\]]+)-([^\]]+)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[ip="([^\]]+)-([^\]]+)"\]#', $rows[$key], $matches)) {
           $has_rules = true;
           if ($longip < ip2long($matches[1]) || $longip > ip2long($matches[2])) continue;
-        } else if (preg_match('/\[ip="([^\]]+)"\]/', $rows[$key], $matches)) {
+        } else if (preg_match('#\[ip="([^\]]+)"\]#', $rows[$key], $matches)) {
           $has_rules = true;
           if ($matches[1] != $_SERVER['REMOTE_ADDR']) continue;
         }
 
-        if (preg_match('/\[hostname="([^\]]+)"\]/', $rows[$key], $matches)) {
+        if (preg_match('#\[hostname="([^\]]+)"\]#', $rows[$key], $matches)) {
           $has_rules = true;
           if (substr($hostname, 0 - strlen($matches[1])) != $matches[1]) continue;
         }
 
-        if (preg_match('/\[agent="([^\]]+)"\]/i', $rows[$key], $matches)) {
+        if (preg_match('#\[agent="([^\]]+)"\]#i', $rows[$key], $matches)) {
           $has_rules = true;
           if (isset($_SERVER['HTTP_USER_AGENT']) && stripos($_SERVER['HTTP_USER_AGENT'], $matches[1]) === false) continue;
         }
@@ -250,7 +256,7 @@
               . '  URI: '. $_SERVER['REQUEST_URI'] . PHP_EOL
               . '  Address: '. $_SERVER['REMOTE_ADDR'] .' ('. $hostname .')' . PHP_EOL
               . '  Agent: '. $_SERVER['HTTP_USER_AGENT']
-              . '  Date: '. date('r')
+              . '  Date: '. date('r') . PHP_EOL
               , 0);
 
       $row = $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'] .' '
@@ -268,6 +274,7 @@
       session::clear();
       sleep(3);
       http_response_code(400);
-      exit;
+      header('Refresh: 0; url='. document::ilink(''));
+      die('Bad Request');
     }
   }

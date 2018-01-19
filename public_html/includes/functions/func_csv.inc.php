@@ -21,9 +21,9 @@
     while(!feof($fp)) $output .= fgets($fp);
     fclose($fp);
 
-    $output = mb_convert_encoding($output, $charset, language::$selected['charset']);
+    $output = language::convert_characters($output, language::$selected['charset'], $charset);
 
-    return preg_replace('/(\r\n|\r|\n)/', $eol, $output);
+    return preg_replace('#(\r\n|\r|\n)#', $eol, $output);
   }
 
   function csv_decode($string, $delimiter='', $enclosure='"', $escape='"', $charset='utf-8') {
@@ -33,11 +33,11 @@
     $ini_eol = ini_get('auto_detect_line_endings');
     ini_set('auto_detect_line_endings', true);
 
-    $string = mb_convert_encoding($string, language::$selected['charset'], $charset);
+    $string = language::convert_characters($string, $charset, language::$selected['charset']);
 
     if (empty($delimiter)) {
-      preg_match('/^([^(\r|\n)]+)/', $string, $matches);
-      foreach(array(',', ';', "\t", '|') as $char) {
+      preg_match('#^([^(\R)]+)#', $string, $matches);
+      foreach (array(',', ';', "\t", '|', chr(124)) as $char) {
         if (strpos($matches[1], $char) !== false) {
           $delimiter = $char;
         }

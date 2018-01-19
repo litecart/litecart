@@ -1,10 +1,9 @@
 <?php
 
-  if (!empty($_POST['export_categories'])) {
+  if (isset($_POST['export_categories'])) {
 
-    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
       $csv = array();
 
@@ -53,12 +52,18 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['import_categories'])) {
+  if (isset($_POST['import_categories'])) {
 
-    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
 
       ob_clean();
 
@@ -154,14 +159,17 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['export_products'])) {
+  if (isset($_POST['export_products'])) {
 
-    if (empty($_POST['language_code'])) notices::add('errors', language::translate('error_must_select_a_language', 'You must select a language'));
+    try {
 
-    if (empty(notices::$data['errors'])) {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
       $csv = array();
 
@@ -170,6 +178,7 @@
         left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
         order by pi.name;"
       );
+
       while ($product = database::fetch($products_query)) {
         $product = new ref_product($product['id'], $_POST['language_code'], $_POST['currency_code']);
 
@@ -177,10 +186,12 @@
           'id' => $product->id,
           'status' => $product->status,
           'categories' => implode(',', array_keys($product->categories)),
+          'product_groups' => implode(',', array_keys($product->product_groups)),
           'manufacturer_id' => $product->manufacturer_id,
           'supplier_id' => $product->supplier_id,
           'code' => $product->code,
           'sku' => $product->sku,
+          'mpn' => $product->mpn,
           'gtin' => $product->gtin,
           'taric' => $product->taric,
           'name' => $product->name,
@@ -231,12 +242,19 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
-  if (!empty($_POST['import_products'])) {
+  if (isset($_POST['import_products'])) {
 
-    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+    try {
+
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
 
       ob_clean();
 
@@ -283,6 +301,19 @@
 
         } elseif (!empty($row['sku'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+            $product = new ctrl_product($product['id']);
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+          } else {
+            if (empty($_POST['insert_products'])) {
+              echo "[Skipped] New product on line $line was not inserted to database.\r\n";
+              continue;
+            }
+            $product = new ctrl_product();
+            echo 'Creating new product: '. $row['name'] . PHP_EOL;
+          }
+
+        } elseif (!empty($row['mpn'])) {
+          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
             $product = new ctrl_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
@@ -358,15 +389,14 @@
 
         $fields = array(
           'status',
-          'categories',
           'manufacturer_id',
           'supplier_id',
           'code',
           'sku',
+          'mpn',
           'gtin',
           'taric',
           'tax_class_id',
-          'keywords',
           'quantity',
           'quantity_unit_id',
           'weight',
@@ -384,7 +414,9 @@
           if (isset($row[$field])) $product->data[$field] = $row[$field];
         }
 
-        if (isset($row['categories'])) $product->data['categories'] = explode(',', str_replace(' ', '', $product->data['categories']));
+        if (isset($row['keywords'])) $product->data['keywords'] = preg_split('#, ?#', $row['keywords']);
+        if (isset($row['categories'])) $product->data['categories'] = preg_split('#, ?#', $row['categories']);
+        if (isset($row['product_groups'])) $product->data['product_groups'] = preg_split('#, ?#', $row['product_groups']);
 
       // Set price
         if (!empty($row['currency_code'])) {
@@ -441,6 +473,9 @@
       }
 
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 

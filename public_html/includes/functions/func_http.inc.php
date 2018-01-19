@@ -5,7 +5,10 @@
     trigger_error('http_fetch() has been deprecated, use instead http_client::call()', E_USER_DEPRECATED);
 
     $client = new http_client(array('asynchronous' => $asynchronous, 'follow_redirects' => $follow_redirects));
-    $result = $client->call($url, $post_data, $headers);
+
+    $method = !empty($post_data) ? 'POST' : 'GET';
+
+    $result = $client->call($method, $url, $post_data, $headers);
 
     switch ($return) {
       case 'both':

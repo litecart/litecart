@@ -16,13 +16,12 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-    if (empty($_POST['notify'])) $_POST['notify'] = 0;
-    if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
-    if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
-
-    if (empty(notices::$data['errors'])) {
+      if (empty($_POST['notify'])) $_POST['notify'] = 0;
+      if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
+      if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
       $fields = array(
         'icon',
@@ -43,19 +42,29 @@
 
       $order_status->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $order_status->delete();
+    try {
+      if (empty($order_status->data['id'])) throw new Exception(language::translate('error_must_provide_order_status', 'You must provide an order status'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
-    exit;
+      $order_status->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>
@@ -74,32 +83,30 @@
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale');?><br />
+        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
         <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
       </div>
 
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived');?><br />
+        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
         <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="height: 50px;"');  $use_br = true; ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_description', 'Description'); ?></label>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="height: 50px;"');  $use_br = true; ?>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_icon', 'Icon');?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('icon', true, 'placeholder="fa-circle-thin"'); ?>
     </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_color', 'Color');?></label>
+      <label><?php echo language::translate('title_color', 'Color'); ?></label>
       <?php echo functions::form_draw_color_field('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
     </div>
   </div>
@@ -113,7 +120,7 @@
 
   <fieldset>
     <legend>
-      <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('title_email_notification', 'Email Notification');?></label>
+      <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('title_email_notification', 'Email Notification'); ?></label>
     </legend>
 
     <ul class="nav nav-tabs">

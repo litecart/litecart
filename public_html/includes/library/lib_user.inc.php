@@ -3,8 +3,8 @@
   class user {
     public static $data;
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
       self::$data = &session::$data['user'];
@@ -19,12 +19,9 @@
         self::reset();
       }
 
-    // Turn on PHP errors for logged in admins
       if (!empty(self::$data['id'])) {
         ini_set('display_errors', 'On');
-      }
 
-      if (!empty(self::$data['id'])) {
         database::query(
           "update ". DB_TABLE_USERS ."
           set date_active = '". date('Y-m-d H:i:s') ."'
@@ -235,5 +232,4 @@
       header('Location: ' . $redirect_url);
       exit;
     }
-
   }

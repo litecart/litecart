@@ -6,13 +6,12 @@
     }
   }
 
-  if (!empty($_POST['convert'])) {
+  if (isset($_POST['convert'])) {
 
-    if (empty($_POST['tables'])) notices::$data['errors'][] = language::translate('error_must_select_tables', 'You must select at least one table');
+    try {
+      if (empty($_POST['tables'])) throw new Exception(language::translate('error_must_select_tables', 'You must select tables'));
 
-    $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
-
-    if (empty(notices::$data['errors'])) {
+      $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
 
       if (!empty($_POST['set_database_default'])) {
         database::query("alter database `". DB_DATABASE ."` default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate = ". database::input($_POST['collation']) .";");
@@ -22,10 +21,12 @@
         database::query("alter table `". DB_DATABASE ."`.`". $table ."` convert to character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";");
       }
 
-      notices::$data['success'][] = language::translate('success_changes_saved', 'Changes saved');
-
-      header('Location: '. document::ilink());
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link());
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
@@ -37,9 +38,8 @@
 
 <?php echo functions::form_draw_form_begin('mysql_collation_form', 'post', false, false, 'style="width: 640px;"'); ?>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_database_tables', 'Database Tables'); ?></label>
+  <div class="form-group">
+    <label><?php echo language::translate('title_database_tables', 'Database Tables'); ?></label>
 <?php
   $options = array();
 
@@ -47,6 +47,7 @@
     "select * from `information_schema`.`TABLES`
     where TABLE_SCHEMA = '". DB_DATABASE ."';"
   );
+
   while ($table = database::fetch($tables_query)) {
     if (in_array($table['TABLE_NAME'], $defined_tables)) {
       $options[] = array($table['TABLE_NAME'] .' -- '. $table['TABLE_COLLATION'], $table['TABLE_NAME']);
@@ -56,21 +57,16 @@
   echo functions::form_draw_select_field('tables[]', $options, true, true, 'style="height: 200px;"');
 ?>
 
-    </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_collation', 'Collation'); ?></label>
-      <?php echo functions::form_draw_mysql_collations_list('collation'); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_collation', 'Collation'); ?></label>
+    <?php echo functions::form_draw_mysql_collations_list('collation'); ?>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('set_database_default', 'true'); ?> <?php echo language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)'); ?></label>
-      </div>
+  <div class="form-group">
+    <div class="checkbox">
+      <label><?php echo functions::form_draw_checkbox('set_database_default', 'true'); ?> <?php echo language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)'); ?></label>
     </div>
   </div>
 

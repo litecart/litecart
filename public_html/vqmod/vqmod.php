@@ -371,7 +371,6 @@
               continue;
             }
 
-
             $return = false;
             break;
           }

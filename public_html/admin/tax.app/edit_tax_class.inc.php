@@ -16,9 +16,8 @@
 
   if (isset($_POST['save'])) {
 
-    if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-
-    if (empty(notices::$data['errors'])) {
+    try {
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
       $fields = array(
         'code',
@@ -32,19 +31,29 @@
 
       $tax_class->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
       exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
     }
   }
 
   if (isset($_POST['delete'])) {
 
-    $tax_class->delete();
+    try {
+      if (empty($tax_class->data['id'])) throw new Exception(language::translate('error_must_provide_tax_class', 'You must provide a tax class'));
 
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
-    exit;
+      $tax_class->delete();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
 ?>
@@ -64,11 +73,9 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md">
-      <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php echo functions::form_draw_text_field('description', true); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_description', 'Description'); ?></label>
+    <?php echo functions::form_draw_text_field('description', true); ?>
   </div>
 
   <p class="btn-group">

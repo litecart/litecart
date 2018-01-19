@@ -90,7 +90,7 @@
                 <td style="text-align: right;"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
-                <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. strftime('%B'); ?>:</td>
+                <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
                 <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>

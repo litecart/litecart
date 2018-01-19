@@ -52,7 +52,6 @@
     $y = ($height - $textbox[5])/2;
     imagettftext($image, $font_size, 0, $x, $y, $text_color, $font , $code) or die('Error in imagettftext function');
 
-
   // Generate base64-encoded image data
     ob_start();
     imagejpeg($image);

@@ -3,14 +3,14 @@
 .pagination {
   display: inline-flex;
   padding-left: 0;
-  margin: 1em 0;
+  margin: @default-gutter-size 0;
   border-radius: @default-border-radius;
 
   > li {
     display: inline;
     > a, > span {
       position: relative;
-      padding: @form-input-padding;
+      padding: @form-input-padding @form-input-padding*2;
       text-decoration: none;
       color: inherit;
       background-color: #fff;
@@ -45,8 +45,8 @@
     &, &:hover, &:focus {
       z-index: 3;
       color: #fff;
-      background-color: @primary-button-color;
-      border-color: @primary-button-color;
+      background-color: @primary-color;
+      border-color: @primary-color;
       cursor: default;
     }
   }
