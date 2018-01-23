@@ -297,6 +297,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('security', 'Security', 'Site security and protection against threats', 80);
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('', 'global', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', '', 0, NOW(), NOW()),
 ('store_info', 'global', 'Store Name', 'The name of your store.', 'store_name', '{STORE_NAME}', 'input()', 10, NOW(), NOW()),
 ('store_info', 'global', 'Store Email', 'The store e-mail address.', 'store_email', '{STORE_EMAIL}', 'input()', 11, NOW(), NOW()),
 ('store_info', 'local', 'Store Tax ID', 'The store tax ID or VATIN.', 'store_tax_id', 'XX000000000000', 'input()', 12, NOW(), NOW()),
@@ -370,7 +371,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and deny access to the site.', 'security_xss', '1', 'toggle("e/d")', 14, NOW(), NOW()),
 ('security', 'global', 'Bad URLs Access Detection', 'Detect access to commonly attacked URLs.', 'security_bad_urls', '1', 'toggle("e/d")', 15, NOW(), NOW()),
 ('security', 'local', 'CAPTCHA', 'Prevent robots from posting form data by enabling CAPTCHA security.', 'captcha_enabled', '1', 'toggle()', 16, NOW(), NOW()),
-('', 'global', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', '', 0, NOW(), NOW()),
 ('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'templates("catalog")', 0, NOW(), NOW()),
 ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"product_modal_window":"1","sidebar_parallax_effect":"1","cookie_acceptance":"1"}', 'smalltext()', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'templates("admin")', 0, NOW(), NOW()),
