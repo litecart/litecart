@@ -3,7 +3,7 @@
 
     public static function check($file) {
 
-      $file = str_replace('\\', '/', realpath($file));
+      $file = str_replace('\\', '/', $file);
 
       if (preg_match('#^('. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES, '#') .'[^/]+)/#', $file, $matches)) {
         if (!file_exists($file)) $file = preg_replace('#^('. preg_quote($matches[1], '#') .')#', FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/', $file);
