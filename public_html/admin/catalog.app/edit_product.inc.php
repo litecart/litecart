@@ -732,6 +732,12 @@ foreach (currency::$currencies as $currency) {
 
   $('input[name="categories[]"]:checked').trigger('change');
 
+// SKU
+
+  $('input[name="sku"]').change(function() {
+    $('input[name="sku"]').not(this).val($(this).val());
+  });
+
 // Images
 
   $('#images').on('click', '.move-up, .move-down', function(e) {
