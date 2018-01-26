@@ -4,7 +4,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception('error_must_select_categories_or_products', 'You must select categories or products');
+      if (empty($_POST['categories']) && empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_categories_or_products', 'You must select categories or products'));
+      }
+
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
           $category = new ctrl_category($category_id);
