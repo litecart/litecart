@@ -285,7 +285,7 @@
 
             <div class="input-group">
               <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-              <?php echo functions::form_draw_text_field('sku', true); ?>
+              <?php echo functions::form_draw_text_field('mpn', true); ?>
             </div>
 
             <div class="input-group">
