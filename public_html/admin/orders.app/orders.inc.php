@@ -164,7 +164,7 @@
          . '    <legend>'. $module['name'] .'</legend>' . PHP_EOL
          . '    <div class="btn-group">' . PHP_EOL;
       foreach ($module['actions'] as $action) {
-        echo '      ' . functions::form_draw_button('order_action', array($module['id'].':'.$action['id'], $action['title']), 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'"') . PHP_EOL;
+        echo '      ' . functions::form_draw_button('order_action', array($module['id'].':'.$action['id'], $action['title']), 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'" title="'. htmlspecialchars($action['description']) .'"') . PHP_EOL;
       }
       echo '    </div>' . PHP_EOL
          . '  </fieldset>' . PHP_EOL
