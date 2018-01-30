@@ -232,6 +232,8 @@
 
   if (!empty($_GET['query'])) {
 
+    $code_regex = functions::format_regex_code($_GET['query']);
+
     $products_query = database::query(
       "select p.*, pi.name
       from ". DB_TABLE_PRODUCTS ." p
@@ -241,10 +243,10 @@
       where (
         p.id = '". database::input($_GET['query']) ."'
         or pi.name like '%". database::input($_GET['query']) ."%'
-        or p.code regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
-        or p.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
-        or p.mpn regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
-        or p.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+        or p.code regexp '". database::input($code_regex) ."'
+        or p.sku regexp '". database::input($code_regex) ."'
+        or p.mpn regexp '". database::input($code_regex) ."'
+        or p.gtin regexp '". database::input($code_regex) ."'
         or pi.short_description like '%". database::input($_GET['query']) ."%'
         or pi.description like '%". database::input($_GET['query']) ."%'
         or m.name like '%". database::input($_GET['query']) ."%'
