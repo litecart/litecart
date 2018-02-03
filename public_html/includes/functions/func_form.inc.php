@@ -594,7 +594,7 @@
 
         $options = array();
 
-        if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']');
+        if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
 
         $categories_query = database::query(
           "select c.id, ci.name
