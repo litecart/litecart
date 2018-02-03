@@ -7,6 +7,9 @@
 
   $product = reference::product($_GET['product_id'], $_GET['language_code'], $_GET['currency_code'], $_GET['customer']['id']);
   if (empty($product->id)) return;
+
+  $price = !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price;
+  $tax = tax::get_tax($price, $product->tax_class_id, $_GET['customer']);
 ?>
 <div id="modal-add-product" style="width: 640px;">
   <?php echo functions::form_draw_form_begin('form_add_product', 'post'); ?>
@@ -144,18 +147,16 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_price', 'Price'); ?></label>
             <div>
-              <?php echo functions::form_draw_hidden_field('price', $price = currency::format_raw(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price)); ?>
-              <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($product->price, true, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
-              <?php echo currency::format($price, true, $_GET['currency_code'], $_GET['currency_value']); ?>
+              <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'price', currency::format_raw($price, $_GET['currency_code'], $_GET['currency_value'])); ?>
+              <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($price, true, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
             </div>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
             <div>
-              <?php echo functions::form_draw_hidden_field('tax', $tax = tax::get_tax($price, $product->tax_class_id, $_GET['customer'])); ?>
+              <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'tax', currency::format_raw($tax, $_GET['currency_code'], $_GET['currency_value'])); ?>
               <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($tax, true, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
-              <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']), true, $_GET['currency_code'], $_GET['currency_value']); ?>
             </div>
           </div>
         </div>
@@ -175,7 +176,7 @@
         <div class="row">
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-            <div><?php echo functions::form_draw_decimal_field('quantity', !empty($_POST['quantity']) ? true : '1', 2); ?></div>
+            <div><?php echo functions::form_draw_decimal_field('quantity', !empty($_POST['quantity']) ? true : '1', $product->quantity_unit['decimals']); ?></div>
           </div>
 
           <div class="form-group col-md-8">
