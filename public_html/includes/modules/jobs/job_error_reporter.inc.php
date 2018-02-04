@@ -13,6 +13,8 @@
 
       if (empty($this->settings['status'])) return;
 
+      if (empty($this->settings['email_receipient'])) $this->settings['email_receipient'] = settings::get('store_email');
+
       $last_run = settings::get(__CLASS__.':last_run');
 
       if (empty($force)) {
@@ -48,15 +50,17 @@
 
       $error_log_file = ini_get('error_log');
       $contents = file_get_contents($error_log_file);
-      if (!empty($contents)) {
-        $result = functions::email_send(
-          null,
-          !empty($this->settings['email_receipient']) ? $this->settings['email_receipient'] : settings::get('store_email'),
-          '[Error Report] '. settings::get('store_name'),
-          PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents
-        );
-        if ($result === true) file_put_contents($error_log_file, '');
-      }
+
+      if (empty($contents)) return;
+
+      $email = new email();
+      $email->set_sender($this->settings['email_receipient'])
+            ->set_subject('[Error Report] '. settings::get('store_name'))
+            ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents);
+
+      if ($email->send() !== true) return;
+
+      file_put_contents($error_log_file, '');
     }
 
     function settings() {
