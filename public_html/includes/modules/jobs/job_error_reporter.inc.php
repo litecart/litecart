@@ -51,7 +51,12 @@
       $error_log_file = ini_get('error_log');
       $contents = file_get_contents($error_log_file);
 
-      if (empty($contents)) return;
+      if (empty($contents)) {
+        echo 'Nothing to report';
+        return;
+      }
+
+      echo 'Sending report to '. $this->settings['email_receipient'];
 
       $email = new email();
       $email->set_sender($this->settings['email_receipient'])
