@@ -59,7 +59,7 @@
       echo 'Sending report to '. $this->settings['email_recipient'];
 
       $email = new email();
-      $email->set_sender($this->settings['email_recipient'])
+      $email->add_recipient($this->settings['email_recipient'])
             ->set_subject('[Error Report] '. settings::get('store_name'))
             ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents);
 
