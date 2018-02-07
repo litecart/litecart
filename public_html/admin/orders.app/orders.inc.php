@@ -53,8 +53,16 @@
 <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></li>
-  <li><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></li>
-  <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true); ?></li>
+  <li><?php echo functions::form_draw_order_status_list('order_status_id', true, false, 'style="max-width: 200px;"'); ?></li>
+  <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true, false, 'style="max-width: 200px;"'); ?></li>
+  <li>
+    <div class="input-group" style="max-width: 360px;">
+      <?php echo functions::form_draw_date_field('date_from', true); ?>
+      <span class="input-group-addon"> - </span>
+      <?php echo functions::form_draw_date_field('date_to', true); ?>
+    </div>
+  </li>
+  <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect_url' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
 </ul>
 <?php echo functions::form_draw_form_end(); ?>
