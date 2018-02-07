@@ -13,7 +13,7 @@
 
       if (empty($this->settings['status'])) return;
 
-      if (empty($this->settings['email_receipient'])) $this->settings['email_receipient'] = settings::get('store_email');
+      if (empty($this->settings['email_recipient'])) $this->settings['email_recipient'] = settings::get('store_email');
 
       $last_run = settings::get(__CLASS__.':last_run');
 
@@ -56,10 +56,10 @@
         return;
       }
 
-      echo 'Sending report to '. $this->settings['email_receipient'];
+      echo 'Sending report to '. $this->settings['email_recipient'];
 
       $email = new email();
-      $email->set_sender($this->settings['email_receipient'])
+      $email->set_sender($this->settings['email_recipient'])
             ->set_subject('[Error Report] '. settings::get('store_name'))
             ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents);
 
@@ -93,10 +93,10 @@
           'function' => 'input()',
         ),
         array(
-          'key' => 'email_receipient',
+          'key' => 'email_recipient',
           'default_value' => settings::get('store_email'),
-          'title' => language::translate(__CLASS__.':title_email_receipient', 'Email Receipient'),
-          'description' => language::translate(__CLASS__.':description_email_receipient', 'The email address where reports will be sent.'),
+          'title' => language::translate(__CLASS__.':title_email_recipient', 'Email Recipient'),
+          'description' => language::translate(__CLASS__.':description_email_recipient', 'The email address where reports will be sent.'),
           'function' => 'input()',
         ),
         array(
