@@ -9,17 +9,15 @@
   $category = reference::category($_GET['category_id']);
 
   if (empty($category->id)) {
-    notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));
     http_response_code(410);
-    header('Refresh: 0; url='. document::ilink('categories'));
-    die('HTTP Error 410 Gone');
+    echo language::translate('error_410_gone', 'The requested file is no longer available');
+    return;
   }
 
   if (empty($category->status)) {
-    notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
     http_response_code(404);
-    header('Refresh: 0; url='. document::ilink('categories'));
-    die('HTTP Error 404 Not Found');
+    echo language::translate('error_404_not_found', 'The requested file could not be found');
+    return;
   }
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $category->id), false) .'" />';

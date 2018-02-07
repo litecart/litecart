@@ -26,10 +26,9 @@
     $page = database::fetch($pages_query);
 
     if (empty($page['status'])) {
-      notices::add('errors', language::translate('error_page_not_found', 'The requested page could not be found'));
       http_response_code(404);
-      header('Location: '. document::ilink(''));
-      exit;
+      echo language::translate('error_page_not_found', 'The requested page could not be found');
+      return;
     }
 
     document::$snippets['title'][] = !empty($page['head_title']) ? $page['head_title'] : $page['title'];
