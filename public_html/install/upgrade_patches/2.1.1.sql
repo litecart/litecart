@@ -1,0 +1,1 @@
+UPDATE `lc_settings` SET setting_group_key = 'images', priority = 1 WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
