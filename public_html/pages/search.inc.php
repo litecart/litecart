@@ -91,7 +91,7 @@
 
   if (database::num_rows($products_query) == 1) {
     $product = database::fetch($products_query);
-    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), 302);
+    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), true, 302);
     exit;
   }
 
