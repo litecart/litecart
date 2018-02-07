@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div id="page" class="twelve-eighty shadow">
+<div id="page" class="twelve-eighty">
 
   <header id="header" class="row nowrap center">
 

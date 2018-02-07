@@ -61,7 +61,7 @@
       }
 
       if (count($headers) != count($row)) {
-        trigger_error('Inconsistent amount of columns on line '. $line .' (Should be '. count($headers) .' - Found '. count($row) .')', E_USER_WARNING);
+        trigger_error('Inconsistent amount of columns on line '. $line .' (Expected '. count($headers) .' columns - Found '. count($row) .')', E_USER_WARNING);
         return false;
       }
 
