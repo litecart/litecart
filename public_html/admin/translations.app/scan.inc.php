@@ -1,9 +1,15 @@
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?></h1>
+
 <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
+
   <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
+
   <p><label><?php echo functions::form_draw_checkbox('update', '1'); ?> <?php echo language::translate('text_update_empty_translations', 'Update empty translations if applicable'); ?></label></p>
+
   <p><label><?php echo functions::form_draw_checkbox('clean', '1'); ?> <?php echo language::translate('text_delete_translations_not_present', 'Delete translations no longer present in files'); ?></label></p>
+
   <p><?php echo functions::form_draw_button('scan', language::translate('title_scan', 'Scan'), 'submit', 'onclick="if(!confirm(\''. str_replace('\'', '\\\'', language::translate('warning_backup_translations', 'Warning: Always backup your translations before continuing.')) .'\')) return false;"'); ?></p>
+
 <?php echo functions::form_draw_form_end(); ?>
 
 <?php
@@ -54,23 +60,32 @@
       }
 
       foreach ($translations as $code => $translation) {
+
         $found_translations++;
+
         $translations_query = database::query(
           "select text_en from ". DB_TABLE_TRANSLATIONS ."
           where code = '". database::input($code) ."'
           limit 1;"
         );
         $row = database::fetch($translations_query);
+
         if (empty($row)) {
+
           $new_translations++;
+
           database::query(
             "insert into ". DB_TABLE_TRANSLATIONS ."
-            (code, text_en, pages, date_created)
-            values ('". database::input($code) ."', '". database::input($translation) ."', '". database::input(str_replace("\\", '/', str_replace(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '', $file))) ."', '". date('Y-m-d H:i:s') ."');"
+            (code, text_en, html, date_created)
+            values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
           );
+
           echo  $code . ' [ADDED]<br/>' . PHP_EOL;
+
         } else if (empty($row['text_en']) && !empty($translation) && !empty($_POST['update'])) {
+
           $updated_translations++;
+
           database::query(
             "update ". DB_TABLE_TRANSLATIONS ."
             set text_en = '". database::input($translation, true) ."'
@@ -78,6 +93,7 @@
             and text_en = ''
             limit 1;"
           );
+
           echo  $code . ' [UPDATED]<br/>' . PHP_EOL;
         }
       }
@@ -87,6 +103,7 @@
       $settings_groups_query = database::query(
         "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
       );
+
       while ($group = database::fetch($settings_groups_query)) {
         $translation_keys[] = 'settings_group:title_'.$group['key'];
         $translation_keys[] = 'settings_group:title_'.$group['key'];
@@ -96,6 +113,7 @@
         "select `key` from ". DB_TABLE_SETTINGS ."
         where setting_group_key != '';"
       );
+
       while ($setting = database::fetch($settings_query)) {
         $translation_keys[] = 'settings_key:title_'.$setting['key'];
         $translation_keys[] = 'settings_key:description_'.$setting['key'];
@@ -104,6 +122,7 @@
       $translations_query = database::query(
         "select code from ". DB_TABLE_TRANSLATIONS .";"
       );
+
       while ($translation = database::fetch($translations_query)) {
         if (!in_array($translation['code'], $translation_keys)) {
           database::query(

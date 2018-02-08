@@ -75,44 +75,11 @@ ul.filter li {
 </div>
 <?php } ?>
 
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
-
 <?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
 <?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
 <ul class="filter list-inline pull-right" style="margin: 0 auto;">
   <li>
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword') .'"'); ?>
-  </li>
-
-  <li>
-<?php
-  $pages_query = database::query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
-  $pages = array();
-  while ($row = database::fetch($pages_query)) {
-    $slices = explode(',', $row['pages']);
-    foreach ($slices as $slice) {
-      if ($slice != '') $pages[$slice] = $slice;
-    }
-  }
-  function custom_sort_pages($a, $b) {
-
-    if (strpos($a, '/') && !strpos($b, '/')) {
-      return -1;
-    } else if (!strpos($a, '/') && strpos($b, '/')) {
-      return 1;
-    } else {
-      return ($a < $b) ? -1 : 1;
-    }
-  }
-  usort($pages, 'custom_sort_pages');
-
-  $options = array(array('-- '. language::translate('title_all_scripts', 'All Scripts') .' --', ''));
-  foreach ($pages as $page) {
-    $options[] = array(str_replace("'", '', $page));
-  }
-
-  echo functions::form_draw_select_field('script', $options, isset($_GET['script']) ? $_GET['script'] : false, false, 'style="width: 250px;"');
-?>
   </li>
 
   <li>
@@ -128,6 +95,8 @@ ul.filter li {
   <li><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></li>
 </ul>
 <?php echo functions::form_draw_form_end(); ?>
+
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
@@ -146,7 +115,6 @@ ul.filter li {
     where code != ''
     ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or `text_". implode("` like '%". database::input($_GET['query']) ."%' or `text_", database::input($_GET['languages'])) ."` like '%". database::input($_GET['query']) ."%')" : null) ."
     ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '' or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
-    ". (!empty($_GET['script']) ? "and pages like '%". $_GET['script'] ."%'" : null) ."
     ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", array('cm', 'job', 'oa', 'ot', 'os', 'pm', 'sm')) ."_%:%')" : null) ."
     order by date_created desc;"
   );
@@ -157,13 +125,10 @@ ul.filter li {
 
     $page_items = 0;
     while ($row=database::fetch($translations_query)) {
-
-      $row['pages'] = rtrim($row['pages'], ',');
 ?>
       <tr>
         <td><?php echo $row['code']; ?><br />
-          <small style="color: #999;"><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
-          <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
+          <small style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
         </td>
         <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
         <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
