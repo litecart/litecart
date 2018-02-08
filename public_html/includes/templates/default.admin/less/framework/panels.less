@@ -1,10 +1,19 @@
 /* Panels - Bootstrap Compatible */
 
+.panel(@background-color: transparent, @color: inherit) {
+  border-color: @default-border-color;
+  > .panel-heading {
+    color: @color;
+    background-color: @background-color;
+    border-color: @default-border-color;
+  }
+}
+
 .panel {
   margin-bottom: @default-gutter-size;
   background-color: #fff;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: @default-border-radius;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
   .panel-body {
@@ -32,12 +41,6 @@
     border-bottom-left-radius: 3px;
   }
 
-  &.panel-default {
-    border-color: #ddd;
-    > .panel-heading {
-      color: #333;
-      background-color: #f5f5f5;
-      border-color: #ddd;
-    }
-  }
+  .panel(#f5f5f5, #333);
+  //&.panel-default { .panel(#f5f5f5, #333); };
 }
