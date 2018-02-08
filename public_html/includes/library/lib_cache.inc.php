@@ -188,8 +188,8 @@
       $dependencies = array_unique($dependencies);
       sort($dependencies);
 
-      foreach ($dependencies as $dependant) {
-        switch ($dependant) {
+      foreach ($dependencies as $dependency) {
+        switch ($dependency) {
           case 'basename':
             $hash_string .= $_SERVER['PHP_SELF'];
             break;
@@ -240,10 +240,7 @@
             $hash_string .= $_SERVER['REQUEST_URI'];
             break;
           default:
-            if (is_array($dependant)) {
-              $hash_string .= $dependant;
-            }
-            $hash_string .= $dependant;
+            $hash_string .= is_array($dependency) ? implode('', $dependency) : $dependency;
             break;
         }
       }
