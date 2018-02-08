@@ -203,6 +203,9 @@
           case 'host':
             $hash_string .= $_SERVER['HTTP_HOST'];
             break;
+          case 'endpoint':
+            $hash_string .= preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? 'backend' : 'frontend';
+            break;
           case 'get':
             $hash_string .= serialize($_GET);
             break;
