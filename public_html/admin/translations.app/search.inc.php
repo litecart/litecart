@@ -116,7 +116,7 @@ ul.filter li {
     ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or `text_". implode("` like '%". database::input($_GET['query']) ."%' or `text_", database::input($_GET['languages'])) ."` like '%". database::input($_GET['query']) ."%')" : null) ."
     ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '' or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
     ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", array('cm', 'job', 'oa', 'ot', 'os', 'pm', 'sm')) ."_%:%')" : null) ."
-    order by date_created desc;"
+    order by date_updated desc;"
   );
 
   if (database::num_rows($translations_query) > 0) {
