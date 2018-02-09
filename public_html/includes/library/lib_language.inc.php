@@ -121,13 +121,6 @@
 
     // Set mysql charset and collation
       database::set_encoding(self::$selected['charset']);
-
-    // Chain select currency
-      if (!empty(self::$selected['currency_code'])) {
-        if (!empty(currency::$currencies[self::$selected['currency_code']])) {
-          currency::set(self::$selected['currency_code']);
-        }
-      }
     }
 
     public static function identify() {
