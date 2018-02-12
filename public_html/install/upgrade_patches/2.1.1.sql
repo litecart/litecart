@@ -7,7 +7,6 @@ CHANGE COLUMN `date_updated` `date_updated` DATETIME NOT NULL AFTER `date_access
 ADD INDEX `backend` (`backend`),
 ADD INDEX `frontend` (`frontend`),
 ADD INDEX `date_updated` (`date_updated`),
-ADD INDEX `date_created` (`date_created`)
-DROP INDEX `pages`,
+ADD INDEX `date_created` (`date_created`),
 DROP COLUMN `pages`,
 DROP COLUMN `date_accessed`;
