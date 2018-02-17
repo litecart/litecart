@@ -241,7 +241,16 @@ hr {
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo htmlspecialchars(document::ilink('')); ?></div>
+        <div class="value">
+          <?php
+            $url = document::href_ilink('');
+            if (substr($url,0,5) == "https") {
+              echo "https://" . idn_to_utf8(substr($url,8));
+            } else {
+              echo "http://" . idn_to_utf8(substr($url,7));
+            }
+          ?>
+        </div>
       </div>
 
       <?php if (settings::get('store_tax_id')) { ?>
