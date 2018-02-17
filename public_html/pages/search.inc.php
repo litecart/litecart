@@ -29,9 +29,14 @@
   $code_regex = functions::format_regex_code($_GET['query']);
 
   $query =
-    "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
-    match(pi.name, pi.short_description, pi.description) against ('*". database::input($_GET['query']) ."*' in boolean mode) as relevance
+    "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,";
 
+  if (strlen($_GET['query'])>0)
+    $query .= " match(pi.name, pi.short_description, pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) as relevance ";
+  else
+    $query .= " 1 as relevance ";
+
+  $query .= "
     from (
       select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
       from ". DB_TABLE_PRODUCTS ."
@@ -43,7 +48,7 @@
     left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
 
     left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
-
+ 
     left join (
       select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
       from ". DB_TABLE_PRODUCTS_PRICES ."
@@ -57,14 +62,18 @@
       order by end_date asc
     ) pc on (pc.product_id = p.id)
 
-    having relevance > 0
-    or p.code regexp '". database::input($code_regex) ."'
-    or p.sku regexp '". database::input($code_regex) ."'
-    or p.mpn regexp '". database::input($code_regex) ."'
-    or p.gtin regexp '". database::input($code_regex) ."'
+    having relevance > 0";
 
-    order by %sql_sort;
-  ";
+    if (strlen($_GET['query'])>0) {
+      $query .= "
+        or p.code regexp '". database::input($code_regex) ."'
+        or p.sku regexp '". database::input($code_regex) ."'
+        or p.mpn regexp '". database::input($code_regex) ."'
+        or p.gtin regexp '". database::input($code_regex) ."'
+      ";
+    }
+
+    $query .= " order by %sql_sort;";
 
   switch($_GET['sort']) {
     case 'name':
