@@ -225,7 +225,7 @@ hr {
 
     <div class="row">
       <div class="column">
-        <div><?php echo language::translate('title_address', 'Address'); ?></div>
+        <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
         <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
       </div>
 
