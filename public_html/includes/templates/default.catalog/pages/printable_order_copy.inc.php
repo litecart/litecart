@@ -1,5 +1,5 @@
 <style>
-#logotype {
+.logotype {
   max-width: 320px;
   max-height: 70px;
 }
@@ -8,7 +8,7 @@ h1 {
   margin: 0;
 }
 
-#addresses .row > *:nth-child(1), #addresses .row > *:nth-child(2) {
+.addresses .row > *:nth-child(1), .addresses .row > *:nth-child(2) {
   margin-top: 4mm;
 }
 
@@ -23,50 +23,25 @@ h1 {
   margin: 0 !important;
 }
 
-#items tr th:last-child, #order-total tr td:last-child {
+.items tr th:last-child, #order-total tr td:last-child {
   width: 35mm;
 }
 
-#order-total tr td:first-child:after {
+.order-total tr td:first-child:after {
   content: ':';
 }
 
-#page .label {
+.page .label {
   font-weight: bold;
   margin-bottom: 3pt;
 }
-#page .value {
+.page .value {
   margin-bottom: 3mm;
-}
-
-hr {
-  border-color: #000;
-}
-
-#footer {
-  position: absolute;
-  font-size: 8pt;
-  left: 15mm;
-  right: 15mm;
-  bottom: 15mm;
-}
-@media print {
-  #footer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-}
-
-#footer .column {
-  flex: 1 1 auto;
-  padding: 0 15px;
 }
 </style>
 
-<section id="page">
-  <header id="header">
+<section class="page" data-size="A4">
+  <header class="header">
     <div class="row">
       <div class="col-xs-6">
         <img id="logotype" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
@@ -80,8 +55,8 @@ hr {
     </div>
   </header>
 
-  <main id="body">
-    <div id="addresses">
+  <main class="content">
+    <div class="addresses">
       <div class="row">
         <div class="col-xs-3 shipping-address">
           <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
@@ -128,12 +103,12 @@ hr {
       </div>
     </div>
 
-    <table id="items" class="table table-striped">
+    <table class="items table table-striped data-table">
       <thead>
         <tr>
           <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
           <th><?php echo language::translate('title_item', 'Item'); ?></th>
-          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th class="main"><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th class="text-right"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
           <th class="text-right"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
           <th class="text-right"><?php echo language::translate('title_sum', 'Sum'); ?></th>
@@ -167,7 +142,7 @@ hr {
       </tbody>
     </table>
 
-    <table id="order-total" class="table">
+    <table class="order-total table data-table">
       <tbody>
         <?php foreach ($order['order_total'] as $ot_row) { ?>
         <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
@@ -202,7 +177,7 @@ hr {
     if (in_array('0', array_column($order['comments'], 'hidden'))) {
 ?>
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-  <ul id="comments" class="list-unstyled">
+  <ul class="comments list-unstyled">
 <?php
       foreach ($order['comments'] as $comment) {
         if (!empty($comment['hidden'])) continue;
@@ -219,33 +194,33 @@ hr {
   </main>
 
   <?php if (count($order['items']) <= 10) { ?>
-  <footer id="footer">
+  <footer class="footer">
 
     <hr />
 
     <div class="row">
-      <div class="column">
-        <div><?php echo language::translate('title_address', 'Address'); ?></div>
+      <div class="col-md-auto">
+        <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
         <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
       </div>
 
       <?php if (settings::get('store_phone')) { ?>
-      <div class="column">
+      <div class="col-md-auto">
         <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
         <div class="value"><?php echo settings::get('store_phone'); ?></div>
       </div>
       <?php } ?>
 
-      <div class="column">
+      <div class="col-md-auto">
         <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo htmlspecialchars(document::ilink('')); ?></div>
+        <div class="value"><?php echo htmlspecialchars(link::decode_idn(document::ilink(''))); ?></div>
       </div>
 
       <?php if (settings::get('store_tax_id')) { ?>
-      <div class="column">
+      <div class="col-md-auto">
         <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
         <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
       </div>
