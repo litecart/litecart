@@ -12,7 +12,7 @@
   </div>
   <?php } ?>
 
-  <?php if (count($product_groups) > 1) { ?>
+  <?php if (count($product_groups) > 0) { ?>
   <?php foreach ($product_groups as $group) { ?>
   <div class="box product-group" data-id="<?php echo $group['id']; ?>">
     <h2 class="title"><?php echo $group['name']; ?></h2>
