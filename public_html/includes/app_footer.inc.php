@@ -9,22 +9,22 @@
 // Stitch content
   $_page = new view();
   $_page->snippets = array('content' => $content);
-  $output = $_page->stitch('layouts/'.document::$layout);
+  $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
 
 // Prepare output
   system::run('prepare_output');
 
 // Stitch global snippets
   $_page->snippets = document::$snippets;
-  $_page->html = $output;
-  $output = $_page->stitch();
+  $_page->html = $GLOBALS['output'];
+  $GLOBALS['output'] = $_page->stitch(null, true);
 
 // Run before output processes
   system::run('before_output');
 
 // Output page
   header('Content-Language: '. language::$selected['code']);
-  echo $output;
+  echo $GLOBALS['output'];
 
 // Run after processes
   system::run('shutdown');
