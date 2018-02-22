@@ -102,6 +102,7 @@
           <label><?php echo language::translate('title_confirm_new_password', 'Confirm New Password'); ?></label>
           <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
         </div>
+      </div>
 
       <p><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?></p>
 
