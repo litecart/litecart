@@ -21,9 +21,7 @@
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-          <div class="checkbox">
-            <?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?>
-          </div>
+          <?php echo functions::form_draw_toggle('newsletter', true, 'y/n'); ?>
         </div>
       </div>
 

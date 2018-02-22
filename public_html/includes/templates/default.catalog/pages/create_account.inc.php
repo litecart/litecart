@@ -101,9 +101,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-          <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
-          </div>
+          <?php echo functions::form_draw_toggle('newsletter', true, 'y/n'); ?>
         </div>
 
         <?php if (settings::get('captcha_enabled')) { ?>
