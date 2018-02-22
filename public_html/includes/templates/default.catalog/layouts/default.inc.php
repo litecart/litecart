@@ -16,17 +16,17 @@
 
   <header id="header" class="row nowrap center">
 
-    <div class="col-auto">
+    <div class="col-xs-auto">
       <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
         <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
       </a>
     </div>
 
-    <div class="col-auto text-center hidden-xs">
+    <div class="col-xs-auto text-center hidden-xs">
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
     </div>
 
-    <div class="col-auto text-right">
+    <div class="col-xs-auto text-right">
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
     </div>
   </header>
