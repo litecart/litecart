@@ -1,7 +1,7 @@
 <div id="box-filter">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
-  <?php if (count($manufacturers) > 1) { ?>
+  <?php if ($manufacturers) { ?>
   <div class="box manufacturers">
     <h2 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h2>
     <div class="form-control">
@@ -12,7 +12,7 @@
   </div>
   <?php } ?>
 
-  <?php if (count($product_groups) > 1) { ?>
+  <?php if ($product_groups) { ?>
   <?php foreach ($product_groups as $group) { ?>
   <div class="box product-group" data-id="<?php echo $group['id']; ?>">
     <h2 class="title"><?php echo $group['name']; ?></h2>
