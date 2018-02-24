@@ -32,7 +32,7 @@
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_id, 'file')) {
         $translations_query = database::query(
-          "select id, code, if(text_". self::$selected['code'] .", text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_TRANSLATIONS ."
+          "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_TRANSLATIONS ."
           where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
           having text != '';"
         );
