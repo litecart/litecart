@@ -3,7 +3,7 @@
 
   <?php if (empty(customer::$data['id'])) { ?>
   <div style="float:right">
-    <a href="<?php echo document::ilink('login', array('redirect_url' => document::ilink('checkout'))) ?>" data-toggle="lightbox"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+    <a href="<?php echo document::ilink('login', array('redirect_url' => document::ilink('checkout'))) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
   </div>
   <?php } ?>
 
@@ -13,7 +13,7 @@
 
     <div class="row">
       <div class="form-group col-sm-6">
-        <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+        <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
         <?php echo functions::form_draw_text_field('tax_id', true); ?>
       </div>
 
@@ -25,12 +25,12 @@
 
     <div class="row">
       <div class="form-group col-sm-6">
-        <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
+        <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
         <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?>
       </div>
 
       <div class="form-group col-sm-6">
-        <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
+        <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
         <?php echo functions::form_draw_text_field('lastname', true, 'required="required"'); ?>
       </div>
     </div>
@@ -49,7 +49,7 @@
 
     <div class="row">
       <div class="form-group col-sm-6">
-        <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+        <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
         <?php echo functions::form_draw_text_field('postcode', true); ?>
       </div>
 
@@ -99,12 +99,12 @@
 
       <div class="row">
         <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
+          <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[firstname]', true); ?>
         </div>
 
         <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
+          <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[lastname]', true); ?>
         </div>
       </div>
@@ -123,7 +123,7 @@
 
       <div class="row">
         <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+          <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[postcode]', true); ?>
         </div>
 

@@ -72,6 +72,10 @@
         notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
       }
 
+      if (settings::get('maintenance_mode')) {
+        notices::add('notices', language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'));
+      }
+
     // Widgets
       $box_widgets = new view();
       $box_widgets->snippets['widgets'] = array();

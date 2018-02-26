@@ -34,6 +34,10 @@
         unset($sql_mode[$key]);
       }
 
+      if (($key = array_search('ONLY_FULL_GROUP_BY', $sql_mode)) !== false) {
+        unset($sql_mode[$key]);
+      }
+
       self::query("SET @@session.sql_mode = '". database::input(implode(',', $sql_mode)) ."';");
 
       self::query("set names '". database::input($charset) ."';", $link);

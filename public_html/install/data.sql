@@ -297,6 +297,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('security', 'Security', 'Site security and protection against threats', 80);
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('', 'global', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', '', 0, NOW(), NOW()),
 ('store_info', 'global', 'Store Name', 'The name of your store.', 'store_name', '{STORE_NAME}', 'input()', 10, NOW(), NOW()),
 ('store_info', 'global', 'Store Email', 'The store e-mail address.', 'store_email', '{STORE_EMAIL}', 'input()', 11, NOW(), NOW()),
 ('store_info', 'local', 'Store Tax ID', 'The store tax ID or VATIN.', 'store_tax_id', 'XX000000000000', 'input()', 12, NOW(), NOW()),
@@ -338,6 +339,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_campaign_products_num_items', '5', 'int()', 19, NOW(), NOW()),
 ('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'int()', 20, NOW(), NOW()),
 ('listings', 'local', 'Auto Decimals', 'Show only decimals if there are any to display.', 'auto_decimals', '1', 'toggle("e/d")', 20, NOW(), NOW()),
+('images', 'global', 'Clear Thumbnails Cache', 'Remove all cached image thumbnails from disk.', 'cache_clear_thumbnails', '0', 'toggle()', 1, NOW(), NOW()),
 ('images', 'local', 'Category Images: Aspect Ratio', 'The aspect ratio of the category thumbnails', 'category_image_ratio', '2:3', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '10', NOW(), NOW()),
 ('images', 'local', 'Category Images: Clipping Method', 'The clipping method used for scaled category thumbnails.', 'category_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '11', NOW(), NOW()),
 ('images', 'local', 'Product Images: Aspect Ratio', 'The aspect ratio of the product thumbnails', 'product_image_ratio', '1:1', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '30', NOW(), NOW()),
@@ -354,7 +356,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent hidden decimals.', 'round_amounts', '1', 'toggle()', 13, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '0', 'toggle()', 10, NOW(), NOW()),
 ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '0', 'toggle()', 11, NOW(), NOW()),
-('advanced', 'global', 'Clear Thumbnails Cache', 'Remove all cached image thumbnails from disk.', 'cache_clear_thumbnails', '0', 'toggle()', 12, NOW(), NOW()),
 ('advanced', 'global', 'SEO Links Language Prefix', 'Precede links with language code e.g. /en/....', 'seo_links_language_prefix', '1', 'toggle()', 13, NOW(), NOW()),
 ('advanced', 'global', 'Regional Settings Screen', 'Enables the regional settings screen upon first visit.', 'regional_settings_screen_enabled', '0', 'toggle()', 14, NOW(), NOW()),
 ('advanced', 'global', 'GZIP Enabled', 'Compresses browser data. Increases the load on the server but decreases the bandwidth.', 'gzip_enabled', '1', 'toggle()', 15, NOW(), NOW()),
@@ -370,12 +371,12 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('security', 'global', 'Cross-site Scripting (XSS) Detection', 'Detect common XSS attacks and deny access to the site.', 'security_xss', '1', 'toggle("e/d")', 14, NOW(), NOW()),
 ('security', 'global', 'Bad URLs Access Detection', 'Detect access to commonly attacked URLs.', 'security_bad_urls', '1', 'toggle("e/d")', 15, NOW(), NOW()),
 ('security', 'local', 'CAPTCHA', 'Prevent robots from posting form data by enabling CAPTCHA security.', 'captcha_enabled', '1', 'toggle()', 16, NOW(), NOW()),
-('', 'global', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', '', 0, NOW(), NOW()),
 ('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'templates("catalog")', 0, NOW(), NOW()),
 ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"product_modal_window":"1","sidebar_parallax_effect":"1","cookie_acceptance":"1"}', 'smalltext()', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'templates("admin")', 0, NOW(), NOW()),
 ('', 'global', 'Jobs Last Push', 'Time when background jobs where last pushed for execution.', 'jobs_last_push', NOW(), 'input()', 0, NOW(), NOW()),
-('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW());
+('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'input()', 0, NOW(), NOW()),
+('', 'local', 'Errors Last Reported', 'Time when errors where last reported by the background job.', 'job_error_reporter:last_run', NOW(), 'input()', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
 (1, 1, '', 'Family At The Beach', 'slides/1-family-at-the-beach.svg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());

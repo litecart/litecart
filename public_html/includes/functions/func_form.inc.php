@@ -479,8 +479,6 @@
         return functions::form_draw_number_field($name, $input);
       case 'color':
         return functions::form_draw_color_field($name, $input);
-      case 'currency':
-        return functions::form_draw_currency_field(!empty($options[0]) ? $options[0] : null, $name, $input);
       case 'smallinput':
         return functions::form_draw_input($name, $input, 'text');
       case 'input':
@@ -594,7 +592,7 @@
 
         $options = array();
 
-        if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']');
+        if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
 
         $categories_query = database::query(
           "select c.id, ci.name

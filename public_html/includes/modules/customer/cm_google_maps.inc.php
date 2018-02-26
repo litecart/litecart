@@ -25,7 +25,7 @@
         !empty($data['address1']) ? $data['address1'] : false,
         !empty($data['country_code']) ? $data['country_code'] : false .'-'. !empty($data['postcode']) ? $data['postcode'] : false,
         !empty($data['city']) ? $data['city'] : false,
-        !empty($data['country_code']) ? functions::reference_get_country_name($data['country_code']) : false,
+        !empty($data['country_code']) ? reference::country($data['country_code'])->name : false,
       );
 
       $params = array(

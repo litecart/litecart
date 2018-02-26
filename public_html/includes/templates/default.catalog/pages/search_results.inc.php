@@ -29,6 +29,8 @@
     <div class="products row half-gutter">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
     </div>
+    <?php } else { ?>
+    <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
     <?php } ?>
 
     <?php echo $pagination; ?>

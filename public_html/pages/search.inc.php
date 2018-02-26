@@ -26,6 +26,8 @@
     'pagination' => null,
   );
 
+  $code_regex = functions::format_regex_code($_GET['query']);
+
   $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
     match(pi.name, pi.short_description, pi.description) against ('*". database::input($_GET['query']) ."*' in boolean mode) as relevance
@@ -56,13 +58,12 @@
     ) pc on (pc.product_id = p.id)
 
     having relevance > 0
-    or p.code regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
-    or p.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
-    or p.mpn regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
-    or p.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'
+    ". ((!empty($_GET['query'])) ? "or p.code regexp '". database::input($code_regex) ."'" : "") ."
+    ". ((!empty($_GET['query'])) ? "or p.sku regexp '". database::input($code_regex) ."'" : "") ."
+    ". ((!empty($_GET['query'])) ? "or p.mpn regexp '". database::input($code_regex) ."'" : "") ."
+    ". ((!empty($_GET['query'])) ? "or p.gtin regexp '". database::input($code_regex) ."'" : "") ."
 
-    order by %sql_sort;
-  ";
+    order by %sql_sort;";
 
   switch($_GET['sort']) {
     case 'name':
@@ -89,7 +90,7 @@
 
   if (database::num_rows($products_query) == 1) {
     $product = database::fetch($products_query);
-    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), 302);
+    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), true, 302);
     exit;
   }
 

@@ -8,11 +8,11 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
-  $printable_packing_slip = new view();
-  $printable_packing_slip->snippets['order'] = $order->data;
-  $output = $printable_packing_slip->stitch('pages/printable_packing_slip');
+  $_page = new view();
+  $_page->snippets['order'] = $order->data;
+  echo $_page->stitch('pages/printable_packing_slip');
 
   language::set($session_language);
 
-  require_once('../includes/app_footer.inc.php');
+  require_once vmod::check('../includes/app_footer.inc.php');
   exit;

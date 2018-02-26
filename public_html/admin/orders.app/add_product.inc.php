@@ -7,6 +7,9 @@
 
   $product = reference::product($_GET['product_id'], $_GET['language_code'], $_GET['currency_code'], $_GET['customer']['id']);
   if (empty($product->id)) return;
+
+  $price = !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price;
+  $tax = tax::get_tax($price, $product->tax_class_id, $_GET['customer']);
 ?>
 <div id="modal-add-product" style="width: 640px;">
   <?php echo functions::form_draw_form_begin('form_add_product', 'post'); ?>
@@ -29,37 +32,53 @@
 
         <div id="options">
 <?php
-    if (count($product->options) > 0) {
-      foreach ($product->options as $group) {
+  if (count($product->options) > 0) {
+    foreach ($product->options as $group) {
 
-        echo '  <div class="form-group">'
-           . '    <label>'. $group['name'] .'</label>';
+      echo '  <div class="form-group">'
+         . '    <label>'. $group['name'] .'</label>';
 
-        switch ($group['function']) {
+      switch ($group['function']) {
 
-          case 'checkbox':
+        case 'checkbox':
 
-            foreach ($group['values'] as $value) {
+          foreach ($group['values'] as $value) {
 
-              $price_adjust_text = '';
-              $price_adjust = currency::format_raw($value['price_adjust']);
-              $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+            $price_adjust_text = '';
+            $price_adjust = currency::format_raw($value['price_adjust']);
+            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
-              if ($value['price_adjust']) {
-                $price_adjust_text = currency::format($value['price_adjust']);
-                if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
-              }
-
-              echo '<div class="checkbox">' . PHP_EOL
-                 . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
-                 . '</div>';
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format($value['price_adjust']);
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
             }
-            break;
 
-          case 'input':
+            echo '<div class="checkbox">' . PHP_EOL
+               . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '</div>';
+          }
+          break;
 
-            $value_ids = array_keys($group['values']);
-            $value_id = array_shift($value_ids);
+        case 'input':
+
+          $value_ids = array_keys($group['values']);
+          $value_id = array_shift($value_ids);
+
+          $price_adjust_text = '';
+          $price_adjust = currency::format_raw($value['price_adjust']);
+          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format($value['price_adjust']);
+            if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+          }
+
+          echo functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text . PHP_EOL;
+          break;
+
+        case 'radio':
+
+          foreach ($group['values'] as $value) {
 
             $price_adjust_text = '';
             $price_adjust = currency::format_raw($value['price_adjust']);
@@ -70,52 +89,16 @@
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            echo functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text . PHP_EOL;
-            break;
+            echo '<div class="radio">' . PHP_EOL
+               . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '</div>';
+          }
+          break;
 
-          case 'radio':
+        case 'select':
 
-            foreach ($group['values'] as $value) {
-
-              $price_adjust_text = '';
-              $price_adjust = currency::format_raw($value['price_adjust']);
-              $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
-
-              if ($value['price_adjust']) {
-                $price_adjust_text = currency::format($value['price_adjust']);
-                if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
-              }
-
-              echo '<div class="radio">' . PHP_EOL
-                 . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
-                 . '</div>';
-            }
-            break;
-
-          case 'select':
-
-            $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
-            foreach ($group['values'] as $value) {
-
-              $price_adjust_text = '';
-              $price_adjust = currency::format_raw($value['price_adjust']);
-              $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
-
-              if ($value['price_adjust']) {
-                $price_adjust_text = currency::format($value['price_adjust']);
-                if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
-              }
-
-              $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
-            }
-
-            echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, false, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required="required"' : ''));
-            break;
-
-          case 'textarea':
-
-            $value_ids = array_keys($group['values']);
-            $value_id = array_shift($value_ids);
+          $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+          foreach ($group['values'] as $value) {
 
             $price_adjust_text = '';
             $price_adjust = currency::format_raw($value['price_adjust']);
@@ -123,20 +106,40 @@
 
             if ($value['price_adjust']) {
               $price_adjust_text = currency::format($value['price_adjust']);
-              if ($value['price_adjust'] > 0) {
-                $price_adjust_text = ' <br />+'. currency::format($value['price_adjust']);
-              }
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            echo functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text. PHP_EOL;
-            break;
-        }
+            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
+          }
 
-        echo '</div>';
+          echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, false, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required="required"' : ''));
+          break;
+
+        case 'textarea':
+
+          $value_ids = array_keys($group['values']);
+          $value_id = array_shift($value_ids);
+
+          $price_adjust_text = '';
+          $price_adjust = currency::format_raw($value['price_adjust']);
+          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format($value['price_adjust']);
+            if ($value['price_adjust'] > 0) {
+              $price_adjust_text = ' <br />+'. currency::format($value['price_adjust']);
+            }
+          }
+
+          echo functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text. PHP_EOL;
+          break;
       }
-    }
 
-    echo functions::form_draw_hidden_field('option_stock_combination', '');
+      echo '</div>';
+    }
+  }
+
+  echo functions::form_draw_hidden_field('option_stock_combination', '');
 ?>
         </div>
 
@@ -144,18 +147,16 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_price', 'Price'); ?></label>
             <div>
-              <?php echo functions::form_draw_hidden_field('price', $price = currency::format_raw(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price)); ?>
-              <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($product->price, true, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
-              <?php echo currency::format($price, true, $_GET['currency_code'], $_GET['currency_value']); ?>
+              <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'price', currency::format_raw($price, $_GET['currency_code'], $_GET['currency_value'])); ?>
+              <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($price, true, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
             </div>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
             <div>
-              <?php echo functions::form_draw_hidden_field('tax', $tax = tax::get_tax($price, $product->tax_class_id, $_GET['customer'])); ?>
+              <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'tax', currency::format_raw($tax, $_GET['currency_code'], $_GET['currency_value'])); ?>
               <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($tax, true, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
-              <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']), true, $_GET['currency_code'], $_GET['currency_value']); ?>
             </div>
           </div>
         </div>
@@ -175,7 +176,7 @@
         <div class="row">
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-            <div><?php echo functions::form_draw_decimal_field('quantity', !empty($_POST['quantity']) ? true : '1', 2); ?></div>
+            <div><?php echo functions::form_draw_decimal_field('quantity', !empty($_POST['quantity']) ? true : '1', $product->quantity_unit['decimals']); ?></div>
           </div>
 
           <div class="form-group col-md-8">

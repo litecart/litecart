@@ -56,9 +56,9 @@
   echo '<p>Checking PHP display_errors... ';
 
   if (in_array(strtolower(ini_get('display_errors')), array('1', 'true', 'on', 'yes'))) {
-    echo ini_get('display_errors') . '<span class="ok">[OK]</span></p>';
+    echo ini_get('display_errors') . ' <span class="ok">[OK]</span></p>';
   } else {
-    echo ini_get('display_errors') . '<span class="warning">[Warning] Missing permissions to display errors?</span></p>';
+    echo ini_get('display_errors') . ' <span class="warning">[Warning] Missing permissions to display errors?</span></p>';
   }
 
   ### Database > Connection #####################################

@@ -62,7 +62,7 @@
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
     // Abort mission if in admin panel
-      if (preg_match('#^'. preg_quote(WS_DIR_ADMIN, '#') .'.*#', self::$request)) return;
+      if (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', self::$request)) return;
 
     // Set target route for requested URL
       foreach (self::$_routes as $matched_pattern => $route) {

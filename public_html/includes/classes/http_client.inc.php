@@ -1,14 +1,14 @@
 <?php
 
   class http_client {
-    public $follow_redirects = true;
+    public $follow_redirects = false;
     public $timeout = 20;
     public $last_request;
     public $last_response;
 
     public function call($method, $url='', $data=null, $headers=array(), $asynchronous=false) {
 
-    // Backwards compatibility (where first param was URL)
+    // Backwards compatibility (where first param was URL supporting only GET/POST)
       if (strpos($method, '://') !== false) {
         list($url, $data, $headers) = func_get_args();
         $method = !empty($data) ? 'POST' : 'GET';
@@ -93,18 +93,6 @@
           continue;
         }
 
-        if (preg_match('#^Location:\s?(.*)?$#i', $line, $matches)) {
-
-          $redirect_url = !empty($matches[1]) ? trim($matches[1]) : $url;
-
-          if ($this->follow_redirects) {
-            return $this->call($method, $redirect_url, $data, $headers);
-          }
-
-          trigger_error('Destination is pointing to a new destination while follow redirect is disabled ('. $redirect_url .')');
-          return false;
-        }
-
         $response_header .= $line;
       }
 
@@ -116,13 +104,35 @@
       }
 
       preg_match('#HTTP/1\.(1|0)\s(\d{3})#', $response_header, $matches);
+      $status_code = $matches[2];
 
       $this->last_response['timestamp'] = time();
-      $this->last_response['status_code'] = $matches[2];
+      $this->last_response['status_code'] = $status_code;
       $this->last_response['head'] = $response_header . "\r\n";
       $this->last_response['duration'] = round(microtime(true) - $microtime_start, 3);
       $this->last_response['bytes'] = strlen($response_header . "\r\n" . $response_body);
       $this->last_response['body'] = $response_body;
+
+      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
+        "## [". date('Y-m-d H:i:s', $this->last_request['timestamp']) ."] Request ##############################\r\n\r\n" .
+        $this->last_request['head'] .
+        $this->last_request['body'] ."\r\n\r\n" .
+        "## [". date('Y-m-d H:i:s', $this->last_response['timestamp']) ."] Response — ". (float)$this->last_response['bytes'] ." kb transferred in ". (float)$this->last_response['duration'] ." s ##############################\r\n\r\n" .
+        $this->last_response['head'] .
+        $this->last_response['body'] ."\r\n\r\n"
+      );
+
+    // Redirect
+      if ($status_code == 301) {
+        if (!$this->follow_redirects) {
+          trigger_error('Destination is redirecting to another destination but follow_redirects is disabled', E_USER_WARNING);
+        } else if (preg_match('#^Location:\s?(.*)?$#im', $line, $matches)) {
+          $redirect_url = !empty($matches[1]) ? trim($matches[1]) : $url;
+          return $this->call($method, $redirect_url, $data, $headers);
+        } else {
+          trigger_error('Destination is redirecting to a null destination', E_USER_WARNING);
+        }
+      }
 
       return $response_body;
     }
