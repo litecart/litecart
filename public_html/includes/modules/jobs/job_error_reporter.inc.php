@@ -13,6 +13,8 @@
 
       if (empty($this->settings['status'])) return;
 
+      if (empty($this->settings['email_recipient'])) $this->settings['email_recipient'] = settings::get('store_email');
+
       $last_run = settings::get(__CLASS__.':last_run');
 
       if (empty($force)) {
@@ -48,15 +50,22 @@
 
       $error_log_file = ini_get('error_log');
       $contents = file_get_contents($error_log_file);
-      if (!empty($contents)) {
-        $result = functions::email_send(
-          null,
-          !empty($this->settings['email_receipient']) ? $this->settings['email_receipient'] : settings::get('store_email'),
-          '[Error Report] '. settings::get('store_name'),
-          PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents
-        );
-        if ($result === true) file_put_contents($error_log_file, '');
+
+      if (empty($contents)) {
+        echo 'Nothing to report';
+        return;
       }
+
+      echo 'Sending report to '. $this->settings['email_recipient'];
+
+      $email = new email();
+      $email->add_recipient($this->settings['email_recipient'])
+            ->set_subject('[Error Report] '. settings::get('store_name'))
+            ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents);
+
+      if ($email->send() !== true) return;
+
+      file_put_contents($error_log_file, '');
     }
 
     function settings() {
@@ -84,10 +93,10 @@
           'function' => 'input()',
         ),
         array(
-          'key' => 'email_receipient',
+          'key' => 'email_recipient',
           'default_value' => settings::get('store_email'),
-          'title' => language::translate(__CLASS__.':title_email_receipient', 'Email Receipient'),
-          'description' => language::translate(__CLASS__.':description_email_receipient', 'The email address where reports will be sent.'),
+          'title' => language::translate(__CLASS__.':title_email_recipient', 'Email Recipient'),
+          'description' => language::translate(__CLASS__.':description_email_recipient', 'The email address where reports will be sent.'),
           'function' => 'input()',
         ),
         array(

@@ -14,5 +14,5 @@
 
   language::set($session_language);
 
-  require_once('../includes/app_footer.inc.php');
+  require_once vmod::check('../includes/app_footer.inc.php');
   exit;

@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.1
+ * LiteCart® 2.1.1
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -50,8 +50,10 @@
 
     file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
 
-    echo '<h1>HTTP 404 - Not Found</h1>';
-    echo '<p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>';
+    echo '<div>'
+       . '  <h1>HTTP 404 - Not Found</h1>'
+       . '  <p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>'
+       . '</div>';
   }
 
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

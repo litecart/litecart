@@ -720,12 +720,15 @@ CREATE TABLE `lc_translations` (
   `code` VARCHAR(250) NOT NULL,
   `text_en` TEXT NOT NULL,
   `html` TINYINT(1) NOT NULL,
-  `pages` TEXT NOT NULL,
-  `date_accessed` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
+  `frontend` TINYINT(1) NOT NULL,
+  `backend` TINYINT(1) NOT NULL,
   `date_updated` DATETIME NOT NULL,
+  `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`)
+  UNIQUE KEY `code` (`code`),
+  KEY `frontend` (`frontend`),
+  KEY `backend` (`backend`),
+  KEY `date_created` (`date_created`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_users` (
@@ -742,8 +745,8 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `date_expires` DATETIME NOT NULL,
   `date_active` DATETIME NOT NULL,
   `date_login` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,
+  `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------

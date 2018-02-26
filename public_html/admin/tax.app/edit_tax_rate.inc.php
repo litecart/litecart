@@ -135,7 +135,7 @@
     </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+      <label><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
       <div class="radio">
         <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'with', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_with_tax_id', 'Applies to customers with a tax ID'); ?></label></label>
       </div>

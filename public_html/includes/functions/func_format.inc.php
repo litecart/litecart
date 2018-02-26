@@ -16,3 +16,24 @@
 
     return reference::country($address['country_code'])->format_address($address);
   }
+
+  function format_regex_code($string) {
+
+    $string = preg_replace('#[ -\./]+#', '', $string);
+
+    if (mb_strlen($string) > 1) {
+
+      do {
+        $c = mb_strlen($string);
+        $parts[] = mb_substr($string, 0, 1);
+        $string = mb_substr($string, 1);
+      } while(!empty($string));
+
+    } else {
+      $parts = array($string);
+    }
+
+    $string = implode('([ -\./]+)?', $parts);
+
+    return $string;
+  }

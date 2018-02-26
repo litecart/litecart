@@ -341,7 +341,7 @@
 
               <div class="row">
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+                  <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
                   <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
                 </div>
 
@@ -353,12 +353,12 @@
 
               <div class="row">
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
+                  <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
                   <?php echo functions::form_draw_text_field('customer[firstname]', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
+                  <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
                   <?php echo functions::form_draw_text_field('customer[lastname]', true); ?>
                 </div>
               </div>
@@ -377,7 +377,7 @@
 
               <div class="row">
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+                  <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
                   <?php echo functions::form_draw_text_field('customer[postcode]', true); ?>
                 </div>
 
@@ -428,12 +428,12 @@
 
               <div class="row">
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
+                  <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
                   <?php echo functions::form_draw_text_field('customer[shipping_address][firstname]', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
+                  <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
                   <?php echo functions::form_draw_text_field('customer[shipping_address][lastname]', true); ?>
                 </div>
               </div>
@@ -452,7 +452,7 @@
 
               <div class="row">
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+                  <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
                   <?php echo functions::form_draw_text_field('customer[shipping_address][postcode]', true); ?>
                 </div>
 
@@ -924,7 +924,7 @@
     $('input[name="customer[shipping_address][phone]"]').removeAttr('placeholder');
   }
 
-  $(':input[name^="customer"]').bind('input change', function(){
+  $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').bind('input change', function(){
     var params = {
       language_code: $('select[name="language_code"]').val(),
       currency_code: $('select[name="currency_code"]').val(),
@@ -1025,7 +1025,8 @@
     $(row).find('*[name$="[weight_class]"]').val(item.weight_class);
     $(row).find('*[name$="[quantity]"]').val(item.quantity);
     $(row).find('*[name$="[price]"]').val(item.price);
-    $(row).find('*[name$="[tax]"]').val(item.tax);
+    $(row).find('*[name$="[tax]"]').val(item.tax)
+    $(row).find('[data-type="currency"]').parent().find('.input-group-addon').text($(':input[name="currency_code"]').val());
 
     if (item.options) {
       var product_options = '';
