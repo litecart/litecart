@@ -202,7 +202,11 @@
       );
 
       if (!$translation = database::fetch($translation_query)) {
-        $translation_doesnt_exist = true;
+        database::query(
+          "insert into ". DB_TABLE_TRANSLATIONS ."
+          (code, text_en, html, date_created, date_updated)
+          values ('". database::input($code) ."', '". database::input($default, true) ."', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+        );
       }
 
       try {
@@ -246,16 +250,6 @@
 
       } finally {
         self::$_loaded_translations[] = $code;
-
-      // Create translation if it doesn't exist
-        if (!empty($translation_doesnt_exist)) {
-          $text = self::$_cache['translations'][$language_code][$code];
-          database::query(
-            "insert into ". DB_TABLE_TRANSLATIONS ."
-            (code, text_en, html, date_created, date_updated)
-            values ('". database::input($code) ."', '". database::input($text, true) ."', '". (($text != strip_tags($text)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-          );
-        }
       }
     }
 
