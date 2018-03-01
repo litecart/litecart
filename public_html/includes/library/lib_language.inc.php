@@ -241,6 +241,9 @@
       // Return translation
         return self::$_cache['translations'][$language_code][$code] = $default;
 
+      } catch (Exception $e) {
+        // Do nothing, but required to be defined in PHP 5.3
+
       } finally {
         self::$_loaded_translations[] = $code;
 
