@@ -115,7 +115,7 @@
             <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
             <div class="checkbox">
               <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label><br/>
-              <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', (file_get_contents('php://input') != '') ? true : 'tree'); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', true); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
             </div>
           </div>
 
