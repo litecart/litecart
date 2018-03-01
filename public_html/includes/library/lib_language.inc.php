@@ -201,23 +201,22 @@
         limit 1;"
       );
 
-      try {
+      if (!$translation = database::fetch($translation_query)) {
+        database::query(
+          "insert into ". DB_TABLE_TRANSLATIONS ."
+          (code, text_en, html, date_created, date_updated)
+          values ('". database::input($code) ."', '". database::input($default, true) ."', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+        );
+      }
 
-      // Create translation if it doesn't exist
-        if (!$translation = database::fetch($translation_query)) {
-          database::query(
-            "insert into ". DB_TABLE_TRANSLATIONS ."
-            (code, text_en, html, date_created, date_updated)
-            values ('". database::input($code) ."', '". database::input($default, true) ."', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-          );
-        }
+      try {
 
       // Return translation
         if (!empty($translation['text_'.$language_code])) {
           return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
         }
 
-      // Find same english translation by different key
+      // Find similar translation by different key based on english text
         $translation_query = database::query(
           "select id, text_en, text_". self::$selected['code'] ." from ". DB_TABLE_TRANSLATIONS ."
           where text_en = '". database::input($translation['text_en']) ."'
@@ -245,6 +244,9 @@
 
       // Return translation
         return self::$_cache['translations'][$language_code][$code] = $default;
+
+      } catch (Exception $e) {
+        // Do nothing, but required to be defined in PHP 5.3
 
       } finally {
         self::$_loaded_translations[] = $code;
