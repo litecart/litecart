@@ -28,15 +28,15 @@
         </div>
         <div class="info">
           <div class="name"><?php echo $name; ?></div>
+          <p class="description"><?php echo $short_description; ?></p>
           <div class="manufacturer"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
-          <div class="description"><?php echo $short_description; ?></div>
-          <div class="price-wrapper">
-            <?php if ($campaign_price) { ?>
-            <s class="regular-price"><?php echo currency::format($regular_price); ?></s> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
-            <?php } else { ?>
-            <span class="price"><?php echo currency::format($regular_price); ?></span>
-            <?php } ?>
-          </div>
+        </div>
+        <div class="price-wrapper">
+          <?php if ($campaign_price) { ?>
+          <s class="regular-price"><?php echo currency::format($regular_price); ?></s> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
+          <?php } else { ?>
+          <span class="price"><?php echo currency::format($regular_price); ?></span>
+          <?php } ?>
         </div>
       </a>
     </div>

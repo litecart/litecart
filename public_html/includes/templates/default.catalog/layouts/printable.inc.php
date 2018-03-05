@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{snippet:template_path}css/printable.min.css" />
 {snippet:style}
 </head>
-<body data-size="A4">
+<body>
 
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <button name="print"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button>
