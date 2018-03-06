@@ -191,6 +191,7 @@
 
     // Return from cache
       if (isset(self::$_cache['translations'][$language_code][$code])) {
+        self::$_loaded_translations[] = $code;
         return self::$_cache['translations'][$language_code][$code];
       }
 
@@ -201,6 +202,7 @@
         limit 1;"
       );
 
+    // Create translation if it doesn't exist
       if (!$translation = database::fetch($translation_query)) {
         database::query(
           "insert into ". DB_TABLE_TRANSLATIONS ."
@@ -209,48 +211,43 @@
         );
       }
 
-      try {
+    // Return translation
+      if (!empty($translation['text_'.$language_code])) {
+        self::$_loaded_translations[] = $code;
+        return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
+      }
 
-      // Return translation
-        if (!empty($translation['text_'.$language_code])) {
-          return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
-        }
+    // Find same english translation by different key
+      $translation_query = database::query(
+        "select id, text_en, text_". self::$selected['code'] ." from ". DB_TABLE_TRANSLATIONS ."
+        where text_en = '". database::input($translation['text_en']) ."'
+        and text_en != ''
+        and text_". self::$selected['code'] ." != ''
+        limit 1;"
+      );
 
-      // Find similar translation by different key based on english text
-        $translation_query = database::query(
-          "select id, text_en, text_". self::$selected['code'] ." from ". DB_TABLE_TRANSLATIONS ."
+      if ($translation = database::fetch($translation_query)) {
+        database::query(
+          "update ". DB_TABLE_TRANSLATIONS ."
+          set text_". self::$selected['code'] ." = '". $translation['text_'.$language_code] ."',
+          date_updated = '". date('Y-m-d H:i:s') ."'
           where text_en = '". database::input($translation['text_en']) ."'
-          and text_en != ''
-          and text_". self::$selected['code'] ." != ''
-          limit 1;"
+          and text_". self::$selected['code'] ." = '';"
         );
 
-        if ($translation = database::fetch($translation_query)) {
-          database::query(
-            "update ". DB_TABLE_TRANSLATIONS ."
-            set text_". self::$selected['code'] ." = '". $translation['text_'.$language_code] ."',
-            date_updated = '". date('Y-m-d H:i:s') ."'
-            where text_en = '". database::input($translation['text_en']) ."'
-            and text_". self::$selected['code'] ." = '';"
-          );
-
-          return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
-        }
-
-      // Return english translation
-        if (!empty($translation['text_en'])) {
-          return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
-        }
-
-      // Return translation
-        return self::$_cache['translations'][$language_code][$code] = $default;
-
-      } catch (Exception $e) {
-        // Do nothing, but required to be defined in PHP 5.3
-
-      } finally {
         self::$_loaded_translations[] = $code;
+        return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
       }
+
+    // Return english translation
+      if (!empty($translation['text_en'])) {
+        self::$_loaded_translations[] = $code;
+        return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
+      }
+
+    // Return translation
+      self::$_loaded_translations[] = $code;
+      return self::$_cache['translations'][$language_code][$code] = $default;
     }
 
     public static function number_format($number, $decimals=2) {

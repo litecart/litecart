@@ -23,8 +23,8 @@ h1 {
   margin: 0 !important;
 }
 
-.items tr th:last-child, #order-total tr td:last-child {
-  width: 35mm;
+.items tr th:last-child, .order-total tr td:last-child {
+  width: 30mm;
 }
 
 .order-total tr td:first-child:after {
@@ -107,8 +107,8 @@ h1 {
       <thead>
         <tr>
           <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-          <th><?php echo language::translate('title_item', 'Item'); ?></th>
-          <th class="main"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
           <th class="text-right"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
           <th class="text-right"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
           <th class="text-right"><?php echo language::translate('title_sum', 'Sum'); ?></th>
@@ -118,7 +118,8 @@ h1 {
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
-          <td><?php echo $item['name']; ?>
+          <td><?php echo $item['sku']; ?></td>
+          <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php
     if (!empty($item['options'])) {
       foreach ($item['options'] as $key => $value) {
@@ -127,7 +128,6 @@ h1 {
     }
 ?>
           </td>
-          <td><?php echo $item['sku']; ?></td>
           <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
           <td class="text-right"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
