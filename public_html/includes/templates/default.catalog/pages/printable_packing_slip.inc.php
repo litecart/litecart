@@ -23,12 +23,8 @@ h1 {
   margin: 0 !important;
 }
 
-.items tr th:last-child, #order-total tr td:last-child {
-  width: 35mm;
-}
-
-.order-total tr td:first-child:after {
-  content: ':';
+.items tr th:last-child {
+  width: 30mm;
 }
 
 .page .label {
@@ -99,15 +95,16 @@ h1 {
       <thead>
         <tr>
           <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-          <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
           <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
-          <td><?php echo $item['name']; ?>
+          <td><?php echo $item['sku']; ?></td>
+          <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php
     if (!empty($item['options'])) {
       foreach ($item['options'] as $key => $value) {
@@ -116,7 +113,6 @@ h1 {
     }
 ?>
           </td>
-          <td><?php echo $item['sku']; ?></td>
         </tr>
         <?php } ?>
       </tbody>
