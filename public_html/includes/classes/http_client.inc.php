@@ -60,7 +60,7 @@
       }
 
       $found_body = false;
-      $response_header = '';
+      $response_headers = '';
       $response_body = '';
       $microtime_start = microtime(true);
 
@@ -97,33 +97,33 @@
           continue;
         }
 
-        $response_header .= $line;
+        $response_headers .= $line;
       }
 
       fclose($socket);
 
     // Decode chunked data
-      if (preg_match('#Transfer-Encoding:\s?Chunked#i', $response_header)) {
+      if (preg_match('#Transfer-Encoding:\s?Chunked#i', $response_headers)) {
         $response_body = $this->http_decode_chunked_data($response_body);
       }
 
-      preg_match('#HTTP/1\.(1|0)\s(\d{3})#', $response_header, $matches);
+      preg_match('#HTTP/\d(\.\d)?\s(\d{3})#', $response_headers, $matches);
       $status_code = $matches[2];
 
       $this->last_response['timestamp'] = time();
       $this->last_response['status_code'] = $status_code;
-      $this->last_response['head'] = $response_header . "\r\n";
+      $this->last_response['head'] = $response_headers;
       $this->last_response['duration'] = round(microtime(true) - $microtime_start, 3);
-      $this->last_response['bytes'] = strlen($response_header . "\r\n" . $response_body);
+      $this->last_response['bytes'] = strlen($response_headers . "\r\n" . $response_body);
       $this->last_response['body'] = $response_body;
 
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
         "## [". date('Y-m-d H:i:s', $this->last_request['timestamp']) ."] Request ##############################\r\n\r\n" .
-        $this->last_request['head'] .
-        $this->last_request['body'] ."\r\n\r\n" .
-        "## [". date('Y-m-d H:i:s', $this->last_response['timestamp']) ."] Response — ". (float)$this->last_response['bytes'] ." kb transferred in ". (float)$this->last_response['duration'] ." s ##############################\r\n\r\n" .
-        $this->last_response['head'] .
-        $this->last_response['body'] ."\r\n\r\n"
+        $this->last_request['head']."\r\n" .
+        $this->last_request['body']."\r\n\r\n" .
+        "## [". date('Y-m-d H:i:s', $this->last_response['timestamp']) ."] Response — ". (float)$this->last_response['bytes'] ." bytes transferred in ". (float)$this->last_response['duration'] ." s ##############################\r\n\r\n" .
+        $this->last_response['head']."\r\n" .
+        $this->last_response['body']."\r\n\r\n"
       );
 
     // Redirect
