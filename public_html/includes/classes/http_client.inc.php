@@ -36,6 +36,10 @@
         $headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. $parts['pass']);
       }
 
+      if (empty($headers['User-Agent'])) {
+        $headers['User-Agent'] = PLATFORM_NAME.'/'.PLATFORM_VERSION;
+      }
+
       if (empty($headers['Content-Type']) && !empty($data)) {
         $headers['Content-Type'] = 'application/x-www-form-urlencoded';
       }
