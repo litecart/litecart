@@ -9,11 +9,9 @@
     public $website = 'http://www.litecart.net';
     public $priority = 0;
 
-    public function process($force) {
+    public function process($force, $last_pushed) {
 
       if (empty($this->settings['status'])) return;
-
-      $last_run = settings::get(__CLASS__.':last_run');
 
       if (empty($force)) {
         if (!empty($this->settings['working_hours'])) {
@@ -25,26 +23,19 @@
           case 'Immediately':
             break;
           case 'Hourly':
-            if (strtotime($last_run) > strtotime('-1 hour')) return;
+            if (strtotime($last_pushed) > strtotime('-1 hour')) return;
             break;
           case 'Daily':
-            if (strtotime($last_run) > strtotime('-1 day')) return;
+            if (strtotime($last_pushed) > strtotime('-1 day')) return;
             break;
           case 'Weekly':
-            if (strtotime($last_run) > strtotime('-1 week')) return;
+            if (strtotime($last_pushed) > strtotime('-1 week')) return;
             break;
           case 'Monthly':
-            if (strtotime($last_run) > strtotime('-1 month')) return;
+            if (strtotime($last_pushed) > strtotime('-1 month')) return;
             break;
         }
       }
-
-      database::query(
-        "update ". DB_TABLE_SETTINGS ."
-        set value = '". date('Y-m-d H:i:s') . "'
-        where `key` = '".__CLASS__.":last_run'
-        limit 1;"
-      );
 
       $error_log_file = ini_get('error_log');
       $contents = file_get_contents($error_log_file);
@@ -97,22 +88,6 @@
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
           'function' => 'int()',
         ),
-      );
-    }
-
-    public function install() {
-      database::query(
-        "insert into ". DB_TABLE_SETTINGS ."
-        (title, description, `key`, value, date_created, date_updated)
-        values ('Errors Last Reported', 'Time when errors where last reported by the background job.', '".__CLASS__.":last_run', '', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-      );
-    }
-
-    public function uninstall() {
-      database::query(
-        "delete from ". DB_TABLE_SETTINGS ."
-        where `key` = '".__CLASS__.":last_run'
-        limit 1;"
       );
     }
   }

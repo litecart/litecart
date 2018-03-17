@@ -56,6 +56,10 @@
         $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) ? 1 : 0;
         $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 
+        if ($type == 'job') {
+          $object->date_pushed = $module['date_pushed'];
+        }
+
       // Add module to list
         $this->modules[$object->id] = $object;
       }
