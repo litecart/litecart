@@ -310,6 +310,8 @@ CREATE TABLE `lc_orders` (
   `payment_due` DECIMAL(11,4) NOT NULL,
   `tax_total` DECIMAL(11,4) NOT NULL,
   `client_ip` VARCHAR(39) NOT NULL,
+  `user_agent` VARCHAR(256) NOT NULL,
+  `domain` VARCHAR(64) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
