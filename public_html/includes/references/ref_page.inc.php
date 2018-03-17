@@ -3,11 +3,17 @@
   class ref_page {
 
     private $_id;
+    private $_language_codes;
     private $_data = array();
 
-    function __construct($page_id) {
+    function __construct($page_id, $language_code=null) {
 
       $this->_id = (int)$page_id;
+      $this->_language_codes = array_unique(array(
+        !empty($language_code) ? $language_code : language::$selected['code'],
+        settings::get('default_language_code'),
+        settings::get('store_language_code'),
+      ));
     }
 
     public function &__get($name) {
@@ -40,32 +46,16 @@
         case 'meta_description':
 
           $query = database::query(
-            "select language_code, title, content, meta_description from ". DB_TABLE_PAGES_INFO ."
+            "select * from ". DB_TABLE_PAGES_INFO ."
             where page_id = '". (int)$this->_id ."'
-            and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
+            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
 
           while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) $this->_data[$key][$row['language_code']] = $value;
-          }
-
-        // Fix missing translations
-            foreach (array_keys(language::$languages) as $language_code) {
-            if (empty($this->_data['title'][$language_code])) {
-              if (!empty($this->_data['title'][settings::get('default_language_code')])) {
-                $this->_data['title'][$language_code] = $this->_data['title'][settings::get('default_language_code')];
-              } else {
-                $this->_data['title'][$language_code] = '[untitled]';
-              }
-            }
-            foreach (array('content', 'head_title', 'meta_description') as $key) {
-              if (empty($this->_data[$key][$language_code])) {
-                if (!empty($this->_data[$key][settings::get('default_language_code')])) {
-                  $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
-                } else {
-                  $this->_data[$key][$language_code] = '';
-                }
-              }
+            foreach ($row as $key => $value) {
+              if (in_array($key, array('id', 'page_id', 'language_code'))) continue;
+              if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
           }
 
