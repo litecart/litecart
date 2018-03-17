@@ -10,6 +10,7 @@
     foreach ($tax_rate->data as $key => $value) {
       $_POST[$key] = $value;
     }
+    $_POST['address_type'] = 'shipping';
   }
 
   if (isset($_POST['save'])) {
@@ -112,10 +113,10 @@
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_address_type', 'Address Type'); ?></label>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_radio_button('address_type', 'payment', true); ?> <?php echo language::translate('title_payment_address', 'Payment Address'); ?></label>
+        <label><?php echo functions::form_draw_radio_button('address_type', 'shipping', true); ?> <?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></label>
       </div>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_radio_button('address_type', 'shipping', true); ?> <?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></label>
+        <label><?php echo functions::form_draw_radio_button('address_type', 'payment', true); ?> <?php echo language::translate('title_payment_address', 'Payment Address'); ?></label>
       </div>
     </div>
   </div>
