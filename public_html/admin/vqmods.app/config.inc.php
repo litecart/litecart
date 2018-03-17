@@ -11,5 +11,6 @@
     'docs' => array(
       'download' => 'download.inc.php',
       'vqmods' => 'vqmods.inc.php',
+      'test' => 'test.inc.php',
     ),
   );
