@@ -94,6 +94,11 @@
 
     public function send() {
 
+      if (!settings::get('email_status')) {
+        notices::add('warning', language::translate('warning_email_disabled', 'Please note the email service is disabled so no mails have been sent.'), 'email_disabled');
+        return true;
+      }
+
     // Perpare headers
       $headers = array(
         'From' => $this->format_contact($this->_sender),
