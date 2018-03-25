@@ -68,7 +68,6 @@
     list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
     $listing_product->snippets = array(
-      'listing_type' => $listing_type,
       'product_id' => $product['id'],
       'code' => $product['code'],
       'name' => $product['name'],
@@ -102,7 +101,7 @@
       $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $listing_product->snippets['image']['original'], array('watermark' => true));
     }
 
-    return $listing_product->stitch('views/listing_product');
+    return $listing_product->stitch('views/listing_product_'.$listing_type);
   }
 
   function draw_fancybox($selector='a.fancybox', $params=array()) {
