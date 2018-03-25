@@ -78,10 +78,10 @@
       $aliases = array(
         '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
-        '%customer_firstname' => $_POST['firstname'],
-        '%customer_lastname' => $_POST['lastname'],
-        '%customer_email' => $_POST['email'],
-        '%customer_password' => $_POST['password'],
+        '%customer_id' => $customer->data['id'],
+        '%customer_firstname' => $customer->data['firstname'],
+        '%customer_lastname' => $customer->data['lastname'],
+        '%customer_email' => $customer->data['email'],
       );
 
       $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
