@@ -87,7 +87,7 @@
         database::query(
           "insert into ". DB_TABLE_CURRENCIES ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". date('Y-m-d H:i:s') ."');"
         );
         $this->data['id'] = database::insert_id();
       }

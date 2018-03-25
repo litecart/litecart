@@ -37,7 +37,7 @@
 
       database::query(
         "update ". DB_TABLE_SETTINGS ."
-        set `value` = '". database::input(date('Y-m-d H:i:s')) ."'
+        set `value` = '". date('Y-m-d H:i:s') ."'
         where `key` = 'jobs_last_push'
         limit 1;"
       );

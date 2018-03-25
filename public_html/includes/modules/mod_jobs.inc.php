@@ -28,7 +28,7 @@
 
         database::query(
           "update ". DB_TABLE_MODULES ." set
-          date_pushed = '". database::input(date('Y-m-d H:i:s')) ."'
+          date_pushed = '". date('Y-m-d H:i:s') ."'
           where module_id = '". database::input($module_id) ."'
           limit 1;"
         );

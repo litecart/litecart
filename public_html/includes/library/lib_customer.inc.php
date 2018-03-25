@@ -298,7 +298,7 @@
         "update ". DB_TABLE_CUSTOMERS ."
         set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
             last_agent = '". database::input($_SERVER['USER_AGENT']) ."',
-            date_login = '". database::input(date('Y-m-d H:i:s')) ."'
+            date_login = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$customer['id'] ."
         limit 1;"
       );
