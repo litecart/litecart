@@ -70,6 +70,9 @@
     $listing_product->snippets = array(
       'product_id' => $product['id'],
       'code' => $product['code'],
+      'sku' => $product['sku'],
+      'mpn' => $product['mpn'],
+      'gtin' => $product['gtin'],
       'name' => $product['name'],
       'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id', 'manufacturer_id')),
       'image' => array(
