@@ -4,6 +4,8 @@
     $order = new ctrl_order($_GET['order_id']);
   } else {
     $order = new ctrl_order();
+    $order->data['client_ip'] = $_SERVER['REMOTE_ADDR'];
+    $order->data['date_created'] = date('Y-m-d H:i:s');
   }
 
   if (empty($_POST)) {
@@ -297,7 +299,18 @@
       <h2><?php echo language::translate('title_order_information', 'Order Information'); ?></h2>
 
       <div class="row">
+        <div class="form-group col-md-3">
+          <label><?php echo language::translate('title_date', 'Date'); ?><br />
+          <div class="form-static"><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
+        </div>
 
+        <div class="form-group col-md-9">
+          <label><?php echo language::translate('title_ip_address', 'IP Address'); ?><br />
+          <div class="form-static"><?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
           <?php echo functions::form_draw_order_status_list('order_status_id', true); ?>
