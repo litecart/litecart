@@ -2,6 +2,8 @@
 
   function email_send($from_formatted, $recipients, $subject, $message, $html=false, $attachments=array()) {
 
+    if (empty($from_formatted)) $from_formatted = settings::get('store_email');
+
     $from_email = filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $from_formatted), FILTER_SANITIZE_EMAIL);
     $from_name = trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $from_formatted)), '"');
 
