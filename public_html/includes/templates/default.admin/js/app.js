@@ -76,7 +76,7 @@
   });
 
 // Bootstrap Comaptible (data-toggle="tab")
-  $('[data-toggle="tab"]').click(function(e) {
+  $('body').on('click', '[data-toggle="tab"]', function(e) {
     e.preventDefault();
     $(this).closest('ul').find('li').removeClass('active');
     $(this).closest('li').addClass('active');
@@ -95,7 +95,7 @@
   }
 
 // Bootstrap Comaptible (data-toggle="buttons")
-  $('[data-toggle="buttons"] input[type="checkbox"]').click(function(){
+  $('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');
     } else {
@@ -103,12 +103,12 @@
     }
   });
 
-  $('[data-toggle="buttons"] input[type="radio"]').click(function() {
+  $('body').on('click', '[data-toggle="buttons"] input[type="radio"]', function(){
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
 // Data-Table Toggle Checkboxes
-  $('.data-table *[data-toggle="checkbox-toggle"]').click(function() {
+  $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
     $(this).closest('.data-table').find('tbody :checkbox').each(function() {
       $(this).prop('checked', !$(this).prop('checked'));
     });
