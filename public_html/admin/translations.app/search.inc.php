@@ -77,9 +77,13 @@ ul.filter li {
 
 <?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
 <?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
-<ul class="filter list-inline pull-right" style="margin: 0 auto;">
+<ul class="filter list-inline pull-right" style="margin: -6px 15px 0 0;">
   <li>
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword') .'"'); ?>
+  </li>
+
+  <li>
+    <?php echo functions::form_draw_select_field('endpoint', array(array('-- '. language::translate('title_all', 'All') .' --', ''), array(language::translate('title_frontend', 'Frontend'), 'frontend'), array(language::translate('title_backend', 'Backend'), 'backend'))); ?>
   </li>
 
   <li>
@@ -113,6 +117,8 @@ ul.filter li {
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
     where code != ''
+    ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : null) ."
+    ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : null) ."
     ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or `text_". implode("` like '%". database::input($_GET['query']) ."%' or `text_", database::input($_GET['languages'])) ."` like '%". database::input($_GET['query']) ."%')" : null) ."
     ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '' or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
     ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", array('cm', 'job', 'oa', 'ot', 'os', 'pm', 'sm')) ."_%:%')" : null) ."
