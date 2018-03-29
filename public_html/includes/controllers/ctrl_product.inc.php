@@ -79,8 +79,8 @@
         $this->data['categories'][] = $category['category_id'];
       }
 
-      $this->data['product_groups'] = explode(',', $this->data['product_groups']);
-      $this->data['keywords'] = explode(',', $this->data['keywords']);
+      $_POST['product_groups'] = !empty($_POST['product_groups']) ? explode(',', $_POST['product_groups']) : array();
+      $_POST['keywords'] = !empty($_POST['keywords']) ? explode(',', $_POST['keywords']) : array();
 
     // Info
       $products_info_query = database::query(
