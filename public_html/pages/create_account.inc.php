@@ -10,7 +10,6 @@
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
     }
-    $_POST['newsletter'] = '1';
   }
 
   if (!empty(customer::$data['id'])) {
