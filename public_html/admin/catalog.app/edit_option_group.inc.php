@@ -140,26 +140,27 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table class="table table-striped data-table">
       <thead>
-    <tr>
-        <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
-        <th></th>
-      </tr>
-  </thead>
-  <tbody>
+        <tr>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+          <th></th>
+        </tr>
+    </thead>
+    <tbody>
 <?php
-    if (!empty($_POST['values'])) {
-      $keys = array_keys($_POST['values']);
-      $key = array_shift($keys);
-    } else {
-      $key = 0;
-    }
+  if (!empty($_POST['values'])) {
+    $keys = array_keys($_POST['values']);
+    $key = array_shift($keys);
+  } else {
+    $key = 0;
+  }
 ?>
-      <tr>
-        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-        <td><?php echo language::translate('title_range', 'Range'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true); ?> (<?php echo language::translate('title_example', 'Example'); ?>: 100-400)</td>
-        <td></td>
-      </tr>
+        <tr>
+          <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+          <td><?php echo language::translate('title_range', 'Range'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true); ?> (<?php echo language::translate('title_example', 'Example'); ?>: 100-400)</td>
+          <td></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
@@ -167,26 +168,27 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table class="table table-striped data-table">
       <thead>
-    <tr>
-        <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
-        <th></th>
-      </tr>
-  </thead>
-  <tbody>
+        <tr>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
 <?php
-    if (!empty($_POST['values'])) {
-      $keys = array_keys($_POST['values']);
-      $key = array_shift($keys);
-    } else {
-      $key = 0;
-    }
+  if (!empty($_POST['values'])) {
+    $keys = array_keys($_POST['values']);
+    $key = array_shift($keys);
+  } else {
+    $key = 0;
+  }
 ?>
-      <tr>
-        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-        <td><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true); ?></td>
-        <td></td>
-      </tr>
+        <tr>
+          <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+          <td><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true); ?></td>
+          <td></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
@@ -194,26 +196,27 @@
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table class="table table-striped data-table">
       <thead>
-    <tr>
-        <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
-        <th></th>
-      </tr>
-  </thead>
-  <tbody>
+        <tr>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
 <?php
-    if (!empty($_POST['values'])) {
-      $keys = array_keys($_POST['values']);
-      $key = array_shift($keys);
-    } else {
-      $key = 0;
-    }
+  if (!empty($_POST['values'])) {
+    $keys = array_keys($_POST['values']);
+    $key = array_shift($keys);
+  } else {
+    $key = 0;
+  }
 ?>
-      <tr>
-        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-        <td><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_textarea('values['. $key .'][value]', true); ?></td>
-        <td></td>
-      </tr>
+        <tr>
+          <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
+          <td><?php echo language::translate('title_default', 'Default'); ?>: <?php echo functions::form_draw_textarea('values['. $key .'][value]', true); ?></td>
+          <td></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 

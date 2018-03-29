@@ -11,8 +11,6 @@
 
   if (!isset($payment)) $payment = new mod_payment();
 
-
-
 // Resume incomplete order in session
   if (!empty(session::$data['order']->data['id'])) {
     session::$data['order'] = new ctrl_order(session::$data['order']->data['id']);
