@@ -2,6 +2,8 @@
 
   function email_send($from_formatted, $recipients, $subject, $message, $html=false, $attachments=array()) {
 
+    trigger_error('email_send() is deprecated. Compose a new email using the new email class and send it using $class->send()', E_USER_DEPRECATED);
+
     if (empty($from_formatted)) $from_formatted = settings::get('store_email');
 
     $from_email = filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $from_formatted), FILTER_SANITIZE_EMAIL);
