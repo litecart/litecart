@@ -70,7 +70,7 @@
   <div id="product-values">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
 
-    <table class="table table-striped data-table">
+    <table class="table table-striped table-hover data-table">
       <thead>
         <tr>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>

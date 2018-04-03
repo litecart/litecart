@@ -586,7 +586,7 @@
     </div>
 
     <div class="panel-body table-responsive">
-      <table class="table table-striped data-table">
+      <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
             <th><?php echo language::translate('title_item', 'Item'); ?></th>
@@ -662,7 +662,7 @@
     </div>
 
     <div class="panel-body table-responsive">
-      <table class="table table-striped data-table">
+      <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
             <th style="width: 30px;">&nbsp;</th>

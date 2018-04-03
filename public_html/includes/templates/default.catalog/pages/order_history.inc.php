@@ -12,7 +12,7 @@
 
     <h1 class="title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
 
-    <table class="table table-striped data-table">
+    <table class="table table-striped table-hover data-table">
       <thead>
       <tr>
         <th class="main"><?php echo language::translate('title_order', 'Order'); ?></th>

@@ -69,7 +69,7 @@
 
 <?php echo functions::form_draw_form_begin('settings_form', 'post'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th><?php echo language::translate('title_key', 'Key'); ?></th>

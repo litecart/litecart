@@ -55,10 +55,6 @@
     }
   }
 
-  &.data-table {
-    white-space: nowrap;
-  }
-
   &.table-striped {
     > tbody > tr:nth-of-type(odd) {
       background: @table-striped-row-background-odd;
@@ -66,6 +62,19 @@
     > tbody > tr:nth-of-type(even) {
       background: @table-striped-row-background-even;
     }
+  }
+
+  &.table-hover {
+    > tbody > tr {
+      transition: background 125ms linear;
+      &:hover {
+        background: @table-row-hover-background;
+      }
+    }
+  }
+
+  &.data-table {
+    white-space: nowrap;
   }
 }
 
