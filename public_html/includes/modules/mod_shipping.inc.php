@@ -1,31 +1,27 @@
 <?php
 
   class mod_shipping extends module {
-    public $data;
+    public $data = array();
     public $items = array();
 
-    public function __construct($type='session') {
+    public function __construct() {
 
-      switch($type) {
-        case 'session': // Used for checkout
-          if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) session::$data['shipping'] = array();
-          $this->data = &session::$data['shipping'];
-
-          foreach (cart::$items as $key => $item) {
-            $this->items[$key] = $item;
-          }
-
-          break;
-
-        case 'local':
-          $this->data = array();
-          break;
-
-        default:
-          trigger_error('Unknown type', E_USER_ERROR);
+      if (empty($this->data['selected'])) {
+        $this->data['selected'] = array();
       }
 
+      if (!isset($this->data['userdata'])) {
+        $this->data['userdata'] = array();
+      }
+
+    // Load modules
       $this->load('shipping');
+
+    // Attach userdata to module
+      if (!empty($this->data['selected'])) {
+        list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+        if (!empty($this->modules[$module_id])) $this->modules[$module_id]->userdata = &$this->data['userdata'][$module_id];
+      }
     }
 
     public function options($items=null, $subtotal=null, $tax=null, $currency_code=null, $customer=null) {

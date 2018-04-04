@@ -10,7 +10,8 @@
 
   if (empty($order->data['id'])) die('Error: Missing session order object');
 
-  $payment = new mod_payment();
+  if (empty(session::$data['payment'])) session::$data['payment'] = new mod_payment();
+  $payment = &session::$data['payment'];
 
   $order_module = new mod_order();
 

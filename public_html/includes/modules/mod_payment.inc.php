@@ -1,15 +1,9 @@
 <?php
 
   class mod_payment extends module {
-    public $data;
+    public $data = array();
 
     public function __construct() {
-
-    // Link data to session object
-      if (!isset(session::$data['payment']) || !is_array(session::$data['payment'])) {
-        session::$data['payment'] = array();
-      }
-      $this->data = &session::$data['payment'];
 
       if (empty($this->data['selected'])) {
         $this->data['selected'] = array();
