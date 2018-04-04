@@ -215,7 +215,7 @@
 
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
-    $shipping = new mod_shipping('local');
+    $shipping = new mod_shipping();
     $cheapest_shipping = $shipping->cheapest(
       array(
         $product->id => array(
