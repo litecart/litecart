@@ -332,7 +332,7 @@
               <div class="form-group">
                 <div class="input-group">
                   <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
-                  <div class="selected-account form-control disabled"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#modal-customer-picker" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+                  <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customer_picker')); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                   <span class="input-group-btn">
                     <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
                   </span>
@@ -1114,71 +1114,5 @@
 
   $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
     calculate_total();
-  });
-
-// Customer Picker
-
-  var xhr_customer_picker = null;
-  $('#modal-customer-picker input[name="query"]').bind('propertyChange input', function(){
-    if ($(this).val() == '') {
-      $('#modal-customer-picker .results tbody').html('');
-      xhr_customer_picker = null;
-      return;
-    }
-    xhr_customer_picker = $.ajax({
-      type: 'get',
-      async: true,
-      cache: false,
-      url: '<?php echo document::link('', array('app' => 'customers', 'doc' => 'customers.json')); ?>&query=' + $(this).val(),
-      dataType: 'json',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.error(textStatus + ': ' + errorThrown);
-      },
-      success: function(json) {
-        $('#modal-customer-picker .results tbody').html('');
-        $.each(json, function(i, row){
-          if (row) {
-            $('#modal-customer-picker .results tbody').append(
-              '<tr>' +
-              '  <td class="id">' + row.id + '</td>' +
-              '  <td class="name">' + row.name + '</td>' +
-              '  <td class="email">' + row.email + '</td>' +
-              '  <td class="date-created">' + row.date_created + '</td>' +
-              '  <td></td>' +
-              '</tr>'
-            );
-          }
-        });
-        if ($('#modal-customer-picker .results tbody').html() == '') {
-          $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
-        }
-      },
-    });
-  });
-
-  $('#modal-customer-picker tbody').on('click', 'td', function() {
-    var row = $(this).closest('tr');
-
-    var id = $(row).find('.id').text();
-    var name = $(row).find('.name').text();
-    if (!id) {
-      id = 0;
-      name = '(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)';
-    }
-
-    $('input[name="customer[id]"]').val(id).trigger('change');
-    $('.selected-account .id').text(id);
-    $('.selected-account .name').text(name);
-    $.featherlight.close();
-  });
-
-  $('#modal-customer-picker .set-guest').click(function(){
-    $('input[name="customer[id]"]').val('0');
-    $('.selected-account .id').text('0');
-    $('.selected-account .name').text('(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)');
-    $.featherlight.close();
   });
 </script>

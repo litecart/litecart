@@ -130,6 +130,32 @@
          . '</div>';
   }
 
+  function form_draw_customer_field($name, $value=true, $parameters='') {
+
+    if ($value === true) $value = form_reinsert_value($name);
+
+    $account_name = language::translate('title_guest', 'Guest');
+
+    if (!empty($value)) {
+      $customer_query = database::query(
+        "select * from ". DB_TABLE_CUSTOMERS ."
+        where id = ". (int)$value ."
+        limit 1;"
+      );
+
+      if ($customer = database::fetch($customer_query)) {
+        $account_name = $customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname'];
+      } else {
+        $account_name = '<em>'. language::translate('title_unknown', 'Unknown') .'</em>';
+      }
+    }
+
+    return '<div class="form-control"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
+         . '  ' . functions::form_draw_hidden_field($name, true) . PHP_EOL
+         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customer_picker')) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '</div>';
+  }
+
   function form_draw_date_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 

@@ -25,6 +25,7 @@
       ),
     ),
     'docs' => array(
+      'customer_picker' => 'customer_picker.inc.php',
       'customers' => 'customers.inc.php',
       'customers.json' => 'customers.json.inc.php',
       'edit_customer' => 'edit_customer.inc.php',
