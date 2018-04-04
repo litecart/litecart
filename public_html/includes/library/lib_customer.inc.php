@@ -297,7 +297,7 @@
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
         set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-            last_agent = '". database::input($_SERVER['USER_AGENT']) ."',
+            last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
             date_login = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$customer['id'] ."
         limit 1;"
