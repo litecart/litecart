@@ -186,7 +186,6 @@
       }
 
       $this->data['categories'] = array_map('trim', $this->data['categories']);
-      $this->data['categories'] = array_filter($this->data['categories']);
       $this->data['categories'] = array_unique($this->data['categories']);
 
       $this->data['product_groups'] = array_map('trim', $this->data['product_groups']);
