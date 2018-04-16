@@ -582,8 +582,8 @@ foreach (currency::$currencies as $currency) {
             <tr>
               <th><?php echo language::translate('title_option', 'Option'); ?></th>
               <th class="text-center" style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-              <th class="text-center" style="width: 200px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-              <th style="width: 350px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
+              <th class="text-center" style="width: 185px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+              <th style="width: 400px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
               <th class="text-center" style="width: 125px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
               <th style="width: 85px;">&nbsp;</th>
             </tr>
@@ -594,7 +594,7 @@ foreach (currency::$currencies as $currency) {
               <td><?php echo functions::form_draw_text_field('sku', true); ?></td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('weight', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('weight', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -602,9 +602,9 @@ foreach (currency::$currencies as $currency) {
               </td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('dim_x', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('dim_y', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('dim_z', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('dim_x', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('dim_y', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('dim_z', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -621,7 +621,7 @@ foreach (currency::$currencies as $currency) {
               <td><?php echo functions::form_draw_text_field('options_stock['.$key.'][sku]', true); ?></td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -629,9 +629,9 @@ foreach (currency::$currencies as $currency) {
               </td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -1185,7 +1185,7 @@ foreach (currency::$currencies as $currency) {
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 1, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
                + '      <span class="input-group-addon">'
                + '        <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '', false, 'style="width: auto;"')); ?>'
                + '      </span>'
@@ -1193,9 +1193,9 @@ foreach (currency::$currencies as $currency) {
                + '  </td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 1, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 1, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 1, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 4, 0)); ?>'
                + '      <span class="input-group-addon">'
                + '        <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '', false, 'style="width: auto;"')); ?>'
                + '      </span>'
