@@ -661,10 +661,13 @@ CREATE TABLE IF NOT EXISTS `lc_slides_info` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_sold_out_statuses` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `hidden` TINYINT(1) NOT NULL,
   `orderable` TINYINT(1) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+	KEY `hidden` (`hidden`),
+	KEY `orderable` (`orderable`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_sold_out_statuses_info` (

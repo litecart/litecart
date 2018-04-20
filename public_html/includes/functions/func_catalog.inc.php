@@ -157,9 +157,10 @@
       select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price". (($filter['sort'] == 'occurrences') ? ", " . $sql_select_occurrences : false) ."
 
       from (
-        select p.id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
         from ". DB_TABLE_PRODUCTS ." p
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
+        left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
         where p.status
           and (id
           ". (!empty($filter['products']) ? "$sql_andor p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
@@ -169,6 +170,7 @@
           ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : null) ."
           ". (!empty($filter['purchased']) ? "$sql_andor p.purchases" : null) ."
         )
+        and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."

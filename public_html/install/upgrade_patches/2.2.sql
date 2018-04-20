@@ -15,3 +15,7 @@ WHERE `key` = 'job_error_reporter:last_run';
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('email', 'Send Emails', 'Wheither or not the platform should deliver outgoing emails.', 'email_status', '1', 'toggle("y/n")', '1', NOW(), NOW());
+-- --------------------------------------------------------
+ALTER TABLE `lc_sold_out_statuses` ADD COLUMN `hidden` TINYINT(1) NOT NULL AFTER `id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_sold_out_statuses` ADD INDEX `hidden` (`hidden`), ADD INDEX `orderable` (`orderable`);

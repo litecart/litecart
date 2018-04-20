@@ -15,6 +15,7 @@
         <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
         <th><?php echo language::translate('title_orderable', 'Orderable'); ?></th>
         <th>&nbsp;</th>
       </tr>
@@ -39,7 +40,8 @@
         <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $sold_out_status['id'] .']', $sold_out_status['id']); ?></td>
         <td><?php echo $sold_out_status['id']; ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
-        <td class="text-center"><?php echo !empty($sold_out_status['orderable']) ? 'x' : ''; ?></td>
+        <td class="text-center"><?php echo !empty($sold_out_status['hidden']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+        <td class="text-center"><?php echo !empty($sold_out_status['orderable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
         <td style="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
@@ -50,7 +52,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="5"><?php echo language::translate('title_sold_out_statuses', 'Sold Out Statuses'); ?>: <?php echo database::num_rows($sold_out_status_query); ?></td>
+        <td colspan="6"><?php echo language::translate('title_sold_out_statuses', 'Sold Out Statuses'); ?>: <?php echo database::num_rows($sold_out_status_query); ?></td>
       </tr>
     </tfoot>
   </table>
