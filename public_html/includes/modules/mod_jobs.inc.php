@@ -41,6 +41,13 @@
                 . '##'.str_repeat('#', strlen($duration)).'##' . PHP_EOL;
 
           echo $log;
+
+          database::query(
+            "update ". DB_TABLE_MODULES ."
+            set last_log = '". database::input($log) ."'
+            where module_id = '". database::input($module_id) ."'
+            limit 1;"
+          );
         }
       }
     }
