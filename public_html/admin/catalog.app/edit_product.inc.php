@@ -270,7 +270,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+             <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
           </div>
 
           <div class="form-group">
