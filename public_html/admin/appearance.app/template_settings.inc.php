@@ -86,6 +86,10 @@
 
       switch (true) {
 
+        case (substr($setting['function'], 0, 8) == 'password'):
+          $value = '****************';
+          break;
+
         case (substr($config['function'], 0, 14) == 'regional_input'):
 
           if (isset($settings[$config['key']][language::$selected['code']])) {

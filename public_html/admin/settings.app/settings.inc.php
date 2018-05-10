@@ -123,6 +123,10 @@
       } else {
 
         switch (true) {
+          case (substr($setting['function'], 0, 8) == 'password'):
+            $setting['value'] = '****************';
+            break;
+
           case (substr($setting['function'], 0, 14) == 'regional_input'):
             $setting['value'] = @json_decode($setting['value'], true);
             $setting['value'] = $setting['value'][language::$selected['code']];
