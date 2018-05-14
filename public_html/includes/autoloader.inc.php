@@ -7,9 +7,6 @@
       case (substr($class, 0, 3) == 'cm_'):
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/' . $class . '.inc.php');
         break;
-      case (substr($class, 0, 5) == 'func_'):
-        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . $class . '.inc.php');
-        break;
       case (substr($class, 0, 4) == 'job_'):
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/' . $class . '.inc.php');
         break;

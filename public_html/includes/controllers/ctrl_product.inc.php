@@ -79,8 +79,8 @@
         $this->data['categories'][] = $category['category_id'];
       }
 
-      $this->data['product_groups'] = explode(',', $this->data['product_groups']);
-      $this->data['keywords'] = explode(',', $this->data['keywords']);
+      $this->data['product_groups'] = !empty($this->data['product_groups']) ? explode(',', $this->data['product_groups']) : array();
+      $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : array();
 
     // Info
       $products_info_query = database::query(
@@ -186,7 +186,6 @@
       }
 
       $this->data['categories'] = array_map('trim', $this->data['categories']);
-      $this->data['categories'] = array_filter($this->data['categories']);
       $this->data['categories'] = array_unique($this->data['categories']);
 
       $this->data['product_groups'] = array_map('trim', $this->data['product_groups']);

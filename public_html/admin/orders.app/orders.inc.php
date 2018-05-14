@@ -17,6 +17,8 @@
         throw new Exception(language::translate('error_method_doesnt_exist', 'The method doesn\'t exist'));
       }
 
+      sort($_POST['orders']);
+
       echo call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
       return;
 
@@ -71,7 +73,7 @@
 
 <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>

@@ -512,7 +512,7 @@
                 break;
 
               case 'keywords':
-                $this->_data[$key] = explode(',', $row[$key]);
+                $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : array();
                 break;
 
               default:

@@ -64,7 +64,7 @@
 ?>
 <h1><?php echo $app_icon; ?> <?php echo $title; ?></h1>
 <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>

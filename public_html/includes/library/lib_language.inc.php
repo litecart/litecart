@@ -197,7 +197,7 @@
 
     // Get translation from database
       $translation_query = database::query(
-        "select id, text_en, text_". self::$selected['code'] ." from ". DB_TABLE_TRANSLATIONS ."
+        "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_TRANSLATIONS ."
         where code = '". database::input($code) ."'
         limit 1;"
       );
@@ -219,7 +219,7 @@
 
     // Find same english translation by different key
       $translation_query = database::query(
-        "select id, text_en, text_". self::$selected['code'] ." from ". DB_TABLE_TRANSLATIONS ."
+        "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_TRANSLATIONS ."
         where text_en = '". database::input($translation['text_en']) ."'
         and text_en != ''
         and text_". self::$selected['code'] ." != ''
@@ -229,7 +229,7 @@
       if ($translation = database::fetch($translation_query)) {
         database::query(
           "update ". DB_TABLE_TRANSLATIONS ."
-          set text_". self::$selected['code'] ." = '". $translation['text_'.$language_code] ."',
+          set `text_". $language_code ."` = '". $translation['text_'.$language_code] ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
           where text_en = '". database::input($translation['text_en']) ."'
           and text_". self::$selected['code'] ." = '';"
