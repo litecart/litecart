@@ -69,7 +69,7 @@
 
 <?php echo functions::form_draw_form_begin('settings_form', 'post'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th><?php echo language::translate('title_key', 'Key'); ?></th>
@@ -123,6 +123,10 @@
       } else {
 
         switch (true) {
+          case (substr($setting['function'], 0, 8) == 'password'):
+            $setting['value'] = '****************';
+            break;
+
           case (substr($setting['function'], 0, 14) == 'regional_input'):
             $setting['value'] = @json_decode($setting['value'], true);
             $setting['value'] = $setting['value'][language::$selected['code']];

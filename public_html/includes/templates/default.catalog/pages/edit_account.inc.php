@@ -104,6 +104,13 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_password', 'Password'); ?></label>
+          <?php echo functions::form_draw_password_field('password', ''); ?>
+        </div>
+      </div>
+
       <p><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?></p>
 
     <?php echo functions::form_draw_form_end(); ?>

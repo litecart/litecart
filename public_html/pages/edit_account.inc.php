@@ -29,6 +29,8 @@
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_email_missing', 'You must enter an email address.'));
 
+      if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_current_password', 'You must enter your current password to save changes'));
+
       if (!empty($_POST['new_password'])) {
         if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
         if (isset($_POST['new_password']) && isset($_POST['confirmed_password']) && $_POST['new_password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
@@ -50,6 +52,10 @@
         if (empty($_POST['shipping_address']['postcode']) && !empty($_POST['shipping_address']['country_code']) && reference::country($_POST['shipping_address']['country_code'])->postcode_format) throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
         if (empty($_POST['shipping_address']['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
         if (empty($_POST['shipping_address']['zone_code']) && !empty($_POST['shipping_address']['country_code']) && reference::country($_POST['shipping_address']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+      }
+
+      if ($customer->data['email'] != $_POST['email']) {
+        $customer->set_password($_POST['password']);
       }
 
       $fields = array(

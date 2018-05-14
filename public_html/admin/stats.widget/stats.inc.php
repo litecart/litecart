@@ -82,7 +82,7 @@
     <div class="panel-body table-responsive">
       <div class="row">
         <div class="col-md-6">
-          <table class="table table-striped data-table">
+          <table class="table table-striped table-hover data-table">
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
@@ -104,7 +104,7 @@
           </table>
         </div>
         <div class="col-md-6">
-          <table class="table table-striped data-table">
+          <table class="table table-striped table-hover data-table">
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>

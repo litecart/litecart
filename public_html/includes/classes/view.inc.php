@@ -41,8 +41,8 @@
     // Clean orphan snippets
       if ($cleanup) {
         $search = array(
-          '/\{snippet:[^\}]+\}/',
-          '/<!--snippet:[^-->]+-->/',
+          '#\{snippet:.*?\}#',
+          '#<!--snippet:.*?-->#',
         );
 
         $this->html = preg_replace($search, '', $this->html);

@@ -243,7 +243,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (241, 1, 'Montenegro', '', '499', 'ME', 'MNE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '382', NOW(), NOW()),
 (242, 1, 'Jersey', '', '832', 'JE', 'JEY', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
 (243, 1, 'Isle of Man', '', '833', 'IM', 'IMN', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
-(244, 1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'EUR', '358', NOW(), NOW());
+(244, 1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'sv', 'EUR', '358', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
@@ -324,7 +324,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('email', 'local', 'SMTP Host', 'SMTP hostname e.g. smtp.myprovider.com.', 'smtp_host', 'localhost', 'input()', 11, NOW(), NOW()),
 ('email', 'local', 'SMTP Port', 'SMTP port e.g. 25, 465 (SSL/TLS), or 587 (STARTTLS).', 'smtp_port', '25', 'number()', 12, NOW(), NOW()),
 ('email', 'local', 'SMTP Username', 'Username for SMTP authentication.', 'smtp_username', '', 'input()', 13, NOW(), NOW()),
-('email', 'local', 'SMTP Password', 'Password for SMTP authentication.', 'smtp_password', '', 'input()', 14, NOW(), NOW()),
+('email', 'local', 'SMTP Password', 'Password for SMTP authentication.', 'smtp_password', '', 'password()', 14, NOW(), NOW()),
 ('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', 2, NOW(), NOW()),
 ('listings', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 1, NOW(), NOW()),
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'int()', 10, NOW(), NOW()),

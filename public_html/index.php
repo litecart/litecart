@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.1.1
+ * LiteCart® 2.1.2
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -48,7 +48,16 @@
 
     sort($lines);
 
-    file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
+    if (count($lines) >= 100) {
+      $email = new email();
+      $email->add_recipient(settings::get('store_email'))
+            ->set_subject('[Not Found Report] '. settings::get('store_name'))
+            ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))
+            ->send();
+      file_put_contents($not_found_file, '');
+    } else {
+      file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
+    }
 
     echo '<div>'
        . '  <h1>HTTP 404 - Not Found</h1>'

@@ -50,7 +50,7 @@
 
 <?php echo functions::form_draw_form_begin('template_settings_form', 'post', null, false, 'style="max-width: 960px;"'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th style="width: 250px;"><?php echo language::translate('title_key', 'Key'); ?></th>
@@ -85,6 +85,10 @@
     } else {
 
       switch (true) {
+
+        case (substr($setting['function'], 0, 8) == 'password'):
+          $value = '****************';
+          break;
 
         case (substr($config['function'], 0, 14) == 'regional_input'):
 
