@@ -86,7 +86,7 @@
 
       switch (true) {
 
-        case (substr($setting['function'], 0, 8) == 'password'):
+        case (substr($config['function'], 0, 8) == 'password'):
           $value = '****************';
           break;
 
