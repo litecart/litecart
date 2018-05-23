@@ -30,7 +30,6 @@
       if (empty($_POST['vqmods'])) throw new Exception(language::translate('error_must_select_vqmods', 'You must select vQmods'));
 
       foreach ($_POST['vqmods'] as $vqmod) {
-        die(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_BASENAME));
         unlink(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_BASENAME));
       }
 
