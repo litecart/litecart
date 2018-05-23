@@ -469,13 +469,11 @@
         <label>Time Zone<br />
         <select class="form-control" name="store_time_zone" required="required">
 <?php
-  foreach (timezone_identifiers_list() as $zone) {
-    $zone = explode('/', $zone); // 0 => Continent, 1 => City
-    if (in_array($zone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) {
-      if (!empty($zone[1])) {
-        echo '<option>'. $zone[0]. '/' . $zone[1]  .'</option>';
-      }
-    }
+  foreach (timezone_identifiers_list() as $timezone) {
+    $timezone = explode('/', $timezone);
+    if (!in_array($timezone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) continue;
+    if (empty($timezone[1])) continue;
+    echo '<option>'. implode('/', $timezone)  .'</option>';
   }
 ?>
         </select>
