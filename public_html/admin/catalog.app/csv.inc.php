@@ -128,7 +128,7 @@
         if (isset($row['dock'])) $row['dock'] = explode(',', $row['dock']);
 
       // Set default category data
-        if (empty($category->data['id']) & empty($row['dock'])) {
+        if (empty($category->data['id']) && empty($row['dock']) && empty($row['parent_id'])) {
           $category->data['dock'][] = 'tree';
         }
 
