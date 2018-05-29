@@ -30,6 +30,7 @@ ErrorDocument 500 "Internal Server Error"
   # Force HTTPS (Standard SSL)
   #RewriteCond %{HTTPS} off
   #RewriteCond %{REQUEST_METHOD} !=POST
+  #RewriteCond %{REQUEST_URI} !^\.well-known/
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
   # Force HTTPS (CloudFlare Flexi SSL / Load Balancing Servers)
