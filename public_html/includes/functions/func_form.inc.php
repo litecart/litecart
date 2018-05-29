@@ -117,15 +117,8 @@
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
-    document::$snippets['javascript']['input-currency-replace-decimal'] = "  $('body').on('change', 'input[data-type=\"currency\"]', function(){" . PHP_EOL
-                                                                        . "    if (String($(this).val()).match(/,/)) {" . PHP_EOL
-                                                                        . "      $(this).val($(this).val().replace(',', '.'));" . PHP_EOL
-                                                                        . "      $(this).trigger('change');" . PHP_EOL
-                                                                        . "    }" . PHP_EOL
-                                                                        . "  });";
-
     return '<div class="input-group">' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? round($value, currency::$currencies[$currency_code]['decimals']+2) : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? round($value, currency::$currencies[$currency_code]['decimals']+2) : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
          . '  <strong class="input-group-addon" style="opacity: 0.75;">'. $currency_code .'</strong>' . PHP_EOL
          . '</div>';
   }
