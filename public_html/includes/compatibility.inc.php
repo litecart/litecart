@@ -6,7 +6,7 @@
 
   if (version_compare(phpversion(), '5.4.0', '<') == true) {
 
-  // (Un)register Globals (PHP <5.4)
+  // (Un)register Globals
     if (ini_get('register_globals')) {
       foreach (array_keys(array_merge($_SERVER, $_ENV, !empty($_SESSION) ? $_SESSION : array(), $_COOKIE, $_REQUEST, $_FILES)) as $key) {
         if (isset($GLOBALS[$key])) unset($GLOBALS[$key]);
