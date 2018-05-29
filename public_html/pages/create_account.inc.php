@@ -71,9 +71,9 @@
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
 
-      $customer->save();
-
       $customer->set_password($_POST['password']);
+
+      $customer->save();
 
       $aliases = array(
         '%store_name' => settings::get('store_name'),

@@ -1,14 +1,3 @@
-<?php if (!empty(document::$settings['compact_category_tree'])) { ?>
-<style>
-  #box-category-tree > ul.compact > li:not(.opened) {
-    display: none;
-  }
-  #box-category-tree > ul.compact > li.toggle {
-    display: block !important;
-  }
-</style>
-<?php } ?>
-
 <?php
   if (!function_exists('custom_draw_category')) {
     function custom_draw_category($category, $category_path) {
@@ -25,6 +14,18 @@
     }
   }
 ?>
+
+<?php if (!empty(document::$settings['compact_category_tree'])) { ?>
+<style>
+  #box-category-tree > ul.compact > li:not(.opened) {
+    display: none;
+  }
+  #box-category-tree > ul.compact > li.toggle {
+    display: block !important;
+  }
+</style>
+<?php } ?>
+
 <div id="box-category-tree" class="box">
   <h1 class="title"><?php echo $title; ?></h1>
   <ul class="nav nav-primary nav-pills nav-stacked<?php if (!empty(document::$settings['compact_category_tree']) && !empty($category_path)) echo ' compact'; ?>">

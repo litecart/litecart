@@ -106,7 +106,7 @@
               break;
             }
 
-            if (++$failsafe == 10) die('x');
+            if (++$failsafe == 10) trigger_error('Endless loop while building category path', E_USER_ERROR);
           }
 
           break;

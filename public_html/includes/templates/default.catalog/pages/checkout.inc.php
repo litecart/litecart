@@ -287,7 +287,7 @@
 // Customer Form: Checksum
 
   window.customer_form_changed = false;
-  $('#box-checkout .customer.wrapper').on('input propertyChange', '#box-checkout-customer :input', function(e) {
+  $('#box-checkout .customer.wrapper').on('input change', '#box-checkout-customer :input', function(e) {
     if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
       window.customer_form_changed = true;
       $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
