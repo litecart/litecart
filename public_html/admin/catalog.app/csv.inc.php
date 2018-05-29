@@ -133,13 +133,33 @@
         }
 
       // Set new category data
-        foreach (array('parent_id', 'status', 'code', 'dock', 'keywords', 'image') as $field) {
+        $fields = array(
+          'parent_id',
+          'status',
+          'code',
+          'dock',
+          'keywords',
+          'image',
+        );
+
+        foreach ($fields as $field) {
           if (isset($row[$field])) $category->data[$field] = $row[$field];
         }
 
       // Set category info data
-        foreach (array('name', 'short_description', 'description', 'head_title', 'h1_title', 'meta_description') as $field) {
-          if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
+        if (!empty($row['language_code'])) {
+          $fields = array(
+            'name',
+            'short_description',
+            'description',
+            'head_title',
+            'h1_title',
+            'meta_description',
+          );
+
+          foreach ($fields as $field) {
+            if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
+          }
         }
 
         if (isset($row['new_image'])) {
@@ -425,10 +445,18 @@
 
       // Set product info data
         if (!empty($row['language_code'])) {
-          foreach (array('name', 'short_description', 'description', 'attributes', 'head_title', 'meta_description') as $field) {
-            if (isset($row[$field])) {
-              $product->data[$field][$row['language_code']] = $row[$field];
-            }
+
+          $fields = array(
+            'name',
+            'short_description',
+            'description',
+            'attributes',
+            'head_title',
+            'meta_description'
+          );
+
+          foreach ($fields as $field) {
+            if (isset($row[$field])) $product->data[$field][$row['language_code']] = $row[$field];
           }
         }
 
