@@ -61,6 +61,72 @@
 
           break;
 
+        case 'path':
+
+          $this->_data['path'] = array();
+          $page_index_id = $this->id;
+
+          $failsafe = 0;
+          while (true) {
+            $page_query = database::query(
+              "select id, parent_id from ". DB_TABLE_PAGES ."
+              where id = ". (int)$page_index_id ."
+              limit 1;"
+            );
+
+            $page = database::fetch($page_query);
+
+            if ($page) {
+              $this->_data['path'][$page['id']] = reference::page($page['id']);
+            }
+
+            if (!empty($page['parent_id'])) {
+              $page_index_id = $page['parent_id'];
+            } else {
+              break;
+            }
+
+            if (++$failsafe == 10) trigger_error('Endless loop while building page path', E_USER_ERROR);
+          }
+
+          break;
+
+        case 'descendants':
+
+          $this->data['descendants'] = array();
+
+          if (!defined('custom_page_descendants')) {
+            function custom_page_descendants($parent_id) {
+              $descendants = array();
+              $pages_query = database::query(
+                "select id from ". DB_TABLE_PAGES ."
+                where parent_id = ". (int)$parent_id .";"
+              );
+              while ($page = database::fetch($pages_query)) {
+                $descendants[$page['id']] = reference::page($page['id']);
+                $descendants += custom_page_descendants($page['id']);
+              }
+              return $descendants;
+            }
+          }
+
+          $this->data['descendants'] = custom_page_descendants($this->_id);
+
+        case 'subpages':
+
+          $this->_data['descendants'] = array();
+
+            $page_query = database::query(
+              "select id, parent_id from ". DB_TABLE_PAGES ."
+              where parent_id = ". (int)$this->_id .";"
+            );
+
+            while ($page = database::fetch($page_query)) {
+              $this->_data['descendants'][$page['id']] = reference::page($page['id']);
+            }
+
+          break;
+
         default:
 
           $query = database::query(

@@ -932,22 +932,46 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
-  function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_pages_list($name, $input=true, $multiple=false, $parameters=false) {
 
-    $query = database::query(
-      "select p.id, pi.name from ". DB_TABLE_PAGES ." p
-      left join ". DB_TABLE_PAGES_INFO ." pi on (pi.delivery_status_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-      where p.status
-      order by p.priority, pi.name asc;"
-    );
+    if (!function_exists('form_draw_pages_list_options_iterator')) {
+      function form_draw_pages_list_options_iterator($parent_id = 0, $level = 1) {
+
+        $options = array();
+
+        if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
+
+        $pages_query = database::query(
+          "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+          left join ". DB_TABLE_PAGES_INFO ." pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+          where p.parent_id = '". (int)$parent_id ."'
+          order by p.priority asc, pi.title asc;"
+        );
+
+        while ($page = database::fetch($pages_query)) {
+
+          $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title'], $page['id']);
+
+          $sub_pages_query = database::query(
+            "select id from ". DB_TABLE_PAGES ."
+            where parent_id = '". (int)$page['id'] ."'
+            limit 1;"
+          );
+
+          $sub_options = form_draw_pages_list_options_iterator($page['id'], $level+1);
+
+          $options = array_merge($options, $sub_options);
+        }
+
+        return $options;
+      }
+    }
 
     $options = array();
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
-    }
+    $options = array_merge($options, form_draw_pages_list_options_iterator());
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }

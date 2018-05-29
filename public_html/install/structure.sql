@@ -389,12 +389,14 @@ CREATE TABLE `lc_orders_totals` (
 CREATE TABLE `lc_pages` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
+  `parent_id` INT(11) NOT NULL,
   `dock` VARCHAR(64) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
+  KEY `parent_id` (`parent_id`),
   KEY `dock` (`dock`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------

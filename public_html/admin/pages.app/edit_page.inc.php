@@ -18,12 +18,13 @@
 
     try {
       if (empty($_POST['title'])) throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
-      if (empty($_POST['dock'])) throw new Exception(language::translate('error_missing_dock', 'You must select a dock.'));
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
+      if (empty($_POST['dock'])) $_POST['dock'] = array();
 
       $fields = array(
         'status',
+        'parent_id',
         'title',
         'content',
         'dock',
@@ -73,25 +74,25 @@
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
       <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
     </div>
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+      <?php echo functions::form_draw_number_field('priority', true); ?>
+    </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo language::translate('text_dock_in_dock_menu', 'Dock in site menu'); ?></label>
-      </div>
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('dock[]', 'customer_service', (isset($_POST['dock']) && in_array('customer_service', $_POST['dock'])) ? 'customer_service' : ''); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label>
-      </div>
-      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo language::translate('text_dock_in_dock_menu', 'Dock in site menu'); ?></label><br />
+        <label><?php echo functions::form_draw_checkbox('dock[]', 'customer_service', (isset($_POST['dock']) && in_array('customer_service', $_POST['dock'])) ? 'customer_service' : ''); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br />
         <label><?php echo functions::form_draw_checkbox('dock[]', 'information', (isset($_POST['dock']) && in_array('information', $_POST['dock'])) ? 'information' : '0'); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>
       </div>
     </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-      <?php echo functions::form_draw_number_field('priority', true); ?>
+      <label><?php echo language::translate('title_parent', 'Parent'); ?></label>
+      <?php echo functions::form_draw_pages_list('parent_id', true); ?>
     </div>
   </div>
 

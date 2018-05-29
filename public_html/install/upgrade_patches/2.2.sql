@@ -19,3 +19,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `title`, `description`, `key`, `
 ALTER TABLE `lc_sold_out_statuses` ADD COLUMN `hidden` TINYINT(1) NOT NULL AFTER `id`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_sold_out_statuses` ADD INDEX `hidden` (`hidden`), ADD INDEX `orderable` (`orderable`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_pages`
+ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
+ADD INDEX `parent_id` (`parent_id`);

@@ -84,6 +84,7 @@
       database::query(
         "update ". DB_TABLE_PAGES ."
         set status = '". ((!empty($this->data['status'])) ? 1 : 0) ."',
+          parent_id = ". (int)$this->data['parent_id'] .",
           dock = '". ((!empty($this->data['dock'])) ? implode(',', $this->data['dock']) : '') ."',
           priority = ". (int)$this->data['priority'] .",
           date_updated = '". date('Y-m-d H:i:s') ."'
@@ -128,6 +129,15 @@
     }
 
     public function delete() {
+
+      $pages_query = database::query(
+        "select id from ". DB_TABLE_PAGES ."
+        where parent_id = ". (int)$this->data['id'] .";"
+      );
+
+      if (database::num_rows($pages_query)) {
+        trigger_error('Cannot delete page when there are other pages mounted to it', E_USER_ERROR);
+      }
 
       database::query(
         "delete from ". DB_TABLE_PAGES_INFO ."
