@@ -121,3 +121,12 @@
     if ($(e.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
+
+// Keep alive
+  var keepAlive = setInterval(function() {
+    $.ajax({
+      url: window.config.platform.url + 'ajax/cart.json',
+      type: 'get',
+      cache: false
+    });
+  }, 60000);
