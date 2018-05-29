@@ -3,7 +3,7 @@
     <?php foreach ($logotypes as $logotype) { ?>
     <li>
       <a href="<?php echo htmlspecialchars($logotype['link']); ?>">
-        <img src="<?php echo htmlspecialchars($logotype['image']['thumbnail_1x']); ?>" srcset="<?php echo htmlspecialchars($logotype['image']['thumbnail_1x']); ?> 1x, <?php echo htmlspecialchars($logotype['image']['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($logotype['title']); ?>" style="margin: 0px 15px;">
+        <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $logotype['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $logotype['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $logotype['image']['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($logotype['title']); ?>" style="margin: 0px 15px;">
       </a>
     </li>
     <?php } ?>

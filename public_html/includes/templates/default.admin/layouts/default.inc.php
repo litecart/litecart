@@ -39,7 +39,7 @@
 
     <div id="languages" class="text-center">
       <?php foreach (language::$languages as $language) { ?>
-      <?php if ($language['status']) { ?><a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>"><img src="<?php echo WS_DIR_IMAGES .'languages/'. $language['code'] .'.png'; ?>" alt="<?php echo htmlspecialchars($language['name']); ?>" style="max-width: 16px;" /></a><?php } ?>
+      <?php if ($language['status']) { ?><a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>"><img src="<?php echo document::href_link(WS_DIR_IMAGES .'languages/'. $language['code'] .'.png'); ?>" alt="<?php echo htmlspecialchars($language['name']); ?>" style="max-width: 16px;" /></a><?php } ?>
       <?php } ?>
     </div>
 

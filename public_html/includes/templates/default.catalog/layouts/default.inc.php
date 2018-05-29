@@ -18,7 +18,7 @@
 
     <div class="col-auto">
       <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-        <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+        <img src="<?php echo document::href_link(WS_DIR_IMAGES . 'logotype.png'); ?>" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
       </a>
     </div>
 
