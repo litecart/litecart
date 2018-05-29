@@ -23,7 +23,7 @@
           'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
           'image' => array(
             'original' => WS_DIR_IMAGES . $manufacturer['image'],
-            'thumbnail_1x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 30, 'FIT'),
+            'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 30, 'FIT'),
             'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 60, 'FIT'),
           ),
         );
