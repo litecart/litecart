@@ -20,8 +20,9 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-          <?php echo functions::form_draw_toggle('newsletter', true, 'y/n'); ?>
+          <label class="checkbox">
+            <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
+          </label>
         </div>
       </div>
 
