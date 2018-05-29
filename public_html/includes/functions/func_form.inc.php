@@ -978,11 +978,18 @@
 
   function form_draw_payment_modules_list($name, $input=true, $multiple=true, $parameters='') {
 
-    $payment = new mod_payment();
+    $modules_query = database::query(
+      "select * from ". DB_TABLE_MODULES ."
+      where type = 'payment'
+      and status;"
+    );
 
     $options = array();
 
-    foreach ($payment->modules as $module) {
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while($module = database::fetch($modules_query)) {
+      $module = new $module();
       $options[] = array($module->name, $module->id);
     }
 
@@ -1032,11 +1039,18 @@
 
   function form_draw_shipping_modules_list($name, $input=true, $multiple=true, $parameters='') {
 
-    $shipping = new mod_shipping();
+    $modules_query = database::query(
+      "select * from ". DB_TABLE_MODULES ."
+      where type = 'shipping'
+      and status;"
+    );
 
     $options = array();
 
-    foreach ($shipping->modules as $module) {
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while($module = database::fetch($modules_query)) {
+      $module = new $module();
       $options[] = array($module->name, $module->id);
     }
 
