@@ -30,7 +30,7 @@
 
       $tax_class_query = database::query(
         "select * from ". DB_TABLE_TAX_CLASSES ."
-        where id = '". (int)$tax_class_id ."'
+        where id = ". (int)$tax_class_id ."
         limit 1;"
       );
 
@@ -59,7 +59,7 @@
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -70,7 +70,7 @@
 
       database::query(
         "delete from ". DB_TABLE_TAX_CLASSES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

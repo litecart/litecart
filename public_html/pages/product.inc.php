@@ -40,7 +40,7 @@
   database::query(
     "update ". DB_TABLE_PRODUCTS ."
     set views = views + 1
-    where id = '". (int)$_GET['product_id'] ."'
+    where id = ". (int)$_GET['product_id'] ."
     limit 1;"
   );
 

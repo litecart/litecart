@@ -30,7 +30,7 @@
 
       $supplier_query = database::query(
         "select * from ". DB_TABLE_SUPPLIERS ."
-        where id='". (int)$supplier_id ."'
+        where id=". (int)$supplier_id ."
         limit 1;"
       );
 
@@ -61,7 +61,7 @@
         phone = '". database::input($this->data['phone']) ."',
         link = '". database::input($this->data['link']) ."',
         date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -74,7 +74,7 @@
 
       $products_query = database::query(
         "select id from ". DB_TABLE_PRODUCTS ."
-        where supplier_id = '". (int)$this->data['id'] ."'
+        where supplier_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

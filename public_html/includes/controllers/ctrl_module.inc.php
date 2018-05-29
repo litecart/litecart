@@ -124,11 +124,11 @@
         set
           module_id = '". database::input($this->data['module_id']) ."',
           type = '". database::input($this->data['type']) ."',
-          status = '". (int)$this->data['status'] ."',
-          priority = '". (int)$this->data['priority'] ."',
+          status = ". (int)$this->data['status'] .",
+          priority = ". (int)$this->data['priority'] .",
           settings = '". database::input($this->_encode_settings($this->data['settings'])) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)database::input($this->data['id']) ."'
+        where id = ". (int)database::input($this->data['id']) ."
         limit 1;"
       );
 

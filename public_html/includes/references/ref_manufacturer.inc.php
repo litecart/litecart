@@ -57,7 +57,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
-            where manufacturer_id = '". (int)$this->_id ."'
+            where manufacturer_id = ". (int)$this->_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -75,7 +75,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS ."
-            where id = '". (int)$this->_id ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
 

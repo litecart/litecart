@@ -19,7 +19,7 @@
 
       $manufacturer_query = database::query(
         "select id, name from ". DB_TABLE_MANUFACTURERS ."
-        where id = '". (int)$parsed_link['query']['manufacturer_id'] ."'
+        where id = ". (int)$parsed_link['query']['manufacturer_id'] ."
         limit 1;"
       );
       $manufacturer = database::fetch($manufacturer_query);

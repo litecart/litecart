@@ -41,7 +41,7 @@
       (!empty($_GET['category_id']) ? " left join " . DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on pc.product_id = id " : "").
       "where status
       and product_groups != ''
-      ". (!empty($_GET['manufacturer_id']) ? "and manufacturer_id = '". (int)$_GET['manufacturer_id'] ."'" : "") ."
+      ". (!empty($_GET['manufacturer_id']) ? "and manufacturer_id = ". (int)$_GET['manufacturer_id'] ."" : "") ."
       ". (!empty($_GET['manufacturers']) ? "and (find_in_set('". implode("', manufacturer_id) or find_in_set('", database::input($_GET['manufacturers'])) ."', manufacturer_id))" : "") ."
       ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
       ;"

@@ -73,7 +73,7 @@
         if (!empty($this->data['email'])) {
           database::query(
             "update ". DB_TABLE_ORDERS ."
-            set customer_id = '". (int)$this->data['id'] ."'
+            set customer_id = ". (int)$this->data['id'] ."
             where customer_email = '". database::input($this->data['email']) ."';"
           );
         }
@@ -110,7 +110,7 @@
           newsletter = '". (!empty($this->data['newsletter']) ? '1' : '0') ."',
           notes = '". database::input($this->data['notes']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -135,7 +135,7 @@
         set
           password = '". $password_hash ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -147,12 +147,12 @@
       database::query(
         "update ". DB_TABLE_ORDERS ."
         set customer_id = 0
-        where customer_id = '". (int)$this->data['id'] ."';"
+        where customer_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_CUSTOMERS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

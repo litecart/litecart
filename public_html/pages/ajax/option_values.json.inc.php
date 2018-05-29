@@ -6,7 +6,7 @@
   $option_values_query = database::query(
     "select pcv.id, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
     left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
-    where pcv.group_id = '". (int)$_GET['option_group_id'] ."'
+    where pcv.group_id = ". (int)$_GET['option_group_id'] ."
     order by pcv.priority;"
   );
 

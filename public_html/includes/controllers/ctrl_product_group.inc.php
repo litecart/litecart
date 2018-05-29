@@ -45,7 +45,7 @@
 
       $group_query = database::query(
         "select * from ". DB_TABLE_PRODUCT_GROUPS ."
-        where id = '". (int)$group_id ."'
+        where id = ". (int)$group_id ."
         limit 1;"
       );
 
@@ -57,7 +57,7 @@
 
       $group_info_query = database::query(
         "select name, language_code from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
-        where product_group_id = '". (int)$group_id ."';"
+        where product_group_id = ". (int)$group_id .";"
       );
 
       while ($group = database::fetch($group_info_query)) {
@@ -66,7 +66,7 @@
 
       $values_query = database::query(
         "select * from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
-        where product_group_id = '". (int)$group_id ."';"
+        where product_group_id = ". (int)$group_id .";"
       );
 
       while ($value = database::fetch($values_query)) {
@@ -74,7 +74,7 @@
 
         $values_info_query = database::query(
           "select * from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-          where product_group_value_id = '". (int)$value['id'] ."';"
+          where product_group_value_id = ". (int)$value['id'] .";"
         );
 
         while ($value_info = database::fetch($values_info_query)) {
@@ -101,7 +101,7 @@
       database::query(
         "update ". DB_TABLE_PRODUCT_GROUPS ."
         set date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -110,7 +110,7 @@
 
         $group_info_query = database::query(
           "select id from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
-          where product_group_id = '". (int)$this->data['id'] ."'
+          where product_group_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -120,7 +120,7 @@
           database::query(
             "insert into ". DB_TABLE_PRODUCT_GROUPS_INFO ."
             (product_group_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". database::input($language_code) ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $group_info['id'] = database::insert_id();
         }
@@ -128,8 +128,8 @@
         database::query(
           "update ". DB_TABLE_PRODUCT_GROUPS_INFO ."
           set name = '". database::input($this->data['name'][$language_code]) ."'
-          where id = '". (int)$group_info['id'] ."'
-          and product_group_id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$group_info['id'] ."
+          and product_group_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -138,7 +138,7 @@
     // Delete values
       $values_query = database::query(
         "select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
-        where product_group_id = '". (int)$this->data['id'] ."'
+        where product_group_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
 
@@ -153,13 +153,13 @@
 
         database::query(
           "delete from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
-          where product_group_id = '". (int)$this->data['id'] ."'
-          and id = '". (int)$value['id'] ."'
+          where product_group_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$value['id'] ."
           limit 1;"
         );
         database::query(
           "delete from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-          where product_group_value_id = '". (int)$value['id'] ."';"
+          where product_group_value_id = ". (int)$value['id'] .";"
         );
       }
 
@@ -178,7 +178,7 @@
         database::query(
           "update ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
           set date_updated = '". date('Y-m-d H:i:s') ."'
-          where id = '". (int)$value['id'] ."'
+          where id = ". (int)$value['id'] ."
           limit 1;"
         );
 
@@ -186,7 +186,7 @@
 
           $value_info_query = database::query(
             "select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-            where product_group_value_id = '". (int)$value['id'] ."'
+            where product_group_value_id = ". (int)$value['id'] ."
             and language_code = '". database::input($language_code) ."'
             limit 1;"
           );
@@ -204,8 +204,8 @@
           database::query(
             "update ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
             set name = '". database::input($value['name'][$language_code]) ."'
-            where id = '". (int)$value_info['id'] ."'
-            and product_group_value_id = '". (int)$value['id'] ."'
+            where id = ". (int)$value_info['id'] ."
+            and product_group_value_id = ". (int)$value['id'] ."
             and language_code = '". database::input($language_code) ."'
             limit 1;"
           );
@@ -229,7 +229,7 @@
     // Check products for product group values
       $values_query = database::query(
         "select id from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
-        where product_group_id = '". (int)$this->data['id'] ."'
+        where product_group_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
 
@@ -244,26 +244,26 @@
       // Delete product group values
         database::query(
           "delete from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
-          where product_group_id = '". (int)$this->data['id'] ."'
-          and id = '". (int)$value['id'] ."'
+          where product_group_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$value['id'] ."
           limit 1;"
         );
         database::query(
           "delete from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-          where product_group_value_id = '". (int)$value['id'] ."';"
+          where product_group_value_id = ". (int)$value['id'] .";"
         );
       }
 
     // Delete product group
       database::query(
         "delete from ". DB_TABLE_PRODUCT_GROUPS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
         "delete from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
-        where product_group_id = '". (int)$this->data['id'] ."';"
+        where product_group_id = ". (int)$this->data['id'] .";"
       );
 
       $this->data['id'] = null;

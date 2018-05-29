@@ -94,7 +94,7 @@
         if (!empty($row['id'])) {
           $page_query = database::query(
             "select id from ". DB_TABLE_PAGES ."
-            where id = '". (int)$row['id'] ."'
+            where id = ". (int)$row['id'] ."
             limit 1;"
           );
         } else {

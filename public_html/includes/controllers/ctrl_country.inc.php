@@ -67,7 +67,7 @@
       database::query(
         "update ". DB_TABLE_COUNTRIES ."
         set
-          status = '". (int)$this->data['status'] ."',
+          status = ". (int)$this->data['status'] .",
           iso_code_2 = '". database::input($this->data['iso_code_2']) ."',
           iso_code_3 = '". database::input($this->data['iso_code_3']) ."',
           name = '". database::input($this->data['name']) ."',
@@ -79,7 +79,7 @@
           currency_code = '". database::input($this->data['currency_code']) ."',
           phone_code = '". database::input($this->data['phone_code']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -105,7 +105,7 @@
             name = '". database::input($zone['name']) ."',
             date_updated =  '". date('Y-m-d H:i:s') ."'
             where country_code = '". database::input($this->data['iso_code_2']) ."'
-            and id = '". (int)$zone['id'] ."'
+            and id = ". (int)$zone['id'] ."
             limit 1;"
           );
         }
@@ -131,7 +131,7 @@
 
       database::query(
         "delete from ". DB_TABLE_COUNTRIES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

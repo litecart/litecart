@@ -32,7 +32,7 @@
 
       $geo_zone_query = database::query(
         "select * from ". DB_TABLE_GEO_ZONES ."
-        where id = '". (int)$geo_zone_id ."'
+        where id = ". (int)$geo_zone_id ."
         limit 1;"
       );
 
@@ -46,7 +46,7 @@
         "select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz
         left join ". DB_TABLE_COUNTRIES ." c on (c.iso_code_2 = z2gz.country_code)
         left join ". DB_TABLE_ZONES ." z on (z.code = z2gz.zone_code)
-        where geo_zone_id = '". (int)$geo_zone_id ."'
+        where geo_zone_id = ". (int)$geo_zone_id ."
         order by c.name, z.name;"
       );
 
@@ -75,13 +75,13 @@
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
         "delete from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
-        where geo_zone_id = '". (int)$this->data['id'] ."'
+        where geo_zone_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['zones'], 'id')) ."');"
       );
 
@@ -91,7 +91,7 @@
             database::query(
               "insert into ". DB_TABLE_ZONES_TO_GEO_ZONES ."
               (geo_zone_id, date_created)
-              values ('". (int)$this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
+              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $zone['id'] = database::insert_id();
           }
@@ -100,8 +100,8 @@
             set country_code = '". database::input($zone['country_code']) ."',
             zone_code = '". (isset($zone['zone_code']) ? database::input($zone['zone_code']) : '') ."',
             date_updated =  '". date('Y-m-d H:i:s') ."'
-            where geo_zone_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$zone['id'] ."'
+            where geo_zone_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$zone['id'] ."
             limit 1;"
           );
         }
@@ -114,12 +114,12 @@
 
       database::query(
         "delete from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
-        where geo_zone_id = '". (int)$this->data['id'] ."';"
+        where geo_zone_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_GEO_ZONES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

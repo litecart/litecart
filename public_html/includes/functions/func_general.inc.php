@@ -146,7 +146,7 @@
 
     $query = database::query(
       "select * from ". DB_TABLE_ORDERS ."
-      where id = '". (int)$order_id ."'
+      where id = ". (int)$order_id ."
       limit 1;"
     );
     $order = database::fetch($query);

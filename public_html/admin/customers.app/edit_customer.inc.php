@@ -91,7 +91,7 @@
         group by order_id
       ) oi on (oi.order_id = o.id)
       where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-      and (o.customer_id = '". (int)$customer->data['id'] ."' or o.customer_email = '". database::input($customer->data['email']) ."');"
+      and (o.customer_id = ". (int)$customer->data['id'] ." or o.customer_email = '". database::input($customer->data['email']) ."');"
     );
 
     $orders = database::fetch($orders_query);

@@ -626,7 +626,7 @@
           "select c.id, ci.name
           from ". DB_TABLE_CATEGORIES ." c
           left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
-          where parent_id = '". (int)$parent_id ."'
+          where parent_id = ". (int)$parent_id ."
           order by c.priority asc, ci.name asc;"
         );
 
@@ -637,7 +637,7 @@
           $sub_categories_query = database::query(
             "select id
             from ". DB_TABLE_CATEGORIES ." c
-            where parent_id = '". (int)$category['id'] ."'
+            where parent_id = ". (int)$category['id'] ."
             limit 1;"
           );
 
@@ -896,7 +896,7 @@
     $option_values_query = database::query(
       "select pcv.id, pcv.value, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
       left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
-      where pcv.group_id = '". (int)$group_id ."'
+      where pcv.group_id = ". (int)$group_id ."
       order by pcvi.name asc;"
     );
 

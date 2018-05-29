@@ -53,7 +53,7 @@
     // Product
       $products_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS ."
-        where id = '". (int)$product_id ."'
+        where id = ". (int)$product_id ."
         limit 1;"
       );
 
@@ -72,7 +72,7 @@
 
       $categories_query = database::query(
         "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-         where product_id = '". (int)$product_id ."';"
+         where product_id = ". (int)$product_id .";"
       );
 
       while ($category = database::fetch($categories_query)){
@@ -85,7 +85,7 @@
     // Info
       $products_info_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_INFO ."
-         where product_id = '". (int)$product_id ."';"
+         where product_id = ". (int)$product_id .";"
       );
 
       while ($product_info = database::fetch($products_info_query)) {
@@ -98,7 +98,7 @@
     // Prices
       $products_prices_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_PRICES ."
-        where product_id = '". (int)$this->data['id'] ."';"
+        where product_id = ". (int)$this->data['id'] .";"
       );
       while ($product_price = database::fetch($products_prices_query)) {
         foreach (array_keys(currency::$currencies) as $currency_code) {
@@ -109,7 +109,7 @@
     // Campaigns
       $product_campaigns_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         order by start_date;"
       );
       while ($product_campaign = database::fetch($product_campaigns_query)) {
@@ -119,7 +119,7 @@
     // Options
       $products_options_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_OPTIONS ."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         order by priority asc;"
       );
       while($option = database::fetch($products_options_query)) {
@@ -129,7 +129,7 @@
     // Options stock
       $products_options_stock_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         order by priority;"
       );
       while($option_stock = database::fetch($products_options_stock_query)) {
@@ -142,7 +142,7 @@
 
           $options_values_query = database::query(
             "select ovi.value_id, ovi.name, ovi.language_code from ". DB_TABLE_OPTION_VALUES_INFO ." ovi
-            where ovi.value_id = '". (int)$value_id ."';"
+            where ovi.value_id = ". (int)$value_id .";"
           );
           while($option_value = database::fetch($options_values_query)) {
             if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']])) {
@@ -158,7 +158,7 @@
     // Images
       $products_images_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_IMAGES."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
       );
       while($image = database::fetch($products_images_query)) {
@@ -236,20 +236,20 @@
 
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-         where product_id = '". (int)$this->data['id'] ."';"
+         where product_id = ". (int)$this->data['id'] .";"
       );
       foreach ($this->data['categories'] as $category_id){
         database::query(
           "insert into ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
           (product_id, category_id)
-          values ('". (int)$this->data['id'] ."', '". (int)$category_id ."');"
+          values (". (int)$this->data['id'] .", ". (int)$category_id .");"
         );
       }
 
       foreach (array_keys(language::$languages) as $language_code) {
         $products_info_query = database::query(
           "select * from ". DB_TABLE_PRODUCTS_INFO ."
-          where product_id = '". (int)$this->data['id'] ."'
+          where product_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -259,7 +259,7 @@
           database::query(
             "insert into ". DB_TABLE_PRODUCTS_INFO ."
             (product_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". $language_code ."');"
           );
         }
 
@@ -271,7 +271,7 @@
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
           attributes = '". database::input($this->data['attributes'][$language_code], true) ."'
-          where product_id = '". (int)$this->data['id'] ."'
+          where product_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -281,7 +281,7 @@
 
         $products_prices_query = database::query(
           "select * from ". DB_TABLE_PRODUCTS_PRICES ."
-          where product_id = '". (int)$this->data['id'] ."'
+          where product_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
         $product_price = database::fetch($products_prices_query);
@@ -290,7 +290,7 @@
           database::query(
             "insert into ". DB_TABLE_PRODUCTS_PRICES ."
             (product_id)
-            values ('". (int)$this->data['id'] ."');"
+            values (". (int)$this->data['id'] .");"
           );
         }
 
@@ -303,7 +303,7 @@
         database::query(
           "update ". DB_TABLE_PRODUCTS_PRICES ." set
           $sql_currency_prices
-          where product_id = '". (int)$this->data['id'] ."'
+          where product_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
       }
@@ -311,7 +311,7 @@
     // Delete campaigns
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
       );
 
@@ -322,7 +322,7 @@
             database::query(
               "insert into ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
               (product_id)
-              values ('". (int)$this->data['id'] ."');"
+              values (". (int)$this->data['id'] .");"
             );
             $this->data['campaigns'][$key]['id'] = database::insert_id();
           }
@@ -338,8 +338,8 @@
             start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
             end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
             $sql_currency_campaigns
-            where product_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['campaigns'][$key]['id'] ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['campaigns'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -348,7 +348,7 @@
     // Delete options
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS ."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
       );
 
@@ -362,7 +362,7 @@
             database::query(
               "insert into ". DB_TABLE_PRODUCTS_OPTIONS ."
               (product_id, date_created)
-              values ('". (int)$this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
+              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $this->data['options'][$key]['id'] = database::insert_id();
           }
@@ -378,10 +378,10 @@
                 value_id = '". database::input($this->data['options'][$key]['value_id']) ."',
                 price_operator = '". database::input($this->data['options'][$key]['price_operator']) ."',
                 $sql_currency_options
-                priority = '". (int)$i ."',
+                priority = ". (int)$i .",
                 date_updated = '". date('Y-m-d H:i:s') ."'
-            where product_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['options'][$key]['id'] ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['options'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -390,7 +390,7 @@
     // Delete stock options
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
       );
 
@@ -402,7 +402,7 @@
             database::query(
               "insert into ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
               (product_id, date_created)
-              values ('". (int)$this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
+              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $this->data['options_stock'][$key]['id'] = database::insert_id();
           }
@@ -435,8 +435,8 @@
             quantity = '". database::input($this->data['options_stock'][$key]['quantity']) ."',
             priority = '". $i++ ."',
             date_updated =  '". date('Y-m-d H:i:s') ."'
-            where product_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['options_stock'][$key]['id'] ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['options_stock'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -445,7 +445,7 @@
     // Delete images
       $products_images_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_IMAGES."
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
       while ($product_image = database::fetch($products_images_query)) {
@@ -453,8 +453,8 @@
         functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product_image['filename']);
         database::query(
           "delete from ". DB_TABLE_PRODUCTS_IMAGES ."
-          where product_id = '". (int)$this->data['id'] ."'
-          and id = '". (int)$product_image['id'] ."'
+          where product_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$product_image['id'] ."
           limit 1;"
         );
       }
@@ -467,7 +467,7 @@
             database::query(
               "insert into ". DB_TABLE_PRODUCTS_IMAGES ."
               (product_id)
-              values ('". (int)$this->data['id'] ."');"
+              values (". (int)$this->data['id'] .");"
             );
             $this->data['images'][$key]['id'] = database::insert_id();
           }
@@ -483,8 +483,8 @@
             "update ". DB_TABLE_PRODUCTS_IMAGES ."
             set filename = '". database::input($this->data['images'][$key]['filename']) ."',
                 priority = '". $image_priority++ ."'
-            where product_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['images'][$key]['id'] ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['images'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -502,7 +502,7 @@
       database::query(
         "update ". DB_TABLE_PRODUCTS ." set
         image = '". database::input($this->data['image']) ."'
-        where id='". (int)$this->data['id'] ."'
+        where id=". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -522,26 +522,26 @@
 
       database::query(
         "delete from ". DB_TABLE_PRODUCTS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_INFO ."
-        where product_id = '". (int)$this->data['id'] ."';"
+        where product_id = ". (int)$this->data['id'] .";"
       );
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-         where product_id = '". (int)$this->data['id'] ."';"
+         where product_id = ". (int)$this->data['id'] .";"
       );
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_PRICES ."
-        where product_id = '". (int)$this->data['id'] ."';"
+        where product_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-        where product_id = '". (int)$this->data['id'] ."';"
+        where product_id = ". (int)$this->data['id'] .";"
       );
 
       cache::clear_cache('products');
@@ -586,7 +586,7 @@
       database::query(
         "insert into ". DB_TABLE_PRODUCTS_IMAGES ."
         (product_id, filename, checksum, priority)
-        values ('". (int)$this->data['id'] ."', '". database::input($filename) ."', '". database::input($checksum) ."', '". (int)$priority ."');"
+        values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
       );
       $image_id = database::insert_id();
 

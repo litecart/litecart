@@ -52,7 +52,7 @@
       if (!empty($this->data['id'])) {
         $previous_language_query = database::query(
           "select * from ". DB_TABLE_LANGUAGES ."
-          where id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$this->data['id'] ."
           limit 1;"
         );
         $previous_language = database::fetch($previous_language_query);
@@ -127,7 +127,7 @@
       database::query(
         "update ". DB_TABLE_LANGUAGES ."
         set
-          status = '". (int)$this->data['status'] ."',
+          status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
           code2 = '". database::input($this->data['code2']) ."',
           name = '". database::input($this->data['name']) ."',
@@ -142,9 +142,9 @@
           decimal_point = '". database::input($this->data['decimal_point']) ."',
           thousands_sep = '". database::input($this->data['thousands_sep']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
-          priority = '". (int)$this->data['priority'] ."',
+          priority = ". (int)$this->data['priority'] .",
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -165,7 +165,7 @@
 
       database::query(
         "delete from ". DB_TABLE_LANGUAGES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

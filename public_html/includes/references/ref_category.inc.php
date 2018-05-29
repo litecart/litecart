@@ -57,7 +57,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES_INFO ."
-            where category_id = '". (int)$this->_id ."'
+            where category_id = ". (int)$this->_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -136,7 +136,7 @@
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
             where status
-            and parent_id = '". (int)$this->parent_id ."'
+            and parent_id = ". (int)$this->parent_id ."
             and id != '". database::input($this->_id) ."';"
           );
 
@@ -153,7 +153,7 @@
 
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
-            where parent_id = '". (int)$this->_id ."';"
+            where parent_id = ". (int)$this->_id .";"
           );
 
           while ($row = database::fetch($query)) {
@@ -168,7 +168,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES ."
-            where id = '". (int)$this->_id ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
 

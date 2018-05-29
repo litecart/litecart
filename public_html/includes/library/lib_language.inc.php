@@ -283,7 +283,7 @@
           "update ". DB_TABLE_TRANSLATIONS ."
           set date_accessed = '". date('Y-m-d H:i:s') ."'
           ". (!in_array($page, explode(',', $primary_translation['pages'])) ? ",pages = concat_ws(',', if(pages = '', NULL, pages), '". database::input($page) ."')" : "") ."
-          where id = '". (int)$primary_translation['id'] ."';"
+          where id = ". (int)$primary_translation['id'] .";"
         );
       }
 

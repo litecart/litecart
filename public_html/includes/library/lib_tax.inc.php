@@ -153,7 +153,7 @@
 
       $tax_rates_query = database::query(
         "select * from ". DB_TABLE_TAX_RATES ."
-        where tax_class_id = '". (int)$tax_class_id ."';"
+        where tax_class_id = ". (int)$tax_class_id .";"
       );
 
       while ($rate = database::fetch($tax_rates_query)) {

@@ -143,7 +143,7 @@
 
       $order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
-        where order_id = '". (int)$order_id ."'
+        where order_id = ". (int)$order_id ."
         order by id;"
       );
       while ($item = database::fetch($order_items_query)) {
@@ -153,7 +153,7 @@
 
       $order_totals_query = database::query(
         "select * from ". DB_TABLE_ORDERS_TOTALS ."
-        where order_id = '". (int)$order_id ."'
+        where order_id = ". (int)$order_id ."
         order by priority;"
       );
       while ($row = database::fetch($order_totals_query)) {
@@ -162,7 +162,7 @@
 
       $order_comments_query = database::query(
         "select * from ". DB_TABLE_ORDERS_COMMENTS ."
-        where order_id = '". (int)$order_id ."'
+        where order_id = ". (int)$order_id ."
         order by id;"
       );
       while ($row = database::fetch($order_comments_query)) {
@@ -277,14 +277,14 @@
     // Delete order items
       $previous_order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
-        where order_id = '". (int)$this->data['id'] ."'
+        where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
       while($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
           "delete from ". DB_TABLE_ORDERS_ITEMS ."
-          where order_id = '". (int)$this->data['id'] ."'
-          and id = '". (int)$previous_order_item['id'] ."'
+          where order_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$previous_order_item['id'] ."
           limit 1;"
         );
 
@@ -301,7 +301,7 @@
             database::query(
               "insert into ". DB_TABLE_ORDERS_ITEMS ."
               (order_id)
-              values ('". (int)$this->data['id'] ."');"
+              values (". (int)$this->data['id'] .");"
             );
             $this->data['items'][$key]['id'] = database::insert_id();
 
@@ -319,8 +319,8 @@
         // Get previous quantity
           $previous_order_item_query = database::query(
             "select * from ". DB_TABLE_ORDERS_ITEMS ."
-            where id = '". (int)$this->data['items'][$key]['id'] ."'
-            and order_id = '". (int)$this->data['id'] ."';"
+            where id = ". (int)$this->data['items'][$key]['id'] ."
+            and order_id = ". (int)$this->data['id'] .";"
           );
           $previous_order_item = database::fetch($previous_order_item_query);
 
@@ -334,18 +334,18 @@
 
           database::query(
             "update ". DB_TABLE_ORDERS_ITEMS ."
-            set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
+            set product_id = ". (int)$this->data['items'][$key]['product_id'] .",
             option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
             options = '".  (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
             name = '". database::input($this->data['items'][$key]['name']) ."',
             sku = '". database::input($this->data['items'][$key]['sku']) ."',
-            quantity = '". (float)$this->data['items'][$key]['quantity'] ."',
-            price = '". (float)$this->data['items'][$key]['price'] ."',
-            tax = '". (float)$this->data['items'][$key]['tax'] ."',
-            weight = '". (isset($this->data['items'][$key]['weight']) ? (float)$this->data['items'][$key]['weight'] : '') ."',
-            weight_class = '". (isset($this->data['items'][$key]['weight_class']) ? database::input($this->data['items'][$key]['weight_class']) : '') ."'
-            where order_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['items'][$key]['id'] ."'
+            quantity = ". (float)$this->data['items'][$key]['quantity'] .",
+            price = ". (float)$this->data['items'][$key]['price'] .",
+            tax = ". (float)$this->data['items'][$key]['tax'] .",
+            weight = ". (float)$this->data['items'][$key]['weight'] .",
+            weight_class = '". database::input($this->data['items'][$key]['weight_class']) ."',
+            where order_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['items'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -354,7 +354,7 @@
     // Delete order total items
       database::query(
         "delete from ". DB_TABLE_ORDERS_TOTALS ."
-        where order_id = '". (int)$this->data['id'] ."'
+        where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['order_total'], 'id')) ."');"
       );
 
@@ -366,7 +366,7 @@
             database::query(
               "insert into ". DB_TABLE_ORDERS_TOTALS ."
               (order_id)
-              values ('". (int)$this->data['id'] ."');"
+              values (". (int)$this->data['id'] .");"
             );
             $this->data['order_total'][$key]['id'] = database::insert_id();
           }
@@ -378,8 +378,8 @@
             tax = '". (float)$this->data['order_total'][$key]['tax'] ."',
             calculate = '". (empty($this->data['order_total'][$key]['calculate']) ? 0 : 1) ."',
             priority = '". database::input(++$i) ."'
-            where order_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['order_total'][$key]['id'] ."'
+            where order_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['order_total'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -388,7 +388,7 @@
     // Delete comments
       database::query(
         "delete from ". DB_TABLE_ORDERS_COMMENTS ."
-        where order_id = '". (int)$this->data['id'] ."'
+        where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['comments'], 'id')) ."');"
       );
 
@@ -405,7 +405,7 @@
             database::query(
               "insert into ". DB_TABLE_ORDERS_COMMENTS ."
               (order_id, date_created)
-              values ('". (int)$this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
+              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $this->data['comments'][$key]['id'] = database::insert_id();
             $this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
@@ -420,8 +420,8 @@
             set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
               text = '". database::input($this->data['comments'][$key]['text']) ."',
               hidden = '". (!empty($this->data['comments'][$key]['hidden']) ? 1 : 0) ."'
-            where order_id = '". (int)$this->data['id'] ."'
-            and id = '". (int)$this->data['comments'][$key]['id'] ."'
+            where order_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['comments'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -472,7 +472,7 @@
     // ..then delete
       database::query(
         "delete from ". DB_TABLE_ORDERS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

@@ -45,7 +45,7 @@
 
       $categories_query = database::query(
         "select * from ". DB_TABLE_CATEGORIES ."
-        where id='". (int)$category_id ."'
+        where id=". (int)$category_id ."
         limit 1;"
       );
 
@@ -57,7 +57,7 @@
 
       $categories_info_query = database::query(
         "select * from ". DB_TABLE_CATEGORIES_INFO ."
-        where category_id = '". (int)$category_id ."';"
+        where category_id = ". (int)$category_id .";"
       );
 
       while ($category_info = database::fetch($categories_info_query)) {
@@ -90,16 +90,16 @@
 
       database::query(
         "update ". DB_TABLE_CATEGORIES ."
-        set parent_id = '". (int)$this->data['parent_id'] ."',
-          status = '". (int)$this->data['status'] ."',
+        set parent_id = ". (int)$this->data['parent_id'] .",
+          status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
-          google_taxonomy_id = '". (int)$this->data['google_taxonomy_id'] ."',
+          google_taxonomy_id = ". (int)$this->data['google_taxonomy_id'] .",
           dock = '". database::input(@implode(',', $this->data['dock'])) ."',
           list_style = '". database::input($this->data['list_style']) ."',
           keywords = '". database::input($this->data['keywords']) ."',
-          priority = '". (int)$this->data['priority'] ."',
+          priority = ". (int)$this->data['priority'] .",
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -107,7 +107,7 @@
 
         $categories_info_query = database::query(
           "select * from ". DB_TABLE_CATEGORIES_INFO ."
-          where category_id = '". (int)$this->data['id'] ."'
+          where category_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -117,7 +117,7 @@
           database::query(
             "insert into ". DB_TABLE_CATEGORIES_INFO ."
             (category_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". $language_code ."');"
           );
         }
 
@@ -158,7 +158,7 @@
 
       $subcategories_query = database::query(
         "select id from ". DB_TABLE_CATEGORIES ."
-        where parent_id = '". (int)$this->data['id'] ."'
+        where parent_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -174,13 +174,13 @@
 
       database::query(
         "delete from ". DB_TABLE_CATEGORIES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
         "delete from ". DB_TABLE_CATEGORIES_INFO ."
-        where category_id = '". (int)$this->data['id'] ."';"
+        where category_id = ". (int)$this->data['id'] .";"
       );
 
       cache::clear_cache('category_tree');
@@ -218,7 +218,7 @@
       database::query(
         "update ". DB_TABLE_CATEGORIES ."
         set image = '". database::input($filename) ."'
-        where id = '". (int)$this->data['id'] ."';"
+        where id = ". (int)$this->data['id'] .";"
       );
 
       $this->data['image'] = $filename;
@@ -235,7 +235,7 @@
       database::query(
         "update ". DB_TABLE_CATEGORIES ."
         set image = ''
-        where id = '". (int)$this->data['id'] ."';"
+        where id = ". (int)$this->data['id'] .";"
       );
 
       $this->data['image'] = '';

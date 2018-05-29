@@ -43,7 +43,7 @@
 
       $delivery_status_query = database::query(
         "select * from ". DB_TABLE_DELIVERY_STATUSES ."
-        where id = '". (int)$delivery_status_id ."'
+        where id = ". (int)$delivery_status_id ."
         limit 1;"
       );
 
@@ -55,7 +55,7 @@
 
       $delivery_status_info_query = database::query(
         "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
-        where delivery_status_id = '". (int)$this->data['id'] ."';"
+        where delivery_status_id = ". (int)$this->data['id'] .";"
       );
 
       while ($delivery_status_info = database::fetch($delivery_status_info_query)) {
@@ -80,7 +80,7 @@
       database::query(
         "update ". DB_TABLE_DELIVERY_STATUSES ."
         set date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -88,7 +88,7 @@
 
         $delivery_status_info_query = database::query(
           "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
-          where delivery_status_id = '". (int)$this->data['id'] ."'
+          where delivery_status_id = ". (int)$this->data['id'] ."
           and language_code = '". $language_code ."'
           limit 1;"
         );
@@ -98,7 +98,7 @@
           database::query(
             "insert into ". DB_TABLE_DELIVERY_STATUSES_INFO ."
             (delivery_status_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". $language_code ."');"
           );
           $delivery_status_info['id'] = database::insert_id();
         }
@@ -108,8 +108,8 @@
           set
             name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."'
-          where id = '". (int)$delivery_status_info['id'] ."'
-          and delivery_status_id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$delivery_status_info['id'] ."
+          and delivery_status_id = ". (int)$this->data['id'] ."
           and language_code = '". $language_code ."'
           limit 1;"
         );
@@ -120,19 +120,19 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where delivery_status_id = '". (int)$this->data['id'] ."' limit 1;"))) {
+      if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where delivery_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
         trigger_error('Cannot delete the delivery status because there are products using it', E_USER_ERROR);
         return;
       }
 
       database::query(
         "delete from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
-        where delivery_status_id = '". (int)$this->data['id'] ."';"
+        where delivery_status_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_DELIVERY_STATUSES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

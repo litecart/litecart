@@ -108,7 +108,7 @@
 
       $user_query = database::query(
         "select * from ". DB_TABLE_USERS ."
-        where id = '". (int)$user_id ."'
+        where id = ". (int)$user_id ."
         limit 1;"
       );
       $user = database::fetch($user_query);
@@ -172,7 +172,7 @@
           $user_query = database::query(
             "update ". DB_TABLE_USERS ."
             set login_attempts = login_attempts + 1
-            where id = '". (int)$user['id'] ."'
+            where id = ". (int)$user['id'] ."
             limit 1;"
           );
           notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is blocked'), $config_login_attempts - $user['login_attempts']));
@@ -181,7 +181,7 @@
             "update ". DB_TABLE_USERS ."
             set login_attempts = 0,
             date_blocked = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-            where id = '". (int)$user['id'] ."'
+            where id = ". (int)$user['id'] ."
             limit 1;"
           );
           notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), 15));
@@ -202,7 +202,7 @@
           login_attempts = 0,
           total_logins = total_logins + 1,
           date_login = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$user['id'] ."'
+        where id = ". (int)$user['id'] ."
         limit 1;"
       );
 

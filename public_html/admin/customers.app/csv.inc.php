@@ -18,7 +18,7 @@
         if (!empty($row['id'])) {
           $customers_query = database::query(
             "select id from ". DB_TABLE_CUSTOMERS ."
-            where id = '". (int)$row['id'] ."'
+            where id = ". (int)$row['id'] ."
             limit 1;"
           );
           $customer = database::fetch($customers_query);

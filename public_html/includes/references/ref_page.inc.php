@@ -47,7 +47,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_PAGES_INFO ."
-            where page_id = '". (int)$this->_id ."'
+            where page_id = ". (int)$this->_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -65,7 +65,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_PAGES ."
-            where id = '". (int)$this->_id ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
           $row = database::fetch($query);

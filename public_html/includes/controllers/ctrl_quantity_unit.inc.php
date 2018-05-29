@@ -43,7 +43,7 @@
 
       $quantity_unit_query = database::query(
         "select * from ". DB_TABLE_QUANTITY_UNITS ."
-        where id = '". (int)$quantity_unit_id ."'
+        where id = ". (int)$quantity_unit_id ."
         limit 1;"
       );
 
@@ -55,7 +55,7 @@
 
       $quantity_unit_info_query = database::query(
         "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
-        where quantity_unit_id = '". (int)$this->data['id'] ."';"
+        where quantity_unit_id = ". (int)$this->data['id'] .";"
       );
 
       while ($quantity_unit_info = database::fetch($quantity_unit_info_query)) {
@@ -79,11 +79,11 @@
 
       database::query(
         "update ". DB_TABLE_QUANTITY_UNITS ."
-        set decimals = '". (int)$this->data['decimals'] ."',
-            separate = '". (int)$this->data['separate'] ."',
-            priority = '". (int)$this->data['priority'] ."',
+        set decimals = ". (int)$this->data['decimals'] .",
+            separate = ". (int)$this->data['separate'] .",
+            priority = ". (int)$this->data['priority'] .",
             date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -91,7 +91,7 @@
 
         $quantity_unit_info_query = database::query(
           "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
-          where quantity_unit_id = '". (int)$this->data['id'] ."'
+          where quantity_unit_id = ". (int)$this->data['id'] ."
           and language_code = '". $language_code ."'
           limit 1;"
         );
@@ -101,7 +101,7 @@
           database::query(
             "insert into ". DB_TABLE_QUANTITY_UNITS_INFO ."
             (quantity_unit_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". $language_code ."');"
           );
           $quantity_unit_info['id'] = database::insert_id();
         }
@@ -111,8 +111,8 @@
           set
             name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."'
-          where id = '". (int)$quantity_unit_info['id'] ."'
-          and quantity_unit_id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$quantity_unit_info['id'] ."
+          and quantity_unit_id = ". (int)$this->data['id'] ."
           and language_code = '". $language_code ."'
           limit 1;"
         );
@@ -123,19 +123,19 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where quantity_unit_id = '". (int)$this->data['id'] ."' limit 1;"))) {
+      if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where quantity_unit_id = ". (int)$this->data['id'] ." limit 1;"))) {
         trigger_error('Cannot delete the quantity unit because there are products using it', E_USER_ERROR);
         return;
       }
 
       database::query(
         "delete from ". DB_TABLE_QUANTITY_UNITS_INFO ."
-        where quantity_unit_id = '". (int)$this->data['id'] ."';"
+        where quantity_unit_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_QUANTITY_UNITS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

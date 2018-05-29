@@ -177,7 +177,7 @@
       "select c.id, ci.name
       from ". DB_TABLE_CATEGORIES ." c
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
-      where c.parent_id = '". (int)$category_id ."'
+      where c.parent_id = ". (int)$category_id ."
       order by c.priority asc, ci.name asc;"
     );
 
@@ -223,7 +223,7 @@
         $product_groups_values_query = database::query(
           "select pgv.id, pgvi.name from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." pgv
           left join ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ." pgvi on (pgvi.product_group_value_id = pgv.id and pgvi.language_code = '". language::$selected['code'] ."')
-          where pgv.product_group_id = '". (int)$product_group['id'] ."'
+          where pgv.product_group_id = ". (int)$product_group['id'] ."
           order by pgvi.name asc;"
         );
         while ($product_group_value = database::fetch($product_groups_values_query)) {

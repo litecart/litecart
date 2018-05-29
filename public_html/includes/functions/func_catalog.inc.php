@@ -12,7 +12,7 @@
       "select c.id, c.parent_id, ci.name
       from ". DB_TABLE_CATEGORIES ." c
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.id = '". (int)$category_id ."'
+      where c.id = ". (int)$category_id ."
       limit 1;"
     );
     $category = database::fetch($categories_query);
@@ -39,7 +39,7 @@
       "select c.id, c.parent_id, ci.name
       from ". DB_TABLE_CATEGORIES ." c
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.parent_id = '". (int)$category_id ."';"
+      where c.parent_id = ". (int)$category_id .";"
     );
     while ($category = database::fetch($categories_query)) {
       $subcategories[$category['id']] = $category['name'];
@@ -219,7 +219,7 @@
     if (!empty($option_stock_combination)) {
       $products_options_stock_query = database::query(
         "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-        where product_id = '". (int)$product_id ."'
+        where product_id = ". (int)$product_id ."
         and combination = '". database::input($option_stock_combination) ."';"
       );
       if (database::num_rows($products_options_stock_query) > 0) {
@@ -229,7 +229,7 @@
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
             set quantity = quantity + ". (float)$quantity ."
-            where product_id = '". (int)$product_id ."'
+            where product_id = ". (int)$product_id ."
             and combination =  '". database::input($option_stock_combination) ."'
             limit 1;"
           );
@@ -242,7 +242,7 @@
     database::query(
       "update ". DB_TABLE_PRODUCTS ."
       set quantity = quantity + ". (int)$quantity ."
-      where id = '". (int)$product_id ."'
+      where id = ". (int)$product_id ."
       limit 1;"
     );
   }
@@ -252,7 +252,7 @@
     $products_options_query = database::query(
       "update ". DB_TABLE_PRODUCTS ."
       set purchases = purchases + ". (int)$quantity ."
-      where id = '". (int)$product_id ."'
+      where id = ". (int)$product_id ."
       limit 1;"
     );
   }

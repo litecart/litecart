@@ -237,7 +237,7 @@
 
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where id = '". (int)$customer_id ."'
+        where id = ". (int)$customer_id ."
         limit 1;"
       );
       $customer = database::fetch($customer_query);
