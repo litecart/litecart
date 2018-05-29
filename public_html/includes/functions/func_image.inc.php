@@ -66,7 +66,7 @@
           return;
       }
 
-      $source_webpath = str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($source)));
+      $source_webpath = preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT, '#') .'/)#', '', str_replace('\\', '/', realpath($source)));
       $options['destination'] .= implode('', array(
           sha1($source_webpath),
           !empty($options['trim']) ? '_t' : null,
@@ -83,7 +83,7 @@
       if (!empty($options['overwrite'])) {
         unlink($options['destination']);
       } else {
-        return str_replace(str_replace('\\', '/', realpath(FS_DIR_HTTP_ROOT)), '', str_replace('\\', '/', realpath($options['destination'])));
+        return preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT, '#') .'/)#', '', str_replace('\\', '/', realpath($options['destination'])));
       }
     }
 
@@ -122,7 +122,7 @@
 
     if (!$image->write($options['destination'], $options['extension'], $options['quality'], !empty($options['interlaced']))) return;
 
-    return str_replace(FS_DIR_HTTP_ROOT, '', str_replace('\\', '/', realpath($options['destination'])));
+    return preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT, '#') .'/)#', '', str_replace('\\', '/', realpath($options['destination'])));
   }
 
   function image_resample($source, $destination, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $quality=null) {
