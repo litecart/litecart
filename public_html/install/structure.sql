@@ -33,6 +33,16 @@ CREATE TABLE `lc_categories` (
   KEY `dock` (`dock`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_categories_images` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`category_id` INT(11) NOT NULL,
+	`filename` VARCHAR(256) NOT NULL,
+	`checksum` CHAR(32) NOT NULL,
+	`priority` TINYINT(2) NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `category_id` (`category_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `category_id` INT(11) NOT NULL,

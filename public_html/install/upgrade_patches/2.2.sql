@@ -23,3 +23,18 @@ ALTER TABLE `lc_sold_out_statuses` ADD INDEX `hidden` (`hidden`), ADD INDEX `ord
 ALTER TABLE `lc_pages`
 ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
 ADD INDEX `parent_id` (`parent_id`);
+-- --------------------------------------------------------
+CREATE TABLE `lc_categories_images` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`category_id` INT(11) NOT NULL,
+	`filename` VARCHAR(256) NOT NULL,
+	`checksum` CHAR(32) NOT NULL,
+	`priority` TINYINT(2) NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `category_id` (`category_id`)
+) ENGINE=MyISAM;
+-- --------------------------------------------------------
+INSERT INTO `lc_categories_images` (category_id, filename) (
+  SELECT id, image from `lc_categories`
+  WHERE image != ''
+)

@@ -71,6 +71,21 @@
 
           break;
 
+        case 'images':
+
+          $this->_data['images'] = array();
+
+          $query = database::query(
+            "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+            where category_id = ". (int)$this->_id ."
+            order by priority asc, id asc;"
+          );
+          while ($row = database::fetch($query)) {
+            $this->_data['images'][$row['id']] = $row['filename'];
+          }
+
+          break;
+
         case 'parent':
 
           $this->_data['parent'] = false;

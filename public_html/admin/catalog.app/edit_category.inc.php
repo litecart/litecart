@@ -24,6 +24,7 @@
       if (!empty($category->data['id']) && $category->data['parent_id'] == $category->data['id']) throw new Exception(language::translate('error_cannot_mount_category_to_self', 'Cannot mount category to itself'));
 
       if (!isset($_POST['dock'])) $_POST['dock'] = array();
+      if (!isset($_POST['images'])) $_POST['images'] = array();
 
       $fields = array(
         'status',
@@ -32,7 +33,7 @@
         'google_taxonomy_id',
         'list_style',
         'dock',
-        'image',
+        'images',
         'name',
         'short_description',
         'description',
@@ -47,13 +48,13 @@
         if (isset($_POST[$field])) $category->data[$field] = $_POST[$field];
       }
 
-      $category->save();
-
-      if (!empty($_POST['delete_image'])) $category->delete_image();
-
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
-        $category->save_image($_FILES['image']['tmp_name']);
+      if (!empty($_FILES['new_images']['tmp_name'])) {
+        foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
+          $category->add_image($_FILES['new_images']['tmp_name'][$key]);
+        }
       }
+
+      $category->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::link('', array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
@@ -82,6 +83,26 @@
 
   list($category_image_width, $category_image_height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
 ?>
+<style>
+#images .thumbnail {
+  margin: 0;
+}
+#images .image {
+  overflow: hidden;
+}
+#images .thumbnail {
+  margin-right: 15px;
+}
+#images img {
+  max-width: 50px;
+  max-height: 50px;
+}
+#images .actions {
+  text-align: right;
+  padding: 0.25em 0;
+}
+</style>
+
 <h1><?php echo $app_icon; ?> <?php echo !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']] : language::translate('title_add_new_category', 'Add New Category'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('category_form', 'post', false, true); ?>
@@ -166,18 +187,62 @@
         </div>
 
         <div class="col-md-4">
-          <div id="image">
-            <div class="thumbnail" style="margin-bottom: 15px;">
-              <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+          <div class="form-group">
+            <label><?php echo language::translate('title_images', 'Images'); ?></label>
+            <div class="thumbnail">
+<?php
+  if (isset($category->data['id']) && !empty($category->data['images'])) {
+    $image = current($category->data['images']);
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
+    reset($category->data['images']);
+  } else {
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
+  }
+?>
+            </div>
+          </div>
+
+          <div id="images">
+
+            <div class="images">
+              <?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
+              <div class="image form-group">
+                <?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
+
+                <div class="thumbnail pull-left">
+                  <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['images'][$key]['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                </div>
+
+                <div class="input-group">
+                  <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
+                  <div class="input-group-addon">
+                    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+                    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+                    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                  </div>
+                </div>
+              </div>
+              <?php } ?>
+            </div>
+
+            <div class="new-images">
+              <div class="image form-group">
+                <div class="thumbnail pull-left">
+                  <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                </div>
+
+                <div class="input-group">
+                  <?php echo functions::form_draw_file_field('new_images[]'); ?>
+                  <div class="input-group-addon">
+                    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="form-group">
-              <label><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
-              <?php echo functions::form_draw_file_field('image', ''); ?>
-              <?php if (!empty($category->data['image'])) { ?><br />
-              <div><?php echo $category->data['image']; ?></div>
-              <div><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
-              <?php } ?>
+              <a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a>
             </div>
           </div>
         </div>
@@ -228,23 +293,75 @@
   $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
   <?php } ?>
 
+// Images
+
+  $('#images').on('click', '.move-up, .move-down', function(e) {
+    e.preventDefault();
+    var row = $(this).closest('.form-group');
+
+    if ($(this).is('.move-up') && $(row).prevAll().length > 0) {
+      $(row).insertBefore(row.prev());
+    } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
+      $(row).insertAfter($(row).next());
+    }
+    refreshMainImage();
+  });
+
+  $('#images').on('click', '.remove', function(e) {
+    e.preventDefault();
+    $(this).closest('.form-group').remove();
+    refreshMainImage();
+  });
+
+  $('#images .add').click(function(e) {
+    e.preventDefault();
+    var output = '<div class="image form-group">'
+               + '  <div class="thumbnail pull-left">'
+               + '    <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />'
+               + '  </div>'
+               + '  '
+               + '  <div class="input-group">'
+               + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
+               + '    <div class="input-group-addon">'
+               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '    </div>'
+               + '  </div>'
+               + '</div>';
+    $('#images .new-images').append(output);
+    refreshMainImage();
+  });
+
+  $('#images').on('change', 'input[type="file"]', function(e) {
+    var img = $(this).closest('.form-group').find('img');
+
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(this.files[0]);
+    oFReader.onload = function(e){
+      $(img).attr('src', e.target.result);
+    };
+    oFReader.onloadend = function(e) {
+      refreshMainImage();
+    };
+  });
+
+  function refreshMainImage() {
+    if ($('#images img:first').length) {
+      $('#tab-general .main-image').attr('src', $('#images img:first').attr('src'));
+      return;
+    }
+
+    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
+  }
+
+// Head Title & H1 Title
+
   $('input[name^="name"]').bind('input propertyChange', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 
-  $('input[name="image"]').change(function(e) {
-    if ($(this).val() != '') {
-      var oFReader = new FileReader();
-      oFReader.readAsDataURL(this.files[0]);
-      oFReader.onload = function(e){
-        $('#image img').attr('src', e.target.result);
-      };
-    } else {
-      $('#image img').attr('src', '<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
-    }
-  });
+// Meta Description
 
   $('input[name^="short_description"]').bind('input propertyChange', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
