@@ -8,6 +8,11 @@
       'replace' => '  define(\'DB_TABLE_CATEGORIES\',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . \'categories`\');' . PHP_EOL
                  . '  define(\'DB_TABLE_CATEGORIES_IMAGES\',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . \'categories_images`\');' . PHP_EOL,
     ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'search'  => '<FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
+      'replace' => '<FilesMatch "\.(eot|gif|ico|jpg|jpeg|js|otf|pdf|png|svg|ttf|woff|woff2)$">',
+    ),
   );
 
   foreach ($modified_files as $modification) {
