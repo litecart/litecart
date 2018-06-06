@@ -108,7 +108,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_password', 'Password'); ?></label>
-          <?php echo functions::form_draw_password_field('password', ''); ?>
+          <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?>
         </div>
       </div>
 
