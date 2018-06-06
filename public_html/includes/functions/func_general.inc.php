@@ -1,10 +1,7 @@
 <?php
 
-  function general_escape_js($string, $is_html_attribute=false) {
-
-    $string = preg_replace('#\R#', "\\n", addslashes($string));
-
-    return $is_html_attribute ? htmlspecialchars($string) : $string;
+  function general_escape_js($string) {
+    return addcslashes($string, "\\\"\'\r\n");
   }
 
   function general_path_friendly($text, $language_code=null) {
