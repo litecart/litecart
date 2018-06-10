@@ -16,13 +16,13 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-          <?php echo functions::form_draw_text_field('tax_id', true); ?>
+          <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
+          <?php echo functions::form_draw_text_field('company', true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
-          <?php echo functions::form_draw_text_field('company', true); ?>
+          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+          <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
       </div>
 
@@ -98,21 +98,20 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-          <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
-          </div>
-        </div>
+      <div class="form-group">
+        <label class="checkbox">
+          <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
+        </label>
+      </div>
 
-        <?php if (settings::get('captcha_enabled')) { ?>
+      <?php if (settings::get('captcha_enabled')) { ?>
+      <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
           <?php echo functions::form_draw_captcha_field('captcha', 'create_account', 'required="required"'); ?>
         </div>
-        <?php } ?>
       </div>
+      <?php } ?>
 
       <div class="btn-group">
         <?php echo functions::form_draw_button('create_account', language::translate('title_create_account', 'Create Account')); ?>
