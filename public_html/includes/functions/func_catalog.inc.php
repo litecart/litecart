@@ -68,10 +68,12 @@
 
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
 
-    if (empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
-    if (empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
-    if (empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
-    if (empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
+    if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
+    if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
+    if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
+    if (!empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
+    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
+
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
 
     $sql_inner_sort = array();
@@ -101,8 +103,6 @@
         $sql_outer_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
         break;
     }
-
-    if (!empty($filter['exclude_products']) && !is_array($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
 
     $sql_where_product_groups = "";
     if (!empty($filter['product_groups'])) {
@@ -190,12 +190,11 @@
 
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
 
-    if (empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
-    if (empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
-    if (empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
-    if (empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
-
-    if (!empty($filter['exclude_products']) && !is_array($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
+    if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
+    if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
+    if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
+    if (!empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
+    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
 
     $sql_where_product_groups = "";
     if (!empty($filter['product_groups'])) {
