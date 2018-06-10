@@ -115,19 +115,19 @@
         <?php if (!empty($user->data['id'])) { ?>
         <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
-          <?php echo functions::form_draw_text_field('last_ip', true, 'disabled="disabled"'); ?>
+          <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
         </div>
 
         <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
-          <?php echo functions::form_draw_text_field('last_host', true, 'disabled="disabled"'); ?>
+          <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-          <?php echo functions::form_draw_text_field('date_login', true, 'disabled="disabled"'); ?>
+          <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
         </div>
         <?php } ?>
       </div>
@@ -142,7 +142,6 @@
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
     echo '  <li>' . PHP_EOL
-       //. '    ' . functions::draw_fonticon('fa-check-square-o checkbox-toggle') . PHP_EOL
        . '    <label>'. functions::form_draw_checkbox('permissions['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '    <ul class="">' . PHP_EOL;

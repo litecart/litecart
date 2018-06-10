@@ -55,7 +55,7 @@
       "select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated from ". DB_TABLE_CATEGORIES ." c
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
       where c.status
-      and c.parent_id = '". (int)$parent_id ."'
+      and c.parent_id = ". (int)$parent_id ."
       ". (!empty($dock) ? "and find_in_set('". database::input($dock) ."', c.dock)" : null) ."
       order by c.priority asc, ci.name asc;"
     );

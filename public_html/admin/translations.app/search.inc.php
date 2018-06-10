@@ -86,7 +86,10 @@ ul.filter li {
 
   <li>
 <?php
-  $pages_query = database::query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
+  $pages_query = database::query(
+    "select distinct pages from ". DB_TABLE_TRANSLATIONS .";"
+  );
+
   $pages = array();
   while ($row = database::fetch($pages_query)) {
     $slices = explode(',', $row['pages']);
@@ -94,8 +97,8 @@ ul.filter li {
       if ($slice != '') $pages[$slice] = $slice;
     }
   }
-  function custom_sort_pages($a, $b) {
 
+  function custom_sort_pages($a, $b) {
     if (strpos($a, '/') && !strpos($b, '/')) {
       return -1;
     } else if (!strpos($a, '/') && strpos($b, '/')) {

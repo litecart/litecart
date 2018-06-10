@@ -56,6 +56,8 @@
         trigger_error('Could not find category (ID: '. (int)$category_id .') in database.', E_USER_ERROR);
       }
 
+      $this->data['dock'] = !empty($this->data['dock']) ? explode(',', $this->data['dock']) : array();
+
       $categories_info_query = database::query(
         "select * from ". DB_TABLE_CATEGORIES_INFO ."
         where category_id = ". (int)$category_id .";"
@@ -67,8 +69,6 @@
           $this->data[$key][$category_info['language_code']] = $value;
         }
       }
-
-      $this->data['dock'] = explode(',', $this->data['dock']);
 
     // Images
       $category_images_query = database::query(
@@ -93,6 +93,10 @@
       }
 
       if ($this->data['parent_id'] == $this->data['id']) $this->data['parent_id'] = null;
+
+      $this->data['dock'] = array_map('trim', $this->data['dock']);
+      $this->data['dock'] = array_filter($this->data['dock']);
+      $this->data['dock'] = array_unique($this->data['dock']);
 
       $this->data['keywords'] = explode(',', $this->data['keywords']);
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
