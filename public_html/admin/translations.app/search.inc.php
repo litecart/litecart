@@ -111,7 +111,7 @@ ul.filter li {
     $options[] = array(str_replace("'", '', $page));
   }
 
-  echo functions::form_draw_select_field('script', $options, isset($_GET['script']) ? $_GET['script'] : false, false, 'style="width: 250px;"');
+  echo functions::form_draw_select_field('script', $options, isset($_GET['script']) ? $_GET['script'] : false, 'style="width: 250px;"');
 ?>
   </li>
 

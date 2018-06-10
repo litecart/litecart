@@ -207,7 +207,7 @@
     array(language::strftime('%e %b %Y'), '%e %b %Y'),
     array(language::strftime('%b %e %Y'), '%b %e %Y'),
   );
-  echo functions::form_draw_select_field('format_date', $options, true, false);
+  echo functions::form_draw_select_field('format_date', $options, true);
 ?>
     </div>
 
@@ -295,7 +295,7 @@
     array(language::translate('char_dot', 'Dot'), '.'),
     array(language::translate('char_comma', 'Comma'), ','),
   );
-  echo functions::form_draw_select_field('decimal_point', $options, true, false);
+  echo functions::form_draw_select_field('decimal_point', $options, true);
 ?>
     </div>
 
@@ -309,7 +309,7 @@
     array(language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '),
     array(language::translate('char_single_quote', 'Single quote'), '\''),
   );
-  echo functions::form_draw_select_field('thousands_sep', $options, true, false);
+  echo functions::form_draw_select_field('thousands_sep', $options, true);
 ?>
     </div>
   </div>

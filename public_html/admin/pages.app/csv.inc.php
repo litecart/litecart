@@ -161,22 +161,22 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true, false); ?>
+              <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true, false); ?>
+              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true, false); ?>
+              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8', false); ?>
+              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
             </div>
 
             <div class="form-group">
@@ -197,22 +197,22 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_code', true, false).' '; ?>
+              <?php echo functions::form_draw_languages_list('language_code', true).' '; ?>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true, false); ?>
+              <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true, false); ?>
+              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true, false); ?>
+              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
             </div>
 
             <div class="form-group">
@@ -222,12 +222,12 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-              <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true, false); ?>
+              <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_output', 'Output'); ?></label>
-              <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true, false); ?>
+              <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
             </div>
 
             <?php echo functions::form_draw_button('export', language::translate('title_export', 'Export'), 'submit'); ?>

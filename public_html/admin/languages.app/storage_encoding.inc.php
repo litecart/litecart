@@ -54,7 +54,7 @@
     }
   }
 
-  echo functions::form_draw_select_field('tables[]', $options, true, true, 'style="height: 200px;"');
+  echo functions::form_draw_select_multiple_field('tables[]', $options, true, 'style="height: 200px;"');
 ?>
 
   </div>
