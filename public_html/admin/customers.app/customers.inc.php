@@ -57,7 +57,8 @@
 
   $customers_query = database::query(
     "select c.* from ". DB_TABLE_CUSTOMERS ." c
-    ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
+    where c.id
+    ". ((!empty($sql_find)) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by c.firstname, c.lastname;"
   );
 
