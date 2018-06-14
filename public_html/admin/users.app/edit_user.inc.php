@@ -70,7 +70,7 @@
 ?>
 <h1><?php echo $app_icon; ?> <?php echo !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
+<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
   <div class="row">
 
