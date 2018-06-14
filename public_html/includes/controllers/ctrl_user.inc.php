@@ -82,6 +82,7 @@
         set
           status = '". (empty($this->data['status']) ? 0 : 1) ."',
           username = '". database::input($this->data['username']) ."',
+          email = '". database::input($this->data['email']) ."',
           permissions = '". database::input(json_encode($this->data['permissions'])) ."',
           date_valid_from = '". database::input($this->data['date_valid_from']) ."',
           date_valid_to = '". database::input($this->data['date_valid_to']) ."',

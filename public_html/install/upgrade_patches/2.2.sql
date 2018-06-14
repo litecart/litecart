@@ -40,5 +40,6 @@ INSERT INTO `lc_categories_images` (category_id, filename) (
 );
 -- --------------------------------------------------------
 ALTER TABLE `lc_users`
+ADD COLUMN `email` VARCHAR(64) NOT NULL AFTER `username`,
 CHANGE COLUMN `date_blocked` `date_valid_from` DATETIME NOT NULL AFTER `total_logins`,
 CHANGE COLUMN `date_expires` `date_valid_to` DATETIME NOT NULL AFTER `date_valid_from`;

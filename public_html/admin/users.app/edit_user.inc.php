@@ -28,6 +28,7 @@
       $fields = array(
         'status',
         'username',
+        'email',
         'password',
         'permissions',
         'date_valid_from',
@@ -80,10 +81,17 @@
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
         </div>
+      </div>
 
+      <div class="row">
         <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_username', 'Username'); ?></label>
           <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
+        </div>
+
+        <div class="form-group col-sm-6">
+          <label><?php echo language::translate('title_email', 'Email'); ?></label>
+          <?php echo functions::form_draw_email_field('email', true); ?>
         </div>
       </div>
 
