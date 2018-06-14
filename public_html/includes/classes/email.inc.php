@@ -18,6 +18,8 @@
 
     public function set_sender($email, $name=null) {
 
+      $email = trim($email);
+
       if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
       $this->_sender = array(
@@ -61,6 +63,8 @@
     }
 
     public function add_recipient($email, $name=null) {
+
+      $email = trim($email);
 
       if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
