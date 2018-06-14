@@ -1,5 +1,5 @@
 <div class="col-xs-6 col-sm-4 col-md-3">
-  <div class="product column shadow hover-light" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+  <div class="product column shadow hover-light" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
     <a class="link"<?php echo !empty(document::$settings['product_modal_window']) ? ' data-toggle="lightbox" data-require-window-width="768"' : ''; ?> href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>">
       <div class="image-wrapper">
         <img class="image img-responsive" src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
