@@ -70,67 +70,67 @@
 ?>
 <h1><?php echo $app_icon; ?> <?php echo !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
+<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
   <div class="row">
 
     <div class="col-md-8">
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_username', 'Username'); ?></label>
           <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
           <?php echo functions::form_draw_password_field('password', '', 'autocomplete="off"'); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
           <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_blocked_until', 'Blocked Until'); ?></label>
           <?php echo functions::form_draw_datetime_field('date_blocked', true); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_expires', 'Expires'); ?></label>
           <?php echo functions::form_draw_datetime_field('date_expires', true); ?>
         </div>
       </div>
 
+      <?php if (!empty($user->data['id'])) { ?>
       <div class="row">
-        <?php if (!empty($user->data['id'])) { ?>
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
-          <?php echo functions::form_draw_text_field('last_ip', true, 'disabled="disabled"'); ?>
+          <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
-          <?php echo functions::form_draw_text_field('last_host', true, 'disabled="disabled"'); ?>
+          <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-          <?php echo functions::form_draw_text_field('date_login', true, 'disabled="disabled"'); ?>
+          <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
         </div>
-        <?php } ?>
       </div>
+      <?php } ?>
     </div>
 
     <div class="col-md-4">

@@ -1,4 +1,8 @@
+Sitemap: /feeds/sitemap.xml
+
 User-agent: *
 Allow: /
 Disallow: */cache/*
-Sitemap: /feeds/sitemap.xml
+
+User-agent: AhrefsBot
+Disallow: /

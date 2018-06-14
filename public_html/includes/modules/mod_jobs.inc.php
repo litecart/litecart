@@ -1,10 +1,6 @@
 <?php
 
   class mod_jobs extends module {
-    public $data;
-    public $cheapest = '';
-    public $items = array();
-    public $destination = array();
 
     public function __construct() {
       $this->load('job');

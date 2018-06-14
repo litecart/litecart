@@ -67,6 +67,9 @@
         $this->data[$key] = $value;
       }
 
+      $this->data['product_groups'] = !empty($this->data['product_groups']) ? explode(',', $this->data['product_groups']) : array();
+      $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : array();
+
     // Categories
       $this->data['categories'] = array();
 
@@ -78,9 +81,6 @@
       while ($category = database::fetch($categories_query)){
         $this->data['categories'][] = $category['category_id'];
       }
-
-      $this->data['product_groups'] = !empty($this->data['product_groups']) ? explode(',', $this->data['product_groups']) : array();
-      $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : array();
 
     // Info
       $products_info_query = database::query(

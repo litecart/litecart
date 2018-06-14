@@ -163,7 +163,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-            <div class="form-control" style="height: auto; height: 15em; overflow-y: auto;">
+            <div class="form-control" style="overflow-y: auto; max-height: 200px;">
 <?php
   function custom_catalog_tree($category_id=0, $depth=1, $count=0) {
 
@@ -209,7 +209,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_product_groups', 'Product Groups'); ?></label>
-            <div style="height: auto; height: 11em; overflow-y: auto;" class="form-control">
+            <div class="form-control" style="overflow-y: auto; max-height: 200px;">
 <?php
   // Output product groups
     $product_groups_query = database::query(

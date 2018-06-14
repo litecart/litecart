@@ -907,10 +907,10 @@
   function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
 
     $query = database::query(
-      "select p.id, pi.name from ". DB_TABLE_PAGES ." p
-      left join ". DB_TABLE_PAGES_INFO ." pi on (pi.delivery_status_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+      left join ". DB_TABLE_PAGES_INFO ." pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where p.status
-      order by p.priority, pi.name asc;"
+      order by p.priority, pi.title asc;"
     );
 
     $options = array();
@@ -918,7 +918,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = array($row['title'], $row['id']);
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);

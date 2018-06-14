@@ -30,7 +30,6 @@
       if (empty($_POST['vqmods'])) throw new Exception(language::translate('error_must_select_vqmods', 'You must select vQmods'));
 
       foreach ($_POST['vqmods'] as $vqmod) {
-        die(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_BASENAME));
         unlink(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_BASENAME));
       }
 
@@ -50,11 +49,25 @@
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }
 
-      if (!in_array($_FILES['vqmod']['type'], array('text/xml', 'application/xml'))) {
-        throw new Exception(language::translate('error_must_provide_vqmod', 'You must provide a valid vQmod file'));
+      $dom = new DOMDocument('1.0', 'UTF-8');
+
+      $xml = file_get_contents($_FILES['vqmod']['tmp_name']); // DOMDocument::load() does not support Windows paths so we use DOMDocument::loadXML()
+
+      if (!@$dom->loadXML($xml)) {
+        throw new Exception(language::translate('error_invalid_xml_file', 'Invalid XML file'));
       }
 
-      move_uploaded_file($_FILES['vqmod']['tmp_name'], FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. $_FILES['vqmod']['name']);
+      if (!$dom->getElementsByTagName('modification')) {
+        throw new Exception(language::translate('error_xml_file_is_not_valid_vqmod', 'XML file is not a valid vQmod file'));
+      }
+
+      $filename = FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($_FILES['vqmod']['name'], PATHINFO_FILENAME) .'.xml';
+
+      if (is_file($filename)) {
+        unlink($filename);
+      }
+
+      move_uploaded_file($_FILES['vqmod']['tmp_name'], $filename);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
       header('Location: '. document::ilink());
@@ -64,6 +77,7 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
 ?>
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_vqmods', 'vQmods'); ?></h1>
 
