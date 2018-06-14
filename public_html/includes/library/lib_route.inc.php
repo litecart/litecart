@@ -47,7 +47,7 @@
       $routes = array(
         '#^(?:index\.php)?$#'                  => array('page' => 'index',          'params' => '',  'redirect' => true),
         '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false, 'post_security' => false),
-        '#^([0-9a-z_/\.]+)(?:\.php)?$#'        => array('page' => '$1',             'params' => '',  'redirect' => true),
+        '#^([0-9a-zA-Z_/\.]+)(?:\.php)?$#'     => array('page' => '$1',             'params' => '',  'redirect' => true),
         // See ~/includes/routes/ folder for more advanced routes
       );
 
