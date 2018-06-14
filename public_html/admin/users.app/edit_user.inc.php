@@ -30,8 +30,8 @@
         'username',
         'password',
         'permissions',
-        'date_blocked',
-        'date_expires',
+        'date_valid_from',
+        'date_valid_to',
       );
 
       foreach ($fields as $field) {
@@ -101,13 +101,13 @@
 
       <div class="row">
         <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_blocked_until', 'Blocked Until'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_blocked', true); ?>
+          <label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
+          <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
         </div>
 
         <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_expires', 'Expires'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_expires', true); ?>
+          <label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
+          <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
         </div>
       </div>
 

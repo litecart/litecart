@@ -82,8 +82,8 @@
         'last_host' => '',
         'login_attempts' => '',
         'total_logins' => '',
-        'date_blocked' => '',
-        'date_expires' => '',
+        'date_valid_from' => '',
+        'date_valid_to' => '',
         'date_active' => '',
         'date_login' => '',
         'date_updated' => '',
@@ -146,13 +146,13 @@
         return;
       }
 
-      if (date('Y', strtotime($user['date_expires'])) > '1970' && date('Y-m-d H:i:s') > $user['date_expires']) {
-        notices::add('errors', sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_expires']))));
+      if (date('Y', strtotime($user['date_valid_to'])) > '1970' && date('Y-m-d H:i:s') > $user['date_valid_to']) {
+        notices::add('errors', sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))));
         return;
       }
 
-      if (date('Y-m-d H:i:s') < $user['date_blocked']) {
-        notices::add('errors', sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_blocked']))));
+      if (date('Y-m-d H:i:s') < $user['date_valid_from']) {
+        notices::add('errors', sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))));
         return;
       }
 
@@ -180,7 +180,7 @@
           $user_query = database::query(
             "update ". DB_TABLE_USERS ."
             set login_attempts = 0,
-            date_blocked = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+            date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
             where id = ". (int)$user['id'] ."
             limit 1;"
           );

@@ -37,4 +37,8 @@ CREATE TABLE `lc_categories_images` (
 INSERT INTO `lc_categories_images` (category_id, filename) (
   SELECT id, image from `lc_categories`
   WHERE image != ''
-)
+);
+-- --------------------------------------------------------
+ALTER TABLE `lc_users`
+CHANGE COLUMN `date_blocked` `date_valid_from` DATETIME NOT NULL AFTER `total_logins`,
+CHANGE COLUMN `date_expires` `date_valid_to` DATETIME NOT NULL AFTER `date_valid_from`;

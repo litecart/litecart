@@ -83,8 +83,8 @@
           status = '". (empty($this->data['status']) ? 0 : 1) ."',
           username = '". database::input($this->data['username']) ."',
           permissions = '". database::input(json_encode($this->data['permissions'])) ."',
-          date_blocked = '". database::input($this->data['date_blocked']) ."',
-          date_expires = '". database::input($this->data['date_expires']) ."',
+          date_valid_from = '". database::input($this->data['date_valid_from']) ."',
+          date_valid_to = '". database::input($this->data['date_valid_to']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
