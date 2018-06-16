@@ -19,6 +19,10 @@
 
   function format_regex_code($string) {
 
+    if (strlen($string) > 24 || preg_match('#[^0-9a-zA-Z -\./]#', $string)) {
+      return preg_quote($string, "'");
+    }
+
     $string = preg_replace('#[ -\./]+#', '', $string);
 
     if (mb_strlen($string) > 1) {
