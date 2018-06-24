@@ -72,7 +72,7 @@
     if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
     if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
     if (!empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
-    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
+    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
 
@@ -194,7 +194,7 @@
     if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
     if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
     if (!empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
-    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array($filter['exclude_products']);
+    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
     $sql_where_product_groups = "";
     if (!empty($filter['product_groups'])) {
