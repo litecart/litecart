@@ -36,3 +36,62 @@
       die('<span class="error">[Error]</span></p>');
     }
   }
+
+// Complete Order Items
+  $order_items_query = database::query(
+    "select * from ". DB_TABLE_ORDERS_ITEMS .";"
+  );
+
+  while($order_item = database::fetch($order_items_query)) {
+    if (empty($order_item['product_id'])) continue;
+
+  // Get stock option
+    if (!empty($order_item['option_stock_combination'])) {
+      $stock_options_query = database::query(
+        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        where combination = '". database::input($order_item['option_stock_combination']) ."'
+        limit 1;"
+      );
+    }
+
+    if (!$stock_option = database::fetch($stock_options_query)) {
+      $stock_options_query = database::query(
+        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        where sku = '". database::input($order_item['sku']) ."'
+        limit 1;"
+      );
+    }
+
+    $stock_option = database::fetch($stock_options_query);
+
+  // Product
+    $products_query = database::query(
+      "select * from ". DB_TABLE_PRODUCTS ."
+      where id = ". (!empty($stock_option['product_id']) ? $stock_option['product_id'] : (int)$order_item['product_id']) ."
+      limit 1;"
+    );
+
+    if (!$product = database::fetch($products_query)) {
+      $products_query = database::query(
+        "select * from ". DB_TABLE_PRODUCTS ."
+        where sku = '". database::input($order_item['sku']) ."'
+        limit 1;"
+      );
+    }
+
+    if (empty($product)) continue;
+
+  // Update order item
+    database::query(
+      "update ". DB_TABLE_ORDERS_ITEMS ."
+      set
+        gtin = '". database::input($product['gtin']) ."',
+        taric = '". database::input($product['taric']) ."',
+        dim_x = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_x'] : (float)$product['dim_x']) .",
+        dim_y = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_y'] : (float)$product['dim_y']) .",
+        dim_z = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_z'] : (float)$product['dim_z']) .",
+        dim_class = '". database::input(!empty($stock_option['dim_x']) ? $stock_option['dim_class'] : $product['dim_class']) ."',
+      where id = ". (int)$order_item['id'] ."
+      limit 1;"
+    );
+  }

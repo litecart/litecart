@@ -336,14 +336,20 @@
             "update ". DB_TABLE_ORDERS_ITEMS ."
             set product_id = ". (int)$this->data['items'][$key]['product_id'] .",
             option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
-            options = '".  (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
+            options = '". (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
             name = '". database::input($this->data['items'][$key]['name']) ."',
             sku = '". database::input($this->data['items'][$key]['sku']) ."',
+            gtin = '". database::input($this->data['items'][$key]['gtin']) ."',
+            taric = '". database::input($this->data['items'][$key]['gtin']) ."',
             quantity = ". (float)$this->data['items'][$key]['quantity'] .",
             price = ". (float)$this->data['items'][$key]['price'] .",
             tax = ". (float)$this->data['items'][$key]['tax'] .",
             weight = ". (float)$this->data['items'][$key]['weight'] .",
             weight_class = '". database::input($this->data['items'][$key]['weight_class']) ."',
+            dim_x = ". (float)$this->data['items'][$key]['dim_x'] .",
+            dim_y = ". (float)$this->data['items'][$key]['dim_y'] .",
+            dim_z = ". (float)$this->data['items'][$key]['dim_z'] .",
+            dim_class = '". database::input($this->data['items'][$key]['dim_class']) ."'
             where order_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['items'][$key]['id'] ."
             limit 1;"
@@ -516,11 +522,17 @@
         'option_stock_combination',
         'name',
         'sku',
+        'gtin',
+        'taric',
         'price',
         'tax',
         'quantity',
         'weight',
         'weight_class',
+        'dim_x',
+        'dim_y',
+        'dim_z',
+        'dim_class',
         'error',
       );
 

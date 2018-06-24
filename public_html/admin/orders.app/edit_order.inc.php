@@ -572,16 +572,18 @@
       <h2 class="panel-title"><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
     </div>
 
-    <div class="panel-body table-responsive">
+    <div class="panel-body table-responsive" style="zoom: 0.8;">
       <table class="table table-striped data-table">
         <thead>
           <tr>
             <th><?php echo language::translate('title_item', 'Item'); ?></th>
             <th style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+            <th style="width: 200px;"><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
             <th style="width: 175px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+            <th style="width: 420px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
             <th style="width: 115px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-            <th style="width: 175px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-            <th style="width: 175px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+            <th style="width: 200px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+            <th style="width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
             <th style="width: 30px;">&nbsp;</th>
           </tr>
         </thead>
@@ -620,7 +622,25 @@
 ?>
             </td>
             <td><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
-            <td><div class="input-group"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, 2, 0); ?> <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: auto;"'); ?></span></div></td>
+            <td><?php echo functions::form_draw_hidden_field('items['. $key .'][gtin]', true); ?><?php echo $_POST['items'][$key]['gtin']; ?></td>
+            <td>
+              <div class="input-group">
+                <?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, 2, 0); ?>
+                <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: auto;"'); ?></span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <?php echo functions::form_draw_decimal_field('dim_x', true, 1, 0); ?>
+                <span class="input-group-addon">x</span>
+                <?php echo functions::form_draw_decimal_field('dim_y', true, 1, 0); ?>
+                <span class="input-group-addon">x</span>
+                <?php echo functions::form_draw_decimal_field('dim_z', true, 1, 0); ?>
+                <span class="input-group-addon">
+                  <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
+                </span>
+              </div>
+            </td>
             <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
             <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
             <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
@@ -633,7 +653,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7">
+            <td colspan="9">
               <a class="btn btn-default add-product" href="<?php echo document::href_link('', array('doc' => 'product_picker'), array('app'), array()); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', array('doc' => 'product_picker'), array('app'), array()); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
               <a class="btn btn-default add-custom-item" href="<?php echo document::href_link('', array('doc' => 'add_custom_item'), array('app'), array()); ?>" data-toggle="lightbox" data-width="640px" data-href="<?php echo document::href_link('', array('doc' => 'add_custom_item'), array('app'), array()); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
             </td>
@@ -653,10 +673,10 @@
         <thead>
           <tr>
             <th style="width: 30px;">&nbsp;</th>
-            <th><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
+            <th style="width: 250px;"><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
             <th class="text-right"><?php echo language::translate('title_title', 'Title'); ?></th>
-            <th style="width: 210px;"><?php echo language::translate('title_value', 'Value'); ?></th>
-            <th style="width: 175px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+            <th style="width: 240px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+            <th style="width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
             <th style="width: 30px;">&nbsp;</th>
           </tr>
         </thead>
@@ -1005,7 +1025,9 @@
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
                + '    </td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'+ item.sku +'</td>'
-               + '    <td><div class="input-group"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][weight]', '', 2, 0)); ?> <span class="input-group-addon"><?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '', false, 'style="width: auto;"')); ?></span></div></td>'
+               + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][gtin]', '')); ?>'+ item.gtin +'</td>'
+               + '    <td><div class="input-group"><?php echo functions::form_draw_decimal_field('items[new_item_index][weight]', '', 2, 0); ?> <span class="input-group-addon"><?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '', false, 'style="width: auto;"')); ?></span></div></td>'
+               + '    <td><div class="input-group"><?php echo functions::form_draw_decimal_field('dim_x', true, 1, 0); ?><span class="input-group-addon">x</span><?php echo functions::form_draw_decimal_field('dim_y', true, 1, 0); ?><span class="input-group-addon">x</span><?php echo functions::form_draw_decimal_field('dim_z', true, 1, 0); ?><span class="input-group-addon"><?php echo functions::general_escape_js(functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"')); ?></span></div></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'

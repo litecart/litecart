@@ -43,3 +43,12 @@ ALTER TABLE `lc_users`
 ADD COLUMN `email` VARCHAR(64) NOT NULL AFTER `username`,
 CHANGE COLUMN `date_blocked` `date_valid_from` DATETIME NOT NULL AFTER `total_logins`,
 CHANGE COLUMN `date_expires` `date_valid_to` DATETIME NOT NULL AFTER `date_valid_from`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_items`
+CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL AFTER `name`,
+ADD COLUMN `gtin` VARCHAR(32) NOT NULL AFTER `sku`,
+ADD COLUMN `taric` VARCHAR(32) NOT NULL AFTER `gtin`,
+ADD COLUMN `dim_x` DECIMAL(11,4) NOT NULL AFTER `weight_class`,
+ADD COLUMN `dim_y` DECIMAL(11,4) NOT NULL AFTER `dim_x`,
+ADD COLUMN `dim_z` DECIMAL(11,4) NOT NULL AFTER `dim_y`,
+ADD COLUMN `dim_class` VARCHAR(2) NOT NULL AFTER `dim_z`;

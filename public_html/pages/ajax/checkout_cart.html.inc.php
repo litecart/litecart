@@ -26,6 +26,8 @@
       'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $item['image'], 320, 320, 'FIT_USE_WHITESPACING'),
       'name' => $item['name'],
       'sku' => $item['sku'],
+      'gtin' => $item['gtin'],
+      'taric' => $item['taric'],
       'options' => array(),
       'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
       'price' => $item['price'],
@@ -33,6 +35,12 @@
       'tax_class_id' => $item['tax_class_id'],
       'quantity' => (float)$item['quantity'],
       'quantity_unit' => $item['quantity_unit'],
+      'weight' => (float)$item['weight'],
+      'weight_class' => $item['weight_class'],
+      'dim_x' => (float)$item['dim_x'],
+      'dim_y' => (float)$item['dim_y'],
+      'dim_z' => (float)$item['dim_z'],
+      'dim_class' => $item['dim_class'],
       'error' => $item['error'],
     );
 
