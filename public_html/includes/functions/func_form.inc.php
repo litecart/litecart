@@ -540,9 +540,9 @@
       case 'smallinput':
         return form_draw_input($name, $input, 'text');
       case 'input':
-        return form_draw_input($name, $input, 'text');
+        return form_draw_text_field($name, $input, 'text');
       case 'password':
-        return form_draw_input($name, $input, 'password');
+        return form_draw_password_field($name, $input, 'password');
       case 'smalltext':
         return form_draw_textarea($name, $input, 'rows="2"');
       case 'mediumtext':
