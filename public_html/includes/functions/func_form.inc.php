@@ -564,6 +564,8 @@
       case 'delivery_status':
       case 'delivery_statuses':
         return form_draw_delivery_statuses_list($name, $input);
+      case 'email':
+        return functions::form_draw_email_field($name, $input);
       case 'geo_zone':
       case 'geo_zones':
         return form_draw_geo_zones_list($name, $input);
