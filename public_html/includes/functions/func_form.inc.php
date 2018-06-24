@@ -537,8 +537,6 @@
         return form_draw_color_field($name, $input);
       case 'currency':
         return form_draw_currency_field(!empty($options[0]) ? $options[0] : null, $name, $input);
-      case 'smallinput':
-        return form_draw_input($name, $input, 'text');
       case 'input':
         return form_draw_text_field($name, $input, 'text');
       case 'password':
