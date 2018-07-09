@@ -66,7 +66,17 @@
 
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $config['key']) {
 
-        $_POST['settings'][$config['key']] = $settings[$config['key']];
+        switch (true) {
+          case (substr($config['function'], 0, 14) == 'regional_input'):
+            if (!isset($_POST['settings'][$config['key']])) {
+              $_POST['settings'][$config['key']] = @json_decode($settings[$config['key']], true);
+            }
+            break;
+
+          default:
+            $_POST['settings'][$config['key']] = $settings[$config['key']];
+            break;
+        }
 ?>
       <tr>
         <td style="white-space: normal;">
@@ -113,6 +123,10 @@
            $value = language::translate('title_false', 'False');
           }
 
+          break;
+
+        default:
+          $value = $settings[$config['key']];
           break;
       }
 ?>
