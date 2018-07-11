@@ -143,8 +143,4 @@
 
       return $this;
     }
-
-    public function get_log() {
-      return $this->_log;
-    }
   }
