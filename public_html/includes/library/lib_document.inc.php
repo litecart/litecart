@@ -222,13 +222,6 @@
         }
       }
 
-    // Clean orphan snippets
-      $search = array(
-        '#<!--snippet:[^-->]+-->\R?#',
-        '#\{snippet:[^\}]+\}\R?#',
-      );
-
-      $GLOBALS['output'] = preg_replace($search, '', $GLOBALS['output']);
     }
 
     //public static function shutdown() {
