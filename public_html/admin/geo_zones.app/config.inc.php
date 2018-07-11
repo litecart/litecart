@@ -1,6 +1,6 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_geo_zones', 'Geo Zones'),
     'default' => 'geo_zones',
     'theme' => array(
