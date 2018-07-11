@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.1.3
+ * LiteCart® 2.1.4
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -15,7 +15,7 @@
 
   require_once('includes/app_header.inc.php');
 
-  if (settings::get('maintenance_mode')) {
+  if (settings::get('maintenance_mode') || is_dir(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
     if (!empty(user::$data['id'])) {
       notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', array(
         '%message' => language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
