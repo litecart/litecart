@@ -28,6 +28,7 @@
 
       $fields = array(
         'status',
+        'iso_code_1',
         'iso_code_2',
         'iso_code_3',
         'name',
@@ -81,6 +82,11 @@
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
       <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <?php echo functions::form_draw_text_field('iso_code_1', true, 'required="required" pattern="[A-Z]{2}"'); ?>
     </div>
   </div>
 
