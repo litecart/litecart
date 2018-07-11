@@ -83,8 +83,8 @@
 
       database::query(
         "update ". DB_TABLE_PAGES ."
-        set status = '". ((!empty($this->data['status'])) ? 1 : 0) ."',
-          dock = '". ((!empty($this->data['dock'])) ? implode(',', $this->data['dock']) : '') ."',
+        set status = '". (!empty($this->data['status']) ? 1 : 0) ."',
+          dock = '". (!empty($this->data['dock']) ? implode(',', database::input($this->data['dock'])) : '') ."',
           priority = '". (int)$this->data['priority'] ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
