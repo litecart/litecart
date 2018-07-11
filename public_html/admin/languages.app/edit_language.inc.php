@@ -21,15 +21,15 @@
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
       if (!empty($_POST['code']) && empty($language->data['id'])) {
-          $languages_query = database::query(
-            "select id from ". DB_TABLE_LANGUAGES ."
-            where code = '". database::input($_POST['code']) ."'
-            limit 1;"
-          );
+        $languages_query = database::query(
+          "select id from ". DB_TABLE_LANGUAGES ."
+          where code = '". database::input($_POST['code']) ."'
+          limit 1;"
+        );
 
-          if (database::num_rows($languages_query)) {
-            throw new Exception(language::translate('error_language_already_exists', 'The language already exists in the database'));
-          }
+        if (database::num_rows($languages_query)) {
+          throw new Exception(language::translate('error_language_already_exists', 'The language already exists in the database'));
+        }
       }
 
       if (!empty($_POST['code']) && !empty($language->data['id']) && $language->data['code'] != $_POST['code']) {
