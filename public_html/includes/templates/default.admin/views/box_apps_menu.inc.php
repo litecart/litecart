@@ -1,7 +1,7 @@
 <div id="box-apps-menu-wrapper">
   <ul id="box-apps-menu" class="list-vertical">
     <?php foreach ($apps as $app) { ?>
-      <li id="app-<?php $app['code']; ?>"<?php echo $app['active'] ? ' class="selected"' : ''; ?>>
+      <li id="app-<?php echo $app['code']; ?>"<?php echo $app['active'] ? ' class="selected"' : ''; ?>>
         <a href="<?php echo htmlspecialchars($app['link']); ?>">
         <span class="fa-stack fa-lg icon-wrapper">
           <?php echo functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $app['theme']['color'] .';"'); ?>
