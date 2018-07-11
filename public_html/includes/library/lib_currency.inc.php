@@ -141,7 +141,7 @@
       if (!isset(self::$currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_WARNING);
       if (!isset(self::$currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_WARNING);
 
-      return $value / self::$currencies[$from]['value'] * self::$currencies[$to]['value'];
+      return $value * self::$currencies[$from]['value'] / self::$currencies[$to]['value'];
     }
 
     public static function convert($value, $from, $to=null) {
@@ -163,7 +163,7 @@
 
       if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
 
-      $fraction = ($value * $currency_value) - (int)($value * $currency_value);
+      $fraction = ($value / $currency_value) - (int)($value / $currency_value);
 
       if ($fraction == 0 && $auto_decimals && settings::get('auto_decimals')) {
         $decimals = 0;
@@ -176,7 +176,7 @@
 
       if (empty(self::$currencies[$currency_code])) $suffix = ' ' . $currency_code;
 
-      return $prefix . number_format($value * $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
+      return $prefix . number_format($value / $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
     }
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
@@ -186,7 +186,7 @@
 
       if (empty($currency_value)) $currency_value = currency::$currencies[$currency_code]['value'];
 
-      return number_format($value * $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
+      return number_format($value / $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
     }
 
   // Round a store currency amount in a remote currency

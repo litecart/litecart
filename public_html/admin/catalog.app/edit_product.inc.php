@@ -890,8 +890,8 @@ foreach (currency::$currencies as $currency) {
       if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
 
       var currency_decimals = get_currency_decimals(currency_code),
-          currency_net_price = net_price * get_currency_value(currency_code);
-          currency_gross_price = gross_price * get_currency_value(currency_code);
+          currency_net_price = net_price / get_currency_value(currency_code);
+          currency_gross_price = gross_price / get_currency_value(currency_code);
 
       $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price ? Number(currency_net_price).toFixed(currency_decimals) : '')
       $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price ? Number(currency_gross_price).toFixed(currency_decimals) : '')

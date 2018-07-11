@@ -9,9 +9,9 @@ ALTER TABLE `lc_products_options` ADD `GBP` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'GBP' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 1.2493 WHERE `code` = 'USD' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 0.7475 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 1.1790 WHERE `code` = 'EUR' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 0.8768 WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('GB VAT Zone', '', NOW(), NOW());

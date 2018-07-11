@@ -247,7 +247,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 -- --------------------------------------------------------
 INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
-(1, 'EUR', '978', 'Euros', 0.726, 2, '', ' €', 0, NOW(), NOW());
+(1, 'EUR', '978', 'Euros', 1.173, 2, '', ' €', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
 (1, NOW(), NOW()),

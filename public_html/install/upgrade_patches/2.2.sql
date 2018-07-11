@@ -52,3 +52,7 @@ ADD COLUMN `dim_x` DECIMAL(11,4) NOT NULL AFTER `weight_class`,
 ADD COLUMN `dim_y` DECIMAL(11,4) NOT NULL AFTER `dim_x`,
 ADD COLUMN `dim_z` DECIMAL(11,4) NOT NULL AFTER `dim_y`,
 ADD COLUMN `dim_class` VARCHAR(2) NOT NULL AFTER `dim_z`;
+-- --------------------------------------------------------
+UPDATE `lc_currencies` SET `value` = 1 / `value`;
+-- --------------------------------------------------------
+UPDATE `lc_orders_items` SET currency_value = 1 / currency_value;

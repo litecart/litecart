@@ -5,7 +5,7 @@ ALTER TABLE `lc_translations` ADD `text_nl` text NOT NULL AFTER `text_en`;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'EUR' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 1.0597 WHERE `code` = 'USD' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 0.8525 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_currencies` SET `value` = 1 WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
