@@ -122,7 +122,7 @@
       if (strtoupper(language::$selected['charset']) == 'UTF-8') {
         $subject = '=?utf-8?b?'. base64_encode($this->_subject) .'?=';
       } else {
-        $subject = $this->subject;
+        $subject = $this->_subject;
       }
 
     // Prepare body
