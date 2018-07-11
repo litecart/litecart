@@ -15,7 +15,7 @@
 
   $customers_query = database::query(
     "select id, firstname, lastname, company, email, date_created from ". DB_TABLE_CUSTOMERS ."
-    ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
+    ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by firstname, lastname
     limit 15;"
   );

@@ -265,7 +265,7 @@
            . '[ip="' . $_SERVER['REMOTE_ADDR'] .'"]'
            . '[hostname="'. $hostname .'"]'
            . '[agent="'. $_SERVER['HTTP_USER_AGENT'] .'"]'
-           . '[referer="'. ((!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '') .'"]'
+           . '[referer="'. (!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '') .'"]'
            . '[expires="'. date('Y-m-d H:i:s', strtotime('+ '. self::$_ban_time)) .'"]'
            . PHP_EOL;
 

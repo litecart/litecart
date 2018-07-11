@@ -6,7 +6,11 @@
   $box_latest_products_cache_id = cache::cache_id('box_latest_products', array('language', 'currency', 'prices'));
   if (cache::capture($box_latest_products_cache_id, 'file')) {
 
-    $products_query = functions::catalog_products_query(array('sort' => 'date', 'limit' => settings::get('box_latest_products_num_items')));
+    $products_query = functions::catalog_products_query(array(
+      'sort' => 'date',
+      'limit' => settings::get('box_latest_products_num_items'),
+    ));
+
     if (database::num_rows($products_query)) {
 
       $box_latest_products = new view();

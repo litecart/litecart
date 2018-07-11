@@ -20,6 +20,7 @@
     if (!empty($category['parent_id'])) {
       $trail = functions::catalog_category_trail($category['parent_id']);
       $trail[$category['id']] = $category['name'];
+
     } else if (isset($category['id'])) {
       $trail = array($category['id'] => $category['name']);
     }
@@ -41,6 +42,7 @@
       left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
       where c.parent_id = ". (int)$category_id .";"
     );
+
     while ($category = database::fetch($categories_query)) {
       $subcategories[$category['id']] = $category['name'];
       $subcategories = $subcategories + catalog_category_descendants($category['id'], $language_code);
@@ -106,11 +108,13 @@
 
     $sql_where_product_groups = "";
     if (!empty($filter['product_groups'])) {
+
       $product_groups = array();
       foreach ($filter['product_groups'] as $group_value) {
         list($group,) = explode('-', $group_value);
         $product_groups[$group][] = $group_value;
       }
+
       foreach ($product_groups as $group_value) {
         $sql_where_product_groups .= "and (find_in_set('". implode("', product_groups) or find_in_set('", $group_value) ."', product_groups))";
       }
@@ -118,15 +122,17 @@
 
     $sql_where_prices = "";
     if (!empty($filter['price_ranges'])) {
+
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
         $sql_where_prices .= " or (if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
       }
+
       $sql_where_prices = "and (". ltrim($sql_where_prices, " or ") .")";
     }
 
-    $query = "
-      select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
+    $query = (
+      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
 
       from (
         select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
@@ -134,14 +140,11 @@
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
         left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
         where p.status
-          and (p.id
-          ". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
-          ". (!empty($filter['categories']) ? "and ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
-          ". (!empty($filter['manufacturers']) ? "and manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
-          ". (!empty($filter['keywords']) ? "and (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
-          ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : null) ."
-
-        )
+        ". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
+        ". (!empty($filter['categories']) ? "and ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
+        ". (!empty($filter['manufacturers']) ? "and manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
+        ". (!empty($filter['keywords']) ? "and (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
+        ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : null) ."
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
@@ -177,8 +180,8 @@
       )
 
       order by ". implode(",", $sql_outer_sort) ."
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";
-    ";
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";"
+    );
 
     $products_query = database::query($query);
 
@@ -198,11 +201,13 @@
 
     $sql_where_product_groups = "";
     if (!empty($filter['product_groups'])) {
+
       $product_groups = array();
       foreach ($filter['product_groups'] as $group_value) {
         list($group,) = explode('-', $group_value);
         $product_groups[$group][] = $group_value;
       }
+
       foreach ($product_groups as $group_value) {
         $sql_where_product_groups .= "$sql_andor (find_in_set('". implode("', product_groups) or find_in_set('", $group_value) ."', product_groups))";
       }
@@ -210,15 +215,17 @@
 
     $sql_where_prices = "";
     if (!empty($filter['price_ranges'])) {
+
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
         $sql_where_prices .= " or (if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
       }
+
       $sql_where_prices = "or (". ltrim($sql_where_prices, " or ") .")";
     }
 
-    $query = "
-      select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, (0
+    $query = (
+      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", database::input($filter['categories'])) ."', categories), 1, 0)" : false) ."
@@ -275,8 +282,8 @@
       )
 
       order by occurrences desc
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";
-    ";
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";"
+    );
 
     $products_query = database::query($query);
 
@@ -293,9 +300,12 @@
         where product_id = ". (int)$product_id ."
         and combination = '". database::input($option_stock_combination) ."';"
       );
+
       if (database::num_rows($products_options_stock_query) > 0) {
+
         if (empty($option_stock_combination)) {
           trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
+
         } else {
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
@@ -305,6 +315,7 @@
             limit 1;"
           );
         }
+
       } else {
         $option_id = 0;
       }

@@ -25,7 +25,7 @@
       select product_id, if(`". database::input($_GET['currency_code']) ."`, `". database::input($_GET['currency_code']) ."` * ". (float)$_GET['currency_value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
       from ". DB_TABLE_PRODUCTS_PRICES ."
     ) pp on (pp.product_id = p.id)
-    ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
+    ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by pi.name
     limit 15;"
   );

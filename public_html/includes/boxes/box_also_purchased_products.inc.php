@@ -12,7 +12,11 @@
 
       $also_purchased_products = array_slice($also_purchased_products, 0, settings::get('box_also_purchased_products_num_items')*3, true);
 
-      $products_query = functions::catalog_products_query(array('products' => array_keys($also_purchased_products), 'sort' => 'rand', 'limit' => settings::get('box_also_purchased_products_num_items')));
+      $products_query = functions::catalog_products_query(array(
+        'products' => array_keys($also_purchased_products),
+        'sort' => 'rand',
+        'limit' => settings::get('box_also_purchased_products_num_items'),
+      ));
 
       if (database::num_rows($products_query)) {
 

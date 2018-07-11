@@ -6,7 +6,10 @@
   $box_popular_products_cache_id = cache::cache_id('box_popular_products', array('language', 'currency', 'prices'));
   if (cache::capture($box_popular_products_cache_id, 'file')) {
 
-    $products_query = functions::catalog_products_query(array('sort' => 'popularity', 'limit' => settings::get('box_popular_products_num_items')*2));
+    $products_query = functions::catalog_products_query(array(
+      'sort' => 'popularity',
+      'limit' => settings::get('box_popular_products_num_items')*2,
+    ));
 
     if (database::num_rows($products_query)) {
 

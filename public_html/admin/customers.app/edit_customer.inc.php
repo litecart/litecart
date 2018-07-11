@@ -134,13 +134,13 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-          <?php echo functions::form_draw_text_field('tax_id', true); ?>
+          <label><?php echo language::translate('title_company', 'Company'); ?></label>
+          <?php echo functions::form_draw_text_field('company', true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
-          <?php echo functions::form_draw_text_field('company', true); ?>
+          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+          <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
       </div>
 

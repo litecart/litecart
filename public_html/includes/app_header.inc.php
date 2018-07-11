@@ -13,7 +13,7 @@
 // Get config
   require_once __DIR__ . '/config.inc.php';
 
-// Compatibility
+// Compatibility and Polyfills
   require_once FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php';
 
 // Virtual Modifications System

@@ -250,7 +250,7 @@
       }
     }
 
-    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : false) . $title .'</a>';
+    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. (!empty($icon) ? $icon . ' ' : false) . $title .'</a>';
   }
 
   function form_draw_month_field($name, $value=true, $parameters='') {
@@ -897,7 +897,7 @@
 
     $options = array();
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = array('--', '');
 
     foreach (length::$classes as $class) {
       $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');
@@ -1294,7 +1294,7 @@
 
     $options = array();
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = array('--', '');
 
     foreach (weight::$classes as $class) {
       $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');

@@ -8,7 +8,11 @@
 
     $box_campaign_products = new view();
 
-    $products_query = functions::catalog_products_query(array('campaign' => true, 'sort' => 'rand', 'limit' => settings::get('box_campaign_products_num_items')));
+    $products_query = functions::catalog_products_query(array(
+      'campaign' => true,
+      'sort' => 'rand',
+      'limit' => settings::get('box_campaign_products_num_items'),
+    ));
 
     if (database::num_rows($products_query)) {
 
