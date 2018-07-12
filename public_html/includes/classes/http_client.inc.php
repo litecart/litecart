@@ -44,8 +44,8 @@
         $headers['Content-Type'] = 'application/x-www-form-urlencoded';
       }
 
-      if (!empty($data) && empty($headers['Content-Length'])) {
-        $headers['Content-Length'] = strlen($data);
+      if (empty($headers['Content-Length'])) {
+        $headers['Content-Length'] = mb_strlen($data);
       }
 
       if (empty($headers['Connection'])) {
