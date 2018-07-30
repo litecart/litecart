@@ -26,7 +26,7 @@
     if (!empty($_POST['save_customer_details'])) { // <-- Button is pressed
       if (!empty($_POST['create_account'])) {
         try {
-          if (isset($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
+          if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
           if (!functions::email_validate_address($_POST['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
           if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
             if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
