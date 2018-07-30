@@ -273,7 +273,7 @@ ul.filter li {
         jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert('An error occured');
+        alert('An error occurred');
       },
       success: function(json) {
         if (json['status'] && json['status'] == 'ok') {
