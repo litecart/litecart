@@ -220,7 +220,7 @@
       }
 
     // Append language prefix to base
-      if (settings::get('seo_links_language_prefix')) {
+      if (count(language::$languages > 1) && settings::get('seo_links_language_prefix')) {
         $http_route_base .= $language_code .'/';
       }
 
