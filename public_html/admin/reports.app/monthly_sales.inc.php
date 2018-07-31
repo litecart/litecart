@@ -103,8 +103,8 @@ form[name="filter_form"] li {
 <?php
     if (!isset($total)) $total = array();
     foreach (array_keys($orders) as $key) {
-      if (!isset($total[$key])) $total[$key] = $orders[$key];
-      else $total[$key] += $orders[$key];
+      if (!isset($total[$key])) $total[$key] = (float)$orders[$key];
+      else $total[$key] += (float)$orders[$key];
     }
   }
 ?>
