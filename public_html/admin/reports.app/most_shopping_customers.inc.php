@@ -58,7 +58,12 @@ form[name="filter_form"] li {
   }
 
   $customers_query = database::query(
-    "select sum(o.payment_due - tax_total) as total_amount, o.customer_id as id, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name, customer_email as email from ". DB_TABLE_ORDERS ." o
+    "select
+      sum(o.payment_due - tax_total) as total_amount,
+      o.customer_id as id,
+      if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name,
+      customer_email as email
+    from ". DB_TABLE_ORDERS ." o
     where o.order_status_id in ('". implode("', '", $order_statuses) ."')
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : "") ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : "") ."
