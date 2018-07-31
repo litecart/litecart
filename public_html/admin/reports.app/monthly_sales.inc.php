@@ -60,6 +60,7 @@ form[name="filter_form"] li {
 
   $orders_query = database::query(
     "select
+      group_concat(o.id) as order_ids,
       sum(o.payment_due) - sum(o.tax_total) as total_sales,
       sum(o.tax_total) as total_tax,
       sum(otst.value) as total_subtotal,
@@ -68,16 +69,19 @@ form[name="filter_form"] li {
       date_format(o.date_created, '%Y-%m') as `year_month`
     from ". DB_TABLE_ORDERS ." o
     left join (
-      select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
       where module_id = 'ot_subtotal'
+      group by order_id
     ) otst on (o.id = otst.order_id)
     left join (
-      select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
       where module_id = 'ot_shipping_fee'
+      group by order_id
     ) otsf on (o.id = otsf.order_id)
     left join (
-      select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
       where module_id = 'ot_payment_fee'
+      group by order_id
     ) otpf on (o.id = otpf.order_id)
     where o.order_status_id in ('". implode("', '", $order_statuses) ."')
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : "") ."
