@@ -65,7 +65,7 @@
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
               if (in_array($key, array('id', 'manufacturer_id', 'language_code'))) continue;
-              $this->_data[$key] = $value;
+              if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
           }
 
