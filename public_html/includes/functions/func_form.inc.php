@@ -577,9 +577,7 @@
         return functions::form_draw_regional_wysiwyg_field($name, $input);
       case 'zone':
       case 'zones':
-        $option = !empty($options) ? $options[0] : '';
-        //if (empty($option)) $option = settings::get('store_country_code');
-        return functions::form_draw_zones_list($option, $name, $input);
+        return functions::form_draw_zones_list(!empty($options[0]) ? $options[0] : null, $name, $input);
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_ERROR);
     }
