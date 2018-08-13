@@ -18,15 +18,16 @@
 		"url": "https://github.com/litecart/litecart/issues"
 	},
 	"devDependencies": {
-		"grunt": "^1.0.0",
-		"grunt-contrib-less": "^1.4.1",
+		"grunt": "^1.0.3",
+		"grunt-contrib-less": "^2.0.0",
 		"grunt-contrib-uglify": "^3.2.1",
 		"grunt-contrib-watch": "^1.0.0",
 		"grunt-phplint": "^0.1.0",
-		"grunt-sass": "^2.0.0",
-		"grunt-text-replace": "^0.3.12",
-		"less-plugin-clean-css": ">=1.5.1",
-		"phplint": "^1.7.4"
+		"grunt-sass": "^3.0.1",
+		"grunt-text-replace": "^0.4.0",
+		"less-plugin-clean-css": "^1.5.1",
+		"node-sass": "^4.9.3",
+		"phplint": "^2.0.0"
 	},
 	"scripts": {
 		"build": "grunt"
