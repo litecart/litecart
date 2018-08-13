@@ -36,7 +36,7 @@
       trigger_error('Setting data ('. $name .') is prohibited', E_USER_ERROR);
     }
 
-    private function _load($field='') {
+    private function _load($field) {
 
       switch($field) {
 
