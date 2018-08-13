@@ -3,23 +3,17 @@
   class ref_category {
 
     private $_id;
-    private $_cache_id;
     private $_language_codes;
     private $_data = array();
 
     function __construct($category_id, $language_code=null) {
 
       $this->_id = (int)$category_id;
-      $this->_cache_id = cache::cache_id('category_'.(int)$category_id);
       $this->_language_codes = array_unique(array(
         !empty($language_code) ? $language_code : language::$selected['code'],
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
-
-      if ($cache = cache::get($this->_cache_id, 'file')) {
-        $this->_data = $cache;
-      }
     }
 
     public function &__get($name) {
@@ -42,7 +36,7 @@
       trigger_error('Setting data is prohibited ('.$name.')', E_USER_WARNING);
     }
 
-    private function _load($field='') {
+    private function _load($field) {
 
       switch($field) {
 
@@ -190,7 +184,5 @@
 
           break;
       }
-
-      cache::set($this->_cache_id, 'file', $this->_data);
     }
   }
