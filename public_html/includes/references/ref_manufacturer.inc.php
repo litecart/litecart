@@ -36,7 +36,7 @@
       trigger_error('Setting data is prohibited', E_USER_WARNING);
     }
 
-    private function _load($field='') {
+    private function _load($field) {
 
       switch($field) {
 
