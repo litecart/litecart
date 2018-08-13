@@ -15,7 +15,7 @@
 
   require_once('includes/app_header.inc.php');
 
-  if (settings::get('maintenance_mode') || is_dir(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
+  if (settings::get('maintenance_mode')) {
     if (!empty(user::$data['id'])) {
       notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', array(
         '%message' => language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
