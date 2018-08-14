@@ -84,15 +84,13 @@
         break;
     }
 
-    $products_query = functions::catalog_products_query(
-      array(
-        'category_id' => $category->id,
-        'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
-        'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
-        'sort' => $_GET['sort'],
-        'campaigns_first' => true,
-      )
-    );
+    $products_query = functions::catalog_products_query(array(
+      'categories' => array($category->id),
+      'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
+      'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
+      'sort' => $_GET['sort'],
+      'campaigns_first' => true,
+    ));
 
     if (database::num_rows($products_query)) {
       if ($_GET['page'] > 1) database::seek($products_query, $items_per_page * ($_GET['page'] - 1));
