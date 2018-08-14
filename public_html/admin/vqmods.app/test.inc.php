@@ -2,6 +2,10 @@
   $_GET['debug'] = true;
   $_GET['vqmod'] = basename($_GET['vqmod']);
 
+  foreach (glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file) {
+    unlink($file);
+  }
+
   try {
     if (!empty($_GET['vqmod'])) {
       $vqmods = array(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/'. basename($_GET['vqmod']));
@@ -42,15 +46,25 @@
   }
 
 ?>
-<h1><?php echo $_GET['vqmod']; ?> / <?php echo $xml->id; ?></h1>
+<h1><?php echo $app_icon; ?> <?php echo language::translate('title_test_vqmod', 'Test vQmod'); ?></h1>
+<h2><?php echo $xml->id; ?> (<?php echo $_GET['vqmod']; ?>)</h2>
 
-<table class="table table-striped data-table">
+<table class="table table-striped table-hover data-table">
+  <thead>
+    <tr>
+      <th class="main"><?php echo language::translate('title_file', 'File'); ?></th>
+      <th><?php echo language::translate('title_result', 'Result'); ?></th>
+    </tr>
+  </thead>
   <tbody>
     <?php foreach($files_to_modify as $file) { ?>
     <tr>
       <td>
         <div><?php echo 'Testing ' . preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .')#', '', $file) . PHP_EOL; ?></div>
-        <div><?php vmod::check($file); ?></div>
+        <div><?php ob_start(); vmod::check($file); $buffer = ob_get_clean(); ?></div>
+      </td>
+      <td class="text-center">
+        <?php echo empty($buffer) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"'); ?>
       </td>
     </tr>
     <?php } ?>
