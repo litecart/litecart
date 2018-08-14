@@ -444,7 +444,14 @@
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
-                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
+                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
+                                        . '    btnsDef: {' . PHP_EOL
+                                        . '      lists: {' . PHP_EOL
+                                        . '        dropdown: ["unorderedList", "orderedList"],' . PHP_EOL
+                                        . '        title: "Lists",' . PHP_EOL
+                                        . '        ico: "unorderedList",' . PHP_EOL
+                                        . '      }' . PHP_EOL
+                                        . '    },' . PHP_EOL
                                         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
                                         . '    autogrowOnEnter: true,' . PHP_EOL
                                         . '    imageWidthModalEdit: true,' . PHP_EOL
