@@ -56,3 +56,12 @@ ADD COLUMN `dim_class` VARCHAR(2) NOT NULL AFTER `dim_z`;
 UPDATE `lc_currencies` SET `value` = 1 / `value`;
 -- --------------------------------------------------------
 UPDATE `lc_orders_items` SET currency_value = 1 / currency_value;
+-- --------------------------------------------------------
+ALTER TABLE `lc_users`
+CHANGE COLUMN `last_ip` `last_ip` VARCHAR(39) NOT NULL AFTER `permissions`,
+CHANGE COLUMN `last_host` `last_host` VARCHAR(128) NOT NULL AFTER `last_ip`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_customers`
+ADD COLUMN `last_ip` VARCHAR(39) NOT NULL AFTER `password_reset_token`,
+ADD COLUMN `last_host` VARCHAR(128) NOT NULL AFTER `last_ip`,
+ADD COLUMN `date_login` DATETIME NOT NULL AFTER `last_hostname`;

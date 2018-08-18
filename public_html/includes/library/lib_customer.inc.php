@@ -307,10 +307,24 @@
 
       session::regenerate_id();
 
+      if (!empty($customer['last_host']) && $customer['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
+        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), array('%hostname' => $customer['last_host'])));
+      }
+
       if ($remember_me) {
         $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
       }
+
+      database::query(
+        "update ". DB_TABLE_CUSTOMERS ."
+        set num_logins = num_logins + 1,
+            last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+            last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+            date_login = '". date('Y-m-d H:i:s') ."'
+        where id = ". (int)$customer['id'] ."
+        limit 1;"
+      );
 
       if (empty($redirect_url)) {
         $redirect_url = document::ilink('');
