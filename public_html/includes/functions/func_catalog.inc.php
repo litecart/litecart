@@ -106,20 +106,6 @@
         break;
     }
 
-    $sql_where_product_groups = "";
-    if (!empty($filter['product_groups'])) {
-
-      $product_groups = array();
-      foreach ($filter['product_groups'] as $group_value) {
-        list($group,) = explode('-', $group_value);
-        $product_groups[$group][] = $group_value;
-      }
-
-      foreach ($product_groups as $group_value) {
-        $sql_where_product_groups .= "and (find_in_set('". implode("', product_groups) or find_in_set('", $group_value) ."', product_groups))";
-      }
-    }
-
     $sql_where_prices = "";
     if (!empty($filter['price_ranges'])) {
 
@@ -144,7 +130,7 @@
         ". (!empty($filter['categories']) ? "and ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
         ". (!empty($filter['manufacturers']) ? "and manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
         ". (!empty($filter['keywords']) ? "and (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
-        ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : null) ."
+        ". (!empty($filter['product_groups']) ? "and (find_in_set('". implode("', product_groups) or find_in_set('", database::input($filter['product_groups'])) ."', product_groups))" : null) ."
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
@@ -199,20 +185,6 @@
     if (!empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
     if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
-    $sql_where_product_groups = "";
-    if (!empty($filter['product_groups'])) {
-
-      $product_groups = array();
-      foreach ($filter['product_groups'] as $group_value) {
-        list($group,) = explode('-', $group_value);
-        $product_groups[$group][] = $group_value;
-      }
-
-      foreach ($product_groups as $group_value) {
-        $sql_where_product_groups .= "$sql_andor (find_in_set('". implode("', product_groups) or find_in_set('", $group_value) ."', product_groups))";
-      }
-    }
-
     $sql_where_prices = "";
     if (!empty($filter['price_ranges'])) {
 
@@ -246,7 +218,7 @@
           ". (!empty($filter['categories']) ? "or ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
           ". (!empty($filter['manufacturers']) ? "or manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
           ". (!empty($filter['keywords']) ? "or (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
-          ". (!empty($sql_where_product_groups) ? $sql_where_product_groups : null) ."
+          ". (!empty($filter['product_groups']) ? "or (find_in_set('". implode("', product_groups) or find_in_set('", database::input($filter['product_groups'])) ."', product_groups))" : null) ."
         )
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
