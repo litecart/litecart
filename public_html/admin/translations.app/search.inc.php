@@ -259,7 +259,7 @@ ul.filter li {
   $('.delete').click(function(e){
     e.preventDefault();
 
-    if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
+    if (!window.confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
 
     var row = $(this).closest('tr');
 
