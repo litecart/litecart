@@ -25,7 +25,7 @@ ErrorDocument 500 "Internal Server Error"
   # Redirect www to non-www
   #RewriteCond %{HTTP_HOST} ^www\.(.*)$
   #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+  #RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
 
   # Redirect non-www to www
   #RewriteCond %{HTTP_HOST} !^www\.
