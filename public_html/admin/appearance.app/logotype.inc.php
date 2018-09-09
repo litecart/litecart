@@ -23,7 +23,7 @@
         throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_logotype_saved', 'Changes saved successfully. Your browser may still show the old logotype due to cache.'));
       header('Location: '. document::link());
       exit;
 
