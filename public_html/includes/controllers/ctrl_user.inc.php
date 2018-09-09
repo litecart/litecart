@@ -22,6 +22,8 @@
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
+
+      $this->data['permissions'] = array();
     }
 
     public function load($user_id) {
