@@ -29,7 +29,7 @@
     <?php } ?>
 
     <?php if ($_GET['page'] == 1 && $subcategories) { ?>
-    <div class="categories row half-gutter hidden-xs">
+    <div class="categories row half-gutter">
       <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
     </div>
     <?php } ?>
