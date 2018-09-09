@@ -115,6 +115,8 @@
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
 		width:          '',                    /* Specify width of lightbox. */
 		height:         '',                    /* Specify width of lightbox. */
+		maxWidth:       '',                    /* Specify max-width of lightbox. */
+		maxHeight:      '',                    /* Specify max-height of lightbox. */
 		requireWindowWidth: null,              /* Minimum scren width in pixels to enable the Featherlight. Otherwise bypass it.  */
 
 		/*** methods ***/
@@ -275,6 +277,12 @@
 							}
 							if (self.height) {
 								self.$content.parent().css('height', self.height);
+							}
+							if (self.maxWidth) {
+								self.$content.parent().css('max-width', self.maxWidth);
+							}
+							if (self.maxHeight) {
+								self.$content.parent().css('max-height', self.maxHeight);
 							}
 							self.afterContent(event);
 						})
