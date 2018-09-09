@@ -61,6 +61,16 @@
     echo ini_get('display_errors') . ' <span class="warning">[Warning] Missing permissions to display errors?</span></p>';
   }
 
+  ### PHP > Check file system ################################
+
+  echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
+
+  if (preg_match('#^'. preg_quote($_SERVER['DOCUMENT_ROOT'], '#') .'#', __FILE__)) {
+    echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>';
+  } else {
+    echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning] There is a problem with your PHP configuration causing $_SERVER["DOCUMENT_ROOT"] and __FILE__ to return conflicting values.</span></p>';
+  }
+
   ### Database > Connection #####################################
 
   echo '<p>Connecting to database... ';
