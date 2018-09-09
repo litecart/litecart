@@ -49,7 +49,8 @@
             . '<h1>Banned</h1>' . PHP_EOL
             . '<p>You have been banned due to a bad client behavior.<br />' . PHP_EOL
             . '  The data recorded can be used for tracing requests back to you.<br />' . PHP_EOL
-            . '  We take all spam, hacking, hijacking or intrusion attempts seriously.</p>' . PHP_EOL
+            . '  We take all spam, hacking, hijacking, and intrusion attempts seriously.</p>' . PHP_EOL
+            . '<p>If this was not you, then your computer or router could be infected with malware and part by a a botnet.</p>' . PHP_EOL
             . '<p>If you feel this an error, kindly send an email to the hostmaster at '. settings::get('store_email') .'.</p>' . PHP_EOL
             . '</body>' . PHP_EOL
             . '</html>' . PHP_EOL
