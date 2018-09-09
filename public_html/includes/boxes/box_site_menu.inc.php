@@ -1,15 +1,9 @@
 <?php
 
-  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array(
-    'language',
-    isset($_GET['category_id']) ? $_GET['category_id'] : 0,
-    isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : 0,
-    isset($_GET['page_id']) ? $_GET['page_id'] : 0,
-  ));
+  $box_site_menu = new view();
 
-  if (cache::capture($box_site_menu_cache_id, 'file')) {
-
-    $box_site_menu = new view();
+  $box_site_menu_cache_token = cache::token('box_site_menu', array('language'), 'file');
+  if (!$box_site_menu->snippets = cache::get($box_site_menu_cache_token)) {
 
     $box_site_menu->snippets = array(
       'categories' => array(),
@@ -90,7 +84,7 @@
       );
     }
 
-    echo $box_site_menu->stitch('views/box_site_menu');
-
-    cache::end_capture($box_site_menu_cache_id);
+    cache::set($box_site_menu_cache_token, $box_site_menu->snippets);
   }
+
+  echo $box_site_menu->stitch('views/box_site_menu');
