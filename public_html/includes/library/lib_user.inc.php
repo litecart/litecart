@@ -73,22 +73,17 @@
     ######################################################################
 
     public static function reset() {
-      session::$data['user'] = array(
-        'id' => '',
-        'status' => '',
-        'username' => '',
-        'password' => '',
-        'last_ip' => '',
-        'last_host' => '',
-        'login_attempts' => '',
-        'total_logins' => '',
-        'date_valid_from' => '',
-        'date_valid_to' => '',
-        'date_active' => '',
-        'date_login' => '',
-        'date_updated' => '',
-        'date_created' => '',
+
+      session::$data['user'] = array();
+
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_USERS .";"
       );
+      while ($field = database::fetch($fields_query)) {
+        session::$data['user'][$field['Field']] = null;
+      }
+
+      session::$data['user']['permissions'] = array();
     }
 
     public static function require_login() {
