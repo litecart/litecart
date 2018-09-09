@@ -27,6 +27,10 @@
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_email_missing', 'You must enter an email address.'));
 
+      if (customer::$data['password'] != functions::password_checksum(customer::$data['email'], $_POST['password'])) {
+        throw new Exception(language::translate('error_wrong_password', 'Wrong password'));
+      }
+
       if (!empty($_POST['new_password'])) {
         if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
         if (isset($_POST['new_password']) && isset($_POST['confirmed_password']) && $_POST['new_password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
