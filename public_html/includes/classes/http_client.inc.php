@@ -126,6 +126,11 @@
         $this->last_response['body']."\r\n\r\n"
       );
 
+      if (class_exists('stats', false)) {
+        stats::set('http_requests', stats::get('external_requests') + 1);
+        stats::set('http_duration', stats::get('http_duration') + $this->last_response['duration']);
+      }
+
     // Redirect
       if ($status_code == 301) {
         if (!$this->follow_redirects) {

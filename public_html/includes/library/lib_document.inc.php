@@ -118,6 +118,8 @@
 
     public static function before_output() {
 
+      $microtime_start = microtime(true);
+
       if (!function_exists('replace_first_occurrence')) {
         function replace_first_occurrence($search, $replace, $subject) {
           return implode($replace, explode($search, $subject, 2));
@@ -222,6 +224,9 @@
         }
       }
 
+      if (class_exists('stats', false)) {
+        stats::set('output_optimization', microtime(true) - $microtime_start);
+      }
     }
 
     //public static function shutdown() {
