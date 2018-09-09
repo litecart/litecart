@@ -61,8 +61,7 @@
 
         case 'input':
 
-          $value_ids = array_keys($group['values']);
-          $value_id = array_shift($value_ids);
+          $value = array_shift($group['values']);
 
           $price_adjust_text = '';
           $price_adjust = currency::format_raw($value['price_adjust']);
@@ -117,8 +116,7 @@
 
         case 'textarea':
 
-          $value_ids = array_keys($group['values']);
-          $value_id = array_shift($value_ids);
+          $value = array_shift($group['values']);
 
           $price_adjust_text = '';
           $price_adjust = currency::format_raw($value['price_adjust']);
