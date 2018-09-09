@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = array(
+   $app_config = array(
     'name' => language::translate('title_settings', 'Settings'),
     'default' => 'store_info',
     'theme' => array(
@@ -23,3 +23,5 @@
     );
     $app_config['docs'][$group['key']] = 'settings.inc.php';
   }
+
+  return $app_config;
