@@ -3,8 +3,8 @@
 
   functions::draw_lightbox();
 
-  $box_campaign_products_cache_id = cache::cache_id('box_campaign_products', array('language', 'currency', 'prices'));
-  if (cache::capture($box_campaign_products_cache_id, 'file')) {
+  $box_campaign_products_cache_token = cache::token('box_campaign_products', array('language', 'currency', 'prices'), 'file');
+  if (cache::capture($box_campaign_products_cache_token)) {
 
     $box_campaign_products = new view();
 
@@ -24,5 +24,5 @@
       echo $box_campaign_products->stitch('views/box_campaign_products');
     }
 
-    cache::end_capture($box_campaign_products_cache_id);
+    cache::end_capture($box_campaign_products_cache_token);
   }

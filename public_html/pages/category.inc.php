@@ -34,8 +34,8 @@
 
   functions::draw_lightbox();
 
-  $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+  $box_category_cache_token = cache::token('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
+  if (cache::capture($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
     $_page = new view();
 
@@ -118,5 +118,5 @@
 
     echo $_page->stitch('pages/category');
 
-    cache::end_capture($box_category_cache_id);
+    cache::end_capture($box_category_cache_token);
   }

@@ -1,7 +1,7 @@
 <?php
 
-  $box_slides_cache_id = cache::cache_id('box_slides', array('language'));
-  if (cache::capture($box_slides_cache_id, 'file')) {
+  $box_slides_cache_token = cache::token('box_slides', array('language'), 'file');
+  if (cache::capture($box_slides_cache_token)) {
 
     $slides_query = database::query(
       "select s.*, si.caption, si.link from ". DB_TABLE_SLIDES ." s
@@ -31,5 +31,5 @@
       echo $box_slides->stitch('views/box_slides');
     }
 
-    cache::end_capture($box_slides_cache_id);
+    cache::end_capture($box_slides_cache_token);
   }

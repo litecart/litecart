@@ -3,8 +3,8 @@
 
   functions::draw_lightbox();
 
-  $box_popular_products_cache_id = cache::cache_id('box_popular_products', array('language', 'currency', 'prices'));
-  if (cache::capture($box_popular_products_cache_id, 'file')) {
+  $box_popular_products_cache_token = cache::token('box_popular_products', array('language', 'currency', 'prices'), 'file');
+  if (cache::capture($box_popular_products_cache_token)) {
 
     $products_query = functions::catalog_products_query(array(
       'sort' => 'popularity',
@@ -32,5 +32,5 @@
       echo $box_popular_products->stitch('views/box_popular_products');
     }
 
-    cache::end_capture($box_popular_products_cache_id);
+    cache::end_capture($box_popular_products_cache_token);
   }

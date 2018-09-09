@@ -2,8 +2,8 @@
 
   function admin_get_apps() {
 
-    $apps_cache_id = cache::cache_id('admin_apps', array('language'));
-    if (!$apps = cache::get($apps_cache_id, 'file')) {
+    $apps_cache_token = cache::token('admin_apps', array('language'), 'file');
+    if (!$apps = cache::get($apps_cache_token)) {
       $apps = array();
 
       foreach (glob('*.app/') as $dir) {
@@ -17,7 +17,7 @@
         return ($a['name'] < $b['name']) ? -1 : 1;
       });
 
-      cache::set($apps_cache_id, 'file', $apps);
+      cache::set($apps_cache_token, $apps);
     }
 
     return $apps;
@@ -25,8 +25,8 @@
 
   function admin_get_widgets() {
 
-    $widgets_cache_id = cache::cache_id('admin_widgets', array('language'));
-    if (!$widgets = cache::get($widgets_cache_id, 'file')) {
+    $widgets_cache_token = cache::token('admin_widgets', array('language'), 'file');
+    if (!$widgets = cache::get($widgets_cache_token)) {
       $widgets = array();
 
       foreach (glob('*.widget/') as $dir) {
@@ -41,7 +41,7 @@
         return ($a['priority'] < $b['priority']) ? -1 : 1;
       });
 
-      cache::set($widgets_cache_id, 'file', $widgets);
+      cache::set($widgets_cache_token, $widgets);
     }
 
     return $widgets;

@@ -3,8 +3,8 @@
   document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'chartist/chartist.min.css" />';
   document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_EXT .'chartist/chartist.min.js"></script>';
 
-  $widget_graphs_cache_id = cache::cache_id('widget_graphs');
-  if (cache::capture($widget_graphs_cache_id, 'file', 300)) {
+  $widget_graphs_cache_token = cache::token('widget_graphs', array('site'), 'file');
+  if (cache::capture($widget_graphs_cache_token, 300)) {
 
   // Order Statuses flagged as Sale
     $order_statuses = array();
@@ -171,6 +171,6 @@
   new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
 </script>
 <?php
-    cache::end_capture($widget_graphs_cache_id);
+    cache::end_capture($widget_graphs_cache_token);
   }
 ?>

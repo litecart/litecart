@@ -3,21 +3,21 @@
   class ref_manufacturer {
 
     private $_id;
-    private $_cache_id;
+    private $_cache_token;
     private $_language_codes;
     private $_data = array();
 
     function __construct($manufacturer_id, $language_code=null) {
 
       $this->_id = (int)$manufacturer_id;
-      $this->_cache_id = cache::cache_id('manufacturer_'.(int)$manufacturer_id, array('language'));
+      $this->_cache_token = cache::token('manufacturer_'.(int)$manufacturer_id, array($language_code), 'file');
       $this->_language_codes = array_unique(array(
         !empty($language_code) ? $language_code : language::$selected['code'],
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
 
-      if ($cache = cache::get($this->_cache_id, 'file')) {
+      if ($cache = cache::get($this->_cache_token)) {
         $this->_data = $cache;
       }
     }
@@ -98,6 +98,6 @@
           break;
       }
 
-      cache::set($this->_cache_id, 'file', $this->_data);
+      cache::set($this->_cache_token, $this->_data);
     }
   }

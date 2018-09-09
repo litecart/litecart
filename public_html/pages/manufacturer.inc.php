@@ -31,8 +31,8 @@
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   breadcrumbs::add($manufacturer->name);
 
-  $manufacturer_cache_id = cache::cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($manufacturer_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+  $manufacturer_cache_token = cache::token('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
+  if (cache::capture($manufacturer_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
     $_page = new view();
 
@@ -79,5 +79,5 @@
 
     echo $_page->stitch('pages/manufacturer');
 
-    cache::end_capture($manufacturer_cache_id);
+    cache::end_capture($manufacturer_cache_token);
   }

@@ -1,6 +1,6 @@
 <?php
-  $box_customer_service_links_cache_id = cache::cache_id('box_customer_service_links', array('language', isset($_GET['page_id']) ? $_GET['page_id'] : ''));
-  if (cache::capture($box_customer_service_links_cache_id, 'file')) {
+  $box_customer_service_links_cache_token = cache::token('box_customer_service_links', array('language', isset($_GET['page_id']) ? $_GET['page_id'] : ''), 'file');
+  if (cache::capture($box_customer_service_links_cache_token)) {
 
     if (!empty($_GET['page_id'])) {
       $current_page_path = array_keys(reference::page($_GET['page_id'])->path);
@@ -70,5 +70,5 @@
       echo $box_customer_service_links->stitch('views/box_customer_service_links');
     }
 
-    cache::end_capture($box_customer_service_links_cache_id);
+    cache::end_capture($box_customer_service_links_cache_token);
   }

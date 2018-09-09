@@ -3,8 +3,8 @@
 
   functions::draw_lightbox();
 
-  $box_also_purchased_products_cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
-  if (cache::capture($box_also_purchased_products_cache_id, 'file')) {
+  $box_also_purchased_products_cache_token = cache::token('box_also_purchased_products', array('get', 'language', 'currency', 'prices'), 'file');
+  if (cache::capture($box_also_purchased_products_cache_token)) {
 
     $also_purchased_products = reference::product($_GET['product_id'])->also_purchased_products;
 
@@ -31,5 +31,5 @@
       }
     }
 
-    cache::end_capture($box_also_purchased_products_cache_id);
+    cache::end_capture($box_also_purchased_products_cache_token);
   }

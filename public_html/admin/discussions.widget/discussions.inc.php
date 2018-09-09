@@ -1,6 +1,6 @@
 <?php
-  $widget_discussions_cache_id = cache::cache_id('widget_discussions');
-  if (cache::capture($widget_discussions_cache_id, 'file', 21600, true)) {
+  $widget_discussions_cache_token = cache::token('widget_discussions', array(), 'file');
+  if (cache::capture($widget_discussions_cache_token, 21600, true)) {
 
     $url = document::link('https://www.litecart.net/feeds/discussions.rss');
 
@@ -42,6 +42,6 @@
 </div>
 <?php
     }
-    cache::end_capture($widget_discussions_cache_id);
+    cache::end_capture($widget_discussions_cache_token);
   }
 ?>

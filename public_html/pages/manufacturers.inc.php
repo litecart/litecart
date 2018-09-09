@@ -4,8 +4,8 @@
 
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
 
-  $manufacturers_cache_id = cache::cache_id('manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($manufacturers_cache_id, 'file')) {
+  $manufacturers_cache_token = cache::token('manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
+  if (cache::capture($manufacturers_cache_token)) {
 
     $_page = new view();
 
@@ -34,5 +34,5 @@
 
     echo $_page->stitch('pages/manufacturers');
 
-    cache::end_capture($manufacturers_cache_id);
+    cache::end_capture($manufacturers_cache_token);
   }

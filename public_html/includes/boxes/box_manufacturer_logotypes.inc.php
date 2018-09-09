@@ -1,7 +1,7 @@
 <?php
 
-  $box_manufacturer_logotypes_cache_id = cache::cache_id('box_manufacturer_logotypes', array());
-  if (cache::capture($box_manufacturer_logotypes_cache_id, 'file')) {
+  $box_manufacturer_logotypes_cache_token = cache::token('box_manufacturer_logotypes', array(), 'file');
+  if (cache::capture($box_manufacturer_logotypes_cache_token)) {
 
     $manufacturers_query = database::query(
       "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
@@ -32,5 +32,5 @@
       echo $box_manufacturer_logotypes->stitch('views/box_manufacturer_logotypes');
     }
 
-    cache::end_capture($box_manufacturer_logotypes_cache_id);
+    cache::end_capture($box_manufacturer_logotypes_cache_token);
   }

@@ -4,7 +4,7 @@
     public static $selected = array();
     public static $languages = array();
     private static $_cache = array();
-    private static $_translations_cache_id = '';
+    private static $_translations_cache_token;
 
     //public static function construct() {
     //}
@@ -35,7 +35,7 @@
 
       header('Content-Language: '. self::$selected['code']);
 
-      self::$_translations_cache_id = cache::cache_id('translations', array('language', 'uri'));
+      self::$_translations_cache_token = cache::token('translations', array('language', 'uri'), 'file');
     }
 
     public static function before_capture() {
@@ -79,7 +79,7 @@
     //}
 
     public static function shutdown() {
-      cache::set(self::$_translations_cache_id, 'file', self::$_cache['translations']);
+      cache::set(self::$_translations_cache_token, self::$_cache['translations']);
     }
 
     ######################################################################
@@ -200,7 +200,7 @@
 
     // Import cached translations
       if (!isset(self::$_cache['translations']) === null) {
-        self::$_cache['translations'] = cache::get(self::$_translations_cache_id, 'file');
+        self::$_cache['translations'] = cache::get(self::$_translations_cache_token);
       }
 
     // Return from cache

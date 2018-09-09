@@ -3,7 +3,7 @@
   class route {
     private static $_classes = array();
     private static $_links_cache = array();
-    private static $_links_cache_id = '';
+    private static $_links_cache_token;
     private static $_routes = array();
     public static $route = array();
     public static $request = '';
@@ -15,8 +15,8 @@
     public static function initiate() {
 
     // Load cached links (url rewrites)
-      self::$_links_cache_id = cache::cache_id('links', array('site', 'language'));
-      self::$_links_cache = cache::get(self::$_links_cache_id, 'file');
+      self::$_links_cache_token = cache::token('links', array('site', 'language'), 'file');
+      self::$_links_cache = cache::get(self::$_links_cache_token);
 
     // Load external/dynamic routes
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . 'url_*.inc.php');
@@ -120,7 +120,7 @@
     //}
 
     public static function after_capture() {
-      cache::set(self::$_links_cache_id, 'file', self::$_links_cache);
+      cache::set(self::$_links_cache_token, self::$_links_cache);
     }
 
     //public static function prepare_output() {}
