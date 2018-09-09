@@ -26,7 +26,7 @@
         trigger_error('Error: Invalid database link', E_USER_ERROR);
       }
 
-      $sql_mode_query = self::query("select @@SESSION.sql_mode;");
+      $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
       $sql_mode = preg_split('# ?, ?#', $sql_mode);
 
@@ -34,7 +34,7 @@
         unset($sql_mode[$key]);
       }
 
-      self::query("SET @@session.sql_mode = '". database::input(implode(',', $sql_mode)) ."';");
+      self::query("SET @@session.sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
 
       self::query("set names '". database::input($charset) ."';", $link);
 
@@ -85,7 +85,7 @@
       }
 
       if (!empty($collation)) {
-        self::query("set collation_connection = ". database::input($collation));
+        self::query("set collation_connection = ". database::input($collation), $link);
       }
 
       return true;
