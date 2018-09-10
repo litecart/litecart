@@ -107,3 +107,12 @@
     </div>
   </nav>
 </div>
+
+<script>
+  $('#site-menu .dropdown-menu [data-toggle="dropdown"]').on('click', function(e){
+    $(this).closest('ul').find('.dropdown-menu:visible').hide();
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+</script>

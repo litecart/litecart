@@ -8,6 +8,17 @@
 
     public static function construct() {
 
+      self::$_data = array(
+        'page_parse_time' => 0, // s
+        'page_capture_time' => 0, // s
+        'memory_peak_usage' => 0, // percent
+        'database_queries' => 0, // qty
+        'database_execution_time' => 0, // s
+        'http_requests' => 0, // qty
+        'http_duration' => 0, // s
+        'output_optimization' => 0, // s
+      );
+
     // Set time stamp for execution
       self::$_page_parse_start = microtime(true);
     }
@@ -32,34 +43,41 @@
       }
     }
 
-    public static function prepare_output() {
+    //public static function prepare_output() {
+    //}
+
+    public static function before_output() {
 
     // Capture parse time
       $page_parse_time = microtime(true) - self::$_page_parse_start;
       self::set('page_capture_time', $page_parse_time);
 
     // Memory peak usage
-      self::set('memory_peak_usage', memory_get_peak_usage() / 1024 / 1024);
+      self::set('memory_peak_usage', memory_get_peak_usage(true) / 1000000);
 
     // Page parse time
       $page_parse_time = microtime(true) - self::$_page_parse_start;
       self::set('page_parse_time', $page_parse_time);
 
-    // Add stats to snippet
-      document::$snippets['stats'] = '<p><strong>System Statistics:</strong></p>' . PHP_EOL
-                                   . '<ul>' . PHP_EOL
-                                   . '  <li>'. language::translate('title_page_parse_time', 'Page Parse Time') .': ' . number_format(self::get('page_parse_time'), 3, '.', ' ') . ' s</li>' . PHP_EOL
-                                   . '  <li>'. language::translate('title_page_capture_time', 'Page Capture Time') .': ' . number_format(self::get('page_capture_time'), 3, '.', ' ') . ' s</li>' . PHP_EOL
-                                   . '  <li>'. language::translate('title_included_files', 'Included Files') .': ' . count(get_included_files()) . '</li>' . PHP_EOL
-                                   . '  <li>'. language::translate('title_memory_peak', 'Memory Peak') .': ' . number_format(self::get('memory_peak_usage'), 2, '.', ' ') . ' MB</li>' . PHP_EOL
-                                   . '  <li>'. language::translate('title_memory_limit', 'Memory Limit') .': ' . ini_get('memory_limit') . '</li>' . PHP_EOL
-                                   . '  <li>'. language::translate('title_database_queries', 'Database Queries') .': ' . number_format(self::get('database_queries'), 0, '.', ' ') . '</li>' . PHP_EOL
-                                   . '  <li>'. language::translate('title_database_parse_time', 'Database Parse Time') .': ' . number_format(self::get('database_execution_time'), 3, '.', ' ') . ' s (' . number_format(self::get('database_execution_time')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)</li>' . PHP_EOL
-                                   . '</ul>';
-    }
+    // Output stats
+      if (!empty(user::$data['id'])) {
 
-    //public static function before_output() {
-    //}
+        $stats = '<!--' . PHP_EOL
+               . '  System Statistics:' . PHP_EOL
+               . '  - Page Parse Time: ' . number_format(self::get('page_parse_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
+               . '  - Page Capture Time: ' . number_format(self::get('page_capture_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
+               . '  - Included Files: ' . count(get_included_files()) . PHP_EOL
+               . '  - Memory Peak: ' . number_format(self::get('memory_peak_usage'), 2, '.', ' ') . ' MB / '. ini_get('memory_limit') . PHP_EOL
+               . '  - Database Queries: ' . number_format(self::get('database_queries'), 0, '.', ' ') . PHP_EOL
+               . '  - Database Parse Time: ' . number_format(self::get('database_execution_time')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('database_execution_time')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+               . '  - Network Requests: ' . self::get('http_requests') . PHP_EOL
+               . '  - Network Requests Duration: ' . number_format(self::get('http_duration')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('http_duration')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+               . '  - Output Optimization: ' . number_format(self::get('output_optimization')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('output_optimization')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+               . '-->';
+
+        $GLOBALS['output'] = preg_replace('#</html>$#', '</html>' . PHP_EOL . $stats, $GLOBALS['output']);
+      }
+    }
 
     //public static function shutdown() {
     //}

@@ -444,7 +444,14 @@
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
-                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
+                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
+                                        . '    btnsDef: {' . PHP_EOL
+                                        . '      lists: {' . PHP_EOL
+                                        . '        dropdown: ["unorderedList", "orderedList"],' . PHP_EOL
+                                        . '        title: "Lists",' . PHP_EOL
+                                        . '        ico: "unorderedList",' . PHP_EOL
+                                        . '      }' . PHP_EOL
+                                        . '    },' . PHP_EOL
                                         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
                                         . '    autogrowOnEnter: true,' . PHP_EOL
                                         . '    imageWidthModalEdit: true,' . PHP_EOL
@@ -577,9 +584,7 @@
         return functions::form_draw_regional_wysiwyg_field($name, $input);
       case 'zone':
       case 'zones':
-        $option = !empty($options) ? $options[0] : '';
-        //if (empty($option)) $option = settings::get('store_country_code');
-        return functions::form_draw_zones_list($option, $name, $input);
+        return functions::form_draw_zones_list(!empty($options[0]) ? $options[0] : null, $name, $input);
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_ERROR);
     }

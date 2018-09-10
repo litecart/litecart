@@ -1,16 +1,16 @@
 <?php
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) : null;
-  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) : date('Y-m-d H:i:s');
+  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
+  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
 
   $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
-  $date_first_order = $date_first_order['min(date_created)'];
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d 00:00:00');
+  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
+  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
 
-  if ($_GET['date_from'] > date('Y-m-d H:i:s')) $_GET['date_from'] = date('Y-m-d H:i:s');
-  if ($_GET['date_to'] > date('Y-m-d H:i:s')) $_GET['date_to'] = date('Y-m-d H:i:s');
+  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
+  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 ?>

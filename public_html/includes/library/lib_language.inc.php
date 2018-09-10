@@ -272,7 +272,7 @@
           //  return '???';
 
           case (preg_match('#\.(874|1256)$#', $locale, $matches)):
-            return iconv('UTF-8', "$locale_charset", strftime($format, $timestamp));
+            return iconv('UTF-8', "$locale", strftime($format, $timestamp));
 
           case (preg_match('#\.1250$#', $locale)):
             return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'ISO-8859-2');

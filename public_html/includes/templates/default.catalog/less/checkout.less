@@ -19,6 +19,7 @@
 #header {
   margin: 0 auto;
   padding: @default-gutter-size;
+  overflow: hidden;
   .customer-service {
     float: right;
     text-align: right;
@@ -81,7 +82,7 @@
       padding: 0 !important;
     }
     .title {
-      margin: 0;
+      margin-top: @default-gutter-size;
     }
     .error {
       color: #c00;
@@ -91,6 +92,11 @@
       max-height: 200px;
       overflow-x: hidden;
       overflow-y: auto;
+    }
+  }
+  @media(min-width: @media-breakpoint-sm) {
+    .title {
+      margin: 0;
     }
   }
 }

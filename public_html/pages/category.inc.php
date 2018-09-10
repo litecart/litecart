@@ -32,12 +32,12 @@
 
   functions::draw_lightbox();
 
+  $_page = new view();
+
   $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+  if (!$_page->snippets = cache::get($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
-    $_page = new view();
-
-    $_page->snippets = array(
+  $_page->snippets = array(
       'id' => $category->id,
       'name' => $category->name,
       'short_description' => $category->short_description,
@@ -109,7 +109,7 @@
     $_page->snippets['num_products_total'] = (int)database::num_rows($products_query);
     $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
 
-    echo $_page->stitch('pages/category');
-
-    cache::end_capture($box_category_cache_id);
+    cache::set($box_category_cache_id, 'file', $_page->snippets);
   }
+
+  echo $_page->stitch('pages/category');

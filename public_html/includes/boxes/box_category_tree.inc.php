@@ -12,7 +12,7 @@
     $box_category_tree = new view();
 
     $box_category_tree->snippets = array(
-      'title' =>  language::translate('title_categories'),
+      'title' => language::translate('title_categories', 'Categories'),
       'categories' => array(),
       'category_path' => $category_path,
     );

@@ -1,16 +1,16 @@
 <?php
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) : null;
-  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) : date('Y-m-d H:i:s');
+  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
+  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
 
   $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
-  $date_first_order = $date_first_order['min(date_created)'];
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d 00:00:00');
+  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
+  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
 
-  if ($_GET['date_from'] > date('Y-m-d H:i:s')) $_GET['date_from'] = date('Y-m-d H:i:s');
-  if ($_GET['date_to'] > date('Y-m-d H:i:s')) $_GET['date_to'] = date('Y-m-d H:i:s');
+  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
+  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 ?>
 
 <style>
@@ -58,40 +58,42 @@ form[name="filter_form"] li {
     $order_statuses[] = (int)$order_status['id'];
   }
 
-  $timestamp_from = mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), 1, date('Y', strtotime($_GET['date_from'])));
-  $timestamp_to = mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('t', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])));
+  $orders_query = database::query(
+    "select
+      group_concat(o.id) as order_ids,
+      sum(o.payment_due) - sum(o.tax_total) as total_sales,
+      sum(o.tax_total) as total_tax,
+      sum(otst.value) as total_subtotal,
+      sum(otsf.value) as total_shipping_fees,
+      sum(otpf.value) as total_payment_fees,
+      date_format(o.date_created, '%Y-%m') as `year_month`
+    from ". DB_TABLE_ORDERS ." o
+    left join (
+      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      where module_id = 'ot_subtotal'
+      group by order_id
+    ) otst on (o.id = otst.order_id)
+    left join (
+      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      where module_id = 'ot_shipping_fee'
+      group by order_id
+    ) otsf on (o.id = otsf.order_id)
+    left join (
+      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      where module_id = 'ot_payment_fee'
+      group by order_id
+    ) otpf on (o.id = otpf.order_id)
+    where o.order_status_id in ('". implode("', '", $order_statuses) ."')
+    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : "") ."
+    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : "") ."
+    group by date_format(o.date_created, '%Y-%m')
+    order by `year_month` desc;"
+  );
 
-  for ($timestamp = mktime(0, 0, 0, date('m', strtotime($_GET['date_to'])), date(1, strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to']))); $timestamp >= $timestamp_from; $timestamp = strtotime('-1 month', $timestamp)) {
-
-    $orders_query = database::query(
-      "select
-        sum(o.payment_due) - sum(o.tax_total) as total_sales,
-        sum(o.tax_total) as total_tax,
-        sum(otst.value) as total_subtotal,
-        sum(otsf.value) as total_shipping_fees,
-        sum(otpf.value) as total_payment_fees
-      from ". DB_TABLE_ORDERS ." o
-      left join (
-        select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
-        where module_id = 'ot_subtotal'
-      ) otst on (o.id = otst.order_id)
-      left join (
-        select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
-        where module_id = 'ot_shipping_fee'
-      ) otsf on (o.id = otsf.order_id)
-      left join (
-        select order_id, value from ". DB_TABLE_ORDERS_TOTALS ."
-        where module_id = 'ot_payment_fee'
-      ) otpf on (o.id = otpf.order_id)
-      where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-      and o.date_created >= '". date('Y-m-1 00:00:00', $timestamp) ."'
-      and o.date_created <= '". date('Y-m-t 23:59:59', $timestamp) ."';"
-    );
-
-    $orders = database::fetch($orders_query);
+  while ($orders = database::fetch($orders_query)) {
 ?>
       <tr>
-        <td><?php echo ucfirst(language::strftime('%B, %Y', $timestamp)); ?></td>
+        <td><?php echo ucfirst(language::strftime('%B, %Y', strtotime($orders['year_month'].'-01'))); ?></td>
         <td class="border-left text-right"><?php echo currency::format($orders['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
         <td class="border-left text-right"><?php echo currency::format($orders['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
         <td class="border-left text-right"><?php echo currency::format($orders['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
@@ -101,8 +103,8 @@ form[name="filter_form"] li {
 <?php
     if (!isset($total)) $total = array();
     foreach (array_keys($orders) as $key) {
-      if (!isset($total[$key])) $total[$key] = $orders[$key];
-      else $total[$key] += $orders[$key];
+      if (!isset($total[$key])) $total[$key] = (float)$orders[$key];
+      else $total[$key] += (float)$orders[$key];
     }
   }
 ?>

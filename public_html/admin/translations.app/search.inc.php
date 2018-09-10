@@ -259,7 +259,7 @@ ul.filter li {
   $('.delete').click(function(e){
     e.preventDefault();
 
-    if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
+    if (!window.confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
 
     var row = $(this).closest('tr');
 
@@ -273,7 +273,7 @@ ul.filter li {
         jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert('An error occured');
+        alert('An error occurred');
       },
       success: function(json) {
         if (json['status'] && json['status'] == 'ok') {

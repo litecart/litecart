@@ -26,19 +26,22 @@
         if (empty($translation)) {
 
           if (!empty($_POST['insert'])) {
+
             database::query(
               "insert into ". DB_TABLE_TRANSLATIONS ."
-              (code)
-              values ('". database::input($row['code']) ."');"
+              (code) values ('". database::input($row['code']) ."');"
             );
+
             foreach (array_slice(array_keys($row), 1) as $language_code) {
+
               if (empty($translation['text_'.$language_code]) || !empty($_POST['overwrite'])) {
                 database::query(
                   "update ". DB_TABLE_TRANSLATIONS ."
                   set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
-                  where code = '". $row['code'] ."'
+                  where code = '". database::input($row['code']) ."'
                   limit 1;"
                 );
+
                 $num_inserted_translations++;
               }
             }
@@ -47,11 +50,12 @@
         } else {
 
           foreach (array_slice(array_keys($row), 1) as $language_code) {
+
             if (!empty($_POST['overwrite']) || (empty($translation['text_'.$language_code]) && !empty($row[$language_code]))) {
               database::query(
                 "update ". DB_TABLE_TRANSLATIONS ."
                 set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
-                where code = '". $row['code'] ."'
+                where code = '". database::input($row['code']) ."'
                 limit 1;"
               );
               $num_updated_translations++;

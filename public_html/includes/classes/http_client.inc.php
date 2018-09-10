@@ -44,8 +44,8 @@
         $headers['Content-Type'] = 'application/x-www-form-urlencoded';
       }
 
-      if (!empty($data) && empty($headers['Content-Length'])) {
-        $headers['Content-Length'] = strlen($data);
+      if (empty($headers['Content-Length'])) {
+        $headers['Content-Length'] = mb_strlen($data);
       }
 
       if (empty($headers['Connection'])) {
@@ -125,6 +125,11 @@
         $this->last_response['head']."\r\n" .
         $this->last_response['body']."\r\n\r\n"
       );
+
+      if (class_exists('stats', false)) {
+        stats::set('http_requests', stats::get('external_requests') + 1);
+        stats::set('http_duration', stats::get('http_duration') + $this->last_response['duration']);
+      }
 
     // Redirect
       if ($status_code == 301) {
