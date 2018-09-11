@@ -11,8 +11,6 @@
 
         self::$_links[$link] = new mysqli($server, $username, $password, $database) or exit;
 
-        self::set_encoding($charset);
-
         if (($duration = microtime(true) - $measure_start) > 1) {
           error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'performance.log');
         }
@@ -25,6 +23,8 @@
       if (!is_resource(self::$_links[$link]) && !is_object(self::$_links[$link])) {
         trigger_error('Error: Invalid database link', E_USER_ERROR);
       }
+
+      self::set_encoding($charset);
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
