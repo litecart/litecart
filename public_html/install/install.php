@@ -44,9 +44,9 @@
 
   if (version_compare(PHP_VERSION, '5.3', '<')) {
     die('<span class="error">[Error] PHP 5.3+ required - Detected '. PHP_VERSION .'</span></p>');
-  } else if (version_compare(PHP_VERSION, '5.5', '<')) {
+  } else if (version_compare(PHP_VERSION, '7.1', '<')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">PHP 5.6+ recommended</span></span></p>';
+       . '<span class="warning">PHP 7.1+ recommended</span></span></p>';
   } else {
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
@@ -65,7 +65,7 @@
 
   echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
-  if (preg_match('#^'. preg_quote($_SERVER['DOCUMENT_ROOT'], '#') .'#', __FILE__)) {
+  if (preg_match('#^'. preg_quote(str_replace("\\", '/', $_SERVER['DOCUMENT_ROOT']), '#') .'#', str_replace("\\", '/', __FILE__))) {
     echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>';
   } else {
     echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning] There is a problem with your PHP configuration causing $_SERVER["DOCUMENT_ROOT"] and __FILE__ to return conflicting values.</span></p>';
@@ -102,6 +102,9 @@
 
   if (version_compare($version['VERSION()'], '5.5', '<')) {
     die($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+  } else if (version_compare($version['VERSION()'], '5.6', '<')) {
+    echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
+       . '<span class="warning">MySQL 5.6+ recommended</span></span></p>';
   } else {
     echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
