@@ -136,7 +136,7 @@
             <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
             <div class="checkbox">
               <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label><br/>
-              <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', (file_get_contents('php://input') != '') ? true : 'tree'); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
+              <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', true); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
             </div>
           </div>
 
@@ -283,7 +283,7 @@
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (isset($category->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+    <?php echo (isset($category->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>

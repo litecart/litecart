@@ -37,10 +37,10 @@
     }
 
     public function __set($name, $value) {
-      trigger_error('Setting data ('. $name .') is prohibited', E_USER_ERROR);
+      trigger_error('Setting data is prohibited ('.$name.')', E_USER_ERROR);
     }
 
-    private function _load($field='') {
+    private function _load($field) {
 
       switch($field) {
 
@@ -512,7 +512,7 @@
                 break;
 
               case 'keywords':
-                $this->_data[$key] = explode(',', $row[$key]);
+                $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : array();
                 break;
 
               default:

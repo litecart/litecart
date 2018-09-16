@@ -74,6 +74,7 @@ module.exports = function(grunt) {
     sass: {
       trumbowyg: {
         options: {
+          implementation: require('node-sass'),
           sourceMap: true,
           outputStyle: 'compressed',
           compass: false

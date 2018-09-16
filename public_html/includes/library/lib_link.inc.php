@@ -212,4 +212,21 @@
 
       return $link;
     }
+
+    public static function decode_idn($url) {
+
+      if (!function_exists('idn_to_utf8')) return $url;
+
+      if (substr($url, 0, 8) == 'https://') {
+        $url = 'https://' . idn_to_utf8(substr($url, 8));
+
+      } else if (substr($url, 0, 7) == 'http://') {
+        $url = 'https://' . idn_to_utf8(substr($url, 7));
+
+      } else {
+        $url = idn_to_utf8($url);
+      }
+
+      return language::convert_characters($url, 'UTF-8');
+    }
   }

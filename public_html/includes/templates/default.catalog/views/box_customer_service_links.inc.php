@@ -19,7 +19,7 @@
 
   <h2 class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></h2>
 
-  <ul class="nav nav-pills nav-primary nav-stacked">
+  <ul class="nav nav-stacked nav-pills">
     <?php foreach ($pages as $page) { ?>
     <?php foreach ($pages as $page) custom_draw_page($page, $page_path); ?>
     <?php } ?>

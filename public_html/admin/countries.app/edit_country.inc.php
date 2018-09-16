@@ -28,6 +28,7 @@
 
       $fields = array(
         'status',
+        'iso_code_1',
         'iso_code_2',
         'iso_code_3',
         'name',
@@ -81,6 +82,11 @@
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
       <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <?php echo functions::form_draw_text_field('iso_code_1', true, 'required="required" pattern="[A-Z]{2}"'); ?>
     </div>
   </div>
 
@@ -143,7 +149,7 @@
   </div>
 
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
@@ -178,7 +184,7 @@
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (isset($country->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+    <?php echo (isset($country->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>

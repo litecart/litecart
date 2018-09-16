@@ -1,10 +1,6 @@
 <?php
 
   class mod_jobs extends module {
-    public $data;
-    public $cheapest = '';
-    public $items = array();
-    public $destination = array();
 
     public function __construct() {
       $this->load('job');
@@ -59,6 +55,13 @@
           );
 
           $output .= $log . PHP_EOL;
+
+          database::query(
+            "update ". DB_TABLE_MODULES ."
+            set last_log = '". database::input($log) ."'
+            where module_id = '". database::input($module_id) ."'
+            limit 1;"
+          );
         }
       }
 

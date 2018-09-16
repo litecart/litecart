@@ -47,6 +47,8 @@
 
     public function save() {
 
+      $old_user = new ctrl_user($this->data['id']);
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_USERS ."
@@ -54,20 +56,26 @@
           values ('". date('Y-m-d H:i:s') ."');"
         );
         $this->data['id'] = database::insert_id();
-      } else {
-        $user_query = database::query(
-          "select * from ". DB_TABLE_USERS ."
-          where id = ". (int)$this->data['id'] ."
-          limit 1;"
-        );
-        $old_user = database::fetch($user_query);
       }
+
+      database::query(
+        "update ". DB_TABLE_USERS ." set
+        status = '". (empty($this->data['status']) ? 0 : 1) ."',
+        username = '". database::input($this->data['username']) ."',
+        email = '". database::input($this->data['email']) ."',
+        permissions = '". database::input(json_encode($this->data['permissions'])) ."',
+        date_valid_from = '". database::input($this->data['date_valid_from']) ."',
+        date_valid_to = '". database::input($this->data['date_valid_to']) ."',
+        date_updated = '". date('Y-m-d H:i:s') ."'
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
 
       $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
 
     // Rename .htpasswd user
-      if (!empty($old_user) && $old_user['username'] != $this->data['username']) {
-        $htpasswd = preg_replace('#^(?:(\#)+)?('. preg_quote($old_user['username'], '#') .')?:(.*)$#m', '${1}'.$this->data['username'].':${3}', $htpasswd);
+      if (!empty($old_user->data['id']) && $old_user->data['username'] != $this->data['username']) {
+        $htpasswd = preg_replace('#^(?:(\#)+)?('. preg_quote($old_user->data['username'], '#') .')?:(.*)$#m', '${1}'.$this->data['username'].':${3}', $htpasswd);
       }
 
     // Set .htpasswd user status
@@ -78,20 +86,6 @@
       }
 
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
-
-      database::query(
-        "update ". DB_TABLE_USERS ."
-        set
-          status = '". (empty($this->data['status']) ? 0 : 1) ."',
-          username = '". database::input($this->data['username']) ."',
-          email = '". database::input($this->data['email']) ."',
-          permissions = '". database::input(json_encode($this->data['permissions'])) ."',
-          date_valid_from = '". database::input($this->data['date_valid_from']) ."',
-          date_valid_to = '". database::input($this->data['date_valid_to']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
 
       cache::clear_cache('users');
     }

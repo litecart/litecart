@@ -27,9 +27,9 @@
   if (!empty($shipping->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $shipping->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
-      $shipping->data['selected'] = array(); // Clear
+      $shipping->data['selected'] = array(); // Clear because option is no longer present
     } else {
-      $shipping->select($module_id, $option_id); // Refresh
+      $shipping->select($module_id, $option_id); // Reinstate a present option
     }
   }
 

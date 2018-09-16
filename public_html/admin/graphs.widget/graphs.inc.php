@@ -98,7 +98,11 @@
 }
 
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
-  stroke: rgba(0,0,0,0.15);
+  stroke: rgba(59, 165, 198, .25);
+}
+
+#chart-sales-monthly .ct-series-b .ct-bar, #chart-sales-daily .ct-series-b .ct-bar {
+  stroke: rgba(59, 165, 198, 1);
 }
 
 #chart-sales-monthly .ct-bar{

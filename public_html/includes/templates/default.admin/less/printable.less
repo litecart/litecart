@@ -1,11 +1,23 @@
 @import "variables.less";
 
-body {
-  font-size: 9pt;
-  font-family: Arial, Helvetica,sans-serif;
+* {
+  line-height: 125%;
+}
+
+.page {
+  position: relative;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
   color: #000;
-  margin: 0px;
-  padding: 0px;
+
+  .footer {
+    position: absolute;
+    font-size: 10px;
+  }
+}
+
+hr {
+  border-color: #000;
 }
 
 @media print {
@@ -13,13 +25,19 @@ body {
     size: A4;
     margin: 15mm;
     zoom: 100%;
-    padding: 0px;
+    padding: 0;
   }
 
-  #page {
+  .page {
     min-height: 100%;
     position: relative;
     page-break-after: always;
+    .footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
   }
 
   h1 {
@@ -40,20 +58,30 @@ body {
 }
 
 @media screen {
-  html {
+  body {
     background: #e6e9ed;
-    padding: 5mm;
   }
 
-  body[data-size="A4"] {
-    position: relative;
-    max-width: 21cm;
-    min-height: 29.7cm;
-    margin: 0 auto;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+  .page {
+    margin: 5mm auto;
     padding: 15mm;
     background: #fff;
-    margin-bottom: 5mm;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+
+    &[data-size="A4"] {
+      width: 21cm;
+      height: 29.7cm;
+    }
+    &[data-="A4"][data-orientation="portrait"] {
+      width: 29.7cm;
+      height: 21cm;
+    }
+
+    .footer {
+      left: 15mm;
+      right: 15mm;
+      bottom: 15mm;
+    }
   }
 
   .page-break {
@@ -77,8 +105,4 @@ body {
     z-index: 999999;
     border-radius: 0.25em;
   }
-}
-
-* {
-  line-height: 125%;
 }

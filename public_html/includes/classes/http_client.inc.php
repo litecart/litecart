@@ -1,14 +1,14 @@
 <?php
 
   class http_client {
-    public $follow_redirects = true;
+    public $follow_redirects = false;
     public $timeout = 20;
     public $last_request;
     public $last_response;
 
     public function call($method, $url='', $data=null, $headers=array(), $asynchronous=false) {
 
-    // Backwards compatibility (where first param was URL)
+    // Backwards compatibility (where first param was URL supporting only GET/POST)
       if (strpos($method, '://') !== false) {
         list($url, $data, $headers) = func_get_args();
         $method = !empty($data) ? 'POST' : 'GET';
@@ -36,12 +36,16 @@
         $headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. $parts['pass']);
       }
 
+      if (empty($headers['User-Agent'])) {
+        $headers['User-Agent'] = PLATFORM_NAME.'/'.PLATFORM_VERSION;
+      }
+
       if (empty($headers['Content-Type']) && !empty($data)) {
         $headers['Content-Type'] = 'application/x-www-form-urlencoded';
       }
 
-      if (!empty($data) && empty($headers['Content-Length'])) {
-        $headers['Content-Length'] = strlen($data);
+      if (empty($headers['Content-Length'])) {
+        $headers['Content-Length'] = mb_strlen($data);
       }
 
       if (empty($headers['Connection'])) {
@@ -56,7 +60,7 @@
       }
 
       $found_body = false;
-      $response_header = '';
+      $response_headers = '';
       $response_body = '';
       $microtime_start = microtime(true);
 
@@ -93,36 +97,51 @@
           continue;
         }
 
-        if (preg_match('#^Location:\s?(.*)?$#i', $line, $matches)) {
-
-          $redirect_url = !empty($matches[1]) ? trim($matches[1]) : $url;
-
-          if ($this->follow_redirects) {
-            return $this->call($method, $redirect_url, $data, $headers);
-          }
-
-          trigger_error('Destination is pointing to a new destination while follow redirect is disabled ('. $redirect_url .')');
-          return false;
-        }
-
-        $response_header .= $line;
+        $response_headers .= $line;
       }
 
       fclose($socket);
 
     // Decode chunked data
-      if (preg_match('#Transfer-Encoding:\s?Chunked#i', $response_header)) {
+      if (preg_match('#Transfer-Encoding:\s?Chunked#i', $response_headers)) {
         $response_body = $this->http_decode_chunked_data($response_body);
       }
 
-      preg_match('#HTTP/1\.(1|0)\s(\d{3})#', $response_header, $matches);
+      preg_match('#HTTP/\d(\.\d)?\s(\d{3})#', $response_headers, $matches);
+      $status_code = $matches[2];
 
       $this->last_response['timestamp'] = time();
-      $this->last_response['status_code'] = $matches[2];
-      $this->last_response['head'] = $response_header . "\r\n";
+      $this->last_response['status_code'] = $status_code;
+      $this->last_response['head'] = $response_headers;
       $this->last_response['duration'] = round(microtime(true) - $microtime_start, 3);
-      $this->last_response['bytes'] = strlen($response_header . "\r\n" . $response_body);
+      $this->last_response['bytes'] = strlen($response_headers . "\r\n" . $response_body);
       $this->last_response['body'] = $response_body;
+
+      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
+        "## [". date('Y-m-d H:i:s', $this->last_request['timestamp']) ."] Request ##############################\r\n\r\n" .
+        $this->last_request['head']."\r\n" .
+        $this->last_request['body']."\r\n\r\n" .
+        "## [". date('Y-m-d H:i:s', $this->last_response['timestamp']) ."] Response — ". (float)$this->last_response['bytes'] ." bytes transferred in ". (float)$this->last_response['duration'] ." s ##############################\r\n\r\n" .
+        $this->last_response['head']."\r\n" .
+        $this->last_response['body']."\r\n\r\n"
+      );
+
+      if (class_exists('stats', false)) {
+        stats::set('http_requests', stats::get('external_requests') + 1);
+        stats::set('http_duration', stats::get('http_duration') + $this->last_response['duration']);
+      }
+
+    // Redirect
+      if ($status_code == 301) {
+        if (!$this->follow_redirects) {
+          trigger_error('Destination is redirecting to another destination but follow_redirects is disabled', E_USER_WARNING);
+        } else if (preg_match('#^Location:\s?(.*)?$#im', $line, $matches)) {
+          $redirect_url = !empty($matches[1]) ? trim($matches[1]) : $url;
+          return $this->call($method, $redirect_url, $data, $headers);
+        } else {
+          trigger_error('Destination is redirecting to a null destination', E_USER_WARNING);
+        }
+      }
 
       return $response_body;
     }

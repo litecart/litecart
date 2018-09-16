@@ -16,17 +16,15 @@
   }
 
   if (empty($product->id)) {
-    notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));
     http_response_code(410);
-    header('Refresh: 0; url='. document::ilink(''));
-    die('HTTP Error 410 Gone');
+    echo language::translate('error_410_gone', 'The requested file is no longer available');
+    return;
   }
 
   if (empty($product->status)) {
-    notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
+    echo language::translate('error_404_not_found', 'The requested file could not be found');
     http_response_code(404);
-    header('Refresh: 0; url='. document::ilink(''));
-    die('HTTP Error 404 Not Found');
+    return;
   }
 
   if ($product->date_valid_from > date('Y-m-d H:i:s')) {

@@ -1,4 +1,4 @@
-<div id="column-left">
+<div id="column-left" class="hidden-xs">
 
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
 

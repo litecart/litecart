@@ -5,37 +5,24 @@
 }
 
 #box-product {
-  ul.codes {
-    opacity: 0.75;
-    margin-top: -1.5em;
-    li {
-      &:not(:first-child):before {
-        content: '\b7\a0';
-        margin-left: -2px;
-      }
-      &:first-child {
-        content: none;
-      }
-    }
-  }
   .image-wrapper {
     position: relative;
     margin-bottom: @default-gutter-size;
     overflow: hidden;
     background: @image-whitespace-color;
     text-align: center;
-    box-shadow: 0 0px 2px rgba(0,0,0,0.15);
+    box-shadow: 0 0 2px rgba(0,0,0,0.15);
     img {
       width: 100%;
       min-height: 1px;
     }
     .sticker {
       color: #fff;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: bold;
       top: 15px;
       left: -30px;
-      padding: 3px;
+      padding: @default-gutter-size/4 @default-gutter-size/2;
       position: absolute;
       text-align: center;
       text-transform: uppercase;
@@ -49,13 +36,11 @@
       }
     }
   }
-  .extra-images {
-    margin-bottom: 2em;
-  }
   .extra-image {
     background: @image-whitespace-color;
     text-align: center;
     box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+    margin-bottom: @default-gutter-size;
     img {
       max-width: 100%;
     }

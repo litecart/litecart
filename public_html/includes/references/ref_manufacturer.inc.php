@@ -39,10 +39,10 @@
     }
 
     public function __set($name, $value) {
-      trigger_error('Setting data is prohibited', E_USER_WARNING);
+      trigger_error('Setting data is prohibited ('.$name.')', E_USER_WARNING);
     }
 
-    private function _load($field='') {
+    private function _load($field) {
 
       switch($field) {
 
@@ -65,7 +65,7 @@
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
               if (in_array($key, array('id', 'manufacturer_id', 'language_code'))) continue;
-              $this->_data[$key] = $value;
+              if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
           }
 

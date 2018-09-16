@@ -12,7 +12,8 @@
     }
 
     $_POST['keywords'] = implode(',', $_POST['keywords']);
-    if (isset($_GET['category_id']) && empty($_POST['categories'])) $_POST['categories'][] = $_GET['category_id'];
+
+    if (empty($product->data['id']) && isset($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
   }
 
   breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'));
@@ -162,7 +163,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-            <div class="form-control" style="height: auto; height: 15em; overflow-y: auto;">
+            <div class="form-control" style="overflow-y: auto; max-height: 200px;">
 <?php
   function custom_catalog_tree($category_id=0, $depth=1, $count=0) {
 
@@ -208,7 +209,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_product_groups', 'Product Groups'); ?></label>
-            <div style="height: auto; height: 11em; overflow-y: auto;" class="form-control">
+            <div class="form-control" style="overflow-y: auto; max-height: 200px;">
 <?php
   // Output product groups
     $product_groups_query = database::query(
@@ -269,7 +270,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+             <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
           </div>
 
           <div class="form-group">
@@ -285,7 +286,7 @@
 
             <div class="input-group">
               <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-              <?php echo functions::form_draw_text_field('sku', true); ?>
+              <?php echo functions::form_draw_text_field('mpn', true); ?>
             </div>
 
             <div class="input-group">
@@ -431,7 +432,7 @@
           </div>
         </div>
 
-        <table class="table table-striped data-table">
+        <table class="table table-striped table-hover data-table">
           <thead>
             <tr>
               <td style="width: 50%;"><?php echo language::translate('title_price', 'Price'); ?></td>
@@ -460,7 +461,7 @@ foreach (currency::$currencies as $currency) {
 
       <h2><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h2>
       <div class="table-responsive">
-        <table id="table-campaigns" class="table table-striped data-table">
+        <table id="table-campaigns" class="table table-striped table-hover data-table">
           <tbody>
             <?php if (!empty($_POST['campaigns'])) foreach (array_keys($_POST['campaigns']) as $key) { ?>
             <tr>
@@ -502,7 +503,7 @@ foreach (currency::$currencies as $currency) {
     <div id="tab-options" class="tab-pane">
       <h2><?php echo language::translate('title_options', 'Options'); ?></h2>
       <div class="table-responsive">
-        <table id="table-options" class="table table-striped data-table">
+        <table id="table-options" class="table table-striped table-hover data-table">
           <thead>
             <tr>
               <th style="min-width: 200px;"><?php echo language::translate('title_group', 'Group'); ?></th>
@@ -576,13 +577,13 @@ foreach (currency::$currencies as $currency) {
       </div>
 
       <div class="table-responsive">
-        <table id="table-stock" class="table table-striped data-table">
+        <table id="table-stock" class="table table-striped table-hover data-table">
           <thead>
             <tr>
               <th><?php echo language::translate('title_option', 'Option'); ?></th>
               <th class="text-center" style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-              <th class="text-center" style="width: 200px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-              <th style="width: 350px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
+              <th class="text-center" style="width: 185px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+              <th style="width: 400px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
               <th class="text-center" style="width: 125px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
               <th style="width: 85px;">&nbsp;</th>
             </tr>
@@ -593,7 +594,7 @@ foreach (currency::$currencies as $currency) {
               <td><?php echo functions::form_draw_text_field('sku', true); ?></td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('weight', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('weight', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -601,9 +602,9 @@ foreach (currency::$currencies as $currency) {
               </td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('dim_x', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('dim_y', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('dim_z', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('dim_x', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('dim_y', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('dim_z', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -620,7 +621,7 @@ foreach (currency::$currencies as $currency) {
               <td><?php echo functions::form_draw_text_field('options_stock['.$key.'][sku]', true); ?></td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -628,9 +629,9 @@ foreach (currency::$currencies as $currency) {
               </td>
               <td>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true, 1, 0); ?>
-                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true, 1, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true, 4, 0); ?>
+                  <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true, 4, 0); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true, false, 'style="width: auto;"'); ?>
                   </span>
@@ -688,7 +689,7 @@ foreach (currency::$currencies as $currency) {
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (isset($product->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+    <?php echo (isset($product->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>
@@ -731,6 +732,12 @@ foreach (currency::$currencies as $currency) {
   });
 
   $('input[name="categories[]"]:checked').trigger('change');
+
+// SKU
+
+  $('input[name="sku"]').change(function() {
+    $('input[name="sku"]').not(this).val($(this).val());
+  });
 
 // Images
 
@@ -1178,7 +1185,7 @@ foreach (currency::$currencies as $currency) {
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 1, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
                + '      <span class="input-group-addon">'
                + '        <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '', false, 'style="width: auto;"')); ?>'
                + '      </span>'
@@ -1186,9 +1193,9 @@ foreach (currency::$currencies as $currency) {
                + '  </td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 1, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 1, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 1, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 4, 0)); ?>'
                + '      <span class="input-group-addon">'
                + '        <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '', false, 'style="width: auto;"')); ?>'
                + '      </span>'

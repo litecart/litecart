@@ -101,7 +101,7 @@
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="http://fontawesome.io/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('icon', true, 'placeholder="fa-circle-thin"'); ?>
     </div>
 
@@ -151,7 +151,7 @@
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (isset($order_status->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+    <?php echo (isset($order_status->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>

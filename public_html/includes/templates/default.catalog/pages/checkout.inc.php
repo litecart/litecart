@@ -104,8 +104,7 @@
         jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn('Error');
-        $('#box-checkout .'+ task.component +'.wrapper').html(textStatus + ': ' + errorThrown);
+        $('#box-checkout .'+ task.component +'.wrapper').html('An unexpected error occurred, try reloading the page.');
       },
       success: function(html) {
         if (task.refresh) $('#box-checkout .'+ task.component +'.wrapper').html(html).fadeTo('fast', 1);
@@ -179,9 +178,6 @@
       cache: false,
       async: true,
       dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message + "\n" + jqXHR.responseText);
-      },
       success: function(data) {
         if (data['alert']) alert(data['alert']);
         $.each(data, function(key, value) {
@@ -222,9 +218,6 @@
       cache: true,
       async: true,
       dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
-      },
       success: function(data) {
         $('select[name="zone_code"]').html('');
         if (data.length) {
@@ -264,9 +257,6 @@
       cache: true,
       async: false,
       dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
-      },
       success: function(data) {
         $('select[name="shipping_address[zone_code]"]').html('');
         if (data.length) {

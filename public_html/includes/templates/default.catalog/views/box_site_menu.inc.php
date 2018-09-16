@@ -25,7 +25,7 @@
   }
 ?>
 <div id="site-menu">
-  <nav class="navbar navbar-default">
+  <nav class="navbar">
 
     <div class="navbar-header">
       <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-form"'); ?>
@@ -107,3 +107,12 @@
     </div>
   </nav>
 </div>
+
+<script>
+  $('#site-menu .dropdown-menu [data-toggle="dropdown"]').on('click', function(e){
+    $(this).closest('ul').find('.dropdown-menu:visible').hide();
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+</script>

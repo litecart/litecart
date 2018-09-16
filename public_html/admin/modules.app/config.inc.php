@@ -2,7 +2,7 @@
 
   return $app_config = array(
     'name' => language::translate('title_modules', 'Modules'),
-    'default' => 'jobs',
+    'default' => 'customer',
     'theme' => array(
       'color' => '#c469c5',
       'icon' => 'fa-cube',

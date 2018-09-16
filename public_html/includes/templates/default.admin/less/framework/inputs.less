@@ -45,12 +45,19 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   min-width: 1px; // Firefox fix
   padding: @form-input-padding @form-input-padding * 2;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  &[type="file"] {
+    font-size: 12px;
+  }
   &[disabled] {
     opacity: 0.5;
   }
   &[readonly] {
     color: #999;
   }
+}
+
+.form-control-static {
+  padding: @form-input-padding+1px 0;
 }
 
 .select-wrapper:not(.multiple) {

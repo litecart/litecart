@@ -10,7 +10,6 @@
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
     }
-    $_POST['newsletter'] = '1';
   }
 
   if (!empty(customer::$data['id'])) {
@@ -20,12 +19,14 @@
   if (!empty($_POST['create_account'])) {
 
     try {
+      if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
+
+      if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
+
       if (settings::get('captcha_enabled')) {
         $captcha = functions::captcha_get('create_account');
         if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
       }
-
-      if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address.'));
       if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));

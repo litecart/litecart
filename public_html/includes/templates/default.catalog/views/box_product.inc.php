@@ -181,7 +181,7 @@
 
     <div id="attributes" class="tab-pane">
       <div class="attributes">
-        <table class="table table-striped">
+        <table class="table table-striped table-hover">
 <?php
   for ($i=0; $i<count($attributes); $i++) {
     if (strpos($attributes[$i], ':') !== false) {
@@ -200,7 +200,7 @@
     } else {
       echo ' </tbody>' . PHP_EOL
          . '</table>' . PHP_EOL
-         . '<table class="table table-striped">' . PHP_EOL;
+         . '<table class="table table-striped table-hover">' . PHP_EOL;
     }
   }
 ?>

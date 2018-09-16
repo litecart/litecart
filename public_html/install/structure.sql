@@ -52,7 +52,7 @@ CREATE TABLE `lc_categories_info` (
   `description` TEXT NOT NULL,
   `head_title` VARCHAR(128) NOT NULL,
   `h1_title` VARCHAR(128) NOT NULL,
-  `meta_description` VARCHAR(256) NOT NULL,
+  `meta_description` VARCHAR(512) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `category` (`category_id`, `language_code`),
   KEY `category_id` (`category_id`),
@@ -215,7 +215,7 @@ CREATE TABLE `lc_manufacturers_info` (
   `description` TEXT NOT NULL,
   `h1_title` VARCHAR(128) NOT NULL,
   `head_title` VARCHAR(128) NOT NULL,
-  `meta_description` VARCHAR(256) NOT NULL,
+  `meta_description` VARCHAR(512) NOT NULL,
   `link` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `manufacturer` (`manufacturer_id`, `language_code`),
@@ -423,7 +423,7 @@ CREATE TABLE `lc_pages_info` (
   `title` VARCHAR(256) NOT NULL,
   `content` mediumtext NOT NULL,
   `head_title` VARCHAR(128) NOT NULL,
-  `meta_description` VARCHAR(256) NOT NULL,
+  `meta_description` VARCHAR(512) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`),
   KEY `language_code` (`language_code`)
@@ -547,7 +547,7 @@ CREATE TABLE `lc_products_info` (
   `short_description` VARCHAR(256) NOT NULL,
   `description` TEXT NOT NULL,
   `head_title` VARCHAR(128) NOT NULL,
-  `meta_description` VARCHAR(256) NOT NULL,
+  `meta_description` VARCHAR(512) NOT NULL,
   `attributes` TEXT NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
@@ -747,12 +747,15 @@ CREATE TABLE `lc_translations` (
   `code` VARCHAR(250) NOT NULL,
   `text_en` TEXT NOT NULL,
   `html` TINYINT(1) NOT NULL,
-  `pages` TEXT NOT NULL,
-  `date_accessed` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
+  `frontend` TINYINT(1) NOT NULL,
+  `backend` TINYINT(1) NOT NULL,
   `date_updated` DATETIME NOT NULL,
+  `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`)
+  UNIQUE KEY `code` (`code`),
+  KEY `frontend` (`frontend`),
+  KEY `backend` (`backend`),
+  KEY `date_created` (`date_created`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_users` (
@@ -769,8 +772,8 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `date_expires` DATETIME NOT NULL,
   `date_active` DATETIME NOT NULL,
   `date_login` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,
+  `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------

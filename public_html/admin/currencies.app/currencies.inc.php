@@ -30,41 +30,6 @@
     }
   }
 
-  if (isset($_POST['update_rates'])) {
-
-    try {
-      if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
-
-      $url = document::link('https://api.fixer.io/latest', array('base' => settings::get('store_currency_code'), 'symbols' => implode(',', $_POST['currencies'])));
-
-      $client = new http_client();
-      $response = $client->call('GET', $url);
-
-      if (empty($response)) {
-        throw new Exception(language::translate('error_no_response_from_remote_machine', 'No response from remote machine'));
-      }
-
-      if (!$response = json_decode($response, true)) {
-         throw new Exception(language::translate('error_invalid_response_from_remote_machine', 'Invalid response from remote machine'));
-      }
-
-      foreach ($response['rates'] as $currency_code => $rate) {
-        database::query(
-          "update ". DB_TABLE_CURRENCIES ."
-          set value = '". (float)$rate ."'
-          where code = '". database::input($currency_code) ."'
-          limit 1;"
-        );
-      }
-
-      notices::add('success', language::translate('success_currency_rates_updated', 'Currency rates updated'));
-      header('Location: '. document::link());
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
 ?>
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_currency'), true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
@@ -74,7 +39,7 @@
 
 <?php echo functions::form_draw_form_begin('currencies_form', 'post'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
@@ -137,8 +102,6 @@
         <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
       </div>
     </li>
-
-    <li><?php echo functions::form_draw_button('update_rates', language::translate('title_update_rates', 'Update Rates'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'fa-refresh'); ?></li>
   </ul>
 
 <?php echo functions::form_draw_form_end(); ?>

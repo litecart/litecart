@@ -48,13 +48,16 @@
 
 // Average order count
   $orders_query = database::query(
-    "select count(id) as num_orders, count(month(date_created)) as months from ". DB_TABLE_ORDERS ."
+    "select count(id) as num_orders, date_format(date_created, '%Y-%m') as month from ". DB_TABLE_ORDERS ."
     where order_status_id in ('". implode("', '", $order_statuses) ."')
     and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."'
-    group by month(date_created);"
+    group by date_format(date_created, '%Y-%m');"
   );
-  $orders = database::fetch($orders_query);
-  @$stats['average_order_count'] = round($orders['num_orders'] / $orders['months'], 1);
+  $total_orders = 0;
+  while ($orders = database::fetch($orders_query)) {
+    $total_orders += $orders['num_orders'];
+  }
+  @$stats['average_order_count'] = round($total_orders / database::num_rows($orders_query));
 
 // Num customers
   $customers_query = database::query(
@@ -79,7 +82,7 @@
     <div class="panel-body table-responsive">
       <div class="row">
         <div class="col-md-6">
-          <table class="table table-striped data-table">
+          <table class="table table-striped table-hover data-table">
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
@@ -101,7 +104,7 @@
           </table>
         </div>
         <div class="col-md-6">
-          <table class="table table-striped data-table">
+          <table class="table table-striped table-hover data-table">
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>

@@ -1,16 +1,16 @@
 <?php
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) : null;
-  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) : date('Y-m-d H:i:s');
+  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
+  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
 
   $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
-  $date_first_order = $date_first_order['min(date_created)'];
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d 00:00:00');
+  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
+  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
 
-  if ($_GET['date_from'] > date('Y-m-d H:i:s')) $_GET['date_from'] = date('Y-m-d H:i:s');
-  if ($_GET['date_to'] > date('Y-m-d H:i:s')) $_GET['date_to'] = date('Y-m-d H:i:s');
+  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
+  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 ?>
@@ -28,9 +28,9 @@ form[name="filter_form"] li {
     <li> <?php echo functions::form_draw_search_field('name', true, 'placeholder="'. htmlspecialchars(language::translate('title_item_name', 'Item Name')) .'"'); ?></li>
     <li>
       <div class="input-group" style="max-width: 350px;">
-        <?php echo functions::form_draw_date_field('date_from'); ?>
+        <?php echo functions::form_draw_date_field('date_from', true); ?>
         <span class="input-group-addon"> - </span>
-        <?php echo functions::form_draw_date_field('date_to'); ?>
+        <?php echo functions::form_draw_date_field('date_to', true); ?>
       </div>
     </li>
     <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
@@ -39,7 +39,7 @@ form[name="filter_form"] li {
 
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_most_sold_products', 'Most Sold Products'); ?></h1>
 
-<table class="table table-striped data-table">
+<table class="table table-striped table-hover data-table">
   <thead>
     <tr>
       <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>

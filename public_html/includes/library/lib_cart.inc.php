@@ -112,11 +112,11 @@
 
       if (!empty(customer::$data['id'])) {
         database::query(
-          "update ". DB_TABLE_CART_ITEMS ."
-          set cart_uid = '". database::input(self::$data['uid']) ."',
-            customer_id = ".(int)customer::$data['id'] ."
-          where customer_id = ".(int)customer::$data['id'] ."
-          or cart_uid = '". database::input(self::$data['uid']) ."';"
+          "update ". DB_TABLE_CART_ITEMS ." set
+          cart_uid = '". database::input(self::$data['uid']) ."',
+          customer_id = ".(int)customer::$data['id'] ."
+          where cart_uid = '". database::input(self::$data['uid']) ."'
+          or customer_id = ".(int)customer::$data['id'] .";"
         );
       }
 
@@ -126,6 +126,17 @@
       );
 
       while ($item = database::fetch($cart_items_query)) {
+
+      // Remove duplicate cart item if present
+        if (!empty(self::$items[$item['key']])) {
+          database::query(
+            "delete from ". DB_TABLE_CART_ITEMS ."
+            where cart_uid = '". database::input(self::$data['uid']) ."'
+            and id = ". (int)$item['id'] ."
+            limit 1;"
+          );
+        }
+
         self::add_product($item['product_id'], unserialize($item['options']), $item['quantity'], true, $item['key']);
         if (isset(self::$items[$item['key']])) self::$items[$item['key']]['id'] = $item['id'];
       }
@@ -393,14 +404,14 @@
 
       if (!isset(self::$items[$item_key])) return;
 
-      unset(self::$items[$item_key]);
-
       database::query(
         "delete from ". DB_TABLE_CART_ITEMS ."
-        where `key` = '". database::input($item_key) ."'
-        and cart_uid = '". database::input(self::$data['uid']) ."'
+        where cart_uid = '". database::input(self::$data['uid']) ."'
+        and id = ". (int)self::$items[$item_key]['id'] ."
         limit 1;"
       );
+
+      unset(self::$items[$item_key]);
 
       self::_calculate_total();
 

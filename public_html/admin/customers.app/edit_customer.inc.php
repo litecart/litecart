@@ -139,19 +139,19 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
           <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_firstname', 'Firstname'); ?></label>
+          <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
           <?php echo functions::form_draw_text_field('firstname', true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_lastname', 'Lastname'); ?></label>
+          <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
           <?php echo functions::form_draw_text_field('lastname', true); ?>
         </div>
         </div>
@@ -175,7 +175,7 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+          <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
           <?php echo functions::form_draw_text_field('postcode', true); ?>
         </div>
       </div>
@@ -228,7 +228,7 @@
       <p class="btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </p>
     </div>
 
@@ -239,7 +239,7 @@
       </div>
 
       <?php if (!empty($customer->data['id'])) { ?>
-      <table class="table table-striped data-table">
+      <table class="table table-striped table-hover data-table">
         <tr>
           <td class="col-md-6"><?php echo language::translate('title_orders', 'Orders'); ?><br />
             <?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
@@ -256,15 +256,15 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
-  $('form[name="customer_form"] :input').change(function() {
+  $('form[name="customer_form"]').on('change', ':input', function() {
     if ($(this).val() == '') return;
-    if (console) console.log('Retrieving address ["'+ $(this).attr('name') +']');
+    $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
       data: $(this).closest('form').serialize(),
       cache: false,
-      async: false,
+      async: true,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
         if (console) console.warn(errorThrown.message);
@@ -272,38 +272,37 @@
       success: function(data) {
         if (data['alert']) {
           alert(data['alert']);
+          return;
         }
         $.each(data, function(key, value) {
-          if (console) console.log('  ' + key +": "+ value);
-          if ($('form[name="customer_form"] *[name="'+key+'"]').length && $('form[name="customer_form"] *[name="'+key+'"]').val() == '') {
-            $('form[name="customer_form"] *[name="'+key+'"]').val(value);
-          }
+          console.log(key +' '+ value);
+          if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key]);
         });
       },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
     });
   });
 
-  $('select[name="country_code"]').change(function(){
-    if ($(this).find('option:selected').data('tax-id-format') != '') {
-      $(this).closest('table').find('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+  $('select[name="country_code"]').change(function(e) {
+
+    if ($(this).find('option:selected').data('tax-id-format')) {
+      $('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
     } else {
-      $(this).closest('table').find('input[name="tax_id"]').removeAttr('pattern');
+      $('input[name="tax_id"]').removeAttr('pattern');
     }
 
-    if ($(this).find('option:selected').data('postcode-format') != '') {
-      $(this).closest('table').find('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
-      $(this).closest('table').find('input[name="postcode"]').attr('required', 'required');
-      $(this).closest('table').find('input[name="postcode"]').closest('td').find('.required').show();
+    if ($(this).find('option:selected').data('postcode-format')) {
+      $('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
     } else {
-      $(this).closest('table').find('input[name="postcode"]').removeAttr('pattern');
-      $(this).closest('table').find('input[name="postcode"]').removeAttr('required');
-      $(this).closest('table').find('input[name="postcode"]').closest('td').find('.required').hide();
+      $('input[name="postcode"]').removeAttr('pattern');
     }
 
-    if ($(this).find('option:selected').data('phone-code') != '') {
-      $(this).closest('table').find('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+    if ($(this).find('option:selected').data('phone-code')) {
+      $('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
     } else {
-      $(this).closest('table').find('input[name="phone"]').removeAttr('placeholder');
+      $('input[name="phone"]').removeAttr('placeholder');
     }
 
     $('body').css('cursor', 'wait');
@@ -317,16 +316,14 @@
         if (console) console.warn(errorThrown.message);
       },
       success: function(data) {
-        $('select[name="zone_code"]').html('');
-        if (data) {
-          $('select[name="zone_code"]').removeAttr('disabled');
-          $('select[name="zone_code"]').closest('td').css('opacity', 1);
+        $("select[name='zone_code']").html('');
+        if (data.length) {
+          $('select[name="zone_code"]').prop('disabled', false);
           $.each(data, function(i, zone) {
             $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="zone_code"]').attr('disabled', 'disabled');
-          $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
+          $('select[name="zone_code"]').prop('disabled', true);
         }
       },
       complete: function() {

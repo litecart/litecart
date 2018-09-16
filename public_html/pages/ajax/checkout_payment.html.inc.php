@@ -27,9 +27,9 @@
   if (!empty($payment->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $payment->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
-      $payment->data['selected'] = array(); // Clear
+      $payment->data['selected'] = array(); // Clear because option is no longer present
     } else {
-      $payment->select($module_id, $option_id); // Refresh
+      $payment->select($module_id, $option_id); // Reinstate a present option
     }
   }
 

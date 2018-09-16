@@ -47,7 +47,7 @@
       $routes = array(
         '#^(?:index\.php)?$#'                  => array('page' => 'index',          'params' => '',  'redirect' => true),
         '#^order_process$#'                    => array('page' => 'order_process',  'params' => '',  'redirect' => false, 'post_security' => false),
-        '#^([0-9a-z_/\.]+)(?:\.php)?$#'        => array('page' => '$1',             'params' => '',  'redirect' => true),
+        '#^([0-9a-zA-Z_/\.]+)(?:\.php)?$#'     => array('page' => '$1',             'params' => '',  'redirect' => true),
         // See ~/includes/routes/ folder for more advanced routes
       );
 
@@ -62,7 +62,7 @@
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
     // Abort mission if in admin panel
-      if (preg_match('#^'. preg_quote(WS_DIR_ADMIN, '#') .'.*#', self::$request)) return;
+      if (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', self::$request)) return;
 
     // Set target route for requested URL
       foreach (self::$_routes as $matched_pattern => $route) {
@@ -162,7 +162,13 @@
 
     public static function rewrite($link, $language_code=null) {
 
-      if (empty($language_code)) $language_code = language::$selected['code'];
+      if (empty($language_code)) {
+        $language_code = language::$selected['code'];
+      }
+
+      if (preg_match('#language=([a-z]{2})#', $link, $matches)) {
+        $language_code = $matches[1];
+      }
 
       if (!in_array($language_code, array_keys(language::$languages))) {
         trigger_error('Invalid language code ('. $language_code .')', E_USER_WARNING);
@@ -204,7 +210,7 @@
 
     // Detect URL rewrite support
       $use_rewrite = false;
-      if (isset($_SERVER['HTTP_MOD_REWRITE']) && in_array(strtolower($_SERVER['HTTP_MOD_REWRITE']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+      if (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && in_array(strtolower($_SERVER['REDIRECT_HTTP_MOD_REWRITE']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
         $use_rewrite = true;
       } else if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
         $use_rewrite = true;
@@ -220,7 +226,8 @@
       }
 
     // Append language prefix to base
-      if (settings::get('seo_links_language_prefix')) {
+      if (count(language::$languages > 1) && settings::get('seo_links_language_prefix')) {
+        if (isset($parsed_link['query']['language'])) unset($parsed_link['query']['language']);
         $http_route_base .= $language_code .'/';
       }
 

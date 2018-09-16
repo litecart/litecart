@@ -10,6 +10,7 @@
     foreach ($tax_rate->data as $key => $value) {
       $_POST[$key] = $value;
     }
+    $_POST['address_type'] = 'shipping';
   }
 
   if (isset($_POST['save'])) {
@@ -112,10 +113,10 @@
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_address_type', 'Address Type'); ?></label>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_radio_button('address_type', 'payment', true); ?> <?php echo language::translate('title_payment_address', 'Payment Address'); ?></label>
+        <label><?php echo functions::form_draw_radio_button('address_type', 'shipping', true); ?> <?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></label>
       </div>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_radio_button('address_type', 'shipping', true); ?> <?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></label>
+        <label><?php echo functions::form_draw_radio_button('address_type', 'payment', true); ?> <?php echo language::translate('title_payment_address', 'Payment Address'); ?></label>
       </div>
     </div>
   </div>
@@ -135,7 +136,7 @@
     </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+      <label><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
       <div class="radio">
         <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'with', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_with_tax_id', 'Applies to customers with a tax ID'); ?></label></label>
       </div>
@@ -151,7 +152,7 @@
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (isset($tax_rate->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+    <?php echo (isset($tax_rate->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>

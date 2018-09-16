@@ -6,7 +6,7 @@
 
   if (version_compare(phpversion(), '5.4.0', '<') == true) {
 
-  // (Un)register Globals (PHP <5.4)
+  // (Un)register Globals
     if (ini_get('register_globals')) {
       foreach (array_keys(array_merge($_SERVER, $_ENV, !empty($_SESSION) ? $_SESSION : array(), $_COOKIE, $_REQUEST, $_FILES)) as $key) {
         if (isset($GLOBALS[$key])) unset($GLOBALS[$key]);
@@ -112,6 +112,19 @@
         }
         return $result;
       }
+    }
+  }
+
+// Emulate getallheaders() on non-Apache machines
+  if (!function_exists('getallheaders')) {
+    function getallheaders() {
+      $headers = array();
+      foreach ($_SERVER as $name => $value) {
+        if (substr($name, 0, 5) == 'HTTP_') {
+          $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+        }
+      }
+      return $headers;
     }
   }
 

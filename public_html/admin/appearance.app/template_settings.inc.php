@@ -51,7 +51,7 @@
 
 <?php echo functions::form_draw_form_begin('template_settings_form', 'post', null, false, 'style="max-width: 960px;"'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped table-hover data-table">
     <thead>
       <tr>
         <th style="width: 250px;"><?php echo language::translate('title_key', 'Key'); ?></th>
@@ -67,7 +67,17 @@
 
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $config['key']) {
 
-        $_POST['settings'][$config['key']] = $settings[$config['key']];
+        switch (true) {
+          case (substr($config['function'], 0, 14) == 'regional_input'):
+            if (!isset($_POST['settings'][$config['key']])) {
+              $_POST['settings'][$config['key']] = @json_decode($settings[$config['key']], true);
+            }
+            break;
+
+          default:
+            $_POST['settings'][$config['key']] = $settings[$config['key']];
+            break;
+        }
 ?>
       <tr>
         <td style="white-space: normal;">
@@ -86,6 +96,10 @@
     } else {
 
       switch (true) {
+
+        case (substr($config['function'], 0, 8) == 'password'):
+          $value = '****************';
+          break;
 
         case (substr($config['function'], 0, 14) == 'regional_input'):
 
@@ -110,6 +124,10 @@
            $value = language::translate('title_false', 'False');
           }
 
+          break;
+
+        default:
+          $value = $settings[$config['key']];
           break;
       }
 ?>

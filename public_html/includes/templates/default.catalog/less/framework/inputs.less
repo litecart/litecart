@@ -24,7 +24,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   color: #555;
   background: @form-input-background;
   border: 1px solid @default-border-color;
-  border-radius: 4px;
+  border-radius: @default-border-radius;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
@@ -35,6 +35,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   min-width: 1px; // Firefox fix
   padding: @form-input-padding @form-input-padding * 2;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  &[type="file"] {
+    font-size: 12px;
+  }
   &[disabled] {
     opacity: 0.5;
   }
@@ -132,7 +135,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   .input-group-btn:first-child > .btn,
   .input-group-btn:first-child > .btn-group > .btn,
   .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-    border-radius: 4px 0 0 4px;
+    border-radius: @default-border-radius 0 0 @default-border-radius;
   }
   .form-control:last-child,
   .input-group-addon:last-child,
@@ -140,7 +143,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   .input-group-btn:last-child > .btn-group > .btn,
   .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
     margin-right: -1px;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 @default-border-radius @default-border-radius 0;
   }
   + .input-group {
     margin-top: -1px;

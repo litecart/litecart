@@ -9,6 +9,7 @@
   }
   &.active {
     background: darken(@background-color, 5%);
+    border-color: transparent;
   }
 }
 
@@ -18,9 +19,9 @@
   padding: @form-input-padding @form-input-padding*2;
   text-decoration:  none;
   font-weight: normal;
-  border: 1px solid #ddd;
-  border-color: @default-border-color @default-border-color darken(@default-border-color, 5%);
-  border-radius: 3px;
+  border: 1px solid @default-border-color;
+  border-bottom-color: darken(@default-border-color, 5%);
+  border-radius: @default-border-radius;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
   text-align: center;
 
@@ -31,7 +32,7 @@
   //&.btn-warning { .btn(@warning-color, #fff); }
   &.btn-danger { .btn(@danger-color, #fff); }
 
-  &.btn-sm { padding: 0px 5px; font-size: 0.8em; }
+  &.btn-sm { padding: 0 5px; font-size: 0.8em; }
   &.btn-lg { padding: 12px 18px; font-size: 1.25em; }
 
   &.active, &:active { box-shadow: inset 1px 1px 1px rgba(0,0,0,0.25) !important; }

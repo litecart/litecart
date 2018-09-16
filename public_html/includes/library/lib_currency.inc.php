@@ -153,7 +153,7 @@
 
     public static function format($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
 
-    // Backwards comaptibility
+    // Backwards compatibility
       if (is_bool($currency_code) === true) {
         trigger_error(__METHOD__.'() does no longer support a boolean value for third argument', E_USER_DEPRECATED);
         @list($value, $auto_decimals, , $currency_code, $currency_value) = func_get_args();
@@ -163,20 +163,20 @@
 
       if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
 
-      $fraction = ($value / $currency_value) - (int)($value / $currency_value);
-
-      if ($fraction == 0 && $auto_decimals && settings::get('auto_decimals')) {
-        $decimals = 0;
-      } else {
-        $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
-      }
-
+      $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
+      $amount = round($value / $currency_value, $decimals);
       $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
       $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
 
       if (empty(self::$currencies[$currency_code])) $suffix = ' ' . $currency_code;
 
-      return $prefix . number_format($value / $currency_value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
+      if ($auto_decimals && settings::get('auto_decimals')) {
+        if ($amount - floor($amount) == 0) {
+          $decimals = 0;
+        }
+      }
+
+      return $prefix . number_format($amount, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
     }
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {

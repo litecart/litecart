@@ -1,58 +1,5 @@
 <?php
 
-  if (isset($_POST['export'])) {
-
-    try {
-      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
-
-      ob_clean();
-
-      $csv = array();
-
-      $pages_query = database::query("select id from ". DB_TABLE_PAGES ." order by id;");
-      while ($page = database::fetch($pages_query)) {
-        $page = reference::page($page['id']);
-
-        $csv[] = array(
-          'id' => $page->id,
-          'status' => $page->status,
-          'dock' => implode(',', $page->dock),
-          'title' => $page->title,
-          'content' => $page->content,
-          'head_title' => $page->head_title,
-          'meta_description' => $page->meta_description,
-          'priority' => $page->priority,
-          'language_code' => $_POST['language_code'],
-        );
-      }
-
-      if ($_POST['output'] == 'screen') {
-        header('Content-type: text/plain; charset='. $_POST['charset']);
-      } else {
-        header('Content-type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=pages-'. $_POST['language_code'] .'.csv');
-      }
-
-      switch($_POST['eol']) {
-        case 'Linux':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-          break;
-        case 'Mac':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-          break;
-        case 'Win':
-        default:
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-          break;
-      }
-
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
-
   if (isset($_POST['import'])) {
 
     try {
@@ -141,6 +88,59 @@
     }
   }
 
+  if (isset($_POST['export'])) {
+
+    try {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+
+      ob_clean();
+
+      $csv = array();
+
+      $pages_query = database::query("select id from ". DB_TABLE_PAGES ." order by id;");
+      while ($page = database::fetch($pages_query)) {
+        $page = reference::page($page['id']);
+
+        $csv[] = array(
+          'id' => $page->id,
+          'status' => $page->status,
+          'dock' => implode(',', $page->dock),
+          'title' => $page->title,
+          'content' => $page->content,
+          'head_title' => $page->head_title,
+          'meta_description' => $page->meta_description,
+          'priority' => $page->priority,
+          'language_code' => $_POST['language_code'],
+        );
+      }
+
+      if ($_POST['output'] == 'screen') {
+        header('Content-type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=pages-'. $_POST['language_code'] .'.csv');
+      }
+
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+          break;
+        case 'Mac':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+          break;
+        case 'Win':
+        default:
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+          break;
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 ?>
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?></h1>
 
@@ -197,7 +197,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_code', true).' '; ?>
+              <?php echo functions::form_draw_languages_list('language_code', true); ?>
             </div>
 
             <div class="form-group">

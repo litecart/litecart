@@ -5,8 +5,12 @@
 public_html/cache/*
 public_html/data/*
 public_html/images/*
+public_html/logs/*
 public_html/vqmod/vqcache/*
 public_html/vqmod/xml/*
+
+!public_html/**/index.html
+!public_html/**/.htaccess
 
 public_html/admin/.htaccess
 public_html/admin/.htpasswd
@@ -15,16 +19,10 @@ public_html/.htaccess
 public_html/favicon.ico
 public_html/robots.txt
 
-!public_html/cache/*/index.html
-!public_html/data/.htaccess
-!public_html/cache/.htaccess
-!public_html/vqmod/.htaccess
-!public_html/vqmod/vqcache/index.html
-!public_html/vqmod/xml/index.html
-
 #################
 # Project files #
 #################
+
 node_modules/
 
 *.bak
@@ -35,6 +33,7 @@ node_modules/
 ######################
 # OS generated files #
 ######################
+
 .DS_Store
 .DS_Store?
 ._.DS_Store

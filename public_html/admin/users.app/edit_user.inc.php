@@ -21,9 +21,9 @@
       if (empty($_POST['permissions'])) $_POST['permissions'] = array();
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
-      if (empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
-      if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
-      if (!empty($_POST['password']) && !empty($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
+      if (empty($user->data['id']) && empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
+      if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
+      if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 
       $fields = array(
         'status',
@@ -71,13 +71,13 @@
 ?>
 <h1><?php echo $app_icon; ?> <?php echo !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
+<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
   <div class="row">
 
     <div class="col-md-8">
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
         </div>
@@ -96,49 +96,49 @@
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
           <?php echo functions::form_draw_password_field('password', '', 'autocomplete="off"'); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
           <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
           <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
           <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
         </div>
       </div>
 
+      <?php if (!empty($user->data['id'])) { ?>
       <div class="row">
-        <?php if (!empty($user->data['id'])) { ?>
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
           <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
           <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
           <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
         </div>
-        <?php } ?>
       </div>
+      <?php } ?>
     </div>
 
     <div class="col-md-4">
@@ -170,7 +170,7 @@
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+    <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>

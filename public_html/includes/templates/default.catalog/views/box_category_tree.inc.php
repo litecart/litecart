@@ -4,7 +4,7 @@
       echo '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">' . PHP_EOL
          . '  <a href="'. htmlspecialchars($category['link']) .'">'. functions::draw_fonticon((empty($category['opened']) ? 'fa-caret-right fa-fw' : 'fa-caret-down fa-fw')) .' '. $category['name'] .'</a>' . PHP_EOL;
       if (!empty($category['subcategories'])) {
-        echo '  <ul class="nav nav-pills nav-stacked">' . PHP_EOL;
+        echo '  <ul class="nav nav-stacked nav-pills">' . PHP_EOL;
         foreach ($category['subcategories'] as $subcategory) {
           echo PHP_EOL . custom_draw_category($subcategory, $category_path);
         }
@@ -27,8 +27,8 @@
 <?php } ?>
 
 <div id="box-category-tree" class="box">
-  <h1 class="title"><?php echo $title; ?></h1>
-  <ul class="nav nav-primary nav-pills nav-stacked<?php if (!empty(document::$settings['compact_category_tree']) && !empty($category_path)) echo ' compact'; ?>">
+  <h2 class="title"><?php echo $title; ?></h2>
+  <ul class="nav nav-stacked nav-pills<?php if (!empty(document::$settings['compact_category_tree']) && !empty($category_path)) echo ' compact'; ?>">
     <?php foreach ($categories as $category) custom_draw_category($category, $category_path); ?>
   </ul>
 </div>

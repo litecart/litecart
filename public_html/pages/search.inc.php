@@ -58,13 +58,12 @@
     ) pc on (pc.product_id = p.id)
 
     having relevance > 0
-    or p.code regexp '". database::input($code_regex) ."'
-    or p.sku regexp '". database::input($code_regex) ."'
-    or p.mpn regexp '". database::input($code_regex) ."'
-    or p.gtin regexp '". database::input($code_regex) ."'
+    ". ((!empty($_GET['query'])) ? "or p.code regexp '". database::input($code_regex) ."'" : "") ."
+    ". ((!empty($_GET['query'])) ? "or p.sku regexp '". database::input($code_regex) ."'" : "") ."
+    ". ((!empty($_GET['query'])) ? "or p.mpn regexp '". database::input($code_regex) ."'" : "") ."
+    ". ((!empty($_GET['query'])) ? "or p.gtin regexp '". database::input($code_regex) ."'" : "") ."
 
-    order by %sql_sort;
-  ";
+    order by %sql_sort;";
 
   switch($_GET['sort']) {
     case 'name':
@@ -91,7 +90,7 @@
 
   if (database::num_rows($products_query) == 1) {
     $product = database::fetch($products_query);
-    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), 302);
+    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), true, 302);
     exit;
   }
 
