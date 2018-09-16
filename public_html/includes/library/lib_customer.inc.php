@@ -35,7 +35,7 @@
         if ($do_login && !empty($customer['id'])) {
           self::load($customer['id']);
         } else {
-          setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
+          setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
         }
       }
 
@@ -69,7 +69,9 @@
         if (settings::get('regional_settings_screen_enabled')) {
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
-            setcookie('skip_regional_settings_screen', true, strtotime('+30 days'), WS_DIR_HTTP_HOME);
+            if (!empty($_COOKIE['cookies_accepted'])) {
+              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+            }
           }
         }
       }
@@ -259,7 +261,7 @@
 
     public static function login($login, $password, $redirect_url='', $remember_me=false) {
 
-      setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
+      setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
 
       if (empty($login) || empty($password)) {
         notices::add('errors', language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
@@ -300,7 +302,7 @@
 
       if ($remember_me) {
         $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
+        setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_HTTP_HOME);
       }
 
       if (empty($redirect_url)) {
@@ -322,8 +324,8 @@
       cart::reset();
       session::$data['cart']['uid'] = null;
 
-      setcookie('cart[uid]', '', 1, WS_DIR_HTTP_HOME);
-      setcookie('customer_remember_me', '', 1, WS_DIR_HTTP_HOME);
+      setcookie('cart[uid]', null, -1, WS_DIR_HTTP_HOME);
+      setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
 
       session::regenerate_id();
 

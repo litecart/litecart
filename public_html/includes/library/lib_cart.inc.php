@@ -33,12 +33,14 @@
 
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
-        setcookie('cart[uid]', self::$data['uid'], strtotime('+1 years'), WS_DIR_HTTP_HOME);
+        if (!empty($_COOKIE['cookies_accepted'])) {
+          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        }
       }
 
       database::query(
         "delete from ". DB_TABLE_CART_ITEMS ."
-        where date_created < '". date('Y-m-d H:i:s', strtotime('-1 years')) ."';"
+        where date_created < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
       );
     }
 

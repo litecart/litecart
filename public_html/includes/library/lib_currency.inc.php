@@ -68,7 +68,10 @@
       }
 
       session::$data['currency'] = self::$currencies[$code];
-      setcookie('currency_code', $code, time()+(60*60*24*30), WS_DIR_HTTP_HOME);
+
+      if (!empty($_COOKIE['cookies_accepted'])) {
+        setcookie('currency_code', $code, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+      }
     }
 
     public static function identify() {
