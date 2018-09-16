@@ -62,7 +62,7 @@
             );
 
             while ($row = database::fetch($query)) {
-              $this->_data['also_purchased_products'][$row['product_id']] = reference::product($row['product_id']);
+              $this->_data['also_purchased_products'][$row['product_id']] = reference::product($row['product_id'], $this->_language_codes[0]);
             }
 
           break;
@@ -148,7 +148,7 @@
 
           if (empty($this->default_category_id)) return;
 
-          $this->_data['default_category'] = reference::category($this->default_category_id);
+          $this->_data['default_category'] = reference::category($this->default_category_id, $this->_language_codes[0]);
 
           break;
 
