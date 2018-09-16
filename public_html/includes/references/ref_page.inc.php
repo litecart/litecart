@@ -85,7 +85,7 @@
             $page = database::fetch($page_query);
 
             if ($page) {
-              $this->_data['path'][$page['id']] = reference::page($page['id']);
+              $this->_data['path'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
             }
 
             if (!empty($page['parent_id'])) {
@@ -111,7 +111,7 @@
                 where parent_id = ". (int)$parent_id .";"
               );
               while ($page = database::fetch($pages_query)) {
-                $descendants[$page['id']] = reference::page($page['id']);
+                $descendants[$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
                 $descendants += custom_page_descendants($page['id']);
               }
               return $descendants;
@@ -130,7 +130,7 @@
             );
 
             while ($page = database::fetch($page_query)) {
-              $this->_data['descendants'][$page['id']] = reference::page($page['id']);
+              $this->_data['descendants'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
             }
 
           break;
