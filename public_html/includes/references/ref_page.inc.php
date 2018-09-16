@@ -61,6 +61,14 @@
 
           break;
 
+        case 'parent':
+
+          if (!empty($this->parent_id)) {
+            $this->_data['parent'] = reference::page($page['parent_id'], $this->_language_codes[0]);
+          }
+
+          break;
+
         case 'path':
 
           $this->_data['path'] = array();

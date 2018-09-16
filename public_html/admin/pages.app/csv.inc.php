@@ -69,12 +69,25 @@
         if (isset($row['dock'])) $row['dock'] = explode(',', $row['dock']);
 
       // Set new page data
-        foreach (array('status', 'dock') as $field) {
+        $fields = array(
+          'parent_id',
+          'status',
+          'dock',
+        );
+
+        foreach ($fields as $field) {
           if (isset($row[$field])) $page->data[$field] = $row[$field];
         }
 
       // Set page info data
-        foreach (array('title', 'content', 'head_title', 'meta_description') as $field) {
+        $fields = array(
+          'title',
+          'content',
+          'head_title',
+          'meta_description',
+        );
+
+        foreach ($fields as $field) {
           if (isset($row[$field])) $page->data[$field][$row['language_code']] = $row[$field];
         }
 
@@ -103,6 +116,7 @@
 
         $csv[] = array(
           'id' => $page->id,
+          'parent_id' => $page->parent_id,
           'status' => $page->status,
           'dock' => implode(',', $page->dock),
           'title' => $page->title,

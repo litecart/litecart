@@ -28,7 +28,7 @@
     );
 
     if (!function_exists('custom_build_custmer_service_links_tree')) {
-      function custom_build_custmer_service_links_tree($parent_id, $level, $current_page_path, &$output) {
+      function custom_build_custmer_service_links_tree($parent_id, $level, $current_page_path) {
 
         $pages_query = database::query(
           "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PAGES ." p
@@ -55,7 +55,7 @@
               where parent_id = ". (int)$page['id'] .";"
             );
             if (database::num_rows($sub_pages_query) > 0) {
-              custom_build_custmer_service_links_tree($page['id'], $level+1, $current_page_path, $output[$page['id']]['subpages']);
+              $output[$page['id']]['subpages'] = custom_build_custmer_service_links_tree($page['id'], $level+1, $current_page_path);
             }
           }
         }
