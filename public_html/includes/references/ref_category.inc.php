@@ -92,7 +92,7 @@
 
           if (empty($this->parent_id)) return;
 
-          $this->_data['parent'] = reference::category($this->parent_id);
+          $this->_data['parent'] = reference::category($this->parent_id, $this->_language_codes[0]);
 
           break;
 
@@ -112,7 +112,7 @@
             $category = database::fetch($category_query);
 
             if ($category) {
-              $this->_data['path'][$category['id']] = reference::category($category['id']);
+              $this->_data['path'][$category['id']] = reference::category($category['id'], $this->_language_codes[0]);
             }
 
             if (!empty($category['parent_id'])) {
@@ -137,7 +137,7 @@
           );
 
           while ($row = database::fetch($query)) {
-            $this->_data['products'][$row['id']] = reference::product($row['id']);
+            $this->_data['products'][$row['id']] = reference::product($row['id'], $this->_language_codes[0]);
           }
 
           break;
@@ -156,7 +156,7 @@
           );
 
           while($row = database::fetch($query)) {
-            $this->_data['siblings'][$row['id']] = reference::category($row['id']);
+            $this->_data['siblings'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
           }
 
           break;
@@ -173,7 +173,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              $this->_data['subcategories'][$row['id']] = reference::category($row['id']);
+              $this->_data['subcategories'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
             }
           }
 
