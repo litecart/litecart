@@ -114,9 +114,7 @@
     $_page->snippets['num_products_total'] = (int)database::num_rows($products_query);
     $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
 
-    cache::set($box_category_cache_id, 'file', $_page->snippets);
-  }
-
     cache::set($box_category_cache_token, $_page->snippets);
+  }
 
   echo $_page->stitch('pages/category');
