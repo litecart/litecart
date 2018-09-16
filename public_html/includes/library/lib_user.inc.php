@@ -50,7 +50,7 @@
         if ($do_login) {
           self::load($user['id']);
         } else {
-          setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+          setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
         }
       }
     }
@@ -115,7 +115,7 @@
     public static function login($username, $password, $redirect_url='', $remember_me=false) {
       $config_login_attempts = 3;
 
-      setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
 
       if (empty($username)) {
         notices::add('errors', language::translate('error_missing_username', 'You must provide a username'));
@@ -204,9 +204,9 @@
 
       if ($remember_me) {
         $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+1 year'), WS_DIR_HTTP_HOME);
+        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_HTTP_HOME);
       } else {
-        setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+        setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
       }
 
       if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_ADMIN);
@@ -219,7 +219,7 @@
     public static function logout($redirect_url='') {
       self::reset();
 
-      setcookie('remember_me', '', strtotime('-1 year'), WS_DIR_HTTP_HOME);
+      setcookie('remember_me', null, strtotime('-3 months'), WS_DIR_HTTP_HOME);
 
       if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_ADMIN . 'login.php');
 

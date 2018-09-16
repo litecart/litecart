@@ -103,7 +103,10 @@
       }
 
       session::$data['language'] = self::$languages[$code];
-      setcookie('language_code', $code, time()+(3600*24*30), WS_DIR_HTTP_HOME);
+
+      if (!empty($_COOKIE['cookies_accepted'])) {
+        setcookie('language_code', $code, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+      }
 
     // Set system locale
       if (!setlocale(LC_TIME, explode(',', self::$selected['locale']))) {
