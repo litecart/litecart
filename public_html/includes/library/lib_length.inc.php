@@ -3,8 +3,8 @@
   class length {
     public static $classes = array();
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
       self::$classes = array(

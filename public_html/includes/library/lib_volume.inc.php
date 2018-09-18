@@ -4,8 +4,8 @@
     public static $class = '';
     public static $classes = array();
 
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
 
     public static function load_dependencies() {
       self::$classes = array(
@@ -111,9 +111,8 @@
     //public static function initiate() {
     //}
 
-    public static function startup() {
-      self::$class = &customer::$data['volume_class'];
-    }
+    //public static function startup() {
+    //}
 
     //public static function before_capture() {
     //}
@@ -124,8 +123,8 @@
     //public static function prepare_output() {
     //}
 
-    public static function before_output() {
-    }
+    //public static function before_output() {
+    //}
 
     //public static function shutdown() {
     //}
