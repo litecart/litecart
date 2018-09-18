@@ -226,9 +226,11 @@
       }
 
     // Append language prefix to base
-      if (count(language::$languages > 1) && settings::get('seo_links_language_prefix')) {
-        if (isset($parsed_link['query']['language'])) unset($parsed_link['query']['language']);
-        $http_route_base .= $language_code .'/';
+      if (count(language::$languages) > 1) {
+        if (settings::get('seo_links_language_prefix')) {
+          if (isset($parsed_link['query']['language'])) unset($parsed_link['query']['language']);
+          $http_route_base .= $language_code .'/';
+        }
       }
 
     // Join link elements
