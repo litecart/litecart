@@ -27,11 +27,18 @@
       if (!empty($_POST['create_account'])) {
         try {
           if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
+
           if (!functions::email_validate_address($_POST['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
+
           if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
             if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
             if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
           }
+
+          $mod_customer = new mod_customer();
+          $result = $mod_customer->validate($_POST);
+          if (!empty($result['error'])) throw new Exception($result['error']);
+
         } catch(Exception $e) {
           notices::add('errors', $e->getMessage());
         }
