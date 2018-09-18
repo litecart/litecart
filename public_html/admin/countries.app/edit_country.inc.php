@@ -115,7 +115,7 @@
   </div>
 
   <div class="form-group">
-    <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+    <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="https://en.wikipedia.org/wiki/Address_(geography)" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
     <?php echo functions::form_draw_textarea('address_format', true, 'style="height: 150px;"'); ?>
   </div>
 
