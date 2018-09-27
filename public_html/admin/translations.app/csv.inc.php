@@ -9,7 +9,9 @@
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
-      $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
+      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+      }
 
       $num_inserted_translations = 0;
       $num_updated_translations = 0;
