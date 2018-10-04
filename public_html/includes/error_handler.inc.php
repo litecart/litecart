@@ -46,6 +46,7 @@
       error_log(
         strip_tags($output . $backtrace_output) .
         "Request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']} {$_SERVER['SERVER_PROTOCOL']}" . PHP_EOL .
+        "Host: {$_SERVER['HTTP_HOST']}" . PHP_EOL .
         "Client: {$_SERVER['REMOTE_ADDR']} (". gethostbyaddr($_SERVER['REMOTE_ADDR']) .")" . PHP_EOL .
         "User Agent: {$_SERVER['HTTP_USER_AGENT']}" . PHP_EOL .
         (!empty($_SERVER['HTTP_REFERER']) ? "Referer: {$_SERVER['HTTP_REFERER']}" . PHP_EOL : '')
