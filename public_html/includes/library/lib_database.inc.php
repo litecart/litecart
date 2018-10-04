@@ -202,17 +202,27 @@
       return self::$_links[$link]->info;
     }
 
-    public static function input($string, $allowable_tags=false, $link='default') {
+    public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
 
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
-          $string[$key] = self::input($string[$key]);
+          $string[$key] = self::input($string[$key], $allowable_tags, $trim, $link);
         }
         return $string;
       }
 
-      if (is_bool($allowable_tags) === true && $allowable_tags !== true) {
-        $string = strip_tags($string, $allowable_tags);
+      if ($allowable_tags !== true) {
+        if ($allowable_tags != '') {
+          $string = strip_tags($string, $allowable_tags);
+        } else {
+          $string = strip_tags($string);
+        }
+      }
+
+      if ($trim === true) {
+        $string = trim($string);
+      } else if ($trim != '') {
+        $string = trim($string, $trim);
       }
 
       if (!isset(self::$_links[$link])) self::connect($link);

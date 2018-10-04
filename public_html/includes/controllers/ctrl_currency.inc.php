@@ -133,8 +133,8 @@
           number = '". database::input($this->data['number']) ."',
           name = '". database::input($this->data['name']) ."',
           value = '". database::input($this->data['value']) ."',
-          prefix = '". database::input($this->data['prefix']) ."',
-          suffix = '". database::input($this->data['suffix']) ."',
+          prefix = '". database::input($this->data['prefix'], false, false) ."',
+          suffix = '". database::input($this->data['suffix'], false, false) ."',
           decimals = ". (int)$this->data['decimals'] .",
           priority = ". (int)$this->data['priority'] .",
           date_updated = '". date('Y-m-d H:i:s') ."'
