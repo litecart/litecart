@@ -77,11 +77,17 @@
         $this->data['id'] = database::insert_id();
       }
 
+      $this->data['keywords'] = explode(',', $this->data['keywords']);
+      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
+      $this->data['keywords'] = array_unique($this->data['keywords']);
+      $this->data['keywords'] = implode(',', $this->data['keywords']);
+
       database::query(
         "update ". DB_TABLE_ORDER_STATUSES ."
         set
           icon = '". database::input($this->data['icon']) ."',
           color = '". database::input($this->data['color']) ."',
+          keywords = '". database::input($this->data['keywords']) ."',
           is_sale = '". (empty($this->data['is_sale']) ? '0' : '1') ."',
           is_archived = '". (empty($this->data['is_archived']) ? '0' : '1') ."',
           notify = '". (empty($this->data['notify']) ? '0' : '1') ."',

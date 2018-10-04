@@ -26,6 +26,7 @@
       $fields = array(
         'icon',
         'color',
+        'keywords',
         'is_sale',
         'is_archived',
         'notify',
@@ -75,22 +76,12 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', (isset($_POST['name'][$language_code]) ? $_POST['name'][$language_code] : ''), 'text', 'style="width: 360px"'); ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
-        <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
-      </div>
-
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
-        <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
-      </div>
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
+      <?php echo functions::form_draw_text_field('keywords', true); ?>
     </div>
   </div>
 
@@ -108,6 +99,21 @@
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_color', 'Color'); ?></label>
       <?php echo functions::form_draw_color_field('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
+        <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
+      </div>
+
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
+        <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
+      </div>
     </div>
   </div>
 

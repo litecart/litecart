@@ -70,3 +70,5 @@ ALTER TABLE `lc_users`
 ADD INDEX(`status`)
 ADD INDEX(`username`)
 ADD INDEX(`email`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_order_statuses`	ADD COLUMN `keywords` VARCHAR(256) NOT NULL AFTER `color`;

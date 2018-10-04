@@ -367,6 +367,7 @@ CREATE TABLE `lc_order_statuses` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `icon` VARCHAR(24) NOT NULL,
   `color` VARCHAR(7) NOT NULL,
+  `keywords` VARCHAR(256) NOT NULL,
   `is_sale` TINYINT(1) NOT NULL,
   `is_archived` TINYINT(1) NOT NULL,
   `notify` TINYINT(1) NOT NULL,
