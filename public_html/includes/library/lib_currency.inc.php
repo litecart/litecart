@@ -141,8 +141,8 @@
 
       if (empty($from)) $from = settings::get('store_currency_code');
 
-      if (!isset(self::$currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_WARNING);
-      if (!isset(self::$currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_WARNING);
+      if (!isset(self::$currencies[$from])) trigger_error("Cannot convert from currency $from as the currency does not exist", E_USER_WARNING);
+      if (!isset(self::$currencies[$to])) trigger_error("Cannot convert to currency $to as the currency does not exist", E_USER_WARNING);
 
       return $value * self::$currencies[$from]['value'] / self::$currencies[$to]['value'];
     }
@@ -185,7 +185,7 @@
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
       if (empty($currency_code)) $currency_code = self::$selected['code'];
-      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
+      if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
 
       if (empty($currency_value)) $currency_value = currency::$currencies[$currency_code]['value'];
 
@@ -196,7 +196,7 @@
     public static function round($value, $currency_code) {
 
       if (empty($currency_code)) $currency_code = self::$selected['code'];
-      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
+      if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
 
       $value = self::convert($value, settings::get('store_currency_code'), $currency_code);
       $value = round($value, self::$currencies[$currency_code]['decimals']);
