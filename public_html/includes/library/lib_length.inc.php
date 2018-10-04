@@ -4,9 +4,36 @@
     public static $classes = array();
 
     public static function construct() {
+      self::load();
     }
 
-    public static function load_dependencies() {
+    //public static function load_dependencies() {
+    //}
+
+    //public static function initiate() {
+    //}
+
+    //public static function startup() {
+    //}
+
+    //public static function before_capture() {
+    //}
+
+    //public static function after_capture() {
+    //}
+
+    //public static function prepare_output() {
+    //}
+
+    //public static function before_output() {
+    //}
+
+    //public static function shutdown() {
+    //}
+
+    ######################################################################
+
+    public static function load() {
       self::$classes = array(
         'm' => array(
           'name' => 'Metres',
@@ -65,34 +92,13 @@
       );
     }
 
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
-
-    ######################################################################
-
     public static function convert($value, $from, $to) {
 
       if ($value == 0) return 0;
 
       if ($from == $to) return $value;
+
+      if (empty(self::$classes)) self::load();
 
       if (!isset(self::$classes[$from])) trigger_error('The unit '. $from .' is not a valid length class.', E_USER_WARNING);
       if (!isset(self::$classes[$to])) trigger_error('The unit '. $to .' is not a valid length class.', E_USER_WARNING);
@@ -101,6 +107,8 @@
     }
 
     public static function format($value, $unit) {
+
+      if (empty(self::$classes)) self::load();
 
       if (!isset(self::$classes[$unit])) {
         trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);
