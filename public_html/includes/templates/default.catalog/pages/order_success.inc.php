@@ -1,7 +1,7 @@
 <main id="content">
   {snippet:notices}
 
-  <div id="box-order-success" class="box text-center">
+  <div id="box-order-success" class="box">
 
     <h1 class="title"><?php echo strtr(language::translate('title_order_completed', 'Your order #%order_id is successfully completed!'), array('%order_id' => $order['id'])); ?></h1>
 
