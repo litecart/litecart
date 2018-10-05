@@ -53,12 +53,12 @@
         foreach ($module_options['options'] as $option) {
           $this->data['options'][$module->id]['options'][$option['id']] = array(
             'id' => $option['id'],
-            'icon' => $option['icon'],
-            'name' => $option['name'],
-            'description' => $option['description'],
-            'fields' => $option['fields'],
-            'cost' => (float)$option['cost'],
-            'tax_class_id' => (int)$option['tax_class_id'],
+            'icon' => !empty($option['icon']) ? $option['icon'] : '',
+            'name' => !empty($option['name']) ? $option['name'] : '',
+            'description' => !empty($option['description']) ? $option['description'] : '',
+            'fields' => !empty($option['fields']) ? $option['fields'] : '',
+            'cost' => !empty($option['cost']) ? (float)$option['cost'] : 0,
+            'tax_class_id' => !empty($option['tax_class_id']) ? (int)$option['tax_class_id'] : 0,
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
             'error' => !empty($option['error']) ? $option['error'] : false,
           );

@@ -42,10 +42,10 @@
       return $method;
     }
 
-    public function pre_check() {
+    public function pre_check($order) {
     }
 
-    public function transfer() {
+    public function transfer($order) {
       return array(
         'action' => '',
         'method' => '',
@@ -53,7 +53,7 @@
       );
     }
 
-    public function verify() {
+    public function verify($order) {
       return array(
         'order_status_id' => $this->settings['order_status_id'],
         'payment_transaction_id' => '',
@@ -61,7 +61,7 @@
       );
     }
 
-    public function after_process() {
+    public function after_process($order) {
     }
 
     function settings() {
