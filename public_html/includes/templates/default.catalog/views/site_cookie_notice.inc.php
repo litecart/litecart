@@ -1,4 +1,5 @@
 <?php
+  if (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1) return;
   if (empty(document::$settings['cookie_acceptance'])) return;
   if (isset($_COOKIE['cookies_accepted']) && $_COOKIE['cookies_accepted'] != '') return;
 ?>
