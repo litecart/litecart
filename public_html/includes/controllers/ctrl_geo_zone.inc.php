@@ -63,7 +63,7 @@
         database::query(
           "insert into ". DB_TABLE_GEO_ZONES ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -74,7 +74,7 @@
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -99,7 +99,7 @@
             "update ". DB_TABLE_ZONES_TO_GEO_ZONES ."
             set country_code = '". database::input($zone['country_code']) ."',
             zone_code = '". (isset($zone['zone_code']) ? database::input($zone['zone_code']) : '') ."',
-            date_updated =  '". date('Y-m-d H:i:s') ."'
+            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where geo_zone_id = ". (int)$this->data['id'] ."
             and id = ". (int)$zone['id'] ."
             limit 1;"

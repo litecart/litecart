@@ -72,7 +72,7 @@
         database::query(
           "insert into ". DB_TABLE_SOLD_OUT_STATUSES ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -81,7 +81,7 @@
         "update ". DB_TABLE_SOLD_OUT_STATUSES ."
         set orderable = ". (int)$this->data['orderable'] .",
           hidden = ". (int)$this->data['hidden'] .",
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

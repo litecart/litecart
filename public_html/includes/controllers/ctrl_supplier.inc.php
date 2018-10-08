@@ -47,7 +47,7 @@
         database::query(
           "insert into ". DB_TABLE_SUPPLIERS ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -60,7 +60,7 @@
         email = '". database::input($this->data['email']) ."',
         phone = '". database::input($this->data['phone']) ."',
         link = '". database::input($this->data['link']) ."',
-        date_updated = '". date('Y-m-d H:i:s') ."'
+        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

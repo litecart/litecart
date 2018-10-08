@@ -172,7 +172,7 @@
         database::query(
           "insert into ". DB_TABLE_PRODUCTS ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -229,7 +229,7 @@
         weight_class = '". database::input($this->data['weight_class']) ."',
         date_valid_from = ". (empty($this->data['date_valid_from']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
         date_valid_to = ". (empty($this->data['date_valid_to']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
-        date_updated = '". date('Y-m-d H:i:s') ."'
+        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -362,7 +362,7 @@
             database::query(
               "insert into ". DB_TABLE_PRODUCTS_OPTIONS ."
               (product_id, date_created)
-              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
+              values (". (int)$this->data['id'] .", '". ($this->data['options'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
             $this->data['options'][$key]['id'] = database::insert_id();
           }
@@ -379,7 +379,7 @@
                 price_operator = '". database::input($this->data['options'][$key]['price_operator']) ."',
                 $sql_currency_options
                 priority = ". (int)$i .",
-                date_updated = '". date('Y-m-d H:i:s') ."'
+                date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['options'][$key]['id'] ."
             limit 1;"
@@ -434,7 +434,7 @@
             dim_class = '". database::input($this->data['options_stock'][$key]['dim_class']) ."',
             quantity = '". database::input($this->data['options_stock'][$key]['quantity']) ."',
             priority = '". $i++ ."',
-            date_updated =  '". date('Y-m-d H:i:s') ."'
+            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['options_stock'][$key]['id'] ."
             limit 1;"

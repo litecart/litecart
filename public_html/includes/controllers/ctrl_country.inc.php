@@ -59,7 +59,7 @@
         database::query(
           "insert into ". DB_TABLE_COUNTRIES ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -79,7 +79,7 @@
           language_code = '". database::input($this->data['language_code']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
           phone_code = '". database::input($this->data['phone_code']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -104,7 +104,7 @@
             "update ". DB_TABLE_ZONES ."
             set code = '". database::input($zone['code']) ."',
             name = '". database::input($zone['name']) ."',
-            date_updated =  '". date('Y-m-d H:i:s') ."'
+            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where country_code = '". database::input($this->data['iso_code_2']) ."'
             and id = ". (int)$zone['id'] ."
             limit 1;"

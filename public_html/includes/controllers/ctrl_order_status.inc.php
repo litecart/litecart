@@ -72,7 +72,7 @@
         database::query(
           "insert into ". DB_TABLE_ORDER_STATUSES ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -92,7 +92,7 @@
           is_archived = '". (empty($this->data['is_archived']) ? '0' : '1') ."',
           notify = '". (empty($this->data['notify']) ? '0' : '1') ."',
           priority = ". (int)$this->data['priority'] .",
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

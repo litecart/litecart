@@ -109,7 +109,7 @@
           shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
           newsletter = '". (!empty($this->data['newsletter']) ? '1' : '0') ."',
           notes = '". database::input($this->data['notes']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -134,7 +134,7 @@
         "update ". DB_TABLE_CUSTOMERS ."
         set
           password = '". $password_hash ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

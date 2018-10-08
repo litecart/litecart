@@ -98,7 +98,7 @@
         database::query(
           "insert into ". DB_TABLE_OPTION_GROUPS ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }

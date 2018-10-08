@@ -225,7 +225,7 @@
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
           (uid, client_ip, user_agent, domain, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". date('Y-m-d H:i:s') ."');"
+          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -269,7 +269,7 @@
         weight_class = '". database::input($this->data['weight_class']) ."',
         payment_due = ". (float)$this->data['payment_due'] .",
         tax_total = ". (float)$this->data['tax_total'] .",
-        date_updated = '". date('Y-m-d H:i:s') ."'
+        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -411,10 +411,9 @@
             database::query(
               "insert into ". DB_TABLE_ORDERS_COMMENTS ."
               (order_id, date_created)
-              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
+              values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
             $this->data['comments'][$key]['id'] = database::insert_id();
-            $this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
 
             if ($this->data['comments'][$key]['author'] == 'staff' && !empty($this->data['comments'][$key]['notify']) && empty($this->data['comments'][$key]['hidden'])) {
               $notify_comments[] = $this->data['comments'][$key];

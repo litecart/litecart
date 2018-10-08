@@ -76,7 +76,7 @@
         database::query(
           "insert into ". DB_TABLE_PAGES ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -87,7 +87,7 @@
           parent_id = ". (int)$this->data['parent_id'] .",
           dock = '". (!empty($this->data['dock']) ? implode(',', database::input($this->data['dock'])) : '') ."',
           priority = ". (int)$this->data['priority'] .",
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

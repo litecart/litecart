@@ -72,14 +72,14 @@
         database::query(
           "insert into ". DB_TABLE_DELIVERY_STATUSES ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
 
       database::query(
         "update ". DB_TABLE_DELIVERY_STATUSES ."
-        set date_updated = '". date('Y-m-d H:i:s') ."'
+        set date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

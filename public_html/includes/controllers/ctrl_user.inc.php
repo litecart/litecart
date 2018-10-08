@@ -53,7 +53,7 @@
         database::query(
           "insert into ". DB_TABLE_USERS ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -66,7 +66,7 @@
         permissions = '". database::input(json_encode($this->data['permissions'])) ."',
         date_valid_from = '". database::input($this->data['date_valid_from']) ."',
         date_valid_to = '". database::input($this->data['date_valid_to']) ."',
-        date_updated = '". date('Y-m-d H:i:s') ."'
+        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -100,7 +100,6 @@
         "update ". DB_TABLE_USERS ."
         set
           password = '". $password_hash ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
