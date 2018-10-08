@@ -39,6 +39,11 @@
 
     public function add_body($content, $html=false, $charset=null) {
 
+      if (empty($content)) {
+        trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
+        return $this;
+      }
+
       if (!$charset) $charset = $this->_charset;
 
       $this->_multiparts[] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. $charset . "\r\n"
@@ -133,8 +138,13 @@
     // Prepare body
       $body = '';
       foreach ($this->_multiparts as $multipart) {
-          $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . $multipart . "\r\n\r\n";
+        $body .= '--'. $multipart_boundary_string . "\r\n"
+               . $multipart . "\r\n\r\n";
+      }
+
+      if (empty($body)) {
+        trigger_error('Cannot send email with an empty body', E_USER_WARNING);
+        return false;
       }
 
     // Deliver via SMTP
