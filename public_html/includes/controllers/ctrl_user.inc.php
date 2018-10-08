@@ -92,7 +92,7 @@
 
     public function set_password($password) {
 
-      $this->save();
+      if (empty($this->data['id'])) $this->save();
 
       $password_hash = functions::password_checksum($this->data['id'], $password, PASSWORD_SALT);
 
@@ -115,6 +115,8 @@
       }
 
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
+
+      $this->save();
     }
 
     public function delete() {
