@@ -4,6 +4,7 @@ ADD COLUMN `last_agent` VARCHAR(256) NOT NULL AFTER `last_ip`,
 ADD COLUMN `date_login` DATETIME NOT NULL AFTER `last_ip`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
+ADD COLUMN `shipping_tracking_url` VARCHAR(256) NOT NULL AFTER `shipping_tracking_id`,
 ADD COLUMN `user_agent` VARCHAR(256) NOT NULL AFTER `client_ip`,
 ADD COLUMN `domain` VARCHAR(64) NOT NULL AFTER `user_agent`;
 -- --------------------------------------------------------

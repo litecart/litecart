@@ -59,6 +59,7 @@
         'order_status_id',
         'shipping_option',
         'shipping_tracking_id',
+        'shipping_tracking_url',
         'payment_option',
         'payment_transaction_id',
         'comments',
@@ -547,6 +548,11 @@
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_tracking_id', 'Tracking ID'); ?></label>
                   <?php echo functions::form_draw_text_field('shipping_tracking_id', true); ?>
+                </div>
+
+                <div class="form-group col-md-12">
+                  <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
+                  <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">

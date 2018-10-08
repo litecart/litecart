@@ -151,7 +151,7 @@
       <?php } ?>
     </div>
 
-    <div><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %order_copy_url, %store_name, %store_url</code></div>
+    <div><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %shipping_tracking_url, %order_copy_url, %store_name, %store_url</code></div>
   </fieldset>
 
   <p class="btn-group">

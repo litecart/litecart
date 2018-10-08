@@ -310,6 +310,7 @@ CREATE TABLE `lc_orders` (
   `shipping_option_id` VARCHAR(32) NOT NULL,
   `shipping_option_name` VARCHAR(64) NOT NULL,
   `shipping_tracking_id` VARCHAR(128) NOT NULL,
+  `shipping_tracking_url` VARCHAR(256) NOT NULL,
   `payment_option_id` VARCHAR(32) NOT NULL,
   `payment_option_name` VARCHAR(64) NOT NULL,
   `payment_transaction_id` VARCHAR(128) NOT NULL,
