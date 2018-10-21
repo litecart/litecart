@@ -86,23 +86,33 @@
     }
 
     switch ($filter['sort']) {
+
       case 'name':
         $sql_outer_sort[] = "name asc";
         break;
+
       case 'price':
         $sql_outer_sort[] = "final_price asc";
         break;
+
       case 'date':
         $sql_inner_sort[] = "p.date_created desc";
         $sql_outer_sort[] = "p.date_created desc";
         break;
-      case 'rand':
-        $sql_outer_sort[] = "rand()";
-        break;
+
       case 'popularity':
-      default:
         $sql_inner_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
         $sql_outer_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+        break;
+
+      case 'products':
+        if (empty($filter['products'])) break;
+        $sql_inner_sort[] = "Field(p.id, '". implode("', '", $filter['products']) ."')";
+        $sql_outer_sort[] = "Field(p.id, '". implode("', '", $filter['products']) ."')";
+        break;
+
+      case 'rand':
+        $sql_outer_sort[] = "rand()";
         break;
     }
 

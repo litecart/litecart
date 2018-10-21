@@ -7,11 +7,11 @@
 }
 </style>
 
-<div id="modal-customer-picker" class="modal fade" style="max-width: 640px; display: none;">
+<div id="modal-customer-picker" class="modal fade" style="max-width: 720px; display: none;">
 
   <button class="set-guest btn btn-default pull-right" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button>
 
-  <h2 style="margin-top: 0;"><?php echo language::translate('title_customer', 'Customer'); ?></h2>
+  <h2 style="margin-top: 0;"><?php echo language::translate('title_customers', 'Customers'); ?></h2>
 
   <div class="modal-body">
     <div class="form-group">

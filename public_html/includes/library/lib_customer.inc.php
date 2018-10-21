@@ -298,7 +298,9 @@
 
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+        set num_logins = num_logins + 1,
+            last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+            last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
             last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
             date_login = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$customer['id'] ."
@@ -318,16 +320,6 @@
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_HTTP_HOME);
       }
 
-      database::query(
-        "update ". DB_TABLE_CUSTOMERS ."
-        set num_logins = num_logins + 1,
-            last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-            last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-            date_login = '". date('Y-m-d H:i:s') ."'
-        where id = ". (int)$customer['id'] ."
-        limit 1;"
-      );
-
       if (empty($redirect_url)) {
         $redirect_url = document::ilink('');
       }
@@ -336,6 +328,7 @@
         '%firstname' => self::$data['firstname'],
         '%lastname' => self::$data['lastname'],
       )));
+
       header('Location: '. $redirect_url);
       exit;
     }
