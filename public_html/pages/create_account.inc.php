@@ -75,6 +75,15 @@
 
       $customer->save();
 
+      database::query(
+        "update ". DB_TABLE_CUSTOMERS ."
+        set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+            last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+            last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
+        where id = ". (int)$customer->data['id'] ."
+        limit 1;"
+      );
+
       $aliases = array(
         '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
