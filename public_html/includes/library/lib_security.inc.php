@@ -71,18 +71,17 @@
         $checksum_get = md5(serialize($_GET));
         $checksum_post = md5(serialize($_POST));
 
-        if (!function_exists('sanitize_string')) {
-          function sanitize_string(&$item, &$key) {
-            $filter_list = array(
-              //'/<script(.*?)>(.*?)<\/script>/is' => '',  // Enabling this will prevent administrators from storing javascripts in the WYSIWYG editor
-              '/eval(?:[\s]+)?\((.*)\)/is' => '',
-              '/base64_/is' => '',
-              '/union(?:[\s]+)?select/is' => '',
-            );
+        $sanitize_string = function(&$item, &$key) {
+          $filter_list = array(
+            //'/<script(.*?)>(.*?)<\/script>/is' => '',  // Enabling this will prevent administrators from storing javascripts in the WYSIWYG editor
+            '/eval(?:[\s]+)?\((.*)\)/is' => '',
+            '/base64_/is' => '',
+            '/union(?:[\s]+)?select/is' => '',
+          );
 
-            $item = preg_replace(array_keys($filter_list), array_values($filter_list), $item);
-          }
-        }
+          $item = preg_replace(array_keys($filter_list), array_values($filter_list), $item);
+        };
+
         array_walk_recursive($_GET, 'sanitize_string');
         array_walk_recursive($_POST, 'sanitize_string');
 

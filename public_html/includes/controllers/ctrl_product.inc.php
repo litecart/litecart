@@ -409,18 +409,17 @@
 
         // Ascending option combination
           $combinations = explode(',', $this->data['options_stock'][$key]['combination']);
-          if (!function_exists('custom_sort_combinations')) {
-            function custom_sort_combinations($a, $b) {
-              $a = explode('-', $a);
-              $b = explode('-', $b);
-              if ($a[0] == $b[0]) {
-                return ($a[1] < $b[1]) ? -1 : 1;
-              }
-              return ($a[0] < $b[0]) ? -1 : 1;
+
+          usort($combinations, function($a, $b) {
+            $a = explode('-', $a);
+            $b = explode('-', $b);
+            if ($a[0] == $b[0]) {
+              return ($a[1] < $b[1]) ? -1 : 1;
             }
-          }
-          usort($combinations, 'custom_sort_combinations');
-          $this->data['options_stock'][$key]['combination'] = implode(',', $combinations);
+            return ($a[0] < $b[0]) ? -1 : 1;
+          });
+
+          $this->data['stock_options'][$key]['combination'] = implode(',', $combinations);
 
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."

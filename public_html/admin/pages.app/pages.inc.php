@@ -168,45 +168,44 @@
 
   } else {
 
-    if (!function_exists('custom_subpage_iterator')) {
-      function custom_subpage_iterator($parent_id, $depth=0) {
+    $iterator = function($parent_id, $depth=0, &$iterator) {
 
-        $pages_query = database::query(
+      $pages_query = database::query(
+        "select p.*, pi.title from ". DB_TABLE_PAGES ." p
+        left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+        where parent_id = ". (int)$parent_id ."
+        order by p.priority, pi.title;"
+      );
+
+      if ($parent_id == 0) {
+        if ($_GET['page'] > 1) database::seek($pages_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+        $num_pages = database::num_rows($pages_query);
+      }
+
+      $page_items = 0;
+      while ($page = database::fetch($pages_query)) {
+        $page['dock'] = explode(',', $page['dock']);
+
+        $subpages_query = database::query(
           "select p.*, pi.title from ". DB_TABLE_PAGES ." p
           left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
-          where parent_id = ". (int)$parent_id ."
+          where parent_id = ". (int)$page['id'] ."
           order by p.priority, pi.title;"
         );
 
-        if ($parent_id == 0) {
-          if ($_GET['page'] > 1) database::seek($pages_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-          $num_pages = database::num_rows($pages_query);
-        }
-
-        $page_items = 0;
-        while ($page = database::fetch($pages_query)) {
-          $page['dock'] = explode(',', $page['dock']);
-
-          $subpages_query = database::query(
-            "select p.*, pi.title from ". DB_TABLE_PAGES ." p
-            left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
-            where parent_id = ". (int)$page['id'] ."
-            order by p.priority, pi.title;"
-          );
-
-          if (database::num_rows($subpages_query) > 0) {
-            if (!in_array($page['id'], $_GET['expanded'])) {
-              $expanded = array_merge($_GET['expanded'], array($page['id']));
-              $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, array('expanded' => $expanded), array('app', 'doc', 'page')) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
-
-            } else {
-              $expanded = array_diff($_GET['expanded'], array($page['id']));
-              $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, array('expanded' => $expanded), array('app', 'doc', 'page')) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
-            }
+        if (database::num_rows($subpages_query) > 0) {
+          if (!in_array($page['id'], $_GET['expanded'])) {
+            $expanded = array_merge($_GET['expanded'], array($page['id']));
+            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, array('expanded' => $expanded), array('app', 'doc', 'page')) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
 
           } else {
-            $icon = functions::draw_fonticon('fa-file-o fa-fw');
+            $expanded = array_diff($_GET['expanded'], array($page['id']));
+            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, array('expanded' => $expanded), array('app', 'doc', 'page')) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
           }
+
+        } else {
+          $icon = functions::draw_fonticon('fa-file-o fa-fw');
+        }
 ?>
       <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
         <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
@@ -219,20 +218,19 @@
         <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
-          if (in_array($page['id'], $_GET['expanded'])) {
-            custom_subpage_iterator($page['id'], $depth + 1);
-          }
+        if (in_array($page['id'], $_GET['expanded'])) {
+          $iterator($page['id'], $depth + 1, $iterator);
+        }
 
-          if ($parent_id == 0) {
-            if (++$page_items == settings::get('data_table_rows_per_page')) break;
-          }
+        if ($parent_id == 0) {
+          if (++$page_items == settings::get('data_table_rows_per_page')) break;
         }
       }
+    };
 
-      $num_pages = database::num_rows(database::query("select id from ". DB_TABLE_PAGES));
-      $num_root_pages = database::num_rows(database::query("select id from ". DB_TABLE_PAGES ." where parent_id = 0;"));
-      custom_subpage_iterator(0, 0);
-    }
+    $num_pages = database::num_rows(database::query("select id from ". DB_TABLE_PAGES));
+    $num_root_pages = database::num_rows(database::query("select id from ". DB_TABLE_PAGES ." where parent_id = 0;"));
+    $iterator(0, 0, $iterator);
   }
 ?>
     </tbody>

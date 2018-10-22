@@ -1,18 +1,16 @@
 <?php
-  if (!function_exists('custom_draw_page')) {
-    function custom_draw_page($page, $page_path, $depth = 1) {
-      echo '<li class="page-'. $page['id'] . (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'">' . PHP_EOL
-         . '  <a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;
-      if (!empty($page['subpages'])) {
-        echo '  <ul class="nav nav-pills nav-stacked">' . PHP_EOL;
-        foreach ($page['subpages'] as $subpage) {
-          echo PHP_EOL . custom_draw_page($subpage, $page_path, $depth + 1);
-        }
-        echo '  </ul>' . PHP_EOL;
+  $draw_page($page, $page_path, $depth=1, &$draw_page) {
+    echo '<li class="page-'. $page['id'] . (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'">' . PHP_EOL
+       . '  <a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;
+    if (!empty($page['subpages'])) {
+      echo '  <ul class="nav nav-pills nav-stacked">' . PHP_EOL;
+      foreach ($page['subpages'] as $subpage) {
+        echo PHP_EOL . $draw_page($subpage, $page_path, $depth+1, $draw_page);
       }
-      echo '</li>' . PHP_EOL;
+      echo '  </ul>' . PHP_EOL;
     }
-  }
+    echo '</li>' . PHP_EOL;
+  };
 ?>
 
 <div id="box-information-links" class="box">
@@ -20,7 +18,7 @@
   <h2 class="title"><?php echo language::translate('title_information', 'Information'); ?></h2>
 
   <ul class="nav nav-stacked nav-pills">
-    <?php foreach ($pages as $page) custom_draw_page($page, $page_path); ?>
+    <?php foreach ($pages as $page) $draw_page($page, $page_path, $draw_page); ?>
   </ul>
 
 </div>

@@ -655,46 +655,45 @@
 
   function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if (!function_exists('form_draw_categories_list_options_iterator')) {
-      function form_draw_categories_list_options_iterator($parent_id = 0, $level = 1) {
+    $iterator = function($parent_id=0, $depth=1, $index=0, &$iterator) {
 
-        $options = array();
+      $options = array();
 
-        if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
+      if ($parent_id == 0) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
 
-        $categories_query = database::query(
-          "select c.id, ci.name
+      $categories_query = database::query(
+        "select c.id, ci.name
+        from ". DB_TABLE_CATEGORIES ." c
+        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
+        where parent_id = ". (int)$parent_id ."
+        order by c.priority asc, ci.name asc;"
+      );
+
+      while ($category = database::fetch($categories_query)) {
+        $index++;
+
+        $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $depth) . functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' '. $category['name'], $category['id'], 'data-index="'. $index .'" data-name="'. htmlspecialchars($category['name']) .'"');
+
+        $sub_categories_query = database::query(
+          "select id
           from ". DB_TABLE_CATEGORIES ." c
-          left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
-          where parent_id = ". (int)$parent_id ."
-          order by c.priority asc, ci.name asc;"
+          where parent_id = ". (int)$category['id'] ."
+          limit 1;"
         );
 
-        while ($category = database::fetch($categories_query)) {
+        $sub_options = $iterator($category['id'], $depth+1, $index, $iterator);
 
-          $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $category['name'], $category['id']);
-
-          $sub_categories_query = database::query(
-            "select id
-            from ". DB_TABLE_CATEGORIES ." c
-            where parent_id = ". (int)$category['id'] ."
-            limit 1;"
-          );
-
-          $sub_options = form_draw_categories_list_options_iterator($category['id'], $level+1);
-
-          $options = array_merge($options, $sub_options);
-        }
-
-        return $options;
+        $options = array_merge($options, $sub_options);
       }
-    }
+
+      return $options;
+    };
 
     $options = array();
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    $options = array_merge($options, form_draw_categories_list_options_iterator());
+    $options = array_merge($options, $iterator());
 
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
@@ -1034,37 +1033,35 @@
 
   function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if (!function_exists('form_draw_pages_list_options_iterator')) {
-      function form_draw_pages_list_options_iterator($parent_id = 0, $level = 1) {
+    $iterator = function($parent_id=0, $level=1, &$iterator) {
 
-        $options = array();
+      $options = array();
 
-        if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
+      if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
 
-        $pages_query = database::query(
-          "select p.id, pi.title from ". DB_TABLE_PAGES ." p
-          left join ". DB_TABLE_PAGES_INFO ." pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-          where p.parent_id = '". (int)$parent_id ."'
-          order by p.priority asc, pi.title asc;"
+      $pages_query = database::query(
+        "select p.id, pi.title from ". DB_TABLE_PAGES ." p
+        left join ". DB_TABLE_PAGES_INFO ." pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        where p.parent_id = '". (int)$parent_id ."'
+        order by p.priority asc, pi.title asc;"
+      );
+
+      while ($page = database::fetch($pages_query)) {
+
+        $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title'], $page['id']);
+
+        $sub_pages_query = database::query(
+          "select id from ". DB_TABLE_PAGES ."
+          where parent_id = '". (int)$page['id'] ."'
+          limit 1;"
         );
 
-        while ($page = database::fetch($pages_query)) {
+        $sub_options = $iterator($page['id'], $level+1, $iterator);
 
-          $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title'], $page['id']);
-
-          $sub_pages_query = database::query(
-            "select id from ". DB_TABLE_PAGES ."
-            where parent_id = '". (int)$page['id'] ."'
-            limit 1;"
-          );
-
-          $sub_options = form_draw_pages_list_options_iterator($page['id'], $level+1);
-
-          $options = array_merge($options, $sub_options);
-        }
-
-        return $options;
+        $options = array_merge($options, $sub_options);
       }
+
+      return $options;
     }
 
     $options = array();

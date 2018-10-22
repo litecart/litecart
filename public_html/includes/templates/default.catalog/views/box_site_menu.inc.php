@@ -1,28 +1,26 @@
 <?php
-  if (!function_exists('custom_draw_site_menu_item')) {
-    function custom_draw_site_menu_item($item, $indent=0) {
+  $draw_menu_item = function($item, $indent=0, &$draw_menu_item) {
 
-      if (!empty($item['subitems'])) {
-        $output = '<li class="dropdown" data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
-                . '  <a href="'. htmlspecialchars($item['link']) .'" class="dropdown-toggle" data-toggle="dropdown">'. $item['title'] .' <b class="caret"></b></a>'
-                . '  <ul class="dropdown-menu">' . PHP_EOL;
+    if (!empty($item['subitems'])) {
+      $output = '<li class="dropdown" data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+              . '  <a href="'. htmlspecialchars($item['link']) .'" class="dropdown-toggle" data-toggle="dropdown">'. $item['title'] .' <b class="caret"></b></a>'
+              . '  <ul class="dropdown-menu">' . PHP_EOL;
 
-        foreach ($item['subitems'] as $subitem) {
-          $output .= custom_draw_site_menu_item($subitem, $indent+1);
-        }
-
-        $output .= '  </ul>' . PHP_EOL
-                 . '</li>' . PHP_EOL;
-
-      } else {
-        $output = '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
-                . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>'
-                . '</li>' . PHP_EOL;
+      foreach ($item['subitems'] as $subitem) {
+        $output .= $draw_menu_item($subitem, $indent+1, $draw_menu_item);
       }
 
-      return $output;
+      $output .= '  </ul>' . PHP_EOL
+               . '</li>' . PHP_EOL;
+
+    } else {
+      $output = '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+              . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>'
+              . '</li>' . PHP_EOL;
     }
-  }
+
+    return $output;
+  };
 ?>
 <div id="site-menu">
   <nav class="navbar">
@@ -46,13 +44,13 @@
           <a href="<?php echo document::ilink(''); ?>" class="navbar-brand"><?php echo functions::draw_fonticon('fa-home'); ?></a>
         </li>
 
-        <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
+        <?php foreach ($categories as $item) echo $draw_menu_item($item); ?>
 
         <?php if ($manufacturers) { ?>
         <li class="manufacturers dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <?php foreach ($manufacturers as $item) echo custom_draw_site_menu_item($item); ?>
+            <?php foreach ($manufacturers as $item) echo $draw_menu_item($item); ?>
           </ul>
         </li>
         <?php } ?>
@@ -61,7 +59,7 @@
         <li class="information dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <?php foreach ($pages as $item) echo custom_draw_site_menu_item($item); ?>
+            <?php foreach ($pages as $item) echo $draw_menu_item($item); ?>
           </ul>
         </li>
         <?php } ?>

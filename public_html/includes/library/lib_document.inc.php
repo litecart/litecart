@@ -121,11 +121,9 @@
 
       $microtime_start = microtime(true);
 
-      if (!function_exists('replace_first_occurrence')) {
-        function replace_first_occurrence($search, $replace, $subject) {
-          return implode($replace, explode($search, $subject, 2));
-        }
-      }
+      $mb_str_replace_first = function($search, $replace, $subject) {
+        return implode($replace, explode($search, $subject, 2));
+      };
 
     // Extract and group in content stylesheets
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
@@ -134,7 +132,7 @@
         $stylesheets = array();
         if (preg_match_all('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'], 1)) {
               $stylesheets[] = trim($match[1]);
             }
           }
@@ -156,7 +154,7 @@
         $styles = array();
         if (preg_match_all('#<style>(.*?)</style>\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'], 1)) {
               $styles[] = trim($match[1]);
             }
           }
@@ -183,7 +181,7 @@
         if (preg_match_all('#\R?(<script[^>]+></script>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'], 1)) {
               $js_resources[] = trim($match[1]);
             }
           }
@@ -206,7 +204,7 @@
         if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'], 1)) {
               $javascript[] = trim($match[1], "\r\n");
             }
           }
