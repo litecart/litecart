@@ -10,7 +10,7 @@
 
     $products_query = functions::catalog_products_query(array(
       'campaign' => true,
-      'sort' => 'rand',
+      'sort' => 'random',
       'limit' => settings::get('box_campaign_products_num_items'),
     ));
 
