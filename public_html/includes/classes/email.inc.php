@@ -114,7 +114,7 @@
         'Reply-To' => $this->format_contact($this->_sender),
         'Return-Path' => $this->format_contact($this->_sender),
         'MIME-Version' => '1.0',
-        'X-Mailer' => PLATFORM_NAME .' '. PLATFORM_VERSION,
+        'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
       );
 
       $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
