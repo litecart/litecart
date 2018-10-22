@@ -111,7 +111,7 @@
         $sql_outer_sort[] = "Field(p.id, '". implode("', '", $filter['products']) ."')";
         break;
 
-      case 'rand':
+      case 'random':
         $sql_outer_sort[] = "rand()";
         break;
     }
