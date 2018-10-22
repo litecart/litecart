@@ -408,7 +408,7 @@
       }
 
       $html .= '  <div class="checkbox">'. PHP_EOL
-             . '    <label>'. form_draw_checkbox($name, isset($option[1]) ? $option[1] : $option[0], $option_input) .' '.  $option[0] .'</label>' . PHP_EOL
+             . '    <label>'. form_draw_checkbox($name, isset($option[1]) ? $option[1] : $option[0], $option_input, isset($option[2]) ? $option[2] : null) .' '.  $option[0] .'</label>' . PHP_EOL
              . '  </div>';
     }
 
