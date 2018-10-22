@@ -314,16 +314,11 @@
 
       if ($from_charset == $to_charset) return $variable;
 
-      if (function_exists('mb_convert_variables')) {
-        if (mb_convert_variables($to_charset, $from_charset, $variable)) {
-          return $variable;
-        } else {
-          trigger_error('Could not encode variable from '. $from_charset .' to '. $to_charset, E_USER_WARNING);
-        }
-      } else {
-        trigger_error('Missing Multibyte PHP extension', E_USER_ERROR);
+      if (!mb_convert_variables($to_charset, $from_charset, $variable)) {
+        trigger_error('Could not encode variable from '. $from_charset .' to '. $to_charset, E_USER_WARNING);
+        return false;
       }
 
-      return false;
+      return $variable;
     }
   }
