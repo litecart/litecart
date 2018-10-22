@@ -1062,7 +1062,7 @@
       }
 
       return $options;
-    }
+    };
 
     $options = array();
 

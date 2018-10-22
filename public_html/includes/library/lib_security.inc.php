@@ -82,8 +82,8 @@
           $item = preg_replace(array_keys($filter_list), array_values($filter_list), $item);
         };
 
-        array_walk_recursive($_GET, 'sanitize_string');
-        array_walk_recursive($_POST, 'sanitize_string');
+        array_walk_recursive($_GET, $sanitize_string);
+        array_walk_recursive($_POST, $sanitize_string);
 
         if (md5(serialize($_GET)) != $checksum_get) {
           self::ban('XSS - HTTP GET');
