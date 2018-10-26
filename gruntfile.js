@@ -86,15 +86,15 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      featherlight: {
+        files: {
+          'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
+        }
+      },
       litecart: {
         files: {
           'public_html/includes/templates/default.admin/js/app.min.js'   : ['public_html/includes/templates/default.admin/js/app.js'],
           'public_html/includes/templates/default.catalog/js/app.min.js' : ['public_html/includes/templates/default.catalog/js/app.js'],
-        }
-      },
-      featherlight: {
-        files: {
-          'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
         }
       },
     },
@@ -111,9 +111,8 @@ module.exports = function(grunt) {
     watch: {
       less: {
         files: [
-          'public_html/includes/templates/*/less/*/*.less',
-          'public_html/includes/templates/*/less/*.less',
           'public_html/ext/featherlight/featherlight.less'
+          'public_html/includes/templates/**/*.less',
         ],
         tasks: ['less']
       },
