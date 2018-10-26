@@ -44,13 +44,13 @@
           <a href="<?php echo document::ilink(''); ?>" class="navbar-brand"><?php echo functions::draw_fonticon('fa-home'); ?></a>
         </li>
 
-        <?php foreach ($categories as $item) echo $draw_menu_item($item); ?>
+        <?php foreach ($categories as $item) echo $draw_menu_item($item, 0, $draw_menu_item); ?>
 
         <?php if ($manufacturers) { ?>
         <li class="manufacturers dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <?php foreach ($manufacturers as $item) echo $draw_menu_item($item); ?>
+            <?php foreach ($manufacturers as $item) echo $draw_menu_item($item, 0, $draw_menu_item); ?>
           </ul>
         </li>
         <?php } ?>
@@ -59,7 +59,7 @@
         <li class="information dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <?php foreach ($pages as $item) echo $draw_menu_item($item); ?>
+            <?php foreach ($pages as $item) echo $draw_menu_item($item, 0, $draw_menu_item); ?>
           </ul>
         </li>
         <?php } ?>

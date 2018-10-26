@@ -17,7 +17,9 @@
       'category_path' => $category_path,
     );
 
-    $iterator = function($parent_id, $level, $category_path, &$output, &$iterator) {
+    $iterator = function($parent_id, $level, $category_path, &$iterator) {
+
+      $tree = array();
 
       $categories_query = database::query(
         "select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated from ". DB_TABLE_CATEGORIES ." c
@@ -28,7 +30,8 @@
       );
 
       while ($category = database::fetch($categories_query)) {
-        $output[$category['id']] = array(
+
+        $tree[$category['id']] = array(
           'id' => $category['id'],
           'parent_id' => $category['parent_id'],
           'name' => $category['name'],
@@ -41,17 +44,17 @@
         if (in_array($category['id'], $category_path)) {
           $sub_categories_query = functions::catalog_categories_query($category['id']);
           if (database::num_rows($sub_categories_query) > 0) {
-            custom_build_category_tree($category['id'], $level+1, $category_path, $output[$category['id']]['subcategories']);
+            $tree[$category['id']]['subcategories'] = $iterator($category['id'], $level+1, $category_path, $iterator);
           }
         }
       }
 
       database::free($categories_query);
 
-      return $output;
+      return $tree;
     };
 
-    if ($box_category_tree->snippets['categories'] = $iterator(0, 0, $category_path, $box_category_tree->snippets['categories'], $iterator)) {
+    if ($box_category_tree->snippets['categories'] = $iterator(0, 0, $category_path, $iterator)) {
       echo $box_category_tree->stitch('views/box_category_tree');
     }
 
