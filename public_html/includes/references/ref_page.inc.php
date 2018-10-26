@@ -97,6 +97,8 @@
             if (++$failsafe == 10) trigger_error('Endless loop while building page path', E_USER_ERROR);
           }
 
+          $this->_data['path'] = array_reverse($this->_data['path']);
+
           break;
 
         case 'descendants':
@@ -120,9 +122,11 @@
 
           $this->data['descendants'] = custom_page_descendants($this->_id);
 
+          break;
+
         case 'subpages':
 
-          $this->_data['descendants'] = array();
+          $this->_data['subpages'] = array();
 
             $page_query = database::query(
               "select id, parent_id from ". DB_TABLE_PAGES ."
@@ -130,7 +134,7 @@
             );
 
             while ($page = database::fetch($page_query)) {
-              $this->_data['descendants'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
+              $this->_data['subpages'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
             }
 
           break;
