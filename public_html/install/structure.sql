@@ -765,6 +765,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
   `username` VARCHAR(32) NOT NULL,
+  `email` VARCHAR(128) NOT NULL,
   `password` VARCHAR(128) NOT NULL,
   `permissions` VARCHAR(4096) NOT NULL,
   `last_ip` VARCHAR(15) NOT NULL,
@@ -777,7 +778,10 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `date_login` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`),
+  KEY `username` (`username`),
+  KEY `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_zones` (
