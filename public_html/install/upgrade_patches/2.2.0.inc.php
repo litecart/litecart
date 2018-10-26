@@ -87,6 +87,8 @@
       set
         gtin = '". database::input($product['gtin']) ."',
         taric = '". database::input($product['taric']) ."',
+        weight = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['weight'] : (float)$product['weight']) .",
+        weight_class = '". database::input(!empty($stock_option['weight']) ? $stock_option['weight_class'] : $product['weight_class']) ."',
         dim_x = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_x'] : (float)$product['dim_x']) .",
         dim_y = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_y'] : (float)$product['dim_y']) .",
         dim_z = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_z'] : (float)$product['dim_z']) .",
