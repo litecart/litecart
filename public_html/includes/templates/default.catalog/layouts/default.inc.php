@@ -14,6 +14,8 @@
 
 <div id="page" class="twelve-eighty">
 
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/site_cookie_notice.inc.php'); ?>
+
   <header id="header" class="row nowrap center">
 
     <div class="col-xs-auto">
@@ -36,8 +38,6 @@
   <div id="main">
     {snippet:content}
   </div>
-
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/site_cookie_notice.inc.php'); ?>
 
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
 </div>
