@@ -81,6 +81,35 @@
       return $this;
     }
 
+
+    public function add_cc($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+
+      $this->_cc[] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
+    public function add_bcc($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+
+      $this->_bcc[] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
     public function format_contact($contact) {
 
       if (empty($contact['name'])) return '<'. $contact['email'] .'>';
@@ -116,6 +145,24 @@
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
       );
+
+    // Add CCs
+      if (!empty($this->_cc)) {
+        $ccs = array();
+        foreach ($this->_cc as $cc) {
+          $ccs[] = $this->format_contact($cc);
+        }
+        $headers['Cc'] = implode(', ', $ccs);
+      }
+
+    // Add BCCs
+      if (!empty($this->_bcc)) {
+        $bccs = array();
+        foreach ($this->_bcc as $bcc) {
+          $bccs[] = $this->format_contact($bcc);
+        }
+        $headers['Bcc'] = implode(', ', $bccs);
+      }
 
       $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
       $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
