@@ -113,11 +113,6 @@
     return $listing_product->stitch('views/listing_product_'.$listing_type);
   }
 
-  function draw_fancybox($selector='a.fancybox', $params=array()) {
-    trigger_error('draw_fancybox() is deprecated. Use instead draw_lightbox()', E_USER_DEPRECATED);
-    return functions::draw_lightbox($selector, $params);
-  }
-
   function draw_lightbox($selector='*[data-toggle="lightbox"]', $params=array()) {
 
     $selector = str_replace("'", '"', $selector);
