@@ -5,23 +5,6 @@
           . ((strtolower($method) == 'post') ? form_draw_hidden_field('token', form::session_post_token()) . PHP_EOL : '');
   }
 
-  function form_draw_protected_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
-
-    document::$snippets['javascript'][] = "  $('form[name=\"". $name ."\"]').on('change keyup keydown', ':input', function(){" . PHP_EOL
-                                        . "    $(this).addClass('unsaved');" . PHP_EOL
-                                        . "  });" . PHP_EOL
-                                        . "  $('form').submit(function() {" . PHP_EOL
-                                        . "    $(this).find('.changed-input').each(function(){" . PHP_EOL
-                                        . "      $(this).removeClass('unsaved');" . PHP_EOL
-                                        . "    });" . PHP_EOL
-                                        . "  });" . PHP_EOL
-                                        . "  $(window).on('beforeunload', function(){" . PHP_EOL
-                                        . "    if ($('.unsaved').length) return '". htmlspecialchars(language::translate('warning_unsaved_changes', 'There are unsaved changes, do you wish to continue?')) ."';" . PHP_EOL
-                                        . "  });";
-
-    return form_draw_form_begin($name, $method, $action, $multipart, $parameters);
-  }
-
   function form_draw_form_end() {
     return '</form>' . PHP_EOL;
   }
