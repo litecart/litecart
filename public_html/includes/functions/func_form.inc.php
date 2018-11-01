@@ -67,6 +67,9 @@
         case 'delete':
           $icon = functions::draw_fonticon('fa-trash-o');
           break;
+        case 'ok':
+          $icon = functions::draw_fonticon('fa-check');
+          break;
         case 'on':
           $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
           break;
