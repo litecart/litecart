@@ -1,5 +1,5 @@
 <?php
-  $draw_page($page, $page_path, $depth=1, &$draw_page) {
+  $draw_page = function($page, $page_path, $depth=1, &$draw_page) {
     echo '<li class="page-'. $page['id'] . (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'">' . PHP_EOL
        . '  <a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;
     if (!empty($page['subpages'])) {
@@ -18,7 +18,7 @@
   <h2 class="title"><?php echo language::translate('title_information', 'Information'); ?></h2>
 
   <ul class="nav nav-stacked nav-pills">
-    <?php foreach ($pages as $page) $draw_page($page, $page_path, $draw_page); ?>
+    <?php foreach ($pages as $page) $draw_page($page, $page_path, 0, $draw_page); ?>
   </ul>
 
 </div>

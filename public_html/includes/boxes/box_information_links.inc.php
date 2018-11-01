@@ -46,7 +46,7 @@
             where parent_id = ". (int)$page['id'] .";"
           );
           if (database::num_rows($sub_pages_query) > 0) {
-            $output[$page['id']]['subpages'] = custom_build_information_links_tree($page['id'], $level+1, $current_page_path);
+            $output[$page['id']]['subpages'] = $iterator($page['id'], $level+1, $current_page_path, $iterator);
           }
         }
       }
@@ -56,7 +56,7 @@
       return $output;
     };
 
-    if ($box_information_links->snippets['pages'] = custom_build_information_links_tree(0, 0, $current_page_path)) {
+    if ($box_information_links->snippets['pages'] = $iterator(0, 0, $current_page_path, $iterator)) {
       echo $box_information_links->stitch('views/box_information_links');
     }
 
