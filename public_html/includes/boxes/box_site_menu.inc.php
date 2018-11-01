@@ -22,23 +22,8 @@
         'title' => $category['name'],
         'link' => document::ilink('category', array('category_id' => $category['id'])),
         'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 24, 24, 'CROP'),
-        'subitems' => array(),
         'priority' => $category['priority'],
       );
-
-      $subcategories_query = functions::catalog_categories_query($category['id']);
-
-      while ($subcategory = database::fetch($subcategories_query)) {
-        $box_site_menu->snippets['categories'][$category['id']]['subitems'][$subcategory['id']] = array(
-          'type' => 'category',
-          'id' => $subcategory['id'],
-          'title' => $subcategory['name'],
-          'link' => document::ilink('category', array('category_id' => $subcategory['id'])),
-          'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $subcategory['image'], 24, 24, 'CROP'),
-          'subitems' => array(),
-          'priority' => $subcategory['priority'],
-        );
-      }
     }
 
   // Manufacturers
@@ -57,7 +42,6 @@
         'title' => $manufacturer['name'],
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
         'image' => null,
-        'subitems' => array(),
         'priority' => 0,
       );
     }
@@ -79,7 +63,6 @@
         'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),
         'image' => null,
-        'subitems' => array(),
         'priority' => $page['priority'],
       );
     }
