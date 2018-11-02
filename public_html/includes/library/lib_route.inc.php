@@ -133,22 +133,6 @@
 
     ######################################################################
 
-    public static function ilink($page=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-
-      if ($page === null) {
-        $page = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        if ($inherit_params === null) $inherit_params = true;
-      } else {
-        $page = WS_DIR_HTTP_HOME . $route;
-      }
-
-      return link::create_link($page, $new_params, $inherit_params, $skip_params, $language_code);
-    }
-
-    public static function href_ilink($page=null, $new_params=array(), $inherit_params=false, $skip_params=array(), $language_code=null) {
-      return htmlspecialchars(self::ilink($page, $new_params, $inherit_params, $skip_params, $language_code));
-    }
-
     public static function strip_url_logic($link) {
 
       if (empty($link)) return;
