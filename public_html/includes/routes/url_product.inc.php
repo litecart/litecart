@@ -13,7 +13,7 @@
       );
     }
 
-  	function rewrite($parsed_link, $language_code) {
+    function rewrite($parsed_link, $language_code) {
 
       if (empty($parsed_link['query']['product_id'])) return;
 
