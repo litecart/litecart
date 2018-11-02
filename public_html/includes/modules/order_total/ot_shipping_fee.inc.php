@@ -17,16 +17,16 @@
 
       if (empty($this->settings['status'])) return;
 
-      if (empty($GLOBALS['shipping']->data['selected']['cost'])) return;
-
       $output = array();
 
-      $output[] = array(
-        'title' => $GLOBALS['shipping']->data['selected']['title'] .' ('. $GLOBALS['shipping']->data['selected']['name'] .')',
-        'value' => $GLOBALS['shipping']->data['selected']['cost'],
-        'tax' => tax::get_tax($GLOBALS['shipping']->data['selected']['cost'], $GLOBALS['shipping']->data['selected']['tax_class_id'], $order->data['customer']),
-        'calculate' => true,
-      );
+      if (isset($order->data['shipping_option']['cost']) && $order->data['shipping_option']['cost'] != 0) {
+        $output[] = array(
+          'title' => $order->data['shipping_option']['title'] .' ('. $order->data['shipping_option']['name'] .')',
+          'value' => $order->data['shipping_option']['cost'],
+          'tax' => tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
+          'calculate' => true,
+        );
+      }
 
       if (!empty($this->settings['free_shipping_table'])) {
 
@@ -36,9 +36,9 @@
           $subtotal += $item['quantity'] * $item['price'];
         }
 
-        $free_shipping_table = functions::csv_decode($this->settings['free_shipping_table'], ',');
+      // Check for free shipping
+        if ($free_shipping_table = functions::csv_decode($this->settings['free_shipping_table'], ',')) {
 
-        if (!empty($free_shipping_table)) {
           foreach ($free_shipping_table as $row) {
             if (empty($row['country_code']) || $row['country_code'] != $order->data['customer']['shipping_address']['country_code']) continue;
             if (!isset($row['min_subtotal']) || $row['min_subtotal'] < 0) continue;
@@ -46,9 +46,9 @@
 
             $output[] = array(
               'title' => language::translate('title_free_shipping', 'Free Shipping'),
-              'value' => -$GLOBALS['shipping']->data['selected']['cost'],
-              'tax' => -tax::get_tax($GLOBALS['shipping']->data['selected']['cost'], $GLOBALS['shipping']->data['selected']['tax_class_id'], $order->data['customer']),
-              'tax_class_id' => $GLOBALS['shipping']->data['selected']['tax_class_id'],
+              'value' => -$order->data['shipping_option']['cost'],
+              'tax' => -tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
+              'tax_class_id' => $order->data['shipping_option']['tax_class_id'],
               'calculate' => true,
             );
           }
