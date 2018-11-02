@@ -43,8 +43,8 @@
 
     // CDN content
       //self::$snippets['head_tags']['dns-prefetch-jsdelivr'] = '<link rel="dns-prefetch" href="//cdn.jsdelivr.net">';
-      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
-      //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/g/jquery@3.3.1"></script>';
+      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css" />';
+      //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>';
 
     // Local content
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
@@ -135,7 +135,7 @@
         $stylesheets = array();
         if (preg_match_all('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
               $stylesheets[] = trim($match[1]);
             }
           }
@@ -157,7 +157,7 @@
         $styles = array();
         if (preg_match_all('#<style>(.*?)</style>\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
               $styles[] = trim($match[1]);
             }
           }
@@ -184,7 +184,7 @@
         if (preg_match_all('#\R?(<script[^>]+></script>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
               $js_resources[] = trim($match[1]);
             }
           }
@@ -207,7 +207,7 @@
         if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'], 1)) {
+            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
               $javascript[] = trim($match[1], "\r\n");
             }
           }

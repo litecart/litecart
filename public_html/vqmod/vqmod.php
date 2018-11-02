@@ -194,8 +194,7 @@
         self::$_lastModifiedTime = time();
       } elseif (file_exists($modCache) && filemtime($modCache) >= self::$_lastModifiedTime) {
         $mods = file_get_contents($modCache);
-        if (!empty($mods))
-        self::$_mods = unserialize($mods);
+        if (!empty($mods)) self::$_mods = unserialize($mods);
         if (self::$_mods !== false) {
           return;
         }
