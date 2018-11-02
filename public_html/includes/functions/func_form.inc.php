@@ -1057,7 +1057,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    $options = array_merge($options, form_draw_pages_list_options_iterator());
+    $options = array_merge($options, $iterator(0, 1, $iterator));
 
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);

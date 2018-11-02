@@ -97,7 +97,7 @@
             if (++$failsafe == 10) trigger_error('Endless loop while building page path', E_USER_ERROR);
           }
 
-          $this->_data['path'] = array_reverse($this->_data['path']);
+          $this->_data['path'] = array_reverse($this->_data['path'], true);
 
           break;
 
