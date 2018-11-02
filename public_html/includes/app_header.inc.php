@@ -21,6 +21,9 @@
 
 // Autoloader
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'autoloader.inc.php');
+  if (is_file(FS_DIR_HTTP_ROOT . '/vendor/autoload.php')) {
+    require_once FS_DIR_HTTP_ROOT . '/vendor/autoload.php';
+  }
 
 // 3rd party autoloader (If present)
   if (is_file(FS_DIR_HTTP_ROOT . '/vendor/autoload.php')) {

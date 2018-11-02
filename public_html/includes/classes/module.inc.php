@@ -25,7 +25,7 @@
       $modules_query = database::query(
         "select * from ". DB_TABLE_MODULES ."
         where type = '". database::input($type) ."'
-        ". (!empty($module_id) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
+        ". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
       );
 
       while($module = database::fetch($modules_query)){

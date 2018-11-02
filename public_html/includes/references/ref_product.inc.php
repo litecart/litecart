@@ -193,7 +193,7 @@
 
           if (empty($this->_data['manufacturer_id'])) return;
 
-          $this->_data['manufacturer'] = reference::manufacturer($this->manufacturer_id);
+          $this->_data['manufacturer'] = reference::manufacturer($this->manufacturer_id, $this->_language_codes[0]);
 
           break;
 
@@ -373,7 +373,7 @@
           );
 
           while ($row = database::fetch($query)) {
-            $this->_data['parents'][$row['category_id']] = reference::category($row['category_id']);
+            $this->_data['parents'][$row['category_id']] = reference::category($row['category_id'], $this->_language_codes[0]);
           }
 
           break;

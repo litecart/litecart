@@ -72,7 +72,7 @@
 
     <div class="row">
       <div class="form-group col-xs-6">
-        <label><?php echo language::translate('title_email', 'Email'); ?></label>
+        <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
         <?php echo functions::form_draw_email_field('email', true, 'required="required"'. (!empty(customer::$data['id']) ? ' readonly="readonly"' : '')); ?>
       </div>
 

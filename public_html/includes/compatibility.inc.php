@@ -1,7 +1,8 @@
 <?php
 
+// Check version
   if (version_compare(phpversion(), '5.3.0', '<') == true) {
-    die('Abort Mission: PHP 5.3+ Required');
+    die('This application requires at minimum PHP 5.3 (Detected '. phpversion() .')');
   }
 
   if (version_compare(phpversion(), '5.4.0', '<') == true) {

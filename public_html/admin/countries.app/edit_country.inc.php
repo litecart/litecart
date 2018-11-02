@@ -86,7 +86,7 @@
 
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('iso_code_1', true, 'required="required" pattern="[A-Z]{2}"'); ?>
+      <?php echo functions::form_draw_text_field('iso_code_1', true, 'required="required" pattern="[0-9]{3}"'); ?>
     </div>
   </div>
 
@@ -115,7 +115,7 @@
   </div>
 
   <div class="form-group">
-    <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+    <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="https://en.wikipedia.org/wiki/Address_(geography)" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
     <?php echo functions::form_draw_textarea('address_format', true, 'style="height: 150px;"'); ?>
   </div>
 

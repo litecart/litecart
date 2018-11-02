@@ -9,7 +9,13 @@
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
-      $csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset']);
+      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+      }
+
+      if (empty($csv[0]['code'])) throw new Exception(language::translate('error_missing_code_column', 'Missing column for code'));
+
+      $language_codes = array_diff(array_keys($csv[0]), array('code'));
 
       $num_inserted_translations = 0;
       $num_updated_translations = 0;
@@ -32,34 +38,43 @@
               (code) values ('". database::input($row['code']) ."');"
             );
 
-            foreach (array_slice(array_keys($row), 1) as $language_code) {
+            foreach ($language_codes as $language_code) {
 
-              if (empty($translation['text_'.$language_code]) || !empty($_POST['overwrite'])) {
-                database::query(
-                  "update ". DB_TABLE_TRANSLATIONS ."
-                  set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
-                  where code = '". database::input($row['code']) ."'
-                  limit 1;"
-                );
+              if (empty($row[$language_code])) continue;
 
-                $num_inserted_translations++;
-              }
-            }
-          }
+              if (!in_array($language_code, array_keys(language::$languages))) continue;
 
-        } else {
-
-          foreach (array_slice(array_keys($row), 1) as $language_code) {
-
-            if (!empty($_POST['overwrite']) || (empty($translation['text_'.$language_code]) && !empty($row[$language_code]))) {
               database::query(
                 "update ". DB_TABLE_TRANSLATIONS ."
                 set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
                 where code = '". database::input($row['code']) ."'
                 limit 1;"
               );
-              $num_updated_translations++;
+
+              $num_inserted_translations++;
             }
+          }
+
+        } else {
+
+          foreach ($language_codes as $language_code) {
+
+            if (empty($row[$language_code])) continue;
+
+            if (empty($_POST['overwrite']) && empty($_POST['append'])) continue;
+            if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
+            if (!empty($translation['text_'.$language_code]) && empty($_POST['overwrite'])) continue;
+
+            if (!in_array($language_code, array_keys(language::$languages))) continue;
+
+            database::query(
+              "update ". DB_TABLE_TRANSLATIONS ."
+              set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
+              where code = '". database::input($row['code']) ."'
+              limit 1;"
+            );
+
+            $num_updated_translations++;
           }
         }
       }
@@ -168,8 +183,9 @@
         </div>
 
         <div class="form-group">
-          <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', isset($_POST['insert']) ? true : '1'); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
-          <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', isset($_POST['insert']) ? true : ''); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
+          <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
+          <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', true); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
+          <div class="checkbox"><label><?php echo functions::form_draw_checkbox('append', '1', isset($_POST['append']) ? true : '1'); ?> <?php echo language::translate('text_append_missing_entries', 'Append missing entries'); ?></label></div>
         </div>
 
         <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>

@@ -501,6 +501,7 @@
                                         . '    autogrowOnEnter: true,' . PHP_EOL
                                         . '    imageWidthModalEdit: true,' . PHP_EOL
                                         . '    removeformatPasted: true,' . PHP_EOL
+                                        . '    semantic: false' . PHP_EOL
                                         . '  });';
 
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';

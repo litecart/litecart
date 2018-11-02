@@ -88,15 +88,22 @@
       color: #c00;
     }
     .content {
-      transition: all 0.25s ease;
       max-height: 200px;
       overflow-x: hidden;
       overflow-y: auto;
+      text-align: left;
+      transition: all 0.25s ease;
     }
   }
   @media(min-width: @media-breakpoint-sm) {
     .title {
-      margin: 0;
+      margin: 0 !important;
+    }
+    .price {
+      position: absolute;
+      display: inline-block;
+      top: 0;
+      right: 0;
     }
   }
 }

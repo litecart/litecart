@@ -94,6 +94,29 @@
         return;
       }
 
+      if (!empty($keyword)) {
+    public static function clear_cache($keyword=null) {
+
+    // Clear files
+      if (!empty($keyword)) {
+        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache*_'. $keyword .'_*');
+      } else {
+        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
+      }
+
+      if ($files) foreach ($files as $file) unlink($file);
+
+    // Set breakpoint (for session cache)
+      database::query(
+        "update ". DB_TABLE_SETTINGS ."
+        set value = '". date('Y-m-d H:i:s') ."'
+        where `key` = 'cache_system_breakpoint'
+        limit 1;"
+      );
+    }
+
+    public static function cache_id($keyword, $dependencies=array()) {
+
       $hash_string = $keyword;
 
       if (!is_array($dependencies)) {

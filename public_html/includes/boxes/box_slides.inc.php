@@ -21,7 +21,7 @@
 
       while ($slide = database::fetch($slides_query)) {
         $box_slides->snippets['slides'][] = array(
-          'id' => $slide['link'],
+          'id' => $slide['id'],
           'link' => $slide['link'],
           'image' => WS_DIR_IMAGES . $slide['image'],
           'caption' => $slide['caption'],

@@ -34,9 +34,7 @@
       </div>
       <?php } ?>
 
-      <p class="btn-group btn-block">
-        <?php echo functions::form_draw_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
-      </p>
+      <?php echo functions::form_draw_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>

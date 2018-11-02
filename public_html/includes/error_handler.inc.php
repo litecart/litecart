@@ -1,4 +1,5 @@
 <?php
+
   function error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
 
     if (!(error_reporting() & $errno)) return;

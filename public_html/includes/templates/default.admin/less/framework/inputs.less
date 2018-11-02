@@ -45,6 +45,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   min-width: 1px; // Firefox fix
   padding: @form-input-padding @form-input-padding * 2;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  &[type="color"] {
+    height: (@form-input-padding * 2) + 22px;
+  }
   &[type="file"] {
     font-size: 12px;
   }

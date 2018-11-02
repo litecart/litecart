@@ -17,7 +17,7 @@
 
       <ul class="nav navbar-nav">
         <li class="hidden-xs">
-          <a href="<?php echo document::ilink(''); ?>" class="navbar-brand"><?php echo functions::draw_fonticon('fa-home'); ?></a>
+          <a href="<?php echo document::ilink(''); ?>" title="<?php echo language::translate('title_home', 'Home'); ?>><?php echo functions::draw_fonticon('fa-home'); ?></a>
         </li>
 
         <?php if ($categories) { ?>
@@ -68,7 +68,7 @@
               <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
             <?php } else { ?>
               <li>
-                <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form" style="min-width: 300px;"'); ?>
+                <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
                   <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link()); ?>
 
                   <div class="form-group">
