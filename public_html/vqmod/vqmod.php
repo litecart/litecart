@@ -200,7 +200,7 @@
       }
 
       $modCache = self::path(self::$modCache);
-      if (isset(self::$_debug) || !file_exists($modCache)) {
+      if (!empty(self::$_debug) || !file_exists($modCache)) {
         self::$_lastModifiedTime = time();
       } elseif (file_exists($modCache) && filemtime($modCache) >= self::$_lastModifiedTime) {
         $mods = file_get_contents($modCache);
