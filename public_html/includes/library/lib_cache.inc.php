@@ -158,7 +158,7 @@
     public static function clear_cache($keyword=null) {
 
     // Clear files
-      if (!empty($_name)) {
+      if (!empty($keyword)) {
         $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache*_'. $keyword .'_*');
       } else {
         $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
