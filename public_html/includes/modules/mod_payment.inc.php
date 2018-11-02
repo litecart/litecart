@@ -46,7 +46,20 @@
         $this->data['options'][$module->id]['options'] = array();
 
         foreach ($module_options['options'] as $option) {
-          $this->data['options'][$module->id]['options'][$option['id']] = $option;
+
+          $this->data['options'][$module->id]['options'][$option['id']] = array(
+            'id' => $option['id'],
+            'icon' => $option['icon'],
+            'title' => !empty($option['title']) ? $option['title'] : $this->data['options'][$module->id]['title'],
+            'name' => $option['name'],
+            'description' => $option['description'],
+            'fields' => $option['fields'],
+            'cost' => (float)$option['cost'],
+            'tax_class_id' => (int)$option['tax_class_id'],
+            'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
+            'confirm' => !empty($option['confirm']) ? $option['confirm'] : '',
+            'error' => !empty($option['error']) ? $option['error'] : false,
+          );
         }
       }
 
@@ -79,7 +92,7 @@
       $this->data['selected'] = array(
         'id' => $module_id.':'.$option_id,
         'icon' => $this->data['options'][$module_id]['options'][$option_id]['icon'],
-        'title' => $this->data['options'][$module_id]['title'],
+        'title' => $this->data['options'][$module_id]['options'][$option_id]['title'],
         'name' => $this->data['options'][$module_id]['options'][$option_id]['name'],
         'cost' => $this->data['options'][$module_id]['options'][$option_id]['cost'],
         'tax_class_id' => $this->data['options'][$module_id]['options'][$option_id]['tax_class_id'],

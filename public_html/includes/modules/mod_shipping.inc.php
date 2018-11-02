@@ -47,9 +47,11 @@
         $this->data['options'][$module->id]['options'] = array();
 
         foreach ($module_options['options'] as $option) {
+
           $this->data['options'][$module->id]['options'][$option['id']] = array(
             'id' => $option['id'],
             'icon' => $option['icon'],
+            'title' => !empty($option['title']) ? $option['title'] : $this->data['options'][$module->id]['title'],
             'name' => $option['name'],
             'description' => $option['description'],
             'fields' => $option['fields'],
@@ -85,7 +87,7 @@
       $this->data['selected'] = array(
         'id' => $module_id.':'.$option_id,
         'icon' => $this->data['options'][$module_id]['options'][$option_id]['icon'],
-        'title' => $this->data['options'][$module_id]['title'],
+        'title' => $this->data['options'][$module_id]['options'][$option_id]['title'],
         'name' => $this->data['options'][$module_id]['options'][$option_id]['name'],
         'cost' => $this->data['options'][$module_id]['options'][$option_id]['cost'],
         'tax_class_id' => $this->data['options'][$module_id]['options'][$option_id]['tax_class_id'],
