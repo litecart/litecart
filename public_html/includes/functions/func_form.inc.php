@@ -62,6 +62,9 @@
         case 'save':
           $icon = functions::draw_fonticon('fa-floppy-o');
           break;
+        case 'send':
+          $icon = functions::draw_fonticon('fa-paper-plane');
+          break;
         default:
           $icon = functions::draw_fonticon($icon);
       }
