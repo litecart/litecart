@@ -117,7 +117,7 @@ module.exports = function(grunt) {
     watch: {
       less: {
         files: [
-          'public_html/ext/featherlight/featherlight.less'
+          'public_html/ext/featherlight/featherlight.less',
           'public_html/includes/templates/**/*.less',
         ],
         tasks: ['less']
