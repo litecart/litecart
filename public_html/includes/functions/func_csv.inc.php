@@ -36,9 +36,9 @@
     $string = language::convert_characters($string, $charset, language::$selected['charset']);
 
     if (empty($delimiter)) {
-      preg_match('#^([^(\R)]+)#', $string, $matches);
+      preg_match('#^.*$#m', $string, $matches);
       foreach (array(',', ';', "\t", '|', chr(124)) as $char) {
-        if (strpos($matches[1], $char) !== false) {
+        if (strpos($matches[0], $char) !== false) {
           $delimiter = $char;
           break;
         }
