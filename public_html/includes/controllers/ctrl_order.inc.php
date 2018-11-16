@@ -222,10 +222,15 @@
 
     // Insert/update order
       if (empty($this->data['id'])) {
+
+        if (empty($this->data['public_key'])) {
+          $this->data['public_key'] = md5($order->data['id'] . $order->data['uid'] . $order->data['customer']['email'] . $order->data['date_created']. rand(1, 65535));
+        }
+
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
-          (uid, client_ip, user_agent, domain, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          (uid, client_ip, user_agent, domain, public_key, date_created)
+          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". database::input($this->data['public_key']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -708,7 +713,7 @@
       /*
       $action_button = '<div itemscope itemtype="https://schema.org/EmailMessage" style="display:none">' . PHP_EOL
                      . '  <div itemprop="potentialAction" itemscope itemtype="https://schema.org/ViewAction">' . PHP_EOL
-                     . '    <link itemprop="target url" href="'. document::href_ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))) .'" />' . PHP_EOL
+                     . '    <link itemprop="target url" href="'. document::href_ilink('printable_order_copy', array('order_id' => $this->data['id'], 'public_key' => $this->data['public_key'])) .'" />' . PHP_EOL
                      . '    <meta itemprop="name" content="'. htmlspecialchars(language::translate('title_view_order', 'View Order', $language_code)) .'" />' . PHP_EOL
                      . '  </div>' . PHP_EOL
                      . '  <meta itemprop="description" content="'. htmlspecialchars(language::translate('title_view_printable_order_copy', 'View printable order copy', $language_code)) .'" />' . PHP_EOL
@@ -730,7 +735,7 @@
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
         '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
-        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']), 'media' => 'print'), false, array(), $language_code),
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'public_key' => $this->data['public_key'], 'media' => 'print'), false, array(), $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
         '%store_name' => settings::get('store_name'),
         '%store_url' => document::ilink('', array(), false, array(), $language_code),
@@ -786,7 +791,7 @@
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
-        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])), false, array(), $this->data['language_code']),
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'public_key' => $this->data['public_key']), false, array(), $this->data['language_code']),
         '%order_status' => $order_status->name,
         '%store_name' => settings::get('store_name'),
         '%store_url' => document::ilink('', array(), false, array(), $this->data['language_code']),

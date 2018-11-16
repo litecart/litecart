@@ -325,6 +325,7 @@ CREATE TABLE `lc_orders` (
   `client_ip` VARCHAR(39) NOT NULL,
   `user_agent` VARCHAR(256) NOT NULL,
   `domain` VARCHAR(64) NOT NULL,
+  `public_key` VARCHAR(32) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),

@@ -97,3 +97,24 @@
       limit 1;"
     );
   }
+
+// Order Public Key
+  database::query(
+    "ALTER TABLE `lc_orders`
+	  ADD COLUMN `public_key` VARCHAR(32) NOT NULL AFTER `domain`;"
+  );
+
+  $orders_query = database::query(
+    "select * from ". DB_TABLE_ORDERS .";"
+  );
+
+  while ($order = database::fetch($orders_query)) {
+
+    $public_key = md5($order['id'] . $order['uid'] . $order['customer_email'] . $order['date_created']);
+
+    database::query(
+      "update ". DB_TABLE_ORDERS ."
+      set public_key = '". database::input($public_key) ."'
+      where id = ". (int)$order['id'] .";"
+    );
+  }
