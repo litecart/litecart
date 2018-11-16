@@ -51,6 +51,9 @@
   // Convert charset
     $string = language::convert_characters($string, $charset, language::$selected['charset']);
 
+  // Trim preceding and trailing whitespace
+    $string = trim($string);
+
   // Auto-detect delimiter
     if (empty($delimiter)) {
       preg_match('#^.*$#m', $string, $matches);
