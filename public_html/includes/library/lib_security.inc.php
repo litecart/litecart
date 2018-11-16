@@ -128,22 +128,22 @@
     //public static function before_capture() {
     //}
 
-    public static function after_capture() {
-
-    // Bad Bot Trap - Rig the trap
-      if (settings::get('security_bot_trap')) {
-        if (document::$layout == 'default') {
-          $GLOBALS['content'] = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: none;"><img src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="" style="width: 1px; height: 1px; border: none;" /></a>' . PHP_EOL
-                               . $GLOBALS['content'];
-        }
-      }
-    }
+    //public static function after_capture() {
+    //}
 
     //public static function prepare_output() {
     //}
 
-    //public static function before_output() {
-    //}
+    public static function before_output() {
+
+    // Bad Bot Trap - Rig the trap
+      if (settings::get('security_bot_trap')) {
+        if (document::$layout == 'default') {
+          $pixel_trap = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: none;"></a>';
+          $GLOBALS['output'] = preg_replace('#(<body.*?>)#s', '$1' . PHP_EOL . PHP_EOL . $pixel_trap, $GLOBALS['output']);
+        }
+      }
+    }
 
     //public static function shutdown() {
     //}
