@@ -157,7 +157,7 @@
               where id = ". (int)$user['id'] ."
               limit 1;"
             );
-            notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is blocked'), $config_login_attempts - $user['login_attempts']));
+            notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is blocked'), 3 - $user['login_attempts']));
           } else {
             $user_query = database::query(
               "update ". DB_TABLE_USERS ."
