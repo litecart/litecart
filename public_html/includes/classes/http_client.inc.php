@@ -117,7 +117,7 @@
       $this->last_response['bytes'] = strlen($response_headers . "\r\n" . $response_body);
       $this->last_response['body'] = $response_body;
 
-      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
+      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last-'. $parts['host'] .'.log',
         "## [". date('Y-m-d H:i:s', $this->last_request['timestamp']) ."] Request ##############################\r\n\r\n" .
         $this->last_request['head']."\r\n" .
         $this->last_request['body']."\r\n\r\n" .
