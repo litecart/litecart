@@ -52,7 +52,7 @@
     $string = language::convert_characters($string, $charset, language::$selected['charset']);
 
   // Trim preceding and trailing whitespace
-    $string = trim($string);
+    $string = trim($string, "\r\n ");
 
   // Auto-detect delimiter
     if (empty($delimiter)) {
