@@ -175,8 +175,6 @@
     // Re-calculate total if there are changes
       $this->refresh_total();
 
-      if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
-
     // Previous order status
       $previous_order_status_query = database::query(
         "select os.*, osi.name from ". DB_TABLE_ORDERS ." o
