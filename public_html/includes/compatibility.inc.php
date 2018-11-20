@@ -115,6 +115,12 @@
     }
   }
 
+  if (version_compare(phpversion(), '7.1', '>=') == true) {
+
+  // Fix JSON serialize float precision issue in PHP 7.1+
+    ini_set('serialize_precision', -1);
+  }
+
 // Emulate getallheaders() on non-Apache machines
   if (!function_exists('getallheaders')) {
     function getallheaders() {
