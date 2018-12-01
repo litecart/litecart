@@ -93,7 +93,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
+            <?php echo functions::form_draw_toggle('status', (file_get_contents('php://input') != '') ? true : '1', 'e/d'); ?>
           </div>
 
           <div class="form-group">
