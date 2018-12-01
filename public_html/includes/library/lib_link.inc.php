@@ -215,17 +215,9 @@
 
     public static function decode_idn($url) {
 
-      if (!function_exists('idn_to_utf8')) return $url;
+      if (!function_exists('idn_to_utf8') !defined('INTL_IDNA_VARIANT_UTS46')) return $url;
 
-      if (substr($url, 0, 8) == 'https://') {
-        $url = 'https://' . idn_to_utf8(substr($url, 8));
-
-      } else if (substr($url, 0, 7) == 'http://') {
-        $url = 'https://' . idn_to_utf8(substr($url, 7));
-
-      } else {
-        $url = idn_to_utf8($url);
-      }
+      $url = idn_to_utf8($url, INTL_IDNA_VARIANT_UTS46);
 
       return language::convert_characters($url, 'UTF-8');
     }
