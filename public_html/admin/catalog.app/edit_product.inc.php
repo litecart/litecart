@@ -983,7 +983,7 @@ foreach (currency::$currencies as $currency) {
 ?>
                + '  <td><br /><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
-   while ($('input[name="campaigns[new_'+new_campaign_i+']"]').length) new_campaign_i++;
+    while ($('input[name="campaigns[new_'+new_campaign_i+']"]').length) new_campaign_i++;
     output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);
     $('#table-campaigns tbody').append(output);
     new_campaign_i++;

@@ -100,7 +100,7 @@
               break;
             }
 
-            if (++$failsafe == 10) die('x');
+            if (++$failsafe == 10) trigger_error('Getting category path got stuck in a loop', E_USER_ERROR);
           }
 
           break;

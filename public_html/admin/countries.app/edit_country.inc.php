@@ -17,6 +17,7 @@
   if (isset($_POST['save'])) {
 
     try {
+      if (empty($_POST['iso_code_1'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
       if (empty($_POST['iso_code_2'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
       if (empty($_POST['iso_code_3'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
@@ -85,7 +86,7 @@
     </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+      <label><?php echo language::translate('title_number', 'Number'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('iso_code_1', true, 'required="required" pattern="[0-9]{3}"'); ?>
     </div>
   </div>
