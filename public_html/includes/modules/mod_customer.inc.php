@@ -37,15 +37,19 @@
       return $fields;
     }
 
-    public function validate($fields) {
+    public function validate(&$fields) {
 
       if (empty($this->modules)) return false;
 
       foreach ($this->modules as $module) {
         if (!method_exists($module, 'validate')) continue;
+
         $result = $module->validate($fields);
-        if (!empty($result['error'])) {
-          return $result;
+
+        if (!empty($result['error'])) return $result;
+
+        if (is_array($result)) {
+          $fields = array_replace($fields, array_intersect_key($result, $fields));
         }
       }
 
