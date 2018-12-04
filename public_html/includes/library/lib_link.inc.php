@@ -215,7 +215,7 @@
 
     public static function decode_idn($url) {
 
-      if (!function_exists('idn_to_utf8') !defined('INTL_IDNA_VARIANT_UTS46')) return $url;
+      if (!function_exists('idn_to_utf8') || !defined('INTL_IDNA_VARIANT_UTS46')) return $url;
 
       $url = idn_to_utf8($url, INTL_IDNA_VARIANT_UTS46);
 
