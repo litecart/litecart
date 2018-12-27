@@ -102,9 +102,9 @@
 
   if (version_compare($version['VERSION()'], '5.5', '<')) {
     die($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
-  } else if (version_compare($version['VERSION()'], '5.6', '<')) {
+  } else if (version_compare($version['VERSION()'], '5.7', '<')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">MySQL 5.6+ recommended</span></span></p>';
+       . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
   } else {
     echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
