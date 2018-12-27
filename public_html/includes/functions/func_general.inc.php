@@ -148,7 +148,8 @@
       where id = ". (int)$order_id ."
       limit 1;"
     );
+
     $order = database::fetch($query);
 
-    return $order['public_key']);
+    return $order['public_key'];
   }
