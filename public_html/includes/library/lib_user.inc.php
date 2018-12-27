@@ -212,7 +212,7 @@
     public static function logout($redirect_url='') {
       self::reset();
 
-      setcookie('remember_me', null, strtotime('-3 months'), WS_DIR_HTTP_HOME);
+      setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
 
       if (empty($redirect_url)) $redirect_url = document::link(WS_DIR_ADMIN . 'login.php');
 
