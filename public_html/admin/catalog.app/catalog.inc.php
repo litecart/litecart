@@ -47,6 +47,10 @@
         $product->data = $original->data;
         $product->data['id'] = null;
         $product->data['status'] = 0;
+        $product->data['code'] = '';
+        $product->data['sku'] = '';
+        $product->data['mpn'] = '';
+        $product->data['gtin'] = '';
         $product->data['categories'] = array($_POST['category_id']);
         $product->data['image'] = null;
         $product->data['images'] = array();
