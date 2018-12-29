@@ -81,7 +81,7 @@
       while (!feof($socket)) {
 
         if ((microtime(true) - $microtime_start) > $this->timeout) {
-          trigger_error('Timout during retrieval', E_USER_WARNING);
+          trigger_error('Timeout during retrieval', E_USER_WARNING);
           return false;
         }
 
