@@ -154,7 +154,7 @@
       if (!isset($parts['query'])) {
         $parts['query'] = array();
       } else {
-        parse_str($parts['query'], $parsed_query);
+        mb_parse_str($parts['query'], $parsed_query);
         $parts['query'] = $parsed_query;
       }
 
