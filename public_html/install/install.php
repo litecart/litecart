@@ -46,7 +46,7 @@
     die('<span class="error">[Error] PHP 5.3+ required - Detected '. PHP_VERSION .'</span></p>');
   } else if (version_compare(PHP_VERSION, '7.1', '<')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">PHP 7.1+ recommended</span></span></p>';
+       . '<span class="warning">[Warning] PHP 7.1+ recommended - Detected '. PHP_VERSION .' that has reached end of life</span></span></p>';
   } else {
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
