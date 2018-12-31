@@ -77,6 +77,8 @@
             where customer_email = '". database::input($this->data['email']) ."';"
           );
         }
+      } else {
+        $old = new ctrl_customer($this->data['id']);
       }
 
       database::query(
@@ -115,7 +117,12 @@
       );
 
       $customer_modules = new mod_customer();
-      $customer_modules->update($this->data);
+
+      if (!empty($old)) {
+        $customer_modules->update($this->data, $old->data);
+      } else {
+        $customer_modules->update($this->data);
+      }
 
       cache::clear_cache('customers');
     }
