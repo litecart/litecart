@@ -39,13 +39,13 @@
 
         if (!empty($log)) {
 
-          $log =  '##'.str_repeat('#', strlen($title=$module_id .' executed at '. date('Y-m-d H:i:s'))).'##' . PHP_EOL
-                . '# '.$title.' #' . PHP_EOL
-                . '##'.str_repeat('#', strlen($title)).'##' . PHP_EOL
-                . $log . PHP_EOL
-                . '##'.str_repeat('#', strlen($duration='Completed in '. round(microtime(true) - $timestamp, 3).' s')).'##' . PHP_EOL
-                . '# '.$duration.' #' . PHP_EOL
-                . '##'.str_repeat('#', strlen($duration)).'##' . PHP_EOL;
+          $log = str_repeat('#', 72) . PHP_EOL
+               . '#'. str_pad(" $module_id executed at ". date('Y-m-d H:i:s') .' ', 71, '#', STR_PAD_RIGHT). PHP_EOL
+               . str_repeat('#', 72) . PHP_EOL . PHP_EOL
+               . $log . PHP_EOL . PHP_EOL
+               . str_repeat('#', 72) . PHP_EOL
+               . '#'. str_pad(' Completed in '. round(microtime(true) - $timestamp, 3).' s ', 71, '#', STR_PAD_RIGHT) . PHP_EOL
+               . str_repeat('#', 72) . PHP_EOL;
 
           database::query(
             "update ". DB_TABLE_MODULES ." set
