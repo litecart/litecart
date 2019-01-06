@@ -16,9 +16,9 @@
   $modified_files = array(
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_CATEGORIES',                        '`". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "categories`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_CATEGORIES',                        '`". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "categories`');" . PHP_EOL
-                 . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "categories_images`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
+                 . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
