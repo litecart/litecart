@@ -114,6 +114,10 @@
       case 'random':
         $sql_outer_sort[] = "rand()";
         break;
+
+      default:
+        trigger_error('Invalid sort method ('. $filter['sort'] .')', E_USER_WARNING);
+        break;
     }
 
     $sql_where_prices = "";
@@ -175,7 +179,7 @@
         ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
       )
 
-      order by ". implode(",", $sql_outer_sort) ."
+      ". (!empty($sql_outer_sort) ? "order by ". implode(",", $sql_outer_sort) : "") ."
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";"
     );
 
