@@ -93,7 +93,7 @@
         dim_x = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_x'] : (float)$product['dim_x']) .",
         dim_y = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_y'] : (float)$product['dim_y']) .",
         dim_z = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['dim_z'] : (float)$product['dim_z']) .",
-        dim_class = '". database::input(!empty($stock_option['dim_x']) ? $stock_option['dim_class'] : $product['dim_class']) ."',
+        dim_class = '". database::input(!empty($stock_option['dim_x']) ? $stock_option['dim_class'] : $product['dim_class']) ."'
       where id = ". (int)$order_item['id'] ."
       limit 1;"
     );
