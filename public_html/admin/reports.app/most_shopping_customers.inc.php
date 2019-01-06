@@ -11,8 +11,6 @@
 
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
-
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 ?>
 
 <style>

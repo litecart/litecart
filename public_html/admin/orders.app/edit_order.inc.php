@@ -315,7 +315,7 @@
           <div class="form-control-static"><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
         </div>
 
-        <div class="form-group col-md-9">
+        <div class="form-group col-md-3">
           <label><?php echo language::translate('title_ip_address', 'IP Address'); ?><br />
           <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
         </div>

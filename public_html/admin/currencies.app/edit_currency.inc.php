@@ -142,7 +142,7 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
-      <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
+      <?php echo functions::form_draw_toggle('status', (file_get_contents('php://input') != '') ? true : '1', 'e/d'); ?>
     </div>
 
     <div class="form-group col-md-6">
@@ -159,7 +159,7 @@
 
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217) <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('number', true, 'pattern="[0-9]{3}"'); ?>
+      <?php echo functions::form_draw_text_field('number', true, 'required="required" pattern="[0-9]{3}"'); ?>
     </div>
   </div>
 
