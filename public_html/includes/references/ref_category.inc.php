@@ -103,6 +103,8 @@
             if (++$failsafe == 10) trigger_error('Getting category path got stuck in a loop', E_USER_ERROR);
           }
 
+          $this->_data['path'] = array_reverse($this->_data['path']);
+
           break;
 
         case 'products':
@@ -141,7 +143,25 @@
           break;
 
         case 'descendants':
+
+          $this->_data['descendants'] = array();
+
+          $query = database::query(
+            "select id from ". DB_TABLE_CATEGORIES ."
+            where parent_id = '". (int)$this->_id ."';"
+          );
+
+          while ($row = database::fetch($query)) {
+            foreach ($row as $key => $value) {
+              $this->_data['descendants'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
+              $this->_data['descendants'] += reference::category($row['id'], $this->_language_codes[0])->descendants;
+            }
+          }
+
+          break;
+
         case 'subcategories':
+        case 'children':
 
           $this->_data['subcategories'] = array();
 
