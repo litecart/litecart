@@ -16,9 +16,9 @@
           limit 1;"
         );
 
-
       // Load template settings structure
-        include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . basename($_POST['template_catalog']) .'/config.inc.php');
+        $template_config = include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . basename($_POST['template_catalog']) .'/config.inc.php');
+        if (!is_array($template_config)) include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . basename($_POST['template_catalog']) .'/config.inc.php'); // Backwards compatibility
 
       // Set template default settings
         $settings = array();

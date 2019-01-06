@@ -66,17 +66,19 @@
         database::query(
           "insert into ". DB_TABLE_CUSTOMERS ."
           (email, date_created)
-          values ('". database::input($this->data['email']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". database::input($this->data['email']) ."', '". date('Y-m-d H:i:s') ."');"
         );
         $this->data['id'] = database::insert_id();
 
         if (!empty($this->data['email'])) {
           database::query(
             "update ". DB_TABLE_ORDERS ."
-            set customer_id = '". (int)$this->data['id'] ."'
+            set customer_id = ". (int)$this->data['id'] ."
             where customer_email = '". database::input($this->data['email']) ."';"
           );
         }
+      } else {
+        $old = new ctrl_customer($this->data['id']);
       }
 
       database::query(
@@ -109,13 +111,18 @@
           shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
           newsletter = '". (!empty($this->data['newsletter']) ? '1' : '0') ."',
           notes = '". database::input($this->data['notes']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       $customer_modules = new mod_customer();
-      $customer_modules->update($this->data);
+
+      if (!empty($old)) {
+        $customer_modules->update($this->data, $old->data);
+      } else {
+        $customer_modules->update($this->data);
+      }
 
       cache::clear_cache('customers');
     }
@@ -134,8 +141,8 @@
         "update ". DB_TABLE_CUSTOMERS ."
         set
           password = '". $password_hash ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -147,12 +154,12 @@
       database::query(
         "update ". DB_TABLE_ORDERS ."
         set customer_id = 0
-        where customer_id = '". (int)$this->data['id'] ."';"
+        where customer_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_CUSTOMERS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

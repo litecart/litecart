@@ -1,6 +1,6 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_customers', 'Customers'),
     'default' => 'customers',
     'theme' => array(
@@ -25,6 +25,7 @@
       ),
     ),
     'docs' => array(
+      'customer_picker' => 'customer_picker.inc.php',
       'customers' => 'customers.inc.php',
       'customers.json' => 'customers.json.inc.php',
       'edit_customer' => 'edit_customer.inc.php',

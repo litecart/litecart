@@ -45,7 +45,7 @@
 
       $slide_query = database::query(
         "select * from ". DB_TABLE_SLIDES ."
-        where id = '". (int)$slide_id ."'
+        where id = ". (int)$slide_id ."
         limit 1;"
       );
 
@@ -59,7 +59,7 @@
 
       $slide_info_query = database::query(
         "select * from ". DB_TABLE_SLIDES_INFO ."
-        where slide_id = '". (int)$this->data['id'] ."';"
+        where slide_id = ". (int)$this->data['id'] .";"
         );
 
       while ($slide_info = database::fetch($slide_info_query)) {
@@ -76,7 +76,7 @@
         database::query(
           "insert into ". DB_TABLE_SLIDES ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -84,15 +84,15 @@
       database::query(
         "update ". DB_TABLE_SLIDES ."
         set
-          status = '". (int)$this->data['status'] ."',
+          status = ". (int)$this->data['status'] .",
           languages = '". database::input(implode(',', database::input($this->data['languages']))) ."',
           name = '". database::input($this->data['name']) ."',
           image = '" . database::input($this->data['image']) . "',
-          priority = '". (int)$this->data['priority'] ."',
+          priority = ". (int)$this->data['priority'] .",
           date_valid_from = '". database::input($this->data['date_valid_from']) ."',
           date_valid_to = '". database::input($this->data['date_valid_to']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -100,7 +100,7 @@
 
         $slide_info_query = database::query(
           "select * from ". DB_TABLE_SLIDES_INFO ."
-          where slide_id = '". (int)$this->data['id'] ."'
+          where slide_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -110,7 +110,7 @@
           database::query(
             "insert into ". DB_TABLE_SLIDES_INFO ."
             (slide_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". $language_code ."');"
           );
           $slide_info['id'] = database::insert_id();
         }
@@ -120,8 +120,8 @@
           set
             caption = '". database::input($this->data['caption'][$language_code], true) ."',
             link = '". database::input($this->data['link'][$language_code]) ."'
-          where id = '". (int)$slide_info['id'] ."'
-          and slide_id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$slide_info['id'] ."
+          and slide_id = ". (int)$this->data['id'] ."
           and language_code = '". $language_code ."'
           limit 1;"
         );
@@ -172,12 +172,12 @@
 
       database::query(
         "delete from ". DB_TABLE_SLIDES_INFO ."
-        where slide_id = '". (int)$this->data['id'] ."';"
+        where slide_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_SLIDES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

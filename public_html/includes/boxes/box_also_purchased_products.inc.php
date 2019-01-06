@@ -3,8 +3,8 @@
 
   functions::draw_lightbox();
 
-  $box_also_purchased_products_cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
-  if (cache::capture($box_also_purchased_products_cache_id, 'file')) {
+  $box_also_purchased_products_cache_token = cache::token('box_also_purchased_products', array('get', 'language', 'currency', 'prices'), 'file');
+  if (cache::capture($box_also_purchased_products_cache_token)) {
 
     $also_purchased_products = reference::product($_GET['product_id'])->also_purchased_products;
 
@@ -12,7 +12,11 @@
 
       $also_purchased_products = array_slice($also_purchased_products, 0, settings::get('box_also_purchased_products_num_items')*3, true);
 
-      $products_query = functions::catalog_products_query(array('products' => array_keys($also_purchased_products), 'sort' => 'rand', 'limit' => settings::get('box_also_purchased_products_num_items')));
+      $products_query = functions::catalog_products_query(array(
+        'products' => array_keys($also_purchased_products),
+        'sort' => 'rand',
+        'limit' => settings::get('box_also_purchased_products_num_items'),
+      ));
 
       if (database::num_rows($products_query)) {
 
@@ -27,5 +31,5 @@
       }
     }
 
-    cache::end_capture($box_also_purchased_products_cache_id);
+    cache::end_capture($box_also_purchased_products_cache_token);
   }

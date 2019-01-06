@@ -47,18 +47,19 @@
 <?php
   if (!empty($_GET['query'])) {
     $sql_find = array(
-      "id = '". database::input($_GET['query']) ."'",
-      "email like '%". database::input($_GET['query']) ."%'",
-      "tax_id like '%". database::input($_GET['query']) ."%'",
-      "company like '%". database::input($_GET['query']) ."%'",
-      "concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%'",
+      "c.id = '". database::input($_GET['query']) ."'",
+      "c.email like '%". database::input($_GET['query']) ."%'",
+      "c.tax_id like '%". database::input($_GET['query']) ."%'",
+      "c.company like '%". database::input($_GET['query']) ."%'",
+      "concat(c.firstname, ' ', c.lastname) like '%". database::input($_GET['query']) ."%'",
     );
   }
 
   $customers_query = database::query(
-    "select * from ". DB_TABLE_CUSTOMERS ."
-    ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
-    order by firstname, lastname;"
+    "select c.* from ". DB_TABLE_CUSTOMERS ." c
+    where c.id
+    ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
+    order by c.firstname, c.lastname;"
   );
 
   if (database::num_rows($customers_query) > 0) {

@@ -9,7 +9,9 @@
 
   if (empty(customer::$data['country_code'])) return;
 
-  $shipping = new mod_shipping();
+  if (empty(session::$data['shipping'])) session::$data['shipping'] = new mod_shipping();
+  $shipping = &session::$data['shipping'];
+
   $options = $shipping->options();
 
   if (file_get_contents('php://input') != '' && !empty($_POST['shipping'])) {

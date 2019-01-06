@@ -17,9 +17,10 @@
   $jobs = new mod_jobs();
 
   if (!empty($_GET['module_id'])) {
-    echo $jobs->process($_GET['module_id']);
+    $jobs->process($_GET['module_id']);
   } else {
-    echo $jobs->process();
+    $jobs->process();
   }
 
+  echo 'OK';
   exit;

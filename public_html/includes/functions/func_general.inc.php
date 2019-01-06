@@ -1,10 +1,7 @@
 <?php
 
-  function general_escape_js($string, $is_html_attribute=false) {
-
-    $string = preg_replace('#\R#', "\\n", addslashes($string));
-
-    return $is_html_attribute ? htmlspecialchars($string) : $string;
+  function general_escape_js($string) {
+    return addcslashes($string, "\\\"\'\r\n");
   }
 
   function general_path_friendly($text, $language_code=null) {
@@ -144,14 +141,15 @@
 
   function general_order_public_checksum($order_id) {
 
+    trigger_error(__METHOD__.'() is deprecated. Use instead reference::order(id)->public_key', E_USER_DEPRECATED);
+
     $query = database::query(
-      "select * from ". DB_TABLE_ORDERS ."
-      where id = '". (int)$order_id ."'
+      "select public_key from ". DB_TABLE_ORDERS ."
+      where id = ". (int)$order_id ."
       limit 1;"
     );
+
     $order = database::fetch($query);
 
-    $checksum = md5($order['id'] . $order['uid'] . $order['customer_email'] . $order['date_created']);
-
-    return $checksum;
+    return $order['public_key'];
   }

@@ -46,7 +46,7 @@
 
       $option_group_query = database::query(
         "select * from ". DB_TABLE_OPTION_GROUPS ."
-        where id = '". (int)$group_id ."'
+        where id = ". (int)$group_id ."
         limit 1;"
       );
 
@@ -58,7 +58,7 @@
 
       $option_groups_info_query = database::query(
         "select * from ". DB_TABLE_OPTION_GROUPS_INFO ."
-        where group_id = '". (int)$group_id ."';"
+        where group_id = ". (int)$group_id .";"
       );
 
       while ($option_group_info = database::fetch($option_groups_info_query)) {
@@ -70,7 +70,7 @@
 
       $option_values_query = database::query(
         "select * from ". DB_TABLE_OPTION_VALUES ."
-        where group_id = '". (int)$group_id ."'
+        where group_id = ". (int)$group_id ."
         order by priority;"
       );
 
@@ -79,7 +79,7 @@
 
         $option_values_info_query = database::query(
           "select * from ". DB_TABLE_OPTION_VALUES_INFO ."
-          where value_id = '". (int)$option_value['id'] ."';"
+          where value_id = ". (int)$option_value['id'] .";"
         );
 
         while ($option_value_info = database::fetch($option_values_info_query)) {
@@ -98,7 +98,7 @@
         database::query(
           "insert into ". DB_TABLE_OPTION_GROUPS ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -108,7 +108,7 @@
         set function = '". database::input($this->data['function']) ."',
         required = '". (!empty($this->data['required']) ? '1' : '0') ."',
         sort = '". database::input($this->data['sort']) ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -117,7 +117,7 @@
 
         $option_groups_info_query = database::query(
           "select id from ". DB_TABLE_OPTION_GROUPS_INFO ."
-          where group_id = '". (int)$this->data['id'] ."'
+          where group_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -127,7 +127,7 @@
           database::query(
             "insert into ". DB_TABLE_OPTION_GROUPS_INFO ."
             (group_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". database::input($language_code) ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $option_group_info['id'] = database::insert_id();
         }
@@ -136,8 +136,8 @@
           "update ". DB_TABLE_OPTION_GROUPS_INFO ."
           set name = '". @database::input($this->data['name'][$language_code]) ."',
             description = '". @database::input($this->data['description'][$language_code]) ."'
-          where id = '". (int)$option_group_info['id'] ."'
-          and group_id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$option_group_info['id'] ."
+          and group_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -146,7 +146,7 @@
     // Delete option values
       $option_values_query = database::query(
         "select id from ". DB_TABLE_OPTION_VALUES ."
-        where group_id = '". (int)$this->data['id'] ."'
+        where group_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
 
@@ -160,13 +160,13 @@
 
         database::query(
           "delete from ". DB_TABLE_OPTION_VALUES ."
-          where group_id = '". (int)$this->data['id'] ."'
-          and id = '". (int)$option_value['id'] ."'
+          where group_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$option_value['id'] ."
           limit 1;"
         );
         database::query(
           "delete from ". DB_TABLE_OPTION_VALUES_INFO ."
-          where value_id = '". (int)$option_value['id'] ."';"
+          where value_id = ". (int)$option_value['id'] .";"
         );
       }
 
@@ -187,8 +187,8 @@
         database::query(
           "update ". DB_TABLE_OPTION_VALUES ."
           set value = '". database::input($option_value['value']) ."',
-            priority = '". (int)$i ."'
-          where id = '". (int)$option_value['id'] ."'
+            priority = ". (int)$i ."
+          where id = ". (int)$option_value['id'] ."
           limit 1;"
         );
 
@@ -197,7 +197,7 @@
 
           $option_value_info_query = database::query(
             "select id from ". DB_TABLE_OPTION_VALUES_INFO ."
-            where value_id = '". (int)$option_value['id'] ."'
+            where value_id = ". (int)$option_value['id'] ."
             and language_code = '". database::input($language_code) ."'
             limit 1;"
           );
@@ -215,8 +215,8 @@
           database::query(
             "update ". DB_TABLE_OPTION_VALUES_INFO ."
             set name = '". @database::input($option_value['name'][$language_code]) ."'
-            where id = '". (int)$option_value_info['id'] ."'
-            and value_id = '". (int)$option_value['id'] ."'
+            where id = ". (int)$option_value_info['id'] ."
+            and value_id = ". (int)$option_value['id'] ."
             and language_code = '". database::input($language_code) ."'
             limit 1;"
           );
@@ -240,7 +240,7 @@
     // Check products for option values
       $option_values_query = database::query(
         "select id from ". DB_TABLE_OPTION_VALUES ."
-        where group_id = '". (int)$this->data['id'] ."'
+        where group_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
 
@@ -255,26 +255,26 @@
       // Delete option values
         database::query(
           "delete from ". DB_TABLE_OPTION_VALUES ."
-          where group_id = '". (int)$this->data['id'] ."'
-          and id = '". (int)$option_value['id'] ."'
+          where group_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$option_value['id'] ."
           limit 1;"
         );
         database::query(
           "delete from ". DB_TABLE_OPTION_VALUES_INFO ."
-          where value_id = '". (int)$option_value['id'] ."';"
+          where value_id = ". (int)$option_value['id'] .";"
         );
       }
 
     // Delete option group
       database::query(
         "delete from ". DB_TABLE_OPTION_GROUPS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
         "delete from ". DB_TABLE_OPTION_GROUPS_INFO ."
-        where group_id = '". (int)$this->data['id'] ."';"
+        where group_id = ". (int)$this->data['id'] .";"
       );
 
       cache::clear_cache('option_groups');

@@ -81,12 +81,7 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-      <div></div>
-      <div class="form-control">
-        <?php foreach (language::$languages as $language) { ?>
-        <div><label><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code'], true); ?> <?php echo $language['name']; ?></label></div>
-        <?php } ?>
-      </div>
+      <div><?php echo functions::form_draw_languages_list('languages[]', true, true); ?></div>
     </div>
   </div>
 
@@ -97,7 +92,7 @@
     </div>
   </div>
 
-  <?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" alt="" class="img-responsive" /></p>'; ?>
+  <?php if (!empty($slide->data['image'])) echo '<p><img src="'. document::href_link(WS_DIR_IMAGES . $slide->data['image']) .'" alt="" class="img-responsive" /></p>'; ?>
 
   <div class="form-group">
     <label><?php echo language::translate('title_image', 'Image'); ?></label>

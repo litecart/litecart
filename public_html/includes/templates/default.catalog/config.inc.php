@@ -1,5 +1,6 @@
 <?php
-  $template_config = array(
+
+  return $template_config = array(
     array(
       'key' => 'product_modal_window',
       'default_value' => '1',

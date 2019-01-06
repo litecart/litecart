@@ -14,9 +14,9 @@ ALTER TABLE `lc_products_options` ADD `SEK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'SEK' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1106 WHERE `code` = 'USD' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 8.5 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1044 WHERE `code` = 'EUR' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 10 WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('SE VAT Zone', '', NOW(), NOW());

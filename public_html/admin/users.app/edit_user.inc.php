@@ -28,10 +28,11 @@
       $fields = array(
         'status',
         'username',
+        'email',
         'password',
         'permissions',
-        'date_blocked',
-        'date_expires',
+        'date_valid_from',
+        'date_valid_to',
       );
 
       foreach ($fields as $field) {
@@ -80,10 +81,17 @@
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
         </div>
+      </div>
 
-        <div class="form-group col-md-6">
+      <div class="row">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_username', 'Username'); ?></label>
           <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
+        </div>
+
+        <div class="form-group col-sm-6">
+          <label><?php echo language::translate('title_email', 'Email'); ?></label>
+          <?php echo functions::form_draw_email_field('email', true); ?>
         </div>
       </div>
 
@@ -101,13 +109,13 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_blocked_until', 'Blocked Until'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_blocked', true); ?>
+          <label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
+          <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_expires', 'Expires'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_expires', true); ?>
+          <label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
+          <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
         </div>
       </div>
 
@@ -142,7 +150,6 @@
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
     echo '  <li>' . PHP_EOL
-       //. '    ' . functions::draw_fonticon('fa-check-square-o checkbox-toggle') . PHP_EOL
        . '    <label>'. functions::form_draw_checkbox('permissions['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '    <ul class="">' . PHP_EOL;

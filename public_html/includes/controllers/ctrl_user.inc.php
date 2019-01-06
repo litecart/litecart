@@ -32,7 +32,7 @@
 
       $user_query = database::query(
         "select * from ". DB_TABLE_USERS ."
-        where id = '". (int)$user_id ."'
+        where id = ". (int)$user_id ."
         limit 1;"
       );
 
@@ -53,7 +53,7 @@
         database::query(
           "insert into ". DB_TABLE_USERS ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -62,11 +62,12 @@
         "update ". DB_TABLE_USERS ." set
         status = '". (empty($this->data['status']) ? 0 : 1) ."',
         username = '". database::input($this->data['username']) ."',
+        email = '". database::input($this->data['email']) ."',
         permissions = '". database::input(json_encode($this->data['permissions'])) ."',
-        date_blocked = '". database::input($this->data['date_blocked']) ."',
-        date_expires = '". database::input($this->data['date_expires']) ."',
-        date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        date_valid_from = '". database::input($this->data['date_valid_from']) ."',
+        date_valid_to = '". database::input($this->data['date_valid_to']) ."',
+        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -91,7 +92,7 @@
 
     public function set_password($password) {
 
-      $this->save();
+      if (empty($this->data['id'])) $this->save();
 
       $password_hash = functions::password_checksum($this->data['id'], $password, PASSWORD_SALT);
 
@@ -99,8 +100,7 @@
         "update ". DB_TABLE_USERS ."
         set
           password = '". $password_hash ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -115,6 +115,8 @@
       }
 
       file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
+
+      $this->save();
     }
 
     public function delete() {
@@ -125,7 +127,7 @@
 
       database::query(
         "delete from ". DB_TABLE_USERS ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

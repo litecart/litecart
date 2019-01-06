@@ -1,12 +1,9 @@
 <?php
 
-  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array(
-    'language',
-  ));
-
   $box_site_menu = new view();
 
-  if (($box_site_menu->snippets = cache::get($box_site_menu_cache_id, 'file')) === null) {
+  $box_site_menu_cache_token = cache::token('box_site_menu', array('language'), 'file');
+  if (!$box_site_menu->snippets = cache::get($box_site_menu_cache_token)) {
 
     $box_site_menu->snippets = array(
       'categories' => array(),
@@ -25,23 +22,8 @@
         'title' => $category['name'],
         'link' => document::ilink('category', array('category_id' => $category['id'])),
         'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 24, 24, 'CROP'),
-        'subitems' => array(),
         'priority' => $category['priority'],
       );
-
-      $subcategories_query = functions::catalog_categories_query($category['id']);
-
-      while ($subcategory = database::fetch($subcategories_query)) {
-        $box_site_menu->snippets['categories'][$category['id']]['subitems'][$subcategory['id']] = array(
-          'type' => 'category',
-          'id' => $subcategory['id'],
-          'title' => $subcategory['name'],
-          'link' => document::ilink('category', array('category_id' => $subcategory['id'])),
-          'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $subcategory['image'], 24, 24, 'CROP'),
-          'subitems' => array(),
-          'priority' => $subcategory['priority'],
-        );
-      }
     }
 
   // Manufacturers
@@ -60,7 +42,6 @@
         'title' => $manufacturer['name'],
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
         'image' => null,
-        'subitems' => array(),
         'priority' => 0,
       );
     }
@@ -82,12 +63,11 @@
         'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),
         'image' => null,
-        'subitems' => array(),
         'priority' => $page['priority'],
       );
     }
 
-    cache::set($box_site_menu_cache_id, 'file', $box_site_menu->snippets);
+    cache::set($box_site_menu_cache_token, $box_site_menu->snippets);
   }
 
   echo $box_site_menu->stitch('views/box_site_menu');

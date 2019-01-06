@@ -4,9 +4,11 @@
 
   if (settings::get('catalog_only_mode')) return;
 
-  $shipping = new mod_shipping();
+  if (empty(session::$data['shipping'])) session::$data['shipping'] = new mod_shipping();
+  $shipping = &session::$data['shipping'];
 
-  $payment = new mod_payment();
+  if (empty(session::$data['payment'])) session::$data['payment'] = new mod_payment();
+  $payment = &session::$data['payment'];
 
   if (empty(session::$data['order'])) {
     notices::add('errors', 'Missing order object');

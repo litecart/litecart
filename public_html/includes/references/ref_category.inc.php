@@ -3,17 +3,23 @@
   class ref_category {
 
     private $_id;
+    private $_cache_token;
     private $_language_codes;
     private $_data = array();
 
     function __construct($category_id, $language_code=null) {
 
       $this->_id = (int)$category_id;
+      $this->_cache_token = cache::token('category_'.(int)$category_id, array($language_code), 'file');
       $this->_language_codes = array_unique(array(
         !empty($language_code) ? $language_code : language::$selected['code'],
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
+
+      if ($cache = cache::get($this->_cache_token)) {
+        $this->_data = $cache;
+      }
     }
 
     public function &__get($name) {
@@ -51,7 +57,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES_INFO ."
-            where category_id = '". (int)$this->_id ."'
+            where category_id = ". (int)$this->_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -61,6 +67,21 @@
               if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
+          }
+
+          break;
+
+        case 'images':
+
+          $this->_data['images'] = array();
+
+          $query = database::query(
+            "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+            where category_id = ". (int)$this->_id ."
+            order by priority asc, id asc;"
+          );
+          while ($row = database::fetch($query)) {
+            $this->_data['images'][$row['id']] = $row['filename'];
           }
 
           break;
@@ -100,7 +121,7 @@
               break;
             }
 
-            if (++$failsafe == 10) trigger_error('Getting category path got stuck in a loop', E_USER_ERROR);
+            if (++$failsafe == 10) trigger_error('Endless loop while building category path', E_USER_ERROR);
           }
 
           $this->_data['path'] = array_reverse($this->_data['path']);
@@ -132,7 +153,7 @@
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
             where status
-            and parent_id = '". (int)$this->parent_id ."'
+            and parent_id = ". (int)$this->parent_id ."
             and id != '". database::input($this->_id) ."';"
           );
 
@@ -167,7 +188,7 @@
 
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
-            where parent_id = '". (int)$this->_id ."';"
+            where parent_id = ". (int)$this->_id .";"
           );
 
           while ($row = database::fetch($query)) {
@@ -182,7 +203,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES ."
-            where id = '". (int)$this->_id ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
 
@@ -204,5 +225,7 @@
 
           break;
       }
+
+      cache::set($this->_cache_token, $this->_data);
     }
   }

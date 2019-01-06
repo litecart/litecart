@@ -73,6 +73,16 @@
     }
   }
 
+  &.table-dragable {
+    > tbody .grabable {
+      cursor: n-resize;
+    }
+    > tbody > tr.grabbed {
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+      user-input: unset;
+    }
+  }
+
   &.data-table {
     white-space: nowrap;
   }

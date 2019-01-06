@@ -59,7 +59,7 @@
         database::query(
           "insert into ". DB_TABLE_COUNTRIES ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -67,7 +67,7 @@
       database::query(
         "update ". DB_TABLE_COUNTRIES ."
         set
-          status = '". (int)$this->data['status'] ."',
+          status = ". (int)$this->data['status'] .",
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."',
           iso_code_2 = '". database::input($this->data['iso_code_2']) ."',
           iso_code_3 = '". database::input($this->data['iso_code_3']) ."',
@@ -79,8 +79,8 @@
           language_code = '". database::input($this->data['language_code']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
           phone_code = '". database::input($this->data['phone_code']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -104,9 +104,9 @@
             "update ". DB_TABLE_ZONES ."
             set code = '". database::input($zone['code']) ."',
             name = '". database::input($zone['name']) ."',
-            date_updated =  '". date('Y-m-d H:i:s') ."'
+            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where country_code = '". database::input($this->data['iso_code_2']) ."'
-            and id = '". (int)$zone['id'] ."'
+            and id = ". (int)$zone['id'] ."
             limit 1;"
           );
         }
@@ -132,7 +132,7 @@
 
       database::query(
         "delete from ". DB_TABLE_COUNTRIES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

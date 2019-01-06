@@ -14,9 +14,9 @@ ALTER TABLE `lc_products_options` ADD `DKK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'DKK' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1425 WHERE `code` = 'USD' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 6.3511 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1345 WHERE `code` = 'EUR' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 7.4499 WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('DK VAT Zone', '', NOW(), NOW());

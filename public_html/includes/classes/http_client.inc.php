@@ -117,13 +117,13 @@
       $this->last_response['bytes'] = strlen($response_headers . "\r\n" . $response_body);
       $this->last_response['body'] = $response_body;
 
-      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
-        "## [". date('Y-m-d H:i:s', $this->last_request['timestamp']) ."] Request ##############################\r\n\r\n" .
-        $this->last_request['head']."\r\n" .
-        $this->last_request['body']."\r\n\r\n" .
-        "## [". date('Y-m-d H:i:s', $this->last_response['timestamp']) ."] Response — ". (float)$this->last_response['bytes'] ." bytes transferred in ". (float)$this->last_response['duration'] ." s ##############################\r\n\r\n" .
-        $this->last_response['head']."\r\n" .
-        $this->last_response['body']."\r\n\r\n"
+      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last-'. $parts['host'] .'.log',
+        '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
+        $this->last_request['head'] . PHP_EOL .
+        $this->last_request['body'] . PHP_EOL . PHP_EOL .
+        '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. (float)$this->last_response['bytes'] .' bytes transferred in '. (float)$this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
+        $this->last_response['head'] . PHP_EOL .
+        $this->last_response['body'] . PHP_EOL . PHP_EOL
       );
 
       if (class_exists('stats', false)) {

@@ -2,8 +2,8 @@
 
   if (!in_array(route::$route['page'], array('category', 'manufacturer'))) return;
 
-  $box_filter_cache_id = cache::cache_id('box_filter', array('language', 'get'));
-  if (cache::capture($box_filter_cache_id, 'file')) {
+  $box_filter_cache_token = cache::token('box_filter', array('language', 'get'), 'file');
+  if (cache::capture($box_filter_cache_token)) {
 
     $box_filter = new view();
 
@@ -41,7 +41,7 @@
       (!empty($_GET['category_id']) ? " left join " . DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on pc.product_id = id " : "").
       "where status
       and product_groups != ''
-      ". (!empty($_GET['manufacturer_id']) ? "and manufacturer_id = '". (int)$_GET['manufacturer_id'] ."'" : "") ."
+      ". (!empty($_GET['manufacturer_id']) ? "and manufacturer_id = ". (int)$_GET['manufacturer_id'] ."" : "") ."
       ". (!empty($_GET['manufacturers']) ? "and (find_in_set('". implode("', manufacturer_id) or find_in_set('", database::input($_GET['manufacturers'])) ."', manufacturer_id))" : "") ."
       ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
       ;"
@@ -91,5 +91,5 @@
 
     echo $box_filter->stitch('views/box_filter');
 
-    cache::end_capture($box_filter_cache_id);
+    cache::end_capture($box_filter_cache_token);
   }

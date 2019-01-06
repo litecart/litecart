@@ -1,25 +1,29 @@
 <?php
   header('Content-type: application/json; charset='. language::$selected['charset']);
 
-  if (!isset($_GET['option_group_id'])) exit;
+  try {
 
-  $option_values_query = database::query(
-    "select pcv.id, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
-    left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
-    where pcv.group_id = '". (int)$_GET['option_group_id'] ."'
-    order by pcv.priority;"
-  );
+    if (!isset($_GET['option_group_id'])) throw new Exception('Missing option_group_id');
 
-  if (database::num_rows($option_values_query) == 0) {
-    exit;
-  }
-
-  $json = array();
-  while ($configuration_value = database::fetch($option_values_query)) {
-    $json[] = array(
-      'id' => $configuration_value['id'],
-      'name' => $configuration_value['name'],
+    $option_values_query = database::query(
+      "select pcv.id, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
+      left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
+      where pcv.group_id = ". (int)$_GET['option_group_id'] ."
+      order by pcv.priority;"
     );
+
+    if (database::num_rows($option_values_query) == 0) throw new Exception('Option group has no values');
+
+    $json = array();
+    while ($configuration_value = database::fetch($option_values_query)) {
+      $json[] = array(
+        'id' => $configuration_value['id'],
+        'name' => $configuration_value['name'],
+      );
+    }
+
+  } catch(Exception $e) {
+    $json = array('error' => $e->getMessage());
   }
 
   language::convert_characters($json, language::$selected['charset'], 'UTF-8');

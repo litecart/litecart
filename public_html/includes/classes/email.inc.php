@@ -39,6 +39,11 @@
 
     public function add_body($content, $html=false, $charset=null) {
 
+      if (empty($content)) {
+        trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
+        return $this;
+      }
+
       if (!$charset) $charset = $this->_charset;
 
       $this->_multiparts[] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. $charset . "\r\n"
@@ -76,6 +81,35 @@
       return $this;
     }
 
+
+    public function add_cc($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+
+      $this->_cc[] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
+    public function add_bcc($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+
+      $this->_bcc[] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
     public function format_contact($contact) {
 
       if (empty($contact['name'])) return '<'. $contact['email'] .'>';
@@ -98,14 +132,37 @@
 
     public function send() {
 
-    // Prepare headers
+      if (!settings::get('email_status')) {
+        notices::add('warning', language::translate('warning_email_disabled', 'Please note the email service is disabled so no mails have been sent.'), 'email_disabled');
+        return true;
+      }
+
+    // Perpare headers
       $headers = array(
         'From' => $this->format_contact($this->_sender),
         'Reply-To' => $this->format_contact($this->_sender),
         'Return-Path' => $this->format_contact($this->_sender),
         'MIME-Version' => '1.0',
-        'X-Mailer' => PLATFORM_NAME .' '. PLATFORM_VERSION,
+        'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
       );
+
+    // Add CCs
+      if (!empty($this->_cc)) {
+        $ccs = array();
+        foreach ($this->_cc as $cc) {
+          $ccs[] = $this->format_contact($cc);
+        }
+        $headers['Cc'] = implode(', ', $ccs);
+      }
+
+    // Add BCCs
+      if (!empty($this->_bcc)) {
+        $bccs = array();
+        foreach ($this->_bcc as $bcc) {
+          $bccs[] = $this->format_contact($bcc);
+        }
+        $headers['Bcc'] = implode(', ', $bccs);
+      }
 
       $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
       $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
@@ -128,8 +185,13 @@
     // Prepare body
       $body = '';
       foreach ($this->_multiparts as $multipart) {
-          $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . $multipart . "\r\n\r\n";
+        $body .= '--'. $multipart_boundary_string . "\r\n"
+               . $multipart . "\r\n\r\n";
+      }
+
+      if (empty($body)) {
+        trigger_error('Cannot send email with an empty body', E_USER_WARNING);
+        return false;
       }
 
     // Deliver via SMTP

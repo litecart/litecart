@@ -7,9 +7,11 @@
 
   if (empty(cart::$items)) return;
 
-  if (!isset($shipping)) $shipping = new mod_shipping();
+  if (empty(session::$data['shipping'])) session::$data['shipping'] = new mod_shipping();
+  $shipping = &session::$data['shipping'];
 
-  if (!isset($payment)) $payment = new mod_payment();
+  if (empty(session::$data['payment'])) session::$data['payment'] = new mod_payment();
+  $payment = &session::$data['payment'];
 
 // Resume incomplete order in session
   if (!empty(session::$data['order']->data['id'])) {
@@ -42,17 +44,11 @@
   }
 
   if (!empty($shipping->data['selected'])) {
-    $order->data['shipping_option'] = array(
-      'id' => $shipping->data['selected']['id'],
-      'name' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
-    );
+    $order->data['shipping_option'] = $shipping->data['selected'];
   }
 
   if (!empty($payment->data['selected'])) {
-    $order->data['payment_option'] = array(
-      'id' => $payment->data['selected']['id'],
-      'name' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
-    );
+    $order->data['payment_option'] = $payment->data['selected'];
   }
 
   $order_total = new mod_order_total();

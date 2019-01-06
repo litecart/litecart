@@ -1,6 +1,6 @@
 <?php
-  $box_manufacturer_links_cache_id = cache::cache_id('box_manufacturer_links', array('language', isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : ''));
-  if (cache::capture($box_manufacturer_links_cache_id, 'file')) {
+  $box_manufacturer_links_cache_token = cache::token('box_manufacturer_links', array('language', isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : ''), 'file');
+  if (cache::capture($box_manufacturer_links_cache_token)) {
 
     $manufacturers_query = database::query(
       "select a.id, a.name, a.date_created from ". DB_TABLE_MANUFACTURERS ." a
@@ -28,5 +28,5 @@
       echo $box_manufacturer_links->stitch('views/box_manufacturer_links');
     }
 
-    cache::end_capture($box_manufacturer_links_cache_id);
+    cache::end_capture($box_manufacturer_links_cache_token);
   }

@@ -1,4 +1,18 @@
 <?php
+
+  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
+  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
+
+  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
+
+  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
+  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
+  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
+  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
+
+  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
+  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
+
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
@@ -56,7 +70,7 @@
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></li>
   <li><?php echo functions::form_draw_order_status_list('order_status_id', true, false, 'style="max-width: 200px;"'); ?></li>
-  <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true, false, 'style="max-width: 200px;"'); ?></li>
+  <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true, 'style="max-width: 200px;"'); ?></li>
   <li>
     <div class="input-group" style="max-width: 360px;">
       <?php echo functions::form_draw_date_field('date_from', true); ?>
@@ -110,7 +124,7 @@
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "and (os.is_archived is null or os.is_archived = 0)") ."
+    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : "and (os.is_archived is null or os.is_archived = 0)") ."
     ". (!empty($_GET['payment_option_name']) ? "and o.payment_option_name = '". database::input($_GET['payment_option_name']) ."'" : '') ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."

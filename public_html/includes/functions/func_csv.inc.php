@@ -2,25 +2,39 @@
 
   function csv_encode($array, $delimiter=',', $enclosure='"', $escape='"', $charset='utf-8', $eol="\r\n") {
 
-    $fp = fopen('php://temp', 'r+');
-
-    $array = array_merge(array(array_keys($array[0])), $array);
-
-    foreach ($array as $row) {
-      foreach (array_keys($row) as $key) {
-        if (strpbrk($row[$key], $delimiter.$enclosure.$escape."\r\n") !== false) {
-          $row[$key] = $enclosure . str_replace($enclosure, $escape.$enclosure, $row[$key]) . $enclosure;
-        }
-      }
-      fputs($fp, implode($delimiter, $row) . $eol); // Don't use fputcsv as EOL and escape char can not be customized
-    }
-
     $output = '';
 
-    rewind($fp);
-    while(!feof($fp)) $output .= fgets($fp);
-    fclose($fp);
+  // Collect columns
+    $columns = array();
+    foreach ($array as $row) {
+      foreach (array_keys($row) as $column) {
+        if (!in_array($column, $columns)) $columns[] = $column;
+      }
+    }
 
+  // Collect rows and order by column order
+    foreach (array_keys($array) as $row) {
+      $line = array();
+      foreach ($columns as $column) {
+        $line[$column] = isset($array[$row][$column]) ? $array[$row][$column] : '';
+      }
+      $array[$row] = $line;
+    }
+
+  // Prepend column header
+    array_unshift($array, array_combine($columns, $columns));
+
+  // Build output
+    foreach ($array as $row) {
+      foreach (array_keys($row) as $column) {
+        if (strpbrk($row[$column], $delimiter.$enclosure.$escape."\r\n") !== false) {
+          $row[$column] = $enclosure . str_replace($enclosure, $escape.$enclosure, $row[$column]) . $enclosure;
+        }
+      }
+      $output .= implode($delimiter, $row) . $eol; // Don't use fputcsv as EOL and escape char can not be customized
+    }
+
+  // Convert charset
     $output = language::convert_characters($output, language::$selected['charset'], $charset);
 
     return preg_replace('#(\r\n|\r|\n)#', $eol, $output);
@@ -30,11 +44,17 @@
 
     $output = array();
 
+  // Override line endings
     $ini_eol = ini_get('auto_detect_line_endings');
     ini_set('auto_detect_line_endings', true);
 
+  // Convert charset
     $string = language::convert_characters($string, $charset, language::$selected['charset']);
 
+  // Trim preceding and trailing whitespace
+    $string = trim($string, "\r\n ");
+
+  // Auto-detect delimiter
     if (empty($delimiter)) {
       preg_match('#^.*$#m', $string, $matches);
       foreach (array(',', ';', "\t", '|', chr(124)) as $char) {
@@ -47,6 +67,7 @@
       if (empty($delimiter)) trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
     }
 
+  // Decode CSV using temporary buffer for file handle
     $fp = fopen('php://temp', 'r+');
     fputs($fp, $string);
     rewind($fp);

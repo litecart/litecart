@@ -38,7 +38,7 @@
   database::query(
     "update ". DB_TABLE_PRODUCTS ."
     set views = views + 1
-    where id = '". (int)$_GET['product_id'] ."'
+    where id = ". (int)$_GET['product_id'] ."
     limit 1;"
   );
 
@@ -213,7 +213,7 @@
 
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
-    $shipping = new mod_shipping('local');
+    $shipping = new mod_shipping();
     $cheapest_shipping = $shipping->cheapest(
       array(
         $product->id => array(
@@ -322,7 +322,7 @@
             $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
           }
 
-          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, false, !empty($group['required']) ? 'required="required"' : '');
+          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, !empty($group['required']) ? 'required="required"' : '');
           break;
 
         case 'textarea':

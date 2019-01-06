@@ -56,13 +56,13 @@
       return true;
     }
 
-    public function update($fields) {
+    public function update($fields, $old_fields=null) {
 
       if (empty($this->modules)) return false;
 
       foreach ($this->modules as $module) {
         if (!method_exists($module, 'update')) continue;
-        $module->update($fields);
+        $module->update($fields, $old_fields);
       }
     }
 

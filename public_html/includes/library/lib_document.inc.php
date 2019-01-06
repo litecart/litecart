@@ -63,7 +63,8 @@
       }
 
     // Get template settings
-      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
+      $template_config = include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
+      if (!is_array($template_config)) include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
       self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
       foreach (array_keys($template_config) as $i) {
         if (!isset(self::$settings[$template_config[$i]['key']])) self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
@@ -122,11 +123,9 @@
 
       $microtime_start = microtime(true);
 
-      if (!function_exists('replace_first_occurrence')) {
-        function replace_first_occurrence($search, $replace, $subject) {
-          return implode($replace, explode($search, $subject, 2));
-        }
-      }
+      $mb_str_replace_first = function($search, $replace, $subject) {
+        return implode($replace, explode($search, $subject, 2));
+      };
 
     // Extract and group in content stylesheets
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
@@ -135,7 +134,7 @@
         $stylesheets = array();
         if (preg_match_all('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
               $stylesheets[] = trim($match[1]);
             }
           }
@@ -157,7 +156,7 @@
         $styles = array();
         if (preg_match_all('#<style>(.*?)</style>\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
               $styles[] = trim($match[1]);
             }
           }
@@ -184,7 +183,7 @@
         if (preg_match_all('#\R?(<script[^>]+></script>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
               $js_resources[] = trim($match[1]);
             }
           }
@@ -207,7 +206,7 @@
         if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
-            if ($GLOBALS['output'] = replace_first_occurrence($match[0], '', $GLOBALS['output'])) {
+            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
               $javascript[] = trim($match[1], "\r\n");
             }
           }

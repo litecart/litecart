@@ -1,6 +1,6 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_users', 'Users'),
     'default' => 'users',
     'theme' => array(

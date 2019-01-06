@@ -109,10 +109,20 @@
               foreach (array_keys($customer->data) as $key) {
                 if (isset(customer::$data[$key])) $customer->data[$key] = customer::$data[$key];
               }
-              $customer->save();
 
               if (empty($_POST['password'])) $_POST['password'] = functions::password_generate(6);
               $customer->set_password($_POST['password']);
+
+              $customer->save();
+
+              database::query(
+                "update ". DB_TABLE_CUSTOMERS ."
+                set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+                    last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+                    last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
+                where id = ". (int)$customer->data['id'] ."
+                limit 1;"
+              );
 
               $aliases = array(
                 '%store_name' => settings::get('store_name'),

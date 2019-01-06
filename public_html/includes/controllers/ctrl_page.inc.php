@@ -45,7 +45,7 @@
 
       $page_query = database::query(
         "select * from ". DB_TABLE_PAGES ."
-        where id = '". (int)$page_id ."'
+        where id = ". (int)$page_id ."
         limit 1;"
       );
 
@@ -59,7 +59,7 @@
 
       $page_info_query = database::query(
         "select * from ". DB_TABLE_PAGES_INFO ."
-        where page_id = '". (int)$this->data['id'] ."';"
+        where page_id = ". (int)$this->data['id'] .";"
       );
 
       while ($page_info = database::fetch($page_info_query)) {
@@ -76,18 +76,19 @@
         database::query(
           "insert into ". DB_TABLE_PAGES ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
 
       database::query(
         "update ". DB_TABLE_PAGES ."
-        set status = '". (!empty($this->data['status']) ? 1 : 0) ."',
+        set status = ". (int)$this->data['status'] .",
+          parent_id = ". (int)$this->data['parent_id'] .",
           dock = '". (!empty($this->data['dock']) ? implode(',', database::input($this->data['dock'])) : '') ."',
-          priority = '". (int)$this->data['priority'] ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+          priority = ". (int)$this->data['priority'] .",
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -95,7 +96,7 @@
 
         $page_info_query = database::query(
           "select * from ". DB_TABLE_PAGES_INFO ."
-          where page_id = '". (int)$this->data['id'] ."'
+          where page_id = ". (int)$this->data['id'] ."
           and language_code = '". $language_code ."'
           limit 1;"
         );
@@ -105,7 +106,7 @@
           database::query(
             "insert into ". DB_TABLE_PAGES_INFO ."
             (page_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". $language_code ."');"
           );
           $page_info['id'] = database::insert_id();
         }
@@ -117,8 +118,8 @@
             content = '". database::input($this->data['content'][$language_code], true) ."',
             head_title = '". database::input($this->data['head_title'][$language_code]) ."',
             meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-          where id = '". (int)$page_info['id'] ."'
-          and page_id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$page_info['id'] ."
+          and page_id = ". (int)$this->data['id'] ."
           and language_code = '". $language_code ."'
           limit 1;"
         );
@@ -129,14 +130,23 @@
 
     public function delete() {
 
+      $pages_query = database::query(
+        "select id from ". DB_TABLE_PAGES ."
+        where parent_id = ". (int)$this->data['id'] .";"
+      );
+
+      if (database::num_rows($pages_query)) {
+        trigger_error('Cannot delete page when there are other pages mounted to it', E_USER_ERROR);
+      }
+
       database::query(
         "delete from ". DB_TABLE_PAGES_INFO ."
-        where page_id = '". (int)$this->data['id'] ."';"
+        where page_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
         "delete from ". DB_TABLE_PAGES ."
-        where id = '". (int)$this->data['id'] ."';"
+        where id = ". (int)$this->data['id'] .";"
       );
 
       $this->data['id'] = null;

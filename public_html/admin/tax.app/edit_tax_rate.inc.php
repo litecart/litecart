@@ -104,7 +104,7 @@
       <label><?php echo language::translate('title_rate', 'Rate'); ?></label>
       <div class="input-group">
         <?php echo functions::form_draw_decimal_field('rate', true, 4); ?>
-        <span class="input-group-btn"><?php echo functions::form_draw_select_field('type', array(array('percent'), array('fixed')), true, false, 'style="width: 150px;"'); ?></span>
+        <span class="input-group-btn"><?php echo functions::form_draw_select_field('type', array(array('percent'), array('fixed')), true, 'style="width: 150px;"'); ?></span>
       </div>
     </div>
   </div>

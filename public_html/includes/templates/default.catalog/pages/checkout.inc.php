@@ -104,7 +104,7 @@
         jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        $('#box-checkout .'+ task.component +'.wrapper').html('<?php echo 'An unexpected error occurred, try reloading the page.'; ?>');
+        $('#box-checkout .'+ task.component +'.wrapper').html('An unexpected error occurred, try reloading the page.');
       },
       success: function(html) {
         if (task.refresh) $('#box-checkout .'+ task.component +'.wrapper').html(html).fadeTo('fast', 1);
@@ -277,7 +277,7 @@
 // Customer Form: Checksum
 
   window.customer_form_changed = false;
-  $('#box-checkout .customer.wrapper').on('input propertyChange', '#box-checkout-customer :input', function(e) {
+  $('#box-checkout .customer.wrapper').on('input change', '#box-checkout-customer :input', function(e) {
     if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
       window.customer_form_changed = true;
       $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');

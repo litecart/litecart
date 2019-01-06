@@ -90,7 +90,8 @@
         <th></th>
         <th><?php echo language::translate('title_file', 'File'); ?></th>
         <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th class="text-center"><?php echo language::translate('title_version', 'Version'); ?></th>
+        <th></th>
+        <th><?php echo language::translate('title_version', 'Version'); ?></th>
         <th><?php echo language::translate('title_author', 'Author'); ?></th>
         <th>&nbsp;</th>
       </tr>
@@ -108,6 +109,7 @@
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#88cc44' : '#ff6644') .';"'); ?></td>
       <td><?php echo $filename; ?></td>
       <td><?php echo $xml->id; ?></td>
+      <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vqmod' => $filename), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
       <td><?php echo $xml->version; ?></td>
       <td><?php echo $xml->author; ?></td>
       <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => $filename), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download fa-lg'); ?></a></td>
@@ -119,7 +121,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="7"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
+        <td colspan="8"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
       </tr>
     </tfoot>
   </table>

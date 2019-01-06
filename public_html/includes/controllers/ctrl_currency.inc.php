@@ -58,7 +58,7 @@
       if (!empty($this->data['id'])) {
         $currencies_query = database::query(
           "select * from ". DB_TABLE_CURRENCIES ."
-          where id = '". (int)$this->data['id'] ."'
+          where id = ". (int)$this->data['id'] ."
           limit 1;"
         );
         $currency = database::fetch($currencies_query);
@@ -87,7 +87,7 @@
         database::query(
           "insert into ". DB_TABLE_CURRENCIES ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -128,17 +128,17 @@
       database::query(
         "update ". DB_TABLE_CURRENCIES ."
         set
-          status = '". (int)$this->data['status'] ."',
+          status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
           number = '". database::input($this->data['number']) ."',
           name = '". database::input($this->data['name']) ."',
           value = '". database::input($this->data['value']) ."',
-          prefix = '". database::input($this->data['prefix']) ."',
-          suffix = '". database::input($this->data['suffix']) ."',
-          decimals = '". (int)$this->data['decimals'] ."',
-          priority = '". (int)$this->data['priority'] ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+          prefix = '". database::input($this->data['prefix'], false, false) ."',
+          suffix = '". database::input($this->data['suffix'], false, false) ."',
+          decimals = ". (int)$this->data['decimals'] .",
+          priority = ". (int)$this->data['priority'] .",
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -159,7 +159,7 @@
 
       database::query(
         "delete from ". DB_TABLE_CURRENCIES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

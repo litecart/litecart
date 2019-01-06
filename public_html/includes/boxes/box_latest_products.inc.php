@@ -3,10 +3,14 @@
 
   functions::draw_lightbox();
 
-  $box_latest_products_cache_id = cache::cache_id('box_latest_products', array('language', 'currency', 'prices'));
-  if (cache::capture($box_latest_products_cache_id, 'file')) {
+  $box_latest_products_cache_token = cache::token('box_latest_products', array('language', 'currency', 'prices'), 'file');
+  if (cache::capture($box_latest_products_cache_token)) {
 
-    $products_query = functions::catalog_products_query(array('sort' => 'date', 'limit' => settings::get('box_latest_products_num_items')));
+    $products_query = functions::catalog_products_query(array(
+      'sort' => 'date',
+      'limit' => settings::get('box_latest_products_num_items'),
+    ));
+
     if (database::num_rows($products_query)) {
 
       $box_latest_products = new view();
@@ -19,5 +23,5 @@
       echo $box_latest_products->stitch('views/box_latest_products');
     }
 
-    cache::end_capture($box_latest_products_cache_id);
+    cache::end_capture($box_latest_products_cache_token);
   }

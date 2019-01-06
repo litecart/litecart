@@ -18,7 +18,7 @@
       if (!empty($parsed_link['query']['page_id'])) {
         $page_query = database::query(
           "select page_id, title from ". DB_TABLE_PAGES_INFO ."
-          where page_id = '". (int)$parsed_link['query']['page_id'] ."'
+          where page_id = ". (int)$parsed_link['query']['page_id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );

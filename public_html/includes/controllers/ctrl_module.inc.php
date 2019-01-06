@@ -95,7 +95,7 @@
         database::query(
           "insert into ". DB_TABLE_MODULES ."
           (module_id, type, date_created)
-          values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". date('Y-m-d H:i:s') ."');"
+          values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
 
         $this->data['id'] = database::insert_id();
@@ -124,11 +124,11 @@
         set
           module_id = '". database::input($this->data['module_id']) ."',
           type = '". database::input($this->data['type']) ."',
-          status = '". (int)$this->data['status'] ."',
-          priority = '". (int)$this->data['priority'] ."',
+          status = ". (int)$this->data['status'] .",
+          priority = ". (int)$this->data['priority'] .",
           settings = '". database::input($this->_encode_settings($this->data['settings'])) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)database::input($this->data['id']) ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)database::input($this->data['id']) ."
         limit 1;"
       );
 

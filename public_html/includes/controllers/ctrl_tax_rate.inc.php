@@ -30,7 +30,7 @@
 
       $tax_rate_query = database::query(
         "select * from ". DB_TABLE_TAX_RATES ."
-        where id = '". (int)$tax_rate_id ."'
+        where id = ". (int)$tax_rate_id ."
         limit 1;"
       );
 
@@ -47,7 +47,7 @@
         database::query(
           "insert into ". DB_TABLE_TAX_RATES ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -65,8 +65,8 @@
           address_type = '". database::input($this->data['address_type']) ."',
           customer_type = '". database::input($this->data['customer_type']) ."',
           tax_id_rule = '". database::input($this->data['tax_id_rule']) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". (int)$this->data['id'] ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -77,7 +77,7 @@
 
       database::query(
         "delete from ". DB_TABLE_TAX_RATES ."
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

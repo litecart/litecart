@@ -68,7 +68,10 @@
       }
 
       session::$data['currency'] = self::$currencies[$code];
-      setcookie('currency_code', $code, time()+(60*60*24*30), WS_DIR_HTTP_HOME);
+
+      if (!empty($_COOKIE['cookies_accepted'])) {
+        setcookie('currency_code', $code, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+      }
     }
 
     public static function identify() {
@@ -138,10 +141,10 @@
 
       if (empty($from)) $from = settings::get('store_currency_code');
 
-      if (!isset(self::$currencies[$from])) trigger_error('Currency ('. $from .') does not exist', E_USER_WARNING);
-      if (!isset(self::$currencies[$to])) trigger_error('Currency ('. $to .') does not exist', E_USER_WARNING);
+      if (!isset(self::$currencies[$from])) trigger_error("Cannot convert from currency $from as the currency does not exist", E_USER_WARNING);
+      if (!isset(self::$currencies[$to])) trigger_error("Cannot convert to currency $to as the currency does not exist", E_USER_WARNING);
 
-      return $value / self::$currencies[$from]['value'] * self::$currencies[$to]['value'];
+      return $value * self::$currencies[$from]['value'] / self::$currencies[$to]['value'];
     }
 
     public static function convert($value, $from, $to=null) {
@@ -164,7 +167,7 @@
       if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
 
       $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
-      $amount = round($value * $currency_value, $decimals);
+      $amount = round($value / $currency_value, $decimals);
       $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
       $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
 
@@ -182,18 +185,18 @@
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
       if (empty($currency_code)) $currency_code = self::$selected['code'];
-      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
+      if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
 
       if (empty($currency_value)) $currency_value = currency::$currencies[$currency_code]['value'];
 
-      return number_format($value * $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
+      return number_format($value / $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
     }
 
   // Round a store currency amount in a remote currency
     public static function round($value, $currency_code) {
 
       if (empty($currency_code)) $currency_code = self::$selected['code'];
-      if (!isset(self::$currencies[$currency_code])) trigger_error('Currency ('. $currency_code .') does not exist', E_USER_WARNING);
+      if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
 
       $value = self::convert($value, settings::get('store_currency_code'), $currency_code);
       $value = round($value, self::$currencies[$currency_code]['decimals']);

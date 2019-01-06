@@ -42,7 +42,7 @@
 
       $manufacturers_query = database::query(
         "select * from ". DB_TABLE_MANUFACTURERS ."
-        where id='". (int)$manufacturer_id ."'
+        where id=". (int)$manufacturer_id ."
         limit 1;"
       );
 
@@ -54,7 +54,7 @@
 
       $manufacturers_info_query = database::query(
         "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
-        where manufacturer_id = '". (int)$manufacturer_id ."';"
+        where manufacturer_id = ". (int)$manufacturer_id .";"
       );
 
       while ($manufacturer_info = database::fetch($manufacturers_info_query)) {
@@ -71,7 +71,7 @@
         database::query(
           "insert into ". DB_TABLE_MANUFACTURERS ."
           (date_created)
-          values ('". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -83,13 +83,13 @@
 
       database::query(
         "update ". DB_TABLE_MANUFACTURERS ." set
-        status = '". (int)$this->data['status'] ."',
-        featured = '". (int)$this->data['featured'] ."',
+        status = ". (int)$this->data['status'] .",
+        featured = ". (int)$this->data['featured'] .",
         code = '". database::input($this->data['code']) ."',
         name = '". database::input($this->data['name']) ."',
         image = '". database::input($this->data['image']) ."',
         keywords = '". database::input($this->data['keywords']) ."'
-        where id = '". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -97,7 +97,7 @@
 
         $manufacturers_info_query = database::query(
           "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
-          where manufacturer_id = '". (int)$this->data['id'] ."'
+          where manufacturer_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -107,7 +107,7 @@
           database::query(
             "insert into ". DB_TABLE_MANUFACTURERS_INFO ."
             (manufacturer_id, language_code)
-            values ('". (int)$this->data['id'] ."', '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". $language_code ."');"
           );
         }
 
@@ -119,7 +119,7 @@
           h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
           link = '". database::input($this->data['link'][$language_code]) ."'
-          where manufacturer_id = '". (int)$this->data['id'] ."'
+          where manufacturer_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -134,7 +134,7 @@
 
       $products_query = database::query(
         "select id from ". DB_TABLE_PRODUCTS ."
-        where manufacturer_id = '". (int)$this->data['id'] ."'
+        where manufacturer_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -193,7 +193,7 @@
       database::query(
         "update ". DB_TABLE_MANUFACTURERS ."
         set image = '". database::input($filename) ."'
-        where id = '". (int)$this->data['id'] ."';"
+        where id = ". (int)$this->data['id'] .";"
       );
 
       $this->data['image'] = $filename;

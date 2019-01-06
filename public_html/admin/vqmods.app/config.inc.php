@@ -1,6 +1,6 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_vqmods', 'vQmods'),
     'default' => 'vqmods',
     'theme' => array(
@@ -11,5 +11,6 @@
     'docs' => array(
       'download' => 'download.inc.php',
       'vqmods' => 'vqmods.inc.php',
+      'test' => 'test.inc.php',
     ),
   );

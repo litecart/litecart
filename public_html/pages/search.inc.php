@@ -45,12 +45,12 @@
     left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
 
     left join (
-      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
+      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
       from ". DB_TABLE_PRODUCTS_PRICES ."
     ) pp on (pp.product_id = p.id)
 
     left join (
-      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
+      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
       from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
       where (start_date <= '". date('Y-m-d H:i:s') ."')
       and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')

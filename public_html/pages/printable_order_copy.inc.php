@@ -4,7 +4,9 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
-  if (empty($_GET['order_id']) || empty($_GET['checksum'])) {
+  if (!isset($_GET['public_key']) && isset($_GET['checksum'])) $_GET['public_key'] = $_GET['checksum']; // Backwards compatible
+
+  if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
     http_response_code(401);
     exit;
   }
@@ -13,7 +15,7 @@
 
   document::$snippets['title'][] = language::translate('title_order', 'Order') .' #'. (int)$order->data['id'];
 
-  if (empty($order->data['id']) || $_GET['checksum'] != functions::general_order_public_checksum($order->data['id'])) {
+  if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
     http_response_code(400);
     exit;
   }

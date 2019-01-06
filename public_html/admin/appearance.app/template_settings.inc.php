@@ -1,7 +1,8 @@
 <?php
 
 // Load template settings structure
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
+  $template_config = include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
+  if (!is_array($template_config)) include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
 
 // Get settings from database
   $settings = json_decode(settings::get('store_template_catalog_settings'), true);

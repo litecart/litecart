@@ -1,5 +1,3 @@
-@image-whitespace-color: #fff;
-
 #view-full-page {
   float: right;
   display: inline-block;
@@ -7,17 +5,7 @@
 }
 
 #box-product {
-  .image-wrapper {
-    position: relative;
-    margin-bottom: @default-gutter-size;
-    overflow: hidden;
-    background: @image-whitespace-color;
-    text-align: center;
-    box-shadow: 0 0 2px rgba(0,0,0,0.15);
-    img {
-      width: 100%;
-      min-height: 1px;
-    }
+  .main-image {
     .sticker {
       color: #fff;
       font-size: 12px;
@@ -38,17 +26,8 @@
       }
     }
   }
-  .extra-image {
-    background: @image-whitespace-color;
-    text-align: center;
-    box-shadow: 0 2px 2px rgba(0,0,0,0.15);
-    margin-bottom: @default-gutter-size;
-    img {
-      max-width: 100%;
-    }
-  }
   .price-wrapper {
-    font-size: 2em;
+    font-size: 1.75em;
   }
   .regular-price {
     font-size: 0.75em;

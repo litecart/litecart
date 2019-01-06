@@ -75,107 +75,24 @@
 
     ######################################################################
 
-    public static function get($cache_id, $type, $max_age=900, $force=false) {
-
-      if (empty($force)) {
-        if (empty(self::$enabled)) return null;
-
-      // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
-        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return null;
-
-        if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return null;
-          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return null;
-        }
-      }
-
-      switch ($type) {
-
-        case 'database': // Not supported yet
-          return null;
-
-        case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$cache_id;
-          if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
-            if (!$force && filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return null;
-
-            $data = @json_decode(file_get_contents($cache_file), true);
-
-            if (strtolower(language::$selected['charset']) != 'utf-8') {
-              $data = language::convert_characters($data, 'UTF-8', language::$selected['charset']);
-            }
-
-            return $data;
-          }
-          return null;
-
-        case 'session':
-          if (isset(self::$_data[$cache_id]['mtime']) && self::$_data[$cache_id]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            if (!$force && self::$_data[$cache_id]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return null;
-            return self::$_data[$cache_id]['data'];
-          }
-          return null;
-
-        case 'memory': // Not supported yet
-          return null;
-
-        default:
-          trigger_error('Invalid cache type ('. $type .')', E_USER_ERROR);
-      }
+    public static function cache_id() {
+      trigger_error('The method cache::cache_id() is deprecated, use instead cache::token()', E_USER_DEPRECATED);
+      return;
     }
 
-    public static function set($cache_id, $type, $data) {
+    public static function token($keyword, $dependencies=array(), $storage='file', $ttl=900) {
 
-      switch ($type) {
-
-        case 'database': // Not supported yet
-          return false;
-
-        case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $cache_id;
-
-          if (strtolower(language::$selected['charset']) != 'utf-8') {
-            $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
-          }
-
-          return @file_put_contents($cache_file, json_encode($data));
-
-        case 'session':
-          self::$_data[$cache_id] = array(
-            'mtime' => time(),
-            'data' => $data,
-          );
-          return true;
-
-        case 'memory': // Not supported yet
-          return false;
-
-        default:
-          trigger_error('Invalid cache type ('. $type .')', E_USER_ERROR);
-      }
-    }
-
-    public static function clear_cache($keyword=null) {
-
-    // Clear files
-      if (!empty($keyword)) {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache*_'. $keyword .'_*');
-      } else {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
-      }
-
-      if ($files) foreach ($files as $file) unlink($file);
-
-    // Set breakpoint (for session cache)
-      database::query(
-        "update ". DB_TABLE_SETTINGS ."
-        set value = '". date('Y-m-d H:i:s') ."'
-        where `key` = 'cache_system_breakpoint'
-        limit 1;"
+      $storage_types = array(
+        //'database',
+        'file',
+        'session',
+        //'memory',
       );
-    }
 
-    public static function cache_id($keyword, $dependencies=array()) {
+      if (!in_array($storage, $storage_types)) {
+        trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
+        return;
+      }
 
       $hash_string = $keyword;
 
@@ -245,24 +162,126 @@
         }
       }
 
-      return $keyword .'_'. md5($hash_string);
+      return array(
+        'id' => $keyword .'_'. md5($hash_string),
+        'storage' => $storage,
+        'ttl' => $ttl,
+      );
     }
 
-    /* This option is not affected by $enabled since new data is always recorded */
-    public static function capture($cache_id, $type='session', $max_age=900, $force=false) {
+    public static function get($token, $max_age=900, $no_hard_refresh=false) {
 
-      if (isset(self::$_recorders[$cache_id])) trigger_error('Cache recorder already initiated ('. $cache_id .')', E_USER_ERROR);
+      if (is_string($token)) {
+        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
+        return;
+      }
 
-      $_data = self::get($cache_id, $type, $max_age, $force);
+      if (empty(self::$enabled)) return;
+
+      if (empty($no_hard_refresh)) {
+
+      // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
+        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return;
+
+        if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
+          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return;
+          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return;
+        }
+      }
+
+      switch ($token['storage']) {
+
+        case 'database': // Reserved, but not implemented
+          return;
+
+        case 'file':
+          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$token['id'];
+          if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
+            if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
+
+            $data = @json_decode(file_get_contents($cache_file), true);
+
+            if (strtolower(language::$selected['charset']) != 'utf-8') {
+              $data = language::convert_characters($data, 'UTF-8', language::$selected['charset']);
+            }
+
+            return $data;
+          }
+          return;
+
+        case 'session':
+          if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
+            if (self::$_data[$token['id']]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return;
+            return self::$_data[$token['id']]['data'];
+          }
+          return;
+
+        case 'memory': // Reserved, but not implemented
+          return;
+
+        default:
+          trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
+          return;
+      }
+    }
+
+    public static function set($token, $data) {
+
+      if (is_string($token)) {
+        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
+        return;
+      }
+
+      switch ($token['storage']) {
+
+        case 'database': // Reserved, but not implemented
+          return false;
+
+        case 'file':
+          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $token['id'];
+
+          if (strtolower(language::$selected['charset']) != 'utf-8') {
+            $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
+          }
+
+          return @file_put_contents($cache_file, json_encode($data));
+
+        case 'session':
+          self::$_data[$token['id']] = array(
+            'mtime' => time(),
+            'data' => $data,
+          );
+          return true;
+
+        case 'memory': // Reserved, but not implemented
+          return false;
+
+        default:
+          trigger_error('Invalid cache type ('. $storage .')', E_USER_WARNING);
+          return;
+      }
+    }
+
+    // Output recorder (This option is not affected by $enabled as fresh data is always recorded)
+    public static function capture($token, $max_age=900, $force=false) {
+
+      if (is_string($token)) {
+        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
+        return;
+      }
+
+      if (isset(self::$_recorders[$token['id']])) trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+
+      $_data = self::get($token, $max_age, $force);
 
       if (!empty($_data)) {
         echo $_data;
         return false;
       }
 
-      self::$_recorders[$cache_id] = array(
-        'id' => $cache_id,
-        'type' => $type,
+      self::$_recorders[$token['id']] = array(
+        'id' => $token['id'],
+        'storage' => $token['storage'],
       );
 
       ob_start();
@@ -270,22 +289,51 @@
       return true;
     }
 
-    /* This option is not affected by $enabled since new data is always recorded */
-    public static function end_capture($cache_id=null) {
+    public static function end_capture($token=null) {
 
-      if (empty($cache_id)) $cache_id = current(array_reverse(self::$_recorders));
+      if (is_string($token)) {
+        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
+        return false;
+      }
 
-      if (!isset(self::$_recorders[$cache_id])) {
-        if ($_data === false) trigger_error('Could not end buffer recording as cache_id doesn\'t exist', E_USER_ERROR);
-        return;
+      if (empty($token['id'])) $token['id'] = current(array_reverse(self::$_recorders));
+
+      if (!isset(self::$_recorders[$token['id']])) {
+        trigger_error('Could not end buffer recording as token id doesn\'t exist', E_USER_WARNING);
+        return false;
       }
 
       $_data = ob_get_flush();
 
-      if ($_data === false) trigger_error('No active recording while trying to end buffer recorder', E_USER_ERROR);
+      if ($_data === false) {
+        trigger_error('No active recording while trying to end buffer recorder', E_USER_WARNING);
+        return false;
+      }
 
-      self::set($cache_id, self::$_recorders[$cache_id]['type'], $_data);
+      self::set($token, $_data);
 
-      unset(self::$_recorders[$cache_id]);
+      unset(self::$_recorders[$token['id']]);
+
+      return true;
+    }
+
+    public static function clear_cache($keyword=null) {
+
+    // Clear files
+      if (!empty($keyword)) {
+        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache*_'. $keyword .'_*');
+      } else {
+        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
+      }
+
+      if ($files) foreach ($files as $file) unlink($file);
+
+    // Set breakpoint (for all session cache)
+      database::query(
+        "update ". DB_TABLE_SETTINGS ."
+        set value = '". date('Y-m-d H:i:s') ."'
+        where `key` = 'cache_system_breakpoint'
+        limit 1;"
+      );
     }
   }

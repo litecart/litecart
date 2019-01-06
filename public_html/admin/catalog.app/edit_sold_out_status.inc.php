@@ -24,6 +24,7 @@
       $fields = array(
         'name',
         'description',
+        'hidden',
         'orderable',
       );
 
@@ -77,6 +78,9 @@
 
   <div class="row">
     <div class="form-group col-md-6">
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('hidden', '1', empty($_POST['hidden']) ? '' : '1'); ?> <?php echo language::translate('text_hide_from_listing', 'Hide from listing'); ?></label>
+      </div>
       <div class="checkbox">
         <label><?php echo functions::form_draw_checkbox('orderable', '1', empty($_POST['orderable']) ? '' : '1'); ?> <?php echo language::translate('text_product_is_orderable', 'Product is orderable'); ?></label>
       </div>

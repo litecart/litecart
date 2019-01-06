@@ -28,9 +28,8 @@
         if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
       }
 
-      if (!empty($_POST['email']) && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
-
-      if (empty($_POST['email'])) throw new Exception(language::translate('error_email_missing', 'You must enter your email address.'));
+      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address.'));
+      if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
 
       if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
       if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
@@ -72,17 +71,26 @@
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
 
+      $customer->set_password($_POST['password']);
+
       $customer->save();
 
-      $customer->set_password($_POST['password']);
+      database::query(
+        "update ". DB_TABLE_CUSTOMERS ."
+        set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+            last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+            last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
+        where id = ". (int)$customer->data['id'] ."
+        limit 1;"
+      );
 
       $aliases = array(
         '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
-        '%customer_firstname' => $_POST['firstname'],
-        '%customer_lastname' => $_POST['lastname'],
-        '%customer_email' => $_POST['email'],
-        '%customer_password' => $_POST['password'],
+        '%customer_id' => $customer->data['id'],
+        '%customer_firstname' => $customer->data['firstname'],
+        '%customer_lastname' => $customer->data['lastname'],
+        '%customer_email' => $customer->data['email'],
       );
 
       $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
@@ -94,10 +102,9 @@
             ->add_body($message)
             ->send();
 
-      notices::add('success', language::translate('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
-
       customer::load($customer->data['id']);
 
+      notices::add('success', language::translate('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
       header('Location: '. document::ilink(''));
       exit;
 

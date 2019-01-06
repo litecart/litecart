@@ -5,8 +5,9 @@
    * @description Main Object used
    */
   abstract class VQMod {
-  public static $_vqversion = '2.6.1';            // Current version number
+    public static $_vqversion = '2.6.1';        // Current version number
 
+    private static $_debug = false;             // Debug mode
     private static $_modFileList = array();     // Array of xml files
     private static $_mods = array();            // Array of modifications to apply
     private static $_filesModded = array();     // Array of already modified files
@@ -34,6 +35,15 @@
 
       if (!class_exists('DOMDocument', false)) {
         trigger_error(__METHOD__.' - vQmod requires the PHP DOMDocument extension', E_USER_ERROR);
+      }
+
+      if (isset($_GET['debug'])) {
+        self::$_debug = true;
+      }
+
+      if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
+        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) self::$_debug = true;
+        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) self::$_debug = true;
       }
 
       if (!$path) $path = str_replace("\\", '/', dirname(dirname(__FILE__)));
@@ -87,7 +97,7 @@
       $cacheFile = self::$_cachePathFull . 'vq2-' . preg_replace('#[/\\\\]+#', '_', $stripped_filename);
       $file_last_modified = filemtime($sourcePath);
 
-      if (file_exists($cacheFile) && filemtime($cacheFile) >= self::$_lastModifiedTime && filemtime($cacheFile) >= $file_last_modified) {
+      if (!isset(self::$_debug) && file_exists($cacheFile) && filemtime($cacheFile) >= self::$_lastModifiedTime && filemtime($cacheFile) >= $file_last_modified) {
         return $cacheFile;
       }
 
@@ -190,7 +200,7 @@
       }
 
       $modCache = self::path(self::$modCache);
-      if (isset($_GET['debug']) || !file_exists($modCache)) {
+      if (!empty(self::$_debug) || !file_exists($modCache)) {
         self::$_lastModifiedTime = time();
       } elseif (file_exists($modCache) && filemtime($modCache) >= self::$_lastModifiedTime) {
         $mods = file_get_contents($modCache);

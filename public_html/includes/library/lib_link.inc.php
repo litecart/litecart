@@ -160,20 +160,19 @@
 
       // Magic Quotes Fix
       if (ini_get('magic_quotes_gpc')) {
-        if (!function_exists('stripslashes_recursive')) {
-          function stripslashes_recursive($value) {
-            if (is_array($value)) {
-              $return = array();
-              foreach ($value as $k => $v) {
-                $return[$k] = stripslashes_recursive($v);
-              }
-            } else {
-              $return = stripslashes($value);
+        $stripslashes_recursive = function($value, &$stripslashes_recursive) {
+          if (is_array($value)) {
+            $return = array();
+            foreach ($value as $k => $v) {
+              $return[$k] = $stripslashes_recursive($v);
             }
-            return $return;
+          } else {
+            $return = stripslashes($value);
           }
-        }
-        $parts['query'] = stripslashes_recursive($parts['query']);
+          return $return;
+        };
+
+        $parts['query'] = $stripslashes_recursive($parts['query']);
       }
 
       if (!isset($parts['fragment'])) $parts['fragment'] = '';

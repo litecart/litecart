@@ -9,7 +9,9 @@
 
   if (empty(customer::$data['country_code'])) customer::$data['country_code'] = settings::get('default_country_code');
 
-  $payment = new mod_payment();
+  if (empty(session::$data['payment'])) session::$data['payment'] = new mod_payment();
+  $payment = &session::$data['payment'];
+
   $options = $payment->options();
 
   if (file_get_contents('php://input') != '' && !empty($_POST['payment'])) {

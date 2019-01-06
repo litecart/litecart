@@ -91,7 +91,7 @@
         group by order_id
       ) oi on (oi.order_id = o.id)
       where o.order_status_id in ('". implode("', '", $order_statuses) ."')
-      and (o.customer_id = '". (int)$customer->data['id'] ."' or o.customer_email = '". database::input($customer->data['email']) ."');"
+      and (o.customer_id = ". (int)$customer->data['id'] ." or o.customer_email = '". database::input($customer->data['email']) ."');"
     );
 
     $orders = database::fetch($orders_query);
@@ -134,13 +134,13 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-          <?php echo functions::form_draw_text_field('tax_id', true); ?>
+          <label><?php echo language::translate('title_company', 'Company'); ?></label>
+          <?php echo functions::form_draw_text_field('company', true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
-          <?php echo functions::form_draw_text_field('company', true); ?>
+          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+          <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
       </div>
 
@@ -203,6 +203,27 @@
           <?php echo functions::form_draw_password_field('new_password', '', 'autocomplete="off"'); ?>
         </div>
       </div>
+
+      <?php if (!empty($customer->data['id'])) { ?>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
+          <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
+          <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
+          <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
+        </div>
+      </div>
+      <?php } ?>
 
       <p class="btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>

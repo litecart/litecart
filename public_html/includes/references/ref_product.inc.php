@@ -127,7 +127,7 @@
           while ($product_to_category = database::fetch($products_to_categories_query)) {
             $categories_info_query = database::query(
               "select * from ". DB_TABLE_CATEGORIES_INFO ."
-              where category_id = '". (int)$product_to_category['category_id'] ."'
+              where category_id = ". (int)$product_to_category['category_id'] ."
               and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
               order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
             );
@@ -158,7 +158,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
-            where delivery_status_id = '". (int)$this->_data['delivery_status_id'] ."'
+            where delivery_status_id = ". (int)$this->_data['delivery_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -213,7 +213,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['id'])) {
               $option_group_query = database::query(
                 "select * from ". DB_TABLE_OPTION_GROUPS ."
-                where id = '". (int)$product_option['group_id'] ."'
+                where id = ". (int)$product_option['group_id'] ."
                 limit 1;"
               );
               $option_group = database::fetch($option_group_query);
@@ -225,7 +225,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['name'])) {
               $option_group_info_query = database::query(
                 "select * from ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi
-                where group_id = '". (int)$product_option['group_id'] ."'
+                where group_id = ". (int)$product_option['group_id'] ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
@@ -241,7 +241,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['id'])) {
               $option_value_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES ."
-                where id = '". (int)$product_option['value_id'] ."'
+                where id = ". (int)$product_option['value_id'] ."
                 limit 1;"
               );
               $option_value = database::fetch($option_value_query);
@@ -253,7 +253,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['name'])) {
               $option_values_info_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES_INFO ." pcvi
-                where value_id = '". (int)$product_option['value_id'] ."'
+                where value_id = ". (int)$product_option['value_id'] ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
@@ -310,7 +310,7 @@
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
             where product_id = ". (int)$this->_id ."
-            ". (!empty($option_id) ? "and id = '". (int)$option_id ."'" : '') ."
+            ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
           );
 
@@ -343,7 +343,7 @@
 
               $options_values_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES_INFO ."
-                where value_id = '". (int)$value_id ."'
+                where value_id = ". (int)$value_id ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
@@ -369,7 +369,7 @@
 
           $query = database::query(
             "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-            where product_id = '". (int)$this->_id ."';"
+            where product_id = ". (int)$this->_id .";"
           );
 
           while ($row = database::fetch($query)) {
@@ -408,7 +408,7 @@
 
               $query = database::query(
                 "select name from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
-                where product_group_id = '". (int)$group_id ."'
+                where product_group_id = ". (int)$group_id ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
@@ -419,7 +419,7 @@
 
               $query = database::query(
                 "select name from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-                where product_group_value_id = '". (int)$value_id ."'
+                where product_group_value_id = ". (int)$value_id ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
@@ -452,7 +452,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
-            where quantity_unit_id = '". (int)$this->quantity_unit_id ."'
+            where quantity_unit_id = ". (int)$this->quantity_unit_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -471,7 +471,7 @@
 
           $query = database::query(
             "select id, orderable from ". DB_TABLE_SOLD_OUT_STATUSES ."
-            where id = '". (int)$this->sold_out_status_id ."'
+            where id = ". (int)$this->sold_out_status_id ."
             limit 1;"
           );
           $this->_data['sold_out_status'] = database::fetch($query);
@@ -480,7 +480,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
-            where sold_out_status_id = '". (int)$this->_data['sold_out_status_id'] ."'
+            where sold_out_status_id = ". (int)$this->_data['sold_out_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );

@@ -10,7 +10,6 @@
     public $priority = 0;
 
     public function __construct() {
-
       $this->name = language::translate(__CLASS__.':title_payment_fee', 'Payment Fee');
     }
 
@@ -18,16 +17,16 @@
 
       if (empty($this->settings['status'])) return;
 
-      if (empty($GLOBALS['payment']->data['selected']['cost'])) return;
-
       $output = array();
 
-      $output[] = array(
-        'title' => $GLOBALS['payment']->data['selected']['title'] .' ('. $GLOBALS['payment']->data['selected']['name'] .')',
-        'value' => $GLOBALS['payment']->data['selected']['cost'],
-        'tax' => tax::get_tax($GLOBALS['payment']->data['selected']['cost'], $GLOBALS['payment']->data['selected']['tax_class_id'], $order->data['customer']),
-        'calculate' => true,
-      );
+      if (isset($order->data['payment_option']['cost']) && $order->data['payment_option']['cost'] != 0) {
+        $output[] = array(
+          'title' => $order->data['payment_option']['title'] .' ('. $order->data['payment_option']['name'] .')',
+          'value' => $order->data['payment_option']['cost'],
+          'tax' => tax::get_tax($order->data['payment_option']['cost'], $order->data['payment_option']['tax_class_id'], $order->data['customer']),
+          'calculate' => true,
+        );
+      }
 
       return $output;
     }
