@@ -1,7 +1,7 @@
 <div id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
   <div class="row">
     <div class="col-sm-6 col-md-4">
-      <div class="thumbnail">
+      <div class="main-image thumbnail">
         <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
           <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
           <?php echo $sticker; ?>
@@ -12,7 +12,7 @@
       <div class="extra-images row half-gutter">
         <?php foreach ($extra_images as $image) { ?>
         <div class="col-xs-4">
-          <div class="thumbnail">
+          <div class="extra-image thumbnail">
             <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
               <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
             </a>
