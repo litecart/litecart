@@ -512,7 +512,7 @@
                     //trigger_error(__METHOD__.'('. basename($this->modFile) .') - Invalid regular expression ('. VQMod::$fileModding .'): '. $mod['search']->getContent(), E_USER_WARNING);
                     trigger_error(__METHOD__.'('. basename($this->modFile) .') - Invalid regular expression in "'. $modObject->id  .'": '. VQMod::$fileModding . $skip, E_USER_WARNING);
                   }
-                  continue 2;
+                  continue 3;
                 } elseif ($pos == 0) {
                   $pos = false;
                 }
