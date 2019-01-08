@@ -11,7 +11,14 @@
     border: 1px solid @default-border-color;
     border-radius: @default-border-radius;
     text-align: center;
-    transition: all 50ms linear;
+    transition: all 100ms ease-out;
+    transform: scale(1);
+
+    &:hover {
+      box-shadow: 0 @default-gutter-size/4 @default-gutter-size/2 0 rgba(0, 0, 0, 0.15);
+      transform: scale(1.01);
+    }
+
     a.link {
       display: block;
       color: inherit;
@@ -74,7 +81,8 @@
     background: @image-whitespace-color;
     border: 1px solid @default-border-color;
     border-radius: @default-gutter-size/4;
-    transition: all 50ms linear;
+    transform: scale(1);
+    transition: all 100ms linear;
     a.link {
       display: block;
       color: inherit;
@@ -157,6 +165,11 @@
         color: #cc0000;
         white-space: nowrap;
       }
+    }
+
+    &:hover {
+      box-shadow: 0 @default-gutter-size/4 @default-gutter-size/2 0 rgba(0, 0, 0, 0.15);
+      transform: scale(1.01);
     }
 
     &.column {
