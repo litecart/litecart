@@ -31,7 +31,7 @@
 
     ######################################################################
 
-    public static function create_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+    public static function create_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null, $rewrite=true) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
@@ -87,12 +87,14 @@
       $link = self::implode_link($parsed_link);
 
     // Process catalog links
-      if (empty($parsed_link['host']) || $parsed_link['host'] == preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) {
-        if ($parsed_link['path'] == WS_DIR_HTTP_HOME || !file_exists(FS_DIR_HTTP_ROOT . $parsed_link['path'])) {
-          if (preg_match('#^'. WS_DIR_HTTP_HOME .'#', $parsed_link['path'])) {
-            if (class_exists('route', false)) {
-              if ($rewritten_link = route::rewrite($link, $language_code)) {
-                $link = $rewritten_link;
+      if (!empty($rewrite)) {
+        if (empty($parsed_link['host']) || $parsed_link['host'] == preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) {
+          if ($parsed_link['path'] == WS_DIR_HTTP_HOME || !file_exists(FS_DIR_HTTP_ROOT . $parsed_link['path'])) {
+            if (preg_match('#^'. WS_DIR_HTTP_HOME .'#', $parsed_link['path'])) {
+              if (class_exists('route', false)) {
+                if ($rewritten_link = route::rewrite($link, $language_code)) {
+                  $link = $rewritten_link;
+                }
               }
             }
           }
