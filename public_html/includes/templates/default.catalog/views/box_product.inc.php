@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-6 col-md-4">
       <div class="main-image thumbnail">
-        <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+        <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
           <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
           <?php echo $sticker; ?>
         </a>
@@ -13,7 +13,7 @@
         <?php foreach ($extra_images as $image) { ?>
         <div class="col-xs-4">
           <div class="extra-image thumbnail">
-            <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <a href="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
               <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
             </a>
           </div>

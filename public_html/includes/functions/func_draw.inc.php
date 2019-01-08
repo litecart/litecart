@@ -82,7 +82,7 @@
       'name' => $product['name'],
       'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id', 'manufacturer_id')),
       'image' => array(
-        'original' => $product['image'] ? WS_DIR_IMAGES . $product['image'] : '',
+        'original' => ltrim($product['image'] ? WS_DIR_IMAGES . $product['image'] : '', '/'),
         'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'viewport' => array(
