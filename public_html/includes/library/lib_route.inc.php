@@ -212,6 +212,8 @@
       $use_rewrite = false;
       if (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && in_array(strtolower($_SERVER['REDIRECT_HTTP_MOD_REWRITE']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
         $use_rewrite = true;
+      } else if (isset($_SERVER['HTTP_MOD_REWRITE']) && in_array(strtolower($_SERVER['HTTP_MOD_REWRITE']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) { // FastCGI
+        $use_rewrite = true;
       } else if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
         $use_rewrite = true;
       } else if (!preg_match('#(apache)#i', $_SERVER['SERVER_SOFTWARE'])) {
