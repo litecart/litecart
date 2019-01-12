@@ -232,7 +232,7 @@
       if ($translation = database::fetch($translation_query)) {
         database::query(
           "update ". DB_TABLE_TRANSLATIONS ."
-          set `text_". $language_code ."` = '". $translation['text_'.$language_code] ."',
+          set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
           where text_en = '". database::input($translation['text_en']) ."'
           and text_". self::$selected['code'] ." = '';"
