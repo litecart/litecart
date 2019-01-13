@@ -9,7 +9,7 @@
       <div class="manufacturer"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
-        <s class="regular-price"><?php echo currency::format($regular_price); ?></s> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
+          <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
         <?php } else { ?>
         <span class="price"><?php echo currency::format($regular_price); ?></span>
         <?php } ?>

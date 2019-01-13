@@ -11,7 +11,6 @@
         <div class="description"><?php echo $short_description; ?></div>
         <div class="price-wrapper">
           <?php if ($campaign_price) { ?>
-          <s class="regular-price"><?php echo currency::format($regular_price); ?></s> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
           <?php } else { ?>
           <span class="price"><?php echo currency::format($regular_price); ?></span>
           <?php } ?>
@@ -19,4 +18,5 @@
       </div>
     </a>
   </div>
+        <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
 </div>
