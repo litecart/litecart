@@ -1,8 +1,8 @@
-<aside id="sidebar">
+<div id="sidebar">
   <div id="column-left">
     <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
   </div>
-</aside>
+</div>
 
 <main id="content">
   {snippet:notices}

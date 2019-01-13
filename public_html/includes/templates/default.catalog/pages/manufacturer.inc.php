@@ -1,7 +1,7 @@
-<aside id="sidebar">
+<div id="sidebar">
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturer_links.inc.php'); ?>
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php'); ?>
-</aside>
+</div>
 
 <main id="content">
   {snippet:notices}

@@ -1,6 +1,6 @@
-<aside id="sidebar" class="hidden-xs">
+<div id="sidebar" class="hidden-xs">
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
-</aside>
+</div>
 
 <main id="content">
   {snippet:notices}
