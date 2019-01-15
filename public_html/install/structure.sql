@@ -130,6 +130,7 @@ CREATE TABLE `lc_customers` (
   `newsletter` TINYINT(1) NOT NULL DEFAULT '1',
   `notes` TEXT NOT NULL,
   `password_reset_token` VARCHAR(128) NOT NULL,
+  `num_logins` INT(11) NOT NULL,
   `last_ip` VARCHAR(39) NOT NULL,
   `last_host` VARCHAR(64) NOT NULL,
   `last_agent` VARCHAR(256) NOT NULL,
