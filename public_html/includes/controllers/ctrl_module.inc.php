@@ -88,10 +88,6 @@
 
       if (empty($this->data['id'])) {
 
-        if (method_exists($this->_module, 'uninstall')) {
-          $this->_module->uninstall();
-        }
-
         database::query(
           "insert into ". DB_TABLE_MODULES ."
           (module_id, type, date_created)
