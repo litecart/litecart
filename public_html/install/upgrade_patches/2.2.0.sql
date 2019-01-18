@@ -66,3 +66,5 @@ ALTER TABLE `lc_order_statuses` ADD COLUMN `keywords` VARCHAR(256) NOT NULL AFTE
 UPDATE `lc_currencies` SET `value` = 1 / `value`;
 -- --------------------------------------------------------
 UPDATE `lc_orders` SET currency_value = 1 / currency_value;
+-- --------------------------------------------------------
+DELETE FROM `lc_translations` WHERE code = 'terms_cookies_acceptance';

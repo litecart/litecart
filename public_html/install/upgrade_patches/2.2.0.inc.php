@@ -2,8 +2,10 @@
 
 // Delete old files
   $deleted_files = array(
-    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery-3.2.1.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_catalog.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
+    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/listing_product.inc.php',
   );
 
   foreach ($deleted_files as $pattern) {
