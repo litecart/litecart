@@ -121,3 +121,66 @@
       where id = ". (int)$order['id'] .";"
     );
   }
+
+// Fix unique indexes (ALTER IGNORE is deprecated)
+  $tables = array(
+    array('table' => DB_TABLE_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'manufacturers_info',         'index' => 'manufacturer_info',        'columns' => '`manufacturer_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'option_groups_info',         'index' => 'option_group_info',        'columns' => '`group_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'option_values_info',         'index' => 'option_value_info',        'columns' => '`value_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'order_statuses_info',        'index' => 'order_status_info',        'columns' => '`order_status_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'pages_info',                 'index' => 'page_info',                'columns' => '`page_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'products_info',              'index' => 'product_info',             'columns' => '`product_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'),
+    array('table' => DB_TABLE_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'),
+    array('table' => DB_TABLE_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'),
+    array('table' => DB_TABLE_PREFIX.'product_groups_info',        'index' => 'product_group_info',       'columns' => '`product_group_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'product_groups_values_info', 'index' => 'product_group_value_info', 'columns' => '`product_group_value_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'),
+    array('table' => DB_TABLE_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'),
+  );
+
+  foreach ($tables as $table) {
+    $index_query = database::query(
+      "SHOW KEYS FROM `". $table['table'] ."`
+      WHERE Key_name = '". $table['index'] ."'
+      AND Non_unique = 0;"
+    );
+
+    if (!database::num_rows($index_query)) {
+      database::query(
+        "ALTER TABLE `". $table['table'] ."`
+        ADD UNIQUE KEY `". $table['index'] ."` (". $table['columns'] .");"
+      );
+    }
+  }
+
+// Remove some indexes
+  $index_query = database::query(
+    "SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_prices`
+    WHERE Key_name = 'product_price'
+    AND Non_unique = 0;"
+  );
+
+  if (database::num_rows($index_query)) {
+    database::query(
+      "ALTER TABLE `". DB_TABLE_PREFIX ."products_prices`
+      DROP KEY `product_price`;"
+    );
+  }
+
+  $index_query = database::query(
+    "SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_to_categories`
+    WHERE Key_name = 'mapping'
+    AND Non_unique = 0;"
+  );
+
+  if (database::num_rows($index_query)) {
+    database::query(
+      "ALTER TABLE `". DB_TABLE_PREFIX ."products_to_categories`
+      DROP KEY `mapping`;"
+    );
+  }
