@@ -563,7 +563,10 @@ CREATE TABLE `lc_products_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `product_info` (`product_id`, `language_code`),
   KEY `product_id` (`product_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  FULLTEXT KEY `name` (`name`),
+  FULLTEXT KEY `short_description` (`short_description`),
+  FULLTEXT KEY `description` (`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_options` (

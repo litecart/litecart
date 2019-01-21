@@ -42,6 +42,11 @@ ALTER TABLE `lc_pages`
 ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
 ADD INDEX `parent_id` (`parent_id`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_products_info`
+ADD FULLTEXT INDEX `name` (`name`),
+ADD FULLTEXT INDEX `short_description` (`short_description`),
+ADD FULLTEXT INDEX `description` (`description`);
+-- --------------------------------------------------------
 ALTER TABLE `lc_users`
 ADD COLUMN `email` VARCHAR(128) NOT NULL AFTER `username`,
 CHANGE COLUMN `date_blocked` `date_valid_from` DATETIME NOT NULL AFTER `total_logins`,
