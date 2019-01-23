@@ -63,8 +63,10 @@
           type = '". database::input($this->data['type']) ."',
           rate = '". database::input($this->data['rate']) ."',
           address_type = '". database::input($this->data['address_type']) ."',
-          customer_type = '". database::input($this->data['customer_type']) ."',
-          tax_id_rule = '". database::input($this->data['tax_id_rule']) ."',
+          rule_companies_with_tax_id = ". (int)$this->data['rule_companies_with_tax_id'] .",
+          rule_companies_without_tax_id = ". (int)$this->data['rule_companies_without_tax_id'] .",
+          rule_individuals_with_tax_id = ". (int)$this->data['rule_individuals_with_tax_id'] .",
+          rule_individuals_without_tax_id = ". (int)$this->data['rule_individuals_without_tax_id'] .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

@@ -73,3 +73,21 @@ UPDATE `lc_currencies` SET `value` = 1 / `value`;
 UPDATE `lc_orders` SET currency_value = 1 / currency_value;
 -- --------------------------------------------------------
 DELETE FROM `lc_translations` WHERE code = 'terms_cookies_acceptance';
+-- --------------------------------------------------------
+ALTER TABLE `lc_tax_rates`
+ADD COLUMN `rule_companies_with_tax_id` TINYINT(1) NOT NULL AFTER `tax_id_rule`,
+ADD COLUMN `rule_companies_without_tax_id` TINYINT(1) NOT NULL AFTER `rule_companies_with_tax_id`,
+ADD COLUMN `rule_individuals_with_tax_id` TINYINT(1) NOT NULL AFTER `rule_companies_without_tax_id`,
+ADD COLUMN `rule_individuals_without_tax_id` TINYINT(1) NOT NULL AFTER `rule_individuals_with_tax_id`;
+-- --------------------------------------------------------
+UPDATE `lc_tax_rates` SET rule_companies_with_tax_id = 1 WHERE customer_type IN ('both', 'companies') AND tax_id_rule IN ('both', 'with');
+-- --------------------------------------------------------
+UPDATE `lc_tax_rates` SET rule_companies_without_tax_id = 1 WHERE customer_type IN ('both', 'companies') AND tax_id_rule IN ('both', 'without');
+-- --------------------------------------------------------
+UPDATE `lc_tax_rates` SET rule_individuals_with_tax_id = 1 WHERE customer_type IN ('both', 'individuals') AND tax_id_rule IN ('both', 'with');
+-- --------------------------------------------------------
+UPDATE `lc_tax_rates` SET rule_individuals_without_tax_id = 1 WHERE customer_type IN ('both', 'individuals') AND tax_id_rule IN ('both', 'without');
+-- --------------------------------------------------------
+ALTER TABLE `lc_tax_rates`
+DROP COLUMN `customer_type`,
+DROP COLUMN `tax_id_rule`;
