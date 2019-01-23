@@ -215,7 +215,7 @@
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",
         purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
-        tax_class_id = '". database::input($this->data['tax_class_id']) ."',
+        tax_class_id = ". (int)$this->data['tax_class_id'] .",
         code = '". database::input($this->data['code']) ."',
         sku = '". database::input($this->data['sku']) ."',
         mpn = '". database::input($this->data['mpn']) ."',
@@ -374,8 +374,8 @@
 
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS ."
-            set group_id = '". database::input($this->data['options'][$key]['group_id']) ."',
-                value_id = '". database::input($this->data['options'][$key]['value_id']) ."',
+            set group_id = ". (int)$this->data['options'][$key]['group_id'] .",
+                value_id = ". (int)$this->data['options'][$key]['value_id'] .",
                 price_operator = '". database::input($this->data['options'][$key]['price_operator']) ."',
                 $sql_currency_options
                 priority = ". (int)$i .",

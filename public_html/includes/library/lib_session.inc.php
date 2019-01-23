@@ -18,7 +18,7 @@
 
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
 
-      self::$data = &$_SESSION;
+      self::$data = &$GLOBALS['_SESSION'];
 
       if (!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
       if (empty(self::$data['last_ip'])) self::$data['last_ip'] = $_SERVER['REMOTE_ADDR'];

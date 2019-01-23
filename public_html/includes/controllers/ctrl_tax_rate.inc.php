@@ -55,13 +55,13 @@
       database::query(
         "update ". DB_TABLE_TAX_RATES ."
         set
-          tax_class_id = '". database::input($this->data['tax_class_id']) ."',
-          geo_zone_id = '". database::input($this->data['geo_zone_id']) ."',
+          tax_class_id = ". (int)$this->data['tax_class_id'] .",
+          geo_zone_id = ". (int)$this->data['geo_zone_id'] .",
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
           type = '". database::input($this->data['type']) ."',
-          rate = '". database::input($this->data['rate']) ."',
+          rate = ". (float)$this->data['rate'] .",
           address_type = '". database::input($this->data['address_type']) ."',
           rule_companies_with_tax_id = ". (int)$this->data['rule_companies_with_tax_id'] .",
           rule_companies_without_tax_id = ". (int)$this->data['rule_companies_without_tax_id'] .",

@@ -36,7 +36,7 @@
 
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where id = '". database::input($customer_id) ."'
+        where id = ". (int)$customer_id ."
         limit 1;"
       );
 
