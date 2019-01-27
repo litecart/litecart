@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS `lc_cart_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_categories_images`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_countries`;
