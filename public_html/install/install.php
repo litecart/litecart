@@ -410,6 +410,56 @@
     }
   }
 
+  ### Files > Development Type ##################################
+
+  echo '<p>Preparing CSS files...';
+
+  if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
+
+    $files_to_delete = array(
+      '../includes/templates/default.catalog/css/app.css',
+      '../includes/templates/default.catalog/css/checkout.css',
+      '../includes/templates/default.catalog/css/framework.css',
+      '../includes/templates/default.catalog/css/printable.css',
+    );
+
+    foreach ($files_to_delete as $file) {
+      if (file_delete($file)) {
+        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+      } else {
+        echo '<span class="error">[Error]</span></p>' . PHP_EOL;
+      }
+    }
+
+  } else {
+
+    $files_to_delete = array(
+      '../includes/templates/default.catalog/less/',
+      '../includes/templates/default.catalog/css/*.min.css',
+      '../includes/templates/default.catalog/css/*.min.css.map',
+    );
+
+    foreach ($files_to_delete as $file) {
+      if (file_delete($file)) {
+        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+      } else {
+        echo '<span class="error">[Error]</span></p>' . PHP_EOL;
+      }
+    }
+
+    foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
+      echo 'Modify '. $file . PHP_EOL;
+      $contents = file_get_contents($file);
+      $search_replace = array(
+        'app.min.css'  => 'app.css'
+        'checkout.min.css'  => 'checkout.css'
+        'framework.min.css' => 'framework.css'
+        'printable.min.css' => 'printable.css'
+      );
+      file_put_contents($file, strtr($contents, $search_replace));
+    }
+  }
+
   ### Set cache breakpoint ######################################
 
   echo '<p>Set cache breakpoint...';

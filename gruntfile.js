@@ -42,6 +42,21 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.admin/css/printable.min.css' : 'public_html/includes/templates/default.admin/less/printable.less',
         }
       },
+      litecart_catalog_template: {
+        options: {
+          compress: false,
+          sourceMap: false,
+          sourceMapBasepath: 'public_html/includes/templates/default.catalog/less/',
+          sourceMapRootpath: '../less/',
+          relativeUrls: true
+        },
+        files: {
+          'public_html/includes/templates/default.catalog/css/app.css'       : 'public_html/includes/templates/default.catalog/less/app.less',
+          'public_html/includes/templates/default.catalog/css/checkout.css'  : 'public_html/includes/templates/default.catalog/less/checkout.less',
+          'public_html/includes/templates/default.catalog/css/framework.css' : 'public_html/includes/templates/default.catalog/less/framework.less',
+          'public_html/includes/templates/default.catalog/css/printable.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
+        }
+      },
       litecart_catalog_template_minified: {
         options: {
           compress: true,

@@ -273,6 +273,34 @@
   );
 
 ?>
+<style>
+input[name="development_type"] {
+  display: none;
+}
+input[name="development_type"] + div {
+  display: inline-block;
+  padding: 15px;
+  margin: 7.5px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 15px;
+  width: 250px;
+  height: 150px;
+  text-align: center;
+  cursor: pointer;
+}
+input[name="development_type"] + div .type {
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
+input[name="development_type"] + div .title {
+  font-size: 1.25em;
+  font-weight: bold;
+  line-height: 2em;
+}
+input[name="development_type"]:checked + div {
+  border-color: #333;
+}
+</style>
 
   <h1>Installer</h1>
 
@@ -478,6 +506,32 @@
 ?>
         </select>
       </div>
+    </div>
+
+    <h3>Development</h3>
+
+    <div class="form-group" style="display: flex;">
+
+      <label>
+        <input name="development_type" value="standard" type="radio" checked="checked" />
+        <div>
+          <div class="type">Standard</div>
+          <div class="title">.css</div>
+          <div class="description">Uncompressed CSS files</div>
+        </div>
+      </label>
+
+      <label>
+        <input name="development_type" value="advanced" type="radio" />
+        <div>
+          <div class="type">Advanced</div>
+          <div class="title">.less + .min.css</div>
+          <div class="description">
+            Compressed CSS files<br />
+            (Requires a <a href="https://wiki.litecart.net/doku.php?id=how_to_change_the_look_of_your_store" target="_blank">LESS compiler</a>)
+          </div>
+        </div>
+      </label>
     </div>
 
     <h3>Administration</h3>

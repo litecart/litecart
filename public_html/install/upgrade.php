@@ -102,6 +102,56 @@
 
     #############################################
 
+    echo '<p>Preparing CSS files...';
+
+    if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
+
+      $files_to_delete = array(
+        '../includes/templates/default.catalog/css/app.css',
+        '../includes/templates/default.catalog/css/checkout.css',
+        '../includes/templates/default.catalog/css/framework.css',
+        '../includes/templates/default.catalog/css/printable.css',
+      );
+
+      foreach ($files_to_delete as $file) {
+        if (file_delete($file)) {
+          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+        } else {
+          echo '<span class="error">[Error]</span></p>' . PHP_EOL;
+        }
+      }
+
+    } else {
+
+      $files_to_delete = array(
+        '../includes/templates/default.catalog/less/',
+        '../includes/templates/default.catalog/css/*.min.css',
+        '../includes/templates/default.catalog/css/*.min.css.map',
+      );
+
+      foreach ($files_to_delete as $file) {
+        if (file_delete($file)) {
+          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+        } else {
+          echo '<span class="error">[Error]</span></p>' . PHP_EOL;
+        }
+      }
+
+      foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
+        echo 'Modify '. $file . PHP_EOL;
+        $contents = file_get_contents($file);
+        $search_replace = array(
+          'app.min.css'  => 'app.css'
+          'checkout.min.css'  => 'checkout.css'
+          'framework.min.css' => 'framework.css'
+          'printable.min.css' => 'printable.css'
+        );
+        file_put_contents($file, strtr($contents, $search_replace));
+      }
+    }
+
+    #############################################
+
     echo '<p>Clear cache... ';
 
     database::query(
@@ -135,6 +185,35 @@
   }
 
 ?>
+<style>
+input[name="development_type"] {
+  display: none;
+}
+input[name="development_type"] + div {
+  display: inline-block;
+  padding: 15px;
+  margin: 7.5px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 15px;
+  width: 250px;
+  height: 150px;
+  text-align: center;
+  cursor: pointer;
+}
+input[name="development_type"] + div .type {
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
+input[name="development_type"] + div .title {
+  font-size: 1.25em;
+  font-weight: bold;
+  line-height: 2em;
+}
+input[name="development_type"]:checked + div {
+  border-color: #333;
+}
+</style>
+
 <p>Upgrade to <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?> from any older version listed.</p>
 <p class="alert alert-danger"><strong>Backup your files and database before you continue!</strong> Selecting the wrong version will most likely damage your data.</p>
 
@@ -147,6 +226,32 @@
       <option value="">-- Select Version --</option>
       <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_POST['from_version']) && $_POST['from_version'] == $version) ? 'selected="selected"' : '') .'>LiteCart '. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
     </select>
+  </div>
+
+  <h3>Development</h3>
+
+  <div class="form-group" style="display: flex;">
+
+    <label>
+      <input name="development_type" value="standard" type="radio" checked="checked" />
+      <div>
+        <div class="type">Standard</div>
+        <div class="title">.css</div>
+        <div class="description">Uncompressed CSS files</div>
+      </div>
+    </label>
+
+    <label>
+      <input name="development_type" value="advanced" type="radio" />
+      <div>
+        <div class="type">Advanced</div>
+        <div class="title">.less + .min.css</div>
+        <div class="description">
+          Compressed CSS files<br />
+          (Requires a <a href="https://wiki.litecart.net/doku.php?id=how_to_change_the_look_of_your_store" target="_blank">LESS compiler</a>)
+        </div>
+      </div>
+    </label>
   </div>
 
   <button class="btn btn-default btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" />Upgrade To <?php echo PLATFORM_VERSION; ?></button>
