@@ -341,32 +341,6 @@
     echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
   }
 
-  ## OS Adjustments #############################################
-
-  /*
-  if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-    echo '<p>Making adjustments for Windows platform...';
-    database::query(
-      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
-      set locale = 'english',
-          charset = 'Windows-1252'
-      where code = 'en'
-      limit 1;"
-    );
-    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-
-  } else if (strtoupper(substr(PHP_OS, 0, 6)) == 'DARWIN') {
-    echo '<p>Making adjustments for Darwin (Mac) platform...';
-    database::query(
-      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
-      set locale = 'en_US.UTF-8'
-      where code = 'en'
-      limit 1;"
-    );
-    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-  }
-  */
-
   ### Regional Data Patch #######################################
 
   if (!empty($_REQUEST['country_code'])) {
