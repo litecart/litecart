@@ -559,9 +559,12 @@ input[name="development_type"]:checked + div {
     <hr />
 
     <p class="text-center">
-      This software is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/" target="blank">Creative Commons BY-ND 4.0</a>.<br />
-      By installing this software you agree to the terms and conditions.
+      This software is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/" target="blank">Creative Commons BY-ND 4.0</a>.
     </p>
+
+    <div class="form-group text-center">
+      <label><input name="accept_terms" value="1" type="checkbox" required="required" /> I agree to the terms and conditions.</label>
+    </div>
 
     <input class="btn btn-default btn-block" type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
   </form>
