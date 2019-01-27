@@ -276,7 +276,7 @@
 
           $price_adjust_text = '';
           $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
           if ($value['price_adjust']) {
             $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
@@ -292,7 +292,7 @@
 
             $price_adjust_text = '';
             $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
               $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
@@ -312,7 +312,7 @@
 
             $price_adjust_text = '';
             $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
               $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
@@ -331,7 +331,7 @@
 
           $price_adjust_text = '';
           $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
           if ($value['price_adjust']) {
             $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
