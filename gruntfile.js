@@ -130,6 +130,12 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      replace: {
+        files: [
+          'package.json',
+        ],
+        tasks: ['replace']
+      },
       less: {
         files: [
           'public_html/ext/featherlight/featherlight.less',
