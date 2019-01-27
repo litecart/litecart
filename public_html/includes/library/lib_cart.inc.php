@@ -250,7 +250,9 @@
             case 'textarea':
 
               $matched_value = $options[$matched_group];
-              $item['extras'] += $value['price_adjust'];
+              if (!empty($matched_value)) {
+                $item['extras'] += $value['price_adjust'];
+              }
               break;
 
             case 'radio':
