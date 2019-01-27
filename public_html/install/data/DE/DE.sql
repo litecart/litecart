@@ -55,10 +55,8 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Standard', '', NOW(), NOW()),
 ('Reduced', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `customer_type`, `tax_id_rule`, `date_updated`, `date_created`) VALUES
-(1, @DE_VAT_ZONE, 'percent', 'UK VAT 19%', '', 19.0000, 'both', 'both', NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'UK VAT 19%', '', 19.0000, 'individuals', 'both', NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'UK VAT 19%', '', 19.0000, 'companies', 'without', NOW(), NOW()),
-(2, @DE_VAT_ZONE, 'percent', 'UK VAT 7%', '', 7.0000, 'both', 'both', NOW(), NOW()),
-(2, @EU_VAT_ZONE, 'percent', 'UK VAT 7%', '', 7.0000, 'individuals', 'both', NOW(), NOW()),
-(2, @EU_VAT_ZONE, 'percent', 'UK VAT 7%', '', 7.0000, 'companies', 'without', NOW(), NOW());
+INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
+(1, @DE_VAT_ZONE, 'percent', 'UK VAT 19%', '', 19.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @EU_VAT_ZONE, 'percent', 'UK VAT 19%', '', 19.0000, 0, 1, 1, 1, NOW(), NOW()),
+(2, @DE_VAT_ZONE, 'percent', 'UK VAT 7%', '', 7.0000, 1, 1, 1, 1, NOW(), NOW()),
+(2, @EU_VAT_ZONE, 'percent', 'UK VAT 7%', '', 7.0000, 0, 1, 1, 1, NOW(), NOW());
