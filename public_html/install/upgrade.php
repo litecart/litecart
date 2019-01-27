@@ -215,6 +215,7 @@ input[name="development_type"]:checked + div {
 </style>
 
 <p>Upgrade to <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?> from any older version listed.</p>
+
 <p class="alert alert-danger"><strong>Backup your files and database before you continue!</strong> Selecting the wrong version will most likely damage your data.</p>
 
 <form name="upgrade_form" method="post">

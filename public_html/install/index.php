@@ -272,6 +272,10 @@
     'ZW' => 'Zimbabwe',
   );
 
+
+  if (file_exists('../includes/config.inc.php')) {
+    $upgrade_detected = true;
+  }
 ?>
 <style>
 input[name="development_type"] {
@@ -303,6 +307,12 @@ input[name="development_type"]:checked + div {
 </style>
 
   <h1>Installer</h1>
+
+  <?php if (!empty($upgrade_detected)) { ?>
+  <p class="alert alert-danger">
+    <strong>Danger!</strong> An existing installation has been detected. The existing installation <strong>WILL BE DELETED</strong> if you continue! <a href="upgrade.php">Upgraders click here to for the upgrade tool</a>.
+  </p>
+  <?php } ?>
 
   <div class="row">
     <div class="col-md-6">
@@ -384,12 +394,6 @@ input[name="development_type"]:checked + div {
 
   <h2>Installation Parameters</h2>
 
-  <?php if (file_exists('../includes/config.inc.php')) { ?>
-  <p class="alert alert-danger">
-    Attention: An existing installation has been detected. The existing installation <strong>WILL BE DELETED</strong> if you continue! <a href="upgrade.php">Upgraders click here to for the upgrade tool</a>.
-  </p>
-  <?php } ?>
-
   <form name="installation_form" method="post" action="install.php">
 
     <input class="form-control" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
@@ -401,7 +405,7 @@ input[name="development_type"]:checked + div {
       <div class="form-control"><?php echo $document_root; ?></div>
     </div>
 
-    <h3>MySQL</h3>
+    <h3>Database</h3>
 
     <div class="row">
       <div class="form-group col-md-6">
@@ -484,7 +488,9 @@ input[name="development_type"]:checked + div {
         <label>Store Email</label>
         <input class="form-control" name="store_email" type="text" value="store@email.com" required="required" />
       </div>
+    </div>
 
+    <div class="row">
       <div class="form-group col-md-6">
         <label>Country</label>
         <select class="form-control" name="country_code" required="required">
@@ -544,7 +550,9 @@ input[name="development_type"]:checked + div {
           <input class="form-control" name="admin_folder" type="text" value="admin" required="required" />
         </div>
       </div>
+    </div>
 
+    <div class="row">
       <div class="form-group col-md-6">
         <label>Username</label>
         <input class="form-control" name="username" type="text" id="username" value="admin" required="required" />

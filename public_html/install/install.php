@@ -403,6 +403,7 @@
 
   if (!empty($_REQUEST['demo_data'])) {
     echo '<p>Copying demo files...';
+
     if (file_xcopy('data/demo/public_html/', $installation_path)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {

@@ -3,29 +3,29 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-		replace: {
-			app_header: {
-				src: ['public_html/includes/app_header.inc.php'],
-				overwrite: true,
-				replacements: [
-					{
-						from: /define\('PLATFORM_VERSION', '([0-9\.]+)'\);/,
-						to: 'define(\'PLATFORM_VERSION\', \'<%= pkg.version %>\');'
-					}
-				]
-			},
+    replace: {
+      app_header: {
+        src: ['public_html/includes/app_header.inc.php'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /define\('PLATFORM_VERSION', '([0-9\.]+)'\);/,
+            to: 'define(\'PLATFORM_VERSION\', \'<%= pkg.version %>\');'
+          }
+        ]
+      },
 
       index: {
-				src: ['public_html/index.php'],
-				overwrite: true,
-				replacements: [
-					{
-						from: /LiteCart® ([0-9\.]+)/,
-						to: 'LiteCart® <%= pkg.version %>'
-					}
-				]
-			},
-		},
+        src: ['public_html/index.php'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /LiteCart® ([0-9\.]+)/,
+            to: 'LiteCart® <%= pkg.version %>'
+          }
+        ]
+      },
+    },
 
     less: {
       litecart_admin_template_minified: {
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
     },
 
     sass: {
-      trumbowyg: {
+      trumbowyg_minified: {
         options: {
           implementation: require('node-sass'),
           sourceMap: true,
@@ -157,7 +157,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-sass');
-	grunt.loadNpmTasks('grunt-text-replace');
+  grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('default', ['replace', 'less', 'sass', 'uglify']);
 
