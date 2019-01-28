@@ -1234,7 +1234,7 @@
     $(modal).data('row', '');
   });
 
-  $('#modal-edit-order-item button[name="save"]').click(function(e){
+  $('#modal-edit-order-item button[name="ok"]').click(function(e){
 
     var modal = $('.featherlight.active');
     var row = $(modal).data('row');
