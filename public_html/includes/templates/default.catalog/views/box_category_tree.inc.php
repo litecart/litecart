@@ -1,5 +1,5 @@
 <?php
-  $draw_branch = function($category, $category_path, &$draw_branch) {
+  $draw_branch = function($category, &$category_path, &$draw_branch) {
     echo '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">' . PHP_EOL
        . '  <a href="'. htmlspecialchars($category['link']) .'"><i class="fa fa-fw fa-'. (empty($category['opened']) ? 'caret-right' : 'caret-down') .'"></i> '. $category['name'] .'</a>' . PHP_EOL;
     if (!empty($category['subcategories'])) {
