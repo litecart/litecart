@@ -36,7 +36,6 @@
         }
       }
 
-      $this->data['dock'] = array();
       $this->data['images'] = array();
     }
 
@@ -55,8 +54,6 @@
       } else {
         trigger_error('Could not find category (ID: '. (int)$category_id .') in database.', E_USER_ERROR);
       }
-
-      $this->data['dock'] = !empty($this->data['dock']) ? explode(',', $this->data['dock']) : array();
 
       $categories_info_query = database::query(
         "select * from ". DB_TABLE_CATEGORIES_INFO ."
@@ -94,10 +91,6 @@
 
       if ($this->data['parent_id'] == $this->data['id']) $this->data['parent_id'] = null;
 
-      $this->data['dock'] = array_map('trim', $this->data['dock']);
-      $this->data['dock'] = array_filter($this->data['dock']);
-      $this->data['dock'] = array_unique($this->data['dock']);
-
       $this->data['keywords'] = explode(',', $this->data['keywords']);
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
@@ -109,7 +102,6 @@
           status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
           google_taxonomy_id = ". (int)$this->data['google_taxonomy_id'] .",
-          dock = '". database::input(@implode(',', $this->data['dock'])) ."',
           list_style = '". database::input($this->data['list_style']) ."',
           keywords = '". database::input($this->data['keywords']) ."',
           priority = ". (int)$this->data['priority'] .",

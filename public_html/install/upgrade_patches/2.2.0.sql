@@ -91,3 +91,6 @@ UPDATE `lc_tax_rates` SET rule_individuals_without_tax_id = 1 WHERE customer_typ
 ALTER TABLE `lc_tax_rates`
 DROP COLUMN `customer_type`,
 DROP COLUMN `tax_id_rule`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_categories`
+DROP COLUMN `dock`;

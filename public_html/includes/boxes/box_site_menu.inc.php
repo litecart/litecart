@@ -13,7 +13,7 @@
 
   // Categories
 
-    $categories_query = functions::catalog_categories_query(0, 'menu');
+    $categories_query = functions::catalog_categories_query(0);
 
     while ($category = database::fetch($categories_query)) {
       $box_site_menu->snippets['categories'][$category['id']] = array(

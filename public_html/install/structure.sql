@@ -20,7 +20,6 @@ CREATE TABLE `lc_categories` (
   `status` TINYINT(1) NOT NULL,
   `code` VARCHAR(64) NOT NULL,
   `list_style` VARCHAR(32) NOT NULL,
-  `dock` VARCHAR(32) NOT NULL,
   `keywords` VARCHAR(256) NOT NULL,
   `image` VARCHAR(256) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
