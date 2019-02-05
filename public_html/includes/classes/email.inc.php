@@ -81,7 +81,6 @@
       return $this;
     }
 
-
     public function add_cc($email, $name=null) {
 
       $email = trim($email);
