@@ -4,4 +4,9 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
-  user::logout();
+  user::reset();
+
+  setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
+
+  header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php'));
+  exit;

@@ -84,6 +84,8 @@
         limit 1;"
       );
 
+      customer::load($customer->data['id']);
+
       $aliases = array(
         '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
@@ -101,8 +103,6 @@
             ->set_subject($subject)
             ->add_body($message)
             ->send();
-
-      customer::load($customer->data['id']);
 
       notices::add('success', language::translate('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
       header('Location: '. document::ilink(''));
