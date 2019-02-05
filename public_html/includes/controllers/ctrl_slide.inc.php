@@ -52,7 +52,7 @@
       if ($slide = database::fetch($slide_query)) {
         $this->data = array_replace($this->data, array_intersect_key($slide, $this->data));
       } else {
-        trigger_error('Could not find slide (ID: '. (int)$slide_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find slide (ID: '. (int)$slide_id .') in database.');
       }
 
       $this->data['languages'] = explode(',', $this->data['languages']);

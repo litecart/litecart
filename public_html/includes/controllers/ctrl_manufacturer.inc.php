@@ -49,7 +49,7 @@
       if ($manufacturer = database::fetch($manufacturers_query)) {
         $this->data = array_replace($this->data, array_intersect_key($manufacturer, $this->data));
       } else {
-        trigger_error('Could not find manufacturer (ID: '. (int)$manufacturer_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find manufacturer (ID: '. (int)$manufacturer_id .') in database.');
       }
 
       $manufacturers_info_query = database::query(

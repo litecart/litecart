@@ -39,7 +39,7 @@
       if ($user = database::fetch($user_query)) {
         $this->data = array_replace($this->data, array_intersect_key($user, $this->data));
       } else {
-        trigger_error('Could not find user (ID: '. (int)$user_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find user (ID: '. (int)$user_id .') in database.');
       }
 
       $this->data['permissions'] = @json_decode($this->data['permissions'], true);

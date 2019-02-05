@@ -28,7 +28,7 @@
 
       $this->reset();
 
-      if (!preg_match('#[A-Z]{3}#', $currency_code)) trigger_error('Invalid currency code ('. $currency_code .')', E_USER_ERROR);
+      if (!preg_match('#[A-Z]{3}#', $currency_code)) throw new Exception('Invalid currency code ('. $currency_code .')');
 
       $currency_query = database::query(
         "select * from ". DB_TABLE_CURRENCIES ."
@@ -39,19 +39,19 @@
       if ($currency = database::fetch($currency_query)) {
         $this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
       } else {
-        trigger_error('Could not find currency (Code: '. htmlspecialchars($currency_code) .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find currency (Code: '. htmlspecialchars($currency_code) .') in database.');
       }
     }
 
     public function save() {
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('store_currency_code')) {
-        trigger_error('You cannot disable the store currency.', E_USER_ERROR);
+        throw new Exception('You cannot disable the store currency.');
         return;
       }
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_currency_code')) {
-        trigger_error('You cannot disable the default currency.', E_USER_ERROR);
+        throw new Exception('You cannot disable the default currency.');
         return;
       }
 
@@ -65,7 +65,7 @@
 
         if ($this->data['code'] != $currency['code']) {
           if ($currency['code'] == settings::get('store_currency_code')) {
-            trigger_error('Cannot rename the store currency.', E_USER_ERROR);
+            throw new Exception('Cannot rename the store currency.');
           } else {
             database::query(
               "alter table ". DB_TABLE_PRODUCTS_PRICES ."
@@ -148,12 +148,12 @@
     public function delete() {
 
       if ($this->data['code'] == settings::get('store_currency_code')) {
-        trigger_error('Cannot delete the store currency', E_USER_ERROR);
+        throw new Exception('Cannot delete the store currency');
         return;
       }
 
       if ($this->data['code'] == settings::get('default_currency_code')) {
-        trigger_error('Cannot delete the default currency', E_USER_ERROR);
+        throw new Exception('Cannot delete the default currency');
         return;
       }
 

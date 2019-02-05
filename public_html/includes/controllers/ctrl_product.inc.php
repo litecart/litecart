@@ -60,7 +60,7 @@
       if ($product = database::fetch($products_query)) {
         $this->data = array_replace($this->data, array_intersect_key($product, $this->data));
       } else {
-        trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find product (ID: '. (int)$product_id .') in database.');
       }
 
       foreach ($product as $key => $value) {

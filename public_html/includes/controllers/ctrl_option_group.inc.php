@@ -53,7 +53,7 @@
       if ($option_group = database::fetch($option_group_query)) {
         $this->data = array_replace($this->data, array_intersect_key($option_group, $this->data));
       } else {
-        trigger_error('Could not find option group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find option group (ID: '. (int)$group_id .') in database.');
       }
 
       $option_groups_info_query = database::query(
@@ -156,7 +156,7 @@
           "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
           where combination like '%". (int)$this->data['id'] ."-". (int)$option_value['id'] ."%';"
         );
-        if (database::num_rows($products_options_stock_query) > 0) trigger_error('Cannot delete option value linked to products.', E_USER_ERROR);
+        if (database::num_rows($products_options_stock_query) > 0) throw new Exception('Cannot delete option value linked to products.');
 
         database::query(
           "delete from ". DB_TABLE_OPTION_VALUES ."
@@ -235,7 +235,7 @@
         "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
         where combination like '%". (int)$this->data['id'] ."-%';"
       );
-      if (database::num_rows($products_options_stock_query) > 0) trigger_error('Cannot delete option group linked to products.', E_USER_ERROR);
+      if (database::num_rows($products_options_stock_query) > 0) throw new Exception('Cannot delete option group linked to products.');
 
     // Check products for option values
       $option_values_query = database::query(
@@ -250,7 +250,7 @@
           "select id from ". DB_TABLE_PRODUCTS_OPTIONS ."
           where combination like '%". (int)$this->data['id'] ."-". (int)$option_value['id'] ."%';"
         );
-        if (database::num_rows($products_options_query) > 0) trigger_error('Cannot delete option value linked to products.', E_USER_ERROR);
+        if (database::num_rows($products_options_query) > 0) throw new Exception('Cannot delete option value linked to products.');
 
       // Delete option values
         database::query(

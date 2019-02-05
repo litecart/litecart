@@ -52,7 +52,7 @@
       if ($page = database::fetch($page_query)) {
         $this->data = array_replace($this->data, array_intersect_key($page, $this->data));
       } else {
-        trigger_error('Could not find page (ID: '. (int)$page_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find page (ID: '. (int)$page_id .') in database.');
       }
 
       $this->data['dock'] = explode(',', $this->data['dock']);
@@ -136,7 +136,7 @@
       );
 
       if (database::num_rows($pages_query)) {
-        trigger_error('Cannot delete page when there are other pages mounted to it', E_USER_ERROR);
+        throw new Exception('Cannot delete page when there are other pages mounted to it');
       }
 
       database::query(

@@ -48,7 +48,7 @@
       } else if (extension_loaded('gd')) {
         $this->_library = 'gd';
       } else {
-        trigger_error('No image processing library available', E_USER_ERROR);
+        throw new Exception('No image processing library available');
       }
 
       if (!empty($file)) $this->set($file);

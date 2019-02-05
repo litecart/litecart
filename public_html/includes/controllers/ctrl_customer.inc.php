@@ -43,7 +43,7 @@
       if ($customer = database::fetch($customer_query)) {
         $this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
       } else {
-        trigger_error('Could not find customer (ID: '. (int)$customer_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find customer (ID: '. (int)$customer_id .') in database.');
       }
 
       foreach ($customer as $field => $value) {
@@ -129,7 +129,7 @@
 
     public function set_password($password) {
 
-      if (empty($this->data['email'])) trigger_error('Cannot set password without an email address', E_USER_ERROR);
+      if (empty($this->data['email'])) throw new Exception('Cannot set password without an email address');
 
       if (empty($this->data['id'])) {
         $this->save();

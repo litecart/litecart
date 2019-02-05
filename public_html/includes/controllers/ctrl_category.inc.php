@@ -52,7 +52,7 @@
       if ($category = database::fetch($categories_query)) {
         $this->data = array_replace($this->data, array_intersect_key($category, $this->data));
       } else {
-        trigger_error('Could not find category (ID: '. (int)$category_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find category (ID: '. (int)$category_id .') in database.');
       }
 
       $categories_info_query = database::query(

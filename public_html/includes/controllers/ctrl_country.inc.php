@@ -28,7 +28,7 @@
 
       $this->reset();
 
-      if (!preg_match('#[A-Z]{2}#', $country_code)) trigger_error('Invalid country code ('. $country_code .')', E_USER_ERROR);
+      if (!preg_match('#[A-Z]{2}#', $country_code)) throw new Exception('Invalid country code ('. $country_code .')');
 
       $country_query = database::query(
         "select * from ". DB_TABLE_COUNTRIES ."
@@ -39,7 +39,7 @@
       if ($country = database::fetch($country_query)) {
         $this->data = array_replace($this->data, array_intersect_key($country, $this->data));
       } else {
-        trigger_error('Could not find country (Code: '. htmlspecialchars($country_code) .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find country (Code: '. htmlspecialchars($country_code) .') in database.');
       }
 
       $zones_query = database::query(
@@ -116,12 +116,12 @@
     public function delete() {
 
       if ($this->data['code'] == settings::get('store_country_code')) {
-        trigger_error('Cannot delete the store country', E_USER_ERROR);
+        throw new Exception('Cannot delete the store country');
         return;
       }
 
       if ($this->data['code'] == settings::get('default_country_code')) {
-        trigger_error('Cannot delete the default country', E_USER_ERROR);
+        throw new Exception('Cannot delete the default country');
         return;
       }
 

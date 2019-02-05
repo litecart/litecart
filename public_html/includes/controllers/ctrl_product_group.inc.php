@@ -52,7 +52,7 @@
       if ($group = database::fetch($group_query)) {
         $this->data = array_replace($this->data, array_intersect_key($group, $this->data));
       } else {
-        trigger_error('Could not find product group (ID: '. (int)$group_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find product group (ID: '. (int)$group_id .') in database.');
       }
 
       $group_info_query = database::query(
@@ -149,7 +149,7 @@
           where product_groups like '%". (int)$this->data['id'] ."-". (int)$value['id'] ."%';"
         );
 
-        if (database::num_rows($products_query) > 0) trigger_error('Cannot delete value linked to products.', E_USER_ERROR);
+        if (database::num_rows($products_query) > 0) throw new Exception('Cannot delete value linked to products.');
 
         database::query(
           "delete from ". DB_TABLE_PRODUCT_GROUPS_VALUES ."
@@ -224,7 +224,7 @@
         "select id from ". DB_TABLE_PRODUCTS ."
         where product_groups like '%". (int)$this->data['id'] ."-%';"
       );
-      if (database::num_rows($products_query) > 0) trigger_error('Cannot delete group linked to products.', E_USER_ERROR);
+      if (database::num_rows($products_query) > 0) throw new Exception('Cannot delete group linked to products.');
 
     // Check products for product group values
       $values_query = database::query(
@@ -239,7 +239,7 @@
           "select id from ". DB_TABLE_PRODUCTS ."
           where product_groups like '%". (int)$this->data['id'] ."-". (int)$value['id'] ."%';"
         );
-        if (database::num_rows($products_query) > 0) trigger_error('Cannot delete product group value linked to products.', E_USER_ERROR);
+        if (database::num_rows($products_query) > 0) throw new Exception('Cannot delete product group value linked to products.');
 
       // Delete product group values
         database::query(

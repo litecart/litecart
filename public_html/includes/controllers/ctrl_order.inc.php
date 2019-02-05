@@ -94,7 +94,7 @@
       if ($order = database::fetch($order_query)) {
         $this->data = array_replace($this->data, array_intersect_key($order, $this->data));
       } else {
-        trigger_error('Could not find order in database (ID: '. (int)$order_id .')', E_USER_ERROR);
+        throw new Exception('Could not find order in database (ID: '. (int)$order_id .')');
       }
 
       foreach($order as $field => $value) {
