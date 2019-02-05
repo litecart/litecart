@@ -26,9 +26,9 @@
 
     public function load($currency_code) {
 
-      $this->reset();
+      if (!preg_match('#^[A-Z]{3}$#', $currency_code)) throw new Exception('Invalid currency code ('. $currency_code .')');
 
-      if (!preg_match('#[A-Z]{3}#', $currency_code)) throw new Exception('Invalid currency code ('. $currency_code .')');
+      $this->reset();
 
       $currency_query = database::query(
         "select * from ". DB_TABLE_CURRENCIES ."

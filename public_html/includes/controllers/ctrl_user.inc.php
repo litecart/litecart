@@ -6,7 +6,7 @@
     public function __construct($user_id=null) {
 
       if ($user_id !== null) {
-        $this->load((int)$user_id);
+        $this->load($user_id);
       } else {
         $this->reset();
       }
@@ -27,6 +27,8 @@
     }
 
     public function load($user_id) {
+
+      if (!preg_match('#^[0-9]+$#', $user_id)) throw new Exception('Invalid user id (ID: '. $user_id .')');
 
       $this->reset();
 

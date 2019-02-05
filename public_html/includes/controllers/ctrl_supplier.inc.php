@@ -6,7 +6,7 @@
     public function __construct($supplier_id=null) {
 
       if (!empty($supplier_id)) {
-        $this->load((int)$supplier_id);
+        $this->load($supplier_id);
       } else {
         $this->reset();
       }
@@ -25,6 +25,8 @@
     }
 
     public function load($supplier_id) {
+
+      if (!preg_match('#^[0-9]+$#', $supplier_id)) throw new Exception('Invalid supplier (ID: '. $supplier_id .')');
 
       $this->reset();
 

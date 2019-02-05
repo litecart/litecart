@@ -6,7 +6,7 @@
     public function __construct($quantity_unit_id=null) {
 
       if ($quantity_unit_id !== null) {
-        $this->load((int)$quantity_unit_id);
+        $this->load($quantity_unit_id);
       } else {
         $this->reset();
       }
@@ -38,6 +38,8 @@
     }
 
     public function load($quantity_unit_id) {
+
+      if (!preg_match('#^[0-9]+$#', $quantity_unit_id)) throw new Exception('Invalid quantity unit (ID: '. $quantity_unit_id .')');
 
       $this->reset();
 

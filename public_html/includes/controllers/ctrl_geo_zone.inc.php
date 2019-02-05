@@ -6,7 +6,7 @@
     public function __construct($geo_zone_id=null) {
 
       if ($geo_zone_id !== null) {
-        $this->load((int)$geo_zone_id);
+        $this->load($geo_zone_id);
       } else {
         $this->reset();
       }
@@ -27,6 +27,8 @@
     }
 
     public function load($geo_zone_id) {
+
+      if (!preg_match('#^[0-9]+$#', $geo_zone_id)) throw new Exception('Invalid geo zone (ID: '. $geo_zone_id .')');
 
       $this->reset();
 

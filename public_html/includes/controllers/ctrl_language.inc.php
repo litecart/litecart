@@ -26,9 +26,9 @@
 
     public function load($language_code) {
 
-      $this->reset();
+      if (!preg_match('#^[a-z]{2}$#', $language_code)) throw new Exception('Invalid language code ('. $language_code .')');
 
-      if (!preg_match('#[a-z]{2}#', $language_code)) throw new Exception('Invalid language code ('. $language_code .')');
+      $this->reset();
 
       $language_query = database::query(
         "select * from ". DB_TABLE_LANGUAGES ."

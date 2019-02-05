@@ -6,7 +6,7 @@
     public function __construct($order_id=null) {
 
       if (!empty($order_id)) {
-        $this->load((int)$order_id);
+        $this->load($order_id);
       } else {
         $this->reset();
       }
@@ -82,6 +82,8 @@
     }
 
     private function load($order_id) {
+
+      if (!preg_match('#^[0-9]+$#', $order_id)) throw new Exception('Invalid order (ID: '. $order_id .')');
 
       $this->reset();
 

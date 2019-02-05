@@ -6,7 +6,7 @@
     public function __construct($customer_id=null) {
 
       if ($customer_id !== null) {
-        $this->load((int)$customer_id);
+        $this->load($customer_id);
       } else {
         $this->reset();
       }
@@ -31,6 +31,8 @@
     }
 
     public function load($customer_id) {
+
+      if (!preg_match('#^[0-9]+$#', $customer_id)) throw new Exception('Invalid customer (ID: '. $customer_id .')');
 
       $this->reset();
 

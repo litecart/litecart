@@ -6,7 +6,7 @@
     public function __construct($page_id=null) {
 
       if ($page_id !== null) {
-        $this->load((int)$page_id);
+        $this->load($page_id);
       } else {
         $this->reset();
       }
@@ -40,6 +40,8 @@
     }
 
     public function load($page_id) {
+
+      if (!preg_match('#^[0-9]+$#', $page_id)) throw new Exception('Invalid page (ID: '. $page_id .')');
 
       $this->reset();
 

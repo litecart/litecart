@@ -26,9 +26,9 @@
 
     public function load($country_code) {
 
-      $this->reset();
+      if (!preg_match('#^[A-Z]{2}$#', $country_code)) throw new Exception('Invalid country code ('. $country_code .')');
 
-      if (!preg_match('#[A-Z]{2}#', $country_code)) throw new Exception('Invalid country code ('. $country_code .')');
+      $this->reset();
 
       $country_query = database::query(
         "select * from ". DB_TABLE_COUNTRIES ."

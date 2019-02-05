@@ -38,6 +38,8 @@
 
     public function load($manufacturer_id) {
 
+      if (!preg_match('#^[0-9]+$#', $manufacturer_id)) throw new Exception('Invalid manufacturer (ID: '. $manufacturer_id .')');
+
       $this->reset();
 
       $manufacturers_query = database::query(

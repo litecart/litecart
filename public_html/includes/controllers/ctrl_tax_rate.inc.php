@@ -6,7 +6,7 @@
     public function __construct($tax_rate_id=null) {
 
       if ($tax_rate_id !== null) {
-        $this->load((int)$tax_rate_id);
+        $this->load($tax_rate_id);
       } else {
         $this->reset();
       }
@@ -25,6 +25,8 @@
     }
 
     public function load($tax_rate_id) {
+
+      if (!preg_match('#^[0-9]+$#', $tax_rate_id)) throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
 
       $this->reset();
 

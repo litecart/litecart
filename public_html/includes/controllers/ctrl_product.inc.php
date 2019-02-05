@@ -6,7 +6,7 @@
     public function __construct($product_id=null) {
 
       if (!empty($product_id)) {
-        $this->load((int)$product_id);
+        $this->load($product_id);
       } else {
         $this->reset();
       }
@@ -47,6 +47,8 @@
     }
 
     public function load($product_id) {
+
+      if (!preg_match('#^[0-9]+$#', $product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
 
       $this->reset();
 

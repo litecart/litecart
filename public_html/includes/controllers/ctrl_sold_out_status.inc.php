@@ -6,7 +6,7 @@
     public function __construct($sold_out_status_id=null) {
 
       if ($sold_out_status_id !== null) {
-        $this->load((int)$sold_out_status_id);
+        $this->load($sold_out_status_id);
       } else {
         $this->reset();
       }
@@ -38,6 +38,8 @@
     }
 
     public function load($sold_out_status_id) {
+
+      if (!preg_match('#^[0-9]+$#', $sold_out_status_id)) throw new Exception('Invalid sold out status (ID: '. $sold_out_status_id .')');
 
       $this->reset();
 

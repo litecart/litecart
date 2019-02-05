@@ -6,7 +6,7 @@
     public function __construct($delivery_status_id=null) {
 
       if ($delivery_status_id !== null) {
-        $this->load((int)$delivery_status_id);
+        $this->load($delivery_status_id);
       } else {
         $this->reset();
       }
@@ -38,6 +38,8 @@
     }
 
     public function load($delivery_status_id) {
+
+      if (!preg_match('#^[0-9]+$#', $delivery_status_id)) throw new Exception('Invalid delivery status (ID: '. $delivery_status_id .')');
 
       $this->reset();
 

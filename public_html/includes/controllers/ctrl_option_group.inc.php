@@ -6,7 +6,7 @@
     public function __construct($group_id=null) {
 
       if ($group_id !== null) {
-        $this->load((int)$group_id);
+        $this->load($group_id);
       } else {
         $this->reset();
       }
@@ -41,6 +41,8 @@
     }
 
     public function load($group_id) {
+
+      if (!preg_match('#^[0-9]+$#', $group_id)) throw new Exception('Invalid option group (ID: '. $group_id .')');
 
       $this->reset();
 
