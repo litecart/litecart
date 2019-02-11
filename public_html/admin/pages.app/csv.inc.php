@@ -114,7 +114,7 @@
 
       $pages_query = database::query("select id from ". DB_TABLE_PAGES ." order by id;");
       while ($page = database::fetch($pages_query)) {
-        $page = reference::page($page['id']);
+        $page = new ref_page($page['id'], $_POST['language_code']);
 
         $csv[] = array(
           'id' => $page->id,
