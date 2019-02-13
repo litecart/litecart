@@ -24,7 +24,7 @@
     public static function initiate() {
 
     // Bad Bot Trap - Establish trigger
-      if (!isset(session::$data['bottrap']['trigger'])) session::$data['bottrap']['trigger'] = array();
+      if (empty(session::$data['bottrap']['trigger'])) session::$data['bottrap'] = array('trigger' => null);
       self::$_trigger = &session::$data['bottrap']['trigger'];
 
       if (empty(self::$_trigger['key']) || empty(self::$_trigger['expires']) || self::$_trigger['expires'] < date('Y-m-d H:i:s')) {
