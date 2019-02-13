@@ -286,6 +286,7 @@ CREATE TABLE `lc_option_values_info` (
 CREATE TABLE `lc_orders` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(13) NOT NULL,
+  `starred` TINYINT(1) NOT NULL,
   `order_status_id` INT(11) NOT NULL,
   `customer_id` INT(11) NOT NULL,
   `customer_company` VARCHAR(64) NOT NULL,
@@ -331,7 +332,8 @@ CREATE TABLE `lc_orders` (
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `order_status_id` (`order_status_id`)
+  KEY `order_status_id` (`order_status_id`),
+  KEY `starred` (`starred`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_comments` (

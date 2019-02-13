@@ -119,6 +119,7 @@
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;
+    if ($(e.target).is('.fa-star,.fa-star-o')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 

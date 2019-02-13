@@ -57,6 +57,10 @@ ADD INDEX `status` (`status`),
 ADD INDEX `username` (`username`),
 ADD INDEX `email` (`email`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_orders`
+ADD COLUMN `starred` TINYINT(1) NOT NULL AFTER `uid`,
+ADD INDEX `starred` (`starred`);
+-- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL AFTER `name`,
 ADD COLUMN `gtin` VARCHAR(32) NOT NULL AFTER `sku`,

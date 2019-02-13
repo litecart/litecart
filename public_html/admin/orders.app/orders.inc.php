@@ -16,6 +16,16 @@
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
+  if (isset($_POST['star']) || isset($_POST['unstar'])) {
+    database::query(
+      "update ". DB_TABLE_ORDERS ."
+      set starred = ". (isset($_POST['star']) ? 1 : 0) ."
+      where id = ". (int)$_POST['order_id'] ."
+      limit 1;"
+    );
+    exit;
+  }
+
   if (!empty($_POST['order_action'])) {
 
     try {
@@ -55,6 +65,13 @@
 
 ?>
 <style>
+table .fa-star-o:hover {
+  transform: scale(1.5);
+}
+table .fa-star:hover {
+  transform: scale(1.5);
+}
+
 #order-actions li {
   vertical-align: middle;
 }
@@ -93,6 +110,7 @@
         <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
         <th>&nbsp;</th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th>&nbsp;</th>
         <th class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
         <th><?php echo language::translate('title_country', 'Country'); ?></th>
         <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
@@ -128,7 +146,11 @@
     ". (!empty($_GET['payment_option_name']) ? "and o.payment_option_name = '". database::input($_GET['payment_option_name']) ."'" : '') ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
-    order by o.date_created desc, o.id desc;"
+    order by
+      o.starred desc,
+      o.date_created desc,
+      o.id desc
+    ;"
   );
 
   if (database::num_rows($orders_query) > 0) {
@@ -150,6 +172,7 @@
       <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
       <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
       <td><?php echo $order['id']; ?></td>
+      <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
       <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI'])); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
       <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
       <td><?php echo $order['payment_option_name']; ?></td>
