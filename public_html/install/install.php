@@ -481,6 +481,18 @@
      . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'">administration area</a> and start configuring your store.</p>' . PHP_EOL
      . '<p>Check out our <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL;
 
+  echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
+     . '  <input type="url" value="https://www.litecart.net/" />' . PHP_EOL
+     . '  <div class="row">' . PHP_EOL
+     . '    <div class="col-xs-9">' . PHP_EOL
+     . '      <textarea name="text">Woohoo! I just installed #LiteCart and I am super excited! :)</textarea>' . PHP_EOL
+     . '    </div>' . PHP_EOL
+     . '    <div class="col-xs-3">' . PHP_EOL
+     . '      <button class="btn btn-success" type="submit">Tweet!</button>' . PHP_EOL
+     . '    </div>' . PHP_EOL
+     . '  </div>' . PHP_EOL
+     . '</form>' . PHP_EOL;
+
   if (!empty($_REQUEST['redirect'])) {
     header('Location: '. $_REQUEST['redirect']);
     exit;
