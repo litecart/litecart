@@ -7,7 +7,7 @@
 
   echo '<h1>Installer</h1>' . PHP_EOL;
 
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '>=') ? E_ALL & ~E_STRICT : E_ALL);
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'Off');
   ini_set('display_errors', 'On');
