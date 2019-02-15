@@ -98,3 +98,5 @@ DROP COLUMN `tax_id_rule`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_categories`
 DROP COLUMN `dock`;
+-- --------------------------------------------------------
+DELETE FROM `lc_settings` WHERE `key` = 'seo_links_enabled';
