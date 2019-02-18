@@ -34,6 +34,7 @@ module.exports = function(grunt) {
           sourceMap: true,
           sourceMapBasepath: 'public_html/includes/templates/default.admin/less/',
           sourceMapRootpath: '../less/',
+          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
@@ -61,6 +62,7 @@ module.exports = function(grunt) {
           sourceMap: true,
           sourceMapBasepath: 'public_html/includes/templates/default.catalog/less/',
           sourceMapRootpath: '../less/',
+          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
@@ -75,7 +77,8 @@ module.exports = function(grunt) {
           compress: true,
           sourceMap: true,
           sourceMapBasepath: 'public_html/ext/featherlight/',
-          sourceMapRootpath: '/',
+          sourceMapRootpath: './',
+          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
