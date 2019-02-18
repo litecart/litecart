@@ -512,11 +512,7 @@
                     //trigger_error(__METHOD__.'('. basename($this->modFile) .') - Invalid regular expression ('. VQMod::$fileModding .'): '. $mod['search']->getContent(), E_USER_WARNING);
                     trigger_error(__METHOD__.'('. basename($this->modFile) .') - Invalid regular expression in "'. $modObject->id  .'": '. VQMod::$fileModding . $skip, E_USER_WARNING);
                   }
-                  if (version_compare(PHP_VERSION, '7.3', '>=')) {
-                    continue 3; // https://github.com/php/php-src/commit/04e3523b7d095341f65ed5e71a3cac82fca690e4
-                  } else {
-                    continue 2;
-                  }
+                  break 2;
                 } elseif ($pos == 0) {
                   $pos = false;
                 }
