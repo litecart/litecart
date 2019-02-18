@@ -7,18 +7,18 @@
   if (!isset($_GET['public_key']) && isset($_GET['checksum'])) $_GET['public_key'] = $_GET['checksum']; // Backwards compatible
 
   if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
-    http_response_code(401);
-    exit;
+    http_response_code(400);
+    die('Missing order or key');
   }
 
   $order = new ctrl_order($_GET['order_id']);
 
-  document::$snippets['title'][] = language::translate('title_order', 'Order') .' #'. (int)$order->data['id'];
-
   if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
-    http_response_code(400);
-    exit;
+    http_response_code(401);
+    die('Invalid key');
   }
+
+  document::$snippets['title'][] = language::translate('title_order', 'Order') .' #'. (int)$order->data['id'];
 
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);

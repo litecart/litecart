@@ -7,6 +7,9 @@
     //}
 
     public static function load_dependencies() {
+
+    // Bind user to session
+      if (empty(session::$data['user']) || !is_array(session::$data['user'])) session::$data['user'] = array();
       self::$data = &session::$data['user'];
     }
 
@@ -15,9 +18,7 @@
 
     public static function startup() {
 
-      if (empty(session::$data['user']) || !is_array(session::$data['user'])) {
-        self::reset();
-      }
+      if (empty(self::$data)) self::reset();
 
       if (!empty(self::$data['id'])) {
         ini_set('display_errors', 'On');
@@ -86,18 +87,6 @@
       session::$data['user']['permissions'] = array();
     }
 
-    public static function require_login() {
-      if (!self::check_login()) {
-        //notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', array('redirect_url' => $_SERVER['REQUEST_URI'])));
-        exit;
-      }
-    }
-
-    public static function check_login() {
-      if (!empty(self::$data['id'])) return true;
-    }
-
     public static function load($user_id) {
 
       $user_query = database::query(
@@ -110,5 +99,17 @@
       $user['permissions'] = @json_decode($user['permissions'], true);
 
       session::$data['user'] = $user;
+    }
+
+    public static function require_login() {
+      if (!self::check_login()) {
+        //notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
+        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', array('redirect_url' => $_SERVER['REQUEST_URI'])));
+        exit;
+      }
+    }
+
+    public static function check_login() {
+      if (!empty(self::$data['id'])) return true;
     }
   }

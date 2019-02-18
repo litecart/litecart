@@ -30,15 +30,15 @@
 
       while($module = database::fetch($modules_query)){
 
-      // Uninstall orphan modules
         if (!is_file($directory . $module['module_id'] .'.inc.php')) {
-          /*
-          database::query(
-            "delete from ". DB_TABLE_MODULES ."
-            where module_id = '". database::input($module['id']) ."'
-            limit 1;"
-          );
-          */
+
+        // Uninstall orphan modules
+          //database::query(
+          //  "delete from ". DB_TABLE_MODULES ."
+          //  where module_id = '". database::input($module['id']) ."'
+          //  limit 1;"
+          //);
+
           continue;
         }
 

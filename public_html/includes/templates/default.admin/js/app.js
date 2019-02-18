@@ -115,7 +115,7 @@
     return false;
   });
 
-  $('.data-table tbody tr').click(function(e) {
+  $('.data-table tbody').on('click', 'tr', function(e) {
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;

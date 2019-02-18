@@ -7,12 +7,15 @@
     //}
 
     public static function load_dependencies() {
+
+    // Bind customer to session
+      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) session::$data['customer'] = array();
       self::$data = &session::$data['customer'];
     }
 
     public static function initiate() {
 
-      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
+      if (empty(self::$data)) {
         self::reset();
       }
 
@@ -221,18 +224,6 @@
       session::$data['customer']['display_prices_including_tax'] = null;
     }
 
-    public static function require_login() {
-      if (!self::check_login()) {
-        notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::ilink('login', array('redirect_url' => $_SERVER['REQUEST_URI'])));
-        exit;
-      }
-    }
-
-    public static function check_login() {
-      if (!empty(self::$data['id'])) return true;
-    }
-
     public static function load($customer_id) {
 
       self::reset();
@@ -257,5 +248,17 @@
           self::$data['shipping_address'][$key] = self::$data[$key];
         }
       }
+    }
+
+    public static function require_login() {
+      if (!self::check_login()) {
+        notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
+        header('Location: ' . document::ilink('login', array('redirect_url' => $_SERVER['REQUEST_URI'])));
+        exit;
+      }
+    }
+
+    public static function check_login() {
+      if (!empty(self::$data['id'])) return true;
     }
   }

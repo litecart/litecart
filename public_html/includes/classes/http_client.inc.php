@@ -69,7 +69,6 @@
       $this->last_request['timestamp'] = time();
 
       if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout)) {
-        trigger_error('Error calling URL ('. $url .'): '. $errstr, E_USER_WARNING);
         return;
       }
 
