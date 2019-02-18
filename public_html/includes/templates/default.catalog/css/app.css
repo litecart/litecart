@@ -108,6 +108,9 @@ html {
 #site-menu {
   grid-area: navigation;
 }
+#main {
+  grid-area: main;
+}
 @media (min-width: 768px) {
   #main {
     display: grid;
