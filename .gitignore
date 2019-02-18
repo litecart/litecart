@@ -19,9 +19,9 @@ public_html/.htaccess
 public_html/favicon.ico
 public_html/robots.txt
 
-#################
-# Project files #
-#################
+#####################
+# Development files #
+#####################
 
 node_modules/
 
@@ -29,6 +29,7 @@ node_modules/
 *.old
 *.ignore
 *.cmd
+*.lnk
 
 ######################
 # OS generated files #
