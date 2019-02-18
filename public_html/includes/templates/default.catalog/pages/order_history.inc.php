@@ -19,7 +19,6 @@
         <th class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
         <th class="text-right"><?php echo language::translate('title_amount', 'Amount'); ?></th>
         <th class="text-right"><?php echo language::translate('title_date', 'Date'); ?></th>
-        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -29,7 +28,6 @@
         <td class="text-center"><?php echo $order['order_status']; ?></td>
         <td class="text-right"><?php echo $order['payment_due']; ?></td>
         <td class="text-right"><?php echo $order['date_created']; ?></td>
-        <td class="text-right"><a href="<?php echo htmlspecialchars($order['link']); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
       </tr>
       <?php } ?>
       </tbody>

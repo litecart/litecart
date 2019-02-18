@@ -172,26 +172,6 @@ h1 {
         </tr>
       </tbody>
     </table>
-
-<?php
-  if (!empty($order['comments'])) {
-    if (in_array('0', array_column($order['comments'], 'hidden'))) {
-?>
-  <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-  <ul class="comments list-unstyled">
-<?php
-      foreach ($order['comments'] as $comment) {
-        if (!empty($comment['hidden'])) continue;
-?>
-    <li><?php echo date(language::$selected['raw_date'], strtotime($comment['date_created'])); ?>: <?php echo $comment['text']; ?></li>
-<?php
-      }
-?>
-  </ul>
-<?php
-    }
-  }
-?>
   </div>
 
   <?php if (count($order['items']) <= 10) { ?>
