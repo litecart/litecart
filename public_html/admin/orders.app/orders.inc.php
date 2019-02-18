@@ -194,7 +194,7 @@ table .fa-star:hover {
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+        <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
       </tr>
     </tfoot>
   </table>
@@ -247,4 +247,22 @@ table .fa-star:hover {
       $('#order-actions button').attr('disabled', 'disabled');
     }
   }).trigger('change');
+
+
+  $('table').on('click', '.fa-star-o', function(e){
+    e.stopPropagation();
+    var star = this;
+    $.post('', 'star&order_id='+$(star).closest('tr').data('id'), function(data) {
+      $(star).replaceWith('<?php echo functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"'); ?>');
+    });
+    return false;
+  });
+
+  $('table').on('click', '.fa-star', function(e){
+    var star = this;
+    $.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), function(data) {
+      $(star).replaceWith('<?php echo functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?>');
+    });
+    return false;
+  });
 </script>
