@@ -500,7 +500,7 @@ input[name="development_type"]:checked + div {
     </div>
 
     <div class="form-group col-md-6">
-      <label>Time Zone<br />
+      <label>Time Zone</label>
       <select class="form-control" name="store_time_zone" required="required">
 <?php
   foreach (timezone_identifiers_list() as $timezone) {

@@ -28,8 +28,7 @@ CREATE TABLE `lc_categories` (
   PRIMARY KEY (`id`),
   KEY `code` (`code`),
   KEY `parent_id` (`parent_id`),
-  KEY `status` (`status`),
-  KEY `dock` (`dock`)
+  KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_images` (

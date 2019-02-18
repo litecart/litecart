@@ -114,7 +114,7 @@
       );
 
       foreach ($files_to_delete as $file) {
-        echo 'Delete '. $file . PHP_EOL;
+        echo 'Delete '. $file;
         if (file_delete($file)) {
           echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
         } else {
@@ -131,7 +131,7 @@
       );
 
       foreach ($files_to_delete as $file) {
-        echo 'Delete '. $file . PHP_EOL;
+        echo 'Delete '. $file;
         if (file_delete($file)) {
           echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
         } else {
