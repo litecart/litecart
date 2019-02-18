@@ -1,7 +1,7 @@
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-order-success" class="box" data-id="<?php echo $order['id']; ?>" data-payment-due="<?php echo currency::format_raw($order['payment_due'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['tax_total'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
+  <section id="box-order-success" class="box" data-id="<?php echo $order['id']; ?>" data-payment-due="<?php echo currency::format_raw($order['payment_due'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['tax_total'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
 
     <h1 class="title"><?php echo strtr(language::translate('title_order_completed', 'Your order #%order_id is successfully completed!'), array('%order_id' => $order['id'])); ?></h1>
 
@@ -22,5 +22,5 @@
     <?php if ($payment_receipt) echo $payment_receipt; ?>
 
     <?php if ($order_success_modules_output) echo $order_success_modules_output; ?>
-  </div>
-</main>
+  </section>
+</div>

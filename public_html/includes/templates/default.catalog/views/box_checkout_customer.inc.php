@@ -1,4 +1,4 @@
-<div id="box-checkout-customer" class="box">
+<section id="box-checkout-customer" class="box">
   <?php echo functions::form_draw_hidden_field('customer_details', 'true'); ?>
 
   <?php if (empty(customer::$data['id'])) { ?>
@@ -195,7 +195,7 @@
     <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
   </div>
 
-</div>
+</section>
 
 <script>
   <?php if (!empty(notices::$data['errors'])) { ?>

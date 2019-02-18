@@ -1,4 +1,4 @@
-<div id="box-checkout-payment" class="box">
+<section id="box-checkout-payment" class="box">
   <h2 class="title"><?php echo language::translate('title_payment', 'Payment'); ?></h2>
 
   <div class="options btn-group-vertical">
@@ -30,7 +30,7 @@
     <?php } ?>
 
   </div>
-</div>
+</section>
 
 <script>
   $('#box-checkout-payment .option.active :input').prop('disabled', false);

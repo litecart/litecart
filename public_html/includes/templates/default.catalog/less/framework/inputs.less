@@ -12,11 +12,26 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 }
 
 .form-group {
-  margin-bottom: @default-gutter-size;
   &.required label::after {
     content: ' *';
     color: #f00;
   }
+  &:not([class*="col-"]) {
+    margin-bottom: @default-gutter-size;
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    padding: @form-input-padding/2 0;
+    color: #666;
+    letter-spacing: 1%;
+  }
+  //&:focus-within {
+  //  transform: scale(1.05);
+  //  label {
+  //    color: #cc9900;
+  //  }
+  //}
 }
 
 .input-field() {
@@ -35,11 +50,13 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   min-width: 1px; // Firefox fix
   padding: @form-input-padding @form-input-padding * 2;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  &[type="file"] {
-    font-size: 12px;
-  }
+  transition: all 50ms;
+
   &[type="color"] {
     height: (@form-input-padding * 2) + 22px;
+  }
+  &[type="file"] {
+    font-size: 12px;
   }
   &[disabled] {
     opacity: 0.5;
@@ -71,6 +88,23 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     appearance: none;
     padding-right: @default-gutter-size * 2;
   }
+}
+
+.select-wrapper.multiple {
+  .form-control {
+    padding: 0;
+  }
+  option {
+    padding: @form-input-padding @form-input-padding*2;
+  }
+}
+
+.input-unstyled {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
 }
 
 .checkbox, .radio {

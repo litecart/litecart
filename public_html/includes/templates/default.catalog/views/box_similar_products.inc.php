@@ -1,9 +1,9 @@
-<div id="box-similar-products" class="box">
+<section id="box-similar-products" class="box">
 
   <h2 class="title"><?php echo language::translate('title_similar_products', 'Similar Products'); ?></h2>
 
-  <div class="products row half-gutter text-center">
+  <section class="listing">
     <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
-  </div>
+  </section>
 
-</div>
+</section>

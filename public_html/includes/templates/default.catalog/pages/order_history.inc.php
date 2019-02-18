@@ -5,10 +5,10 @@
   </div>
 </div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-order-history" class="box">
+  <section id="box-order-history" class="box">
 
     <h1 class="title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
 
@@ -36,5 +36,5 @@
     </table>
 
     <?php echo $pagination; ?>
-  </div>
-</main>
+  </section>
+</div>

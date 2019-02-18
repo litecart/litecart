@@ -5,10 +5,10 @@
   </div>
 </div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-edit-account" class="box" style="margin-bottom: 2em;">
+  <section id="box-edit-account" class="box">
     <h1 class="title"><?php echo language::translate('title_sign_in_and_security', 'Sign-In and Security'); ?></h1>
 
     <?php echo functions::form_draw_form_begin('customer_account_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
@@ -37,17 +37,12 @@
         </div>
       </div>
 
-      <div class="row">
-      </div>
-
       <p><?php echo functions::form_draw_button('save_account', language::translate('title_save', 'Save')); ?></p>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  </section>
 
-  <hr />
-
-  <div id="box-edit-details" class="box">
+  <section id="box-edit-details" class="box">
     <h1 class="title"><?php echo language::translate('title_customer_profile', 'Customer Profile'); ?></h1>
 
     <?php echo functions::form_draw_form_begin('customer_details_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
@@ -128,9 +123,9 @@
       <p><?php echo functions::form_draw_button('save_details', language::translate('title_save', 'Save')); ?></p>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  </section>
 
-</main>
+</div>
 
 <script>
   $('form[name="customer_form"]').on('input propertyChange', ':input', function() {

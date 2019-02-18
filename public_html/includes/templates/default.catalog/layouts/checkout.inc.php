@@ -17,7 +17,7 @@
   <header id="header" class="twelve-eighty">
 
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-      <img src="<?php echo document::href_link(WS_DIR_IMAGES . 'logotype.png'); ?>" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+      <img src="<?php echo document::href_link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
     </a>
 
     <div class="customer-service hidden-xs">
@@ -27,11 +27,10 @@
   </header>
 </div>
 
-<div id="page" class="shadow">
-  <div id="main">
-    {snippet:content}
-  </div>
-</div>
+
+<main id="page">
+  {snippet:content}
+</main>
 
 {snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>

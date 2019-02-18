@@ -1,4 +1,4 @@
-<div id="box-account-login" class="box">
+<section id="box-account-login" class="box">
   <h2><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 
   <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login')); ?>
@@ -25,4 +25,4 @@
     </p>
 
   <?php echo functions::form_draw_form_end(); ?>
-</div>
+</section>

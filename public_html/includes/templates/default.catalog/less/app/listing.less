@@ -1,154 +1,127 @@
-/* Categories */
+#box-recently-viewed-products .listing {
+  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+}
 
-.categories.row {
-  > *[class^=col-] {
-    padding: @default-gutter-size/2;
+.listing {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 15px;
+
+  h1, h2, h3 {
+    padding-bottom: 0;
+    border: none;
   }
-  .category {
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .category, .manufacturer, .product-column, .product-row {
     position: relative;
     overflow: hidden;
+
     background: @image-whitespace-color;
     border: 1px solid @default-border-color;
-    border-radius: @default-border-radius;
-    text-align: center;
-    transition: all 100ms ease-out;
+    border-radius: @default-gutter-size/2;
     transform: scale(1);
+    transition: all 100ms linear;
+
+    color: inherit;
+    text-decoration: none;
 
     &:hover {
       box-shadow: 0 @default-gutter-size/4 @default-gutter-size/2 0 rgba(0, 0, 0, 0.15);
       transform: scale(1.01);
     }
+  }
 
-    a.link {
-      display: block;
-      color: inherit;
-      text-decoration: none;
-    }
+  .category {
+    grid-column: auto / span 2;
     .caption {
       background: #f2f2f2;
       padding: @default-gutter-size/2 @default-gutter-size;
       color: @default-text-color;
+      text-align: center;
       * {
         color: inherit;
         margin: 0;
       }
     }
   }
-}
 
-/* Manufacturers */
-
-.manufacturers.row {
-  > *[class^=col-] {
-    padding: @default-gutter-size/2;
-  }
   .manufacturer {
-    position: relative;
-    overflow: hidden;
-    background: @image-whitespace-color;
-    border: 1px solid @default-border-color;
-    border-radius: @default-border-radius;
-    text-align: center;
-    transition: all 50ms linear;
-    a.link {
-      display: block;
-      color: inherit;
-      text-decoration: none;
-    }
     img {
       width: 100%;
       height: auto;
       padding: @default-gutter-size/2;
     }
+
     .caption {
+      margin: 0;
       padding: @default-gutter-size / 2;
       background: #f2f2f2;
       color: @default-text-color;
-      margin: 0;
+      text-align: center;
     }
   }
-}
 
-/* Products */
-
-.products.row {
-  > *[class^=col-] {
-    padding: @default-gutter-size/2;
-  }
-  .product {
-    overflow: hidden;
+  .product-column, .product-row {
     position: relative;
-    background: @image-whitespace-color;
-    border: 1px solid @default-border-color;
-    border-radius: @default-gutter-size/4;
-    transform: scale(1);
-    transition: all 100ms linear;
-    a.link {
-      display: block;
-      color: inherit;
+
+    .link {
+      position: relative;
       text-decoration: none;
     }
+
     .image-wrapper {
-      display: inline-block;
-      .image {
-        width: 160px;
-        height: auto;
+      background: @image-whitespace-color;
+
+      .sticker {
+        position: absolute;
+        top: 20px;
+        left: -32px;
+        width: 125px;
+        padding: @default-gutter-size/4 @default-gutter-size/2;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        transform: rotate(-45deg);
+        &.new {
+          background: rgba(251, 184, 41, 0.85);
+        }
+        &.sale {
+          background: rgba(237, 60, 50, 0.85);
+        }
       }
     }
-    .sticker {
-      position: absolute;
-      top: 20px;
-      left: -32px;
-      width: 125px;
-      padding: @default-gutter-size/4 @default-gutter-size/2;
-      color: #fff;
-      font-size: 12px;
-      font-weight: bold;
-      text-align: center;
-      text-transform: uppercase;
-      transform: rotate(-45deg);
-      &.new {
-        background: rgba(251, 184, 41, 0.85);
-      }
-      &.sale {
-        background: rgba(237, 60, 50, 0.85);
-      }
-    }
-    .info {
-      position: absolute;
-      top: 0;
-      left: 160px + @default-gutter-size;
-      padding: @default-gutter-size/4;
-    }
+
     .name {
       display: flex;
       justify-content: center;
       align-content: center;
       flex-direction: column;
-      padding: 0 @default-gutter-size/4;
-      height: @default-gutter-size * 3;
+      height: 40px;
     }
-    .manufacturer {
-      padding: 0 @default-gutter-size/4;
+
+    .manufacturer-name {
       color: lighten(@default-text-color, 25%);
       font-size: 0.9em;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      line-height: 200%;
     }
+
     .description {
       padding: 0 @default-gutter-size/4;
       margin-top: @default-gutter-size;
     }
+
     .price-wrapper {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      padding: 0 @default-gutter-size;
-      line-height: @default-gutter-size * 3;
       font-size: 1.25em;
-      background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 100%);
-      padding-left: @default-gutter-size * 2;
       .price {
         font-weight: bold;
         color: #333;
@@ -167,21 +140,59 @@
       }
     }
 
-    &:hover {
-      box-shadow: 0 @default-gutter-size/4 @default-gutter-size/2 0 rgba(0, 0, 0, 0.15);
-      transform: scale(1.01);
+    .preview {
+      margin: 0 -1px -1px -1px;
+      display: none;
+      position: absolute;
+      top: 7.5px;
+      right: 7.5px;
+      box-shadow: none;
+      //background: rgba(0, 0, 0 ,0.15);
+      //text-decoration: none;
+      //color: inherit;
+      //opacity: 0.5;
     }
 
-    &.column {
+    &:hover .preview {
+      display: inline-block;
+    }
+  }
+
+  .product-column {
+    .image {
+      width: 100%;
+      height: auto;
+    }
+
+    .info {
+      padding: @default-gutter-size/2;
       text-align: center;
-      img {
-        width: 100%;
-        height: auto;
-      }
-      .price-wrapper {
-        position: initial;
-        padding: 0 @default-gutter-size/4;
-      }
+    }
+
+    .price-wrapper {
+      position: initial;
+    }
+  }
+
+  .product-row {
+    grid-column: span 4;
+    .info {
+      position: absolute;
+      top: 0;
+      left: 160px + @default-gutter-size;
+      padding: @default-gutter-size/2;
+    }
+    .image {
+      max-width: 160px;
+    }
+    .price-wrapper {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-size: 1.25em;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 100%);
+      padding: @default-gutter-size/2;
+      padding-left: @default-gutter-size * 2;
     }
   }
 }

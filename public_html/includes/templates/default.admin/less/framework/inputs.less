@@ -22,10 +22,17 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 }
 
 .form-group {
-  margin-bottom: @default-gutter-size;
   &.required label::after {
     content: ' *';
     color: #f00;
+  }
+  &:not([class*="col-"]) {
+    margin-bottom: @default-gutter-size;
+  }
+  label {
+    display: block;
+    padding: @form-input-padding/2 @form-input-padding*2;
+    color: #666;
   }
 }
 
@@ -59,11 +66,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   }
 }
 
-.form-control-static {
-  padding: @form-input-padding+1px 0;
-}
-
-.select-wrapper:not(.multiple) {
+.select-wrapper {
   position: relative;
   width: 100%;
   background: @form-input-background;
@@ -106,6 +109,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 
 .checkbox, .radio {
   padding: @form-input-padding @form-input-padding * 2;
+}
+.form-control .checkbox {
+  padding: @form-input-padding 0;
 }
 
 .input-group {
@@ -170,7 +176,6 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     margin-right: -1px;
     border-radius: 0 @default-border-radius @default-border-radius 0;
   }
-
   + .input-group {
     margin-top: -1px;
   }

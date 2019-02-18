@@ -5,11 +5,11 @@
   </div>
 </div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-customer-service" class="box">
+  <section id="box-customer-service" class="box">
     <?php echo $content; ?>
-  </div>
+  </section>
 
-</main>
+</div>

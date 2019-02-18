@@ -6,6 +6,7 @@
 
 h1 {
   margin: 0;
+  border: none;
 }
 
 .addresses .row > *:nth-child(1), .addresses .row > *:nth-child(2) {
@@ -51,7 +52,7 @@ h1 {
     </div>
   </header>
 
-  <main class="content">
+  <div class="content">
     <div class="addresses">
       <div class="row">
         <div class="col-xs-6 billing-address">
@@ -137,7 +138,7 @@ h1 {
     }
   }
 ?>
-  </main>
+  </div>
 
   <?php if (count($order['items']) <= 10) { ?>
   <footer class="footer">

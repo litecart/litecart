@@ -4,11 +4,11 @@
   </div>
 </div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
   {snippet:breadcrumbs}
 
-  <div id="box-create-account" class="box">
+  <section id="box-create-account" class="box">
 
     <h1><?php echo language::translate('title_create_account', 'Create Account'); ?></h1>
 
@@ -118,8 +118,8 @@
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</main>
+  </section>
+</div>
 
 <script>
   $('#box-create-account').on('change', ':input', function() {

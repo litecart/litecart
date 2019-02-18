@@ -1,7 +1,7 @@
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-regional-settings">
+  <section id="box-regional-settings">
     <h1 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
 
     <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
@@ -45,8 +45,8 @@
       </p>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</main>
+  </section>
+</div>
 
 <script>
   if ($('#regional-settings .title').parents('.modal')) {

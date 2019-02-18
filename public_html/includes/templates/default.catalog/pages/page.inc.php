@@ -1,7 +1,8 @@
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-page" class="box">
+  <section id="box-page" class="box">
     <?php echo $content; ?>
-  </div>
-</main>
+  </section>
+
+</div>

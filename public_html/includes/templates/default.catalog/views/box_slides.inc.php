@@ -1,4 +1,4 @@
-<div id="box-slides" class="box carousel slide" data-ride="carousel">
+<section id="box-slides" class="carousel slide" data-ride="carousel">
 
   <div class="carousel-inner">
 <?php
@@ -34,4 +34,4 @@
   <a class="right carousel-control" href="#box-slides" data-slide="next">
     <span class="icon-next"><?php echo functions::draw_fonticon('fa-chevron-right'); ?></span>
   </a>
-</div>
+</section>

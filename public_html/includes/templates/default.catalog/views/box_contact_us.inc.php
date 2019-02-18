@@ -1,4 +1,4 @@
-<div id="box-contact-us" class="box">
+<section id="box-contact-us" class="box">
 
   <div class="row">
     <div class="col-md-6">
@@ -52,5 +52,6 @@
 
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/box_store_map.inc.php'); ?>
     </div>
+
   </div>
-</div>
+</section>

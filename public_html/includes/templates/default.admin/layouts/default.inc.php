@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div class="page">
+<div id="page">
 
   <div id="sidebar" class="hidden-print">
 

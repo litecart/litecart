@@ -2,11 +2,11 @@
     <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
 </div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
   {snippet:breadcrumbs}
 
-  <div id="box-reset-password" class="box">
+  <section id="box-reset-password" class="box">
 
     <h2 class="title"><?php echo language::translate('title_reset_password', 'Reset Password'); ?></h2>
 
@@ -37,5 +37,5 @@
       <?php echo functions::form_draw_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</main>
+  </section>
+</div>

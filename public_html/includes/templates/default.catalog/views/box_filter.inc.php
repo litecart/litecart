@@ -1,4 +1,4 @@
-<div id="box-filter">
+<section id="box-filter" class="box">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
   <?php if ($manufacturers) { ?>
@@ -26,7 +26,7 @@
   <?php } ?>
 
   <?php echo functions::form_draw_form_end(); ?>
-</div>
+</section>
 
 <script>
   $('form[name="filter_form"] input[name="manufacturers[]"]').click(function(){
