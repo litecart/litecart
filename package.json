@@ -20,7 +20,7 @@
 	"devDependencies": {
 		"grunt": "^1.0.3",
 		"grunt-contrib-less": "^2.0.0",
-		"grunt-contrib-uglify": "^3.2.1",
+		"grunt-contrib-uglify": "^4.0.0",
 		"grunt-contrib-watch": "^1.0.0",
 		"grunt-phplint": "^0.1.0",
 		"grunt-sass": "^3.0.2",
