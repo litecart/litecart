@@ -46,8 +46,6 @@ module.exports = function(grunt) {
         options: {
           compress: false,
           sourceMap: false,
-          sourceMapBasepath: 'public_html/includes/templates/default.catalog/less/',
-          sourceMapRootpath: '../less/',
           relativeUrls: true
         },
         files: {
