@@ -74,7 +74,7 @@
         }
 
         if (file_exists('upgrade_patches/'. $version .'.inc.php')) {
-          echo '<p>Upgrading system to '. $version .'... ';
+          echo '<p>Upgrading system to '. $version .'... ' . PHP_EOL;
           include('upgrade_patches/'. $version .'.inc.php');
           echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
         }
@@ -102,7 +102,7 @@
 
     #############################################
 
-    echo '<p>Preparing CSS files...';
+    echo '<p>Preparing CSS files...' . PHP_EOL;
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
@@ -114,6 +114,7 @@
       );
 
       foreach ($files_to_delete as $file) {
+        echo 'Delete '. $file . PHP_EOL;
         if (file_delete($file)) {
           echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
         } else {
@@ -130,6 +131,7 @@
       );
 
       foreach ($files_to_delete as $file) {
+        echo 'Delete '. $file . PHP_EOL;
         if (file_delete($file)) {
           echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
         } else {
@@ -141,10 +143,10 @@
         echo 'Modify '. $file . PHP_EOL;
         $contents = file_get_contents($file);
         $search_replace = array(
-          'app.min.css'  => 'app.css'
-          'checkout.min.css'  => 'checkout.css'
-          'framework.min.css' => 'framework.css'
-          'printable.min.css' => 'printable.css'
+          'app.min.css'  => 'app.css',
+          'checkout.min.css'  => 'checkout.css',
+          'framework.min.css' => 'framework.css',
+          'printable.min.css' => 'printable.css',
         );
         file_put_contents($file, strtr($contents, $search_replace));
       }
@@ -196,7 +198,7 @@ input[name="development_type"] + div {
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 15px;
   width: 250px;
-  height: 150px;
+  height: 125px;
   text-align: center;
   cursor: pointer;
 }
