@@ -15,7 +15,7 @@
 // AJAX Search
   var timer_ajax_search = null;
   var xhr_search = null;
-  $('#search input[name="query"]').on('change input', function(){
+  $('#search input[name="query"]').on('input', function(){
     if (xhr_search) xhr_search.abort();
 
     if ($(this).val() != '') {
