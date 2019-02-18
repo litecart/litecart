@@ -39,7 +39,14 @@ main {
     margin-top: 2em;
     .result {
       display: block;
-        margin-bottom: 5px;
+      margin-bottom: 5px;
+      &:hover a {
+        transform: scale(1.05);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
       .id {
         opacity: 0.5;
       }
@@ -48,11 +55,6 @@ main {
       }
       .description {
         opacity: 0.75;
-      }
-      hr {
-        margin: 0;
-        padding: 0;
-        border: none;
       }
     }
   }

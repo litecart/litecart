@@ -51,12 +51,11 @@
                 $.each(group.results, function(i, result){
                   $('#search .results ul[data-group="'+ group.name +'"]').append(
                     '<li class="result">' +
-                    '  <a class="list-group-item" href="'+ result.url +'">' +
+                    '  <a class="list-group-item" href="'+ result.url +'" style="border-left: 3px solid '+ group.theme.color +';">' +
                     '    <small class="id pull-right">#'+ result.id +'</small>' +
                     '    <div class="title">'+ result.title +'</div>' +
                     '    <div class="description"><small>'+ result.description +'</small></div>' +
                     '  </a>' +
-                    '  <hr style="border-bottom: 3px '+ group.theme.color +' solid;" />' +
                     '</li>'
                   );
                 });
