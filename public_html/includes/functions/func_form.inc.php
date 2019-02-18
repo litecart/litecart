@@ -1034,8 +1034,8 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     while ($row = database::fetch($collations_query)) {
-      if (strtoupper($row['Support']) != 'YES') continue;
-      if (!in_array($row['Engine'], array('CSV',  'InnoDB', 'MyISAM', 'Aria'))) continue;
+      if (!in_array(strtoupper($row['Support']), array('YES', 'DEFAULT'))) continue;
+      if (!in_array($row['Engine'], array('CSV', 'InnoDB', 'MyISAM', 'Aria'))) continue;
       $options[] = array($row['Engine'] . ' -- '. $row['Comment'], $row['Engine']);
     }
 
