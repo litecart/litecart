@@ -167,8 +167,11 @@ table .fa-star:hover {
 
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
+
+      $row_classes = array();
+      if (empty($order['order_status_id'])) $row_classes[]= 'semi-transparent';
 ?>
-    <tr class="<?php echo empty($order['order_status_id']) ? 'semi-transparent' : null; ?>">
+    <tr class="<?php echo implode(' ', $row_classes); ?>" data-id="<?php echo $order['id']; ?>">
       <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
       <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
       <td><?php echo $order['id']; ?></td>
