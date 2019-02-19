@@ -81,21 +81,21 @@
           'default_value' => '07:00-21:00',
           'title' => language::translate(__CLASS__.':title_working_hours', 'Working Hours'),
           'description' => language::translate(__CLASS__.':description_working_hours', 'During what hours of the day the job would operate e.g. 07:00-21:00.'),
-          'function' => 'input()',
+          'function' => 'text()',
         ),
         array(
           'key' => 'email_recipient',
           'default_value' => settings::get('store_email'),
           'title' => language::translate(__CLASS__.':title_email_recipient', 'Email Recipient'),
           'description' => language::translate(__CLASS__.':description_email_recipient', 'The email address where reports will be sent.'),
-          'function' => 'input()',
+          'function' => 'text()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
-          'function' => 'int()',
+          'function' => 'number()',
         ),
       );
     }

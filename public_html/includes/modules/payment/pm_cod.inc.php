@@ -78,7 +78,7 @@
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_icon', 'Icon'),
           'description' => language::translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
-          'function' => 'input()',
+          'function' => 'text()',
         ),
         array(
           'key' => 'fee',
@@ -92,7 +92,7 @@
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_tax_class', 'Tax Class'),
           'description' => language::translate(__CLASS__.':description_tax_class', 'The tax class for the fee.'),
-          'function' => 'tax_classes()',
+          'function' => 'tax_class()',
         ),
         array(
           'key' => 'order_status_id',
@@ -106,14 +106,14 @@
           'default_value' => '',
           'title' => language::translate('title_geo_zone_limitation', 'Geo Zone Limitation'),
           'description' => language::translate('modules:description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
-          'function' => 'geo_zones()',
+          'function' => 'geo_zone()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate('title_priority', 'Priority'),
           'description' => language::translate('modules:description_priority', 'Process this module in the given priority order.'),
-          'function' => 'int()',
+          'function' => 'number()',
         ),
       );
     }

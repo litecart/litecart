@@ -79,7 +79,7 @@
           'default_value' => '20',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
-          'function' => 'int()',
+          'function' => 'number()',
         ),
       );
     }
