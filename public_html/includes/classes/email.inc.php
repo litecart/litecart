@@ -4,6 +4,8 @@
     private $_charset = 'UTF-8';
     private $_sender = array();
     private $_recipients = array();
+    private $_ccs = array();
+    private $_bccs = array();
     private $_subject = '';
     private $_multiparts = array();
 
@@ -87,7 +89,7 @@
 
       if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
-      $this->_cc[] = array(
+      $this->_ccs[] = array(
         'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
         'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
       );
@@ -101,7 +103,7 @@
 
       if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
-      $this->_bcc[] = array(
+      $this->_bccs[] = array(
         'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
         'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
       );
@@ -145,22 +147,29 @@
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
       );
 
-    // Add CCs
-      if (!empty($this->_cc)) {
+    // Add "To"
+      if (!empty($this->_recipients)) {
+        $tos = array();
+        foreach ($this->_recipients as $to) {
+          $tos[] = $this->format_contact($to);
+        }
+        $headers['To'] = implode(', ', $tos);
+      }
+
+    // Add "Cc"
+      if (!empty($this->_ccs)) {
         $ccs = array();
-        foreach ($this->_cc as $cc) {
+        foreach ($this->_ccs as $cc) {
           $ccs[] = $this->format_contact($cc);
         }
         $headers['Cc'] = implode(', ', $ccs);
       }
 
-    // Add BCCs
-      if (!empty($this->_bcc)) {
-        $bccs = array();
-        foreach ($this->_bcc as $bcc) {
-          $bccs[] = $this->format_contact($bcc);
-        }
-        $headers['Bcc'] = implode(', ', $bccs);
+    // Prepare subject
+      if (strtoupper(language::$selected['charset']) == 'UTF-8') {
+        $headers['Subject'] = '=?utf-8?b?'. base64_encode($this->_subject) .'?=';
+      } else {
+        $headers['Subject'] = $this->_subject;
       }
 
       $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
@@ -173,13 +182,6 @@
       );
 
       $headers = implode("\r\n", $headers);
-
-    // Prepare subject
-      if (strtoupper(language::$selected['charset']) == 'UTF-8') {
-        $subject = '=?utf-8?b?'. base64_encode($this->_subject) .'?=';
-      } else {
-        $subject = $this->_subject;
-      }
 
     // Prepare body
       $body = '';
@@ -196,24 +198,38 @@
     // Deliver via SMTP
       if (settings::get('smtp_status')) {
 
-        $smtp = new smtp(
-          settings::get('smtp_host'),
-          settings::get('smtp_port'),
-          settings::get('smtp_username'),
-          settings::get('smtp_password')
-        );
+        try {
 
-        foreach ($this->_recipients as $recipient) {
+          $smtp = new smtp(
+            settings::get('smtp_host'),
+            settings::get('smtp_port'),
+            settings::get('smtp_username'),
+            settings::get('smtp_password')
+          );
 
-          $data = 'To: ' . $this->format_contact($recipient) . "\r\n"
-                . 'Subject: ' . $subject . "\r\n"
-                . $headers . "\r\n"
-                . $body;
-          try {
-            $result = $smtp->send($this->_sender['email'], $recipient['email'], $data);
-          } catch(Exception $e) {
-            trigger_error('Failed sending email to '. $recipient['email'] .': '. $e->getMessage(), E_USER_WARNING);
+          $smtp->connect();
+
+          $recipients = array();
+
+          foreach ($this->_recipients as $recipient) {
+            $recipients[] = $recipient['email'];
           }
+
+          foreach ($this->_ccs as $cc) {
+            $recipients[] = $cc['email'];
+          }
+
+          foreach ($this->_bccs as $bcc) {
+            $recipients[] = $bcc['email'];
+          }
+
+          $data = $headers . "\r\n"
+                . $body;
+
+          $result = $smtp->send($this->_sender['email'], $recipients, $data);
+
+        } catch(Exception $e) {
+          trigger_error('Failed sending email "'. $this->_subject .'": '. $e->getMessage(), E_USER_WARNING);
         }
 
         $smtp->disconnect();
@@ -221,10 +237,31 @@
     // Deliver via PHP mail()
       } else {
 
-        foreach ($this->_recipients as $recipient) {
-          if (!$result = mail($this->format_contact($recipient), $subject, $body, $headers)) {
-            trigger_error('Failed sending email to '. $recipient['email'], E_USER_WARNING);
+        $headers = preg_replace('#(To:.*\r\n)#', '', $headers);
+        $headers = preg_replace('#(Subject:.*\r\n)#', '', $headers);
+
+        if (!empty($this->_bccs)) {
+          $bccs = array();
+          foreach ($this->_bccs as $bcc) {
+            $bccs[] = $this->format_contact($bcc);
           }
+          $headers .= 'Bcc: '. implode(', ', $bccs) . "\r\n";
+        }
+
+        $recipients = array();
+        foreach ($this->_recipients as $recipient) {
+          $recipients[] = $this->format_contact($recipient);
+        }
+        $recipients = implode(', ', $recipients);
+
+        if (strtoupper(language::$selected['charset']) == 'UTF-8') {
+          $subject = '=?utf-8?b?'. base64_encode($this->_subject) .'?=';
+        } else {
+          $subject = $this->_subject;
+        }
+
+        if (!$result = mail($recipients, $subject, $body, $headers)) {
+          trigger_error('Failed sending email "'. $this->_subject .'"', E_USER_WARNING);
         }
       }
 
