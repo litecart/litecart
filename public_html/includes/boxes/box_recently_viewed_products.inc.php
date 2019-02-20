@@ -32,7 +32,7 @@
     $box_recently_viewed_products->snippets['products'][] = array(
       'id' => $product['id'],
       'name' => $product['name'],
-      'thumbnail' => document::ilink(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim'))),
+      'thumbnail' => document::ilink(functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim'))),
       'link' => document::ilink('product', array('product_id' => $product['id'])),
     );
     if (++$count >= settings::get('box_recently_viewed_products_num_items')) break;
