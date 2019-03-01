@@ -10,7 +10,7 @@
 // Sidebar parallax effect
   if (window.config.template.settings.sidebar_parallax_effect == true) {
 
-    var column = $('#column-left'), sidebar = $('#sidebar');
+    var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
     var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
     $(window).bind('resize scroll', function(e){
@@ -47,7 +47,7 @@
     });
   });
 
-// Bootstrap Comaptible (data-toggle="tab")
+// Bootstrap Compatible (data-toggle="tab")
   $('body').on('click', '[data-toggle="tab"]', function(e) {
     e.preventDefault();
     $(this).closest('ul').find('li').removeClass('active');
@@ -66,7 +66,7 @@
     $('a[href="' + document.location.hash + '"]').click();
   }
 
-// Bootstrap Comaptible (data-toggle="buttons")
+// Bootstrap Compatible (data-toggle="buttons")
   $('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');

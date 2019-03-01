@@ -29,7 +29,7 @@
     <?php } ?>
 
     <?php if ($products) { ?>
-    <section class="listing">
+    <section class="listing products">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
     </section>
     <?php } ?>

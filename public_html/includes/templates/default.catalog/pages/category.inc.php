@@ -55,12 +55,12 @@
     <?php } ?>
 
     <?php if ($_GET['page'] == 1) { ?>
-    <section class="listing" style="margin-bottom: 15px;">
+    <section class="listing categories" style="margin-bottom: 15px;">
       <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
     </section>
     <?php } ?>
 
-    <section class="listing">
+    <section class="listing products">
       <?php if ($_GET['page'] == 1) { ?>
       <?php } ?>
 

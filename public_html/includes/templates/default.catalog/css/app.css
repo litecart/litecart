@@ -2,30 +2,19 @@ html {
   background: #f0f0f0;
 }
 #page {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-areas: 'header' 'navigation' 'main' 'footer' 'copyright';
-  grid-template-rows: auto auto 1fr auto auto;
-  min-height: 100%;
-  padding: 10px;
+  min-height: 100vh;
   background: #fff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
 }
-@media (min-width: 992px) {
-  #page {
-    grid-gap: 20px;
-    grid-template-areas: 'header' 'navigation' 'main' 'footer' 'copyright';
-    padding: 20px;
-  }
-}
 #header {
-  grid-area: header;
+  padding: 20px 10px;
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
 }
 @media (min-width: 992px) {
   #header {
+    padding: 20px;
     grid-template-columns: 250px auto 250px;
   }
 }
@@ -34,7 +23,7 @@ html {
 }
 @media (min-width: 400px) {
   #header .logotype img {
-    max-width: 260px;
+    max-width: 100%;
     max-height: 80px;
   }
 }
@@ -106,13 +95,37 @@ html {
   }
 }
 #site-menu {
-  grid-area: navigation;
+  margin: 0 10px 20px 10px;
+}
+@media (min-width: 768px) {
+  #site-menu {
+    margin: 0 20px 20px 20px;
+  }
+}
+#cookies-acceptance {
+  /*position: sticky;*/
+  top: 0;
+  z-index: 999;
+  margin: 0 10px 0 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px rgba(0, 0, 0, 0.1) solid;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 10px;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  #cookies-acceptance {
+    margin: 0 20px 0 20px;
+    padding: 10px 20px;
+  }
 }
 #main {
-  grid-area: main;
+  padding: 0 10px 20px 10px;
 }
 @media (min-width: 768px) {
   #main {
+    padding: 0 20px 20px 20px;
     display: grid;
     grid-template-columns: max-content;
     grid-template-areas: 'sidebar content';
@@ -120,27 +133,45 @@ html {
   }
 }
 #sidebar {
-  grid-area: sidebar;
   position: relative;
 }
 @media (min-width: 768px) {
   #sidebar {
     width: 250px;
   }
+  #sidebar > *:first-child {
+    margin-top: 0;
+  }
   #sidebar + #content {
     margin-left: 20px;
   }
 }
 #content {
-  grid-area: content;
   position: relative;
   flex: 1 1 100%;
 }
 #footer {
-  grid-area: footer;
+  padding: 0 10px 20px 10px;
+}
+@media (min-width: 768px) {
+  #footer {
+    padding: 0 20px 20px 20px;
+  }
+}
+#footer .columns {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 15px;
+}
+@media (min-width: 768px) {
+  #footer .columns {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 992px) {
+  #footer .columns {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 #footer * {
   color: #333;
@@ -155,28 +186,9 @@ html {
 #footer ul.list-vertical li {
   padding: 0;
 }
-@media (min-width: 768px) {
-  #footer {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-@media (min-width: 992px) {
-  #footer {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-#copyright {
-  grid-area: copyright;
-}
 #copyright .notice {
   color: #333;
   padding: 20px;
-  text-align: center;
-}
-#cookies-acceptance {
-  border: 1px rgba(0, 0, 0, 0.1) solid;
-  margin-bottom: 20px;
-  padding: 5px 0;
   text-align: center;
 }
 #scroll-up {
@@ -229,12 +241,30 @@ html {
   overflow-y: auto;
 }
 #box-recently-viewed-products .listing {
-  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(48px, 0.5fr));
 }
 .listing {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 15px;
+}
+.listing.products {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-gap: 10px;
+}
+@media (min-width: 480px) {
+  .listing.products {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 20px;
+  }
+}
+.listing.categories {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 10px;
+}
+@media (min-width: 768px) {
+  .listing.categories {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-gap: 20px;
+  }
 }
 .listing h1,
 .listing h2,
@@ -254,7 +284,7 @@ html {
   overflow: hidden;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 4px;
   transform: scale(1);
   transition: all 100ms linear;
   color: inherit;
@@ -266,9 +296,6 @@ html {
 .listing .product-row:hover {
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
   transform: scale(1.01);
-}
-.listing .category {
-  grid-column: auto / span 2;
 }
 .listing .category .caption {
   background: #f2f2f2;

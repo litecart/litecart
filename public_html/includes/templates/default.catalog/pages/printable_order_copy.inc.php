@@ -28,16 +28,15 @@ h1 {
   width: 30mm;
 }
 
-.order-total tr td:first-child:after {
-  content: ':';
-}
-
 .page .label {
   font-weight: bold;
   margin-bottom: 3pt;
 }
 .page .value {
   margin-bottom: 3mm;
+}
+.page .footer .row {
+  margin-bottom: 0;
 }
 </style>
 
@@ -79,20 +78,12 @@ h1 {
     </div>
 
     <div class="row">
-      <div class="col-xs-3">
+      <div class="col-xs-6">
         <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
         <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
 
         <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
         <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
-      </div>
-
-      <div class="col-xs-3">
-        <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-        <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
-
-        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-        <div class="value"><?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></div>
       </div>
 
       <div class="col-xs-6">
@@ -148,12 +139,12 @@ h1 {
         <?php foreach ($order['order_total'] as $ot_row) { ?>
         <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
         <tr>
-          <td class="text-right"><?php echo $ot_row['title']; ?></td>
+          <td class="text-right"><?php echo $ot_row['title']; ?>:</td>
           <td class="text-right"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
         <?php } else { ?>
         <tr>
-          <td class="text-right"><?php echo $ot_row['title']; ?></td>
+          <td class="text-right"><?php echo $ot_row['title']; ?>:</td>
           <td class="text-right"><?php echo currency::format($ot_row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
         <?php } ?>
@@ -161,13 +152,13 @@ h1 {
 
         <?php if (!empty($order['tax_total']) && $order['tax_total'] != 0) { ?>
         <tr>
-          <td class="text-right"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?></td>
+          <td class="text-right"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
           <td class="text-right"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
         <?php } ?>
 
         <tr>
-          <td class="text-right"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?></strong></td>
+          <td class="text-right"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
           <td class="text-right"><strong><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
         </tr>
       </tbody>
@@ -180,19 +171,12 @@ h1 {
     <hr />
 
     <div class="row">
-      <div class="col-md-auto">
+      <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
         <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
       </div>
 
-      <?php if (settings::get('store_phone')) { ?>
-      <div class="col-md-auto">
-        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-        <div class="value"><?php echo settings::get('store_phone'); ?></div>
-      </div>
-      <?php } ?>
-
-      <div class="col-md-auto">
+      <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
@@ -200,12 +184,20 @@ h1 {
         <div class="value"><?php echo htmlspecialchars(link::decode_idn(document::ilink(''))); ?></div>
       </div>
 
-      <?php if (settings::get('store_tax_id')) { ?>
-      <div class="col-md-auto">
+      <div class="col-xs-3">
+        <?php if (settings::get('store_phone')) { ?>
+        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+        <div class="value"><?php echo settings::get('store_phone'); ?></div>
+        <?php } ?>
+
+        <?php if (settings::get('store_tax_id')) { ?>
         <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
         <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
+        <?php } ?>
       </div>
-      <?php } ?>
+
+      <div class="col-xs-3">
+      </div>
     </div>
   </footer>
   <?php } ?>

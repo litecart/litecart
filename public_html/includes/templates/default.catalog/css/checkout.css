@@ -1,5 +1,10 @@
-#page {
-  display: block !important;
+#content {
+  padding: 10px 20px;
+}
+@media (min-width: 768px) {
+  #content {
+    padding: 20px;
+  }
 }
 .loader-wrapper {
   position: fixed;

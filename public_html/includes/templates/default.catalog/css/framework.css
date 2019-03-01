@@ -199,7 +199,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100vh;
 }
 h1,
 h2,
@@ -1045,11 +1045,8 @@ input[data-type="decimal"] {
   margin-bottom: 20px;
 }
 .form-group label {
-  display: block;
-  font-size: 12px;
-  padding: 3.5px 0;
-  color: #666;
-  letter-spacing: 1%;
+  display: inline-block;
+  padding-bottom: 3.5px;
 }
 .form-control {
   position: relative;
@@ -1541,7 +1538,7 @@ ul.list-inline li {
 }
 .navbar-form {
   border-top: 1px solid transparent;
-  margin: 7.5px 10px;
+  margin: 6px 12px;
 }
 .navbar-toggle .icon-bar {
   position: relative;

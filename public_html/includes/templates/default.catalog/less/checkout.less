@@ -1,8 +1,11 @@
 // Variables
 @import "variables.less";
 
-#page {
-  display: block !important;
+#content {
+  padding: @default-gutter-size/2 @default-gutter-size;
+  @media(min-width: @media-breakpoint-sm) {
+  padding: @default-gutter-size;
+  }
 }
 
 .loader-wrapper {

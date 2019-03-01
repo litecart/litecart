@@ -3,50 +3,28 @@ html {
 }
 
 #page {
-  display: grid;
-  grid-gap: @default-gutter-size/2;
-  grid-template-areas:
-    'header'
-    'navigation'
-    'main'
-    'footer'
-    'copyright';
-  grid-template-rows: auto auto 1fr auto auto;
-
-  min-height: 100%;
-  padding: @default-gutter-size/2;
+  min-height: 100vh;
 
   background: @page-background;
   box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
-
-  @media (min-width: @media-breakpoint-md) {
-    grid-gap: @default-gutter-size;
-    grid-template-areas:
-      'header'
-      'navigation'
-      'main'
-      'footer'
-      'copyright';
-
-    padding: @default-gutter-size;
-  }
 }
 
 #header {
-  grid-area: header;
+  padding: @default-gutter-size @default-gutter-size/2;
 
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
 
   @media (min-width: @media-breakpoint-md) {
+    padding: @default-gutter-size;
     grid-template-columns: @default-sidebar-width auto @default-sidebar-width;
   }
 
   .logotype img {
     max-width: 200px;
     @media (min-width: 400px) {
-      max-width: @default-sidebar-width + (@default-gutter-size/2);
+      max-width: 100%;
       max-height: 80px;
     }
   }
@@ -124,12 +102,33 @@ html {
 }
 
 #site-menu {
-  grid-area: navigation;
+  margin: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
+  @media (min-width: (@media-breakpoint-sm)) {
+    margin: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
+  }
+}
+
+#cookies-acceptance {
+  /*position: sticky;*/
+  top: 0;
+  z-index: 999;
+  margin: 0 @default-gutter-size/2 0 @default-gutter-size/2;
+  background: rgba(255, 255, 255, .9);
+  border: 1px @default-border-color solid;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: @default-gutter-size/2;
+  text-align: center;
+  @media (min-width: (@media-breakpoint-sm)) {
+    margin: 0 @default-gutter-size 0 @default-gutter-size;
+    padding: @default-gutter-size/2 @default-gutter-size;
+  }
 }
 
 #main {
-  grid-area: main;
+  padding: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
   @media (min-width: (@media-breakpoint-sm)) {
+    padding: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
     display: grid;
     //grid-template-columns: @default-sidebar-width auto;
     grid-template-columns: max-content;
@@ -139,10 +138,11 @@ html {
 }
 
 #sidebar {
-  grid-area: sidebar;
   position: relative;
-  //grid-column: span 1;
   @media (min-width: (@media-breakpoint-sm)) {
+    > *:first-child {
+      margin-top: 0;
+    }
     width: 250px;
     + #content {
       margin-left: @default-gutter-size;
@@ -151,18 +151,30 @@ html {
 }
 
 #content {
-  grid-area: content;
   position: relative;
   flex: 1 1 100%;
 }
 
 #footer {
-  grid-area: footer;
+  padding: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
 
-  display: grid;
-  //grid-template-columns: repeat(2, 1fr);
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 15px;
+  @media (min-width: (@media-breakpoint-sm)) {
+    padding: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
+  }
+
+  .columns {
+    display: grid;
+    //grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 15px;
+    @media (min-width: (@media-breakpoint-sm)) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (min-width: (@media-breakpoint-md)) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
 
   * {
     color: @default-text-color;
@@ -179,30 +191,14 @@ html {
       padding: 0;
     }
   }
-
-  @media (min-width: (@media-breakpoint-sm)) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (min-width: (@media-breakpoint-md)) {
-    grid-template-columns: repeat(5, 1fr);
-  }
 }
 
 #copyright {
-  grid-area: copyright;
   .notice {
     color: @default-text-color;
     padding: @default-gutter-size;
     text-align: center;
   }
-}
-
-#cookies-acceptance {
-  border: 1px @default-border-color solid;
-  margin-bottom: @default-gutter-size;
-  padding: 5px 0;
-  text-align: center;
 }
 
 #scroll-up {

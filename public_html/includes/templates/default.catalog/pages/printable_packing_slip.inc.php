@@ -35,6 +35,9 @@ h1 {
 .page .value {
   margin-bottom: 3mm;
 }
+.page .footer .row {
+  margin-bottom: 0;
+}
 </style>
 
 <section class="page" data-size="A4">
@@ -118,26 +121,6 @@ h1 {
         <?php } ?>
       </tbody>
     </table>
-
-<?php
-  if (!empty($order['comments'])) {
-    if (in_array('0', array_column($order['comments'], 'hidden'))) {
-?>
-  <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-  <ul class="comments list-unstyled">
-<?php
-      foreach ($order['comments'] as $comment) {
-        if (!empty($comment['hidden'])) continue;
-?>
-    <li><?php echo date(language::$selected['raw_date'], strtotime($comment['date_created'])); ?>: <?php echo $comment['text']; ?></li>
-<?php
-      }
-?>
-  </ul>
-<?php
-    }
-  }
-?>
   </div>
 
   <?php if (count($order['items']) <= 10) { ?>
@@ -146,32 +129,33 @@ h1 {
     <hr />
 
     <div class="row">
-      <div class="col-md-auto">
+      <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
         <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
       </div>
 
-      <?php if (settings::get('store_phone')) { ?>
-      <div class="col-md-auto">
-        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-        <div class="value"><?php echo settings::get('store_phone'); ?></div>
-      </div>
-      <?php } ?>
-
-      <div class="col-md-auto">
+      <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo htmlspecialchars(document::ilink('')); ?></div>
+        <div class="value"><?php echo htmlspecialchars(link::decode_idn(document::ilink(''))); ?></div>
       </div>
 
-      <?php if (settings::get('store_tax_id')) { ?>
-      <div class="col-md-auto">
+      <div class="col-xs-3">
+        <?php if (settings::get('store_phone')) { ?>
+        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+        <div class="value"><?php echo settings::get('store_phone'); ?></div>
+        <?php } ?>
+
+        <?php if (settings::get('store_tax_id')) { ?>
         <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
         <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
+        <?php } ?>
       </div>
-      <?php } ?>
+
+      <div class="col-xs-3">
+      </div>
     </div>
   </footer>
   <?php } ?>
