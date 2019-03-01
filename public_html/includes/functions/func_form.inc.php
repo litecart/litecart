@@ -695,6 +695,12 @@
       case 'tax_classes':
         return form_draw_tax_classes_list($name, $input, true);
 
+      case 'user':
+        return form_draw_users_list($name, $input, false);
+
+      case 'users':
+        return form_draw_users_list($name, $input, true);
+
       case 'weight_class':
         return form_draw_weight_classes_list($name, $input);
 
@@ -1373,6 +1379,28 @@
           $options[] = array(implode('/', $zone));
         }
       }
+    }
+
+    if ($multiple) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_users_list($name, $input=true, $multiple=false, $parameters='') {
+
+    $users_query = database::query(
+      "select id, username from ". DB_TABLE_USERS ."
+      order by username;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($user = database::fetch($users_query)) {
+      $options[] = array($user['username'], $user['id']);
     }
 
     if ($multiple) {
