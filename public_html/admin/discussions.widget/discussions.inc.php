@@ -6,7 +6,7 @@
 
     $client = new http_client();
     $client->timeout = 10;
-    $response = $client->call('GET', $url);
+    $response = @$client->call('GET', $url);
     $rss = simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {

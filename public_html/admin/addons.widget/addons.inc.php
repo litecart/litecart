@@ -17,7 +17,7 @@
 
     $client = new http_client();
     $client->timeout = 10;
-    $response = $client->call('POST', $url, $store_info);
+    $response = @$client->call('POST', $url, $store_info);
     $rss = simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {
