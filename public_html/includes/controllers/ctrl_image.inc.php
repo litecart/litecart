@@ -550,7 +550,8 @@
             $code = ($width < $original_x || $height < $original_y) ? 1 : 0;
           } while (0);
 
-          $padding = $width * 0.1; // Set padding size in px
+          //$padding = $width * 0.1; // Set padding size in percentage
+          $padding = 50; // Set padding size in px
 
           $_image = ImageCreateTrueColor($width + ($padding * 2), $height + ($padding * 2));
           ImageAlphaBlending($_image, true);
