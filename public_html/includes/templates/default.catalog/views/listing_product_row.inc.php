@@ -21,9 +21,7 @@
     </div>
   </a>
 
-  <?php if (!empty(document::$settings['product_modal_window'])) { ?>
   <button class="preview btn btn-default" data-toggle="lightbox" data-target="<?php echo htmlspecialchars($link) ?>" data-require-window-width="768" data-max-width="980">
     <?php echo functions::draw_fonticon('fa-search-plus'); ?>
   </button>
-  <?php } ?>
 </article>
