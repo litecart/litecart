@@ -100,3 +100,33 @@ ALTER TABLE `lc_categories`
 DROP COLUMN `dock`;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` = 'seo_links_enabled';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'text()' WHERE `function` IN ('input()', 'smallinput()', 'smalltext()');
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'country()' WHERE `function` = 'countries()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'currency()' WHERE `function` = 'currencies()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'timezone()' WHERE `function` = 'timezones()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'language()' WHERE `function` = 'languages()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'zone()' WHERE `function` = 'zones()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'weight_class()' WHERE `function` = 'weight_classes()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'length_class()' WHERE `function` = 'length_classes()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'tax_class()' WHERE `function` = 'tax_classes()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'quantity_unit()' WHERE `function` = 'quantity_units()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'sold_out_status()' WHERE `function` = 'sold_out_statuses()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'delivery_status()' WHERE `function` = 'delivery_statuses()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'number()' WHERE `function` = 'int()';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'template("admin")' WHERE `function` = 'templates("admin")';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `function` = 'template("catalog")' WHERE `function` = 'templates("catalog")';

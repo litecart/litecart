@@ -537,15 +537,13 @@
         return form_draw_color_field($name, $input);
 
       case 'smallinput': // Deprecated
+      case 'smalltext': // Deprecated
       case 'input': // Deprecated
       case 'text':
         return form_draw_text_field($name, $input);
 
       case 'password':
-        return form_draw_password_field($name, $input, 'password');
-
-      case 'smalltext':
-        return form_draw_textarea($name, $input, 'rows="2"');
+        return form_draw_password_field($name, $input);
 
       case 'mediumtext':
       case 'textarea':
@@ -696,7 +694,7 @@
         return form_draw_tax_classes_list($name, $input, true);
 
       case 'user':
-        return form_draw_users_list($name, $input, false);
+        return form_draw_users_list($name, $input);
 
       case 'users':
         return form_draw_users_list($name, $input, true);
