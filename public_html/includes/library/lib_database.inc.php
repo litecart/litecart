@@ -32,12 +32,19 @@
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
       $sql_mode = preg_split('# ?, ?#', $sql_mode);
 
-      if (($key = array_search('STRICT_TRANS_TABLES', $sql_mode)) !== false) {
-        unset($sql_mode[$key]);
-      }
+      $undesired_modes = array(
+        'TRADITIONAL',         // Shortcut flag for a bunch of other flags like below
+        'STRICT_ALL_TABLES',   // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
+        'STRICT_TRANS_TABLES', // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
+        'ONLY_FULL_GROUP_BY',  // Requiring an undesired amount of columns in group by clause [MySQL 5.7+]
+        'NO_ZERO_DATE',        // Prevents us from sending in empty dates [MySQL 5.7+]
+        'NO_ZERO_IN_DATE',     // Prevents us from sending in a zero date 0000-00-00 [MySQL 5.7+]
+      );
 
-      if (($key = array_search('ONLY_FULL_GROUP_BY', $sql_mode)) !== false) {
-        unset($sql_mode[$key]);
+      foreach ($undesired_modes as $mode) {
+        if (($key = array_search($mode, $sql_mode)) !== false) {
+          unset($sql_mode[$key]);
+        }
       }
 
       self::query("SET @@session.sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
