@@ -1054,29 +1054,6 @@
     }
   }
 
-  function form_draw_mysql_engines_list($name, $input=true, $multiple=false, $parameters='') {
-
-    $collations_query = database::query(
-      "SHOW ENGINES;"
-    );
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    while ($row = database::fetch($collations_query)) {
-      if (!in_array(strtoupper($row['Support']), array('YES', 'DEFAULT'))) continue;
-      if (!in_array($row['Engine'], array('CSV', 'InnoDB', 'MyISAM', 'Aria'))) continue;
-      $options[] = array($row['Engine'] . ' -- '. $row['Comment'], $row['Engine']);
-    }
-
-    if ($multiple) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
   function form_draw_option_groups_list($name, $input=true, $multiple=false, $parameters='') {
 
     $option_groups_query = database::query(
