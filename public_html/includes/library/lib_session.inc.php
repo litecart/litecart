@@ -18,6 +18,16 @@
 
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
 
+    // (Un)register Globals
+      if (version_compare(phpversion(), '5.4.0', '<') == true) {
+        if (ini_get('register_globals')) {
+          foreach (array_keys($_SESSION) as $key) {
+            $_SESSION[$key] = $GLOBALS[$key];
+            unset($GLOBALS[$key]);
+          }
+        }
+      }
+
       self::$data = &$_SESSION;
 
       if (!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';

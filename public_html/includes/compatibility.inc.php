@@ -8,8 +8,10 @@
 
   // (Un)register Globals
     if (ini_get('register_globals')) {
-      foreach (array_keys(array_merge($_SERVER, $_ENV, !empty($_SESSION) ? $_SESSION : array(), $_COOKIE, $_REQUEST, $_FILES)) as $key) {
-        if (isset($GLOBALS[$key])) unset($GLOBALS[$key]);
+      foreach (array('_ENV', '_FILES', '_REQUEST', '_SERVER') as $superglobal) { // Note: $_SESSION is not populated before start_session()
+        foreach (array_keys($$superglobal) as $key) {
+          unset($GLOBALS[$key]);
+        }
       }
     }
 
