@@ -36,7 +36,7 @@
 
     <?php if ($products) { ?>
     <div class="products row half-gutter">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], array('category_id')); ?>
     </div>
     <?php } ?>
 

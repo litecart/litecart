@@ -54,7 +54,7 @@
     return $listing_category->stitch('views/listing_category');
   }
 
-  function draw_listing_product($product, $listing_type='column') {
+  function draw_listing_product($product, $listing_type='column', $inherit_params=array()) {
 
     $listing_product = new view();
 
@@ -72,7 +72,7 @@
       'product_id' => $product['id'],
       'code' => $product['code'],
       'name' => $product['name'],
-      'link' => document::ilink('product', array('product_id' => $product['id']), array('category_id', 'manufacturer_id')),
+      'link' => document::ilink('product', array('product_id' => $product['id']), $inherit_params),
       'image' => array(
         'original' => $product['image'] ? WS_DIR_IMAGES . $product['image'] : '',
         'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
