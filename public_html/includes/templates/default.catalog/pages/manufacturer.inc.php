@@ -30,7 +30,7 @@
 
     <?php if ($products) { ?>
     <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', array('manufacturer_id')); ?>
     </section>
     <?php } ?>
 

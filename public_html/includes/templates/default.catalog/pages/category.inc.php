@@ -64,7 +64,7 @@
       <?php if ($_GET['page'] == 1) { ?>
       <?php } ?>
 
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], array('category_id')); ?>
     </section>
 
     <?php echo $pagination; ?>
