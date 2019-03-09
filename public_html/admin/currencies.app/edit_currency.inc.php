@@ -31,7 +31,7 @@
         );
 
         if (database::num_rows($currencys_query)) {
-          throw new Exception(currency::translate('error_currency_already_exists', 'The currency already exists in the database'));
+          throw new Exception(language::translate('error_currency_already_exists', 'The currency already exists in the database'));
         }
       }
 
@@ -43,7 +43,7 @@
         );
 
         if (database::num_rows($currencys_query)) {
-          throw new Exception(currency::translate('error_currency_already_exists', 'The currency already exists in the database'));
+          throw new Exception(language::translate('error_currency_already_exists', 'The currency already exists in the database'));
         }
       }
 
