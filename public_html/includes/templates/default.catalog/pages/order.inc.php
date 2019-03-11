@@ -3,6 +3,7 @@
 <style>
 body {
   display: flex;
+  height: 100vh;
 }
 
 #order-copy {
