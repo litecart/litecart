@@ -55,17 +55,19 @@
         where combination = '". database::input($order_item['option_stock_combination']) ."'
         limit 1;"
       );
+
+      $stock_option = database::fetch($stock_options_query);
     }
 
-    if (!$stock_option = database::fetch($stock_options_query)) {
+    if (empty($stock_option)) {
       $stock_options_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
         where sku = '". database::input($order_item['sku']) ."'
         limit 1;"
       );
-    }
 
-    $stock_option = database::fetch($stock_options_query);
+      $stock_option = database::fetch($stock_options_query);
+    }
 
   // Product
     $products_query = database::query(
