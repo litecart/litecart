@@ -317,6 +317,7 @@ CREATE TABLE `lc_orders` (
   `payment_option_id` VARCHAR(32) NOT NULL,
   `payment_option_name` VARCHAR(64) NOT NULL,
   `payment_transaction_id` VARCHAR(128) NOT NULL,
+  `reference` VARCHAR(128) NOT NULL,
   `language_code` VARCHAR(2) NOT NULL,
   `weight_total` DECIMAL(11,4) NOT NULL,
   `weight_class` VARCHAR(2) NOT NULL,

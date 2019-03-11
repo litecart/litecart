@@ -269,6 +269,7 @@
         payment_option_id = '". database::input($this->data['payment_option']['id']) ."',
         payment_option_name = '". database::input($this->data['payment_option']['name']) ."',
         payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
+        reference = '". database::input($this->data['reference']) ."',
         language_code = '". database::input($this->data['language_code']) ."',
         currency_code = '". database::input($this->data['currency_code']) ."',
         currency_value = ". (float)$this->data['currency_value'] .",

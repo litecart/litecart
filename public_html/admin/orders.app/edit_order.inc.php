@@ -320,6 +320,11 @@
           <label><?php echo language::translate('title_ip_address', 'IP Address'); ?><br />
           <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
         </div>
+
+        <div class="form-group col-md-3">
+          <label><?php echo language::translate('title_reference', 'Reference'); ?></label>
+          <?php echo functions::form_draw_text_field('reference', true); ?>
+        </div>
       </div>
 
       <div class="row">
