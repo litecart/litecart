@@ -30,9 +30,8 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     margin-bottom: @default-gutter-size;
   }
   label {
-    display: block;
-    padding: @form-input-padding/2 @form-input-padding*2;
-    color: #666;
+    display: inline-block;
+    padding-bottom: @form-input-padding/2;
   }
 }
 
@@ -69,7 +68,6 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 .select-wrapper {
   position: relative;
   width: 100%;
-  background: @form-input-background;
   &:before {
     content: ' ';
     position: absolute;
@@ -80,9 +78,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid #000;
+    z-index: 1;
   }
   select.form-control {
-    background: transparent;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
