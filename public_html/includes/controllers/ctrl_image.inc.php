@@ -217,7 +217,7 @@
               return false;
             }
           } catch (Exception $e) {
-            trigger_error($e->getMessage() .' {$width}x{$height} ($this->_src)', E_USER_WARNING);
+            trigger_error($e->getMessage() ." {$width}x{$height} ($this->_src)", E_USER_WARNING);
             return false;
           }
 

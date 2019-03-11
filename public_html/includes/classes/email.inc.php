@@ -138,7 +138,7 @@
         return true;
       }
 
-    // Perpare headers
+    // Prepare headers
       $headers = array(
         'From' => $this->format_contact($this->_sender),
         'Reply-To' => $this->format_contact($this->_sender),

@@ -28,7 +28,7 @@
         }
       }
 
-      self::$data = &$GLOBALS['_SESSION'];
+      self::$data = &$_SESSION;
 
       if (!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
       if (empty(self::$data['last_ip'])) self::$data['last_ip'] = $_SERVER['REMOTE_ADDR'];
