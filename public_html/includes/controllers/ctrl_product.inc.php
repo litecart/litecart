@@ -229,8 +229,8 @@
         dim_class = '". database::input($this->data['dim_class']) ."',
         weight = ". (float)$this->data['weight'] .",
         weight_class = '". database::input($this->data['weight_class']) ."',
-        date_valid_from = ". (empty($this->data['date_valid_from']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
-        date_valid_to = ". (empty($this->data['date_valid_to']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
+        date_valid_from = '". database::input($this->data['date_valid_from']) ."',
+        date_valid_to = '". database::input($this->data['date_valid_to']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
