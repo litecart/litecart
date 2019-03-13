@@ -639,27 +639,6 @@
               <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_y]', true); ?>
               <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_z]', true); ?>
               <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_class]', true); ?>
-<?php
-      if (!empty($_POST['items'][$key]['options'])) {
-        foreach (array_keys($_POST['items'][$key]['options']) as $field) {
-          echo '<div>' . PHP_EOL
-             . ' - '. $field .': ' . PHP_EOL;
-          if (is_array($_POST['items'][$key]['options'][$field])) {
-            $use_coma = false;
-            foreach (array_keys($_POST['items'][$key]['options'][$field]) as $k) {
-              echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']['.$k.']', true) . $_POST['items'][$key]['options'][$field][$k];
-              if ($use_coma) echo ', ';
-              $use_coma = true;
-            }
-          } else {
-            echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']', true) . $_POST['items'][$key]['options'][$field];
-          }
-          echo '</div>' . PHP_EOL;
-        }
-      } else {
-        echo functions::form_draw_hidden_field('items['.$key.'][options]', '');
-      }
-?>
             </td>
             <td class="sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
             <td>

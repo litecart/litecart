@@ -116,16 +116,6 @@
         $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
       }
 
-    // Options
-      $products_options_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS ."
-        where product_id = ". (int)$this->data['id'] ."
-        order by priority asc;"
-      );
-      while($option = database::fetch($products_options_query)) {
-        $this->data['options'][$option['id']] = $option;
-      }
-
     // Options stock
       $products_options_stock_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
@@ -345,48 +335,6 @@
         }
       }
 
-    // Delete options
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_OPTIONS ."
-        where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
-      );
-
-    // Update options
-      if (!empty($this->data['options'])) {
-        $i = 0;
-        foreach (array_keys($this->data['options']) as $key) {
-          $i++;
-
-          if (empty($this->data['options'][$key]['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PRODUCTS_OPTIONS ."
-              (product_id, date_created)
-              values (". (int)$this->data['id'] .", '". ($this->data['options'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
-            );
-            $this->data['options'][$key]['id'] = database::insert_id();
-          }
-
-          $sql_currency_options = "";
-          foreach (array_keys(currency::$currencies) as $currency_code) {
-            $sql_currency_options .= $currency_code ." = '". (isset($this->data['options'][$key][$currency_code]) ? (float)$this->data['options'][$key][$currency_code] : 0) ."', ";
-          }
-
-          database::query(
-            "update ". DB_TABLE_PRODUCTS_OPTIONS ."
-            set group_id = '". database::input($this->data['options'][$key]['group_id']) ."',
-                value_id = '". database::input($this->data['options'][$key]['value_id']) ."',
-                price_operator = '". database::input($this->data['options'][$key]['price_operator']) ."',
-                $sql_currency_options
-                priority = ". (int)$i .",
-                date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
-            where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['options'][$key]['id'] ."
-            limit 1;"
-          );
-        }
-      }
-
     // Delete stock options
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
@@ -515,7 +463,6 @@
 
       $this->data['images'] = array();
       $this->data['campaigns'] = array();
-      $this->data['options'] = array();
       $this->data['options_stock'] = array();
       $this->save();
 

@@ -43,12 +43,6 @@
       'dim_class' => $item['dim_class'],
       'error' => $item['error'],
     );
-
-    if (!empty($item['options'])) {
-      foreach ($item['options'] as $k => $v) {
-        $box_checkout_cart->snippets['items'][$key]['options'][] = $k .': '. $v;
-      }
-    }
   }
 
   echo $box_checkout_cart->stitch('views/box_checkout_cart');

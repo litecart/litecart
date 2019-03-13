@@ -104,15 +104,7 @@ h1 {
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
           <td><?php echo $item['sku']; ?></td>
-          <td style="white-space: normal;"><?php echo $item['name']; ?>
-<?php
-    if (!empty($item['options'])) {
-      foreach ($item['options'] as $key => $value) {
-        echo '<br />- '.$key .': '. $value;
-      }
-    }
-?>
-          </td>
+          <td style="white-space: normal;"><?php echo $item['name']; ?></td>
         </tr>
         <?php } ?>
       </tbody>

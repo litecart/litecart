@@ -32,7 +32,6 @@
       $_POST['keywords'] = explode(',', $_POST['keywords']);
       if (!isset($_POST['images'])) $_POST['images'] = array();
       if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
-      if (!isset($_POST['options'])) $_POST['options'] = array();
       if (!isset($_POST['options_stock'])) $_POST['options_stock'] = array();
       if (!isset($_POST['product_groups'])) $_POST['product_groups'] = array();
 
@@ -73,7 +72,6 @@
         'meta_description',
         'attributes',
         'images',
-        'options',
         'options_stock',
       );
 
@@ -146,7 +144,6 @@
     <li class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a></li>
   </ul>
 
@@ -494,61 +491,6 @@ foreach (currency::$currencies as $currency) {
           <tfoot>
             <tr>
               <td colspan="<?php echo 5 + count(currency::$currencies) - 1; ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#"><?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></a></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
-
-    <div id="tab-options" class="tab-pane">
-      <h2><?php echo language::translate('title_options', 'Options'); ?></h2>
-      <div class="table-responsive">
-        <table id="table-options" class="table table-striped table-hover data-table">
-          <thead>
-            <tr>
-              <th style="min-width: 200px;"><?php echo language::translate('title_group', 'Group'); ?></th>
-              <th style="min-width: 200px;"><?php echo language::translate('title_value', 'Value'); ?></th>
-              <th style="width: 50px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>
-              <th style="width: 200px;"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>
-<?php
-  foreach (array_keys(currency::$currencies) as $currency_code) {
-    if ($currency_code == settings::get('store_currency_code')) continue;
-?>
-            <th class="text-center" style="width: 200px;"></th>
-<?php
-  }
-?>
-              <th style="width: 85px;">&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-<?php
-  if (!empty($_POST['options'])) {
-    foreach (array_keys($_POST['options']) as $key) {
-?>
-          <tr>
-            <td><?php echo functions::form_draw_option_groups_list('options['.$key.'][group_id]', true); ?></td>
-            <td><?php echo functions::form_draw_option_values_list($_POST['options'][$key]['group_id'], 'options['.$key.'][value_id]', true); ?></td>
-            <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$key.'][price_operator]', array('+','%','*'), $_POST['options'][$key]['price_operator']); ?></td>
-            <td><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'options['.$key.']['.settings::get('store_currency_code').']', true); ?></td>
-<?php
-      foreach (array_keys(currency::$currencies) as $currency_code) {
-        if ($currency_code == settings::get('store_currency_code')) continue;
-?>
-            <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field($currency_code, 'options['.$key.']['. $currency_code. ']', number_format((float)$_POST['options'][$key][$currency_code], 4, '.', ''))); ?></td>
-<?php
-      }
-?>
-            <td class="text-right"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-          </tr>
-<?php
-    }
-  }
-?>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="<?php echo 5 + count(currency::$currencies); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#"><?php echo language::translate('title_add_option', 'Add Option'); ?></a></td>
             </tr>
           </tfoot>
         </table>
@@ -987,75 +929,6 @@ foreach (currency::$currencies as $currency) {
     output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);
     $('#table-campaigns tbody').append(output);
     new_campaign_i++;
-  });
-
-// Options
-
-  $('#table-options').on('click', '.remove', function(e) {
-    e.preventDefault();
-    $(this).closest('tr').remove();
-  });
-
-  $('#table-options').on('click', '.move-up, .move-down', function(e) {
-    e.preventDefault();
-    var row = $(this).closest('tr');
-    if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
-      $(row).insertBefore($(row).prev());
-    } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
-      $(row).insertAfter($(row).next());
-    }
-  });
-
-  $('#table-options').on('change', 'select[name^="options"][name$="[group_id]"]', function(){
-    var valueField = this.name.replace(/group/, 'value');
-    $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/option_values.json'); ?>?option_group_id=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-      },
-      success: function(data) {
-        $('select[name="'+ valueField +'"]').html('');
-        if ($('select[name="'+ valueField +'"]').attr('disabled')) $('select[name="'+ valueField +'"]').removeAttr('disabled');
-        if (data) {
-          $.each(data, function(i, zone) {
-            $('select[name="'+ valueField +'"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name="'+ valueField +'"]').attr('disabled', 'disabled');
-        }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
-    });
-  });
-
-  var new_option_i = 1;
-  $('#table-options').on('click', '.add', function(e) {
-    e.preventDefault();
-    var output = '<tr>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_option_groups_list('options[new_option_i][group_id]', '')); ?></td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
-               + '  <td class="text-center"><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_option_i][price_operator]', array('+','*'), '+')); ?></td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_currency_field(settings::get('store_currency_code'), 'options[new_option_i]['. settings::get('store_currency_code') .']', 0)); ?></td>'
-<?php
-  foreach (array_keys(currency::$currencies) as $currency_code) {
-    if ($currency_code == settings::get('store_currency_code')) continue;
-?>
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'options[new_option_i]['. $currency_code. ']', '')); ?></td>'
-<?php
-  }
-?>
-               + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-               + '</tr>';
-    output = output.replace(/new_option_i/g, 'new_' + new_option_i);
-    $('#table-options tbody').append(output);
-    new_option_i++;
   });
 
 // Quantity Unit

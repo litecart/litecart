@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Product Options</id>
+	<version>1.0</version>
+	<vqmver required="true">2.4.0</vqmver>
+	<author>tim-international.net</author>
+
+	<file name="admin/catalog.app/config.inc.php">
+		<operation error="log">
+			<search position="after" offset="2"><![CDATA[
+        'doc' => 'product_groups',
+      ]]></search>
+			<add><![CDATA[
+      array(
+        'title' => language::translate('title_option_groups', 'Option Groups'),
+        'doc' => 'option_groups',
+        'params' => array(),
+      ),
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+      'edit_product_group' => 'edit_product_group.inc.php',
+      ]]></search>
+			<add><![CDATA[
+      'option_groups' => 'option_groups.inc.php',
+      'edit_option_group' => 'edit_option_group.inc.php',
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="admin/catalog.app/catalog.inc.php">
+		<operation error="log">
+			<search position="replace"><![CDATA[
+        foreach (array('campaigns', 'options_stock') as $field) {
+      ]]></search>
+			<add><![CDATA[
+        foreach (array('campaigns', 'options', 'options_stock') as $field) {
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="admin/catalog.app/edit_product.inc.php">
+		<operation error="log">
+			<search position="after"><![CDATA[
+      if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
+      ]]></search>
+			<add><![CDATA[
+      if (!isset($_POST['options'])) $_POST['options'] = array();
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+        'images',
+      ]]></search>
+			<add><![CDATA[
+        'options',
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+    <li><a data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
+      ]]></search>
+			<add><![CDATA[
+    <li><a data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a></li>
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+    <div id="tab-stock" class="tab-pane">
+      ]]></search>
+			<add><![CDATA[
+    <div id="tab-options" class="tab-pane">
+      <h2><?php echo language::translate('title_options', 'Options'); ?></h2>
+      <div class="table-responsive">
+        <table id="table-options" class="table table-striped table-hover data-table">
+          <thead>
+            <tr>
+              <th style="min-width: 200px;"><?php echo language::translate('title_group', 'Group'); ?></th>
+              <th style="min-width: 200px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+              <th style="width: 50px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>
+              <th style="width: 200px;"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>
+<?php
+  foreach (array_keys(currency::$currencies) as $currency_code) {
+    if ($currency_code == settings::get('store_currency_code')) continue;
+?>
+            <th class="text-center" style="width: 200px;"></th>
+<?php
+  }
+?>
+              <th style="width: 85px;">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+<?php
+  if (!empty($_POST['options'])) {
+    foreach (array_keys($_POST['options']) as $key) {
+?>
+          <tr>
+            <td><?php echo functions::form_draw_option_groups_list('options['.$key.'][group_id]', true); ?></td>
+            <td><?php echo functions::form_draw_option_values_list($_POST['options'][$key]['group_id'], 'options['.$key.'][value_id]', true); ?></td>
+            <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$key.'][price_operator]', array('+','%','*'), $_POST['options'][$key]['price_operator']); ?></td>
+            <td><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'options['.$key.']['.settings::get('store_currency_code').']', true); ?></td>
+<?php
+      foreach (array_keys(currency::$currencies) as $currency_code) {
+        if ($currency_code == settings::get('store_currency_code')) continue;
+?>
+            <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_currency_field($currency_code, 'options['.$key.']['. $currency_code. ']', number_format((float)$_POST['options'][$key][$currency_code], 4, '.', ''))); ?></td>
+<?php
+      }
+?>
+            <td class="text-right"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+          </tr>
+<?php
+    }
+  }
+?>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="<?php echo 5 + count(currency::$currencies); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#"><?php echo language::translate('title_add_option', 'Add Option'); ?></a></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+// Stock
+      ]]></search>
+			<add><![CDATA[
+// Options
+
+  $('#table-options').on('click', '.remove', function(e) {
+    e.preventDefault();
+    $(this).closest('tr').remove();
+  });
+
+  $('#table-options').on('click', '.move-up, .move-down', function(e) {
+    e.preventDefault();
+    var row = $(this).closest('tr');
+    if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
+      $(row).insertBefore($(row).prev());
+    } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
+      $(row).insertAfter($(row).next());
+    }
+  });
+
+  $('#table-options').on('change', 'select[name^="options"][name$="[group_id]"]', function(){
+    var valueField = this.name.replace(/group/, 'value');
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo document::ilink('ajax/option_values.json'); ?>?option_group_id=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+      },
+      success: function(data) {
+        $('select[name="'+ valueField +'"]').html('');
+        if ($('select[name="'+ valueField +'"]').attr('disabled')) $('select[name="'+ valueField +'"]').removeAttr('disabled');
+        if (data) {
+          $.each(data, function(i, zone) {
+            $('select[name="'+ valueField +'"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $('select[name="'+ valueField +'"]').attr('disabled', 'disabled');
+        }
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+
+  var new_option_i = 1;
+  $('#table-options').on('click', '.add', function(e) {
+    e.preventDefault();
+    var output = '<tr>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_option_groups_list('options[new_option_i][group_id]', '')); ?></td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_option_i][value_id]', array(array('','')), '')); ?></td>'
+               + '  <td class="text-center"><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_option_i][price_operator]', array('+','*'), '+')); ?></td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_currency_field(settings::get('store_currency_code'), 'options[new_option_i]['. settings::get('store_currency_code') .']', 0)); ?></td>'
+<?php
+  foreach (array_keys(currency::$currencies) as $currency_code) {
+    if ($currency_code == settings::get('store_currency_code')) continue;
+?>
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'options[new_option_i]['. $currency_code. ']', '')); ?></td>'
+<?php
+  }
+?>
+               + '  <td style="white-space: nowrap; text-align: right;"><a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '</tr>';
+    output = output.replace(/new_option_i/g, 'new_' + new_option_i);
+    $('#table-options tbody').append(output);
+    new_option_i++;
+  });
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="admin/orders.app/add_product.inc.php">
+		<operation error="log">
+			<search position="after" offset="2"><![CDATA[
+          <?php echo functions::form_draw_number_field('product_id', true, 'readonly="readonly"'); ?>
+      ]]></search>
+			<add><![CDATA[
+      <div class="options">
+<?php
+  if (count($product->options) > 0) {
+    foreach ($product->options as $group) {
+
+      echo '  <div class="form-group">'
+         . '    <label>'. $group['name'] .'</label>';
+
+      switch ($group['function']) {
+
+        case 'checkbox':
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust_text = '';
+            $price_adjust = currency::format_raw($value['price_adjust']);
+            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format($value['price_adjust']);
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
+            }
+
+            echo '<div class="checkbox">' . PHP_EOL
+               . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '</div>';
+          }
+          break;
+
+        case 'input':
+
+          $value = array_shift($group['values']);
+
+          $price_adjust_text = '';
+          $price_adjust = currency::format_raw($value['price_adjust']);
+          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format($value['price_adjust']);
+            if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+          }
+
+          echo functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text . PHP_EOL;
+
+          break;
+
+        case 'radio':
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust_text = '';
+            $price_adjust = currency::format_raw($value['price_adjust']);
+            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format($value['price_adjust']);
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+            }
+
+            echo '<div class="radio">' . PHP_EOL
+               . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '</div>';
+          }
+
+          break;
+
+        case 'select':
+
+          $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust_text = '';
+            $price_adjust = currency::format_raw($value['price_adjust']);
+            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format($value['price_adjust']);
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+            }
+
+            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
+          }
+
+          echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required="required"' : ''));
+
+          break;
+
+        case 'textarea':
+
+          $value = array_shift($group['values']);
+
+          $price_adjust_text = '';
+          $price_adjust = currency::format_raw($value['price_adjust']);
+          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format($value['price_adjust']);
+            if ($value['price_adjust'] > 0) {
+              $price_adjust_text = ' <br />+'. currency::format($value['price_adjust']);
+            }
+          }
+
+          echo functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['id'].'-'.$value['id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text. PHP_EOL;
+
+          break;
+      }
+
+      echo '</div>';
+    }
+  }
+
+  echo functions::form_draw_hidden_field('option_stock_combination', '');
+?>
+      </div>
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+          option_stock_combination: $(form).find(':input[name="option_stock_combination"]').val(),
+      ]]></search>
+			<add><![CDATA[
+          options: {},
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+    var selected_option_combinations = [];
+      ]]></search>
+			<add><![CDATA[
+          options: {},
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->stock_options) : '[]'; ?>;
+      ]]></search>
+			<add><![CDATA[
+    var selected_option_combinations = [];
+
+    $(form).find('.options input[type="checkbox"]:checked').each(function(){
+      if ($(this).val()) {
+        if (!item.options[$(this).data('group')]) item.options[$(this).data('group')] = [];
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).data('group')].push($(this).val());
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    $(form).find('.options input[type="radio"]:checked').each(function(){
+      if ($(this).val()) {
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    $(form).find('.options select :selected').each(function(){
+      if ($(this).val()) {
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).parent().data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).parent().attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    $(form).find('.options input[type!="radio"][type!="checkbox"]').each(function(){
+      if ($(this).val()) {
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    if (error) {
+      alert("<?php echo htmlspecialchars(language::translate('error_missing_required_options', 'Missing required options')); ?>");
+      return false;
+    }
+
+    selected_option_combinations.sort();
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="admin/orders.app/edit_order.inc.php">
+		<operation error="log">
+			<search position="after"><![CDATA[
+              <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_class]', true); ?>
+      ]]></search>
+			<add><![CDATA[
+<?php
+      if (!empty($_POST['items'][$key]['options'])) {
+        foreach (array_keys($_POST['items'][$key]['options']) as $field) {
+          echo '<div>' . PHP_EOL
+             . ' - '. $field .': ' . PHP_EOL;
+          if (is_array($_POST['items'][$key]['options'][$field])) {
+            $use_coma = false;
+            foreach (array_keys($_POST['items'][$key]['options'][$field]) as $k) {
+              echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']['.$k.']', true) . $_POST['items'][$key]['options'][$field][$k];
+              if ($use_coma) echo ', ';
+              $use_coma = true;
+            }
+          } else {
+            echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']', true) . $_POST['items'][$key]['options'][$field];
+          }
+          echo '</div>' . PHP_EOL;
+        }
+      } else {
+        echo functions::form_draw_hidden_field('items['.$key.'][options]', '');
+      }
+?>
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/controllers/ctrl_order.inc.php">
+		<operation error="log">
+			<search position="after"><![CDATA[
+            option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
+      ]]></search>
+			<add><![CDATA[
+            options = '". (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/controllers/ctrl_product.inc.php">
+		<operation error="log">
+			<search position="after" offset="1"><![CDATA[
+        $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
+      ]]></search>
+			<add><![CDATA[
+
+    // Options
+      $products_options_query = database::query(
+        "select * from ". DB_TABLE_PRODUCTS_OPTIONS ."
+        where product_id = ". (int)$this->data['id'] ."
+        order by priority asc;"
+      );
+      while($option = database::fetch($products_options_query)) {
+        $this->data['options'][$option['id']] = $option;
+      }
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+    // Delete stock options
+      ]]></search>
+			<add><![CDATA[
+    // Delete options
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_OPTIONS ."
+        where product_id = ". (int)$this->data['id'] ."
+        and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
+      );
+
+    // Update options
+      if (!empty($this->data['options'])) {
+        $i = 0;
+        foreach (array_keys($this->data['options']) as $key) {
+          $i++;
+
+          if (empty($this->data['options'][$key]['id'])) {
+            database::query(
+              "insert into ". DB_TABLE_PRODUCTS_OPTIONS ."
+              (product_id, date_created)
+              values (". (int)$this->data['id'] .", '". ($this->data['options'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
+            );
+            $this->data['options'][$key]['id'] = database::insert_id();
+          }
+
+          $sql_currency_options = "";
+          foreach (array_keys(currency::$currencies) as $currency_code) {
+            $sql_currency_options .= $currency_code ." = '". (isset($this->data['options'][$key][$currency_code]) ? (float)$this->data['options'][$key][$currency_code] : 0) ."', ";
+          }
+
+          database::query(
+            "update ". DB_TABLE_PRODUCTS_OPTIONS ."
+            set group_id = '". database::input($this->data['options'][$key]['group_id']) ."',
+                value_id = '". database::input($this->data['options'][$key]['value_id']) ."',
+                price_operator = '". database::input($this->data['options'][$key]['price_operator']) ."',
+                $sql_currency_options
+                priority = ". (int)$i .",
+                date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['options'][$key]['id'] ."
+            limit 1;"
+          );
+        }
+      }
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before" index="2"><![CDATA[
+      $this->data['options_stock'] = array();
+      ]]></search>
+			<add><![CDATA[
+      $this->data['options'] = array();
+      ]]></add>
+		</operation>
+	</file>
+
+  <file name="includes/functions/func_form.inc.php">
+    <operation error="log">
+			<search position="before"><![CDATA[
+  function form_draw_order_status_list($name, $input=true, $multiple=false, $parameters='') {
+      ]]></search>
+			<add><![CDATA[
+  function form_draw_option_groups_list($name, $input=true, $multiple=false, $parameters='') {
+
+    $option_groups_query = database::query(
+      "select pcg.id, pcg.function, pcg.required, pcgi.name from ". DB_TABLE_OPTION_GROUPS ." pcg
+      left join ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi on (pcgi.group_id = pcg.id and pcgi.language_code = '". database::input(language::$selected['code']) ."')
+      order by pcgi.name asc;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($option_group = database::fetch($option_groups_query)) {
+      $options[] = array($option_group['name'] .' ['. $option_group['function'] .']', $option_group['id']);
+    }
+
+    if ($multiple) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_option_values_list($group_id, $name, $input=true, $multiple=false, $parameters='') {
+
+    $option_values_query = database::query(
+      "select pcv.id, pcv.value, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
+      left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
+      where pcv.group_id = ". (int)$group_id ."
+      order by pcvi.name asc;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($option_value = database::fetch($option_values_query)) {
+      if (empty($option_value['name'])) $option_value['name'] = $option_value['value'];
+      if (empty($option_value['name'])) $option_value['name'] = '('. language::translate('text_user_input', 'User input') .')';
+      $options[] = array($option_value['name'], $option_value['id']);
+    }
+
+    if ($multiple) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/library/lib_cart.inc.php">
+		<operation error="log">
+			<search position="replace"><![CDATA[
+        self::add_product($_POST['product_id'], isset($_POST['quantity']) ? $_POST['quantity'] : 1);
+      ]]></search>
+			<add><![CDATA[
+        $options = !empty($_POST['options']) ? $_POST['options'] : array();
+        if (!empty($options)) {
+          foreach (array_keys($options) as $key) {
+            if (is_array($options[$key])) $options[$key] = implode(', ', $options[$key]);
+          }
+        }
+
+        self::add_product($_POST['product_id'], $options, isset($_POST['quantity']) ? $_POST['quantity'] : 1);
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after" offset="1"><![CDATA[
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, $product->quantity_unit['decimals']))));
+      ]]></search>
+			<add><![CDATA[
+      // Build options structure
+        $sanitized_options = array();
+        foreach($product->options as $option) {
+
+        // Check group
+          $possible_groups = array_filter(array_unique(reference::option_group($option['id'])->name));
+          $matched_group = @reset(array_intersect(array_keys($options), array_values($possible_groups)));
+
+          if (empty($matched_group)) {
+            if (!empty($option['required'])) {
+              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
+            } else {
+              continue;
+            }
+          }
+
+        // Check values
+          switch ($option['function']) {
+
+            case 'checkbox':
+
+              $matched_values = array();
+              foreach($option['values'] as $value) {
+                $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
+                $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
+                if (!empty($matched_value)) {
+                  $matched_values[] = $matched_value;
+                  $item['extras'] += $value['price_adjust'];
+                }
+              }
+              break;
+
+            case 'input':
+            case 'textarea':
+
+              $matched_value = $options[$matched_group];
+              $item['extras'] += $value['price_adjust'];
+              break;
+
+            case 'radio':
+            case 'select':
+
+              foreach($option['values'] as $value) {
+                $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
+                $matched_value = @reset(array_intersect(array($options[$matched_group]), array_values($possible_values)));
+                if (!empty($matched_value)) {
+                  $item['extras'] += $value['price_adjust'];
+                  break;
+                }
+              }
+              break;
+          }
+
+          if (empty($matched_value) && !empty($option['required'])) {
+            throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
+          }
+
+          if (empty($matched_group) && (empty($matched_values) && empty($matched_value))) continue;
+
+          $sanitized_options[] = array(
+            'group_id' => $option['id'],
+            'value_id' => $value['id'],
+            'combination' => $option['id'].'-'.$value['id'],
+            'name' => $matched_group,
+            'value' => !empty($matched_values) ? $matched_values : $matched_value,
+          );
+        }
+
+      // Options stock
+        foreach ($product->options_stock as $option_stock) {
+
+          $option_match = true;
+          foreach (explode(',', $option_stock['combination']) as $pair) {
+            if (!in_array($pair, array_column($sanitized_options, 'combination'))) {
+              $option_match = false;
+              break;
+            }
+          }
+
+          if ($option_match) {
+            //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
+            if (($option_stock['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], $product->quantity_unit['decimals']) .')');
+            }
+
+            $item['option_stock_combination'] = $option_stock['combination'];
+            if (!empty($option_stock['sku'])) $item['sku'] = $option_stock['sku'];
+            if (!empty($option_stock['weight'])) $item['weight'] = $option_stock['weight'];
+            if (!empty($option_stock['weight_class'])) $item['weight_class'] = $option_stock['weight_class'];
+            if (!empty($option_stock['dim_x'])) $item['dim_x'] = $option_stock['dim_x'];
+            if (!empty($option_stock['dim_y'])) $item['dim_y'] = $option_stock['dim_y'];
+            if (!empty($option_stock['dim_z'])) $item['dim_z'] = $option_stock['dim_z'];
+            if (!empty($option_stock['dim_class'])) $item['dim_class'] = $option_stock['dim_class'];
+
+            break;
+          }
+        }
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+    // Adjust price with extras
+      ]]></search>
+			<add><![CDATA[
+    // Convert options array to string
+      if (!empty($item['options'])) {
+        foreach (array_keys($item['options']) as $key) {
+          if (is_array($item['options'][$key])) $item['options'][$key] = implode(', ', $item['options'][$key]);
+        }
+      }
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="2"><![CDATA[
+            "insert into ". DB_TABLE_CART_ITEMS ."
+      ]]></search>
+			<add><![CDATA[
+            "insert into ". DB_TABLE_CART_ITEMS ."
+            (customer_id, cart_uid, `key`, product_id, options, quantity, date_updated, date_created)
+            values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", '". database::input(serialize($item['options'])) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace"><![CDATA[
+      self::add_product($item['product_id'], $quantity, true, $item_key);
+      ]]></search>
+			<add><![CDATA[
+      self::add_product($item['product_id'], $item['options'], $quantity, true, $item_key);
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace"><![CDATA[
+        self::add_product($item['product_id'], $item['quantity'], true, $item['key']);
+      ]]></search>
+			<add><![CDATA[
+        self::add_product($item['product_id'], unserialize($item['options']), $item['quantity'], true, $item['key']);
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace"><![CDATA[
+    public static function add_product($product_id, $quantity=1, $force=false, $item_key=null) {
+      ]]></search>
+			<add><![CDATA[
+    public static function add_product($product_id, $options, $quantity=1, $force=false, $item_key=null) {
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace"><![CDATA[
+          $item_key = md5(serialize(array($product->id)));
+      ]]></search>
+			<add><![CDATA[
+          $item_key = md5(serialize(array($product->id, $options)));
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+        'option_stock_combination' => '',
+      ]]></search>
+			<add><![CDATA[
+        'options' => $options,
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/references/ref_product.inc.php">
+		<operation error="log">
+			<search position="before"><![CDATA[
+        case 'options_stock':
+      ]]></search>
+			<add><![CDATA[
+        case 'options':
+
+          $this->_data['options'] = array();
+
+          $products_options_query = database::query(
+            "select * from ". DB_TABLE_PRODUCTS_OPTIONS ."
+            where product_id = ". (int)$this->_id ."
+            order by priority;"
+          );
+
+          while ($product_option = database::fetch($products_options_query)) {
+
+          // Group
+            if (!isset($this->_data['options'][$product_option['group_id']]['id'])) {
+              $option_group_query = database::query(
+                "select * from ". DB_TABLE_OPTION_GROUPS ."
+                where id = ". (int)$product_option['group_id'] ."
+                limit 1;"
+              );
+              $option_group = database::fetch($option_group_query);
+              foreach (array('id', 'function', 'required') as $key) {
+                $this->_data['options'][$product_option['group_id']][$key] = $option_group[$key];
+              }
+            }
+
+            if (!isset($this->_data['options'][$product_option['group_id']]['name'])) {
+              $option_group_info_query = database::query(
+                "select * from ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi
+                where group_id = ". (int)$product_option['group_id'] ."
+                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+              );
+              while ($option_group_info = database::fetch($option_group_info_query)) {
+                foreach ($option_group_info as $key => $value) {
+                  if (in_array($key, array('id', 'group_id', 'language_code'))) continue;
+                  if (empty($this->_data['options'][$product_option['group_id']][$key])) $this->_data['options'][$product_option['group_id']][$key] = $value;
+                }
+              }
+            }
+
+          // Values
+            if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['id'])) {
+              $option_value_query = database::query(
+                "select * from ". DB_TABLE_OPTION_VALUES ."
+                where id = ". (int)$product_option['value_id'] ."
+                limit 1;"
+              );
+              $option_value = database::fetch($option_value_query);
+              foreach (array('id', 'value') as $key) {
+                $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $option_value[$key];
+              }
+            }
+
+            if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['name'])) {
+              $option_values_info_query = database::query(
+                "select * from ". DB_TABLE_OPTION_VALUES_INFO ." pcvi
+                where value_id = ". (int)$product_option['value_id'] ."
+                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+              );
+              while ($option_value_info = database::fetch($option_values_info_query)) {
+                foreach ($option_value_info as $key => $value) {
+                  if (in_array($key, array('id', 'value_id', 'language_code'))) continue;
+                  if (empty($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key])) $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $value;
+                }
+              }
+            }
+
+          // Price Adjust
+            $product_option['price_adjust'] = 0;
+
+            if ((isset($product_option[$this->_currency_code]) && $product_option[$this->_currency_code] != 0) || (isset($product_option[settings::get('store_currency_code')]) && $product_option[settings::get('store_currency_code')] != 0)) {
+
+              switch ($product_option['price_operator']) {
+                case '+':
+                  if ($product_option[$this->_currency_code] != 0) {
+                    $product_option['price_adjust'] = currency::convert($product_option[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+                  } else {
+                    $product_option['price_adjust'] = $product_option[settings::get('store_currency_code')];
+                  }
+                  break;
+                case '%':
+                  if ($product_option[$this->_currency_code] != 0) {
+                    $product_option['price_adjust'] = $this->price * ((float)$product_option[$this->_currency_code] / 100);
+                  } else {
+                    $product_option['price_adjust'] = $this->price * $product_option[settings::get('store_currency_code')] / 100;
+                  }
+                  break;
+                case '*':
+                  if ($product_option[$this->_currency_code] != 0) {
+                    $product_option['price_adjust'] = $this->price * $product_option[$this->_currency_code];
+                  } else {
+                    $product_option['price_adjust'] = $this->price * $product_option[settings::get('store_currency_code')];
+                  }
+                  break;
+                default:
+                  trigger_error('Unknown price operator for option', E_USER_WARNING);
+                  break;
+              }
+            }
+
+            $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['price_adjust'] = $product_option['price_adjust'];
+          }
+
+          break;
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/templates/default.catalog/pages/printable_order_copy.inc.php">
+		<operation error="log">
+			<search position="replace"><![CDATA[
+          <td style="white-space: normal;"><?php echo $item['name']; ?></td>
+      ]]></search>
+			<add><![CDATA[
+          <td style="white-space: normal;"><?php echo $item['name']; ?>
+<?php
+    if (!empty($item['options'])) {
+      foreach ($item['options'] as $key => $value) {
+        echo '<br />- '.$key .': '. $value;
+      }
+    }
+?>
+</td>
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/templates/default.catalog/pages/printable_order_copy.inc.php">
+		<operation error="log">
+			<search position="replace"><![CDATA[
+          <td style="white-space: normal;"><?php echo $item['name']; ?></td>
+      ]]></search>
+			<add><![CDATA[
+          <td style="white-space: normal;"><?php echo $item['name']; ?>
+<?php
+    if (!empty($item['options'])) {
+      foreach ($item['options'] as $key => $value) {
+        echo '<br />- '.$key .': '. $value;
+      }
+    }
+?>
+</td>
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/templates/default.catalog/views/box_checkout_cart.inc.php">
+		<operation error="log">
+			<search position="after"><![CDATA[
+            <div><strong><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
+      ]]></search>
+			<add><![CDATA[
+            <?php if (!empty($item['options'])) echo '<div class="options">'. implode('<br />', $item['options']) .'</div>'; ?>
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="includes/templates/default.catalog/views/box_product.inc.php">
+		<operation error="log">
+			<search position="after"><![CDATA[
+        <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
+      ]]></search>
+			<add><![CDATA[
+        <?php if ($options) { ?>
+          <?php foreach ($options as $option) { ?>
+          <div class="form-group">
+            <label><?php echo $option['name']; ?></label>
+            <?php echo $option['description'] ? '<div>' . $option['description'] . '</div>' : ''; ?>
+            <?php echo $option['values']; ?>
+          </div>
+          <?php } ?>
+        <?php } ?>
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="pages/ajax/checkout_cart.html.inc.php">
+		<operation error="log">
+			<search position="after" offset="1"><![CDATA[
+      'error' => $item['error'],
+      ]]></search>
+			<add><![CDATA[
+    if (!empty($item['options'])) {
+      foreach ($item['options'] as $k => $v) {
+        $box_checkout_cart->snippets['items'][$key]['options'][] = $k .': '. $v;
+      }
+    }
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="pages/ajax/checkout_summary.html.inc.php">
+		<operation error="log">
+			<search position="after"><![CDATA[
+      'name' => $item['name'],
+      ]]></search>
+			<add><![CDATA[
+      'options' => $item['options'],
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="pages/product.inc.php">
+		<operation error="log">
+			<search position="before"><![CDATA[
+  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json) .'</script>';
+      ]]></search>
+			<add><![CDATA[
+// Options
+  if (count($product->options) > 0) {
+    foreach ($product->options as $group) {
+      $values = '';
+      switch ($group['function']) {
+
+        case 'checkbox':
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust_text = '';
+            $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
+            }
+
+            $values .= '<div class="checkbox">' . PHP_EOL
+                     . '  <label>' . functions::form_draw_checkbox('options['.$group['name'].'][]', $value['name'], true, 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '</div>';
+          }
+          break;
+
+        case 'input':
+
+          $value = array_shift($group['values']);
+
+          $price_adjust_text = '';
+          $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
+            if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+          }
+
+          $values .= functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) . $price_adjust_text . PHP_EOL;
+          break;
+
+        case 'radio':
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust_text = '';
+            $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+            }
+
+            $values .= '<div class="radio">' . PHP_EOL
+                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '</div>';
+          }
+          break;
+
+        case 'select':
+
+          $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+          foreach ($group['values'] as $value) {
+
+            $price_adjust_text = '';
+            $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+            }
+
+            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
+          }
+
+          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, !empty($group['required']) ? 'required="required"' : '');
+          break;
+
+        case 'textarea':
+
+          $value = array_shift($group['values']);
+
+          $price_adjust_text = '';
+          $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
+            if ($value['price_adjust'] > 0) {
+              $price_adjust_text = ' <br />+'. currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
+            }
+          }
+
+          $values .= functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
+          break;
+      }
+
+      $_page->snippets['options'][] = array(
+        'name' => $group['name'],
+        'description' => $group['description'],
+        'required' => !empty($group['required']) ? 1 : 0,
+        'values' => $values,
+      );
+    }
+  }
+      ]]></add>
+		</operation>
+	</file>
+
+</modification>

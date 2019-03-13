@@ -19,11 +19,6 @@
         'params' => array(),
       ),
       array(
-        'title' => language::translate('title_option_groups', 'Option Groups'),
-        'doc' => 'option_groups',
-        'params' => array(),
-      ),
-      array(
         'title' => language::translate('title_manufacturers', 'Manufacturers'),
         'doc' => 'manufacturers',
         'params' => array(),
@@ -60,8 +55,6 @@
       'edit_category' => 'edit_category.inc.php',
       'product_groups' => 'product_groups.inc.php',
       'edit_product_group' => 'edit_product_group.inc.php',
-      'option_groups' => 'option_groups.inc.php',
-      'edit_option_group' => 'edit_option_group.inc.php',
       'manufacturers' => 'manufacturers.inc.php',
       'edit_manufacturer' => 'edit_manufacturer.inc.php',
       'suppliers' => 'suppliers.inc.php',

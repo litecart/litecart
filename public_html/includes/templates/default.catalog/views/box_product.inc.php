@@ -127,16 +127,6 @@
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
-        <?php if ($options) { ?>
-          <?php foreach ($options as $option) { ?>
-          <div class="form-group">
-            <label><?php echo $option['name']; ?></label>
-            <?php echo $option['description'] ? '<div>' . $option['description'] . '</div>' : ''; ?>
-            <?php echo $option['values']; ?>
-          </div>
-          <?php } ?>
-        <?php } ?>
-
         <?php if (!$catalog_only_mode) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>

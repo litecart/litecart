@@ -77,7 +77,6 @@
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
       'name' => $item['name'],
       'sku' => $item['sku'],
-      'options' => $item['options'],
       'price' => $item['price'],
       'tax' => $item['tax'],
       'sum' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(($item['price'] + $item['tax']) * $item['quantity'], false) : currency::format($item['price'] * $item['quantity'], false),
