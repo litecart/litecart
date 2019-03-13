@@ -6,7 +6,7 @@
     public function __construct($tax_class_id=null) {
 
       if ($tax_class_id !== null) {
-        $this->load((int)$tax_class_id);
+        $this->load($tax_class_id);
       } else {
         $this->reset();
       }
@@ -26,6 +26,8 @@
 
     public function load($tax_class_id) {
 
+      if (!preg_match('#^[0-9]+$#', $tax_class_id)) throw new Exception('Invalid tax class (ID: '. $tax_class_id .')');
+
       $this->reset();
 
       $tax_class_query = database::query(
@@ -37,7 +39,7 @@
       if ($tax_class = database::fetch($tax_class_query)) {
         $this->data = array_replace($this->data, array_intersect_key($tax_class, $this->data));
       } else {
-        trigger_error('Could not find tax class (ID: '. (int)$tax_class_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find tax class (ID: '. (int)$tax_class_id .') in database.');
       }
     }
 

@@ -6,7 +6,7 @@
 
     public function __construct($module_id) {
 
-      if (empty($module_id)) trigger_error('First argument module_id cannot be empty', E_USER_ERROR);
+      if (empty($module_id)) throw new Exception('First argument module_id cannot be empty');
 
       preg_match('#^([^_]+)#', $module_id, $matches);
 
@@ -30,7 +30,7 @@
           $type = 'job';
           break;
         default:
-          trigger_error('Unknown module type for module '. $module_id, E_USER_ERROR);
+          throw new Exception('Unknown module type for module '. $module_id);
       }
 
       $this->load($module_id, $type);
@@ -87,10 +87,6 @@
     public function save() {
 
       if (empty($this->data['id'])) {
-
-        if (method_exists($this->_module, 'uninstall')) {
-          $this->_module->uninstall();
-        }
 
         database::query(
           "insert into ". DB_TABLE_MODULES ."

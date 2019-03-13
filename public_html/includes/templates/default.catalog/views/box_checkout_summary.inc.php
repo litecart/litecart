@@ -1,4 +1,4 @@
-<div id="box-checkout-summary" class="box">
+<section id="box-checkout-summary" class="box">
   <h2 class="title"><?php echo language::translate('title_order_summary', 'Order Summary'); ?></h2>
 
   <table class="table table-striped table-bordered data-table">
@@ -49,4 +49,4 @@
       <button class="btn btn-block btn-lg btn-success" type="submit" name="confirm_order" value="true"<?php echo !empty($error) ? ' disabled="disabled"' : ''; ?>><?php echo $confirm; ?></button>
     </div>
   </div>
-</div>
+</section>

@@ -6,7 +6,7 @@
     public function __construct($order_status_id=null) {
 
       if ($order_status_id !== null) {
-        $this->load((int)$order_status_id);
+        $this->load($order_status_id);
       } else {
         $this->reset();
       }
@@ -39,6 +39,8 @@
 
     public function load($order_status_id) {
 
+      if (!preg_match('#^[0-9]+$#', $order_status_id)) throw new Exception('Invalid order status (ID: '. $order_status_id .')');
+
       $this->reset();
 
       $order_status_query = database::query(
@@ -50,7 +52,7 @@
       if ($order_status = database::fetch($order_status_query)) {
         $this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
       } else {
-        trigger_error('Could not find order_status (ID: '. (int)$order_status_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find order_status (ID: '. (int)$order_status_id .') in database.');
       }
 
       $order_status_info_query = database::query(
@@ -136,7 +138,7 @@
     public function delete() {
 
       if (database::num_rows(database::query("select id from ". DB_TABLE_ORDERS ." where order_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
-        trigger_error('Cannot delete the order status because there are orders using it', E_USER_ERROR);
+        throw new Exception('Cannot delete the order status because there are orders using it');
         return;
       }
 

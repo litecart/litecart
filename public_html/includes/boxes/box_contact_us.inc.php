@@ -20,13 +20,13 @@
 
       $result = $email->send();
 
-      if ($result) {
-        notices::add('success', language::translate('success_your_email_was_sent', 'Your email has successfully been sent'));
-        header('Location: '. document::ilink());
-        exit;
-      } else {
+      if (!$result) {
         throw new Exception(language::translate('error_sending_email_for_unknown_reason', 'The email could not be sent for an unknown reason'));
       }
+
+      notices::add('success', language::translate('success_your_email_was_sent', 'Your email has successfully been sent'));
+      header('Location: '. document::ilink());
+      exit;
 
     } catch (Exception $e) {
       notices::add('errors', $e->getMessage());

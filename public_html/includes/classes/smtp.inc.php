@@ -16,13 +16,52 @@
 
       $this->_username = $username;
       $this->_password = $password;
+
+      $this->_log_handle = fopen(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'last_smtp.log', 'w');
+    }
+
+    function __destruct() {
+      if (is_resource($this->_socket)) $this->disconnect();
     }
 
     public function send($sender, $recipients, $data='') {
 
-      $this->_log_handle = fopen(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'last_smtp.log', 'w');
+      if (!is_array($recipients)) $recipients = array($recipients);
 
       if (!is_resource($this->_socket)) $this->connect();
+
+      $this->write("MAIL FROM: <$sender>\r\n", 250);
+
+      foreach ($recipients as $recipient) {
+        $this->write("RCPT TO: <$recipient>\r\n", 250);
+      }
+
+      $this->write("DATA\r\n", 354)
+           ->write("$data\r\n")
+           ->write(".\r\n", 250);
+
+      return true;
+    }
+
+    public function connect() {
+
+      $stream_context = $context = stream_context_create(array(
+        'ssl' => array(
+          // set some SSL/TLS specific options
+          'verify_peer' => false,
+          'verify_peer_name' => false,
+          'allow_self_signed' => true
+        ),
+      ));
+
+      fwrite($this->_log_handle, "Connecting to $this->_host ...\r\n");
+      $this->_socket = stream_socket_client($this->_host, $errno, $errstr, 3, STREAM_CLIENT_CONNECT, $stream_context);
+
+      if ($errno) throw new Exception('Could not connect to socket '. $this->_host .': '. $errstr);
+      if (empty($this->_socket)) throw new Exception('Failed opening socket connection to '. $this->_host);
+
+      stream_set_blocking($this->_socket, true);
+      stream_set_timeout($this->_socket, 6);
 
       $this->read(220)
            ->write("EHLO {$_SERVER['SERVER_NAME']}\r\n", 250);
@@ -65,40 +104,6 @@
         }
       }
 
-      $this->write("MAIL FROM: <$sender>\r\n", 250);
-
-      if (!is_array($recipients)) $recipients = array($recipients);
-      foreach ($recipients as $recipient) {
-        $this->write("RCPT TO: <$recipient>\r\n", 250);
-      }
-
-      $this->write("DATA\r\n", 354)
-           ->write("$data\r\n")
-           ->write(".\r\n", 250);
-
-      return true;
-    }
-
-    public function connect() {
-
-      $stream_context = $context = stream_context_create(array(
-        'ssl' => array(
-          // set some SSL/TLS specific options
-          'verify_peer' => false,
-          'verify_peer_name' => false,
-          'allow_self_signed' => true
-        ),
-      ));
-
-      fwrite($this->_log_handle, "Connecting to $this->_host ...\r\n");
-      $this->_socket = stream_socket_client($this->_host, $errno, $errstr, 3, STREAM_CLIENT_CONNECT, $stream_context);
-
-      if ($errno) throw new Exception('Could not connect to socket '. $this->_host .': '. $errstr);
-      if (empty($this->_socket)) throw new Exception('Failed opening socket connection to '. $this->_host);
-
-      stream_set_blocking($this->_socket, true);
-      stream_set_timeout($this->_socket, 6);
-
       return $this;
     }
 
@@ -107,6 +112,7 @@
       if (!is_resource($this->_socket)) return;
 
       $this->write("QUIT\r\n");
+      fwrite($this->_log_handle, "\r\n");
 
       fclose($this->_socket);
       fclose($this->_log_handle);

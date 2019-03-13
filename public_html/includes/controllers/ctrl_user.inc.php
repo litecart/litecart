@@ -6,7 +6,7 @@
     public function __construct($user_id=null) {
 
       if ($user_id !== null) {
-        $this->load((int)$user_id);
+        $this->load($user_id);
       } else {
         $this->reset();
       }
@@ -28,6 +28,8 @@
 
     public function load($user_id) {
 
+      if (!preg_match('#^[0-9]+$#', $user_id)) throw new Exception('Invalid user id (ID: '. $user_id .')');
+
       $this->reset();
 
       $user_query = database::query(
@@ -39,7 +41,7 @@
       if ($user = database::fetch($user_query)) {
         $this->data = array_replace($this->data, array_intersect_key($user, $this->data));
       } else {
-        trigger_error('Could not find user (ID: '. (int)$user_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find user (ID: '. (int)$user_id .') in database.');
       }
 
       $this->data['permissions'] = @json_decode($this->data['permissions'], true);

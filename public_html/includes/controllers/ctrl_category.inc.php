@@ -6,7 +6,7 @@
     public function __construct($category_id=null) {
 
       if (!empty($category_id)) {
-        $this->load((int)$category_id);
+        $this->load($category_id);
       } else {
         $this->reset();
       }
@@ -36,11 +36,12 @@
         }
       }
 
-      $this->data['dock'] = array();
       $this->data['images'] = array();
     }
 
     public function load($category_id) {
+
+      if (!preg_match('#^[0-9]+$#', $category_id)) throw new Exception('Invalid category (ID: '. $category_id .')');
 
       $this->reset();
 
@@ -53,10 +54,8 @@
       if ($category = database::fetch($categories_query)) {
         $this->data = array_replace($this->data, array_intersect_key($category, $this->data));
       } else {
-        trigger_error('Could not find category (ID: '. (int)$category_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find category (ID: '. (int)$category_id .') in database.');
       }
-
-      $this->data['dock'] = !empty($this->data['dock']) ? explode(',', $this->data['dock']) : array();
 
       $categories_info_query = database::query(
         "select * from ". DB_TABLE_CATEGORIES_INFO ."
@@ -94,10 +93,6 @@
 
       if ($this->data['parent_id'] == $this->data['id']) $this->data['parent_id'] = null;
 
-      $this->data['dock'] = array_map('trim', $this->data['dock']);
-      $this->data['dock'] = array_filter($this->data['dock']);
-      $this->data['dock'] = array_unique($this->data['dock']);
-
       $this->data['keywords'] = explode(',', $this->data['keywords']);
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
@@ -109,7 +104,6 @@
           status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
           google_taxonomy_id = ". (int)$this->data['google_taxonomy_id'] .",
-          dock = '". database::input(@implode(',', $this->data['dock'])) ."',
           list_style = '". database::input($this->data['list_style']) ."',
           keywords = '". database::input($this->data['keywords']) ."',
           priority = ". (int)$this->data['priority'] .",

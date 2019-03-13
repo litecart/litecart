@@ -7,12 +7,15 @@
     //}
 
     public static function load_dependencies() {
+
+    // Bind customer to session
+      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) session::$data['customer'] = array();
       self::$data = &session::$data['customer'];
     }
 
     public static function initiate() {
 
-      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
+      if (empty(self::$data)) {
         self::reset();
       }
 
@@ -221,18 +224,6 @@
       session::$data['customer']['display_prices_including_tax'] = null;
     }
 
-    public static function require_login() {
-      if (!self::check_login()) {
-        notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::ilink('login', array('redirect_url' => $_SERVER['REQUEST_URI'])));
-        exit;
-      }
-    }
-
-    public static function check_login() {
-      if (!empty(self::$data['id'])) return true;
-    }
-
     public static function load($customer_id) {
 
       self::reset();
@@ -259,100 +250,15 @@
       }
     }
 
-    public static function login($login, $password, $redirect_url='', $remember_me=false) {
-
-      try {
-
-        setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
-
-        if (empty($login) || empty($password)) {
-          throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
-        }
-
-        $customer_query = database::query(
-          "select * from ". DB_TABLE_CUSTOMERS ."
-          where email like '". database::input($login) ."'
-          limit 1;"
-        );
-        $customer = database::fetch($customer_query);
-
-        if (empty($customer) || (!empty($customer['password']) && $customer['password'] != functions::password_checksum($customer['email'], $password))) {
-          throw new Exception(language::translate('error_login_invalid', 'Wrong password or the account does not exist'));
-        }
-
-        if (empty($customer['status'])) {
-          throw new Exception(language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
-        }
-
-        if (empty($customer['password'])) {
-          $customer['password'] = functions::password_checksum($customer['email'], $password);
-          database::query(
-            "update ". DB_TABLE_CUSTOMERS ."
-            set password = '". database::input($customer['password']) ."'
-            where id = ". (int)$customer['id'] ."
-            limit 1;"
-          );
-        }
-
-        database::query(
-          "update ". DB_TABLE_CUSTOMERS ."
-          set num_logins = num_logins + 1,
-              last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-              last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-              last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
-              date_login = '". date('Y-m-d H:i:s') ."'
-          where id = ". (int)$customer['id'] ."
-          limit 1;"
-        );
-
-        self::load($customer['id']);
-
-        session::regenerate_id();
-
-        if (!empty($customer['last_host']) && $customer['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
-          notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), array('%hostname' => $customer['last_host'])));
-        }
-
-        if ($remember_me) {
-          $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-          setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_HTTP_HOME);
-        }
-
-        if (empty($redirect_url)) {
-          $redirect_url = document::ilink('');
-        }
-
-        notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
-          '%firstname' => self::$data['firstname'],
-          '%lastname' => self::$data['lastname'],
-        )));
-
-        header('Location: '. $redirect_url);
+    public static function require_login() {
+      if (!self::check_login()) {
+        notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
+        header('Location: ' . document::ilink('login', array('redirect_url' => $_SERVER['REQUEST_URI'])));
         exit;
-
-      } catch (Exception $e) {
-        http_response_code(401);
-        notices::add('errors', $e->getMessage());
       }
     }
 
-    public static function logout($redirect_url='') {
-
-      self::reset();
-
-      cart::reset();
-      session::$data['cart']['uid'] = null;
-
-      setcookie('cart[uid]', null, -1, WS_DIR_HTTP_HOME);
-      setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
-
-      session::regenerate_id();
-
-      notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
-
-      if (empty($redirect_url)) $redirect_url = document::ilink('');
-
-      header('Location: ' . $redirect_url);
-      exit;
+    public static function check_login() {
+      if (!empty(self::$data['id'])) return true;
     }
   }

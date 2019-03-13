@@ -30,7 +30,15 @@
 
   $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
-    match(pi.name, pi.short_description, pi.description) against ('*". database::input($_GET['query']) ."*' in boolean mode) as relevance
+    (
+      match(pi.name) against ('*". database::input($_GET['query']) ."*')
+      + (match(pi.short_description) against ('*". database::input($_GET['query']) ."*') / 2)
+      + (match(pi.description) against ('*". database::input($_GET['query']) ."*') / 3)
+      ". ((!empty($code_regex)) ? "+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)" : "") ."
+      ". ((!empty($code_regex)) ? "+ if(p.sku regexp '". database::input($code_regex) ."', 5, 0)" : "") ."
+      ". ((!empty($code_regex)) ? "+ if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)" : "") ."
+      ". ((!empty($code_regex)) ? "+ if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)" : "") ."
+    ) as relevance
 
     from (
       select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
@@ -58,10 +66,6 @@
     ) pc on (pc.product_id = p.id)
 
     having relevance > 0
-    ". ((!empty($_GET['query'])) ? "or p.code regexp '". database::input($code_regex) ."'" : "") ."
-    ". ((!empty($_GET['query'])) ? "or p.sku regexp '". database::input($code_regex) ."'" : "") ."
-    ". ((!empty($_GET['query'])) ? "or p.mpn regexp '". database::input($code_regex) ."'" : "") ."
-    ". ((!empty($_GET['query'])) ? "or p.gtin regexp '". database::input($code_regex) ."'" : "") ."
 
     order by %sql_sort;";
 

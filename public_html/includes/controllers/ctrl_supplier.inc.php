@@ -6,7 +6,7 @@
     public function __construct($supplier_id=null) {
 
       if (!empty($supplier_id)) {
-        $this->load((int)$supplier_id);
+        $this->load($supplier_id);
       } else {
         $this->reset();
       }
@@ -26,6 +26,8 @@
 
     public function load($supplier_id) {
 
+      if (!preg_match('#^[0-9]+$#', $supplier_id)) throw new Exception('Invalid supplier (ID: '. $supplier_id .')');
+
       $this->reset();
 
       $supplier_query = database::query(
@@ -37,7 +39,7 @@
       if ($supplier = database::fetch($supplier_query)) {
         $this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
       } else {
-        trigger_error('Could not find supplier (ID: '. (int)$supplier_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find supplier (ID: '. (int)$supplier_id .') in database.');
       }
     }
 

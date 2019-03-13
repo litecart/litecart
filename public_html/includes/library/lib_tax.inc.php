@@ -159,14 +159,10 @@
       while ($rate = database::fetch($tax_rates_query)) {
         switch($rate['address_type']) {
           case 'payment':
-            if ($rate['customer_type'] == 'individuals' && !empty($customer['company'])) continue 2;
-            if ($rate['customer_type'] == 'companies' && empty($customer['company'])) continue 2;
             if (!functions::reference_in_geo_zone($rate['geo_zone_id'], $customer['country_code'], $customer['zone_code'])) continue 2;
             break;
 
           case 'shipping':
-            if ($rate['customer_type'] == 'individuals' && !empty($customer['shipping_address']['company'])) continue 2;
-            if ($rate['customer_type'] == 'companies' && empty($customer['shipping_address']['company'])) continue 2;
             if (!functions::reference_in_geo_zone($rate['geo_zone_id'], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue 2;
             break;
 
@@ -175,8 +171,14 @@
             break;
         }
 
-        if ($rate['tax_id_rule'] == 'without' && !empty($customer['tax_id'])) continue;
-        if ($rate['tax_id_rule'] == 'with' && empty($customer['tax_id'])) continue;
+        $does_apply = false;
+
+        if (!empty($rate['rule_companies_with_tax_id'])      && !empty($customer['company']) && !empty($customer['tax_id'])) $does_apply = true;
+        if (!empty($rate['rule_companies_without_tax_id'])   && !empty($customer['company']) &&  empty($customer['tax_id'])) $does_apply = true;
+        if (!empty($rate['rule_individuals_with_tax_id'])    &&  empty($customer['company']) && !empty($customer['tax_id'])) $does_apply = true;
+        if (!empty($rate['rule_individuals_without_tax_id']) &&  empty($customer['company']) &&  empty($customer['tax_id'])) $does_apply = true;
+
+        if (!$does_apply) continue;
 
         $tax_rates[$rate['id']] = $rate;
       }

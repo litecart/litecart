@@ -7,7 +7,7 @@
 
   echo '<h1>Installer</h1>' . PHP_EOL;
 
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '>=') ? E_ALL & ~E_STRICT : E_ALL);
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'Off');
   ini_set('display_errors', 'On');
@@ -341,32 +341,6 @@
     echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
   }
 
-  ## OS Adjustments #############################################
-
-  /*
-  if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-    echo '<p>Making adjustments for Windows platform...';
-    database::query(
-      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
-      set locale = 'english',
-          charset = 'Windows-1252'
-      where code = 'en'
-      limit 1;"
-    );
-    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-
-  } else if (strtoupper(substr(PHP_OS, 0, 6)) == 'DARWIN') {
-    echo '<p>Making adjustments for Darwin (Mac) platform...';
-    database::query(
-      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
-      set locale = 'en_US.UTF-8'
-      where code = 'en'
-      limit 1;"
-    );
-    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-  }
-  */
-
   ### Regional Data Patch #######################################
 
   if (!empty($_REQUEST['country_code'])) {
@@ -429,10 +403,63 @@
 
   if (!empty($_REQUEST['demo_data'])) {
     echo '<p>Copying demo files...';
+
     if (file_xcopy('data/demo/public_html/', $installation_path)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+    }
+  }
+
+  ### Files > Development Type ##################################
+
+  echo '<p>Preparing CSS files...' . PHP_EOL;
+
+  if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
+
+    $files_to_delete = array(
+      '../includes/templates/default.catalog/css/app.css',
+      '../includes/templates/default.catalog/css/checkout.css',
+      '../includes/templates/default.catalog/css/framework.css',
+      '../includes/templates/default.catalog/css/printable.css',
+    );
+
+    foreach ($files_to_delete as $file) {
+      echo 'Delete '. $file;
+      if (file_delete($file)) {
+        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+      } else {
+        echo '<span class="error">[Error]</span></p>' . PHP_EOL;
+      }
+    }
+
+  } else {
+
+    $files_to_delete = array(
+      '../includes/templates/default.catalog/less/',
+      '../includes/templates/default.catalog/css/*.min.css',
+      '../includes/templates/default.catalog/css/*.min.css.map',
+    );
+
+    foreach ($files_to_delete as $file) {
+      echo 'Delete '. $file;
+      if (file_delete($file)) {
+        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+      } else {
+        echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+      }
+    }
+
+    foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
+      echo 'Modify '. $file . PHP_EOL;
+      $contents = file_get_contents($file);
+      $search_replace = array(
+        'app.min.css'  => 'app.css',
+        'checkout.min.css'  => 'checkout.css',
+        'framework.min.css' => 'framework.css',
+        'printable.min.css' => 'printable.css',
+      );
+      file_put_contents($file, strtr($contents, $search_replace));
     }
   }
 
@@ -455,6 +482,18 @@
      . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL
      . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'">administration area</a> and start configuring your store.</p>' . PHP_EOL
      . '<p>Check out our <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL;
+
+  echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
+     . '  <input type="hidden" value="https://www.litecart.net/" />' . PHP_EOL
+     . '  <div class="form-group">' . PHP_EOL
+     . '    <div class="input-group">' . PHP_EOL
+     . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
+     . '      <span class="input-group-btn">' . PHP_EOL
+     . '        <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
+     . '      </span>' . PHP_EOL
+     . '    </div>' . PHP_EOL
+     . '  </div>' . PHP_EOL
+     . '</form>' . PHP_EOL;
 
   if (!empty($_REQUEST['redirect'])) {
     header('Location: '. $_REQUEST['redirect']);

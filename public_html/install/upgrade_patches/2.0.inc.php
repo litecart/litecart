@@ -38,7 +38,6 @@
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/images/loader.png',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/styles/',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/box_account.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/box_categories.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/box_category.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/box_create_account.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/box_customer_service.inc.php',

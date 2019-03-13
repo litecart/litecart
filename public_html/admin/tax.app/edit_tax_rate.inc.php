@@ -21,6 +21,11 @@
       if (empty($_POST['tax_class_id'])) throw new Exception(language::translate('error_must_select_tax_class', 'You must select a tax class'));
       if (empty($_POST['rate'])) throw new Exception(language::translate('error_must_enter_rate', 'You must enter a rate'));
 
+      if (empty($_POST['rule_companies_with_tax_id'])) $_POST['rule_companies_with_tax_id'] = 0;
+      if (empty($_POST['rule_companies_without_tax_id'])) $_POST['rule_companies_without_tax_id'] = 0;
+      if (empty($_POST['rule_individuals_with_tax_id'])) $_POST['rule_individuals_with_tax_id'] = 0;
+      if (empty($_POST['rule_individuals_without_tax_id'])) $_POST['rule_individuals_without_tax_id'] = 0;
+
       $fields = array(
         'tax_class_id',
         'geo_zone_id',
@@ -30,8 +35,10 @@
         'rate',
         'type',
         'address_type',
-        'customer_type',
-        'tax_id_rule',
+        'rule_companies_with_tax_id',
+        'rule_companies_without_tax_id',
+        'rule_individuals_with_tax_id',
+        'rule_individuals_without_tax_id',
       );
 
       foreach ($fields as $field) {
@@ -119,32 +126,20 @@
         <label><?php echo functions::form_draw_radio_button('address_type', 'payment', true); ?> <?php echo language::translate('title_payment_address', 'Payment Address'); ?></label>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_customer_type', 'Customer Type'); ?></label>
-      <div class="radio">
-        <label><?php echo functions::form_draw_radio_button('customer_type', 'individuals', true); ?> <?php echo language::translate('text_tax_rate_rule_individuals', 'Applies to individuals'); ?></label>
-      </div>
-      <div class="radio">
-        <label><?php echo functions::form_draw_radio_button('customer_type', 'companies', true); ?> <?php echo language::translate('text_tax_rate_rule_companies', 'Applies to companies'); ?></label></label>
-      </div>
-      <div class="radio">
-        <label><?php echo functions::form_draw_radio_button('customer_type', 'both', empty($_POST['customer_type']) ? 'both' : true); ?> <?php echo language::translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?></label>
-      </div>
-    </div>
 
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_rule', 'Rule'); ?>: <?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+      <label><?php echo language::translate('title_conditions', 'Conditions'); ?></label>
       <div class="radio">
-        <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'with', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_with_tax_id', 'Applies to customers with a tax ID'); ?></label></label>
+        <label><?php echo functions::form_draw_checkbox('rule_companies_with_tax_id', '1', true); ?> <?php echo language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID'); ?></label>
       </div>
       <div class="radio">
-        <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'without', true); ?> <?php echo language::translate('text_tax_rate_rule_customers_without_tax_id', 'Applies to customers without a tax ID'); ?></label></label>
+        <label><?php echo functions::form_draw_checkbox('rule_companies_without_tax_id', '1', true); ?> <?php echo language::translate('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID'); ?></label>
       </div>
       <div class="radio">
-        <label><?php echo functions::form_draw_radio_button('tax_id_rule', 'both', empty($_POST['customer_type']) ? 'both' : true); ?> <?php echo language::translate('text_tax_rate_rule_both_of_the_above', 'Applies to both of above'); ?></label>
+        <label><?php echo functions::form_draw_checkbox('rule_individuals_with_tax_id', '1', true); ?> <?php echo language::translate('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID'); ?></label>
+      </div>
+      <div class="radio">
+        <label><?php echo functions::form_draw_checkbox('rule_individuals_without_tax_id', '1', true); ?> <?php echo language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID'); ?></label>
       </div>
     </div>
   </div>

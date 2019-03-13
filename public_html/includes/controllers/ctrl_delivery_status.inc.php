@@ -6,7 +6,7 @@
     public function __construct($delivery_status_id=null) {
 
       if ($delivery_status_id !== null) {
-        $this->load((int)$delivery_status_id);
+        $this->load($delivery_status_id);
       } else {
         $this->reset();
       }
@@ -39,6 +39,8 @@
 
     public function load($delivery_status_id) {
 
+      if (!preg_match('#^[0-9]+$#', $delivery_status_id)) throw new Exception('Invalid delivery status (ID: '. $delivery_status_id .')');
+
       $this->reset();
 
       $delivery_status_query = database::query(
@@ -50,7 +52,7 @@
       if ($delivery_status = database::fetch($delivery_status_query)) {
         $this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));;
       } else {
-        trigger_error('Could not find delivery status (ID: '. (int)$delivery_status_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find delivery status (ID: '. (int)$delivery_status_id .') in database.');
       }
 
       $delivery_status_info_query = database::query(
@@ -121,7 +123,7 @@
     public function delete() {
 
       if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where delivery_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
-        trigger_error('Cannot delete the delivery status because there are products using it', E_USER_ERROR);
+        throw new Exception('Cannot delete the delivery status because there are products using it');
         return;
       }
 

@@ -23,7 +23,6 @@
       if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       if (!empty($category->data['id']) && $category->data['parent_id'] == $category->data['id']) throw new Exception(language::translate('error_cannot_mount_category_to_self', 'Cannot mount category to itself'));
 
-      if (!isset($_POST['dock'])) $_POST['dock'] = array();
       if (!isset($_POST['images'])) $_POST['images'] = array();
 
       $fields = array(
@@ -32,7 +31,6 @@
         'code',
         'google_taxonomy_id',
         'list_style',
-        'dock',
         'images',
         'name',
         'short_description',
@@ -130,14 +128,6 @@
           <div class="form-group">
             <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
             <?php echo functions::form_draw_number_field('google_taxonomy_id', true); ?>
-          </div>
-
-          <div class="form-group">
-            <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
-            <div class="checkbox">
-              <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_menu', 'Dock in top menu'); ?></label><br/>
-              <label><?php echo functions::form_draw_checkbox('dock[]', 'tree', true); ?> <?php echo language::translate('text_dock_in_tree', 'Dock in category tree'); ?></label>
-            </div>
           </div>
 
           <?php if (!empty($category->data['id'])) { ?>

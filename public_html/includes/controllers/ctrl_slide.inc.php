@@ -6,7 +6,7 @@
     public function __construct($slide_id=null) {
 
       if ($slide_id !== null) {
-        $this->load((int)$slide_id);
+        $this->load($slide_id);
       } else {
         $this->reset();
       }
@@ -41,6 +41,8 @@
 
     public function load($slide_id) {
 
+      if (!preg_match('#^[0-9]+$#', $slide_id)) throw new Exception('Invalid slide (ID: '. $slide_id .')');
+
       $this->reset();
 
       $slide_query = database::query(
@@ -52,7 +54,7 @@
       if ($slide = database::fetch($slide_query)) {
         $this->data = array_replace($this->data, array_intersect_key($slide, $this->data));
       } else {
-        trigger_error('Could not find slide (ID: '. (int)$slide_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find slide (ID: '. (int)$slide_id .') in database.');
       }
 
       $this->data['languages'] = explode(',', $this->data['languages']);

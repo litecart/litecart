@@ -5,6 +5,7 @@
   } else {
     $order = new ctrl_order();
     $order->data['client_ip'] = $_SERVER['REMOTE_ADDR'];
+    $order->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
     $order->data['date_created'] = date('Y-m-d H:i:s');
   }
 
@@ -318,6 +319,11 @@
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_ip_address', 'IP Address'); ?><br />
           <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label><?php echo language::translate('title_reference', 'Reference'); ?></label>
+          <?php echo functions::form_draw_text_field('reference', true); ?>
         </div>
       </div>
 
@@ -1213,7 +1219,7 @@
     $(modal).data('row', '');
   });
 
-  $('#modal-edit-order-item button[name="save"]').click(function(e){
+  $('#modal-edit-order-item button[name="ok"]').click(function(e){
 
     var modal = $('.featherlight.active');
     var row = $(modal).data('row');

@@ -26,9 +26,9 @@
 
     public function load($language_code) {
 
-      $this->reset();
+      if (!preg_match('#^[a-z]{2}$#', $language_code)) throw new Exception('Invalid language code ('. $language_code .')');
 
-      if (!preg_match('#[a-z]{2}#', $language_code)) trigger_error('Invalid language code ('. $language_code .')', E_USER_ERROR);
+      $this->reset();
 
       $language_query = database::query(
         "select * from ". DB_TABLE_LANGUAGES ."
@@ -39,14 +39,14 @@
       if ($language = database::fetch($language_query)) {
         $this->data = array_intersect_key(array_merge($this->data, $language), $this->data);
       } else {
-        trigger_error('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.');
       }
     }
 
     public function save() {
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_language_code')) {
-        trigger_error('You cannot disable the default language.', E_USER_ERROR);
+        throw new Exception('You cannot disable the default language.');
       }
 
       if (!empty($this->data['id'])) {
@@ -59,7 +59,7 @@
 
         if ($this->data['code'] != $previous_language['code']) {
           if ($previous_language['code'] == 'en') {
-            trigger_error('You cannot not rename the english language because it is used for the PHP framework.', E_USER_ERROR);
+            throw new Exception('You cannot not rename the english language because it is used for the PHP framework.');
 
           } else {
             database::query(
@@ -102,7 +102,7 @@
         );
 
         if (database::num_rows($languages_query)) {
-          trigger_error('Language already exists', E_USER_ERROR);
+          throw new Exception('Language already exists');
         }
 
         database::query(
@@ -154,12 +154,12 @@
     public function delete() {
 
       if ($this->data['code'] == 'en') {
-        trigger_error('English is the PHP framework language and must not be deleted, but it can be disabled.', E_USER_ERROR);
+        throw new Exception('English is the PHP framework language and must not be deleted, but it can be disabled.');
         return;
       }
 
       if ($this->data['code'] == settings::get('default_language_code')) {
-        trigger_error('Cannot delete the default language', E_USER_ERROR);
+        throw new Exception('Cannot delete the default language');
         return;
       }
 

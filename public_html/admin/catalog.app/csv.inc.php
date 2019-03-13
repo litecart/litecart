@@ -69,19 +69,11 @@
           continue;
         }
 
-        if (isset($row['dock'])) $row['dock'] = explode(',', $row['dock']);
-
-      // Set default category data
-        if (empty($category->data['id']) && empty($row['dock']) && empty($row['parent_id'])) {
-          $category->data['dock'][] = 'tree';
-        }
-
       // Set new category data
         $fields = array(
           'parent_id',
           'status',
           'code',
-          'dock',
           'keywords',
           'image',
         );
@@ -340,6 +332,10 @@
           'quantity_unit_id',
           'weight',
           'weight_class',
+          'dim_x',
+          'dim_y',
+          'dim_z',
+          'dim_class',
           'purchase_price',
           'purchase_price_currency_code',
           'delivery_status_id',
@@ -471,6 +467,10 @@
           'quantity_unit_id' => $product->quantity_unit['id'],
           'weight' => $product->weight,
           'weight_class' => $product->weight_class,
+          'dim_x' => $product->dim_x,
+          'dim_y' => $product->dim_y,
+          'dim_z' => $product->dim_z,
+          'dim_class' => $product->dim_class,
           'delivery_status_id' => $product->delivery_status_id,
           'sold_out_status_id' => $product->sold_out_status_id,
           'language_code' => $_POST['language_code'],

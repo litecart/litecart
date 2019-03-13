@@ -1,12 +1,12 @@
-<aside id="sidebar">
+<div id="sidebar">
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
-</aside>
+</div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
   {snippet:breadcrumbs}
 
-  <div id="box-search-results" class="box">
+  <section id="box-search-results" class="box">
 
     <?php if ($products) { ?>
     <div class="btn-group pull-right hidden-xs">
@@ -26,13 +26,13 @@
     <h1 class="title"><?php echo $title; ?></h1>
 
     <?php if ($products) { ?>
-    <div class="products row half-gutter">
+    <section class="listing products">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
-    </div>
+    </section>
     <?php } else { ?>
     <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
     <?php } ?>
 
     <?php echo $pagination; ?>
-  </div>
-</main>
+  </section>
+</div>

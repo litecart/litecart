@@ -6,7 +6,7 @@
     public function __construct($sold_out_status_id=null) {
 
       if ($sold_out_status_id !== null) {
-        $this->load((int)$sold_out_status_id);
+        $this->load($sold_out_status_id);
       } else {
         $this->reset();
       }
@@ -39,6 +39,8 @@
 
     public function load($sold_out_status_id) {
 
+      if (!preg_match('#^[0-9]+$#', $sold_out_status_id)) throw new Exception('Invalid sold out status (ID: '. $sold_out_status_id .')');
+
       $this->reset();
 
       $sold_out_status_query = database::query(
@@ -50,7 +52,7 @@
       if ($sold_out_status = database::fetch($sold_out_status_query)) {
         $this->data = array_replace($this->data, array_intersect_key($sold_out_status, $this->data));
       } else {
-        trigger_error('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.');
       }
 
       $sold_out_status_info_query = database::query(
@@ -123,7 +125,7 @@
     public function delete() {
 
       if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where sold_out_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
-        trigger_error('Cannot delete the sold out status because there are products using it', E_USER_ERROR);
+        throw new Exception('Cannot delete the sold out status because there are products using it');
         return;
       }
 

@@ -3,7 +3,7 @@
   $widget_addons_cache_token = cache::token('widget_addons', array(), 'file');
   if (cache::capture($widget_addons_cache_token, 43200, true)) {
 
-    $url = document::link('https://www.litecart.net/feeds/addons', array('whoami' => document::ilink(''), 'version' => PLATFORM_VERSION));
+    $url = document::link('https://www.litecart.net/feeds/addons');
 
     $store_info = array(
       'platform' => PLATFORM_NAME,
@@ -16,8 +16,9 @@
     );
 
     $client = new http_client();
+    $client->timeout = 10;
     $response = @$client->call('POST', $url, $store_info);
-    $rss = @simplexml_load_string($response);
+    $rss = simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {
 

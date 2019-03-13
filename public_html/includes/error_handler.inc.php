@@ -3,21 +3,33 @@
   function error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
 
     if (!(error_reporting() & $errno)) return;
+
     $errfile = preg_replace('#^'. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .'#', '~/', str_replace('\\', '/', $errfile));
 
     switch($errno) {
-      case E_WARNING:
-      case E_USER_WARNING:
-        $output = "<strong>Warning:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
-        break;
       case E_STRICT:
+        $output = "<strong>Strict:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        break;
       case E_NOTICE:
       case E_USER_NOTICE:
         $output = "<strong>Notice:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
+      case E_WARNING:
+      case E_USER_WARNING:
+      case E_COMPILE_WARNING:
+      case E_RECOVERABLE_ERROR:
+        $output = "<strong>Warning:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        break;
       case E_DEPRECATED:
       case E_USER_DEPRECATED:
         $output = "<strong>Deprecated:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        break;
+      case E_PARSE:
+      case E_ERROR:
+      case E_CORE_ERROR:
+      case E_COMPILE_ERROR:
+      case E_USER_ERROR:
+        $output = "<strong>Fatal error:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
       default:
         $output = "<strong>Fatal error:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
@@ -54,7 +66,7 @@
       );
     }
 
-    if (in_array($errno, array(E_ERROR, E_USER_ERROR))) {
+    if (in_array($errno, array(E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, E_USER_ERROR))) {
       http_response_code(500);
       exit;
     }

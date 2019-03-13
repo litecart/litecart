@@ -1,7 +1,7 @@
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-regional-settings">
+  <section id="box-regional-settings">
     <h1 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
 
     <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
@@ -32,11 +32,8 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_display_prices', 'Display Prices'); ?></label>
-          <div class="radio">
-            <label><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
-            <label style="margin-left: 1em;"><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-          </div>
+          <label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
+          <?php echo functions::form_draw_toggle('display_prices_including_tax', customer::$data['display_prices_including_tax'], 'y/n'); ?>
         </div>
       </div>
 
@@ -45,8 +42,8 @@
       </p>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</main>
+  </section>
+</div>
 
 <script>
   if ($('#regional-settings .title').parents('.modal')) {

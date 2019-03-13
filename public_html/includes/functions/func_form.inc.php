@@ -524,122 +524,204 @@
     }
 
     switch ($matches[1]) {
+
       case 'decimal':
       case 'float':
         return form_draw_decimal_field($name, $input, 2);
+
       case 'number':
       case 'int':
         return form_draw_number_field($name, $input);
+
       case 'color':
         return form_draw_color_field($name, $input);
-      case 'smallinput':
-        return form_draw_input($name, $input, 'text');
-      case 'input':
-        return form_draw_text_field($name, $input, 'text');
+
+      case 'smallinput': // Deprecated
+      case 'smalltext': // Deprecated
+      case 'input': // Deprecated
+      case 'text':
+        return form_draw_text_field($name, $input);
+
       case 'password':
-        return form_draw_password_field($name, $input, 'password');
-      case 'smalltext':
-        return form_draw_textarea($name, $input, 'rows="2"');
+        return form_draw_password_field($name, $input);
+
       case 'mediumtext':
+      case 'textarea':
         return form_draw_textarea($name, $input, 'rows="5"');
+
       case 'bigtext':
         return form_draw_textarea($name, $input, 'rows="10"');
+
       case 'category':
-      case 'categories':
         return form_draw_categories_list($name, $input);
+
+      case 'categories':
+        return form_draw_categories_list($name, $input, true);
+
       case 'customer':
-      case 'customers':
         return form_draw_customers_list($name, $input);
+
+      case 'customers':
+        return form_draw_customers_list($name, $input, true);
+
       case 'country':
-      case 'countries':
         return form_draw_countries_list($name, $input);
+
+      case 'countries':
+        return form_draw_countries_list($name, $input, true);
+
       case 'currency':
-      case 'currencies':
         return form_draw_currencies_list($name, $input);
+
+      case 'currencies':
+        return form_draw_currencies_list($name, $input, true);
+
       case 'delivery_status':
-      case 'delivery_statuses':
         return form_draw_delivery_statuses_list($name, $input);
+
+      case 'delivery_statuses':
+        return form_draw_delivery_statuses_list($name, $input, true);
+
       case 'email':
         return functions::form_draw_email_field($name, $input);
+
       case 'geo_zone':
-      case 'geo_zones':
         return form_draw_geo_zones_list($name, $input);
+
+      case 'geo_zones':
+        return form_draw_geo_zones_list($name, $input, true);
+
       case 'language':
-      case 'languages':
         return form_draw_languages_list($name, $input);
+
+      case 'languages':
+        return form_draw_languages_list($name, $input, true);
+
       case 'length_class':
-      case 'length_classes':
         return form_draw_length_classes_list($name, $input);
+
+      case 'length_classes':
+        return form_draw_length_classes_list($name, $input, true);
+
       case 'product':
-      case 'products':
         return form_draw_products_list($name, $input);
+
+      case 'products':
+        return form_draw_products_list($name, $input, true);
+
       case 'quantity_unit':
-      case 'quantity_units':
         return form_draw_quantity_units_list($name, $input);
+
+      case 'quantity_units':
+        return form_draw_quantity_units_list($name, $input, true);
+
       case 'order_status':
-      case 'order_statuses':
         return form_draw_order_status_list($name, $input);
+
+      case 'order_statuses':
+        return form_draw_order_status_list($name, $input, true);
+
       case 'regional_input':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
           $output .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input);
         }
         return $output;
+
       case 'regional_textarea':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
           $output .= form_draw_regional_textarea($language_code, $name.'['. $language_code.']', $input);
         }
         return $output;
+
       case 'regional_wysiwyg':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
           $output .= form_draw_regional_wysiwyg_field($language_code, $name.'['. $language_code.']', $input);
         }
         return $output;
+
       case 'page':
-      case 'pages':
         return form_draw_pages_list($name, $input);
+
+      case 'pages':
+        return form_draw_pages_list($name, $input, true);
+
       case 'radio':
         $output = '';
         for ($i=0; $i<count($options); $i++) {
           $output .= '<div class="radio"><label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label></div>';
         }
         return $output;
+
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
         return form_draw_select_field($name, $options, $input);
+
       case 'select_multiple':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
         return form_draw_select_multiple_field($name, $options, $input);
+
       case 'timezone':
-      case 'timezones':
         return form_draw_timezones_list($name, $input);
+
+      case 'timezones':
+        return form_draw_timezones_list($name, $input, true);
+
       case 'template':
-      case 'templates':
         return form_draw_templates_list($name, $input);
+
+      case 'templates':
+        return form_draw_templates_list($name, $input, true);
+
       case 'time':
         return form_draw_time_field($name, $input);
+
       case 'toggle':
         return form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
+
       case 'sold_out_status':
-      case 'sold_out_statuses':
         return form_draw_sold_out_statuses_list($name, $input);
+
+      case 'sold_out_statuses':
+        return form_draw_sold_out_statuses_list($name, $input, true);
+
       case 'tax_class':
-      case 'tax_classes':
         return form_draw_tax_classes_list($name, $input);
+
+      case 'tax_classes':
+        return form_draw_tax_classes_list($name, $input, true);
+
+      case 'user':
+        return form_draw_users_list($name, $input);
+
+      case 'users':
+        return form_draw_users_list($name, $input, true);
+
       case 'weight_class':
-      case 'weight_classes':
         return form_draw_weight_classes_list($name, $input);
+
+      case 'weight_classes':
+        return form_draw_weight_classes_list($name, $input, true);
+
       case 'wysiwyg':
         return form_draw_regional_wysiwyg_field($name, $input);
+
       case 'zone':
-      case 'zones':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
         return form_draw_zones_list($option, $name, $input);
+
+      case 'zones':
+        $option = !empty($options) ? $options[0] : '';
+        //if (empty($option)) $option = settings::get('store_country_code');
+        return form_draw_zones_list($option, $name, $input, true);
+
       default:
-        trigger_error('Unknown function name ('. $function .')', E_USER_ERROR);
+        trigger_error('Unknown function name ('. $function .')', E_USER_WARNING);
+        return form_draw_hidden_field($name, $input);
+        break;
     }
   }
 
@@ -1223,6 +1305,28 @@
           $options[] = array(implode('/', $zone));
         }
       }
+    }
+
+    if ($multiple) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_users_list($name, $input=true, $multiple=false, $parameters='') {
+
+    $users_query = database::query(
+      "select id, username from ". DB_TABLE_USERS ."
+      order by username;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($user = database::fetch($users_query)) {
+      $options[] = array($user['username'], $user['id']);
     }
 
     if ($multiple) {

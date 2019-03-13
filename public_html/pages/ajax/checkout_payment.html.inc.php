@@ -9,10 +9,10 @@
 
   if (empty(customer::$data['country_code'])) customer::$data['country_code'] = settings::get('default_country_code');
 
-  if (empty(session::$data['payment'])) session::$data['payment'] = new mod_payment();
+  session::$data['payment'] = new mod_payment();
   $payment = &session::$data['payment'];
 
-  $options = $payment->options();
+  $options = $payment->options(cart::$items, cart::$total['value'], cart::$total['tax'], currency::$selected['code'], customer::$data);
 
   if (file_get_contents('php://input') != '' && !empty($_POST['payment'])) {
     list($module_id, $option_id) = explode(':', $_POST['payment']['option_id']);

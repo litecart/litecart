@@ -9,10 +9,10 @@
 
   if (empty(customer::$data['country_code'])) return;
 
-  if (empty(session::$data['shipping'])) session::$data['shipping'] = new mod_shipping();
+  session::$data['shipping'] = new mod_shipping();
   $shipping = &session::$data['shipping'];
 
-  $options = $shipping->options();
+  $options = $shipping->options(cart::$items, cart::$total['value'], cart::$total['tax'], currency::$selected['code'], customer::$data);
 
   if (file_get_contents('php://input') != '' && !empty($_POST['shipping'])) {
     list($module_id, $option_id) = explode(':', $_POST['shipping']['option_id']);

@@ -6,7 +6,7 @@
     public function __construct($customer_id=null) {
 
       if ($customer_id !== null) {
-        $this->load((int)$customer_id);
+        $this->load($customer_id);
       } else {
         $this->reset();
       }
@@ -32,18 +32,20 @@
 
     public function load($customer_id) {
 
+      if (!preg_match('#^[0-9]+$#', $customer_id)) throw new Exception('Invalid customer (ID: '. $customer_id .')');
+
       $this->reset();
 
       $customer_query = database::query(
         "select * from ". DB_TABLE_CUSTOMERS ."
-        where id = '". database::input($customer_id) ."'
+        where id = ". (int)$customer_id ."
         limit 1;"
       );
 
       if ($customer = database::fetch($customer_query)) {
         $this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
       } else {
-        trigger_error('Could not find customer (ID: '. (int)$customer_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find customer (ID: '. (int)$customer_id .') in database.');
       }
 
       foreach ($customer as $field => $value) {
@@ -129,7 +131,7 @@
 
     public function set_password($password) {
 
-      if (empty($this->data['email'])) trigger_error('Cannot set password without an email address', E_USER_ERROR);
+      if (empty($this->data['email'])) throw new Exception('Cannot set password without an email address');
 
       if (empty($this->data['id'])) {
         $this->save();

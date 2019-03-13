@@ -1,4 +1,4 @@
-<div id="box-manufacturer-logotypes" class="box hidden-xs hidden-sm">
+<section id="box-manufacturer-logotypes" class="box hidden-xs hidden-sm">
   <ul class="list-inline text-center">
     <?php foreach ($logotypes as $logotype) { ?>
     <li>
@@ -8,4 +8,4 @@
     </li>
     <?php } ?>
   </ul>
-</div>
+</section>

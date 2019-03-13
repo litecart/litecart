@@ -6,7 +6,7 @@
     public function __construct($tax_rate_id=null) {
 
       if ($tax_rate_id !== null) {
-        $this->load((int)$tax_rate_id);
+        $this->load($tax_rate_id);
       } else {
         $this->reset();
       }
@@ -26,6 +26,8 @@
 
     public function load($tax_rate_id) {
 
+      if (!preg_match('#^[0-9]+$#', $tax_rate_id)) throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
+
       $this->reset();
 
       $tax_rate_query = database::query(
@@ -37,7 +39,7 @@
       if ($tax_rate = database::fetch($tax_rate_query)) {
         $this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
       } else {
-        trigger_error('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.');
       }
     }
 
@@ -55,16 +57,18 @@
       database::query(
         "update ". DB_TABLE_TAX_RATES ."
         set
-          tax_class_id = '". database::input($this->data['tax_class_id']) ."',
-          geo_zone_id = '". database::input($this->data['geo_zone_id']) ."',
+          tax_class_id = ". (int)$this->data['tax_class_id'] .",
+          geo_zone_id = ". (int)$this->data['geo_zone_id'] .",
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
           type = '". database::input($this->data['type']) ."',
-          rate = '". database::input($this->data['rate']) ."',
+          rate = ". (float)$this->data['rate'] .",
           address_type = '". database::input($this->data['address_type']) ."',
-          customer_type = '". database::input($this->data['customer_type']) ."',
-          tax_id_rule = '". database::input($this->data['tax_id_rule']) ."',
+          rule_companies_with_tax_id = ". (int)$this->data['rule_companies_with_tax_id'] .",
+          rule_companies_without_tax_id = ". (int)$this->data['rule_companies_without_tax_id'] .",
+          rule_individuals_with_tax_id = ". (int)$this->data['rule_individuals_with_tax_id'] .",
+          rule_individuals_without_tax_id = ". (int)$this->data['rule_individuals_without_tax_id'] .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

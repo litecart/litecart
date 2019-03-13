@@ -14,7 +14,7 @@
 
       $products_query = functions::catalog_products_query(array(
         'products' => array_keys($also_purchased_products),
-        'sort' => 'rand',
+        'sort' => 'random',
         'limit' => settings::get('box_also_purchased_products_num_items'),
       ));
 

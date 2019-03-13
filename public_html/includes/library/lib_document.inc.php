@@ -266,7 +266,7 @@
     }
 
     public static function link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
-      return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code);
+      return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
     public static function href_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {

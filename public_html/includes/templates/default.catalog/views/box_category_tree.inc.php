@@ -1,5 +1,5 @@
 <?php
-  $draw_branch = function($category, $category_path, &$draw_branch) {
+  $draw_branch = function($category, &$category_path, &$draw_branch) {
     echo '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">' . PHP_EOL
        . '  <a href="'. htmlspecialchars($category['link']) .'"><i class="fa fa-fw fa-'. (empty($category['opened']) ? 'caret-right' : 'caret-down') .'"></i> '. $category['name'] .'</a>' . PHP_EOL;
     if (!empty($category['subcategories'])) {
@@ -24,12 +24,13 @@
 </style>
 <?php } ?>
 
-<div id="box-category-tree" class="box">
+<section id="box-category-tree" class="box">
   <h2 class="title"><?php echo $title; ?></h2>
+
   <ul class="nav nav-stacked nav-pills<?php if (!empty(document::$settings['compact_category_tree']) && !empty($category_path)) echo ' compact'; ?>">
     <?php foreach ($categories as $category) $draw_branch($category, $category_path, $draw_branch); ?>
   </ul>
-</div>
+</section>
 
 <?php if (!empty(document::$settings['compact_category_tree'])) { ?>
 <script>

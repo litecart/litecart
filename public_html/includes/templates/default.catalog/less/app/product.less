@@ -5,19 +5,26 @@
 }
 
 #box-product {
+
+  .images {
+    margin-bottom: @default-gutter-size*2;
+  }
+
   .main-image {
+    position: relative;
+    overflow: hidden;
     .sticker {
       color: #fff;
       font-size: 12px;
       font-weight: bold;
-      top: 15px;
-      left: -30px;
+      top: 17px;
+      left: -34px;
       padding: @default-gutter-size/4 @default-gutter-size/2;
       position: absolute;
       text-align: center;
       text-transform: uppercase;
       transform: rotate(-45deg);
-      width: 125px;
+      width: 140px;
       &.new {
         background: rgba(251, 184, 41, 0.85);
       }
@@ -26,6 +33,7 @@
       }
     }
   }
+
   .price-wrapper {
     font-size: 1.75em;
   }

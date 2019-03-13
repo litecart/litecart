@@ -22,10 +22,16 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 }
 
 .form-group {
-  margin-bottom: @default-gutter-size;
   &.required label::after {
     content: ' *';
     color: #f00;
+  }
+  &:not([class*="col-"]) {
+    margin-bottom: @default-gutter-size;
+  }
+  label {
+    display: inline-block;
+    padding-bottom: @form-input-padding/2;
   }
 }
 
@@ -34,7 +40,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   color: #555;
   background: @form-input-background;
   border: 1px solid @default-border-color;
-  border-radius: 4px;
+  border-radius: @default-border-radius;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
@@ -59,14 +65,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   }
 }
 
-.form-control-static {
-  padding: @form-input-padding+1px 0;
-}
-
-.select-wrapper:not(.multiple) {
+.select-wrapper {
   position: relative;
   width: 100%;
-  background: @form-input-background;
   &:before {
     content: ' ';
     position: absolute;
@@ -77,9 +78,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid #000;
+    z-index: 1;
   }
   select.form-control {
-    background: transparent;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -92,7 +93,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     padding: 0;
   }
   option {
-    padding: 6px 12px;
+    padding: @form-input-padding @form-input-padding*2;
   }
 }
 
@@ -106,6 +107,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 
 .checkbox, .radio {
   padding: @form-input-padding @form-input-padding * 2;
+}
+.form-control .checkbox {
+  padding: @form-input-padding 0;
 }
 
 .input-group {
@@ -160,7 +164,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   .input-group-btn:first-child > .btn,
   .input-group-btn:first-child > .btn-group > .btn,
   .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-    border-radius: 4px 0 0 4px;
+    border-radius: @default-border-radius 0 0 @default-border-radius;
   }
   .form-control:last-child,
   .input-group-addon:last-child,
@@ -168,7 +172,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   .input-group-btn:last-child > .btn-group > .btn,
   .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
     margin-right: -1px;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 @default-border-radius @default-border-radius 0;
   }
   + .input-group {
     margin-top: -1px;

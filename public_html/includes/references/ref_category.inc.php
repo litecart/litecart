@@ -98,31 +98,18 @@
 
         case 'path':
 
-          $this->_data['path'] = array();
-          $category_index_id = $this->id;
+          $this->_data['path'] = array($this->_id => $this);
+
+          $current = $this;
 
           $failsafe = 0;
-          while (true) {
-            $category_query = database::query(
-              "select id, parent_id from ". DB_TABLE_CATEGORIES ."
-              where id = ". (int)$category_index_id ."
-              limit 1;"
-            );
-
-            $category = database::fetch($category_query);
-
-            if ($category) {
-              $this->_data['path'][$category['id']] = reference::category($category['id'], $this->_language_codes[0]);
-            }
-
-            if (!empty($category['parent_id'])) {
-              $category_index_id = $category['parent_id'];
-            } else {
-              break;
-            }
-
+          while (!empty($current->parent_id)) {
+            $this->_data['path'][$current->parent_id] = $current;
+            $current = reference::category($current->parent_id, $current->_language_codes[0]);
             if (++$failsafe == 10) trigger_error('Endless loop while building category path', E_USER_ERROR);
           }
+
+          $this->_data['path'] = array_reverse($this->_data['path'], true);
 
           break;
 
@@ -162,7 +149,25 @@
           break;
 
         case 'descendants':
+
+          $this->_data['descendants'] = array();
+
+          $query = database::query(
+            "select id from ". DB_TABLE_CATEGORIES ."
+            where parent_id = '". (int)$this->_id ."';"
+          );
+
+          while ($row = database::fetch($query)) {
+            foreach ($row as $key => $value) {
+              $this->_data['descendants'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
+              $this->_data['descendants'] += reference::category($row['id'], $this->_language_codes[0])->descendants;
+            }
+          }
+
+          break;
+
         case 'subcategories':
+        case 'children':
 
           $this->_data['subcategories'] = array();
 

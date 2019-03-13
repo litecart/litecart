@@ -31,7 +31,7 @@
 
     ######################################################################
 
-    public static function create_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+    public static function create_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null, $rewrite=true) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
@@ -87,12 +87,14 @@
       $link = self::implode_link($parsed_link);
 
     // Process catalog links
-      if (empty($parsed_link['host']) || $parsed_link['host'] == preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) {
-        if ($parsed_link['path'] == WS_DIR_HTTP_HOME || !file_exists(FS_DIR_HTTP_ROOT . $parsed_link['path'])) {
-          if (preg_match('#^'. WS_DIR_HTTP_HOME .'#', $parsed_link['path'])) {
-            if (class_exists('route', false)) {
-              if ($rewritten_link = route::rewrite($link, $language_code)) {
-                $link = $rewritten_link;
+      if (!empty($rewrite)) {
+        if (empty($parsed_link['host']) || $parsed_link['host'] == preg_replace('#^([a-z|0-9|\.|-]+)(?:\:[0-9]+)?$#', '$1', $_SERVER['HTTP_HOST'])) {
+          if ($parsed_link['path'] == WS_DIR_HTTP_HOME || !file_exists(FS_DIR_HTTP_ROOT . $parsed_link['path'])) {
+            if (preg_match('#^'. WS_DIR_HTTP_HOME .'#', $parsed_link['path'])) {
+              if (class_exists('route', false)) {
+                if ($rewritten_link = route::rewrite($link, $language_code)) {
+                  $link = $rewritten_link;
+                }
               }
             }
           }
@@ -139,9 +141,18 @@
       $parts = parse_url($link);
 
       if (empty($parts['host'])) {
+
         $parts['scheme'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
-        @list($parts['host'], $parts['port']) = explode(':', $_SERVER['HTTP_HOST']);
-        if (empty($parts['port'])) $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443', '8080')) ? '' : $_SERVER['SERVER_PORT'];
+
+        if (strpos(':', $_SERVER['HTTP_HOST']) !== false) {
+          list($parts['host'], $parts['port']) = explode(':', $_SERVER['HTTP_HOST']);
+        } else {
+          $parts['host'] = $_SERVER['HTTP_HOST'];
+        }
+
+        if (empty($parts['port'])) {
+          $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443', '8080')) ? '' : $_SERVER['SERVER_PORT'];
+        }
       }
 
       if (empty($parts['scheme'])) $parts['scheme'] = 'http';
@@ -183,9 +194,18 @@
     public static function implode_link($parts) {
 
       if (empty($parts['host'])) {
+
         $parts['scheme'] = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
-        @list($parts['host'], $parts['port']) = explode(':', $_SERVER['HTTP_HOST']);
-        if (empty($parts['port'])) $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443', '8080')) ? '' : $_SERVER['SERVER_PORT'];
+
+        if (strpos(':', $_SERVER['HTTP_HOST']) !== false) {
+          list($parts['host'], $parts['port']) = explode(':', $_SERVER['HTTP_HOST']);
+        } else {
+          $parts['host'] = $_SERVER['HTTP_HOST'];
+        }
+
+        if (empty($parts['port'])) {
+          $parts['port'] = in_array($_SERVER['SERVER_PORT'], array('80', '443', '8080')) ? '' : $_SERVER['SERVER_PORT'];
+        }
       }
 
       if (empty($parts['scheme'])) $parts['scheme'] = 'http';
@@ -216,7 +236,7 @@
 
       if (!function_exists('idn_to_utf8') || !defined('INTL_IDNA_VARIANT_UTS46')) return $url;
 
-      $url = idn_to_utf8($url, INTL_IDNA_VARIANT_UTS46);
+      $url = idn_to_utf8($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
 
       return language::convert_characters($url, 'UTF-8');
     }

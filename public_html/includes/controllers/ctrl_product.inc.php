@@ -6,7 +6,7 @@
     public function __construct($product_id=null) {
 
       if (!empty($product_id)) {
-        $this->load((int)$product_id);
+        $this->load($product_id);
       } else {
         $this->reset();
       }
@@ -48,6 +48,8 @@
 
     public function load($product_id) {
 
+      if (!preg_match('#^[0-9]+$#', $product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
+
       $this->reset();
 
     // Product
@@ -60,7 +62,7 @@
       if ($product = database::fetch($products_query)) {
         $this->data = array_replace($this->data, array_intersect_key($product, $this->data));
       } else {
-        trigger_error('Could not find product (ID: '. (int)$product_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find product (ID: '. (int)$product_id .') in database.');
       }
 
       foreach ($product as $key => $value) {
@@ -205,7 +207,7 @@
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",
         purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
-        tax_class_id = '". database::input($this->data['tax_class_id']) ."',
+        tax_class_id = ". (int)$this->data['tax_class_id'] .",
         code = '". database::input($this->data['code']) ."',
         sku = '". database::input($this->data['sku']) ."',
         mpn = '". database::input($this->data['mpn']) ."',
@@ -217,8 +219,8 @@
         dim_class = '". database::input($this->data['dim_class']) ."',
         weight = ". (float)$this->data['weight'] .",
         weight_class = '". database::input($this->data['weight_class']) ."',
-        date_valid_from = ". (empty($this->data['date_valid_from']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
-        date_valid_to = ". (empty($this->data['date_valid_to']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
+        date_valid_from = '". database::input($this->data['date_valid_from']) ."',
+        date_valid_to = '". database::input($this->data['date_valid_to']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

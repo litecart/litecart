@@ -15,7 +15,7 @@
 // AJAX Search
   var timer_ajax_search = null;
   var xhr_search = null;
-  $('#search input[name="query"]').on('change input', function(){
+  $('#search input[name="query"]').on('input', function(){
     if (xhr_search) xhr_search.abort();
 
     if ($(this).val() != '') {
@@ -51,12 +51,11 @@
                 $.each(group.results, function(i, result){
                   $('#search .results ul[data-group="'+ group.name +'"]').append(
                     '<li class="result">' +
-                    '  <a class="list-group-item" href="'+ result.url +'">' +
+                    '  <a class="list-group-item" href="'+ result.url +'" style="border-left: 3px solid '+ group.theme.color +';">' +
                     '    <small class="id pull-right">#'+ result.id +'</small>' +
                     '    <div class="title">'+ result.title +'</div>' +
                     '    <div class="description"><small>'+ result.description +'</small></div>' +
                     '  </a>' +
-                    '  <hr style="border-bottom: 3px '+ group.theme.color +' solid;" />' +
                     '</li>'
                   );
                 });
@@ -75,7 +74,7 @@
     }
   });
 
-// Bootstrap Comaptible (data-toggle="tab")
+// Bootstrap Compatible (data-toggle="tab")
   $('body').on('click', '[data-toggle="tab"]', function(e) {
     e.preventDefault();
     $(this).closest('ul').find('li').removeClass('active');
@@ -94,7 +93,7 @@
     $('a[href="' + document.location.hash + '"]').click();
   }
 
-// Bootstrap Comaptible (data-toggle="buttons")
+// Bootstrap Compatible (data-toggle="buttons")
   $('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');
@@ -115,10 +114,11 @@
     return false;
   });
 
-  $('.data-table tbody tr').click(function(e) {
+  $('.data-table tbody').on('click', 'tr', function(e) {
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;
+    if ($(e.target).is('.fa-star,.fa-star-o')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 

@@ -1,4 +1,4 @@
-<div id="box-account" class="box">
+<section id="box-account" class="box">
 
   <h2 class="title"><?php echo language::translate('title_account', 'Account'); ?></h2>
 
@@ -8,4 +8,4 @@
     <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
   </ul>
 
-</div>
+</section>

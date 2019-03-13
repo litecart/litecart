@@ -6,7 +6,7 @@
     public function __construct($quantity_unit_id=null) {
 
       if ($quantity_unit_id !== null) {
-        $this->load((int)$quantity_unit_id);
+        $this->load($quantity_unit_id);
       } else {
         $this->reset();
       }
@@ -39,6 +39,8 @@
 
     public function load($quantity_unit_id) {
 
+      if (!preg_match('#^[0-9]+$#', $quantity_unit_id)) throw new Exception('Invalid quantity unit (ID: '. $quantity_unit_id .')');
+
       $this->reset();
 
       $quantity_unit_query = database::query(
@@ -50,7 +52,7 @@
       if ($quantity_unit = database::fetch($quantity_unit_query)) {
         $this->data = array_replace($this->data, array_intersect_key($quantity_unit, $this->data));
       } else {
-        trigger_error('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.');
       }
 
       $quantity_unit_info_query = database::query(
@@ -124,8 +126,7 @@
     public function delete() {
 
       if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where quantity_unit_id = ". (int)$this->data['id'] ." limit 1;"))) {
-        trigger_error('Cannot delete the quantity unit because there are products using it', E_USER_ERROR);
-        return;
+        throw new Exception('Cannot delete the quantity unit because there are products using it');
       }
 
       database::query(

@@ -48,7 +48,7 @@
       } else if (extension_loaded('gd')) {
         $this->_library = 'gd';
       } else {
-        trigger_error('No image processing library available', E_USER_ERROR);
+        throw new Exception('No image processing library available');
       }
 
       if (!empty($file)) $this->set($file);
@@ -217,7 +217,7 @@
               return false;
             }
           } catch (Exception $e) {
-            trigger_error($e->getMessage() .' {$width}x{$height} ($this->_src)', E_USER_WARNING);
+            trigger_error($e->getMessage() ." {$width}x{$height} ($this->_src)", E_USER_WARNING);
             return false;
           }
 
@@ -550,7 +550,8 @@
             $code = ($width < $original_x || $height < $original_y) ? 1 : 0;
           } while (0);
 
-          $padding = $width * 0.1; // Set padding size in px
+          //$padding = $width * 0.1; // Set padding size in percentage
+          $padding = 50; // Set padding size in px
 
           $_image = ImageCreateTrueColor($width + ($padding * 2), $height + ($padding * 2));
           ImageAlphaBlending($_image, true);
