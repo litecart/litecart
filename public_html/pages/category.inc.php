@@ -63,7 +63,9 @@
       $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, 'CROP');
     }
 
-    $_page->snippets['image'] = $_page->snippets['images'][0];
+    if (!empty($_page->snippets['images'])) {
+      $_page->snippets['image'] = $_page->snippets['images'][0];
+    }
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
