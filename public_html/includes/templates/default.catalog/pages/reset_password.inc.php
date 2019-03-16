@@ -34,6 +34,13 @@
       </div>
       <?php } ?>
 
+      <?php if (settings::get('captcha_enabled')) { ?>
+      <div class="form-group">
+        <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+        <?php echo functions::form_draw_captcha_field('captcha', 'reset_password', 'required="required"'); ?>
+      </div>
+      <?php } ?>
+
       <?php echo functions::form_draw_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
 
     <?php echo functions::form_draw_form_end(); ?>

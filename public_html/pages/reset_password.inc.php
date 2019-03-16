@@ -40,6 +40,11 @@
         }
       }
 
+      if (settings::get('captcha_enabled')) {
+        $captcha = functions::captcha_get('reset_password');
+        if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+      }
+
     // Process
 
       if (empty($_REQUEST['reset_token'])) {
