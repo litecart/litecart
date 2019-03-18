@@ -42,7 +42,7 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($option_group->data['id'])) throw new Exception(language::translate('error_must_provide_product_group', 'You must provide a product group'));
+      if (empty($product_group->data['id'])) throw new Exception(language::translate('error_must_provide_product_group', 'You must provide a product group'));
 
       $product_group->delete();
 
