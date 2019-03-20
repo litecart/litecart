@@ -316,7 +316,7 @@
 
   function catalog_purchase_count_adjust($product_id, $quantity) {
 
-    $products_options_query = database::query(
+    database::query(
       "update ". DB_TABLE_PRODUCTS ."
       set purchases = purchases + ". (int)$quantity ."
       where id = ". (int)$product_id ."

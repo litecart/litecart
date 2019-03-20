@@ -30,7 +30,7 @@
 
       while($module = database::fetch($modules_query)){
 
-        if (!is_file($directory . $module['module_id'] .'.inc.php')) {
+        if (!is_file(vmod::check($directory . $module['module_id'] .'.inc.php'))) {
 
         // Uninstall orphan modules
           //database::query(

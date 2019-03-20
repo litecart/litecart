@@ -213,7 +213,7 @@
                 return $this->_image->thumbnailImage($width, $height, false); // Stretch
 
             default:
-              trigger_error('Unknown clipping method ($clipping)', E_USER_WARNING);
+              trigger_error("Unknown clipping method ($clipping)", E_USER_WARNING);
               return false;
             }
           } catch (Exception $e) {

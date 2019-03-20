@@ -39,7 +39,7 @@
 
     $listing_category = new view();
 
-    list($width, $height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
+    list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
     $listing_category->snippets = array(
       'category_id' => $category['id'],

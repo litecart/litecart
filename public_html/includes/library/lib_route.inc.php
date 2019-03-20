@@ -83,7 +83,7 @@
       }
 
     // Forward to rewritten URL (if necessary)
-      if (!empty(self::$route['page']) && is_file(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . self::$route['page'] .'.inc.php')) {
+      if (!empty(self::$route['page']) && is_file(vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . self::$route['page'] .'.inc.php'))) {
 
         $rewritten_url = document::ilink(self::$route['page'], $_GET);
 

@@ -198,7 +198,7 @@ input[name="development_type"] + div {
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 15px;
   width: 250px;
-  height: 125px;
+  height: 145px;
   text-align: center;
   cursor: pointer;
 }
