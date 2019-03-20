@@ -225,7 +225,7 @@
       if (empty($this->data['id'])) {
 
         if (empty($this->data['public_key'])) {
-          $this->data['public_key'] = md5($order->data['id'] . $order->data['uid'] . $order->data['customer']['email'] . $order->data['date_created']. rand(1, 65535));
+          $this->data['public_key'] = md5($this->data['id'] . $this->data['uid'] . $this->data['customer']['email'] . $this->data['date_created']. rand(1, 65535));
         }
 
         database::query(
