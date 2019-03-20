@@ -110,10 +110,13 @@
       $order->save();
 
       if (!empty($_POST['email_order_copy'])) {
-        $order->email_order_copy($order->data['customer']['email']);
-        foreach (explode(';', settings::get('email_order_copy')) as $email) {
-          $order->email_order_copy($email, settings::get('store_language_code'));
+
+        $bccs = array();
+        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
+          $bccs[] = $email;
         }
+
+        $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['id']);
       }
 
       if (!empty($_GET['redirect_url'])) {
