@@ -249,9 +249,11 @@
             case 'input':
             case 'textarea':
 
+              $value = array_values($option['values'])[0];
               $matched_value = $options[$matched_group];
+
               if (!empty($matched_value)) {
-                $item['extras'] += $value['price_adjust'];
+                $item['extras'] += $option['price_adjust'];
               }
               break;
 
