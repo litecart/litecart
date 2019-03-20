@@ -78,6 +78,7 @@
         'order_total' => array(),
         'comments' => array(),
         'subtotal' => array('amount' => 0, 'tax' => 0),
+        'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
       ));
     }
 
@@ -275,6 +276,7 @@
         currency_value = ". (float)$this->data['currency_value'] .",
         weight_total = ". (float)$this->data['weight_total'] .",
         weight_class = '". database::input($this->data['weight_class']) ."',
+        display_prices_including_tax = ". (int)$this->data['display_prices_including_tax'] .",
         payment_due = ". (float)$this->data['payment_due'] .",
         tax_total = ". (float)$this->data['tax_total'] .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'

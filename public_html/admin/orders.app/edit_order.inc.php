@@ -63,6 +63,7 @@
         'shipping_tracking_url',
         'payment_option',
         'payment_transaction_id',
+        'display_prices_including_tax',
         'comments',
       );
 
@@ -324,9 +325,24 @@
           <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
         </div>
 
+<!--
+        <div class="form-group col-md-3">
+          <label><?php echo language::translate('title_user_agent', 'User Agent'); ?></label>
+          <div class="form-control-static"><?php echo $order->data['user_agent']; ?></div>
+        </div>
+-->
+
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_reference', 'Reference'); ?></label>
           <?php echo functions::form_draw_text_field('reference', true); ?>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
+          <div class="btn-group btn-block" data-toggle="buttons">
+            <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked="checked"' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
+            <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked="checked"' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+          </div>
         </div>
       </div>
 

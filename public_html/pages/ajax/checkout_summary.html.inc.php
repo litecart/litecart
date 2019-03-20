@@ -38,6 +38,7 @@
   $order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
   $order->data['language_code'] = language::$selected['code'];
   $order->data['customer'] = customer::$data;
+  $order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
 
   foreach (cart::$items as $item) {
     $order->add_item($item);
