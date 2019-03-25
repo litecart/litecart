@@ -105,7 +105,7 @@
     ),
   );
 
-  list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
+  list($width, $height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
 
   $_page->snippets = array(
     'product_id' => $product->id,

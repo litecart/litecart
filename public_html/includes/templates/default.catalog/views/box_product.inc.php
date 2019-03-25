@@ -1,7 +1,7 @@
 <article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
   <div class="row">
-    <div class="col-sm-6 col-md-4">
+    <div class="col-sm-4 col-md-6">
       <div class="images row half-gutter">
 
         <div class="col-xs-12">
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="col-sm-6 col-md-4">
+    <div class="col-sm-8 col-md-6">
       <h1 class="title"><?php echo $name; ?></h1>
 
       <?php if ($short_description) { ?>
@@ -42,25 +42,6 @@
         </a>
       </div>
       <?php } ?>
-    </div>
-
-    <div class="col-sm-6 col-md-4">
-
-      <div class="price-wrapper">
-        <?php if ($campaign_price) { ?>
-        <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
-        <?php } else { ?>
-        <span class="price"><?php echo currency::format($regular_price); ?></span>
-        <?php } ?>
-      </div>
-
-      <div class="tax" style="margin: 0 0 1em 0;">
-       <?php if ($tax_rates) { ?>
-        <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
-       <?php } else { ?>
-        <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
-       <?php } ?>
-      </div>
 
       <?php if ($cheapest_shipping_fee !== null) { ?>
       <div class="cheapest-shipping" style="margin: 1em 0;">
@@ -126,15 +107,21 @@
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
-        <?php if ($options) { ?>
-          <?php foreach ($options as $option) { ?>
-          <div class="form-group">
-            <label><?php echo $option['name']; ?></label>
-            <?php echo $option['description'] ? '<div>' . $option['description'] . '</div>' : ''; ?>
-            <?php echo $option['values']; ?>
-          </div>
+        <div class="price-wrapper">
+          <?php if ($campaign_price) { ?>
+          <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
+          <?php } else { ?>
+          <span class="price"><?php echo currency::format($regular_price); ?></span>
           <?php } ?>
-        <?php } ?>
+        </div>
+
+        <div class="tax" style="margin: 0 0 1em 0;">
+         <?php if ($tax_rates) { ?>
+          <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
+         <?php } else { ?>
+          <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
+         <?php } ?>
+        </div>
 
         <?php if (!$catalog_only_mode) { ?>
         <div class="form-group">
