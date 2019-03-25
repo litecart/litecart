@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{snippet:language}">
+<html lang="{snippet:language}" dir="{snippet:text_direction}">
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
