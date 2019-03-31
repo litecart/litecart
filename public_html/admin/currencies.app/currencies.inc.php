@@ -7,13 +7,11 @@
       foreach (array_keys($_POST['currencies']) as $currency_code) {
 
         if (!empty($_POST['disable']) && $currency_code == settings::get('default_currency_code')) {
-          notices::add('errors', language::translate('error_cannot_disable_default_currency', 'You cannot disable the default currency'));
-          continue;
+          throw new Exception(language::translate('error_cannot_disable_default_currency', 'You cannot disable the default currency'));
         }
 
         if (!empty($_POST['disable']) && $currency_code == settings::get('store_currency_code')) {
-          notices::add('errors', language::translate('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
-          continue;
+          throw new Exception(language::translate('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
         }
 
         $currency = new ctrl_currency($_POST['currencies'][$currency_code]);

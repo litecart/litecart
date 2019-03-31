@@ -9,13 +9,11 @@
       foreach (array_keys($_POST['languages']) as $language_code) {
 
         if (!empty($_POST['disable']) && $language_code == settings::get('default_language_code')) {
-          notices::add('errors', language::translate('error_cannot_disable_default_language', 'You cannot disable the default language'));
-          continue;
+          throw new Exception(language::translate('error_cannot_disable_default_language', 'You cannot disable the default language'));
         }
 
         if (!empty($_POST['disable']) && $language_code == settings::get('store_language_code')) {
-          notices::add('errors', language::translate('error_cannot_disable_store_language', 'You cannot disable the store language'));
-          continue;
+          throw new Exception(language::translate('error_cannot_disable_store_language', 'You cannot disable the store language'));
         }
 
         $language = new ctrl_language($_POST['languages'][$language_code]);

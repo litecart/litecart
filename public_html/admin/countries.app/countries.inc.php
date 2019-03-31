@@ -8,13 +8,11 @@
       foreach ($_POST['countries'] as $country_code) {
 
         if (!empty($_POST['disable']) && $country_code == settings::get('default_country_code')) {
-          notices::add('errors', language::translate('error_cannot_disable_default_country', 'You cannot disable the default country'));
-          continue;
+          throw new Exception(language::translate('error_cannot_disable_default_country', 'You cannot disable the default country'));
         }
 
         if (!empty($_POST['disable']) && $country_code == settings::get('store_country_code')) {
-          notices::add('errors', language::translate('error_cannot_disable_store_country', 'You cannot disable the store country'));
-          continue;
+          throw new Exception(language::translate('error_cannot_disable_store_country', 'You cannot disable the store country'));
         }
 
         $country = new ctrl_country($country_code);
