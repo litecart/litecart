@@ -64,6 +64,7 @@
         'payment_option',
         'payment_transaction_id',
         'display_prices_including_tax',
+        'reference',
         'comments',
       );
 
