@@ -21,12 +21,6 @@
 
       if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
 
-      if (!empty($_POST['remove_image']) && !empty($manufacturer->data['image'])) {
-        functions::image_delete_cache(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image']);
-        if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->data['image']);
-        $manufacturer->data['image'] = '';
-      }
-
       $fields = array(
         'status',
         'featured',
@@ -46,6 +40,8 @@
       }
 
       $manufacturer->save();
+
+      if (!empty($_POST['delete_image'])) $manufacturer->delete_image();
 
       if (is_uploaded_file($_FILES['image']['tmp_name'])) {
         $manufacturer->save_image($_FILES['image']['tmp_name']);
@@ -128,7 +124,7 @@
               <?php echo functions::form_draw_file_field('image', ''); ?>
               <?php if (!empty($manufacturer->data['image'])) { ?>
               <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('remove_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></label>
+                <label><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></label>
               </div>
               <?php } ?>
             </div>
