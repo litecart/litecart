@@ -319,7 +319,7 @@ input[name="development_type"]:checked + div {
     <h2>System Requirements</h2>
 
     <ul class="list-unstyled">
-      <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
+      <li>PHP 5.4+ <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
         <ul>
           <li>Settings
             <ul>
