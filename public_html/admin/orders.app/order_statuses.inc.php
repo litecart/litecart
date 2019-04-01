@@ -1,4 +1,6 @@
 <?php
+  breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'));
+
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 ?>
 <ul class="list-inline pull-right">

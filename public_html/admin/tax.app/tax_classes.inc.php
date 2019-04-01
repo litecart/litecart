@@ -1,3 +1,8 @@
+<?php
+
+  breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'));
+
+?>
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_tax_class'), true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
 </ul>

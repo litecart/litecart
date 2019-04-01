@@ -1,4 +1,7 @@
 <?php
+
+  breadcrumbs::add(language::translate('title_newsletter', 'Newsletter'));
+
   if (!isset($_GET['template'])) $_GET['template'] = 'raw';
 ?>
 <style>

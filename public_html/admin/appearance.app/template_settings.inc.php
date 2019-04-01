@@ -1,5 +1,7 @@
 <?php
 
+  breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
+
 // Load template settings structure
   $template_config = include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
   if (!is_array($template_config)) include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility

@@ -1,4 +1,6 @@
 <?php
+  breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));
+
   $defined_tables = array();
   foreach (get_defined_constants() as $constant) {
     if (preg_match('#^`'. preg_quote(DB_DATABASE, '#') .'`\.`(.*)`$#', $constant, $matches)) {

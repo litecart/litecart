@@ -1,4 +1,7 @@
 <?php
+
+  breadcrumbs::add(language::translate('title_most_sold_products', 'Most Sold Products'));
+
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 

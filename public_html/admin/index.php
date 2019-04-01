@@ -5,7 +5,8 @@
 
   document::$template = settings::get('store_template_admin');
 
-  breadcrumbs::add(language::translate('title_admin_panel', 'Admin Panel'), WS_DIR_ADMIN);
+  breadcrumbs::reset();
+  breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
 
 // Build apps list menu
     $box_apps_menu = new view();
@@ -101,7 +102,7 @@
 
         if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
 
-        breadcrumbs::add($app_config['name'], $app_config['default']);
+        breadcrumbs::add($app_config['name'], document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $app_config['default'])));
 
         $_page = new view();
         $_page->snippets = array(

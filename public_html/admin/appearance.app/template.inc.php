@@ -1,5 +1,7 @@
 <?php
 
+  breadcrumbs::add(language::translate('title_template', 'Template'));
+
   if (isset($_POST['save'])) {
 
     try {
