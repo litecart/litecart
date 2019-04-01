@@ -1026,7 +1026,7 @@
 
   $('#customer-details button[name="get_address"]').click(function() {
     $.ajax({
-      url: '<?php echo document::link('', array('doc' => 'get_address.json'), array('app')); ?>',
+      url: '<?php echo document::link('', array('app' => 'customers', 'doc' => 'get_address.json')); ?>',
       type: 'post',
       data: 'customer_id=' + $('*[name="customer[id]"]').val() + '&token=<?php echo form::session_post_token(); ?>',
       cache: true,
