@@ -85,7 +85,7 @@
           'settings' => self::$settings,
         ),
       );
-      self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, null) .";</script>";
+      self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, JSON_UNESCAPED_SLASHES) .";</script>";
     }
 
     //public static function after_capture() {
