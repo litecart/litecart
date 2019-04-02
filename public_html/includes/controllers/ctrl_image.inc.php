@@ -69,19 +69,13 @@
       if (!empty($file)) $this->_src = $file;
 
       if (empty($this->_src)) {
-        trigger_error('No source image file set', E_USER_WARNING);
-        return false;
+        throw new Exception('No source image file set');
       }
 
       switch($this->_library) {
         case 'imagick':
-          try {
             $this->_image = new imagick($this->_src);
             return true;
-          } catch (Exception $e) {
-            trigger_error($e->getMessage() .' ('.$this->_src.')', E_USER_WARNING);
-            return false;
-          }
 
         case 'gd':
           switch(strtolower(pathinfo($this->_src, PATHINFO_EXTENSION))) {
@@ -120,12 +114,7 @@
 
         case 'imagick':
 
-          try {
-            return $this->_image->readImageBlob($binary);
-          } catch (Exception $e) {
-            trigger_error($e->getMessage() . ' ('.$this->_src.')', E_USER_WARNING);
-            return false;
-          }
+          return $this->_image->readImageBlob($binary);
 
         case 'gd':
 
@@ -143,8 +132,7 @@
       if ($width == 0 && $height == 0) return;
 
       if ($this->width() == 0 || $this->height() == 0) {
-        trigger_error('Error getting source image dimensions ('. $this->_src .').', E_USER_WARNING);
-        return false;
+        throw new Exception('Error getting source image dimensions ('. $this->_src .').');
       }
 
     // Convert percentage dimensions to pixels
@@ -165,69 +153,60 @@
           if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
-            trigger_error('Not a valid image object', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
-          try {
-            $this->_image->setImageBackgroundColor('rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
+          $this->_image->setImageBackgroundColor('rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
 
-            switch(strtoupper($clipping)) {
-              case 'FIT':
-                //$result = $this->_image->scaleImage($width, $height, true);
-                //return $this->_image->adaptiveResizeImage($width, $height, true);
-                return $this->_image->thumbnailImage($width, $height, true);
+          switch(strtoupper($clipping)) {
+            case 'FIT':
+              //$result = $this->_image->scaleImage($width, $height, true);
+              //return $this->_image->adaptiveResizeImage($width, $height, true);
+              return $this->_image->thumbnailImage($width, $height, true);
 
-              case 'FIT_ONLY_BIGGER':
-                if ($this->width() <= $width && $this->height() <= $height) return true;
+            case 'FIT_ONLY_BIGGER':
+              if ($this->width() <= $width && $this->height() <= $height) return true;
+              return $this->_image->thumbnailImage($width, $height, true);
 
-                return $this->_image->thumbnailImage($width, $height, true);
+            case 'FIT_USE_WHITESPACING':
+              return $this->_image->thumbnailImage($width, $height, true, true);
 
-              case 'FIT_USE_WHITESPACING':
-                return $this->_image->thumbnailImage($width, $height, true, true);
+            case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
+              if ($this->width() <= $width && $this->height() <= $height) {
+                $_newimage = new imagick();
+                $_newimage->newImage($width, $height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
+                $offset_x = round(($width - $this->width()) / 2);
+                $offset_y = round(($height - $this->height()) / 2);
+                $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
+                $this->_image = $_newimage;
+                return $result;
+              }
 
-              case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
-                if ($this->width() <= $width && $this->height() <= $height) {
-                  $_newimage = new imagick();
-                  $_newimage->newImage($width, $height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
-                  $offset_x = round(($width - $this->width()) / 2);
-                  $offset_y = round(($height - $this->height()) / 2);
-                  $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
-                  $this->_image = $_newimage;
-                  return $result;
-                }
+              return $this->_image->thumbnailImage($width, $height, true, true);
 
-                return $this->_image->thumbnailImage($width, $height, true, true);
+            case 'CROP':
 
-              case 'CROP':
+              return $this->_image->cropThumbnailImage($width, $height);
 
-                return $this->_image->cropThumbnailImage($width, $height);
+            case 'CROP_ONLY_BIGGER':
+              if ($this->width() <= $width && $this->height() <= $height) return true;
+              return $this->_image->cropThumbnailImage($width, $height);
 
-              case 'CROP_ONLY_BIGGER':
-                if ($this->width() <= $width && $this->height() <= $height) return true;
-                return $this->_image->cropThumbnailImage($width, $height);
-
-              case 'STRETCH':
-                //return $this->_image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1); // Stretch
-                //return $this->_image->adaptiveResizeImage($width, $height, false); // Stretch
-                return $this->_image->thumbnailImage($width, $height, false); // Stretch
+            case 'STRETCH':
+              //return $this->_image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1); // Stretch
+              //return $this->_image->adaptiveResizeImage($width, $height, false); // Stretch
+              return $this->_image->thumbnailImage($width, $height, false); // Stretch
 
             default:
-              trigger_error("Unknown clipping method ($clipping)", E_USER_WARNING);
-              return false;
-            }
-          } catch (Exception $e) {
-            trigger_error($e->getMessage() ." {$width}x{$height} ($this->_src)", E_USER_WARNING);
-            return false;
-          }
+              throw new Exception('Unknown clipping method ($clipping)');
+        }
 
         case 'gd':
 
           if (!is_resource($this->_image)) $this->load();
 
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image resource');
           }
 
         // Calculate new size
@@ -349,8 +328,7 @@
               break;
 
             default:
-              trigger_error('Unknown clipping method', E_USER_WARNING);
-              return false;
+              throw new Exception('Unknown clipping method');
           }
 
           $this->_width = $destination_width;
@@ -372,8 +350,7 @@
           if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
-            trigger_error('Not a valid image object', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
           switch($filter) {
@@ -399,8 +376,7 @@
               return $this->_image->sharpenImage(2, 3);
 
             default:
-              trigger_error('Unknown filter effect for image', E_USER_WARNING);
-              return false;
+              throw new Exception('Unknown filter effect for image');
           }
 
         case 'gd':
@@ -408,8 +384,7 @@
           if (!is_resource($this->_image)) $this->load();
 
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image resource');
           }
 
           switch($filter) {
@@ -451,8 +426,7 @@
               return true;
 
             default:
-              trigger_error('Unknown filter effect for image', E_USER_WARNING);
-              return false;
+              throw new Exception('Unknown filter effect for image');
           }
       }
     }
@@ -469,23 +443,21 @@
           if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
-            trigger_error('Not a valid image object', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
-          try {
-            return $this->_image->trimImage(0);
-          } catch (Exception $e) {
-            trigger_error($e->getMessage() . ' ('.$this->_src.')', E_USER_WARNING);
-          }
+          if (!$this->_image->trimImage(0)) return false;
+
+          $this->resample($this->width() * 1.15, $this->height() * 1.15, 'FIT_ONLY_BIGGER_USE_WHITESPACING');  // Add 15% padding
+
+          return true;
 
         case 'gd':
 
           if (!is_resource($this->_image)) $this->load();
 
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image resource');
           }
 
           //if (function_exists('imagecropauto')) { // PHP 5.5
@@ -550,8 +522,8 @@
             $code = ($width < $original_x || $height < $original_y) ? 1 : 0;
           } while (0);
 
-          //$padding = $width * 0.1; // Set padding size in percentage
-          $padding = 50; // Set padding size in px
+          //$padding = 50; // Set padding size in px
+          $padding = $width * 0.15; // Set padding size in percentage
 
           $_image = ImageCreateTrueColor($width + ($padding * 2), $height + ($padding * 2));
           ImageAlphaBlending($_image, true);
@@ -579,8 +551,7 @@
           if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
-            trigger_error('Not a valid image object', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
           $_watermark = new imagick();
@@ -620,16 +591,14 @@
           if (!is_resource($this->_image)) $this->load();
 
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image resource');
           }
 
           $_watermark = new ctrl_image($watermark, $this->_library);
 
         // Return false on no image
           if (!$_watermark->type()) {
-            trigger_error('Watermark file is not a valid image: '. $watermark, E_USER_WARNING);
-            return false;
+            throw new Exception('Watermark file is not a valid image ('. $watermark .')');
           }
 
         // Load watermark
@@ -637,7 +606,7 @@
 
         // Check if watermark is a PNG file
           if ($_watermark->type() != 'png') {
-            trigger_error('Watermark file is not a PNG image: '. $watermark, E_USER_NOTICE);
+            trigger_error('Watermark file is not a PNG image ('. $watermark .')', E_USER_NOTICE);
           }
 
         // Shrink a large watermark
@@ -684,25 +653,21 @@
     public function write($destination, $type=null, $quality=90, $interlaced=false) {
 
       if (is_file($destination)) {
-        trigger_error('Destination already exists: '. $destination, E_USER_WARNING);
-        return false;
+        throw new Exception('Destination already exists ('. $destination .')');
       }
 
       if (is_dir($destination)) {
-        trigger_error('Destination is a folder: '. $destination, E_USER_WARNING);
-        return false;
+        throw new Exception('Destination is a folder: ('. $destination .')');
       }
 
       if (!is_writable(pathinfo($destination, PATHINFO_DIRNAME))) {
-        trigger_error('Destination is not writable: '. $destination .'.', E_USER_WARNING);
-        return false;
+        throw new Exception('Destination is not writable ('. $destination .')');
       }
 
       if (empty($type)) $type = pathinfo($destination, PATHINFO_EXTENSION);
 
       if (!in_array(strtolower($type), array('gif', 'jpg', 'png'))) {
-        trigger_error('Unknown output format.', E_USER_WARNING);
-        return false;
+        throw new Exception('Unknown output format');
       }
 
       switch($this->_library) {
@@ -712,8 +677,7 @@
           if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
-            trigger_error('Not a valid image object', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
           switch(strtolower($type)) {
@@ -736,8 +700,7 @@
           if (!is_resource($this->_image)) $this->load();
 
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image resource');
           }
 
           if ($interlaced) ImageInterlace($this->_image, true);
@@ -774,9 +737,8 @@
               return $result;
 
             default:
-              trigger_error('Unknown output format', E_USER_WARNING);
               ImageDestroy($this->_image);
-              return false;
+              throw new Exception('Unknown output format');
           }
       }
     }
@@ -789,26 +751,19 @@
           if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
-            trigger_error('Not a valid image object', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
-          try {
-            $this->_image->setImageFormat($type);
-            $this->_image->setImageCompressionQuality($quality);
-            return $this->_image->getImageBlob();
-          } catch (Exception $e) {
-            trigger_error($e->getMessage() . ' ($this->_src)', E_USER_WARNING);
-            return false;
-          }
+          $this->_image->setImageFormat($type);
+          $this->_image->setImageCompressionQuality($quality);
+          return $this->_image->getImageBlob();
 
         case 'gd':
 
           if (!is_resource($this->_image)) $this->load();
 
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image resource');
           }
 
           switch(strtolower($type)) {
@@ -843,9 +798,8 @@
               return $result;
 
             default:
-              trigger_error('Unknown output format', E_USER_WARNING);
               ImageDestroy($this->_image);
-              return false;
+              throw new Exception('Unknown output format');
           }
       }
     }
@@ -854,40 +808,26 @@
 
       if (!empty($this->_width)) return $this->_width;
 
-      if (empty($this->_image) && extension_loaded('gd')) {
-        list($this->_width, $this->_height) = getimagesize($this->_src);
-
-        return $this->_width;
-      }
-
       switch($this->_library) {
         case 'imagick':
 
-          if (empty($this->_src)) {
-            trigger_error('Not a valid image source set', E_USER_WARNING);
-            return false;
+          if (empty($this->_image)) $this->load();
+
+          if (empty($this->_image)) {
+            throw new Exception('Not a valid image object');
           }
 
-          try {
-            $this->_image->pingImage($this->_src);
-            $this->_width = $this->_image->getImageWidth();
-            return $this->_width;
-          } catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-            return false;
-          }
+          $this->_width = $this->_image->getImageWidth();
+          return $this->_width;
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
-
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            list($this->_width, $this->_height) = getimagesize($this->_src);
+            return $this->_width;
           }
 
           $this->_width = ImageSX($this->_image);
-
           return $this->_width;
       }
     }
@@ -896,36 +836,25 @@
 
       if (!empty($this->_height)) return $this->_height;
 
-      if (empty($this->_image) && extension_loaded('gd')) {
-        list($this->_width, $this->_height) = getimagesize($this->_src);
-        return $this->_height;
-      }
-
       switch($this->_library) {
         case 'imagick':
 
+          if (empty($this->_src)) $this->load();
+
           if (empty($this->_src)) {
-            trigger_error('Not a valid image source set', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
-          try {
-            $this->_image->pingImage($this->_src);
-            $this->_height = $this->_image->getImageHeight();
-            return $this->_height;
-          } catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-            return false;
-          }
+          $this->_height = $this->_image->getImageHeight();
+          return $this->_height;
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
-
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            list($this->_width, $this->_height) = getimagesize($this->_src);
+            return $this->_height;
           }
+
           $this->_height = ImageSY($this->_image);
           return $this->_height;
       }
@@ -964,24 +893,17 @@
           if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
-            trigger_error('Not a valid image object', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image object');
           }
 
-          try {
-            return $this->_image->getImageFormat();
-          } catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-            return false;
-          }
+          return $this->_image->getImageFormat();
 
         case 'gd':
 
           if (is_resource($this->_image)) $this->load();
 
           if (!is_resource($this->_image)) {
-            trigger_error('Not a valid image resource', E_USER_WARNING);
-            return false;
+            throw new Exception('Not a valid image resource');
           }
 
           return $this->_type;
