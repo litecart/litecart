@@ -147,13 +147,13 @@ module.exports = function(grunt) {
       javascripts: {
         files: [
           'public_html/ext/featherlight/featherlight.js',
-          'public_html/includes/templates/*/js/app.js',
+          'public_html/includes/templates/**/js/*.js',
         ],
         tasks: ['uglify']
       },
       sass: {
         files: [
-          'public_html/ext/trumbowyg/ui/trumbowyg.scss'
+          'public_html/ext/trumbowyg/ui/trumbowyg.scss',
         ],
         tasks: ['sass']
       },

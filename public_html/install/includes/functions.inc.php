@@ -60,7 +60,7 @@
       $result = file_put_contents($file, $contents);
     }
 
-    return $result;
+    return !empty($result) ? true : false;
   }
 
 // Function to rename file or folder

@@ -56,7 +56,7 @@
     );
 
     $products_query = functions::catalog_products_query(array(
-      'manufacturer_id' => $manufacturer->id,
+      'manufacturers' => array($manufacturer->id),
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ));
