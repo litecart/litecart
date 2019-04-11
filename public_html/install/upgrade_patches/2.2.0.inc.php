@@ -138,8 +138,6 @@
     array('table' => DB_TABLE_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'),
     array('table' => DB_TABLE_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'),
     array('table' => DB_TABLE_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'),
-    array('table' => DB_TABLE_PREFIX.'product_groups_info',        'index' => 'product_group_info',       'columns' => '`product_group_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'product_groups_values_info', 'index' => 'product_group_value_info', 'columns' => '`product_group_value_id`, `language_code`'),
     array('table' => DB_TABLE_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'),
     array('table' => DB_TABLE_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'),
     array('table' => DB_TABLE_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'),

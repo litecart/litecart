@@ -72,7 +72,6 @@
     if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
     if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
     if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
-    if (!empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
     if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
@@ -134,7 +133,7 @@
       "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
 
       from (
-        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
         from ". DB_TABLE_PRODUCTS ." p
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
         left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
@@ -143,7 +142,6 @@
         ". (!empty($filter['categories']) ? "and ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
         ". (!empty($filter['manufacturers']) ? "and manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
         ". (!empty($filter['keywords']) ? "and (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
-        ". (!empty($filter['product_groups']) ? "and (find_in_set('". implode("', product_groups) or find_in_set('", database::input($filter['product_groups'])) ."', product_groups))" : null) ."
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
@@ -195,7 +193,6 @@
     if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
     if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
     if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
-    if (!empty($filter['product_groups'])) $filter['product_groups'] = array_filter($filter['product_groups']);
     if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
     $sql_where_prices = "";
@@ -214,14 +211,13 @@
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", database::input($filter['categories'])) ."', categories), 1, 0)" : false) ."
-        ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."
         ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
-        ". (!empty($filter['product_groups']) ? "+ if(find_in_set('". implode("', p.product_groups), 1, 0) + if(find_in_set('", database::input($filter['product_groups'])) ."', p.product_groups), 1, 0)" : false) ."
+        ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."
         ". (!empty($filter['products']) ? "+ if(p.id in ('". implode("', '", database::input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences
 
       from (
-        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.product_groups, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
         from ". DB_TABLE_PRODUCTS ." p
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
         left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
@@ -231,7 +227,6 @@
           ". (!empty($filter['categories']) ? "or ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
           ". (!empty($filter['manufacturers']) ? "or manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
           ". (!empty($filter['keywords']) ? "or (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
-          ". (!empty($filter['product_groups']) ? "or (find_in_set('". implode("', product_groups) or find_in_set('", database::input($filter['product_groups'])) ."', product_groups))" : null) ."
         )
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')

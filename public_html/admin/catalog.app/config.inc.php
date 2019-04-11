@@ -14,11 +14,6 @@
         'params' => array(),
       ),
       array(
-        'title' => language::translate('title_product_groups', 'Product Groups'),
-        'doc' => 'product_groups',
-        'params' => array(),
-      ),
-      array(
         'title' => language::translate('title_manufacturers', 'Manufacturers'),
         'doc' => 'manufacturers',
         'params' => array(),
@@ -53,8 +48,6 @@
       'catalog' => 'catalog.inc.php',
       'edit_product' => 'edit_product.inc.php',
       'edit_category' => 'edit_category.inc.php',
-      'product_groups' => 'product_groups.inc.php',
-      'edit_product_group' => 'edit_product_group.inc.php',
       'manufacturers' => 'manufacturers.inc.php',
       'edit_manufacturer' => 'edit_manufacturer.inc.php',
       'suppliers' => 'suppliers.inc.php',

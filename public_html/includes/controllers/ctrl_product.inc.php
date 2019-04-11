@@ -37,7 +37,6 @@
       }
 
       $this->data['categories'] = array();
-      $this->data['product_groups'] = array();
       $this->data['keywords'] = array();
       $this->data['images'] = array();
       $this->data['prices'] = array();
@@ -69,7 +68,6 @@
         $this->data[$key] = $value;
       }
 
-      $this->data['product_groups'] = !empty($this->data['product_groups']) ? explode(',', $this->data['product_groups']) : array();
       $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : array();
 
     // Categories
@@ -181,10 +179,6 @@
       $this->data['categories'] = array_filter($this->data['categories']);
       $this->data['categories'] = array_unique($this->data['categories']);
 
-      $this->data['product_groups'] = array_map('trim', $this->data['product_groups']);
-      $this->data['product_groups'] = array_filter($this->data['product_groups']);
-      $this->data['product_groups'] = array_unique($this->data['product_groups']);
-
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_filter($this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
@@ -201,7 +195,6 @@
         delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'].",
-        product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
         keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
         quantity = ". (float)$this->data['quantity'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",

@@ -33,7 +33,6 @@
       if (!isset($_POST['images'])) $_POST['images'] = array();
       if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
       if (!isset($_POST['options_stock'])) $_POST['options_stock'] = array();
-      if (!isset($_POST['product_groups'])) $_POST['product_groups'] = array();
 
       $fields = array(
         'status',
@@ -43,7 +42,6 @@
         'sold_out_status_id',
         'default_category_id',
         'categories',
-        'product_groups',
         'keywords',
         'date_valid_from',
         'date_valid_to',
@@ -202,40 +200,6 @@
           <div class="form-group">
             <label><?php echo language::translate('title_default_category', 'Default Category'); ?></label>
             <?php echo functions::form_draw_select_field('default_category_id', array(), true); ?>
-          </div>
-
-          <div class="form-group">
-            <label><?php echo language::translate('title_product_groups', 'Product Groups'); ?></label>
-            <div class="form-control" style="overflow-y: auto; max-height: 200px;">
-<?php
-  // Output product groups
-    $product_groups_query = database::query(
-      "select pg.id, pgi.name from ". DB_TABLE_PRODUCT_GROUPS ." pg
-      left join ". DB_TABLE_PRODUCT_GROUPS_INFO ." pgi on (pgi.product_group_id = pg.id and pgi.language_code = '". language::$selected['code'] ."')
-      order by pgi.name asc;"
-    );
-    if (database::num_rows($product_groups_query)) {
-      while ($product_group = database::fetch($product_groups_query)) {
-        echo '<div class="form-group">' . PHP_EOL
-           . '  <label>'. $product_group['name'] .'</label>' . PHP_EOL;
-        $product_groups_values_query = database::query(
-          "select pgv.id, pgvi.name from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." pgv
-          left join ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ." pgvi on (pgvi.product_group_value_id = pgv.id and pgvi.language_code = '". language::$selected['code'] ."')
-          where pgv.product_group_id = ". (int)$product_group['id'] ."
-          order by pgvi.name asc;"
-        );
-        while ($product_group_value = database::fetch($product_groups_values_query)) {
-          echo '  <div class="checkbox"><label>'. functions::form_draw_checkbox('product_groups[]', $product_group['id'].'-'.$product_group_value['id'], true) .' '. $product_group_value['name'] .'</label></div>' . PHP_EOL;
-        }
-        echo '</div>' . PHP_EOL;
-      }
-    } else {
-?>
-            <div><em><?php echo language::translate('description_no_existing_product_groups', 'There are no existing product groups.'); ?></em></div>
-<?php
-    }
-?>
-            </div>
           </div>
 
           <div class="form-group">

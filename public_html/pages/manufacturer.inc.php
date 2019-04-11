@@ -57,7 +57,6 @@
 
     $products_query = functions::catalog_products_query(array(
       'manufacturer_id' => $manufacturer->id,
-      'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ));

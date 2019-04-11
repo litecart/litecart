@@ -447,7 +447,6 @@ CREATE TABLE `lc_products` (
   `delivery_status_id` INT(11) NOT NULL,
   `sold_out_status_id` INT(11) NOT NULL,
   `default_category_id` INT(11) NOT NULL,
-  `product_groups` VARCHAR(128) NOT NULL,
   `keywords` VARCHAR(256) NOT NULL,
   `code` VARCHAR(32) NOT NULL,
   `sku` VARCHAR(32) NOT NULL,
@@ -486,8 +485,7 @@ CREATE TABLE `lc_products` (
   KEY `date_valid_from` (`date_valid_from`),
   KEY `date_valid_to` (`date_valid_to`),
   KEY `purchases` (`purchases`),
-  KEY `views` (`views`),
-  KEY `product_groups` (`product_groups`)
+  KEY `views` (`views`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_campaigns` (
@@ -499,46 +497,6 @@ CREATE TABLE `lc_products_campaigns` (
   `EUR` DECIMAL(11,4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_product_groups` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(1) NOT NULL,
-  `date_updated` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_product_groups_info` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_group_id` INT(11) NOT NULL,
-  `language_code` VARCHAR(2) NOT NULL,
-  `name` VARCHAR(64) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `product_group_info` (`product_group_id`, `language_code`),
-  KEY `product_group_id` (`product_group_id`),
-  KEY `language_code` (`language_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_product_groups_values` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_group_id` INT(11) NOT NULL,
-  `date_updated` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_group_id` (`product_group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_product_groups_values_info` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_group_value_id` INT(11) NOT NULL,
-  `language_code` VARCHAR(2) NOT NULL,
-  `name` VARCHAR(64) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `product_group_value_info` (`product_group_value_id`, `language_code`),
-  KEY `product_group_value_id` (`product_group_value_id`),
-  KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_images` (
