@@ -12,19 +12,6 @@
   </div>
   <?php } ?>
 
-  <?php if ($product_groups) { ?>
-  <?php foreach ($product_groups as $group) { ?>
-  <div class="box product-group" data-id="<?php echo $group['id']; ?>">
-    <h2 class="title"><?php echo $group['name']; ?></h2>
-    <div class="form-control">
-      <ul class="list-unstyled">
-        <?php foreach ($group['values'] as $value) echo '<li><label>' . functions::form_draw_checkbox('product_groups[]', $group['id'].'-'.$value['id']) .' '. $value['name'].'</label></li>' . PHP_EOL; ?>
-      </ul>
-    </div>
-  </div>
-  <?php } ?>
-  <?php } ?>
-
   <?php echo functions::form_draw_form_end(); ?>
 </section>
 

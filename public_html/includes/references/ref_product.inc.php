@@ -397,40 +397,6 @@
 
           break;
 
-        case 'product_groups':
-
-          $this->_data['product_groups'] = array();
-
-          if (count($this->product_group_ids)) {
-            foreach ($this->product_group_ids as $pair) {
-
-              list($group_id, $value_id) = explode('-', $pair);
-
-              $query = database::query(
-                "select name from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
-                where product_group_id = ". (int)$group_id ."
-                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
-
-              while ($row = database::fetch($query)) {
-                if (empty($this->_data['product_groups'][$pair]['group'])) $this->_data['product_groups'][$pair]['group'] = $row['name'];
-              }
-
-              $query = database::query(
-                "select name from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-                where product_group_value_id = ". (int)$value_id ."
-                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
-              while ($row = database::fetch($query)) {
-                if (empty($this->_data['product_groups'][$pair]['value'])) $this->_data['product_groups'][$pair]['value'] = $row['name'];
-              }
-            }
-          }
-
-          break;
-
         case 'quantity_unit':
 
           $this->_data['quantity_unit'] = array(

@@ -70,14 +70,6 @@ DROP TABLE IF EXISTS `lc_products_options_stock`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_prices`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_product_groups`;
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_product_groups_info`;
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_product_groups_values`;
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_product_groups_values_info`;
--- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_quantity_units`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_quantity_units_info`;

@@ -14,7 +14,6 @@
       'product_name' => $product->name,
       'categories' => isset($_GET['category_id']) ? array($_GET['category_id']) : array_keys($product->categories),
       'manufacturers' => array($product->manufacturer_id),
-      'product_groups' => $product->product_group_ids,
       'exclude_products' => array($product->id),
       'keywords' => $product->keywords,
       'limit' => settings::get('box_similar_products_num_items'),

@@ -351,7 +351,6 @@
 
         if (isset($row['keywords'])) $product->data['keywords'] = preg_split('#, ?#', $row['keywords']);
         if (isset($row['categories'])) $product->data['categories'] = preg_split('#, ?#', $row['categories']);
-        if (isset($row['product_groups'])) $product->data['product_groups'] = preg_split('#, ?#', $row['product_groups']);
 
       // Set price
         if (!empty($row['currency_code'])) {
@@ -443,7 +442,6 @@
           'id' => $product->id,
           'status' => $product->status,
           'categories' => implode(',', array_keys($product->categories)),
-          'product_groups' => implode(',', array_keys($product->product_groups)),
           'manufacturer_id' => $product->manufacturer_id,
           'supplier_id' => $product->supplier_id,
           'code' => $product->code,

@@ -9,7 +9,6 @@
 
     $box_filter->snippets = array(
       'manufacturers' => array(),
-      'product_groups' => array(),
     );
 
   // Manufacturers
@@ -30,60 +29,6 @@
             'id' => $manufacturer['id'],
             'name' => $manufacturer['name'],
             'href' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
-          );
-        }
-      }
-    }
-
-  // Product Groups
-    $products_query = database::query(
-      "select distinct product_groups from ". DB_TABLE_PRODUCTS .
-      (!empty($_GET['category_id']) ? " left join " . DB_TABLE_PRODUCTS_TO_CATEGORIES . " pc on pc.product_id = id " : "").
-      "where status
-      and product_groups != ''
-      ". (!empty($_GET['manufacturer_id']) ? "and manufacturer_id = ". (int)$_GET['manufacturer_id'] ."" : "") ."
-      ". (!empty($_GET['manufacturers']) ? "and (find_in_set('". implode("', manufacturer_id) or find_in_set('", database::input($_GET['manufacturers'])) ."', manufacturer_id))" : "") ."
-      ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
-      ;"
-    );
-
-    $product_groups = array();
-    while ($product = database::fetch($products_query)) {
-      $sets = explode(',', $product['product_groups']);
-      foreach ($sets as $set) {
-        list($group_id, $value_id) = explode('-', $set);
-        $product_groups[(int)$group_id][(int)$value_id] = (int)$value_id;
-      }
-    }
-
-    if (!empty($product_groups)) {
-
-      $product_groups_query = database::query(
-        "select product_group_id as id, name from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
-        where product_group_id in ('". implode("', '", array_keys($product_groups)) ."')
-        and language_code = '". database::input(language::$selected['code']) ."'
-        order by name;"
-      );
-
-      while ($group = database::fetch($product_groups_query)) {
-
-        $box_filter->snippets['product_groups'][$group['id']] = array(
-          'id' => $group['id'],
-          'name' => $group['name'],
-          'values' => array(),
-        );
-
-        $product_group_values_query = database::query(
-          "select product_group_value_id as id, name from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-          where product_group_value_id in ('". implode("', '", $product_groups[$group['id']]) ."')
-          and language_code = '". database::input(language::$selected['code']) ."'
-          order by name;"
-        );
-
-        while ($value = database::fetch($product_group_values_query)) {
-          $box_filter->snippets['product_groups'][$group['id']]['values'][$value['id']] = array(
-            'id' => $value['id'],
-            'name' => $value['name'],
           );
         }
       }
