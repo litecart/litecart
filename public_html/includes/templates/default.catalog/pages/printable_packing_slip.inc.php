@@ -112,7 +112,17 @@ h1 {
 <?php
     if (!empty($item['options'])) {
       foreach ($item['options'] as $key => $value) {
-        echo '<br />- '.$key .': '. $value;
+        if (is_array($value)) {
+          echo '<br />- '.$key .': ';
+          $useComa = false;
+          foreach ($value as $v) {
+            if ($useComa) echo ', ';
+            echo $v;
+            $useComa = true;
+          }
+        } else {
+          echo '<br />- '.$key .': '. $value;
+        }
       }
     }
 ?>
