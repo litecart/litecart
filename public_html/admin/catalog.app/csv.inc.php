@@ -364,7 +364,7 @@
             'name',
             'short_description',
             'description',
-            'attributes',
+            'datasheet',
             'head_title',
             'meta_description'
           );
@@ -453,7 +453,7 @@
           'short_description' => $product->short_description,
           'description' => $product->description,
           'keywords' => implode(',', $product->keywords),
-          'attributes' => $product->attributes,
+          'datasheet' => $product->datasheet,
           'head_title' => $product->head_title,
           'meta_description' => $product->meta_description,
           'images' => implode(';', $product->images),

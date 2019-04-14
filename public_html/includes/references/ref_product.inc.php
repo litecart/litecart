@@ -72,7 +72,7 @@
         case 'description':
         case 'head_title':
         case 'meta_description':
-        case 'attributes':
+        case 'datasheet':
 
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_INFO ."
