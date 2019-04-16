@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_modules', 'Modules'),
     'default' => 'customer',
+    'priority' => 0,
     'theme' => array(
       'color' => '#c469c5',
       'icon' => 'fa-cube',

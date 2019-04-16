@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_translations', 'Translations'),
     'default' => 'search',
+    'priority' => 0,
     'theme' => array(
       'color' => '#cc7d7d',
       'icon' => 'fa-book',

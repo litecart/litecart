@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_orders', 'Orders'),
     'default' => 'orders',
+    'priority' => 0,
     'theme' => array(
       'color' => '#9dd238',
       'icon' => 'fa-shopping-cart',

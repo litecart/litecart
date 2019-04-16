@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_reports', 'Reports'),
     'default' => 'monthly_sales',
+    'priority' => 0,
     'theme' => array(
       'color' => '#a17b54',
       'icon' => 'fa-pie-chart',

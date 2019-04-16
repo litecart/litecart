@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_customers', 'Customers'),
     'default' => 'customers',
+    'priority' => 0,
     'theme' => array(
       'color' => '#37b776',
       'icon' => 'fa-user',

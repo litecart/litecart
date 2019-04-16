@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_pages', 'Pages'),
     'default' => 'pages',
+    'priority' => 0,
     'theme' => array(
       'color' => '#adb4a3',
       'icon' => 'fa-file-text',
