@@ -1037,8 +1037,13 @@
       },
       success: function(data) {
         $.each(data, function(key, value) {
-          if (console) console.log(key +": "+ value);
-          if ($('*[name="customer['+key+']"]').length) $('*[name="customer['+key+']"]').val(data[key]).trigger('change');
+          if (key.match(/^shipping_address/)) {
+            $.each(value, function(key, value) {
+              if ($('*[name="customer[shipping_address]['+key+']"]').length) $('*[name="customer[shipping_address]['+key+']"]').val(value).trigger('change');
+            });
+          } else {
+            if ($('*[name="customer['+key+']"]').length) $('*[name="customer['+key+']"]').val(value).trigger('change');
+          }
         });
       },
     });

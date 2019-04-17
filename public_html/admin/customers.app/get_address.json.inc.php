@@ -11,6 +11,7 @@
   if (empty($customer)) exit;
 
   $json = array(
+    'email' => !empty($customer['email']) ? $customer['email'] : '',
     'tax_id' => !empty($customer['tax_id']) ? $customer['tax_id'] : '',
     'company' => !empty($customer['company']) ? $customer['company'] : '',
     'firstname' => !empty($customer['firstname']) ? $customer['firstname'] : '',
@@ -22,7 +23,19 @@
     'country_code' => !empty($customer['country_code']) ? $customer['country_code'] : '',
     'zone_code' => !empty($customer['zone_code']) ? $customer['zone_code'] : '',
     'phone' => !empty($customer['phone']) ? $customer['phone'] : '',
-    'email' => !empty($customer['email']) ? $customer['email'] : '',
+    'different_shipping_address' => !empty($customer['different_shipping_address']) ? true : false,
+    'shipping_address' => array(
+      'company' => !empty($customer['shipping_company']) ? $customer['shipping_company'] : '',
+      'firstname' => !empty($customer['shipping_firstname']) ? $customer['shipping_firstname'] : '',
+      'lastname' => !empty($customer['shipping_lastname']) ? $customer['shipping_lastname'] : '',
+      'address1' => !empty($customer['shipping_address1']) ? $customer['shipping_address1'] : '',
+      'address2' => !empty($customer['shipping_address2']) ? $customer['shipping_address2'] : '',
+      'postcode' => !empty($customer['shipping_postcode']) ? $customer['shipping_postcode'] : '',
+      'city' => !empty($customer['shipping_city']) ? $customer['shipping_city'] : '',
+      'country_code' => !empty($customer['shipping_country_code']) ? $customer['shipping_country_code'] : '',
+      'zone_code' => !empty($customer['shipping_zone_code']) ? $customer['shipping_zone_code'] : '',
+      'phone' => !empty($customer['shipping_phone']) ? $customer['shipping_phone'] : '',
+    ),
   );
 
   language::convert_characters($json, language::$selected['charset'], 'UTF-8');

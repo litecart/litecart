@@ -18,6 +18,7 @@
 
     try {
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
+      if (empty($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
 
       $fields = array(
         'code',
@@ -37,10 +38,28 @@
         'phone',
         'newsletter',
         'notes',
+        'different_shipping_address',
       );
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
+      }
+
+      $fields = array(
+        'company',
+        'firstname',
+        'lastname',
+        'address1',
+        'address2',
+        'postcode',
+        'city',
+        'country_code',
+        'zone_code',
+        'phone',
+      );
+
+      foreach ($fields as $field) {
+        $customer->data['shipping_address'][$field] = !empty($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
       }
 
       $customer->save();
@@ -225,6 +244,74 @@
       </div>
       <?php } ?>
 
+      <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
+
+      <div id="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_company', 'Company'); ?></label>
+            <?php echo functions::form_draw_text_field('shipping_address[company]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+            <?php echo functions::form_draw_text_field('shipping_address[firstname]', true); ?>
+          </div>
+
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+            <?php echo functions::form_draw_text_field('shipping_address[lastname]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
+            <?php echo functions::form_draw_text_field('shipping_address[address1]', true); ?>
+          </div>
+
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
+            <?php echo functions::form_draw_text_field('shipping_address[address2]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+            <?php echo functions::form_draw_text_field('shipping_address[postcode]', true); ?>
+          </div>
+
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_city', 'City'); ?></label>
+            <?php echo functions::form_draw_text_field('shipping_address[city]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_country', 'Country'); ?></label>
+            <?php echo functions::form_draw_countries_list('shipping_address[country_code]', true); ?>
+          </div>
+
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
+            <?php echo functions::form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+            <?php echo functions::form_draw_phone_field('shipping_address[phone]', true); ?>
+          </div>
+        </div>
+
+      </div>
+
       <p class="btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
@@ -256,6 +343,61 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
+
+// Init
+
+  if ($('select[name="country_code"]').find('option:selected').data('tax-id-format') != '') {
+    $('select[name="country_code"]').closest('table').find('input[name="tax_id"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('tax-id-format'));
+  } else {
+    $('select[name="country_code"]').closest('table').find('input[name="tax_id"]').removeAttr('pattern');
+  }
+
+  if ($('select[name="country_code"]').find('option:selected').data('postcode-format') != '') {
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('postcode-format'));
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('required', 'required');
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').show();
+  } else {
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('pattern');
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('required');
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').hide();
+  }
+
+  if ($('select[name="country_code"]').find('option:selected').data('phone-code') != '') {
+    $('select[name="country_code"]').closest('table').find('input[name="phone"]').attr('placeholder', '+' + $('select[name="country_code"]').find('option:selected').data('phone-code'));
+  } else {
+    $('select[name="country_code"]').closest('table').find('input[name="phone"]').removeAttr('placeholder');
+  }
+
+  if ($('select[name="zone_code"] option').length == 0) $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
+
+// Init (Shipping address)
+
+  if ($('select[name="shipping_address[country_code]"]').find('option:selected').data('tax-id-format') != '') {
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="tax_id"]').attr('pattern', $('select[name="shipping_address[country_code]"]').find('option:selected').data('tax-id-format'));
+  } else {
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="tax_id"]').removeAttr('pattern');
+  }
+
+  if ($('select[name="shipping_address[country_code]"]').find('option:selected').data('postcode-format') != '') {
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"]').find('option:selected').data('postcode-format'));
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').attr('required', 'required');
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').closest('td').find('.required').show();
+  } else {
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').removeAttr('pattern');
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').removeAttr('required');
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').closest('td').find('.required').hide();
+  }
+
+  if ($('select[name="shipping_address[country_code]"]').find('option:selected').data('phone-code') != '') {
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"]').find('option:selected').data('phone-code'));
+  } else {
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[phone]"]').removeAttr('placeholder');
+  }
+
+  if ($('select[name="shipping_address[zone_code]"] option').length == 0) $('select[name="shipping_address[zone_code]"]').closest('td').css('opacity', 0.15);
+
+// Get Address
+
   $('form[name="customer_form"]').on('change', ':input', function() {
     if ($(this).val() == '') return;
     $('body').css('cursor', 'wait');
@@ -284,6 +426,39 @@
       }
     });
   });
+
+// Get Address (Shipping address)
+
+  $('form[name="customer_form"]').on('change', ':input', function() {
+    if ($(this).val() == '') return;
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+      type: 'post',
+      data: $(this).closest('form').serialize(),
+      cache: false,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn(errorThrown.message);
+      },
+      success: function(data) {
+        if (data['alert']) {
+          alert(data['alert']);
+          return;
+        }
+        $.each(data, function(key, value) {
+          console.log(key +' '+ value);
+          if ($('input[name="shipping_address['+key+']"]').length && $('input[name="shipping_address['+key+']"]').val() == '') $('input[name="shipping_address['+key+']"]').val(data[key]);
+        });
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+
+// On change country
 
   $('select[name="country_code"]').change(function(e) {
 
@@ -332,27 +507,54 @@
     });
   });
 
-  if ($('select[name="country_code"]').find('option:selected').data('tax-id-format') != '') {
-    $('select[name="country_code"]').closest('table').find('input[name="tax_id"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('tax-id-format'));
-  } else {
-    $('select[name="country_code"]').closest('table').find('input[name="tax_id"]').removeAttr('pattern');
-  }
+// On change country (Shipping address)
 
-  if ($('select[name="country_code"]').find('option:selected').data('postcode-format') != '') {
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('postcode-format'));
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('required', 'required');
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').show();
-  } else {
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('pattern');
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('required');
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').hide();
-  }
+  $('select[name="shipping_address[country_code]"]').change(function(e) {
 
-  if ($('select[name="country_code"]').find('option:selected').data('phone-code') != '') {
-    $('select[name="country_code"]').closest('table').find('input[name="phone"]').attr('placeholder', '+' + $('select[name="country_code"]').find('option:selected').data('phone-code'));
-  } else {
-    $('select[name="country_code"]').closest('table').find('input[name="phone"]').removeAttr('placeholder');
-  }
+    if ($(this).find('option:selected').data('postcode-format')) {
+      $('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+    } else {
+      $('input[name="shipping_address[postcode]"]').removeAttr('pattern');
+    }
 
-  if ($('select[name="zone_code"] option').length == 0) $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
+    if ($(this).find('option:selected').data('phone-code')) {
+      $('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+    } else {
+      $('input[name="shipping_address[phone]"]').removeAttr('placeholder');
+    }
+
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn(errorThrown.message);
+      },
+      success: function(data) {
+        $('select[name="shipping_address[zone_code]"]').html('');
+        if (data.length) {
+          $('select[name="shipping_address[zone_code]"]').prop('disabled', false);
+          $.each(data, function(i, zone) {
+            $('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $('select[name="shipping_address[zone_code]"]').prop('disabled', true);
+        }
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+
+  $('input[name="different_shipping_address"]').change(function(e){
+    if (this.checked == true) {
+      $('#shipping-address').slideDown('fast');
+    } else {
+      $('#shipping-address').slideUp('fast');
+    }
+  });
 </script>
