@@ -5,6 +5,7 @@
     require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
+  } else {
     document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
   }
 
