@@ -57,8 +57,10 @@
 
       if (empty($this->data['different_shipping_address'])) {
         foreach (array_keys($this->data['shipping_address']) as $key) {
-          $this->data['shipping_address'][$key] = $this->data[$key];
+          $this->data['shipping_address'][$key] = null;
         }
+        $this->data['shipping_address']['country_code'] = $this->data['country_code'];
+        $this->data['shipping_address']['zone_code'] = $this->data['zone_code'];
       }
     }
 
