@@ -117,10 +117,10 @@
     'name' => $product->name,
     'short_description' => !empty($product->short_description) ? $product->short_description : '',
     'description' => !empty($product->description) ? $product->description : '<em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em>',
+    'technical_data' => !empty($product->technical_data) ? preg_split('#\r\n|\r|\n#', $product->technical_data) : array(),
     'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
     'keywords' => $product->keywords,
-    'datasheet' => !empty($product->datasheet) ? preg_split('#\r\n|\r|\n#', $product->datasheet) : array(),
     'image' => array(
       'original' => ltrim(!empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png', '/'),
       'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),

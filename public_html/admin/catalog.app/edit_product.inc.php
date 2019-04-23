@@ -66,9 +66,9 @@
         'name',
         'short_description',
         'description',
+        'technical_data',
         'head_title',
         'meta_description',
-        'datasheet',
         'images',
         'options_stock',
       );
@@ -356,8 +356,8 @@
       </div>
 
       <div class="form-group">
-        <label><?php echo language::translate('title_datasheet', 'Datasheet'); ?> <a class="datasheet-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'datasheet['. $language_code .']', true, 'style="height: 200px;"'); ?>
+        <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical_data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
+        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'technical_data['. $language_code .']', true, 'style="height: 200px;"'); ?>
       </div>
 
       <div class="row">

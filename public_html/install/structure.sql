@@ -516,7 +516,7 @@ CREATE TABLE `lc_products_info` (
   `name` VARCHAR(128) NOT NULL,
   `short_description` VARCHAR(256) NOT NULL,
   `description` TEXT NOT NULL,
-  `datasheet` TEXT NOT NULL,
+  `technical_data` TEXT NOT NULL,
   `head_title` VARCHAR(128) NOT NULL,
   `meta_description` VARCHAR(512) NOT NULL,
   PRIMARY KEY (`id`),

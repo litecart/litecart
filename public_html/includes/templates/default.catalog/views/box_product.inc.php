@@ -169,22 +169,22 @@
       <?php echo $description; ?>
     </div>
 
-  <h2><?php echo language::translate('title_datasheet', 'Datasheet'); ?></h2>
+  <h2><?php echo language::translate('title_technical_data', 'Technical Data'); ?></h2>
 
-  <div class="datasheet">
+  <div class="technical_data">
     <table class="table table-striped table-hover">
 <?php
-  for ($i=0; $i<count($datasheet); $i++) {
-    if (strpos($datasheet[$i], ':') !== false) {
-      @list($key, $value) = explode(':', $datasheet[$i]);
+  for ($i=0; $i<count($technical_data); $i++) {
+    if (strpos($technical_data[$i], ':') !== false) {
+      @list($key, $value) = explode(':', $technical_data[$i]);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .':</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
          . '  </tr>' . PHP_EOL;
-    } else if (trim($datasheet[$i]) != '') {
+    } else if (trim($technical_data[$i]) != '') {
       echo '  <thead>' . PHP_EOL
          . '    <tr>' . PHP_EOL
-         . '      <th colspan="2">'. $datasheet[$i] .'</th>' . PHP_EOL
+         . '      <th colspan="2">'. $technical_data[$i] .'</th>' . PHP_EOL
          . '    </tr>' . PHP_EOL
          . '  </thead>' . PHP_EOL
          . '  <tbody>' . PHP_EOL;
