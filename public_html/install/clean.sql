@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS `lc_addresses`;
--- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_cart_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories`;
