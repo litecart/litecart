@@ -43,7 +43,7 @@ ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
 ADD INDEX `parent_id` (`parent_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_info`
-CHANGE COLUMN `attributes` `datasheet` TEXT NOT NULL COLLATE 'utf8_swedish_ci' AFTER `description`
+CHANGE COLUMN `attributes` `technical_data` TEXT NOT NULL COLLATE 'utf8_swedish_ci' AFTER `description`
 ADD FULLTEXT INDEX `name` (`name`),
 ADD FULLTEXT INDEX `short_description` (`short_description`),
 ADD FULLTEXT INDEX `description` (`description`);
