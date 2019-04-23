@@ -378,6 +378,7 @@
 					var self = this,
 						deferred = $.Deferred();
 					/* we are using load so one can specify a target with: url.html #targetelement */
+					url = url.replace('#', ' #');
 					var $container = $('<div></div>').load(url, function(response, status){
 						if ( status !== "error" ) {
 							deferred.resolve($container.contents());
