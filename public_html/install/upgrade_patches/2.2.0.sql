@@ -1,3 +1,70 @@
+CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(32) NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `code` (`code`)
+) ENGINE=MyISAM DEFAULT;
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
+  KEY `group_id` (`group_id`)
+  KEY `language_code` (`language_code`),
+) ENGINE=MyISAM DEFAULT;
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=MyISAM DEFAULT;
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value_id` int(11) NOT NULL,
+  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
+  KEY `value_id` (`value_id`),
+  KEY `language_code` (`language_code`)
+) ENGINE=MyISAM DEFAULT;
+-- --------------------------------------------------------
+INSERT INTO `lc_attribute_groups`
+(id, date_updated, date_created)
+SELECT id, date_updated, date_created FROM `lc_product_groups`;
+-- --------------------------------------------------------
+INSERT INTO `lc_attribute_groups_info`
+(id, group_id, language_code, name)
+SELECT id, product_group_id, language_code, name FROM `lc_product_groups_info`;
+-- --------------------------------------------------------
+INSERT INTO `lc_attribute_values`
+(id, group_id, date_updated, date_created)
+SELECT id, product_group_id, date_updated, date_created FROM `lc_product_groups_values`;
+-- --------------------------------------------------------
+INSERT INTO `lc_attribute_values_info`
+(id, value_id, language_code, name)
+SELECT id, product_group_value_id, language_code, name FROM `lc_product_groups_values_info`;
+-- --------------------------------------------------------
+CREATE TABLE `lc_categories_filters` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`category_id` INT NOT NULL,
+	`select_multiple` TINYINT NOT NULL,
+	`attribute_group_id` INT NOT NULL,
+  `priority` INT(11) NOT NULL AFTER `attribute_group_id`,
+	INDEX `category_id` (`category_id`),
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`)
+) ENGINE=MyISAM DEFAULT;
+-- --------------------------------------------------------
 CREATE TABLE `lc_categories_images` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`category_id` INT(11) NOT NULL,
@@ -42,8 +109,21 @@ ALTER TABLE `lc_pages`
 ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
 ADD INDEX `parent_id` (`parent_id`);
 -- --------------------------------------------------------
+CREATE TABLE `lc_products_attributes` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`product_id` INT NOT NULL,
+	`group_id` INT NOT NULL,
+	`value_id` INT NOT NULL,
+	`custom_value` VARCHAR(256) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
+	INDEX `product_id` (`product_id`),
+	INDEX `group_id` (`group_id`),
+	INDEX `value_id` (`value_id`)
+) ENGINE=MyISAM DEFAULT;
+-- --------------------------------------------------------
 ALTER TABLE `lc_products_info`
-CHANGE COLUMN `attributes` `technical_data` TEXT NOT NULL COLLATE 'utf8_swedish_ci' AFTER `description`
+CHANGE COLUMN `attributes` `technical_data` TEXT NOT NULL AFTER `description`
 ADD FULLTEXT INDEX `name` (`name`),
 ADD FULLTEXT INDEX `short_description` (`short_description`),
 ADD FULLTEXT INDEX `description` (`description`);

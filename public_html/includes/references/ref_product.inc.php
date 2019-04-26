@@ -67,6 +67,24 @@
 
           break;
 
+        case 'attributes':
+
+          $this->_data['attributes'] = array();
+
+          $product_attributes_query = database::query(
+            "select pa.*, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
+            left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
+            left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
+            where product_id = ". (int)$this->_id ."
+            order by group_name, value_name, custom_value;"
+          );
+
+          while ($attribute = database::fetch($product_attributes_query)) {
+            $this->_data['attributes'][$attribute['group_id'].'-'.$attribute['value_id']] = $attribute;
+          }
+
+          break;
+
         case 'name':
         case 'short_description':
         case 'description':

@@ -723,6 +723,53 @@
     }
   }
 
+  function form_draw_attribute_groups_list($name, $input=true, $multiple=false, $parameters='') {
+
+    $query = database::query(
+      "select ag.id, agi.name from ". DB_TABLE_ATTRIBUTE_GROUPS ." ag
+      left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
+      order by name;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($row = database::fetch($query)) {
+      $options[] = array($row['name'], $row['id']);
+    }
+
+    if ($multiple) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_attribute_values_list($group_id, $name, $input=true, $multiple=false, $parameters='') {
+
+    $query = database::query(
+      "select av.id, avi.name from ". DB_TABLE_ATTRIBUTE_VALUES ." av
+      left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." avi on (avi.value_id = av.id and avi.language_code = '". database::input(languave::$selected['code']) ."')
+      where group_id = ". (int)$group_id ."
+      order by name;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($row = database::fetch($query)) {
+      $options[] = array($row['name'], $row['id']);
+    }
+
+    if ($multiple) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
     $iterator = function($parent_id=0, $depth=1, $index=0, &$iterator) {

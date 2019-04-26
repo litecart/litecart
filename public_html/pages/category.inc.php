@@ -86,9 +86,18 @@
         break;
     }
 
+    $attributes = array();
+    if (!empty($_GET['attributes'])) {
+      foreach ($_GET['attributes'] as $attribute) {
+        list($group, $value) = preg_split('#-#', $attribute);
+        $attributes[$group][] = $value;
+      }
+    }
+
     $products_query = functions::catalog_products_query(array(
       'categories' => array($category->id),
       'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
+      'attributes' => $attributes,
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ));

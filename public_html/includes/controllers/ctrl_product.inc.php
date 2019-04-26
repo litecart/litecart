@@ -37,6 +37,7 @@
       }
 
       $this->data['categories'] = array();
+      $this->data['attributes'] = array();
       $this->data['keywords'] = array();
       $this->data['images'] = array();
       $this->data['prices'] = array();
@@ -93,6 +94,19 @@
           if (in_array($key, array('id', 'product_id', 'language_code'))) continue;
           $this->data[$key][$product_info['language_code']] = $value;
         }
+      }
+
+    // Attributes
+      $product_attributes_query = database::query(
+        "select pa.*, agi.name as group_name, avi.name as value_name from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
+        left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
+        left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+        where product_id = ". (int)$product_id ."
+        order by group_name, value_name, custom_value;"
+      );
+
+      while ($attribute = database::fetch($product_attributes_query)) {
+        $this->data['attributes'][$attribute['group_id'].'-'.$attribute['value_id']] = $attribute;
       }
 
     // Prices
@@ -263,15 +277,46 @@
           name = '". database::input($this->data['name'][$language_code]) ."',
           short_description = '". database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
+          technical_data = '". database::input($this->data['technical_data'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
-          datasheet = '". database::input($this->data['datasheet'][$language_code], true) ."'
           where product_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
 
+    // Attributes
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+        where product_id = ". (int)$this->data['id'] ."
+        and id not in ('". @implode("', '", array_column($this->data['attributes'], 'id')) ."');"
+      );
+
+      if (!empty($this->data['attributes'])) {
+        foreach (array_keys($this->data['attributes']) as $key) {
+          if (empty($this->data['attributes'][$key]['id'])) {
+            database::query(
+              "insert into ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+              (product_id, group_id, value_id, custom_value)
+              values (". (int)$this->data['id'] .", ". (int)$this->data['attributes'][$key]['group_id'] .", ". (int)$this->data['attributes'][$key]['value_id'] .", '". database::input($this->data['attributes'][$key]['custom_value']) ."');"
+            );
+            $this->data['attributes'][$key]['id'] = database::insert_id();
+          }
+
+          database::query(
+            "update ". DB_TABLE_PRODUCTS_ATTRIBUTES ." set
+              group_id = ". (int)$this->data['attributes'][$key]['group_id'] .",
+              value_id = ". (int)$this->data['attributes'][$key]['value_id'] .",
+              custom_value = '". database::input($this->data['attributes'][$key]['custom_value']) ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['attributes'][$key]['id'] ."
+            limit 1;"
+          );
+        }
+      }
+
+    // Prices
       foreach (array_keys(currency::$currencies) as $currency_code) {
 
         $products_prices_query = database::query(

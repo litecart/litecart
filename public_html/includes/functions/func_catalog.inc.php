@@ -71,6 +71,7 @@
 
     if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
     if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
+    if (!empty($filter['attributes'])) $filter['attributes'] = array_filter($filter['attributes']);
     if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
     if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
@@ -118,36 +119,68 @@
         break;
     }
 
-    $sql_where_prices = "";
-    if (!empty($filter['price_ranges'])) {
+    $sql_where_categories = array();
+    if (!empty($filter['categories'])) {
+      foreach ($filter['categories'] as $category) {
+        $sql_where_categories[] = "find_in_set('". database::input($category) ."', ptc.categories)";
+      }
+      $sql_where_categories = "and (". implode(" and ", $sql_where_categories) .")";
+    }
 
+    $sql_where_attributes = array();
+    if (!empty($filter['attributes'])) {
+      foreach ($filter['attributes'] as $group => $values) {
+        foreach ($values as $value) {
+          $sql_where_attributes[$group][] = "find_in_set('". database::input($group.'-'.$value) ."', pa.attributes)";
+        }
+        $sql_where_attributes[$group] = implode(" or ", $sql_where_attributes[$group]);
+      }
+      $sql_where_attributes = "and (". implode(" and ", $sql_where_attributes) .")";
+    }
+
+    $sql_where_prices = array();
+    if (!empty($filter['price_ranges'])) {
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
-        $sql_where_prices .= " or (if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
+        $sql_where_prices[] = "(if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
       }
-
-      $sql_where_prices = "and (". ltrim($sql_where_prices, " or ") .")";
+      $sql_where_prices = "and (". implode(" or ", $sql_where_prices) .")";
     }
 
     $query = (
       "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
 
       from (
-        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, ptc.categories, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+
         from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
+
+        left join (
+          select product_id, group_concat(category_id separator ',') as categories
+          from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+          group by product_id
+        ) ptc on (p.id = ptc.product_id)
+
+        left join (
+          select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
+          from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+          group by product_id
+        ) pa on (p.id = pa.product_id)
+
         left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
+
         where p.status
         ". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
-        ". (!empty($filter['categories']) ? "and ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
-        ". (!empty($filter['manufacturers']) ? "and manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
+        ". (!empty($sql_where_categories) ? $sql_where_categories : null) ."
+        ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
+        ". (!empty($filter['manufacturers']) ? "and p.manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
         ". (!empty($filter['keywords']) ? "and (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
-        group by ptc.product_id
+
         ". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : null) ."
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
       ) p

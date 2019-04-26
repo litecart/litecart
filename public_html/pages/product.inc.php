@@ -120,6 +120,7 @@
     'technical_data' => !empty($product->technical_data) ? preg_split('#\r\n|\r|\n#', $product->technical_data) : array(),
     'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
+    'attributes' => $product->attributes,
     'keywords' => $product->keywords,
     'image' => array(
       'original' => ltrim(!empty($product->images) ? WS_DIR_IMAGES . $product->image : WS_DIR_IMAGES . 'no_image.png', '/'),

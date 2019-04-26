@@ -43,6 +43,7 @@
         'sold_out_status_id',
         'default_category_id',
         'categories',
+        'attributes',
         'keywords',
         'date_valid_from',
         'date_valid_to',
@@ -143,6 +144,7 @@
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
+    <li><a data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a></li>
@@ -376,22 +378,52 @@
       </div>
     </div>
 
+    <div id="tab-attributes" class="tab-pane" style="max-width: 960px;">
+
+      <h1><?php echo language::translate('title_attributes', 'Attributes'); ?></h1>
+
+      <table class="table table-striped data-table">
+        <thead>
+          <tr>
+            <th style="width: 320px;"><?php echo language::translate('title_group', 'Group'); ?></th>
+            <th style="width: 320px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+            <th><?php echo language::translate('title_custom_value', 'Custom Value'); ?></th>
+            <th style="width: 60px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach (array_keys($_POST['attributes']) as $key) { ?>
+          <tr>
+            <?php echo functions::form_draw_hidden_field('attributes['.$key.'][id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_name]', true); ?>
+            <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_name]', true); ?>
+            <?php echo functions::form_draw_hidden_field('attributes['.$key.'][custom_value]', true); ?>
+            <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
+            <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
+            <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
+            <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><?php echo functions::form_draw_attribute_groups_list('new_attribute[group_id]', array(), ''); ?></td>
+            <td><?php echo functions::form_draw_select_field('new_attribute[value_id]', array(), ''); ?></td>
+            <td><?php echo functions::form_draw_text_field('new_attribute[custom_value]', ''); ?></td>
+            <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
     <div id="tab-prices" class="tab-pane">
 
       <div id="prices" style="max-width: 640px;">
         <h2><?php echo language::translate('title_prices', 'Prices'); ?></h2>
 
         <div class="row">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
-            <div class="input-group">
-              <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 0, null); ?>
-              <span class="input-group-addon">
-                <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
-              </span>
-            </div>
-          </div>
-
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
             <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
@@ -767,11 +799,94 @@ foreach (currency::$currencies as $currency) {
     $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>');
   }
 
-// Attributes
+// Technical Data
 
-  $('a.attributes-hint').click(function(e){
+  $('a.technical_data-hint').click(function(e){
     e.preventDefault();
     alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\n\nTitle2\nProperty3: Value3...');
+  });
+
+// Attributes
+
+  $('select[name="new_attribute[group_id]"]').change(function(){
+    $('body').css('cursor', 'wait');
+    $.ajax({
+      url: '<?php echo document::link(WS_DIR_ADMIN, array('doc' => 'attribute_values.json'), array('app')); ?>&group_id=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+      },
+      success: function(data) {
+        $('select[name="new_attribute[value_id]"').html('');
+        if ($('select[name="new_attribute[value_id]"').attr('disabled')) $('select[name="attribute[value_id]"]').removeAttr('disabled');
+        if (data) {
+          $('select[name="new_attribute[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
+          $.each(data, function(i, zone) {
+            $('select[name="new_attribute[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $('select[name="new_attribute[value_id]"').attr('disabled', 'disabled');
+        }
+      },
+      complete: function() {
+        $('body').css('cursor', 'auto');
+      }
+    });
+  });
+
+  var new_attribute_i = 0;
+  $('#tab-attributes button[name="add"]').click(function(){
+
+    if ($('select[name="new_attribute[group_id]"]').val() == '') {
+      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      return;
+    }
+
+    if ($('select[name="new_attribute[value_id]"]').val() == '' || $('select[name="new_attribute[value_id]"]').val() == '0') {
+      if ($('input[name="new_attribute[custom_value]"]').val() == '') {
+        alert("<?php echo language::translate('error_must_select_attribute_value', 'You must select an attribute value'); ?>");
+        return;
+      }
+    } else {
+      if ($('input[name="new_attribute[custom_value]"]').val() != '') {
+        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>");
+        return;
+      }
+    }
+
+    var output = '<tr>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][id]', '')); ?>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][group_id]', 'new_group_id')); ?>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][group_name]', 'new_group_name')); ?>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][value_id]', 'new_value_id')); ?>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][value_name]', 'new_value_name')); ?>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][custom_value]', 'new_custom_value')); ?>'
+               + '  <td>new_group_name</td>'
+               + '  <td>new_value_name</td>'
+               + '  <td>new_custom_value</td>'
+               + '  <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+               + '</tr>';
+
+    while ($('input[name="attributes[new_'+new_attribute_i+']"]').length) new_attribute_i++;
+    output = output.replace(/new_attribute_i/g, 'new_' + new_attribute_i);
+    output = output.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val());
+    output = output.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text());
+      output = output.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val());
+    if ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') {
+    output = output.replace(/new_value_name/g, $('select[name="new_attribute[value_id]"] option:selected').text());
+    }
+    output = output.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val());
+    new_attribute_i++;
+
+    $('#tab-attributes tbody').append(output);
+  });
+
+  $('#tab-attributes tbody').on('click', '.remove', function(e) {
+    e.preventDefault();
+    $(this).closest('tr').remove();
   });
 
 // Prices

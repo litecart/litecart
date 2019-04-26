@@ -24,6 +24,7 @@
       if (!empty($category->data['id']) && $category->data['parent_id'] == $category->data['id']) throw new Exception(language::translate('error_cannot_mount_category_to_self', 'Cannot mount category to itself'));
 
       if (!isset($_POST['images'])) $_POST['images'] = array();
+      if (empty($_POST['filters'])) $_POST['filters'] = array();
 
       $fields = array(
         'status',
@@ -39,6 +40,7 @@
         'head_title',
         'h1_title',
         'meta_description',
+        'filters',
         'priority',
       );
 
@@ -108,6 +110,7 @@
   <ul class="nav nav-tabs">
     <li role="presentation" class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
     <li role="presentation"><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
+    <li><a data-toggle="tab" href="#tab-filters"><?php echo language::translate('title_filters', 'Filters'); ?></a></li>
   </ul>
 
   <div class="tab-content">
@@ -268,6 +271,44 @@
         </div>
       </div>
     </div>
+
+    <div id="tab-filters" class="tab-pane" style="max-width: 640px;">
+
+      <table class="table table-striped data-table table-dragable">
+        <thead>
+          <tr>
+            <th><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></th>
+            <th><?php echo language::translate('title_select_multiple', 'Select Multiple'); ?></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
+          <tr class="grabable">
+            <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
+            <td><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
+            <td><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
+            <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="input-group" style="max-width: 320px;">
+        <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
+        <span class="input-group-btn">
+          <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
+        </span>
+      </div>
+    </div>
   </div>
 
   <p class="btn-group">
@@ -357,4 +398,37 @@
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
+
+// Filters
+
+  var new_attribute_filter_i = 0;
+  $('#tab-filters button[name="add"]').click(function(){
+
+    if ($('select[name="new_attribute_group"]').val() == '') {
+      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      return;
+    }
+
+    var output = '<tr>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
+               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
+               + '  <td>new_attribute_group_name</td>'
+               + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
+               + '  <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+               + '</tr>';
+
+    while ($('input[name="filters[new_'+new_attribute_filter_i+']"]').length) new_attribute_filter_i++;
+    output = output.replace(/new_attribute_filter_i/g, 'new_' + new_attribute_filter_i);
+    output = output.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val());
+    output = output.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text());
+    new_attribute_filter_i++;
+
+    $('#tab-filters tbody').append(output);
+  });
+
+  $('#tab-filters').on('click', '.remove', function(e) {
+    e.preventDefault();
+    $(this).closest('tr').remove();
+  });
 </script>
