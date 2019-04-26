@@ -1,6 +1,16 @@
+DROP TABLE IF EXISTS `lc_attribute_groups`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_attribute_groups_info`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_attribute_values`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_attribute_values_info`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_cart_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_categories_filters`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories_images`;
 -- --------------------------------------------------------
@@ -53,6 +63,8 @@ DROP TABLE IF EXISTS `lc_pages`;
 DROP TABLE IF EXISTS `lc_pages_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_products_attributes`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_campaigns`;
 -- --------------------------------------------------------
