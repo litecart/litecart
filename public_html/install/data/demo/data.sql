@@ -1,3 +1,30 @@
+INSERT INTO `lc_attribute_groups` (`id`, `code`, `date_updated`, `date_created`) VALUES
+(1, 'color', NOW(), NOW()),
+(1, 'size', NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_attribute_groups_info` (`id`, `group_id`, `language_code`, `name`) VALUES
+(1, 1, 'en', 'Color'),
+(2, 2, 'en', 'Size');
+-- --------------------------------------------------------
+INSERT INTO `lc_attribute_values` (`id`, `group_id`, `date_updated`, `date_created`) VALUES
+(1, 1, NOW(), NOW()),
+(2, 1, NOW(), NOW()),
+(3, 1, NOW(), NOW()),
+(4, 1, NOW(), NOW()),
+(5, 2, NOW(), NOW()),
+(6, 2, NOW(), NOW()),
+(7, 2, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_attribute_values_info` (`id`, `value_id`, `language_code`, `name`) VALUES
+(1, 1, 'en', 'Yellow'),
+(2, 2, 'en', 'Green'),
+(3, 3, 'en', 'Red'),
+(4, 4, 'en', 'Blue'),
+(5, 5, 'en', 'Purple'),
+(6, 6, 'en', 'Small'),
+(7, 7, 'en', 'Medium'),
+(8, 8, 'en', 'Large');
+-- --------------------------------------------------------
 INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `list_style`, `keywords`, `image`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 1, '', 'columns', '', '', 0, NOW(), NOW()),
 (2, 1, 1, '', 'rows', '', '', 0, NOW(), NOW());
@@ -72,6 +99,13 @@ INSERT INTO `lc_products` (`id`, `status`, `manufacturer_id`, `supplier_id`, `de
 (3, 1, 1, 0, 1, 2, 1, '', 'rd003', 'RD003', '12340003', '', '', 30, 1, 1.0000, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10.0000, 1, 'products/3-red-duck-1.jpg', 1, 0, '0000-00-00', '0000-00-00', NOW(), NOW()),
 (4, 1, 1, 0, 1, 2, 1, '', 'rd004', 'RD004', '12340004', '', '', 30, 1, 1.0000, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10.0000, 1, 'products/4-blue-duck-1.jpg', 1, 0, '0000-00-00', '0000-00-00', NOW(), NOW()),
 (5, 1, 1, 0, 1, 2, 1, '', 'rd005', 'RD005', '12340005', '', '', 30, 1, 1.0000, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10.0000, 1, 'products/5-purple-duck-1.jpg', 1, 0, '0000-00-00', '0000-00-00', NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_products_attributes` (`product_id`, `group_id`, `value_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5);
 -- --------------------------------------------------------
 INSERT INTO `lc_products_to_categories` (`product_id`, `category_id`) VALUES
 (1, 1),

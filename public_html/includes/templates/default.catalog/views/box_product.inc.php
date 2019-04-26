@@ -161,7 +161,7 @@
   <?php if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
   <ul class="nav nav-tabs">
     <?php if ($description) { ?><li><a data-toggle="tab" href="#description"><?php echo language::translate('title_description', 'Description'); ?></a></li><?php } ?>
-    <?php if ($attributes) { ?><li><a data-toggle="tab" href="#attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li><?php } ?>
+    <?php if ($technical_data) { ?><li><a data-toggle="tab" href="#technical-data"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></a></li><?php } ?>
   </ul>
 
   <div class="tab-content">
@@ -169,10 +169,9 @@
       <?php echo $description; ?>
     </div>
 
-  <h2><?php echo language::translate('title_technical_data', 'Technical Data'); ?></h2>
-
-  <div class="technical_data">
-    <table class="table table-striped table-hover">
+    <?php if ($technical_data) { ?>
+    <div id="technical-data" class="tab-pane">
+      <table class="table table-striped table-hover">
 <?php
   for ($i=0; $i<count($technical_data); $i++) {
     if (strpos($technical_data[$i], ':') !== false) {
@@ -195,7 +194,9 @@
     }
   }
 ?>
-    </table>
+      </table>
+    </div>
+    <?php } ?>
   </div>
   <?php } ?>
 

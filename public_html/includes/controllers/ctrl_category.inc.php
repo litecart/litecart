@@ -36,6 +36,7 @@
         }
       }
 
+      $this->data['filters'] = array();
       $this->data['images'] = array();
     }
 
@@ -77,6 +78,19 @@
       );
       while($image = database::fetch($category_images_query)) {
         $this->data['images'][$image['id']] = $image;
+      }
+
+    // Filters
+      $category_filters_query = database::query(
+        "select cf.*, agi.name as attribute_group_name from ". DB_TABLE_CATEGORIES_FILTERS ." cf
+        left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = cf.attribute_group_id and language_code = '". database::input(language::$selected['code']) ."')
+        where category_id = ". (int)$this->data['id'] ."
+        order by priority;"
+      );
+
+      $this->data['filters'] = array();
+      while ($group = database::fetch($category_filters_query)) {
+        $this->data['filters'][] = $group;
       }
     }
 
@@ -208,6 +222,38 @@
         limit 1;"
       );
 
+    // Delete filters
+      database::query(
+        "delete from ". DB_TABLE_CATEGORIES_FILTERS ."
+        where category_id = ". (int)$this->data['id'] ."
+        and id not in ('". @implode("', '", array_column($this->data['filters'], 'id')) ."');"
+      );
+
+    // Update filters
+      if (!empty($this->data['filters'])) {
+        $filter_priority = 1;
+        foreach (array_keys($this->data['filters']) as $key) {
+          if (empty($this->data['filters'][$key]['id'])) {
+            database::query(
+              "insert into ". DB_TABLE_CATEGORIES_FILTERS ."
+              (category_id, attribute_group_id)
+              values (". (int)$this->data['id'] .", ". (int)$this->data['filters'][$key]['attribute_group_id'] .");"
+            );
+            $this->data['filters'][$key]['id'] = database::insert_id();
+          }
+
+          database::query(
+            "update ". DB_TABLE_CATEGORIES_FILTERS ." set
+              attribute_group_id = '". database::input($this->data['filters'][$key]['attribute_group_id']) ."',
+              select_multiple = ". (!empty($this->data['filters'][$key]['select_multiple']) ? 1 : 0) .",
+              priority = ". $filter_priority++ ."
+            where category_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['filters'][$key]['id'] ."
+            limit 1;"
+          );
+        }
+      }
+
       cache::clear_cache('category_tree');
       cache::clear_cache('categories');
       cache::clear_cache('category_'. (int)$this->data['id']);
@@ -266,9 +312,6 @@
 
       if (empty($this->data['id'])) return;
 
-      $this->data['images'] = array();
-      $this->save();
-
       $products_query = database::query(
         "select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
         where category_id = ". (int)$this->data['id'] ."
@@ -292,6 +335,10 @@
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;
       }
+
+      $this->data['filters'] = array();
+      $this->data['images'] = array();
+      $this->save();
 
       database::query(
         "delete from ". DB_TABLE_CATEGORIES ."

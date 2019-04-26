@@ -14,6 +14,11 @@
         'params' => array(),
       ),
       array(
+        'title' => language::translate('title_attribute_groups', 'Attribute Groups'),
+        'doc' => 'attribute_groups',
+        'params' => array(),
+      ),
+      array(
         'title' => language::translate('title_manufacturers', 'Manufacturers'),
         'doc' => 'manufacturers',
         'params' => array(),
@@ -45,7 +50,10 @@
       ),
     ),
     'docs' => array(
+      'attribute_groups' => 'attribute_groups.inc.php',
+      'attribute_values.json' => 'attribute_values.json.inc.php',
       'catalog' => 'catalog.inc.php',
+      'edit_attribute_group' => 'edit_attribute_group.inc.php',
       'edit_product' => 'edit_product.inc.php',
       'edit_category' => 'edit_category.inc.php',
       'manufacturers' => 'manufacturers.inc.php',

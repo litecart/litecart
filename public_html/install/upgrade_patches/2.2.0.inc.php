@@ -5,6 +5,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_catalog.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
+    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/column_left.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/listing_product.inc.php',
   );
 
@@ -18,9 +19,25 @@
   $modified_files = array(
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');" . PHP_EOL
+      'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');" . PHP_EOL
+      'replace' => "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');" . PHP_EOL
+                 . "  define('DB_TABLE_ATTRIBUTE_VALUES_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
+                 . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_filters`');" . PHP_EOL
                  . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'search'  => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL
+                 . "  define('DB_TABLE_PRODUCTS_ATTRIBUTES',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_attributes`');" . PHP_EOL,
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
@@ -183,4 +200,44 @@
       "ALTER TABLE `". DB_TABLE_PREFIX ."products_to_categories`
       DROP KEY `mapping`;"
     );
+  }
+
+// Migrate product groups to product attributes
+  $products_query = database::query(
+    "select id, product_groups from `". DB_TABLE_PREFIX ."products`
+    where product_groups != ''
+    order by id;"
+  );
+
+  while ($product = database::fetch($products_query)) {
+    list($group_id, $value_id) = preg_split('#-#', $product['product_groups']);
+    database::query(
+      "insert into `". DB_TABLE_PREFIX ."products_attributes`
+      (product_id, group_id, value_id) values
+      (". (int)$product['id'] .", ". (int)$group_id .", ". (int)$value_id .");"
+    );
+  }
+
+// Migrate product groups to category filters
+  $categories_query = database::query(
+    "select id from `". DB_TABLE_PREFIX ."categories`
+    order by id;"
+  );
+
+  while ($category = database::fetch($categories_query)) {
+    $products_attributes_query = database::query(
+      "select distinct group_id from `". DB_TABLE_PREFIX ."products_attributes`
+      where product_id in (
+        select id from `". DB_TABLE_PREFIX ."products_to_categories`
+        where category_id = ". (int)$category['id'] ."
+      )
+      order by group_id;"
+    );
+    while ($attribute = database::fetch($products_attributes_query)) {
+      database::query(
+        "insert into `". DB_TABLE_PREFIX ."categories_filters`
+        (category_id, attribute_group_id, select_multiple) values
+        (". (int)$category['id'] .", ". (int)$attribute['group_id'] .", 1);"
+      );
+    }
   }
