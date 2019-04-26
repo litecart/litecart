@@ -1,5 +1,6 @@
 <?php
   require('../includes/compatibility.inc.php');
+  require('../includes/functions/func_draw.inc.php');
   require('includes/header.inc.php');
 
   ini_set('display_errors', 'On');
@@ -272,11 +273,28 @@
     'ZW' => 'Zimbabwe',
   );
 
-
-  if (file_exists('../includes/config.inc.php')) {
-    $upgrade_detected = true;
-  }
 ?>
+
+<?php if (file_exists('../includes/config.inc.php')) { ?>
+<link rel="stylesheet" href="../ext/featherlight/featherlight.min.css" />
+
+<div id="modal-warning-existing-installation" style="display: none; width: 320px;">
+  <h2>Existing Installation Detected</h2>
+  <p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
+  <p><a href="upgrade.php">Click here to upgrade instead.</a></p>
+</div>
+
+<script src="../ext/jquery/jquery-3.3.1.min.js"></script>
+<script src="../ext/featherlight/featherlight.min.js"></script>
+<script>
+  $.featherlight.autoBind = '[data-toggle="lightbox"]';
+  $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
+  $.featherlight.defaults.closeIcon = '&#x2716;';
+  $.featherlight.defaults.targetAttr = 'data-target';
+  $.featherlight('#modal-warning-existing-installation');
+</script>
+<?php } ?>
+
 <style>
 input[name="development_type"] {
   display: none;
@@ -307,12 +325,6 @@ input[name="development_type"]:checked + div {
 </style>
 
 <h1>Installer</h1>
-
-<?php if (!empty($upgrade_detected)) { ?>
-<p class="alert alert-danger">
-  <strong>Danger!</strong> An existing installation has been detected. The existing installation <strong>WILL BE DELETED</strong> if you continue! <a href="upgrade.php">Upgraders click here to for the upgrade tool</a>.
-</p>
-<?php } ?>
 
 <div class="row">
   <div class="col-md-6">
