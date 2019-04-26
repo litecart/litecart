@@ -18,7 +18,7 @@
 
     // Check version
       if (settings::get('platform_database_version') != PLATFORM_VERSION) {
-        trigger_error('Platform database version ('. settings::get('platform_database_version') .') does not match platform version ('. PLATFORM_VERSION .')', E_USER_WARNING);
+        trigger_error('Platform database version ('. settings::get('platform_database_version') .') does not match platform version ('. PLATFORM_VERSION .'). Did you run /install/upgrade.php?', E_USER_WARNING);
       }
 
     // Set time zone

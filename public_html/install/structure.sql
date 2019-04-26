@@ -373,7 +373,7 @@ CREATE TABLE `lc_orders` (
   `weight_total` DECIMAL(11,4) NOT NULL,
   `weight_class` VARCHAR(2) NOT NULL,
   `currency_code` VARCHAR(3) NOT NULL,
-  `currency_value` DECIMAL(11,6)NOT NULL,
+  `currency_value` DECIMAL(11,6) NOT NULL,
   `display_prices_including_tax` TINYINT(1) NOT NULL,
   `payment_due` DECIMAL(11,4) NOT NULL,
   `tax_total` DECIMAL(11,4) NOT NULL,
