@@ -76,7 +76,7 @@ CREATE TABLE `lc_categories_images` (
 ) ENGINE=MyISAM;
 -- --------------------------------------------------------
 INSERT INTO `lc_categories_images` (category_id, filename) (
-  SELECT id, image from `lc_categories`
+  SELECT id, image FROM `lc_categories`
   WHERE image != ''
 );
 -- --------------------------------------------------------

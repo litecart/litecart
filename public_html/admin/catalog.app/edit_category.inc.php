@@ -23,7 +23,7 @@
       if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       if (!empty($category->data['id']) && $category->data['parent_id'] == $category->data['id']) throw new Exception(language::translate('error_cannot_mount_category_to_self', 'Cannot mount category to itself'));
 
-      if (!isset($_POST['images'])) $_POST['images'] = array();
+      if (empty($_POST['images'])) $_POST['images'] = array();
       if (empty($_POST['filters'])) $_POST['filters'] = array();
 
       $fields = array(
@@ -108,8 +108,8 @@
 <?php echo functions::form_draw_form_begin('category_form', 'post', false, true); ?>
 
   <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-    <li role="presentation"><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
+    <li class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
+    <li><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-filters"><?php echo language::translate('title_filters', 'Filters'); ?></a></li>
   </ul>
 

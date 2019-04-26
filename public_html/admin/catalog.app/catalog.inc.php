@@ -214,6 +214,7 @@
   color: #f00;
 }
 </style>
+
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_form_begin('search_form', 'get', '', false, 'onsubmit="return false;"') . functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"') . functions::form_draw_form_end(); ?></li>
   <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
