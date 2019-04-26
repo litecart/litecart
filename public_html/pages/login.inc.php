@@ -89,7 +89,7 @@
       exit;
 
     } catch (Exception $e) {
-      http_response_code(401);
+      //http_response_code(401); // Troublesome with HTTP Auth
       notices::add('errors', $e->getMessage());
     }
   }
