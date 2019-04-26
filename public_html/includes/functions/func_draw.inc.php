@@ -113,29 +113,23 @@
     return $listing_product->stitch('views/listing_product_'.$listing_type);
   }
 
-  function draw_lightbox($selector='*[data-toggle="lightbox"]', $params=array()) {
+  function draw_lightbox($selector='', $params=array()) {
 
     $selector = str_replace("'", '"', $selector);
 
     document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'featherlight/featherlight.min.css" />';
     document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_EXT .'featherlight/featherlight.min.js"></script>';
+    document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.targetAttr = \'data-target\';';
+    if (empty($selector)) return;
 
     if (preg_match('#^(https?:)?//#', $selector)) {
       document::$snippets['javascript']['featherlight-'.$selector] = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
     } else {
       document::$snippets['javascript']['featherlight-'.$selector] = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
     }
-
-    $default_params = array(
-      'loading'     => '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>',
-      'closeIcon'   => '&#x2716;',
-      'targetAttr'  => 'data-target',
-    );
-
-    foreach (array_keys($default_params) as $key) {
-      if (!isset($params[$key])) $params[$key] = $default_params[$key];
-    }
-    ksort($params);
 
     foreach ($params as $key => $value) {
       switch (gettype($params[$key])) {
