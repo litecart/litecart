@@ -15,14 +15,15 @@
     if (database::num_rows($option_values_query) == 0) throw new Exception('Option group has no values');
 
     $json = array();
-    while ($configuration_value = database::fetch($option_values_query)) {
+    while ($value = database::fetch($option_values_query)) {
       $json[] = array(
-        'id' => $configuration_value['id'],
-        'name' => $configuration_value['name'],
+        'id' => $value['id'],
+        'name' => $value['name'],
       );
     }
 
   } catch(Exception $e) {
+    http_response_code(400);
     $json = array('error' => $e->getMessage());
   }
 

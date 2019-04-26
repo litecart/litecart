@@ -218,7 +218,7 @@
         supplier_id = ". (int)$this->data['supplier_id'] .",
         delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
-        default_category_id = ". (int)$this->data['default_category_id'].",
+        default_category_id = ". (int)$this->data['default_category_id'] .",
         keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
         quantity = ". (float)$this->data['quantity'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
@@ -243,6 +243,7 @@
         limit 1;"
       );
 
+    // Categories
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
          where product_id = ". (int)$this->data['id'] .";"
@@ -255,6 +256,7 @@
         );
       }
 
+    // Info
       foreach (array_keys(language::$languages) as $language_code) {
         $products_info_query = database::query(
           "select * from ". DB_TABLE_PRODUCTS_INFO ."
@@ -279,7 +281,7 @@
           description = '". database::input($this->data['description'][$language_code], true) ."',
           technical_data = '". database::input($this->data['technical_data'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-          meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
+          meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
           where product_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -483,7 +485,7 @@
 
     // Delete images
       $products_images_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_IMAGES."
+        "select * from ". DB_TABLE_PRODUCTS_IMAGES ."
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );

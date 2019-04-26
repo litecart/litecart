@@ -12,7 +12,6 @@
     }
 
     $_POST['keywords'] = implode(',', $_POST['keywords']);
-
     if (empty($product->data['id']) && isset($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
   }
 

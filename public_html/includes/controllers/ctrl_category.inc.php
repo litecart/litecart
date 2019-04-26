@@ -160,7 +160,7 @@
 
     // Delete images
       $category_images_query = database::query(
-        "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+        "select * from ". DB_TABLE_CATEGORIES_IMAGES ."
         where category_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
@@ -196,9 +196,9 @@
           }
 
           database::query(
-            "update ". DB_TABLE_CATEGORIES_IMAGES ."
-            set filename = '". database::input($this->data['images'][$key]['filename']) ."',
-                priority = '". $image_priority++ ."'
+            "update ". DB_TABLE_CATEGORIES_IMAGES ." set
+              filename = '". database::input($this->data['images'][$key]['filename']) ."',
+              priority = '". $image_priority++ ."'
             where category_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['images'][$key]['id'] ."
             limit 1;"
