@@ -349,31 +349,46 @@
 
     <div id="tab-information" class="tab-pane" style="max-width: 640px;">
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true); ?>
-      </div>
+      <ul class="nav nav-tabs">
+        <?php foreach (language::$languages as $language) { ?>
+          <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+        <?php } ?>
+      </ul>
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_description', 'Description'); ?></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'style="height: 125px;"'); ?>
-      </div>
+      <div class="tab-content">
+        <?php foreach (array_keys(language::$languages) as $language_code) { ?>
+        <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
       <div class="form-group">
         <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical_data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
         <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'technical_data['. $language_code .']', true, 'style="height: 200px;"'); ?>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
-        </div>
+          <div class="form-group">
+            <label><?php echo language::translate('title_description', 'Description'); ?></label>
+            <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'style="height: 250px;"'); ?>
+          </div>
 
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
+          <div class="form-group">
+            <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
+            <?php echo functions::form_draw_regional_textarea($language_code, 'technical_data['. $language_code .']', true, 'style="height: 250px;"'); ?>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+              <?php echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+              <?php echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
+            </div>
+          </div>
+
         </div>
+        <?php } ?>
+
       </div>
     </div>
 
@@ -800,7 +815,7 @@ foreach (currency::$currencies as $currency) {
 
 // Technical Data
 
-  $('a.technical_data-hint').click(function(e){
+  $('a.technical-data-hint').click(function(e){
     e.preventDefault();
     alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\n\nTitle2\nProperty3: Value3...');
   });
