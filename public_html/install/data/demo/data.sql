@@ -1,6 +1,6 @@
 INSERT INTO `lc_attribute_groups` (`id`, `code`, `date_updated`, `date_created`) VALUES
 (1, 'color', NOW(), NOW()),
-(1, 'size', NOW(), NOW());
+(2, 'size', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_attribute_groups_info` (`id`, `group_id`, `language_code`, `name`) VALUES
 (1, 1, 'en', 'Color'),

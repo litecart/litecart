@@ -5,18 +5,18 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `code` (`code`)
-) ENGINE=MyISAM DEFAULT;
+) ENGINE=MyISAM;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
-  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  `language_code` varchar(2) NOT NULL,
+  `name` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
-  KEY `group_id` (`group_id`)
-  KEY `language_code` (`language_code`),
-) ENGINE=MyISAM DEFAULT;
+  KEY `group_id` (`group_id`),
+  KEY `language_code` (`language_code`)
+) ENGINE=MyISAM;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,18 +25,18 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`)
-) ENGINE=MyISAM DEFAULT;
+) ENGINE=MyISAM;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value_id` int(11) NOT NULL,
-  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  `language_code` varchar(2) NOT NULL,
+  `name` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
   KEY `value_id` (`value_id`),
   KEY `language_code` (`language_code`)
-) ENGINE=MyISAM DEFAULT;
+) ENGINE=MyISAM;
 -- --------------------------------------------------------
 INSERT INTO `lc_attribute_groups`
 (id, date_updated, date_created)
@@ -59,11 +59,11 @@ CREATE TABLE `lc_categories_filters` (
 	`category_id` INT NOT NULL,
 	`select_multiple` TINYINT NOT NULL,
 	`attribute_group_id` INT NOT NULL,
-  `priority` INT(11) NOT NULL AFTER `attribute_group_id`,
+  `priority` INT(11) NOT NULL,
 	INDEX `category_id` (`category_id`),
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`)
-) ENGINE=MyISAM DEFAULT;
+) ENGINE=MyISAM;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_images` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -120,7 +120,7 @@ CREATE TABLE `lc_products_attributes` (
 	INDEX `product_id` (`product_id`),
 	INDEX `group_id` (`group_id`),
 	INDEX `value_id` (`value_id`)
-) ENGINE=MyISAM DEFAULT;
+) ENGINE=MyISAM;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_info`
 CHANGE COLUMN `attributes` `technical_data` TEXT NOT NULL AFTER `description`

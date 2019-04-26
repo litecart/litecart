@@ -242,3 +242,9 @@
       );
     }
   }
+
+// Finally remove product_groups column
+  database::query(
+    "alter table `lc_products`
+    drop column `product_groups`;"
+  );
