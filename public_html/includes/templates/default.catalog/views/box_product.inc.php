@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col-sm-4 col-md-6">
-      <div class="images row half-gutter">
+      <div class="images row">
 
         <div class="col-xs-12">
           <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">

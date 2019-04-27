@@ -6,7 +6,7 @@
 
     <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
 
-      <div class="row half-gutter">
+      <div class="row">
         <?php if (count(language::$languages) > 1) { ?>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_language', 'Language'); ?></label>
