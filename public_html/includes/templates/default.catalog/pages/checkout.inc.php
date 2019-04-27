@@ -36,6 +36,7 @@
   ];
 
   function queueUpdateTask(component, data, refresh) {
+
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
       return (tasks.component == component) ? false : true;
     });
@@ -74,7 +75,7 @@
     }
 
     var url = '';
-    switch(task.component) {
+    switch (task.component) {
       case 'cart':
         url = '<?php echo document::ilink('ajax/checkout_cart.html'); ?>';
         break;
@@ -95,8 +96,25 @@
         break;
     }
 
+    if (task.data === true) {
+      switch (task.component) {
+        case 'customer':
+          task.data = 'token=' + $(':input[name="token"]').val() + '&' + $('#box-checkout-customer :input').serialize();
+          break;
+        case 'shipping':
+          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-shipping .option.active :input').serialize();
+          break;
+        case 'payment':
+          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-payment .option.active :input').serialize();
+          break;
+        case 'summary':
+          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-summary :input').serialize();
+          break;
+      }
+    }
+
     $.ajax({
-      type: 'post',
+      type: task.data ? 'post' : 'get',
       url: url,
       data: task.data,
       dataType: 'html',
@@ -130,9 +148,9 @@
              + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', null, true);
-    queueUpdateTask('shipping', null, true);
-    queueUpdateTask('payment', null, true);
-    queueUpdateTask('summary', null, true);
+    queueUpdateTask('shipping', true, true);
+    queueUpdateTask('payment', true, true);
+    queueUpdateTask('summary', true, true);
   });
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
@@ -142,9 +160,9 @@
              + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', null, true);
-    queueUpdateTask('shipping', null, true);
-    queueUpdateTask('payment', null, true);
-    queueUpdateTask('summary', null, true);
+    queueUpdateTask('shipping', true, true);
+    queueUpdateTask('payment', true, true);
+    queueUpdateTask('summary', true, true);
   });
 
 // Customer Form: Toggles
@@ -300,8 +318,8 @@
                      + '&' + $('#box-checkout-customer :input').serialize();
             queueUpdateTask('customer', data, true);
             queueUpdateTask('cart', null, true);
-            queueUpdateTask('shipping', null, true);
-            queueUpdateTask('payment', null, true);
+            queueUpdateTask('shipping', true, true);
+            queueUpdateTask('payment', true, true);
             queueUpdateTask('summary', null, true);
           }
         }
@@ -322,8 +340,8 @@
              + '&save_customer_details=true';
     queueUpdateTask('customer', data, true);
     queueUpdateTask('cart', null, true);
-    queueUpdateTask('shipping', null, true);
-    queueUpdateTask('payment', null, true);
+    queueUpdateTask('shipping', true, true);
+    queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', null, true);
     window.customer_form_checksum = $('#box-checkout-customer :input').serialize();
     $('#box-checkout-customer :input:first-child').trigger('change');
@@ -342,7 +360,7 @@
     var data = 'token=' + $(':input[name="token"]').val()
              + '&' + $('#box-checkout-shipping .option.active :input').serialize();
     queueUpdateTask('shipping', data, false);
-    queueUpdateTask('payment', null, true);
+    queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', null, true);
   });
 
