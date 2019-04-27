@@ -123,7 +123,7 @@ CREATE TABLE `lc_products_attributes` (
 ) ENGINE=MyISAM;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_info`
-CHANGE COLUMN `attributes` `technical_data` TEXT NOT NULL AFTER `description`
+CHANGE COLUMN `attributes` `technical_data` TEXT NOT NULL AFTER `description`,
 ADD FULLTEXT INDEX `name` (`name`),
 ADD FULLTEXT INDEX `short_description` (`short_description`),
 ADD FULLTEXT INDEX `description` (`description`);

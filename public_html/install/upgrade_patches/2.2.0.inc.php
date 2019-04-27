@@ -22,8 +22,8 @@
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');" . PHP_EOL
-      'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');" . PHP_EOL
-      'replace' => "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');" . PHP_EOL
+                 . "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');" . PHP_EOL
                  . "  define('DB_TABLE_ATTRIBUTE_VALUES_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values_info`');" . PHP_EOL
                  . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
     ),
@@ -211,12 +211,17 @@
   );
 
   while ($product = database::fetch($products_query)) {
-    list($group_id, $value_id) = preg_split('#-#', $product['product_groups']);
-    database::query(
-      "insert into `". DB_TABLE_PREFIX ."products_attributes`
-      (product_id, group_id, value_id) values
-      (". (int)$product['id'] .", ". (int)$group_id .", ". (int)$value_id .");"
-    );
+    if (empty($product['product_groups'])) continue;
+
+    foreach (preg_split('#,#', $product['product_groups']) as $product_group) {
+      list($group_id, $value_id) = preg_split('#-#', $product_group);
+
+      database::query(
+        "insert into `". DB_TABLE_PREFIX ."products_attributes`
+        (product_id, group_id, value_id) values
+        (". (int)$product['id'] .", ". (int)$group_id .", ". (int)$value_id .");"
+      );
+    }
   }
 
 // Migrate product groups to category filters

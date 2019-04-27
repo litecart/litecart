@@ -68,7 +68,9 @@
 
             foreach ($sql as $query) {
               $query = preg_replace('#--.*\s#', '', $query);
-              database::query($query);
+              if (!empty($query)) {
+                database::query($query);
+              }
             }
           echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
         }
