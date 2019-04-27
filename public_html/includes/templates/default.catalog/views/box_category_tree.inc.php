@@ -1,7 +1,7 @@
 <?php
   $draw_branch = function($category, &$category_path, &$draw_branch) {
     echo '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">' . PHP_EOL
-       . '  <a href="'. htmlspecialchars($category['link']) .'"><i class="fa fa-fw fa-'. (empty($category['opened']) ? 'caret-right' : 'caret-down') .'"></i> '. $category['name'] .'</a>' . PHP_EOL;
+       . '  <a href="'. htmlspecialchars($category['link']) .'">'. functions::draw_fonticon('fa-caret-'. (!empty($category['opened']) ? 'down' : 'right') .' fa-fw') .' '. $category['name'] .'</a>' . PHP_EOL;
     if (!empty($category['subcategories'])) {
       echo '  <ul class="nav nav-stacked nav-pills">' . PHP_EOL;
       foreach ($category['subcategories'] as $subcategory) {
@@ -35,7 +35,7 @@
 <?php if (!empty(document::$settings['compact_category_tree'])) { ?>
 <script>
   $('#box-category-tree > ul.compact').prepend(
-    '<li class="toggle"><a href="#" data-toggle="showall"><?php echo functions::draw_fonticon('fa-caret-left'); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
+    '<li class="toggle"><a href="#" data-toggle="showall"><?php echo functions::draw_fonticon('fa-caret-left fa-fw'); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
   );
 
   $('#box-category-tree > ul.compact').on('click', 'a[data-toggle="showall"]', function(e){
