@@ -24,6 +24,7 @@
 ?>
   </div>
 
+  <?php if (count($slides) > 1) { ?>
   <ol class="carousel-indicators">
     <?php foreach ($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'.  $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
   </ol>
@@ -34,4 +35,5 @@
   <a class="right carousel-control" href="#box-slides" data-slide="next">
     <span class="icon-next"><?php echo functions::draw_fonticon('fa-chevron-right'); ?></span>
   </a>
+  <?php } ?>
 </section>
