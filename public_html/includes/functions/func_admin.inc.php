@@ -14,10 +14,10 @@
       }
 
       usort($apps, function($a, $b) use ($apps) {
-        if ($a['priority'] == $b['priority']) {
+        if (@$a['priority'] == @$b['priority']) {
           return ($a['name'] < $b['name']) ? -1 : 1;
         }
-        return ($a['priority'] < $b['priority']) ? -1 : 1;
+        return (@$a['priority'] < @$b['priority']) ? -1 : 1;
       });
 
       cache::set($apps_cache_token, $apps);

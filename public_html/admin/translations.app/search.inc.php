@@ -79,7 +79,7 @@ ul.filter li {
 
 <?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
 <?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
-<ul class="panel-filter">
+<ul class="list-inline">
   <li class="expandable">
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?>
   </li>

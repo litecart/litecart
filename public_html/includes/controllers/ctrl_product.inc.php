@@ -200,7 +200,7 @@
       }
 
       $this->data['categories'] = array_map('trim', $this->data['categories']);
-      $this->data['categories'] = array_filter($this->data['categories']);
+      $this->data['categories'] = array_filter($this->data['categories'], function($var){ return ($var != ''); }); // Don't filter root ('0')
       $this->data['categories'] = array_unique($this->data['categories']);
 
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);

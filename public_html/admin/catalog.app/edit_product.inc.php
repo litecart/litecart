@@ -28,11 +28,14 @@
       if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
       if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 
+      if (empty($_POST['categories'])) $_POST['categories'] = array();
+      if (empty($_POST['images'])) $_POST['images'] = array();
+      if (empty($_POST['attributes'])) $_POST['attributes'] = array();
+      if (empty($_POST['campaigns'])) $_POST['campaigns'] = array();
+      if (empty($_POST['options'])) $_POST['options'] = array();
+      if (empty($_POST['options_stock'])) $_POST['options_stock'] = array();
+
       $_POST['keywords'] = explode(',', $_POST['keywords']);
-      if (!isset($_POST['images'])) $_POST['images'] = array();
-      if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
-      if (!isset($_POST['options'])) $_POST['options'] = array();
-      if (!isset($_POST['options_stock'])) $_POST['options_stock'] = array();
 
       $fields = array(
         'status',
@@ -359,10 +362,10 @@
         <?php foreach (array_keys(language::$languages) as $language_code) { ?>
         <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical_data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'technical_data['. $language_code .']', true, 'style="height: 200px;"'); ?>
-      </div>
+          <div class="form-group">
+            <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
+            <?php echo functions::form_draw_text_field('short_description['. $language_code .']', true); ?>
+          </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_description', 'Description'); ?></label>

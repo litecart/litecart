@@ -109,6 +109,14 @@ ALTER TABLE `lc_pages`
 ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
 ADD INDEX `parent_id` (`parent_id`);
 -- --------------------------------------------------------
+DROP TABLE `lc_product_groups`;
+-- --------------------------------------------------------
+DROP TABLE `lc_product_groups_info`;
+-- --------------------------------------------------------
+DROP TABLE `lc_product_groups_values`;
+-- --------------------------------------------------------
+DROP TABLE `lc_product_groups_values_info`;
+-- --------------------------------------------------------
 CREATE TABLE `lc_products_attributes` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`product_id` INT NOT NULL,
