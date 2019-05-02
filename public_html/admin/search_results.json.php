@@ -24,18 +24,28 @@
     $code_regex = functions::format_regex_code($_GET['query']);
 
     $products_query = database::query(
-      "select p.id, p.default_category_id, pi.name from ". DB_TABLE_PRODUCTS ." p
+      "select p.id, p.default_category_id, pi.name,
+      (
+        if(p.id = '". database::input($_GET['query']) ."', 10, 0)
+        + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
+        + (match(pi.short_description) against ('*". database::input($_GET['query']) ."*') / 2)
+        + (match(pi.description) against ('*". database::input($_GET['query']) ."*') / 3)
+        + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
+          + if (p.id in (
+            select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+            where sku regexp '". database::input($code_regex) ."'
+          ), 5, 0)
+      ) as relevance
+
+      from ". DB_TABLE_PRODUCTS ." p
+
       left join ".  DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-      where (
-        p.id = '". database::input($_GET['query']) ."'
-        or p.code regexp '". database::input($code_regex) ."'
-        or p.sku regexp '". database::input($code_regex) ."'
-        or p.mpn regexp '". database::input($code_regex) ."'
-        or p.gtin regexp '". database::input($code_regex) ."'
-        or p.keywords like '%". database::input($_GET['query']) ."%'
-        or pi.name like '%". database::input($_GET['query']) ."%'
-      )
-      order by pi.name asc
+
+      having relevance > 0
+      order by relevance desc
       limit 5;"
     );
 
@@ -56,13 +66,15 @@
     );
 
     $customers_query = database::query(
-      "select id, concat(firstname, ' ', lastname) as name, email from ". DB_TABLE_CUSTOMERS ."
-      where (
-        id = '". database::input($_GET['query']) ."'
-        or concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%'
-        or email like '%". database::input($_GET['query']) ."%'
-      )
-      order by date_created desc
+      "select id, concat(firstname, ' ', lastname) as name, email,
+      (
+        if(id = '". database::input($_GET['query']) ."', 10, 0)
+        + if(concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(email like '%". database::input($_GET['query']) ."%', 5, 0)
+      ) as relevance
+      from ". DB_TABLE_CUSTOMERS ."
+      having relevance > 0
+      order by relevance desc
       limit 5;"
     );
 
@@ -83,17 +95,19 @@
     );
 
     $orders_query = database::query(
-      "select id, concat(customer_firstname, ' ', customer_lastname) as customer_name from ". DB_TABLE_ORDERS ."
-      where (
-        id = '". database::input($_GET['query']) ."'
-        or customer_email like '%". database::input($_GET['query']) ."%'
-        or customer_tax_id like '%". database::input($_GET['query']) ."%'
-        or concat(customer_firstname, ' ', customer_lastname) like '%". database::input($_GET['query']) ."%'
-        or customer_company like '%". database::input($_GET['query']) ."%'
-        or shipping_tracking_id like '%". database::input($_GET['query']) ."%'
-        or payment_transaction_id like '%". database::input($_GET['query']) ."%'
-      )
-      order by date_created desc
+      "select id, concat(customer_firstname, ' ', customer_lastname) as customer_name,
+      (
+        if(id = '". database::input($_GET['query']) ."', 10, 0)
+        + if(customer_email like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(customer_tax_id like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(concat(customer_firstname, ' ', customer_lastname) like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(customer_company like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(shipping_tracking_id like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(payment_transaction_id like '%". database::input($_GET['query']) ."%', 5, 0)
+      ) as relevance
+      from ". DB_TABLE_ORDERS ."
+      having relevance > 0
+      order by relevance desc
       limit 5;"
     );
 

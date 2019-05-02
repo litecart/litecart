@@ -246,24 +246,27 @@
     $code_regex = functions::format_regex_code($_GET['query']);
 
     $products_query = database::query(
-      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name
+      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name,
+      (
+        if(p.id = '". database::input($_GET['query']) ."', 10, 0)
+        + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
+        + (match(pi.short_description) against ('*". database::input($_GET['query']) ."*') / 2)
+        + (match(pi.description) against ('*". database::input($_GET['query']) ."*') / 3)
+        + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
+          + if (p.id in (
+            select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+            where sku regexp '". database::input($code_regex) ."'
+          ), 5, 0)
+      ) as relevance
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (p.manufacturer_id = m.id)
       left join ". DB_TABLE_SUPPLIERS ." s on (p.supplier_id = s.id)
-      where (
-        p.id = '". database::input($_GET['query']) ."'
-        or pi.name like '%". database::input($_GET['query']) ."%'
-        or p.code regexp '". database::input($code_regex) ."'
-        or p.sku regexp '". database::input($code_regex) ."'
-        or p.mpn regexp '". database::input($code_regex) ."'
-        or p.gtin regexp '". database::input($code_regex) ."'
-        or pi.short_description like '%". database::input($_GET['query']) ."%'
-        or pi.description like '%". database::input($_GET['query']) ."%'
-        or m.name like '%". database::input($_GET['query']) ."%'
-        or s.name like '%". database::input($_GET['query']) ."%'
-      )
-      order by pi.name asc;"
+      having relevance > 0
+      order by relevance desc;"
     );
 
     if (database::num_rows($products_query) > 0) {
