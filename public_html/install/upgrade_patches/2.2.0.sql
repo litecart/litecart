@@ -148,9 +148,11 @@ ADD INDEX `email` (`email`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 ADD COLUMN `starred` TINYINT(1) NOT NULL AFTER `uid`,
+ADD COLUMN `unread` TINYINT(1) NOT NULL AFTER `starred`,
 ADD COLUMN `reference` VARCHAR(128) NOT NULL AFTER `payment_transaction_id`,
 ADD COLUMN `display_prices_including_tax` TINYINT(1) NOT NULL AFTER `currency_value`,
-ADD INDEX `starred` (`starred`);
+ADD INDEX `starred` (`starred`),
+ADD INDEX `unread` (`unread`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL AFTER `name`,

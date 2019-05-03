@@ -337,6 +337,7 @@ CREATE TABLE `lc_orders` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(13) NOT NULL,
   `starred` TINYINT(1) NOT NULL,
+  `unread` TINYINT(1) NOT NULL,
   `order_status_id` INT(11) NOT NULL,
   `customer_id` INT(11) NOT NULL,
   `customer_company` VARCHAR(64) NOT NULL,
@@ -385,7 +386,8 @@ CREATE TABLE `lc_orders` (
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_status_id` (`order_status_id`),
-  KEY `starred` (`starred`)
+  KEY `starred` (`starred`),
+  KEY `unread` (`unread`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_comments` (

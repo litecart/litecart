@@ -35,8 +35,12 @@
 
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
+
+      $row_classes = array();
+      if (empty($order['order_status_id'])) $row_classes[]= 'semi-transparent';
+      if (!empty($order['unread'])) $row_classes[]= 'bold';
 ?>
-        <tr class="<?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : null; ?>">
+        <tr class="<?php echo implode(' ', $row_classes); ?>">
           <td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
           <td><?php echo $order['id']; ?></td>
           <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>

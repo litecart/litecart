@@ -130,6 +130,7 @@
   }
 
 // Save order
+  $order->data['unread'] = true;
   $order->save();
 
 // Clean up cart

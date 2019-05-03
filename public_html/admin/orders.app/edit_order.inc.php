@@ -30,6 +30,16 @@
 
   breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
 
+// Mark as read
+  if (!empty($order->data['id'])) {
+    database::query(
+      "update ". DB_TABLE_ORDERS ."
+      set unread = 0
+      where id = ".  (int)$order->data['id'] ."
+      limit 1;"
+    );
+  }
+
 // Save data to database
   if (isset($_POST['save'])) {
 
@@ -52,6 +62,7 @@
       }
 
       $fields = array(
+        'unread',
         'language_code',
         'currency_code',
         'currency_value',
@@ -804,6 +815,8 @@
   <div class="form-group text-right">
     <div class="checkbox">
       <label><?php echo functions::form_draw_checkbox('email_order_copy', true); ?> <?php echo language::translate('title_send_order_copy_email', 'Send order copy email'); ?></label>
+    <div class="checkbox">
+      <label><?php echo functions::form_draw_checkbox('unread', '1', false); ?> <?php echo language::translate('title_mark_as_unread', 'Mark as unread'); ?></label>
     </div>
   </div>
 
