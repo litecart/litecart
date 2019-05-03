@@ -29,8 +29,9 @@
       'customer_picker' => 'customer_picker.inc.php',
       'customers' => 'customers.inc.php',
       'customers.json' => 'customers.json.inc.php',
-      'edit_customer' => 'edit_customer.inc.php',
       'csv' => 'csv.inc.php',
+      'edit_customer' => 'edit_customer.inc.php',
+      'get_address.json' => 'get_address.json.inc.php',
       'newsletter' => 'newsletter.inc.php',
     ),
   );
