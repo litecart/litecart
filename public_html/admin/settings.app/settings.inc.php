@@ -129,7 +129,7 @@
 
           case (substr($setting['function'], 0, 14) == 'regional_input'):
             $setting['value'] = @json_decode($setting['value'], true);
-            $setting['value'] = $setting['value'][language::$selected['code']];
+            $setting['value'] = @$setting['value'][language::$selected['code']];
             break;
 
           case (substr($setting['function'], 0, 6) == 'toggle'):

@@ -88,7 +88,7 @@
       name = '(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)';
     }
 
-    var field = $.featherlight.current().$currentTarget.closest('.form-control');
+    var field = $.featherlight.current().$currentTarget.closest('.input-group');
 
     $(field).find(':input').val(id).trigger('change');
     $(field).find('.id').text(id);
@@ -98,7 +98,7 @@
 
   $('#modal-customer-picker .set-guest').click(function(){
 
-    var field = $.featherlight.current().$currentTarget.closest('.form-control');
+    var field = $.featherlight.current().$currentTarget.closest('.input-group');
 
     $(field).find(':input').val('0').trigger('change');
     $(field).find('.id').text('0');

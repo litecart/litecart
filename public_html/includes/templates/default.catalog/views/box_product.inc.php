@@ -127,12 +127,12 @@
         <div class="form-group">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
-            <div class="input-group">
+            <div class="input-group" style="flex: 0 1 auto;">
               <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 1, null) : (functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1)); ?>
               <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
             </div>
 
-            <div style="padding-left: 0.5em; white-space: nowrap;">
+            <div style="flex: 1 0 auto; padding-left: 1em;">
               <?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity <= 0 && !$orderable) ? ' disabled="disabled"' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
             </div>
           </div>
@@ -162,12 +162,12 @@
   </ul>
 
   <div class="tab-content">
-    <div id="description" class="tab-pane">
+    <div id="tab-description" class="tab-pane description">
       <?php echo $description; ?>
     </div>
 
     <?php if ($technical_data) { ?>
-    <div id="technical-data" class="tab-pane">
+    <div id="tab-technical-data" class="tab-pane technical-data">
       <table class="table table-striped table-hover">
 <?php
   for ($i=0; $i<count($technical_data); $i++) {
