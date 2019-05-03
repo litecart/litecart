@@ -56,7 +56,7 @@
 <?php
   $languages_query = database::query(
     "select * from ". DB_TABLE_LANGUAGES ."
-    order by status desc, priority, name;"
+    order by field(status, 1, -1, 0), priority, name;"
   );
 
   if (database::num_rows($languages_query) > 0) {
@@ -65,10 +65,16 @@
 
     $page_items = 0;
     while ($language = database::fetch($languages_query)) {
+
+      switch ($language['status']) {
+        case '1': $status_color = '#88cc44'; break;
+        case '-1': $status_color = '#ded90f'; break;
+        case '0': $status_color = '#ff6644'; break;
+      }
 ?>
     <tr class="<?php echo empty($language['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($language['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $status_color .';"'); ?></td>
       <td><?php echo $language['id']; ?></td>
       <td><?php echo $language['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>

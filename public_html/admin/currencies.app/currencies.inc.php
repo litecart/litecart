@@ -59,16 +59,22 @@
 <?php
   $currencies_query = database::query(
     "select * from ". DB_TABLE_CURRENCIES ."
-    order by status desc, priority, name;"
+    order by field(status, 1, -1, 0), priority, name;"
   );
 
   if (database::num_rows($currencies_query) > 0) {
 
     while ($currency = database::fetch($currencies_query)) {
+
+      switch ($currency['status']) {
+        case '1': $status_color = '#88cc44'; break;
+        case '-1': $status_color = '#ded90f'; break;
+        case '0': $status_color = '#ff6644'; break;
+      }
 ?>
     <tr class="<?php echo empty($currency['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($currency['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $status_color .';"'); ?></td>
       <td><?php echo $currency['id']; ?></td>
       <td><?php echo $currency['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>

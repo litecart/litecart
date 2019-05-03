@@ -142,7 +142,11 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
-      <?php echo functions::form_draw_toggle('status', (file_get_contents('php://input') != '') ? true : '1', 'e/d'); ?>
+      <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
+        <label class="btn btn-default<?php echo ($_POST['status'] == 1) ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+        <label class="btn btn-default<?php echo ($_POST['status'] == -1) ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
+        <label class="btn btn-default<?php echo ($_POST['status'] == 0) ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+      </div>
     </div>
 
     <div class="form-group col-md-6">

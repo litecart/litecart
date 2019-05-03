@@ -128,20 +128,27 @@
 
     public static function identify() {
 
+      $all_languages = array_keys(self::$languages);
+
+      $enabled_languages = array();
+      foreach (self::$languages as $language) {
+        if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
+      }
+
     // Return language from URI query
       if (!empty($_GET['language'])) {
-        if (isset(self::$languages[$_GET['language']])) return $_GET['language'];
+        if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
       }
 
     // Return language from URI path
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_HTTP_HOME))));
-      if (isset(self::$languages[$code])) return $code;
+      if (in_array($code, $all_languages)) return $code;
 
     // Return language from session
-      if (isset(self::$selected['code']) && isset(self::$languages[self::$selected['code']])) return self::$selected['code'];
+      if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)) return self::$selected['code'];
 
     // Return language from cookie
-      if (isset($_COOKIE['language_code']) && isset(self::$languages[$_COOKIE['language_code']])) return $_COOKIE['language_code'];
+      if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $all_languages)) return $_COOKIE['language_code'];
 
     // Return language from browser request headers
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -165,18 +172,17 @@
           limit 1;"
         );
         $country = database::fetch($countries_query);
-        if (!empty($country['language_code']) && isset(self::$languages[$country['language_code']])) return $country['language_code'];
+        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
       }
 
     // Return default language
-      if (isset(self::$languages[settings::get('default_language_code')])) return settings::get('default_language_code');
+      if (in_array(settings::get('default_language_code'), $all_languages)) return settings::get('default_language_code');
 
     // Return system language
-      if (isset(self::$languages[settings::get('store_language_code')])) return settings::get('store_language_code');
+      if (in_array(settings::get('store_language_code'), $all_languages)) return settings::get('store_language_code');
 
     // Return first language
-      $languages = array_keys(self::$languages);
-      return array_shift($languages);
+      return (!empty($enabled_languages)) ? $enabled_languages[0] : $all_languages[0];
     }
 
     public static function translate($code, $default=null, $language_code=null) {

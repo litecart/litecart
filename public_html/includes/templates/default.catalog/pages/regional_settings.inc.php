@@ -1,3 +1,15 @@
+<?php
+  $currency_options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+  foreach ($currencies as $currency) {
+    $currency_options[] = array($currency['name'], $currency['code']);
+  }
+
+  $language_options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+  foreach ($languages as $language) {
+    $language_options[] = array($language['name'], $language['code']);
+  }
+?>
+
 <div id="content">
   {snippet:notices}
 
@@ -7,17 +19,17 @@
     <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
 
       <div class="row">
-        <?php if (count(language::$languages) > 1) { ?>
+        <?php if (!empty($languages)) { ?>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_language', 'Language'); ?></label>
-          <?php echo functions::form_draw_languages_list('language_code', language::$selected['code']); ?>
+          <?php echo functions::form_draw_select_field('language_code', $language_options, language::$selected['code']); ?>
         </div>
         <?php } ?>
 
-        <?php if (count(currency::$currencies) > 1) { ?>
+        <?php if (!empty($currencies)) { ?>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-          <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?>
+          <?php echo functions::form_draw_select_field('currency_code', $currency_options, currency::$selected['code']); ?>
         </div>
         <?php } ?>
 
