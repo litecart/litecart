@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
   `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
-  KEY `group_id` (`group_id`)
-  KEY `language_code` (`language_code`),
+  KEY `group_id` (`group_id`),
+  KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
@@ -73,13 +73,13 @@ CREATE TABLE `lc_categories` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_filters` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`category_id` INT NOT NULL,
-	`select_multiple` TINYINT NOT NULL,
-	`attribute_group_id` INT NOT NULL,
-  `priority` INT(11) NOT NULL AFTER `attribute_group_id`,
-	INDEX `category_id` (`category_id`),
+	`category_id` INT(11) NOT NULL,
+	`select_multiple` TINYINT(1) NOT NULL,
+	`attribute_group_id` INT(11) NOT NULL,
+  `priority` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),
-	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`)
+	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),
+	INDEX `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_images` (
@@ -543,10 +543,10 @@ CREATE TABLE `lc_products` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_attributes` (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`product_id` INT NOT NULL,
-	`group_id` INT NOT NULL,
-	`value_id` INT NOT NULL,
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) NOT NULL,
+	`group_id` INT(11) NOT NULL,
+	`value_id` INT(11) NOT NULL,
 	`custom_value` VARCHAR(256) NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),

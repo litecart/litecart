@@ -143,7 +143,7 @@
 
 // Order Public Key
   database::query(
-    "ALTER TABLE `lc_orders`
+    "ALTER TABLE `". DB_TABLE_PREFIX ."orders`
 	  ADD COLUMN `public_key` VARCHAR(32) NOT NULL AFTER `domain`;"
   );
 
@@ -269,6 +269,6 @@
 
 // Finally remove product_groups column
   database::query(
-    "alter table `lc_products`
+    "alter table `". DB_TABLE_PREFIX ."products`
     drop column `product_groups`;"
   );

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS `lc_addresses`;
+-- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(32) NOT NULL,
@@ -56,13 +58,13 @@ SELECT id, product_group_value_id, language_code, name FROM `lc_product_groups_v
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_filters` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`category_id` INT NOT NULL,
-	`select_multiple` TINYINT NOT NULL,
-	`attribute_group_id` INT NOT NULL,
+	`category_id` INT(11) NOT NULL,
+	`select_multiple` TINYINT(1) NOT NULL,
+	`attribute_group_id` INT(11) NOT NULL,
   `priority` INT(11) NOT NULL,
-	INDEX `category_id` (`category_id`),
 	PRIMARY KEY (`id`),
-	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`)
+	UNIQUE KEY `attribute_filter` (`category_id`, `attribute_group_id`),
+	KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_images` (
@@ -72,7 +74,7 @@ CREATE TABLE `lc_categories_images` (
 	`checksum` CHAR(32) NOT NULL,
 	`priority` TINYINT(2) NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `category_id` (`category_id`)
+	KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM;
 -- --------------------------------------------------------
 INSERT INTO `lc_categories_images` (category_id, filename) (
@@ -81,7 +83,7 @@ INSERT INTO `lc_categories_images` (category_id, filename) (
 );
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
-ADD COLUMN `num_logins` INT NOT NULL AFTER `password_reset_token`,
+ADD COLUMN `num_logins` INT(11) NOT NULL AFTER `password_reset_token`,
 ADD COLUMN `last_ip` VARCHAR(39) NOT NULL AFTER `num_logins`,
 ADD COLUMN `last_host` VARCHAR(64) NOT NULL AFTER `last_ip`,
 ADD COLUMN `last_agent` VARCHAR(256) NOT NULL AFTER `last_host`,
@@ -101,13 +103,16 @@ WHERE `key` = 'job_error_reporter:last_run';
 INSERT INTO `lc_settings` (`setting_group_key`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('email', 'Send Emails', 'Wheither or not the platform should deliver outgoing emails.', 'email_status', '1', 'toggle("y/n")', '1', NOW(), NOW());
 -- --------------------------------------------------------
-ALTER TABLE `lc_sold_out_statuses` ADD COLUMN `hidden` TINYINT(1) NOT NULL AFTER `id`;
+ALTER TABLE `lc_sold_out_statuses`
+ADD COLUMN `hidden` TINYINT(1) NOT NULL AFTER `id`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_sold_out_statuses` ADD INDEX `hidden` (`hidden`), ADD INDEX `orderable` (`orderable`);
+ALTER TABLE `lc_sold_out_statuses`
+ADD KEY `hidden` (`hidden`),
+ADD KEY `orderable` (`orderable`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_pages`
 ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
-ADD INDEX `parent_id` (`parent_id`);
+ADD KEY `parent_id` (`parent_id`);
 -- --------------------------------------------------------
 DROP TABLE `lc_product_groups`;
 -- --------------------------------------------------------
@@ -118,23 +123,23 @@ DROP TABLE `lc_product_groups_values`;
 DROP TABLE `lc_product_groups_values_info`;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_attributes` (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`product_id` INT NOT NULL,
-	`group_id` INT NOT NULL,
-	`value_id` INT NOT NULL,
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) NOT NULL,
+	`group_id` INT(11) NOT NULL,
+	`value_id` INT(11) NOT NULL,
 	`custom_value` VARCHAR(256) NOT NULL,
 	PRIMARY KEY (`id`),
-	UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
-	INDEX `product_id` (`product_id`),
-	INDEX `group_id` (`group_id`),
-	INDEX `value_id` (`value_id`)
+	UNIQUE KEY `id` (`id`, `product_id`, `group_id`, `value_id`),
+	KEY `product_id` (`product_id`),
+	KEY `group_id` (`group_id`),
+	KEY `value_id` (`value_id`)
 ) ENGINE=MyISAM;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_info`
 CHANGE COLUMN `attributes` `technical_data` TEXT NOT NULL AFTER `description`,
-ADD FULLTEXT INDEX `name` (`name`),
-ADD FULLTEXT INDEX `short_description` (`short_description`),
-ADD FULLTEXT INDEX `description` (`description`);
+ADD FULLTEXT KEY `name` (`name`),
+ADD FULLTEXT KEY `short_description` (`short_description`),
+ADD FULLTEXT KEY `description` (`description`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_users`
 ADD COLUMN `email` VARCHAR(128) NOT NULL AFTER `username`,
@@ -142,17 +147,17 @@ CHANGE COLUMN `date_blocked` `date_valid_from` DATETIME NOT NULL AFTER `total_lo
 CHANGE COLUMN `date_expires` `date_valid_to` DATETIME NOT NULL AFTER `date_valid_from`,
 CHANGE COLUMN `last_ip` `last_ip` VARCHAR(39) NOT NULL AFTER `permissions`,
 CHANGE COLUMN `last_host` `last_host` VARCHAR(128) NOT NULL AFTER `last_ip`,
-ADD INDEX `status` (`status`),
-ADD INDEX `username` (`username`),
-ADD INDEX `email` (`email`);
+ADD KEY `status` (`status`),
+ADD KEY `username` (`username`),
+ADD KEY `email` (`email`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 ADD COLUMN `starred` TINYINT(1) NOT NULL AFTER `uid`,
 ADD COLUMN `unread` TINYINT(1) NOT NULL AFTER `starred`,
 ADD COLUMN `reference` VARCHAR(128) NOT NULL AFTER `payment_transaction_id`,
 ADD COLUMN `display_prices_including_tax` TINYINT(1) NOT NULL AFTER `currency_value`,
-ADD INDEX `starred` (`starred`),
-ADD INDEX `unread` (`unread`);
+ADD KEY `starred` (`starred`),
+ADD KEY `unread` (`unread`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL AFTER `name`,
