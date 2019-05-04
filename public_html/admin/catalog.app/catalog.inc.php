@@ -1,4 +1,6 @@
 <?php
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
+
   if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {

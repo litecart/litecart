@@ -1,4 +1,5 @@
 <?php
+  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 

@@ -12,6 +12,7 @@
     }
   }
 
+  breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::link(WS_DIR_ADMIN, array('doc' => 'delivery_statuses'), array('app')));
   breadcrumbs::add(!empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status'));
 
   if (isset($_POST['save'])) {

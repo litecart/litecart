@@ -52,6 +52,8 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
+  breadcrumbs::add($title);
+
   $installed_modules_query = database::query(
     "select * from ". DB_TABLE_MODULES ."
     where type = '". database::input($type) ."';"

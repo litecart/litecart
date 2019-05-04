@@ -12,6 +12,7 @@
     }
   }
 
+  breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'), document::link(WS_DIR_ADMIN, array('doc' => 'tax_classes'), array('app')));
   breadcrumbs::add(!empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'));
 
   if (isset($_POST['save'])) {

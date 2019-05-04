@@ -1,3 +1,6 @@
+<?php
+  breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'));
+?>
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier')), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
 </ul>

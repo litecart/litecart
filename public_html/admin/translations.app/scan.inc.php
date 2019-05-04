@@ -1,3 +1,6 @@
+<?php
+  breadcrumbs::add(language::translate('title_scan_translations', 'Scan Translations'));
+?>
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>

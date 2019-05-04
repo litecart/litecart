@@ -12,6 +12,7 @@
     }
   }
 
+  breadcrumbs::add(language::translate('title_option_groups', 'Option Groups'), document::link(WS_DIR_ADMIN, array('doc' => 'option_groups'), array('app')));
   breadcrumbs::add(!empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'));
 
   if (isset($_POST['save'])) {

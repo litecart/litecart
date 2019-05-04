@@ -1,3 +1,6 @@
+<?php
+  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+?>
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc'=> 'edit_attribute_group'), array('app')), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
 </ul>

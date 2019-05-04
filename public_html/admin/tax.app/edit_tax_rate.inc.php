@@ -13,6 +13,9 @@
     $_POST['address_type'] = 'shipping';
   }
 
+  breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::link(WS_DIR_ADMIN, array('doc' => 'tax_rates'), array('app')));
+  breadcrumbs::add(!empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'));
+
   if (isset($_POST['save'])) {
 
     try {

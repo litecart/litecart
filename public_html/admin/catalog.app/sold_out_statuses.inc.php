@@ -1,5 +1,7 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'));
 ?>
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_sold_out_status'), true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
@@ -22,7 +24,6 @@
     </thead>
     <tbody>
 <?php
-
   $sold_out_status_query = database::query(
     "select sos.id, sos.orderable, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
     left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". language::$selected['code'] ."')
