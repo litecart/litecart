@@ -8,6 +8,10 @@
     $_POST['username'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
   }
 
+  if (empty($_POST['redirect_url'])) {
+    $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
+  }
+
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
