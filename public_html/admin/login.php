@@ -113,10 +113,6 @@
   }
 
   $page_login = new view();
-  $page_login->snippets = array(
-    'action' => $_REQUEST['redirect_url'],
-  );
-
   echo $page_login->stitch('pages/login');
 
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
