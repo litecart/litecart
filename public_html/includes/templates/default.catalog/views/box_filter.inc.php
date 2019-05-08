@@ -21,7 +21,7 @@
           <?php foreach ($group['values'] as $value) { ?>
           <div>
             <label>
-              <?php echo (!empty($group['select_multiple'])) ? functions::form_draw_checkbox('attributes[]', $group['id'] .'-'. (!empty($value['id']) ? $value['id'] : $value['value']), true) : functions::form_draw_radio_button('attributes[]', $group['id'] .'-'. (!empty($value['id']) ? $value['id'] : $value['value']), true); ?>
+              <?php echo (!empty($group['select_multiple'])) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', !empty($value['id']) ? $value['id'] : $value['value'], true) : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', !empty($value['id']) ? $value['id'] : $value['value'], true); ?>
               <?php echo $value['value']; ?>
             </label>
           </div>
@@ -37,6 +37,8 @@
 
 <script>
   $('form[name="filter_form"]').change(function(){
-    $("#content").load('?' + $('form[name="filter_form"]').serialize() + ' #content');
+    var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize() + '&sort=<?php echo $_GET['sort']; ?>');
+    //window.location = url.href;
+    $("#content").load(url.href + ' #content');
   });
 </script>

@@ -56,7 +56,6 @@
 
     <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
       <p class="description"><?php echo $description; ?></p>
-    </div>
     <?php } ?>
 
     <?php if ($_GET['page'] == 1) { ?>
@@ -66,9 +65,6 @@
     <?php } ?>
 
     <section class="listing products">
-      <?php if ($_GET['page'] == 1) { ?>
-      <?php } ?>
-
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], array('category_id')); ?>
     </section>
 
