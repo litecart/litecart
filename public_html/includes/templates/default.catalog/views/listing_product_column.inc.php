@@ -19,7 +19,7 @@
     </div>
   </a>
 
-  <button class="preview btn btn-default" data-toggle="lightbox" data-target="<?php echo htmlspecialchars($link) ?>" data-require-window-width="768" data-max-width="980">
+  <button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo htmlspecialchars($link) ?>" data-require-window-width="768" data-max-width="980">
     <?php echo functions::draw_fonticon('fa-search-plus'); ?>
   </button>
 </article>
