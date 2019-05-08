@@ -14,7 +14,7 @@
 
 <div id="page" class="twelve-eighty">
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/site_cookie_notice.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
   <header id="header">
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">

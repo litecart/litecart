@@ -8,6 +8,7 @@
     FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/column_left.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/listing_product.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/site_cookie_notice.inc.php',
   );
 
   foreach ($deleted_files as $pattern) {
