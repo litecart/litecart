@@ -239,6 +239,7 @@
       database::query(
         "update ". DB_TABLE_ORDERS ." set
         starred = ". (int)$this->data['starred'] .",
+        unread = ". (int)$this->data['unread'] .",
         order_status_id = ". (int)$this->data['order_status_id'] .",
         customer_id = ". (int)$this->data['customer']['id'] .",
         customer_email = '". database::input($this->data['customer']['email']) ."',
