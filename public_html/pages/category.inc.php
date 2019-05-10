@@ -65,7 +65,7 @@
   // Images
     list($width, $height) = functions::image_scale_by_width(980, settings::get('category_image_ratio'));
     foreach ($category->images as $image) {
-      $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, 'CROP');
+      $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, settings::get('category_image_clipping'));
     }
 
     if (!empty($_page->snippets['images'])) {
