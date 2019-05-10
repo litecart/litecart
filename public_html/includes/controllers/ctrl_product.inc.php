@@ -13,7 +13,13 @@
     }
 
     public function reset() {
-
+      global $ctrl_product_reset_cache;
+      
+      if($ctrl_product_reset_cache !== null){
+        $this->data = $ctrl_product_reset_cache;
+        return;
+      }
+      
       $this->data = array();
 
       $fields_query = database::query(
@@ -44,6 +50,8 @@
       $this->data['campaigns'] = array();
       $this->data['options'] = array();
       $this->data['options_stock'] = array();
+      
+      $ctrl_product_reset_cache = $this->data;
     }
 
     public function load($product_id) {
@@ -244,16 +252,28 @@
       );
 
     // Categories
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-         where product_id = ". (int)$this->data['id'] .";"
+      $old_categories = array();
+      $categories_query = database::query(
+        "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+         where product_id = '". (int)$this->data['id'] ."';"
       );
+      while ($category_id = database::fetch($categories_query, 'category_id')){
+        $old_categories[] = (int)$category_id;
+        if(!in_array((int)$category_id, $this->data['categories'])) {
+          database::query(
+            "delete from " . DB_TABLE_PRODUCTS_TO_CATEGORIES . "
+             where product_id = '". (int)$this->data['id'] ."' and category_id = '". (int)$category_id ."';"
+          );
+        }
+      }
       foreach ($this->data['categories'] as $category_id){
-        database::query(
-          "insert into ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-          (product_id, category_id)
-          values (". (int)$this->data['id'] .", ". (int)$category_id .");"
-        );
+        if(!in_array((int)$category_id, $old_categories)){
+          database::query(
+            "insert into ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+            (product_id, category_id)
+            values (". (int)$this->data['id'] .", ". (int)$category_id .");"
+          );
+        }
       }
 
     // Info
