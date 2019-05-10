@@ -21,6 +21,8 @@
 
     $iterator = function($parent_id, $level, $current_page_path, &$iterator) {
 
+      $output = array();
+
       $pages_query = database::query(
         "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PAGES ." p
         left join ". DB_TABLE_PAGES_INFO ." pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
