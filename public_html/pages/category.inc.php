@@ -6,6 +6,11 @@
     exit;
   }
 
+  if (!empty($_GET['attributes'])) {
+    $_GET['attributes'] = array_map('array_filter', $_GET['attributes']);
+    $_GET['attributes'] = array_filter($_GET['attributes']);
+  }
+
   $category = reference::category($_GET['category_id']);
 
   if (empty($category->id)) {

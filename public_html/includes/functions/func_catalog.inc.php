@@ -134,7 +134,7 @@
         foreach ($values as $value) {
           $sql_where_attributes[$group][] = "find_in_set('". database::input($group.'-'.$value) ."', pa.attributes)";
         }
-        $sql_where_attributes[$group] = implode(" or ", $sql_where_attributes[$group]);
+        $sql_where_attributes[$group] = "(". implode(" or ", $sql_where_attributes[$group]) .")";
       }
       $sql_where_attributes = "and (". implode(" and ", $sql_where_attributes) .")";
     }
