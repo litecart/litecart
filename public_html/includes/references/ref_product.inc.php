@@ -72,7 +72,8 @@
           $this->_data['attributes'] = array();
 
           $product_attributes_query = database::query(
-            "select pa.*, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
+            "select pa.*, ag.code, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
+            left join ". DB_TABLE_ATTRIBUTE_GROUPS ." ag on (ag.id = pa.group_id)
             left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
             left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
             where product_id = ". (int)$this->_id ."
