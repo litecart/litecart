@@ -101,7 +101,7 @@
       database::query(
         "update ". DB_TABLE_USERS ."
         set
-          password = '". $password_hash ."',
+          password = '". $password_hash ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
