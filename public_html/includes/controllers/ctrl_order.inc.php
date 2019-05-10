@@ -350,7 +350,7 @@
             name = '". database::input($this->data['items'][$key]['name']) ."',
             sku = '". database::input($this->data['items'][$key]['sku']) ."',
             gtin = '". database::input($this->data['items'][$key]['gtin']) ."',
-            taric = '". database::input($this->data['items'][$key]['gtin']) ."',
+            taric = '". database::input($this->data['items'][$key]['taric']) ."',
             quantity = ". (float)$this->data['items'][$key]['quantity'] .",
             price = ". (float)$this->data['items'][$key]['price'] .",
             tax = ". (float)$this->data['items'][$key]['tax'] .",
