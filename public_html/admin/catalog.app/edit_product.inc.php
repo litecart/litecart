@@ -891,9 +891,11 @@ foreach (currency::$currencies as $currency) {
     output = output.replace(/new_attribute_i/g, 'new_' + new_attribute_i);
     output = output.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val());
     output = output.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text());
-      output = output.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val());
+    output = output.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val());
     if ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') {
-    output = output.replace(/new_value_name/g, $('select[name="new_attribute[value_id]"] option:selected').text());
+      output = output.replace(/new_value_name/g, $('select[name="new_attribute[value_id]"] option:selected').text());
+    } else {
+      output = output.replace(/new_value_name/g, '');
     }
     output = output.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val());
     new_attribute_i++;
