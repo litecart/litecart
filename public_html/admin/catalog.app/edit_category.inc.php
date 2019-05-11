@@ -306,7 +306,11 @@
             <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
             <td><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
             <td><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
-            <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+            <td class="text-right">
+              <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+              <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+              <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+            </td>
           </tr>
           <?php } ?>
         </tbody>
@@ -425,13 +429,17 @@
       return;
     }
 
-    var output = '<tr>'
+    var output = '<tr class="grabable">'
                + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
                + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
                + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
                + '  <td>new_attribute_group_name</td>'
                + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
-               + '  <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+               + '  <td class="text-right">'
+               + '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
+               + '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
+               + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '  </td>'
                + '</tr>';
 
     while ($('input[name="filters[new_'+new_attribute_filter_i+']"]').length) new_attribute_filter_i++;
@@ -441,6 +449,17 @@
     new_attribute_filter_i++;
 
     $('#tab-filters tbody').append(output);
+  });
+
+  $('#tab-filters').on('click', '.move-up, .move-down', function(event) {
+    event.preventDefault();
+    var row = $(this).closest('tr');
+
+    if ($(this).is('.move-up') && $(row).prevAll().length) {
+      $(row).insertBefore($(row).prev());
+    } else if ($(this).is('.move-down') && $(row).nextAll().length) {
+      $(row).insertAfter($(row).next());
+    }
   });
 
   $('#tab-filters').on('click', '.remove', function(e) {
