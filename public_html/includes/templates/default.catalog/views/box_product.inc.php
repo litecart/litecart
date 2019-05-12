@@ -167,8 +167,8 @@
 
   <?php if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
   <ul class="nav nav-tabs">
-    <?php if ($description) { ?><li><a data-toggle="tab" href="#description"><?php echo language::translate('title_description', 'Description'); ?></a></li><?php } ?>
-    <?php if ($technical_data) { ?><li><a data-toggle="tab" href="#technical-data"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></a></li><?php } ?>
+    <?php if ($description) { ?><li><a data-toggle="tab" href="#tab-description"><?php echo language::translate('title_description', 'Description'); ?></a></li><?php } ?>
+    <?php if ($technical_data) { ?><li><a data-toggle="tab" href="#tab-technical-data"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></a></li><?php } ?>
   </ul>
 
   <div class="tab-content">
