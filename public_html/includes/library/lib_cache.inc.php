@@ -244,7 +244,7 @@
             $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
           }
 
-          return @file_put_contents($cache_file, json_encode($data));
+          return @file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
 
         case 'session':
           self::$_data[$token['id']] = array(

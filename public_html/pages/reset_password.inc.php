@@ -56,7 +56,7 @@
 
         database::query(
           "update ". DB_TABLE_CUSTOMERS ."
-          set password_reset_token = '". database::input(json_encode($reset_token)) ."'
+          set password_reset_token = '". database::input(json_encode($reset_token), JSON_UNESCAPED_SLASHES) ."'
           where id = ". (int)$customer['id'] ."
           limit 1;"
         );

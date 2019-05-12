@@ -55,5 +55,5 @@
   }
 
   header('Content-Type: application/json');
-  echo json_encode($products);
+  echo json_encode($products, JSON_UNESCAPED_SLASHES);
   exit;

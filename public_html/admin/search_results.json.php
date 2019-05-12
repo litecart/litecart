@@ -124,5 +124,5 @@
     // Do nothing
   }
 
-  echo json_encode($search_results);
+  echo json_encode($search_results, JSON_UNESCAPED_SLASHES);
   exit;

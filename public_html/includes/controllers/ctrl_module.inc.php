@@ -150,7 +150,7 @@
 
       language::convert_characters($data, 'UTF-8', language::$selected['charset']);
 
-      return json_encode($data);
+      return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
     private function _decode_settings($data) {

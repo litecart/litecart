@@ -65,7 +65,7 @@
         status = '". (empty($this->data['status']) ? 0 : 1) ."',
         username = '". database::input($this->data['username']) ."',
         email = '". database::input($this->data['email']) ."',
-        permissions = '". database::input(json_encode($this->data['permissions'])) ."',
+        permissions = '". database::input(json_encode($this->data['permissions'], JSON_UNESCAPED_SLASHES)) ."',
         date_valid_from = '". database::input($this->data['date_valid_from']) ."',
         date_valid_to = '". database::input($this->data['date_valid_to']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'

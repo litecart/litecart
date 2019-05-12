@@ -43,7 +43,7 @@
         self::$_cache[$resource] = array();
       }
 
-      $checksum = md5(json_encode($arguments));
+      $checksum = md5(json_encode($arguments, JSON_UNESCAPED_SLASHES));
 
       if (isset(self::$_cache[$resource][$checksum])) {
         return self::$_cache[$resource][$checksum];
