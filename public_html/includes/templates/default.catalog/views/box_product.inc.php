@@ -211,21 +211,17 @@
 
 <script>
   Number.prototype.toMoney = function() {
-    var number = this;
-    var decimals = <?php echo currency::$selected['decimals']; ?>;
-    var decimal_point = '<?php echo language::$selected['decimal_point']; ?>';
-    var thousands_sep = '<?php echo language::$selected['thousands_sep']; ?>';
-    var prefix = '<?php echo currency::$selected['prefix']; ?>';
-    var suffix = '<?php echo currency::$selected['suffix']; ?>';
-    var sign = (number < 0) ? '-' : '';
+    var n = this,
+      c = <?php echo (int)currency::$selected['decimals']; ?>,
+      d = '<?php echo language::$selected['decimal_point']; ?>',
+      t = '<?php echo language::$selected['thousands_sep']; ?>',
+      p = '<?php echo currency::$selected['prefix']; ?>',
+      x = '<?php echo currency::$selected['suffix']; ?>',
+      s = n < 0 ? '-' : '',
+      i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
+      j = (j = i.length) > 3 ? j % 3 : 0;
 
-    var i = parseInt(number = Math.abs(number).toFixed(decimals)) + '';
-    if (number - i == 0) decimals = 0;
-
-    var l = ((l = i.length) > 3) ? l % 3 : 0;
-    var f = sign + prefix + (l ? i.substr(0, l) + thousands_sep : '') + i.substr(l).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep) + (decimals ? decimal_point + Math.abs(number - i).toFixed(decimals).slice(decimals) : '') + suffix;
-
-    return f;
+    return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '') + x;
   }
 
   $('#box-product form[name=buy_now_form]').bind('input propertyChange', function(e) {
