@@ -19,14 +19,14 @@
     <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
 
       <div class="row">
-        <?php if (!empty($languages)) { ?>
+        <?php if (count($languages) > 1) { ?>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_language', 'Language'); ?></label>
           <?php echo functions::form_draw_select_field('language_code', $language_options, language::$selected['code']); ?>
         </div>
         <?php } ?>
 
-        <?php if (!empty($currencies)) { ?>
+        <?php if (count($currencies) > 1) { ?>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
           <?php echo functions::form_draw_select_field('currency_code', $currency_options, currency::$selected['code']); ?>
