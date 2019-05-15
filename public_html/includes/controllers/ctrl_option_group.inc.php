@@ -2,6 +2,7 @@
 
   class ctrl_option_group {
     public $data;
+    public $previous;
 
     public function __construct($group_id=null) {
 
@@ -91,6 +92,8 @@
           }
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

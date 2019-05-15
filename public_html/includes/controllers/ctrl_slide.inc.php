@@ -2,6 +2,7 @@
 
   class ctrl_slide {
     public $data;
+    public $previous;
 
     public function __construct($slide_id=null) {
 
@@ -37,6 +38,8 @@
           $this->data[$field['Field']][$language_code] = null;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($slide_id) {

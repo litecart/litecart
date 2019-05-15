@@ -2,6 +2,7 @@
 
   class ctrl_tax_class {
     public $data;
+    public $previous;
 
     public function __construct($tax_class_id=null) {
 
@@ -41,6 +42,8 @@
       } else {
         throw new Exception('Could not find tax class (ID: '. (int)$tax_class_id .') in database.');
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

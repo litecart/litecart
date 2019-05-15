@@ -2,6 +2,7 @@
 
   class ctrl_product {
     public $data;
+    public $previous;
 
     public function __construct($product_id=null) {
 
@@ -178,6 +179,8 @@
       while($image = database::fetch($products_images_query)) {
         $this->data['images'][$image['id']] = $image;
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

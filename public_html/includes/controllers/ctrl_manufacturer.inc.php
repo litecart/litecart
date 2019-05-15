@@ -2,6 +2,7 @@
 
   class ctrl_manufacturer {
     public $data;
+    public $previous;
 
     public function __construct($manufacturer_id='') {
 
@@ -65,6 +66,8 @@
           $this->data[$key][$manufacturer_info['language_code']] = $value;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

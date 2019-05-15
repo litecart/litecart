@@ -2,6 +2,7 @@
 
   class ctrl_category {
     public $data;
+    public $previous;
 
     public function __construct($category_id=null) {
 
@@ -92,6 +93,8 @@
       while ($group = database::fetch($category_filters_query)) {
         $this->data['filters'][] = $group;
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

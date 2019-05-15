@@ -2,6 +2,7 @@
 
   class ctrl_order {
     public $data;
+    public $previous;
 
     public function __construct($order_id=null) {
 
@@ -171,6 +172,8 @@
       while ($row = database::fetch($order_comments_query)) {
         $this->data['comments'][$row['id']] = $row;
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {
@@ -179,14 +182,16 @@
       $this->refresh_total();
 
     // Previous order status
-      $previous_order_status_query = database::query(
-        "select os.*, osi.name from ". DB_TABLE_ORDERS ." o
-        left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
-        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
-        where o.id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-      $previous_order_status = database::fetch($previous_order_status_query);
+      if (!empty($this->previous)) {
+        $current_order_status_query = database::query(
+          "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
+          left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
+          where os.id = ". (int)$this->previous['order_status_id'] ."
+          limit 1;"
+        );
+      }
+
+      $previous_order_status = database::fetch($order_status_query);
 
     // Current order status
       $current_order_status_query = database::query(
@@ -198,14 +203,12 @@
       $current_order_status = database::fetch($current_order_status_query);
 
     // Log order status change as comment
-      if (isset($previous_order_status['id']) && isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id']) {
-        if (!empty($this->data['id'])) {
-          $this->data['comments'][] = array(
-            'author' => 'system',
-            'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => $current_order_status['name'])),
-            'hidden' => 1,
-          );
-        }
+      if (!empty($this->previous) && $this->data['order_status_id'] != $this->previous['order_status_id'])) {
+        $this->data['comments'][] = array(
+          'author' => 'system',
+          'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => $current_order_status['name'])),
+          'hidden' => 1,
+        );
       }
 
     // Link guests to customer profile
@@ -460,7 +463,7 @@
       }
 
     // Send order status email notification
-      if ((isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id'])) {
+      if (!empty($this->previous) && $this->data['order_status_id'] != $this->previous['order_status_id'])) {
         if (!empty($current_order_status['notify'])) {
           $this->send_email_notification();
         }

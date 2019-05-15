@@ -2,6 +2,7 @@
 
   class ctrl_user {
     public $data;
+    public $previous;
 
     public function __construct($user_id=null) {
 
@@ -45,11 +46,13 @@
       }
 
       $this->data['permissions'] = @json_decode($this->data['permissions'], true);
+
+      $this->previous = $this->data;
     }
 
     public function save() {
 
-      $old_user = new ctrl_user($this->data['id']);
+      $previous_user = new ctrl_user($this->data['id']);
 
       if (empty($this->data['id'])) {
         database::query(
@@ -76,8 +79,8 @@
       $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
 
     // Rename .htpasswd user
-      if (!empty($old_user->data['id']) && $old_user->data['username'] != $this->data['username']) {
-        $htpasswd = preg_replace('#^(?:(\#)+)?('. preg_quote($old_user->data['username'], '#') .')?:(.*)$#m', '${1}'.$this->data['username'].':${3}', $htpasswd);
+      if (empty($this->previous) && $this->data['username'] != $this->previous['username']) {
+        $htpasswd = preg_replace('#^(?:(\#)+)?('. preg_quote($this->previous['username'], '#') .')?:(.*)$#m', '${1}'.$this->data['username'].':${3}', $htpasswd);
       }
 
     // Set .htpasswd user status

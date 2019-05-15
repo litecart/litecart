@@ -3,6 +3,7 @@
   class ctrl_module {
     private $_module;
     public $data;
+    public $previous;
 
     public function __construct($module_id) {
 
@@ -82,6 +83,8 @@
           if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

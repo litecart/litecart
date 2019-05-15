@@ -2,6 +2,7 @@
 
   class ctrl_language {
     public $data;
+    public $previous;
 
     public function __construct($language_code=null) {
 
@@ -41,6 +42,8 @@
       } else {
         throw new Exception('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.');
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {
@@ -49,22 +52,15 @@
         throw new Exception('You cannot disable the default language.');
       }
 
-      if (!empty($this->data['id'])) {
-        $previous_language_query = database::query(
-          "select * from ". DB_TABLE_LANGUAGES ."
-          where id = ". (int)$this->data['id'] ."
-          limit 1;"
-        );
-        $previous_language = database::fetch($previous_language_query);
-
-        if ($this->data['code'] != $previous_language['code']) {
-          if ($previous_language['code'] == 'en') {
+      if (!empty($this->previous)) {
+        if ($this->data['code'] != $this->previous['code']) {
+          if ($this->previous['code'] == 'en') {
             throw new Exception('You cannot not rename the english language because it is used for the PHP framework.');
 
           } else {
             database::query(
               "alter table ". DB_TABLE_TRANSLATIONS ."
-              change `text_". database::input($previous_language['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
+              change `text_". database::input($this->previous['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
             );
 
             $info_tables = array(
@@ -87,7 +83,7 @@
               database::query(
                 "update ". $table ."
                 set language_code = '". $this->data['code'] ."'
-                where language_code = '". $previous_language['code'] ."';"
+                where language_code = '". $this->previous['code'] ."';"
               );
             }
           }

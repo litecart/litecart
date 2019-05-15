@@ -2,6 +2,7 @@
 
   class ctrl_currency {
     public $data;
+    public $previous;
 
     public function __construct($currency_code=null) {
 
@@ -41,6 +42,8 @@
       } else {
         throw new Exception('Could not find currency (Code: '. htmlspecialchars($currency_code) .') in database.');
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {
@@ -55,31 +58,26 @@
         return;
       }
 
-      if (!empty($this->data['id'])) {
-        $currencies_query = database::query(
-          "select * from ". DB_TABLE_CURRENCIES ."
-          where id = ". (int)$this->data['id'] ."
-          limit 1;"
-        );
-        $currency = database::fetch($currencies_query);
-
-        if ($this->data['code'] != $currency['code']) {
-          if ($currency['code'] == settings::get('store_currency_code')) {
+      if (!empty($this->previous)) {
+        if ($this->data['code'] != $this->previous['code']) {
+          if ($this->previous['code'] == settings::get('store_currency_code')) {
             throw new Exception('Cannot rename the store currency.');
-          } else {
-            database::query(
-              "alter table ". DB_TABLE_PRODUCTS_PRICES ."
-              change `". database::input($currency['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-            );
-            database::query(
-              "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-              change `". database::input($currency['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-            );
-            database::query(
-              "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
-              change `". database::input($currency['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-            );
           }
+
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_PRICES ."
+            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
+
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
+
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
+            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
         }
       }
 

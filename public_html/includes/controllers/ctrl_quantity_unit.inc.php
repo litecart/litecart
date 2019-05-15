@@ -2,6 +2,7 @@
 
   class ctrl_quantity_unit {
     public $data;
+    public $previous;
 
     public function __construct($quantity_unit_id=null) {
 
@@ -66,6 +67,8 @@
           $this->data[$key][$quantity_unit_info['language_code']] = $value;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

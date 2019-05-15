@@ -2,6 +2,7 @@
 
   class ctrl_country {
     public $data;
+    public $previous;
 
     public function __construct($country_code=null) {
 
@@ -52,6 +53,8 @@
       while ($zone = database::fetch($zones_query)) {
         $this->data['zones'][$zone['id']] = $zone;
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

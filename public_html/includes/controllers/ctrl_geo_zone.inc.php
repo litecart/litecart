@@ -2,6 +2,7 @@
 
   class ctrl_geo_zone {
     public $data;
+    public $previous;
 
     public function __construct($geo_zone_id=null) {
 
@@ -57,6 +58,8 @@
         $this->data['zones'][$zone['id']] = $zone;
         if (empty($zone['zone_code'])) $this->data['zones'][$zone['id']]['zone_name'] = '-- '. language::translate('title_all_zones', 'All Zones') .' --';
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

@@ -2,6 +2,7 @@
 
   class ctrl_customer {
     public $data;
+    public $previous;
 
     public function __construct($customer_id=null) {
 
@@ -62,6 +63,8 @@
         $this->data['shipping_address']['country_code'] = $this->data['country_code'];
         $this->data['shipping_address']['zone_code'] = $this->data['zone_code'];
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {
@@ -81,8 +84,6 @@
             where customer_email = '". database::input($this->data['email']) ."';"
           );
         }
-      } else {
-        $old = new ctrl_customer($this->data['id']);
       }
 
       database::query(
@@ -122,8 +123,8 @@
 
       $customer_modules = new mod_customer();
 
-      if (!empty($old)) {
-        $customer_modules->update($this->data, $old->data);
+      if (!empty($this->previous)) {
+        $customer_modules->update($this->data, $this->previous);
       } else {
         $customer_modules->update($this->data);
       }

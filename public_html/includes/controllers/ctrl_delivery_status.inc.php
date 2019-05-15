@@ -2,6 +2,7 @@
 
   class ctrl_delivery_status {
     public $data;
+    public $previous;
 
     public function __construct($delivery_status_id=null) {
 
@@ -35,6 +36,8 @@
           $this->data[$field['Field']][$language_code] = null;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($delivery_status_id) {

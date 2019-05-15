@@ -2,6 +2,7 @@
 
   class ctrl_order_status {
     public $data;
+    public $previous;
 
     public function __construct($order_status_id=null) {
 
@@ -66,6 +67,8 @@
           $this->data[$key][$order_status_info['language_code']] = $value;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

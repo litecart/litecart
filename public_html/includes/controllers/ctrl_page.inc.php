@@ -2,6 +2,7 @@
 
   class ctrl_page {
     public $data;
+    public $previous;
 
     public function __construct($page_id=null) {
 
@@ -70,6 +71,8 @@
           $this->data[$key][$page_info['language_code']] = $value;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {
