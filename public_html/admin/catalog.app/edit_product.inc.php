@@ -364,7 +364,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-            <?php echo functions::form_draw_text_field('short_description['. $language_code .']', true); ?>
+            <?php echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true); ?>
           </div>
 
           <div class="form-group">
