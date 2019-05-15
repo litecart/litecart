@@ -11,6 +11,7 @@
     public $priority = 0;
 
     public function __construct() {
+      language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
     }
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
