@@ -152,6 +152,19 @@
     $(document).mousemove(move).mouseup(up);
   });
 
+// Data-Table Sorting (Page Reload)
+  $('.table-sortable thead th[data-sort]').click(function(){
+    var params = {};
+
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
+      params[key] = value;
+    });
+
+    params.sort = $(this).data('sort');
+
+    window.location.search = $.param(params);
+  });
+
 // Keep-alive
   var keepAlive = setInterval(function(){
     $.get({
