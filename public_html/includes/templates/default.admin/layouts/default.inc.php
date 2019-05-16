@@ -12,7 +12,8 @@
 </head>
 <body>
 
-<div id="page">
+<div id="backend-wrapper">
+  <input id="sidebar-compressed" type="checkbox" hidden />
 
   <div id="sidebar" class="hidden-print">
 
@@ -22,14 +23,6 @@
       </a>
     </div>
 
-    <div id="shortcuts" class="text-center">
-      <a href="<?php echo document::href_ilink(''); ?>" title="<?php echo language::translate('title_catalog', 'Catalog'); ?>"><?php echo functions::draw_fonticon('fa-chevron-circle-left'); ?></a>
-      <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>" title="<?php echo htmlspecialchars(language::translate('title_home', 'Home')); ?>"><?php echo functions::draw_fonticon('fa-home fa-lg'); ?></a>
-      <?php if (settings::get('webmail_link', '')) { ?><a href="<?php echo settings::get('webmail_link'); ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>"><?php echo functions::draw_fonticon('fa-envelope'); ?></a><?php } ?>
-      <?php if (settings::get('database_admin_link', '')) { ?><a href="<?php echo settings::get('database_admin_link'); ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>"><?php echo functions::draw_fonticon('fa-database'); ?></a><?php } ?>
-      <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout.php'); ?>" title="<?php echo language::translate('text_logout', 'Logout'); ?>"><?php echo functions::draw_fonticon('fa-sign-out fa-lg'); ?></a>
-    </div>
-
     <div id="search" class="container-fluid">
       <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;"'); ?>
       <div class="results"></div>
@@ -37,24 +30,90 @@
 
     {snippet:box_apps_menu}
 
-    <div id="languages" class="text-center">
-      <?php foreach (language::$languages as $language) { ?>
-      <?php if ($language['status']) { ?><a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>"><img src="<?php echo document::href_link(WS_DIR_IMAGES .'languages/'. $language['code'] .'.png'); ?>" alt="<?php echo htmlspecialchars($language['name']); ?>" style="max-width: 16px;" /></a><?php } ?>
-      <?php } ?>
-    </div>
+    <div id="platform" class="text-center"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></div>
 
-    <div id="platform" class="text-center"><?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></div>
-
-    <div id="copyright" class="text-center">&copy; <?php echo date('2012-Y'); ?> LiteCart<br />
+    <div id="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
       <a href="http://www.litecart.net" target="_blank">www.litecart.net</a>
     </div>
   </div>
 
   <main id="main">
-    {snippet:notices}
-    {snippet:content}
-  </main>
+    <ul id="top-bar" class="hidden-print">
+      <li>
+        <div>
+          <label class="nav-toggle" for="sidebar-compressed" >
+            <?php echo functions::draw_fonticon('fa-bars'); ?>
+          </label>
+        </div>
+      </li>
 
+      <li>
+        {snippet:breadcrumbs}
+      </li>
+
+      <li style="flex-grow: 1;"></li>
+
+      <?php foreach (language::$languages as $language) { ?>
+      <?php if (empty($language['status'])) continue; ?>
+      <li>
+        <a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>">
+          <img src="<?php echo document::href_link(WS_DIR_IMAGES .'languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" title="<?php echo htmlspecialchars($language['name']); ?>" style="max-height: 1em;" />
+        </a>
+      </li>
+      <?php } ?>
+
+      <li />
+
+<!--
+      <li>
+        <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>" title="<?php echo htmlspecialchars(language::translate('title_dashboard', 'Dashboard')); ?>">
+          <?php echo functions::draw_fonticon('fa-dashboard'); ?>
+        </a>
+      </li>
+-->
+
+
+      <?php if (settings::get('webmail_link', '')) { ?>
+      <li>
+        <a href="<?php echo settings::get('webmail_link'); ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
+          <?php echo functions::draw_fonticon('fa-envelope'); ?>
+        </a>
+      </li>
+      <?php } ?>
+
+      <?php if (settings::get('database_admin_link')) { ?>
+      <li>
+        <a href="<?php echo settings::get('database_admin_link'); ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
+          <?php echo functions::draw_fonticon('fa-database'); ?>
+        </a>
+      </li>
+      <?php } ?>
+
+      <li>
+        <a href="<?php echo document::href_ilink(''); ?>" title="<?php echo language::translate('title_catalog', 'Catalog'); ?>">
+          <?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
+        </a>
+      </li>
+
+      <li>
+        <a class="help" href="{snippet:help_link}" target="_blank" title="<?php echo language::translate('title_help', 'Help'); ?>">
+          <?php echo functions::draw_fonticon('fa-question-circle'); ?> <?php echo language::translate('title_help', 'Help'); ?>
+        </a>
+      </li>
+
+      <li>
+        <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout.php'); ?>" title="<?php echo language::translate('text_logout', 'Logout'); ?>">
+          <?php echo functions::draw_fonticon('fa-sign-out'); ?> <?php echo language::translate('title_sign_out', 'Sign Out'); ?>
+        </a>
+      </li>
+
+    </ul>
+
+    <div id="content">
+      {snippet:notices}
+      {snippet:content}
+    </div>
+  </div>
 </div>
 
 {snippet:foot_tags}
