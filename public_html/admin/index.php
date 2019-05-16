@@ -112,8 +112,10 @@
             'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
             'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
           ),
-          'help_link' => document::link('http://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : ''))),
         );
+
+        //document::$snippets['help_link'] = document::link('https://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : '')));
+        document::$snippets['help_link'] = document::link('https://wiki.litecart.net/');
 
         $app_icon = '<span class="fa-stack icon-wrapper">' . PHP_EOL
                   . '  ' . functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $_page->snippets['theme']['color'] .';"') . PHP_EOL

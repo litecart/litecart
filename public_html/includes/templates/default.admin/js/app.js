@@ -152,11 +152,10 @@
     $(document).mousemove(move).mouseup(up);
   });
 
-// Keep alive
-  var keepAlive = setInterval(function() {
-    $.ajax({
+// Keep-alive
+  var keepAlive = setInterval(function(){
+    $.get({
       url: window.config.platform.url + 'ajax/cart.json',
-      type: 'get',
       cache: false
     });
   }, 60000);
