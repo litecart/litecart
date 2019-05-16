@@ -100,9 +100,8 @@
           and language_code = '". $language_code ."'
           limit 1;"
         );
-        $quantity_unit_info = database::fetch($quantity_unit_info_query);
 
-        if (empty($quantity_unit_info['id'])) {
+        if (!$quantity_unit_info = database::fetch($quantity_unit_info_query)) {
           database::query(
             "insert into ". DB_TABLE_QUANTITY_UNITS_INFO ."
             (quantity_unit_id, language_code)

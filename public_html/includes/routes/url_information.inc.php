@@ -23,9 +23,8 @@
         and language_code = '". database::input($language_code) ."'
         limit 1;"
       );
-      $page = database::fetch($page_query);
 
-      if (empty($page)) return false;
+      if (!$page = database::fetch($page_query)) return false;
 
       $parsed_link['path'] = functions::general_path_friendly($page['title'], $language_code) .'-i-'. $page['page_id'];
 

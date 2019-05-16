@@ -267,9 +267,8 @@
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $product_info = database::fetch($products_info_query);
 
-        if (empty($product_info)) {
+        if (!$product_info = database::fetch($products_info_query)) {
           database::query(
             "insert into ". DB_TABLE_PRODUCTS_INFO ."
             (product_id, language_code)
@@ -329,9 +328,8 @@
           where product_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
-        $product_price = database::fetch($products_prices_query);
 
-        if (empty($product_price)) {
+        if (!$product_price = database::fetch($products_prices_query)) {
           database::query(
             "insert into ". DB_TABLE_PRODUCTS_PRICES ."
             (product_id)

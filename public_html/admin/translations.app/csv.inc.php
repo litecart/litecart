@@ -28,9 +28,8 @@
           where code = '". $row['code'] ."'
           limit 1;"
         );
-        $translation = database::fetch($translation_query);
 
-        if (empty($translation)) {
+        if (!$translation = database::fetch($translation_query)) {
 
           if (!empty($_POST['insert'])) {
 

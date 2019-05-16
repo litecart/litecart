@@ -120,9 +120,8 @@
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $group_info = database::fetch($group_info_query);
 
-        if (empty($group_info)) {
+        if (!$group_info = database::fetch($group_info_query)) {
           database::query(
             "insert into ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ."
             (group_id, language_code)
@@ -197,9 +196,8 @@
             and language_code = '". database::input($language_code) ."'
             limit 1;"
           );
-          $value_info = database::fetch($value_info_query);
 
-          if (empty($value_info)) {
+          if (!$value_info = database::fetch($value_info_query)) {
             database::query(
               "insert into ". DB_TABLE_ATTRIBUTE_VALUES_INFO ."
               (value_id, language_code)

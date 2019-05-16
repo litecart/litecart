@@ -105,9 +105,8 @@
           and language_code = '". $language_code ."'
           limit 1;"
         );
-        $page_info = database::fetch($page_info_query);
 
-        if (empty($page_info['id'])) {
+        if (!$page_info = database::fetch($page_info_query)) {
           database::query(
             "insert into ". DB_TABLE_PAGES_INFO ."
             (page_id, language_code)

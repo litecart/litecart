@@ -94,7 +94,8 @@
         "show fields from ". DB_TABLE_PRODUCTS_PRICES ."
         where `Field` = '". database::input($this->data['code']) ."';"
       );
-      if (database::num_rows($products_prices_query) == 0) {
+
+      if (!database::num_rows($products_prices_query)) {
         database::query(
           "alter table ". DB_TABLE_PRODUCTS_PRICES ."
           add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
@@ -105,7 +106,8 @@
         "show fields from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
         where `Field` = '". database::input($this->data['code']) ."';"
       );
-      if (database::num_rows($products_campaigns_query) == 0) {
+
+      if (!database::num_rows($products_campaigns_query)) {
         database::query(
           "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
           add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
@@ -116,7 +118,8 @@
         "show fields from ". DB_TABLE_PRODUCTS_OPTIONS ."
         where `Field` = '". database::input($this->data['code']) ."';"
       );
-      if (database::num_rows($products_options_query) == 0) {
+
+      if (!database::num_rows($products_options_query)) {
         database::query(
           "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
           add `". database::input($this->data['code']) ."` decimal(11, 4) not null after `price_operator`;"

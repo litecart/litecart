@@ -137,9 +137,8 @@
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $category_info = database::fetch($categories_info_query);
 
-        if (empty($category_info)) {
+        if (!$category_info = database::fetch($categories_info_query)) {
           database::query(
             "insert into ". DB_TABLE_CATEGORIES_INFO ."
             (category_id, language_code)

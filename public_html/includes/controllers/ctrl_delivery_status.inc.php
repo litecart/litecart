@@ -97,9 +97,8 @@
           and language_code = '". $language_code ."'
           limit 1;"
         );
-        $delivery_status_info = database::fetch($delivery_status_info_query);
 
-        if (empty($delivery_status_info['id'])) {
+        if (!$delivery_status_info = database::fetch($delivery_status_info_query)) {
           database::query(
             "insert into ". DB_TABLE_DELIVERY_STATUSES_INFO ."
             (delivery_status_id, language_code)

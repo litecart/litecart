@@ -109,9 +109,8 @@
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $slide_info = database::fetch($slide_info_query);
 
-        if (empty($slide_info['id'])) {
+        if (!$slide_info = database::fetch($slide_info_query)) {
           database::query(
             "insert into ". DB_TABLE_SLIDES_INFO ."
             (slide_id, language_code)

@@ -150,6 +150,7 @@
         where order_id = ". (int)$order_id ."
         order by id;"
       );
+
       while ($item = database::fetch($order_items_query)) {
         $item['options'] = unserialize($item['options']);
         $this->data['items'][$item['id']] = $item;
@@ -160,6 +161,7 @@
         where order_id = ". (int)$order_id ."
         order by priority;"
       );
+
       while ($row = database::fetch($order_totals_query)) {
         $this->data['order_total'][$row['id']] = $row;
       }
@@ -169,6 +171,7 @@
         where order_id = ". (int)$order_id ."
         order by id;"
       );
+
       while ($row = database::fetch($order_comments_query)) {
         $this->data['comments'][$row['id']] = $row;
       }
@@ -200,6 +203,7 @@
         where os.id = ". (int)$this->data['order_status_id'] ."
         limit 1;"
       );
+
       $current_order_status = database::fetch($current_order_status_query);
 
     // Log order status change as comment
@@ -218,8 +222,8 @@
           where email = '". database::input($this->data['customer']['email']) ."'
           limit 1;"
         );
-        $customer = database::fetch($customers_query);
-        if (!empty($customer['id'])) {
+
+        if ($customer = database::fetch($customers_query)) {
           $this->data['customer']['id'] = $customer['id'];
         }
       }
@@ -294,6 +298,7 @@
         where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
+
       while($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
           "delete from ". DB_TABLE_ORDERS_ITEMS ."
@@ -717,6 +722,7 @@
 
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
+      if (empty($this->data['order_status_id'])) return;
 
       /*
       $action_button = '<div itemscope itemtype="https://schema.org/EmailMessage" style="display:none">' . PHP_EOL
@@ -728,9 +734,7 @@
                      . '</div>';
       */
 
-      if (!empty($this->data['order_status_id'])) {
-        $order_status = reference::order_status($this->data['order_status_id'], $language_code);
-      }
+      $order_status = reference::order_status($this->data['order_status_id'], $language_code);
 
       $aliases = array(
         '%order_id' => $this->data['id'],

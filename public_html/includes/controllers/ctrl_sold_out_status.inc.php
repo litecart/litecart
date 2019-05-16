@@ -99,9 +99,8 @@
           and language_code = '". $language_code ."'
           limit 1;"
         );
-        $sold_out_status_info = database::fetch($sold_out_status_info_query);
 
-        if (empty($sold_out_status_info['id'])) {
+        if (!$sold_out_status_info = database::fetch($sold_out_status_info_query)) {
           database::query(
             "insert into ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
             (sold_out_status_id, language_code)

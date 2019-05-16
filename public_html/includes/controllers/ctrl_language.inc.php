@@ -113,7 +113,8 @@
         "show fields from ". DB_TABLE_TRANSLATIONS ."
         where `Field` = 'text_". database::input($this->data['code']) ."';"
       );
-      if (database::num_rows($translations_query) == 0) {
+
+      if (!database::num_rows($translations_query)) {
         database::query(
           "alter table ". DB_TABLE_TRANSLATIONS ."
           add `text_". database::input($this->data['code']) ."` text not null after text_en;"

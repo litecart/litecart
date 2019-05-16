@@ -126,9 +126,8 @@
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $option_group_info = database::fetch($option_groups_info_query);
 
-        if (empty($option_group_info)) {
+        if (!$option_group_info = database::fetch($option_groups_info_query)) {
           database::query(
             "insert into ". DB_TABLE_OPTION_GROUPS_INFO ."
             (group_id, language_code)
@@ -206,9 +205,8 @@
             and language_code = '". database::input($language_code) ."'
             limit 1;"
           );
-          $option_value_info = database::fetch($option_value_info_query);
 
-          if (empty($option_value_info)) {
+          if (!$option_value_info = database::fetch($option_value_info_query)) {
             database::query(
               "insert into ". DB_TABLE_OPTION_VALUES_INFO ."
               (value_id, language_code)

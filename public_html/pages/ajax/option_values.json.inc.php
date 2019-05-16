@@ -12,7 +12,7 @@
       order by pcv.priority;"
     );
 
-    if (database::num_rows($option_values_query) == 0) throw new Exception('Option group has no values');
+    if (!database::num_rows($option_values_query)) throw new Exception('Option group has no values');
 
     $json = array();
     while ($value = database::fetch($option_values_query)) {

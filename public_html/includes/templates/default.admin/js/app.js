@@ -118,7 +118,7 @@
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;
-    if ($(e.target).is('.fa-star,.fa-star-o')) return;
+    if ($(e.target).is('.fa-star, .fa-star-o')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 
@@ -129,7 +129,7 @@
     var index = tr.index();
     $(tr).addClass('grabbed');
     $(tr).closest('tbody').css('unser-input', 'unset');
-    function move (e) {
+    function move(e) {
       if (!drag && Math.abs(e.pageY - sy) < 10) return;
       drag = true;
       tr.siblings().each(function() {
@@ -141,7 +141,7 @@
         }
       });
     }
-    function up (e) {
+    function up(e) {
       if (drag && index != tr.index()) {
         drag = false;
       }

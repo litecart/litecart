@@ -1,5 +1,5 @@
 <?php
-  if (settings::get('box_popular_products_num_items') == 0) return;
+  if (!settings::get('box_popular_products_num_items')) return;
 
   functions::draw_lightbox();
 

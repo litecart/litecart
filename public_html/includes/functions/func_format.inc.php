@@ -7,9 +7,8 @@
       where iso_code_2 = '". database::input($address['country_code']) ."'
       limit 1;"
     );
-    $country = database::fetch($country_query);
 
-    if (empty($country)) {
+    if (!$country = database::fetch($country_query)) {
       trigger_error('Invalid country code for address format', E_USER_WARNING);
       return;
     }

@@ -454,7 +454,7 @@
       echo 'Modify '. $file . PHP_EOL;
       $contents = file_get_contents($file);
       $search_replace = array(
-        'app.min.css'  => 'app.css',
+        'app.min.css' => 'app.css',
         'checkout.min.css'  => 'checkout.css',
         'framework.min.css' => 'framework.css',
         'printable.min.css' => 'printable.css',

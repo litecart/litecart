@@ -106,9 +106,8 @@
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $manufacturer_info = database::fetch($manufacturers_info_query);
 
-        if (empty($manufacturer_info)) {
+        if (!$manufacturer_info = database::fetch($manufacturers_info_query)) {
           database::query(
             "insert into ". DB_TABLE_MANUFACTURERS_INFO ."
             (manufacturer_id, language_code)

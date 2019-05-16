@@ -161,9 +161,7 @@
         limit 1;"
       );
 
-      $module = database::fetch($module_query);
-
-      if (empty($module)) continue;
+      if (!$module = database::fetch($module_query)) continue;
 
       $type = preg_replace('#^(.*)_modules$#', '$1', $installed_modules['key']);
       $module['settings'] = unserialize($module['value']);

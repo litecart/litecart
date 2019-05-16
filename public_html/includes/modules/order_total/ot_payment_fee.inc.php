@@ -10,7 +10,7 @@
     public $priority = 0;
 
     public function __construct() {
-      $this->name = language::translate(__CLASS__.':title_payment_fee', 'Payment Fee');
+      $this->name = language::translate(__CLASS__.':title', 'Payment Fee');
     }
 
     public function process($order) {

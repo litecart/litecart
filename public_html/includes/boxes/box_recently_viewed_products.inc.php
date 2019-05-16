@@ -1,7 +1,7 @@
 <?php
   if (empty(session::$data['recently_viewed_products'])) return;
 
-  if (settings::get('box_recently_viewed_products_num_items') == 0) return;
+  if (!settings::get('box_recently_viewed_products_num_items')) return;
 
   functions::draw_lightbox();
 

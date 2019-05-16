@@ -110,9 +110,8 @@
           and language_code = '". $language_code ."'
           limit 1;"
         );
-        $order_status_info = database::fetch($order_status_info_query);
 
-        if (empty($order_status_info['id'])) {
+        if (!$order_status_info = database::fetch($order_status_info_query)) {
           database::query(
             "insert into ". DB_TABLE_ORDER_STATUSES_INFO ."
             (order_status_id, language_code)

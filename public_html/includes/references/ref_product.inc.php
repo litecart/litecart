@@ -431,9 +431,7 @@
             limit 1;"
           );
 
-          if (!database::num_rows($quantity_unit_query)) return;
-
-          $this->_data['quantity_unit'] = database::fetch($quantity_unit_query);
+          if (!$this->_data['quantity_unit'] = database::fetch($quantity_unit_query)) return;
 
           $query = database::query(
             "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
@@ -459,9 +457,8 @@
             where id = ". (int)$this->sold_out_status_id ."
             limit 1;"
           );
-          $this->_data['sold_out_status'] = database::fetch($query);
 
-          if (empty($this->_data['sold_out_status'])) return;
+          if (!$this->_data['sold_out_status'] = database::fetch($query)) return;
 
           $query = database::query(
             "select * from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
@@ -486,9 +483,8 @@
             where id = ". (int)$this->_id ."
             limit 1;"
           );
-          $row = database::fetch($query);
 
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) {
             switch($key) {

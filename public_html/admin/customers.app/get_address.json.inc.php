@@ -7,8 +7,8 @@
     where id = '". database::input($_REQUEST['customer_id']) ."'
     limit 1;"
   );
-  $customer = database::fetch($customer_query);
-  if (empty($customer)) exit;
+
+  if (!$customer = database::fetch($customer_query)) exit;
 
   $json = array(
     'email' => !empty($customer['email']) ? $customer['email'] : '',

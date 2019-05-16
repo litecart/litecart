@@ -619,7 +619,8 @@
       case 'order_statuses':
         return form_draw_order_status_list($name, $input, true);
 
-      case 'regional_input':
+      case 'regional_input': //Deprecated
+      case 'regional_text':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
           $output .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input);
@@ -981,7 +982,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    if (database::num_rows($geo_zones_query) == 0) {
+    if (!database::num_rows($geo_zones_query)) {
       return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
 
@@ -1500,7 +1501,7 @@
         break;
     }
 
-    if (database::num_rows($zones_query) == 0) {
+    if (!database::num_rows($zones_query)) {
       $parameters .= ' disabled="disabled"';
     }
 

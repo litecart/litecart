@@ -192,9 +192,7 @@
             limit 1;"
           );
 
-          $row = database::fetch($query);
-
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) {
             switch($key) {

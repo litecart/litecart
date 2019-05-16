@@ -71,9 +71,8 @@
           where code = '". database::input($code) ."'
           limit 1;"
         );
-        $row = database::fetch($translations_query);
 
-        if (empty($row)) {
+        if (!$row = database::fetch($translations_query)) {
 
           $new_translations++;
 
