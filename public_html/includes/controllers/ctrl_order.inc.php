@@ -207,7 +207,7 @@
       $current_order_status = database::fetch($current_order_status_query);
 
     // Log order status change as comment
-      if (!empty($this->previous) && $this->data['order_status_id'] != $this->previous['order_status_id'])) {
+      if (!empty($this->previous) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = array(
           'author' => 'system',
           'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => $current_order_status['name'])),
