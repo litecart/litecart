@@ -83,15 +83,26 @@ html {
       border-color: @default-border-color;
       text-decoration: none;
     }
-    img {
-      max-width: 52px;
-      max-height: 52px;
-    }
-    .details {
-      margin-right: @default-gutter-size/2;
-    }
-    .title {
-      font-weight: bold;
+  }
+  img {
+    max-width: 52px;
+    max-height: 52px;
+  }
+  .badge {
+    background: red;
+    border-radius: 1.25rem;
+    padding: .25rem;
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    font-size: 0.75em;
+    position: absolute;
+    right: 0;
+    top: 1em;
+    width: 2em;
+    animation: pulsating 1.5s linear infinite;
+    &:empty {
+      display: none;
     }
   }
   @media (max-width: (@media-breakpoint-sm - 1px)) {
