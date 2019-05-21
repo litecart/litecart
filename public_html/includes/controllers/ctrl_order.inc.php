@@ -186,15 +186,15 @@
 
     // Previous order status
       if (!empty($this->previous)) {
-        $current_order_status_query = database::query(
+        $previous_order_status_query = database::query(
           "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
           left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
           where os.id = ". (int)$this->previous['order_status_id'] ."
           limit 1;"
         );
-      }
 
-      $previous_order_status = database::fetch($order_status_query);
+        $previous_order_status = database::fetch($previous_order_status_query);
+      }
 
     // Current order status
       $current_order_status_query = database::query(
