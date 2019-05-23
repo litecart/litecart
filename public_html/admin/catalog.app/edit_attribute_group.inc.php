@@ -44,7 +44,7 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($option_group->data['id'])) throw new Exception(language::translate('error_must_provide_attribute', 'You must provide a attribute'));
+      if (empty($attribute_group->data['id'])) throw new Exception(language::translate('error_must_provide_attribute', 'You must provide a attribute'));
 
       $attribute_group->delete();
 
