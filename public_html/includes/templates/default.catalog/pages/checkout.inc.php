@@ -77,19 +77,19 @@
     var url = '';
     switch (task.component) {
       case 'cart':
-        url = '<?php echo document::ilink('ajax/checkout_cart.html'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_cart'); ?>';
         break;
       case 'customer':
-        url = '<?php echo document::ilink('ajax/checkout_customer.html'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_customer'); ?>';
         break;
       case 'shipping':
-        url = '<?php echo document::ilink('ajax/checkout_shipping.html'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_shipping'); ?>';
         break;
       case 'payment':
-        url = '<?php echo document::ilink('ajax/checkout_payment.html'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_payment'); ?>';
         break;
       case 'summary':
-        url = '<?php echo document::ilink('ajax/checkout_summary.html'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_summary'); ?>';
         break;
       default:
         alert('Error: Invalid component ' + task.component);

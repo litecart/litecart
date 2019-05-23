@@ -10,6 +10,11 @@
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/column_left.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/listing_product.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/site_cookie_notice.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_cart.html.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_customer.html.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_payment.html.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_shipping.html.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_summary.html.inc.php',
   );
 
   foreach ($deleted_files as $pattern) {
