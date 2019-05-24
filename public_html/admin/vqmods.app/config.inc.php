@@ -10,6 +10,7 @@
     ),
     'menu' => array(),
     'docs' => array(
+      'view' => 'view.inc.php',
       'download' => 'download.inc.php',
       'vqmods' => 'vqmods.inc.php',
       'test' => 'test.inc.php',
