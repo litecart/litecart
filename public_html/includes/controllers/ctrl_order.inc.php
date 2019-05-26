@@ -468,7 +468,7 @@
       }
 
     // Send order status email notification
-      if (!empty($this->previous) && $this->data['order_status_id'] != $this->previous['order_status_id'])) {
+      if (!empty($this->previous) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         if (!empty($current_order_status['notify'])) {
           $this->send_email_notification();
         }
