@@ -284,7 +284,7 @@
   <p><a href="upgrade.php">Click here to upgrade instead.</a></p>
 </div>
 
-<script src="../ext/jquery/jquery-3.3.1.min.js"></script>
+<script src="../ext/jquery/jquery-3.4.1.min.js"></script>
 <script src="../ext/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
