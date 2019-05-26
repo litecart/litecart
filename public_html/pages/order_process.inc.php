@@ -138,8 +138,12 @@
 
 // Send order confirmation email
   $bccs = array();
-  foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
-    $bccs[] = $email;
+
+  if (settings::get('email_order_copy')) {
+    foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
+      if (empty($email)) continue;
+      $bccs[] = $email;
+    }
   }
 
   $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
