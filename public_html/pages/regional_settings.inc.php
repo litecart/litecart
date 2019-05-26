@@ -44,7 +44,7 @@
         $_GET['redirect_url'] = document::ilink('', array(), null, array(), $_POST['language_code']);
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. $_GET['redirect_url']);
       exit;
 

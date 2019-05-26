@@ -49,7 +49,7 @@
       $customer->save();
       customer::$data = $customer->data;
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
@@ -144,7 +144,7 @@
       $customer->save();
       customer::$data = $customer->data;
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
