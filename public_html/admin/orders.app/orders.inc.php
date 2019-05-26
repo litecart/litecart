@@ -89,7 +89,7 @@
       $sql_sort = "o.customer_country_code";
       break;
     default:
-      $sql_sort = "o.starred desc, if(o.date_revived > '1970', o.date_revived, o.date_created) desc, o.date_created desc, o.id desc";
+      $sql_sort = "o.starred desc, o.date_created desc, o.date_created desc, o.id desc";
       break;
   }
 
