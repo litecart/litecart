@@ -225,11 +225,12 @@
       if (empty($this->data['id'])) return;
 
     // Check products for attribute
-      $products_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS ."
-        where attributes like '%". (int)$this->data['id'] ."-%';"
+      $products_attributes_query = database::query(
+        "select id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+        where group_id = ". (int)$this->data['id'] .";"
       );
-      if (database::num_rows($products_query) > 0) throw new Exception('Cannot delete group linked to products.');
+
+      if (database::num_rows($products_attributes_query) > 0) throw new Exception('Cannot delete group linked to products');
 
       $this->data['values'] = array();
       $this->save();
