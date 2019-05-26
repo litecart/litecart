@@ -264,10 +264,10 @@
         <?php } ?>
       </div>
 
-      <p class="btn-group">
+      <div class="btn-group">
         <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
-      </p>
+      </div>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>

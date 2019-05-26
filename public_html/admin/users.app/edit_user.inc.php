@@ -43,7 +43,7 @@
 
       $user->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
 
@@ -59,7 +59,7 @@
 
       $user->delete();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
 
@@ -67,85 +67,88 @@
       notices::add('errors', $e->getMessage());
     }
   }
-
 ?>
-<h1><?php echo $app_icon; ?> <?php echo !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?>
+  </div>
 
-<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
-
-  <div class="row">
-
-    <div class="col-md-8">
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_status', 'Status'); ?></label>
-          <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
-        </div>
-      </div>
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
       <div class="row">
-        <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_username', 'Username'); ?></label>
-          <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
+
+        <div class="col-md-8">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_status', 'Status'); ?></label>
+              <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label><?php echo language::translate('title_username', 'Username'); ?></label>
+              <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
+            </div>
+
+            <div class="form-group col-sm-6">
+              <label><?php echo language::translate('title_email', 'Email'); ?></label>
+              <?php echo functions::form_draw_email_field('email', true); ?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
+              <?php echo functions::form_draw_password_field('password', '', 'autocomplete="off"'); ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
+              <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
+              <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
+              <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
+            </div>
+          </div>
+
+          <?php if (!empty($user->data['id'])) { ?>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
+              <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
+              <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
+              <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
+            </div>
+          </div>
+          <?php } ?>
         </div>
 
-        <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_email', 'Email'); ?></label>
-          <?php echo functions::form_draw_email_field('email', true); ?>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-          <?php echo functions::form_draw_password_field('password', '', 'autocomplete="off"'); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-          <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
-        </div>
-      </div>
-
-      <?php if (!empty($user->data['id'])) { ?>
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
-          <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
-          <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-          <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
-        </div>
-      </div>
-      <?php } ?>
-    </div>
-
-    <div class="col-md-4">
-      <div class="form-group">
-        <label><?php echo functions::form_draw_checkbox('permissions_toggle', '1', !empty($_POST['permissions']) ? '1' : '0'); ?> <?php echo language::translate('title_permissions', 'Permissions'); ?></label>
-        <div class="form-control" style="height: 400px; overflow-y: scroll;">
-          <ul class="list-unstyled">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label><?php echo functions::form_draw_checkbox('permissions_toggle', '1', !empty($_POST['permissions']) ? '1' : '0'); ?> <?php echo language::translate('title_permissions', 'Permissions'); ?></label>
+            <div class="form-control" style="height: 400px; overflow-y: scroll;">
+              <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
@@ -161,19 +164,21 @@
     echo '  </li>' . PHP_EOL;
   }
 ?>
-          </ul>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+
+      <div class="panel-action btn-group">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+      </div>
+
+    <?php echo functions::form_draw_form_end(); ?>
   </div>
-
-  <p class="btn-group">
-    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-  </p>
-
-<?php echo functions::form_draw_form_end(); ?>
+</div>
 
 <script>
   $('input[name="permissions_toggle"]').change(function(){

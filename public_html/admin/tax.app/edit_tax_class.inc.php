@@ -32,7 +32,7 @@
 
       $tax_class->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
       exit;
 
@@ -48,7 +48,7 @@
 
       $tax_class->delete();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
       exit;
 
@@ -56,33 +56,39 @@
       notices::add('errors', $e->getMessage());
     }
   }
-
 ?>
-<h1><?php echo $app_icon; ?> <?php echo !empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
-
-<?php echo functions::form_draw_form_begin('tax_class_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
-
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_code', 'Code'); ?></label>
-      <?php echo functions::form_draw_text_field('code', true); ?>
-    </div>
-
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_name', 'Name'); ?></label>
-      <?php echo functions::form_draw_text_field('name', true); ?>
-    </div>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo !empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?>
   </div>
 
-  <div class="form-group">
-    <label><?php echo language::translate('title_description', 'Description'); ?></label>
-    <?php echo functions::form_draw_text_field('description', true); ?>
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('tax_class_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_code', 'Code'); ?></label>
+          <?php echo functions::form_draw_text_field('code', true); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_name', 'Name'); ?></label>
+          <?php echo functions::form_draw_text_field('name', true); ?>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_description', 'Description'); ?></label>
+        <?php echo functions::form_draw_text_field('description', true); ?>
+      </div>
+
+      <div class="panel-action btn-group">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo (isset($tax_class->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+      </div>
+
+    <?php echo functions::form_draw_form_end(); ?>
+
   </div>
-
-  <p class="btn-group">
-    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (isset($tax_class->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-  </p>
-
-<?php echo functions::form_draw_form_end(); ?>
+</div>

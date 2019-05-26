@@ -31,7 +31,7 @@
 
     cache::clear_cache('translations');
 
-    notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+    notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
     header('Location: '. document::link('', array(), true));
     exit;
@@ -51,6 +51,7 @@
     exit;
   }
 
+// Languages
   $languages_query = database::query(
     "select * from ". DB_TABLE_LANGUAGES ."
     where code in ('". implode("', '", database::input($_GET['languages'])) ."')
@@ -62,57 +63,9 @@
     $languages[$language['code']] = $language;
   }
 
-  functions::draw_lightbox();
-?>
-<style>
-ul.filter li {
-  display: table-cell;
-  vertical-align: middle;
-}
-</style>
+// Table Rows
+  $translations = array();
 
-<?php if (count($_GET['languages']) > 1) { ?>
-<div class="pull-right">
-  <button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button>
-</div>
-<?php } ?>
-
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
-
-<?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
-<?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
-<ul class="list-inline">
-  <li class="expandable">
-    <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?>
-  </li>
-  <li>
-    <?php echo functions::form_draw_select_field('endpoint', array(array('-- '. language::translate('title_all', 'All') .' --', ''), array(language::translate('title_frontend', 'Frontend'), 'frontend'), array(language::translate('title_backend', 'Backend'), 'backend'))); ?>
-  </li>
-  <li>
-    <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br />
-    <label><?php echo functions::form_draw_checkbox('untranslated', 'true'); ?> <?php echo language::translate('text_only_untranslated', 'Only untranslated'); ?></label>
-  </li>
-  <li>
-    <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
-    <div><?php foreach (array_keys(language::$languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', $language_code) .' '. $language_code .'</span>'; ?></div>
-  </li>
-  <li><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></li>
-</ul>
-<?php echo functions::form_draw_form_end(); ?>
-
-<?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
-
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th><?php echo language::translate('title_code', 'Code'); ?></th>
-          <?php foreach ($_GET['languages'] as $language_code) echo '<th style="width: 480px;">'. $languages[$language_code]['name'] .'</th>'; ?>
-          <th>&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-<?php
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
     where code != ''
@@ -124,47 +77,105 @@ ul.filter li {
     order by date_updated desc;"
   );
 
-  if (database::num_rows($translations_query) > 0) {
+  if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
 
-    if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  $page_items = 0;
+  while ($translation = database::fetch($translations_query)) {
+    $translations[] = $translation;
+    if (++$page_items == settings::get('data_table_rows_per_page')) break;
+  }
 
-    $page_items = 0;
-    while ($row=database::fetch($translations_query)) {
+// Number of Rows
+  $num_rows = database::num_rows($translations_query);
+
+// Pagination
+  $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+  functions::draw_lightbox();
 ?>
-        <tr>
-          <td><?php echo $row['code']; ?><br />
-            <small style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
-          </td>
-          <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
-          <td>
-            <?php echo functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']); ?>
-            <?php echo functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
-          </td>
-          <?php } ?>
-          <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-        </tr>
-<?php
-        if (++$page_items == settings::get('data_table_rows_per_page')) break;
-      }
-    } else {
-?>
-        <tr>
-          <td colspan="<?php echo 2+count(language::$languages); ?>" align="left" nowrap="nowrap"><?php echo language::translate('text_no_entries_found_in_database', 'No entries found in database'); ?></td>
-        </tr>
-<?php
-    }
-?>
-      </tbody>
-    </table>
+<style>
+ul.filter li {
+  display: table-cell;
+  vertical-align: middle;
+}
+</style>
+
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?>
   </div>
 
-  <p style="display: inline; float: right;">
-    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
-  </p>
+  <?php if (count($_GET['languages']) > 1) { ?>
+  <div class="panel-action">
+    <button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button>
+  </div>
+  <?php } ?>
 
-<?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+    <?php echo functions::form_draw_hidden_field('app', true); ?>
+    <?php echo functions::form_draw_hidden_field('doc', true); ?>
+    <div class="panel-filter">
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <div><?php echo functions::form_draw_select_field('endpoint', array(array('-- '. language::translate('title_all', 'All') .' --', ''), array(language::translate('title_frontend', 'Frontend'), 'frontend'), array(language::translate('title_backend', 'Backend'), 'backend'))); ?></div>
+      <div>
+        <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br />
+        <label><?php echo functions::form_draw_checkbox('untranslated', 'true'); ?> <?php echo language::translate('text_only_untranslated', 'Only untranslated'); ?></label>
+      </div>
+      <div>
+        <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
+        <div><?php foreach (array_keys(language::$languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', $language_code) .' '. $language_code .'</span>'; ?></div>
+      </div>
+      <div><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></div>
+    </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
-<?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th><?php echo language::translate('title_code', 'Code'); ?></th>
+              <?php foreach ($_GET['languages'] as $language_code) echo '<th style="width: 480px;">'. $languages[$language_code]['name'] .'</th>'; ?>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <?php foreach ($translations as $translation) { ?>
+            <tr>
+              <td><?php echo $translation['code']; ?><br />
+                <small style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $translation['code'] .'][html]', '1', (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
+              </td>
+              <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
+              <td>
+                <?php echo functions::form_draw_hidden_field('translations['. $translation['code'] .'][id]', $translation['id']); ?>
+                <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
+              </td>
+              <?php } ?>
+              <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+            </tr>
+            <?php } ?>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="<?php echo 3 + count($_GET['languages']); ?>"><?php echo language::translate('title_translations', 'Translations'); ?>: <?php echo $num_rows; ?></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="pull-right">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
+      </div>
+
+    <?php echo functions::form_draw_form_end(); ?>
+
+    <?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
+  </div>
+</div>
 
 <div id="translator-tool" style="display: none;">
   <h2><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></h2>

@@ -35,23 +35,29 @@
     }
   }
 ?>
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_logotype', 'Logotype'); ?></h1>
-
-<?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true, 'style="max-width: 320px;"'); ?>
-
-  <div class="thumbnail" style="padding: 1em; display: inline-block;  margin-top: 1em;">
-    <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 500, 'FIT_ONLY_BIGGER')); ?>" alt="" />
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo language::translate('title_logotype', 'Logotype'); ?>
   </div>
 
-  <div class="form-group">
-    <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
-    <?php echo functions::form_draw_file_field('image', ''); ?>
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true, 'style="max-width: 320px;"'); ?>
+
+      <div class="thumbnail" style="padding: 1em; display: inline-block;  margin-top: 1em;">
+        <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 500, 'FIT_ONLY_BIGGER')); ?>" alt="" />
+      </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
+        <?php echo functions::form_draw_file_field('image', ''); ?>
+      </div>
+
+      <div class="panel-action btn-group">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo (isset($pages->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+      </div>
+
+    <?php echo functions::form_draw_form_end(); ?>
   </div>
-
-  <p class="btn-group">
-    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (isset($pages->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-  </p>
-
-<?php echo functions::form_draw_form_end(); ?>
+</div>

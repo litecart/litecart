@@ -507,202 +507,211 @@
       notices::add('errors', $e->getMessage());
     }
   }
-
 ?>
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?></h1>
-
-<div class="row">
-  <div class="col-md-6">
-
-    <h2><?php echo language::translate('title_categories', 'Categories'); ?></h2>
-
-    <div class="row">
-      <div class="col-md-6">
-        <fieldset class="well">
-          <legend><?php echo language::translate('title_import_from_csv', 'Import From CSV'); ?></legend>
-
-          <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
-              <?php echo functions::form_draw_file_field('file'); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo functions::form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo language::translate('text_insert_new_categories', 'Insert new categories'); ?></label>
-            </div>
-
-            <?php echo functions::form_draw_button('import_categories', language::translate('title_import', 'Import'), 'submit'); ?>
-
-          <?php echo functions::form_draw_form_end(); ?>
-        </fieldset>
-      </div>
-
-      <div class="col-md-6">
-        <fieldset class="well">
-          <legend><?php echo language::translate('title_export_to_csv', 'Export To CSV'); ?></legend>
-
-          <?php echo functions::form_draw_form_begin('export_categories_form', 'post'); ?>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_code', true).' '; ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-              <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
-            </div>
-
-            <div class="form-group">
-              <label><?php echo language::translate('title_output', 'Output'); ?></label>
-              <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
-            </div>
-
-            <?php echo functions::form_draw_button('export_categories', language::translate('title_export', 'Export'), 'submit'); ?>
-
-          <?php echo functions::form_draw_form_end(); ?>
-        </fieldset>
-      </div>
-    </div>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?>
   </div>
 
-  <div class="col-md-6">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#tab-import"><?php echo language::translate('title_import_from_csv', 'Import From CSV'); ?></a></li>
+    <li><a data-toggle="tab" href="#tab-export"><?php echo language::translate('title_export_to_csv', 'Export To CSV'); ?></a></li>
+  </ul>
 
-    <h2><?php echo language::translate('title_products', 'Products'); ?></h2>
+  <div class="panel-body">
+    <div class="tab-content" style="max-width: 980px;">
+      <div id="tab-import" class="tab-pane active">
 
-    <div class="row">
-      <div class="col-md-6">
-        <fieldset class="well">
-          <legend><?php echo language::translate('title_import_from_csv', 'Import From CSV'); ?></legend>
+        <div class="row">
+          <div class="col-md-6">
+            <h2><?php echo language::translate('title_categories', 'Categories'); ?></h2>
 
-          <?php echo functions::form_draw_form_begin('import_products_form', 'post', '', true); ?>
+              <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
-              <?php echo functions::form_draw_file_field('file'); ?>
-            </div>
+                <div class="form-group">
+                  <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
+                  <?php echo functions::form_draw_file_field('file'); ?>
+                </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
-            </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                    <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
+                  </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
-            </div>
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                    <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                  </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
-            </div>
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                    <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                  </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-            </div>
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                  </div>
+                </div>
 
-            <div class="form-group">
-              <label><?php echo functions::form_draw_checkbox('insert_products', 'true', true); ?> <?php echo language::translate('text_insert_new_products', 'Insert new products'); ?></label>
-            </div>
+                <div class="form-group">
+                  <label><?php echo functions::form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo language::translate('text_insert_new_categories', 'Insert new categories'); ?></label>
+                </div>
 
-            <?php echo functions::form_draw_button('import_products', language::translate('title_import', 'Import'), 'submit'); ?>
+                <?php echo functions::form_draw_button('import_categories', language::translate('title_import', 'Import'), 'submit'); ?>
 
-          <?php echo functions::form_draw_form_end(); ?>
-        </fieldset>
+              <?php echo functions::form_draw_form_end(); ?>
+            </fieldset>
+          </div>
+
+          <div class="col-md-6">
+            <h2><?php echo language::translate('title_products', 'Products'); ?></h2>
+
+            <?php echo functions::form_draw_form_begin('import_products_form', 'post', '', true); ?>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
+                <?php echo functions::form_draw_file_field('file'); ?>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                  <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                  <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                  <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                  <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo functions::form_draw_checkbox('insert_products', 'true', true); ?> <?php echo language::translate('text_insert_new_products', 'Insert new products'); ?></label>
+              </div>
+
+              <?php echo functions::form_draw_button('import_products', language::translate('title_import', 'Import'), 'submit'); ?>
+
+            <?php echo functions::form_draw_form_end(); ?>
+          </div>
+        </div>
       </div>
 
-      <div class="col-md-6">
-        <fieldset class="well">
-          <legend><?php echo language::translate('title_export_to_csv', 'Export To CSV'); ?></legend>
+      <div id="tab-export" class="tab-pane">
 
-          <?php echo functions::form_draw_form_begin('export_products_form', 'post'); ?>
+        <div class="row">
+          <div class="col-md-6">
+            <h2><?php echo language::translate('title_categories', 'Categories'); ?></h2>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_code', true); ?>
-            </div>
+            <?php echo functions::form_draw_form_begin('export_categories_form', 'post'); ?>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-              <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
-            </div>
+              <div class="form-group">
+                <label><?php echo language::translate('title_language', 'Language'); ?></label>
+                <?php echo functions::form_draw_languages_list('language_code', true).' '; ?>
+              </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
-            </div>
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                  <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
+                </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
-            </div>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                  <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
-            </div>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                  <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-            </div>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                  <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                </div>
+              </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-              <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
-            </div>
+              <div class="form-group">
+                <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
+                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+              </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_output', 'Output'); ?></label>
-              <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
-            </div>
+              <div class="form-group">
+                <label><?php echo language::translate('title_output', 'Output'); ?></label>
+                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+              </div>
 
-            <?php echo functions::form_draw_button('export_products', language::translate('title_export', 'Export'), 'submit'); ?>
+              <?php echo functions::form_draw_button('export_categories', language::translate('title_export', 'Export'), 'submit'); ?>
 
-          <?php echo functions::form_draw_form_end(); ?>
-        </fieldset>
+            <?php echo functions::form_draw_form_end(); ?>
+          </div>
+
+          <div class="col-md-6">
+            <h2><?php echo language::translate('title_products', 'Products'); ?></h2>
+
+            <?php echo functions::form_draw_form_begin('export_products_form', 'post'); ?>
+
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_language', 'Language'); ?></label>
+                  <?php echo functions::form_draw_languages_list('language_code', true); ?>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
+                  <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                  <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                  <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                  <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                  <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
+                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_output', 'Output'); ?></label>
+                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+              </div>
+
+              <?php echo functions::form_draw_button('export_products', language::translate('title_export', 'Export'), 'submit'); ?>
+
+            <?php echo functions::form_draw_form_end(); ?>
+          </div>
+        </div>
       </div>
     </div>
   </div>

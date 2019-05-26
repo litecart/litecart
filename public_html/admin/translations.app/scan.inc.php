@@ -1,24 +1,9 @@
 <?php
   breadcrumbs::add(language::translate('title_scan_translations', 'Scan Translations'));
-?>
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
+  if (!empty($_POST['scan'])) {
 
-  <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
-
-  <p><label><?php echo functions::form_draw_checkbox('update', '1'); ?> <?php echo language::translate('text_update_empty_translations', 'Update empty translations if applicable'); ?></label></p>
-
-  <p><label><?php echo functions::form_draw_checkbox('clean', '1'); ?> <?php echo language::translate('text_delete_translations_not_present', 'Delete translations no longer present in files'); ?></label></p>
-
-  <p><?php echo functions::form_draw_button('scan', language::translate('title_scan', 'Scan'), 'submit', 'onclick="if(!confirm(\''. str_replace('\'', '\\\'', language::translate('warning_backup_translations', 'Warning: Always backup your translations before continuing.')) .'\')) return false;"'); ?></p>
-
-<?php echo functions::form_draw_form_end(); ?>
-
-<?php
-  if (isset($_POST['scan'])) {
-
-    echo '<hr />';
+    ob_start();
 
     $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
@@ -140,8 +125,48 @@
 
     cache::clear_cache('translations');
 
-    echo '<p>'. sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found_translations, $found_files) .'</p>';
-    echo '<p>'. sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations) .'</p>';
-    echo '<p>'. sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated_translations) .'</p>';
-    echo '<p>'. sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) .'</p>';
+    echo sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found_translations, $found_files) . PHP_EOL;
+    echo sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations) . PHP_EOL;
+    echo sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated_translations) . PHP_EOL;
+    echo sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) . PHP_EOL;
+
+    $log = ob_get_clean();
   }
+?>
+<style>
+pre {
+  white-space: pre-line;
+}
+</style>
+
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6">
+        <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
+
+          <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
+
+          <p><label><?php echo functions::form_draw_checkbox('update', '1'); ?> <?php echo language::translate('text_update_empty_translations', 'Update empty translations if applicable'); ?></label></p>
+
+          <p><label><?php echo functions::form_draw_checkbox('clean', '1'); ?> <?php echo language::translate('text_delete_translations_not_present', 'Delete translations no longer present in files'); ?></label></p>
+
+          <p><?php echo functions::form_draw_button('scan', language::translate('title_scan', 'Scan'), 'submit', 'onclick="if(!confirm(\''. str_replace('\'', '\\\'', language::translate('warning_backup_translations', 'Warning: Always backup your translations before continuing.')) .'\')) return false;"'); ?></p>
+
+        <?php echo functions::form_draw_form_end(); ?>
+      </div>
+
+      <?php if (!empty($_POST['scan'])) { ?>
+      <div class="col-md-6">
+        <pre>
+          <?php echo $log; ?>
+        </pre>
+      </div>
+      <?php } ?>
+    </div>
+  </div>
+</div>

@@ -15,7 +15,7 @@
         }
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
@@ -33,7 +33,7 @@
         unlink(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_BASENAME));
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
@@ -69,7 +69,7 @@
 
       move_uploaded_file($_FILES['vqmod']['tmp_name'], $filename);
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
@@ -78,72 +78,92 @@
     }
   }
 
-?>
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_vqmods', 'vQmods'); ?></h1>
+// Table Rows
+  $vqmods = array();
 
-<?php echo functions::form_draw_form_begin('vqmods_form', 'post'); ?>
-
-  <table class="table table-striped table-hover data-table">
-    <thead>
-      <tr>
-        <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-        <th></th>
-        <th><?php echo language::translate('title_file', 'File'); ?></th>
-        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th></th>
-        <th><?php echo language::translate('title_version', 'Version'); ?></th>
-        <th><?php echo language::translate('title_author', 'Author'); ?></th>
-        <th>&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-<?php
-  if ($vqmods = glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE)) {
-    foreach ($vqmods as $vqmod) {
-      $filename = pathinfo($vqmod, PATHINFO_BASENAME);
-      $xml = simplexml_load_file($vqmod);
-      $enabled = preg_match('#\.xml$#', $vqmod) ? true : false;
-?>
-    <tr class="<?php echo empty($enabled) ? 'semi-transparent' : null; ?>">
-      <td><?php echo functions::form_draw_checkbox('vqmods['. $filename .']', $filename); ?></td>
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#88cc44' : '#ff6644') .';"'); ?></td>
-      <td><?php echo $filename; ?></td>
-      <td><?php echo $xml->id; ?></td>
-      <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vqmod' => $filename), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-      <td><?php echo $xml->version; ?></td>
-      <td><?php echo $xml->author; ?></td>
-      <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => $filename), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download fa-lg'); ?></a></td>
-    </tr>
-<?php
-    }
+  foreach (glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE) as $file) {
+    $xml = simplexml_load_file($file);
+    $vqmods[] = array(
+      'filename' => pathinfo($file, PATHINFO_BASENAME),
+      'enabled' => preg_match('#\.xml$#', $file) ? true : false,
+      'id' => $xml->id,
+      'version' => $xml->version,
+      'author' => $xml->author,
+    );
   }
+
+// Number of Rows
+  $num_rows = count($vqmods);
 ?>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="8"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
-      </tr>
-    </tfoot>
-  </table>
 
-  <?php if (count($vqmods)) { ?>
-  <p>
-    <span class="btn-group">
-      <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-      <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-    </span>
-    <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
-  </p>
-  <?php } ?>
-
-<?php echo functions::form_draw_form_end(); ?>
-
-<?php echo functions::form_draw_form_begin('vqmod_form', 'post', '', true); ?>
-  <div class="form-group" style="max-width: 320px;">
-    <label><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</label>
-    <div class="input-group">
-      <?php echo functions::form_draw_file_field('vqmod', 'accept="application/xml"'); ?>
-      <span class="input-group-btn"><?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?></span>
-    </div>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo language::translate('title_vqmods', 'vQmods'); ?>
   </div>
-<?php echo functions::form_draw_form_end(); ?>
+
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('vqmods_form', 'post'); ?>
+
+      <table class="table table-striped table-hover data-table">
+        <thead>
+          <tr>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th></th>
+            <th><?php echo language::translate('title_file', 'File'); ?></th>
+            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+            <th></th>
+            <th><?php echo language::translate('title_version', 'Version'); ?></th>
+            <th><?php echo language::translate('title_author', 'Author'); ?></th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <?php foreach ($vqmods as $vqmod) { ?>
+          <tr class="<?php echo $vqmod['enabled'] ? 'semi-transparent' : null; ?>">
+            <td><?php echo functions::form_draw_checkbox('vqmods['. $vqmod['filename'] .']', $vqmod['filename']); ?></td>
+            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($vqmod['enabled'] ? '#88cc44' : '#ff6644') .';"'); ?></td>
+            <td><a href="<?php echo document::link(null,  array('doc' => 'view', 'vqmod' => $vqmod['filename']), true); ?>"><?php echo $vqmod['filename']; ?></a></td>
+            <td><?php echo $vqmod['id']; ?></td>
+            <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vqmod' => $vqmod['filename']), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+            <td><?php echo $vqmod['version']; ?></td>
+            <td><?php echo $vqmod['author']; ?></td>
+            <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => $vqmod['filename']), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download fa-lg'); ?></a></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="8"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo $num_rows; ?></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <?php if ($vqmods) { ?>
+      <ul class="list-inline">
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          </div>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
+        </li>
+      </p>
+      <?php } ?>
+
+    <?php echo functions::form_draw_form_end(); ?>
+
+    <?php echo functions::form_draw_form_begin('vqmod_form', 'post', '', true); ?>
+      <div class="form-group" style="max-width: 320px;">
+        <label><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</label>
+        <div class="input-group">
+          <?php echo functions::form_draw_file_field('vqmod', 'accept="application/xml"'); ?>
+          <span class="input-group-btn"><?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?></span>
+        </div>
+      </div>
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
+</div>

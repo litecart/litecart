@@ -1,3 +1,32 @@
+<?php
+// Table Rows
+  $orders = array();
+
+  $orders_query = database::query(
+    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
+    left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
+    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
+    where o.order_status_id
+    and os.is_archived = 0
+    order by o.date_created desc, o.id desc
+    limit 10;"
+  );
+
+  while ($order = database::fetch($orders_query)) {
+
+    if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
+    if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
+
+    $order_classes = array();
+    if (empty($order['order_status_id'])) $order_classes[]= 'semi-transparent';
+    if (!empty($order['unread'])) $order_classes[]= 'bold';
+
+    $orders[] = $order;
+  }
+
+// Number of Rows
+  $num_rows = database::num_rows($orders_query);
+?>
 <div id="widget-orders" class="widget">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -17,30 +46,10 @@
           <th>&nbsp;</th>
         </tr>
       </thead>
+
       <tbody>
-<?php
-  $orders_query = database::query(
-    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
-    left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
-    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
-    where o.order_status_id
-    and os.is_archived = 0
-    order by o.date_created desc, o.id desc
-    limit 10;"
-  );
-
-  if (database::num_rows($orders_query) > 0) {
-
-    while ($order = database::fetch($orders_query)) {
-
-      if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
-      if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
-
-      $row_classes = array();
-      if (empty($order['order_status_id'])) $row_classes[]= 'semi-transparent';
-      if (!empty($order['unread'])) $row_classes[]= 'bold';
-?>
-        <tr class="<?php echo implode(' ', $row_classes); ?>">
+        <?php foreach ($orders as $order) { ?>
+        <tr class="<?php echo implode(' ', $order_classes); ?>">
           <td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
           <td><?php echo $order['id']; ?></td>
           <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
@@ -53,10 +62,7 @@
             <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
           </td>
         </tr>
-<?php
-    }
-  }
-?>
+      <?php } ?>
       </tbody>
     </table>
     </div>

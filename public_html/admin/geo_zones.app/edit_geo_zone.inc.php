@@ -30,7 +30,7 @@
 
       $geo_zone->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
       exit;
 
@@ -46,7 +46,7 @@
 
       $geo_zone->delete();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
       exit;
 
@@ -54,72 +54,71 @@
       notices::add('errors', $e->getMessage());
     }
   }
-
 ?>
-<h1><?php echo $app_icon; ?> <?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
-
-<?php echo functions::form_draw_form_begin('form_geo_zone', 'post', false, false, 'style="max-width: 640px;"'); ?>
-
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_code', 'Code'); ?></label>
-      <?php echo functions::form_draw_text_field('code', true); ?>
-    </div>
-
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_name', 'Name'); ?></label>
-      <?php echo functions::form_draw_text_field('name', true); ?>
-    </div>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php echo functions::form_draw_text_field('description', true); ?>
-    </div>
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('form_geo_zone', 'post', false, false, 'style="max-width: 640px;"'); ?>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_code', 'Code'); ?></label>
+          <?php echo functions::form_draw_text_field('code', true); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_name', 'Name'); ?></label>
+          <?php echo functions::form_draw_text_field('name', true); ?>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_description', 'Description'); ?></label>
+          <?php echo functions::form_draw_text_field('description', true); ?>
+        </div>
+      </div>
+
+      <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
+
+      <table class="table table-striped table-hover data-table">
+        <thead>
+          <tr>
+            <th><?php echo language::translate('title_id', 'ID'); ?></th>
+            <th><?php echo language::translate('title_country', 'Country'); ?></th>
+            <th><?php echo language::translate('title_zone', 'Zone'); ?></th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
+          <tr>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '<em>'.language::translate('title_all', 'All') .'</em>'; ?></td>
+            <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4"><a href="#" class="add" title="<?php echo language::translate('title_add_zone', 'Add Zone'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?></a></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="panel-action btn-group">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo (!empty($geo_zone->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+      </div>
+
+    <?php echo functions::form_draw_form_end(); ?>
   </div>
-
-  <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
-
-  <table class="table table-striped table-hover data-table">
-    <thead>
-      <tr>
-        <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th><?php echo language::translate('title_country', 'Country'); ?></th>
-        <th><?php echo language::translate('title_zone', 'Zone'); ?></th>
-        <th>&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-<?php
-    if (!empty($_POST['zones'])) {
-      foreach (array_keys($_POST['zones']) as $key) {
-?>
-    <tr>
-      <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-      <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
-      <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '<em>'.language::translate('title_all', 'All') .'</em>'; ?></td>
-      <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-    </tr>
-<?php
-      }
-    }
-?>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="4"><a href="#" class="add" title="<?php echo language::translate('title_add_zone', 'Add Zone'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?></a></td>
-      </tr>
-    </tfoot>
-  </table>
-
-  <p class="btn-group">
-    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-    <?php echo (!empty($geo_zone->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-  </p>
-
-<?php echo functions::form_draw_form_end(); ?>
+</div>
 
 <script>
   $('select[name$="[zone_code]"][disabled]').each(function() {

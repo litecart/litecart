@@ -1,20 +1,17 @@
 /* Panels - Bootstrap Compatible */
 
-.panel(@background-color: transparent, @color: inherit) {
-  border-color: @default-border-color;
-  > .panel-heading {
-    color: @color;
-    background-color: @background-color;
-    border-color: @default-border-color;
-  }
-}
-
-.panel {
+.panel-default {
   margin-bottom: @default-gutter-size;
   background-color: #fff;
-  border: 1px solid transparent;
+  border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+
+  > .panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: @default-border-color;
+  }
 
   .panel-body {
     padding: 15px;
@@ -40,7 +37,47 @@
     border-bottom-right-radius: @default-border-radius;
     border-bottom-left-radius: @default-border-radius;
   }
+}
 
-  .panel(#f5f5f5, #333);
-  //&.panel-default { .panel(#f5f5f5, #333); };
+.panel-app {
+  position: relative;
+
+  > .panel-heading {
+    //position: sticky;
+    //top: 0;
+    //background: #fff;
+    padding: @default-gutter-size/2 0;
+    font-size: 1.5em;
+    border-bottom: 2px solid transparent;
+    .icon-wrapper {
+      font-size: 24px;
+    }
+  }
+
+  .panel-action {
+    position: absolute;
+    top: .5em;
+    right: 0;
+    z-index: 999;
+  }
+
+  .panel-filter {
+    display: flex;
+    padding: @default-gutter-size/2;
+    margin-top: @default-gutter-size;
+    background: @default-color;
+    border: 1px solid @default-border-color;
+    border-radius: @default-border-radius;
+    > * {
+      flex: 0 1 auto;
+      padding: 0 @default-gutter-size/2;
+      &.expandable {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  .panel-body {
+    margin: @default-gutter-size 0;
+  }
 }
