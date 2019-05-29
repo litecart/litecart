@@ -87,7 +87,7 @@
 
     <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
 
-    <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
+    <fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
 
       <div class="row">
         <div class="form-group col-sm-6">
@@ -151,7 +151,7 @@
         </div>
       </div>
 
-    </div>
+    </fieldset>
   </div>
 
   <?php if (empty(customer::$data['id'])) { ?>
@@ -168,13 +168,13 @@
     <h3><?php echo functions::form_draw_checkbox('create_account', '1', (!empty($_POST['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled="disabled"' : false)); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
     <?php if (settings::get('register_guests')) echo functions::form_draw_hidden_field('create_account', '1'); ?>
 
-    <div id="account-container"<?php echo (empty($_POST['create_account'])) ? ' style="display: none;"' : false; ?>>
+    <fieldset<?php echo (empty($_POST['create_account'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
 
       <div class="row">
         <div class="col-sm-6">
           <div class="form-group">
             <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-            <?php echo functions::form_draw_password_field('password', '', 'autocomplete="off"'); ?>
+            <?php echo functions::form_draw_password_field('password', '', 'autocomplete="new-password"'); ?>
           </div>
         </div>
 
@@ -186,7 +186,7 @@
         </div>
       </div>
 
-    </div>
+    </fieldset>
     <?php } ?>
   </div>
   <?php } ?>

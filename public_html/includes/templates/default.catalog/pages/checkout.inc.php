@@ -1,7 +1,7 @@
 <div id="content" class="twelve-eighty">
   {snippet:notices}
 
-  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process')); ?>
+  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
 
   <section id="box-checkout" class="box">
     <div class="cart wrapper"></div>
@@ -129,7 +129,9 @@
       },
       complete: function(html) {
         if (!updateQueue.length) {
-          $('body > .loader-wrapper').fadeOut('fast', function(){$(this).remove();});
+          $('body > .loader-wrapper').fadeOut('fast', function(){
+            $(this).remove();
+          });
         }
         queueRunLock = false;
         runQueue();
@@ -147,7 +149,7 @@
              + '&' + $(this).closest('td').find(':input').serialize()
              + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', null, true);
+    queueUpdateTask('customer', true, true);
     queueUpdateTask('shipping', true, true);
     queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', true, true);
@@ -159,7 +161,7 @@
              + '&' + $(this).closest('td').find(':input').serialize()
              + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', null, true);
+    queueUpdateTask('customer', true, true);
     queueUpdateTask('shipping', true, true);
     queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', true, true);
@@ -169,17 +171,17 @@
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="different_shipping_address"]', function(e){
     if (this.checked == true) {
-      $('#shipping-address-container').slideDown('fast');
+      $('#box-checkout-customer .shipping-address fieldset').removeAttr('disabled').slideDown('fast');
     } else {
-      $('#shipping-address-container').slideUp('fast');
+      $('#box-checkout-customer .shipping-address fieldset').attr('disabled', 'disabled').slideUp('fast');
     }
   });
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="create_account"]', function(){
     if (this.checked == true) {
-      $('#account-container').slideDown('fast');
+      $('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast');
     } else {
-      $('#account-container').slideUp('fast');
+      $('#box-checkout-customer .account fieldset').attr('disabled', 'disabled').slideUp('fast');
     }
   });
 
@@ -294,9 +296,11 @@
 
 // Customer Form: Checksum
 
-  window.customer_form_changed = false;
-  $('#box-checkout .customer.wrapper').on('input change', '#box-checkout-customer :input', function(e) {
+  window.customer_form_changed = null;
+  window.customer_form_checksum = null;
+  $('#box-checkout .customer.wrapper').on('input change', ':input', function(e) {
     if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
+      if (window.customer_form_checksum == null) return;
       window.customer_form_changed = true;
       $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
     } else {
