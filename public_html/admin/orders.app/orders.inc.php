@@ -191,7 +191,7 @@ table .fa-star:hover {
         <span class="input-group-addon"> - </span>
         <?php echo functions::form_draw_date_field('date_to', true); ?>
       </div>
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></div>
+      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
@@ -253,7 +253,7 @@ table .fa-star:hover {
             <fieldset title="<?php echo htmlspecialchars($module['description']); ?>">
               <legend><?php echo $module['name']; ?></legend>
               <div class="btn-group">
-                <?php foreach ($module['actions'] as $action) functions::form_draw_button('order_action', array($module['id'].':'.$action['id'], $action['title']), 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'" title="'. htmlspecialchars($action['description']) .'"'); ?>
+                <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', array($module['id'].':'.$action['id'], $action['title']), 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'" title="'. htmlspecialchars($action['description']) .'"'); ?>
               </div>
             </fieldset>
           </li>

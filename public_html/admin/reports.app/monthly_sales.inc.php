@@ -84,7 +84,7 @@ form[name="filter_form"] li {
       <ul class="list-inline">
         <li><?php echo language::translate('title_date_period', 'Date Period'); ?>:</li>
         <li>
-          <div class="input-group" style="max-width: 350px;">
+          <div class="input-group" style="max-width: 380px;">
             <?php echo functions::form_draw_date_field('date_from'); ?>
             <span class="input-group-addon"> - </span>
             <?php echo functions::form_draw_date_field('date_to'); ?>

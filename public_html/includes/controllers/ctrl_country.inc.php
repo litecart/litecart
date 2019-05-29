@@ -58,6 +58,7 @@
     }
 
     public function save() {
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_COUNTRIES ."
@@ -103,6 +104,7 @@
             );
             $zone['id'] = database::insert_id();
           }
+
           database::query(
             "update ". DB_TABLE_ZONES ."
             set code = '". database::input($zone['code']) ."',

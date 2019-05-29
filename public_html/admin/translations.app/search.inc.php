@@ -125,7 +125,7 @@ ul.filter li {
         <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
         <div><?php foreach (array_keys(language::$languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', $language_code) .' '. $language_code .'</span>'; ?></div>
       </div>
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></div>
+      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
