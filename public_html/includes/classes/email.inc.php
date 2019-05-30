@@ -61,7 +61,9 @@
 
       $data = $parse_as_string ? $file : file_get_contents($file);
 
-      $this->_multiparts[] = 'Content-Type: application/octet-stream' . "\r\n"
+      $mime_type = mime_content_type($filename);
+
+      $this->_multiparts[] = 'Content-Type: '. $mime_type . "\r\n"
                            . 'Content-Disposition: attachment; filename="'. basename($filename) . '"' . "\r\n"
                            . 'Content-Transfer-Encoding: base64' . "\r\n\r\n"
                            . chunk_split(base64_encode($data)) . "\r\n\r\n";
