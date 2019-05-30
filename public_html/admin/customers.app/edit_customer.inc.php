@@ -93,15 +93,6 @@
 
   if (!empty($customer->data['id'])) {
 
-    $order_statuses = array();
-    $orders_status_query = database::query(
-      "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
-    );
-
-    while ($order_status = database::fetch($orders_status_query)) {
-      $order_statuses[] = (int)$order_status['id'];
-    }
-
     $orders_query = database::query(
       "select count(o.id) as total_count, sum(oi.total_sales) as total_sales
       from ". DB_TABLE_ORDERS ." o
@@ -109,7 +100,10 @@
         select order_id, sum(price * quantity) as total_sales from ". DB_TABLE_ORDERS_ITEMS ."
         group by order_id
       ) oi on (oi.order_id = o.id)
-      where o.order_status_id in ('". implode("', '", $order_statuses) ."')
+      where o.order_status_id in (
+        select id from ". DB_TABLE_ORDER_STATUSES ."
+        where is_sale
+      )
       and (o.customer_id = ". (int)$customer->data['id'] ." or o.customer_email = '". database::input($customer->data['email']) ."');"
     );
 

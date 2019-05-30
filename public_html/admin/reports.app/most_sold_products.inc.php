@@ -17,14 +17,6 @@
 
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  $order_statuses = array();
-  $orders_status_query = database::query(
-    "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
-  );
-  while ($order_status = database::fetch($orders_status_query)) {
-    $order_statuses[] = (int)$order_status['id'];
-  }
-
 // Table Rows
   $order_items = array();
 
@@ -38,7 +30,10 @@
       sum(oi.tax * oi.quantity) as total_tax
     from ". DB_TABLE_ORDERS_ITEMS ." oi
     left join ". DB_TABLE_ORDERS ." o on (o.id = oi.order_id)
-    where o.order_status_id in ('". implode("', '", $order_statuses) ."')
+    where o.order_status_id in (
+      select id from ". DB_TABLE_ORDER_STATUSES ."
+      where is_sale
+    )
     and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
     and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
     ". (!empty($_GET['name']) ? "and oi.name like '%". database::input($_GET['name']) ."%'" : "") ."

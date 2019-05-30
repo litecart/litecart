@@ -14,14 +14,6 @@
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
-  $order_statuses = array();
-  $orders_status_query = database::query(
-    "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
-  );
-  while ($order_status = database::fetch($orders_status_query)) {
-    $order_statuses[] = (int)$order_status['id'];
-  }
-
 // Table Rows
   $rows = array();
 
@@ -50,7 +42,10 @@
       where module_id = 'ot_payment_fee'
       group by order_id
     ) otpf on (o.id = otpf.order_id)
-    where o.order_status_id in ('". implode("', '", $order_statuses) ."')
+    where o.order_status_id in (
+      select id from ". DB_TABLE_ORDER_STATUSES ."
+      where is_sale
+    )
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : "") ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : "") ."
     group by date_format(o.date_created, '%Y-%m')

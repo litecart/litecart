@@ -17,14 +17,6 @@
 
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  $order_statuses = array();
-  $orders_status_query = database::query(
-    "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
-  );
-  while ($order_status = database::fetch($orders_status_query)) {
-    $order_statuses[] = (int)$order_status['id'];
-  }
-
 // Table Rows
   $customers = array();
 
@@ -35,7 +27,10 @@
       if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name,
       customer_email as email
     from ". DB_TABLE_ORDERS ." o
-    where o.order_status_id in ('". implode("', '", $order_statuses) ."')
+    where o.order_status_id in (
+      select id from ". DB_TABLE_ORDER_STATUSES ."
+      where is_sale
+    )
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : "") ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : "") ."
     group by if(o.customer_id, o.customer_id, o.customer_email)
