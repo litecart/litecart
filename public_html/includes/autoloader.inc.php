@@ -64,6 +64,11 @@
         require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . $class . '.inc.php');
         break;
 
+      case ($class == 'email'):
+        //trigger_error('Class object email() is deprecated. Use instead ent_email()', E_USER_DEPRECATED);
+        class_alias('ent_email', 'email', true);
+        break;
+
       default:
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
         break;
