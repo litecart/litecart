@@ -209,6 +209,28 @@ CREATE TABLE `lc_delivery_statuses_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_emails` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
+	`code` VARCHAR(256) NOT NULL,
+	`charset` VARCHAR(16) NOT NULL,
+	`sender` VARCHAR(256) NOT NULL,
+	`recipients` TEXT NOT NULL,
+	`ccs` TEXT NOT NULL,
+	`bccs` TEXT NOT NULL,
+	`subject` VARCHAR(256) NOT NULL,
+	`multiparts` MEDIUMTEXT NOT NULL,
+	`date_scheduled` DATETIME NOT NULL,
+	`date_sent` DATETIME NOT NULL,
+	`date_updated` DATETIME NOT NULL,
+	`date_created` DATETIME NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `date_scheduled` (`date_scheduled`),
+	KEY `code` (`code`),
+	KEY `date_created` (`date_created`),
+	KEY `sender_email` (`sender`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_geo_zones` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL,

@@ -49,7 +49,7 @@
     sort($lines);
 
     if (count($lines) >= 100) {
-      $email = new email();
+      $email = new ctrl_email();
       $email->add_recipient(settings::get('store_email'))
             ->set_subject('[Not Found Report] '. settings::get('store_name'))
             ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))

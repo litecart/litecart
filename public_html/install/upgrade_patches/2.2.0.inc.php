@@ -5,6 +5,8 @@
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery-3.3.1.min.js',
+    FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'email.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . 'func_email.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_catalog.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
     FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/column_left.inc.php',
@@ -40,6 +42,12 @@
       'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
                  . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_filters`');" . PHP_EOL
                  . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
+    ),
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'search'  => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'emails`');",
     ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',

@@ -89,6 +89,28 @@ ADD COLUMN `last_host` VARCHAR(64) NOT NULL AFTER `last_ip`,
 ADD COLUMN `last_agent` VARCHAR(256) NOT NULL AFTER `last_host`,
 ADD COLUMN `date_login` DATETIME NOT NULL AFTER `last_agent`;
 -- --------------------------------------------------------
+CREATE TABLE `lc_emails` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
+	`code` VARCHAR(256) NOT NULL,
+	`charset` VARCHAR(16) NOT NULL,
+	`sender` VARCHAR(256) NOT NULL,
+	`recipients` TEXT NOT NULL,
+	`ccs` TEXT NOT NULL,
+	`bccs` TEXT NOT NULL,
+	`subject` VARCHAR(256) NOT NULL,
+	`multiparts` MEDIUMTEXT NOT NULL,
+	`date_scheduled` DATETIME NOT NULL,
+	`date_sent` DATETIME NOT NULL,
+	`date_updated` DATETIME NOT NULL,
+	`date_created` DATETIME NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `date_scheduled` (`date_scheduled`),
+	KEY `code` (`code`),
+	KEY `date_created` (`date_created`),
+	KEY `sender_email` (`sender`)
+) ENGINE=MyISAM;
+-- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 ADD COLUMN `shipping_tracking_url` VARCHAR(256) NOT NULL AFTER `shipping_tracking_id`,
 ADD COLUMN `user_agent` VARCHAR(256) NOT NULL AFTER `client_ip`,
