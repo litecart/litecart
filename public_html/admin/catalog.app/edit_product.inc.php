@@ -451,7 +451,7 @@
               </div>
             </div>
 
-            <table class="table table-striped table-hover data-table">
+            <table class="table table-striped data-table">
               <thead>
                 <tr>
                   <td style="width: 50%;"><?php echo language::translate('title_price', 'Price'); ?></td>
@@ -480,7 +480,7 @@
 
           <h2><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h2>
           <div class="table-responsive">
-            <table id="table-campaigns" class="table table-striped table-hover data-table">
+            <table id="table-campaigns" class="table table-striped data-table">
               <tbody>
                 <?php if (!empty($_POST['campaigns'])) foreach (array_keys($_POST['campaigns']) as $key) { ?>
                 <tr>
@@ -522,7 +522,7 @@
         <div id="tab-options" class="tab-pane">
           <h2><?php echo language::translate('title_options', 'Options'); ?></h2>
           <div class="table-responsive">
-            <table id="table-options" class="table table-striped table-hover data-table">
+            <table id="table-options" class="table table-striped data-table">
               <thead>
                 <tr>
                   <th style="min-width: 200px;"><?php echo language::translate('title_group', 'Group'); ?></th>
