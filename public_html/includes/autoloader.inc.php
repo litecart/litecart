@@ -2,6 +2,11 @@
   spl_autoload_register(function($class) {
 
     switch($class) {
+
+      case (substr($class, 0, 4) == 'abs_'):
+        require vmod::check(FS_DIR_APP . 'includes/abstracts/' . $class . '.inc.php');
+        break;
+
       case (substr($class, 0, 5) == 'ctrl_'): // For backwards compatibility
 
         $new_class = preg_replace('#^ctrl_#', 'ent_', $class);

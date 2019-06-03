@@ -6,6 +6,7 @@
     FS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
     FS_DIR_APP . 'ext/jquery/jquery-3.3.1.min.js',
     FS_DIR_APP . 'includes/classes/email.inc.php',
+    FS_DIR_APP . 'includes/classes/module.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_attribute_group.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_category.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_country.inc.php',

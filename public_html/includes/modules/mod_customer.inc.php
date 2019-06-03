@@ -1,6 +1,6 @@
 <?php
 
-  class mod_customer extends module {
+  class mod_customer extends abs_module {
     private $_get_address_cache;
 
     public function __construct() {

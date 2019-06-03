@@ -1,6 +1,6 @@
 <?php
 
-  class mod_order extends module {
+  class mod_order extends abs_module {
 
     public function __construct() {
       $this->load('order');

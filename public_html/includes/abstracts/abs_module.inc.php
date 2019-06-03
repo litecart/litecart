@@ -1,6 +1,6 @@
 <?php
 
-  abstract class module {
+  abstract class abs_module {
     public $modules;
 
     public function reset() {
