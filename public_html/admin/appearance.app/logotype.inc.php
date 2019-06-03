@@ -9,7 +9,7 @@
         throw new Exception(language::translate('error_missing_image', 'You must select an image'));
       }
 
-      $image = new ctrl_image($_FILES['image']['tmp_name']);
+      $image = new ent_image($_FILES['image']['tmp_name']);
       if (!$image->width()) throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
 
       $filename = 'logotype.png';

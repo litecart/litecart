@@ -44,9 +44,9 @@
         }
 
         if (!empty($customer)) {
-          $customer = new ctrl_customer($customer['id']);
+          $customer = new ent_customer($customer['id']);
         } else {
-          $customer = new ctrl_customer();
+          $customer = new ent_customer();
         }
 
         $fields = array(

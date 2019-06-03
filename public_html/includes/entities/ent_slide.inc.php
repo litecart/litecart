@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_slide {
+  class ent_slide {
     public $data;
     public $previous;
 
@@ -158,7 +158,7 @@
 
     // Image
       } else {
-        $image = new ctrl_image($file);
+        $image = new ent_image($file);
 
         $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
 

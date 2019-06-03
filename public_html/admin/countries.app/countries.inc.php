@@ -14,7 +14,7 @@
           throw new Exception(language::translate('error_cannot_disable_store_country', 'You cannot disable the store country'));
         }
 
-        $country = new ctrl_country($country_code);
+        $country = new ent_country($country_code);
         $country->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $country->save();
       }

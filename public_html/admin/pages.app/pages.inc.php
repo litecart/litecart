@@ -9,7 +9,7 @@
       if (empty($_POST['pages'])) throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
 
       foreach ($_POST['pages'] as $page_id) {
-        $page = new ctrl_page($page_id);
+        $page = new ent_page($page_id);
         $page->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $page->save();
       }
@@ -42,7 +42,7 @@
 
       if (!empty($_POST['pages'])) {
         foreach ($_POST['pages'] as $page_id) {
-          $page = new ctrl_page($page_id);
+          $page = new ent_page($page_id);
           $page->data['parent_id'] = $_POST['page_id'];
           $page->save();
         }
@@ -63,7 +63,7 @@
       if (empty($_POST['pages'])) throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
 
       foreach ($_POST['pages'] as $page_id) {
-        $page = new ctrl_page($page_id);
+        $page = new ent_page($page_id);
         $page->delete();
       }
 

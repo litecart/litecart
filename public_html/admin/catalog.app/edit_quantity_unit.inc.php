@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['quantity_unit_id'])) {
-    $quantity_unit = new ctrl_quantity_unit($_GET['quantity_unit_id']);
+    $quantity_unit = new ent_quantity_unit($_GET['quantity_unit_id']);
   } else {
-    $quantity_unit = new ctrl_quantity_unit();
+    $quantity_unit = new ent_quantity_unit();
   }
 
   if (empty($_POST)) {

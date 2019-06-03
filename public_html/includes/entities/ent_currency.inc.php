@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_currency {
+  class ent_currency {
     public $data;
     public $previous;
 

@@ -16,7 +16,7 @@
           throw new Exception(language::translate('error_cannot_disable_store_language', 'You cannot disable the store language'));
         }
 
-        $language = new ctrl_language($_POST['languages'][$language_code]);
+        $language = new ent_language($_POST['languages'][$language_code]);
         $language->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $language->save();
       }

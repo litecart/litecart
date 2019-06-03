@@ -6,6 +6,30 @@
     FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery-3.3.1.min.js',
     FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'email.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_attribute_group.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_category.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_country.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_currency.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_customer.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_delivery_status.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_email.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_geo_zone.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_image.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_language.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_manufacturer.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_module.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_option_group.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_order.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_order_status.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_page.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_product.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_quantity_unit.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_slide.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_sold_out_status.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_supplier.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_tax_class.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_tax_rate.inc.php',
+    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_user.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . 'func_email.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_catalog.inc.php',
     FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
@@ -27,6 +51,12 @@
 
 // Modify some files
   $modified_files = array(
+    array(
+      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'search'  => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');" . PHP_EOL,
+      'replace' => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities" . PHP_EOL
+                 . "  define('WS_DIR_ENTITIES',    WS_DIR_INCLUDES  . 'entities/');" . PHP_EOL,
+    ),
     array(
       'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,

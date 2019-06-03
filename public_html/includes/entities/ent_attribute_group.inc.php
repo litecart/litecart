@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_attribute_group {
+  class ent_attribute_group {
     public $data;
     public $previous;
 

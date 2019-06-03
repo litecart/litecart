@@ -8,7 +8,7 @@
 
       foreach ($_POST['users'] as $user_id) {
 
-        $user = new ctrl_user($user_id);
+        $user = new ent_user($user_id);
         $user->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $user->save();
       }

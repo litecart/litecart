@@ -61,12 +61,12 @@
             echo "[Skipped] New page on line $line was not inserted to database.\r\n";
             continue;
           }
-          $page = new ctrl_page();
+          $page = new ent_page();
           echo "Inserting new page '{$row['title']}'\r\n";
 
       // Get page
         } else {
-          $page = new ctrl_page($page['id']);
+          $page = new ent_page($page['id']);
           echo "Updating existing page '{$row['title']}'\r\n";
         }
 

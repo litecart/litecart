@@ -47,7 +47,7 @@
       $result = $mod_customer->validate($_POST);
       if (!empty($result['error'])) throw new Exception($result['error']);
 
-      $customer = new ctrl_customer();
+      $customer = new ent_customer();
 
       $customer->data['status'] = 1;
 
@@ -98,7 +98,7 @@
       $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
       $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
 
-      $email = new ctrl_email();
+      $email = new ent_email();
       $email->add_recipient($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
             ->set_subject($subject)
             ->add_body($message)

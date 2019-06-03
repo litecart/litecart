@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['language_code'])) {
-    $language = new ctrl_language($_GET['language_code']);
+    $language = new ent_language($_GET['language_code']);
   } else {
-    $language = new ctrl_language();
+    $language = new ent_language();
   }
 
   if (empty($_POST)) {

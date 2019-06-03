@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['user_id'])) {
-    $user = new ctrl_user($_GET['user_id']);
+    $user = new ent_user($_GET['user_id']);
   } else {
-    $user = new ctrl_user();
+    $user = new ent_user();
   }
 
   if (empty($_POST)) {

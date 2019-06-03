@@ -90,7 +90,7 @@
         }
       }
 
-      if (!$image = new ctrl_image($source)) return;
+      if (!$image = new ent_image($source)) return;
 
       if (empty($options['extension'])) {
         $options['extension'] = $image->type();

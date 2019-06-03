@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['delivery_status_id'])) {
-    $delivery_status = new ctrl_delivery_status($_GET['delivery_status_id']);
+    $delivery_status = new ent_delivery_status($_GET['delivery_status_id']);
   } else {
-    $delivery_status = new ctrl_delivery_status();
+    $delivery_status = new ent_delivery_status();
   }
 
   if (empty($_POST)) {

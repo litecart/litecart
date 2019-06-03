@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_country {
+  class ent_country {
     public $data;
     public $previous;
 

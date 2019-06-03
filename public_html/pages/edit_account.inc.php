@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'));
 
-  $customer = new ctrl_customer(customer::$data['id']);
+  $customer = new ent_customer(customer::$data['id']);
 
   if (empty($_POST)) {
     foreach ($customer->data as $key => $value) {

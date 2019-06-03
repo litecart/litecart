@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_order_status {
+  class ent_order_status {
     public $data;
     public $previous;
 

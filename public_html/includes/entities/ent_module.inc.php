@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_module {
+  class ent_module {
     private $_module;
     public $data;
     public $previous;

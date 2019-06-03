@@ -32,7 +32,7 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
-  $module = new ctrl_module($module_id);
+  $module = new ent_module($module_id);
   $object = new $module_id();
 
   if (!$_POST) {

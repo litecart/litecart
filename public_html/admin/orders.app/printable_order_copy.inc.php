@@ -3,7 +3,7 @@
 
   if (empty($_GET['order_id'])) die('Missing order ID');
 
-  $order = new ctrl_order($_GET['order_id']);
+  $order = new ent_order($_GET['order_id']);
 
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);

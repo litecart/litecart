@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_tax_class {
+  class ent_tax_class {
     public $data;
     public $previous;
 

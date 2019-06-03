@@ -28,7 +28,7 @@
       // Find category
         if (!empty($row['id'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
-            $category = new ctrl_category($category['id']);
+            $category = new ent_category($category['id']);
             echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_categories'])) {
@@ -36,33 +36,33 @@
               continue;
             }
             database::query("insert into ". DB_TABLE_CATEGORIES ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $category = new ctrl_category($row['id']);
+            $category = new ent_category($row['id']);
             echo 'Creating new category: '. $row['name'] . PHP_EOL;
           }
 
         } elseif (!empty($row['code'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $category = new ctrl_category($category['id']);
+            $category = new ent_category($category['id']);
             echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_categories'])) {
               echo "[Skipped] New category on line $line was not inserted to database.\r\n";
               continue;
             }
-            $category = new ctrl_category();
+            $category = new ent_category();
             echo 'Creating new category: '. $row['name'] . PHP_EOL;
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
-            $category = new ctrl_category($category['id']);
+            $category = new ent_category($category['id']);
             echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_categories'])) {
               echo "[Skipped] New category on line $line was not inserted to database.\r\n";
               continue;
             }
-            $category = new ctrl_category();
+            $category = new ent_category();
           }
 
         } else {
@@ -206,7 +206,7 @@
       // Find product
         if (!empty($row['id'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where id = ". (int)$row['id'] ." limit 1;"))) {
-            $product = new ctrl_product($product['id']);
+            $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_products'])) {
@@ -214,72 +214,72 @@
               continue;
             }
             database::query("insert into ". DB_TABLE_PRODUCTS ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $product = new ctrl_product($row['id']);
+            $product = new ent_product($row['id']);
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
 
         } elseif (!empty($row['code'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $product = new ctrl_product($product['id']);
+            $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_products'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
-            $product = new ctrl_product();
+            $product = new ent_product();
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
 
         } elseif (!empty($row['sku'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
-            $product = new ctrl_product($product['id']);
+            $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_products'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
-            $product = new ctrl_product();
+            $product = new ent_product();
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
 
         } elseif (!empty($row['mpn'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
-            $product = new ctrl_product($product['id']);
+            $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_products'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
-            $product = new ctrl_product();
+            $product = new ent_product();
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
 
         } elseif (!empty($row['gtin'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
-            $product = new ctrl_product($product['id']);
+            $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_products'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
-            $product = new ctrl_product();
+            $product = new ent_product();
             echo 'Creating new product: '. $row['name'] . PHP_EOL;
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
-            $product = new ctrl_product($product['id']);
+            $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
             if (empty($_POST['insert_products'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
-            $product = new ctrl_product();
+            $product = new ent_product();
           }
 
         } else {
@@ -296,7 +296,7 @@
           if ($manufacturer = database::fetch($manufacturers_query)) {
             $row['manufacturer_id'] = $manufacturer['id'];
           } else {
-            $manufacturer = new ctrl_manufacturer();
+            $manufacturer = new ent_manufacturer();
             $manufacturer->data['name'] = $row['manufacturer_name'];
             $manufacturer->save();
             $row['manufacturer_id'] = $manufacturer->data['id'];
@@ -312,7 +312,7 @@
           if ($supplier = database::fetch($suppliers_query)) {
             $row['supplier_id'] = $supplier['id'];
           } else {
-            $supplier = new ctrl_supplier();
+            $supplier = new ent_supplier();
             $supplier->data['name'] = $row['supplier_name'];
             $supplier->save();
             $row['supplier_id'] = $supplier->data['id'];

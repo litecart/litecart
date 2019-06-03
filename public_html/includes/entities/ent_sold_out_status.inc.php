@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_sold_out_status {
+  class ent_sold_out_status {
     public $data;
     public $previous;
 

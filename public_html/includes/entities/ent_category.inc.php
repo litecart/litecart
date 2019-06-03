@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_category {
+  class ent_category {
     public $data;
     public $previous;
 
@@ -276,7 +276,7 @@
 
       if (!is_dir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'categories/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'categories/', 0777);
 
-      if (!$image = new ctrl_image($file)) return false;
+      if (!$image = new ent_image($file)) return false;
 
     // 456-Fancy-category-title-N.jpg
       $i=1;

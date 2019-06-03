@@ -29,7 +29,7 @@
 
 ########################################################################
 
-  class ctrl_image {
+  class ent_image {
     private $_library;
     private $_image;
     private $_src;
@@ -594,7 +594,7 @@
             throw new Exception('Not a valid image resource');
           }
 
-          $_watermark = new ctrl_image($watermark, $this->_library);
+          $_watermark = new ent_image($watermark, $this->_library);
 
         // Return false on no image
           if (!$_watermark->type()) {

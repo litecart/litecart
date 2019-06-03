@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_option_group {
+  class ent_option_group {
     public $data;
     public $previous;
 

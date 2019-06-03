@@ -1,7 +1,7 @@
 <?php
 
 // Compatibility with older LiteCart versions
-  class_alias('ctrl_email', 'email', true); // Class object email() deprecated in 2.2
+  class_alias('ent_email', 'email', true); // Class object email() deprecated in 2.2
 
 // Set up the system object
   class system {

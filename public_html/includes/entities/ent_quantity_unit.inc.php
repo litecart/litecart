@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_quantity_unit {
+  class ent_quantity_unit {
     public $data;
     public $previous;
 

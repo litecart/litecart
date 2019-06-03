@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['manufacturer_id'])) {
-    $manufacturer = new ctrl_manufacturer($_GET['manufacturer_id']);
+    $manufacturer = new ent_manufacturer($_GET['manufacturer_id']);
   } else {
-    $manufacturer = new ctrl_manufacturer();
+    $manufacturer = new ent_manufacturer();
   }
 
   if (empty($_POST)) {

@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_order {
+  class ent_order {
     public $data;
     public $previous;
 
@@ -459,7 +459,7 @@
             $message .= language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])) ." – ". trim($comment['text']) . "\r\n\r\n";
           }
 
-          $email = new ctrl_email();
+          $email = new ent_email();
           $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
                 ->set_subject($subject)
                 ->add_body($message)
@@ -781,7 +781,7 @@
 
       $message = strtr(language::translate('email_order_confirmation', $message, $language_code), $aliases);
 
-      $email = new ctrl_email();
+      $email = new ent_email();
 
       if (!empty($bccs)) {
         foreach ($bccs as $bcc) {
@@ -822,7 +822,7 @@
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
       if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), array('%new_status' => $order_status->name));
 
-      $email = new ctrl_email();
+      $email = new ent_email();
       $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
             ->set_subject($subject)
             ->add_body($message, true)

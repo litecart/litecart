@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['slide_id'])) {
-    $slide = new ctrl_slide($_GET['slide_id']);
+    $slide = new ent_slide($_GET['slide_id']);
   } else {
-    $slide = new ctrl_slide();
+    $slide = new ent_slide();
   }
 
   if (empty($_POST)) {

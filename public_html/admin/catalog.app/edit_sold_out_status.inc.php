@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['sold_out_status_id'])) {
-    $sold_out_status = new ctrl_sold_out_status($_GET['sold_out_status_id']);
+    $sold_out_status = new ent_sold_out_status($_GET['sold_out_status_id']);
   } else {
-    $sold_out_status = new ctrl_sold_out_status();
+    $sold_out_status = new ent_sold_out_status();
   }
 
   if (empty($_POST)) {

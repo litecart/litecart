@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_page {
+  class ent_page {
     public $data;
     public $previous;
 

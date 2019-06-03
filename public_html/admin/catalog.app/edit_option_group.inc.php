@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['option_group_id'])) {
-    $option_group = new ctrl_option_group($_GET['option_group_id']);
+    $option_group = new ent_option_group($_GET['option_group_id']);
   } else {
-    $option_group = new ctrl_option_group();
+    $option_group = new ent_option_group();
   }
 
   if (empty($_POST)) {

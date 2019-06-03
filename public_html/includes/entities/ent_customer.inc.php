@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_customer {
+  class ent_customer {
     public $data;
     public $previous;
 

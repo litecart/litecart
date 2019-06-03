@@ -7,7 +7,7 @@
       if (empty($_POST['slides'])) throw new Exception(language::translate('error_must_select_slides', 'You must select slides'));
 
       foreach ($_POST['slides'] as $slide_id) {
-        $slide = new ctrl_slide($slide_id);
+        $slide = new ent_slide($slide_id);
         $slide->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $slide->save();
       }

@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_tax_rate {
+  class ent_tax_rate {
     public $data;
     public $previous;
 

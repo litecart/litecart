@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_delivery_status {
+  class ent_delivery_status {
     public $data;
     public $previous;
 

@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_manufacturer {
+  class ent_manufacturer {
     public $data;
     public $previous;
 
@@ -178,7 +178,7 @@
 
       if (!is_dir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'manufacturers/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'manufacturers/', 0777);
 
-      $image = new ctrl_image($file);
+      $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
       $filename = 'manufacturers/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();

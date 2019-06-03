@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['supplier_id'])) {
-    $supplier = new ctrl_supplier($_GET['supplier_id']);
+    $supplier = new ent_supplier($_GET['supplier_id']);
   } else {
-    $supplier = new ctrl_supplier();
+    $supplier = new ent_supplier();
   }
 
   if (empty($_POST)) {

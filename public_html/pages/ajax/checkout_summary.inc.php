@@ -15,9 +15,9 @@
 
 // Resume incomplete order in session
   if (!empty(session::$data['order']->data['id'])) {
-    session::$data['order'] = new ctrl_order(session::$data['order']->data['id']);
+    session::$data['order'] = new ent_order(session::$data['order']->data['id']);
   } else {
-    session::$data['order'] = new ctrl_order();
+    session::$data['order'] = new ent_order();
   }
 
   $order = &session::$data['order'];

@@ -9,7 +9,7 @@
       if (empty($_POST['manufacturers'])) throw new Exception(language::translate('error_must_select_manufacturers', 'You must select manufacturers'));
 
       foreach ($_POST['manufacturers'] as $manufacturer_id) {
-        $manufacturer = new ctrl_manufacturer($manufacturer_id);
+        $manufacturer = new ent_manufacturer($manufacturer_id);
         $manufacturer->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $manufacturer->save();
       }

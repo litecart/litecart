@@ -12,7 +12,7 @@
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          $category = new ctrl_category($category_id);
+          $category = new ent_category($category_id);
           $category->data['status'] = !empty($_POST['enable']) ? 1 : 0;
           $category->save();
         }
@@ -20,7 +20,7 @@
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
-          $product = new ctrl_product($product_id);
+          $product = new ent_product($product_id);
           $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
           $product->save();
         }
@@ -43,8 +43,8 @@
       if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
-        $original = new ctrl_product($product_id);
-        $product = new ctrl_product();
+        $original = new ent_product($product_id);
+        $product = new ent_product();
 
         $product->data = $original->data;
         $product->data['id'] = null;
@@ -95,7 +95,7 @@
       if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
-        $product = new ctrl_product($product_id);
+        $product = new ent_product($product_id);
         $product->data['categories'][] = $_POST['category_id'];
         $product->save();
       }
@@ -127,7 +127,7 @@
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
-          $product = new ctrl_product($product_id);
+          $product = new ent_product($product_id);
           $product->data['categories'] = array($_POST['category_id']);
           $product->save();
         }
@@ -136,7 +136,7 @@
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          $category = new ctrl_category($category_id);
+          $category = new ent_category($category_id);
           $category->data['parent_id'] = $_POST['category_id'];
           $category->save();
         }
@@ -159,7 +159,7 @@
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          $category = new ctrl_category($category_id);
+          $category = new ent_category($category_id);
           if ($category->data['parent_id'] == $_GET['category_id']) {
             $category->data['parent_id'] = 0;
             $category->save();
@@ -170,7 +170,7 @@
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
-          $product = new ctrl_product($product_id);
+          $product = new ent_product($product_id);
           foreach (array_keys($product->data['categories']) as $key) {
             if ($product->data['categories'][$key] == $_GET['category_id']) {
               unset($product->data['categories'][$key]);
@@ -198,7 +198,7 @@
       if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
 
       foreach ($_POST['products'] as $product_id) {
-        $product = new ctrl_product($product_id);
+        $product = new ent_product($product_id);
         $product->delete();
       }
 

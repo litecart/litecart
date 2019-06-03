@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_user {
+  class ent_user {
     public $data;
     public $previous;
 
@@ -52,7 +52,7 @@
 
     public function save() {
 
-      $previous_user = new ctrl_user($this->data['id']);
+      $previous_user = new ent_user($this->data['id']);
 
       if (empty($this->data['id'])) {
         database::query(

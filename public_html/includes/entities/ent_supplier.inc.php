@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_supplier {
+  class ent_supplier {
     public $data;
     public $previous;
 

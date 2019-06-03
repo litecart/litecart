@@ -105,7 +105,7 @@
 
             if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
 
-              $customer = new ctrl_customer();
+              $customer = new ent_customer();
               foreach (array_keys($customer->data) as $key) {
                 if (isset(customer::$data[$key])) $customer->data[$key] = customer::$data[$key];
               }
@@ -136,7 +136,7 @@
               $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
               $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
 
-              $email = new ctrl_email();
+              $email = new ent_email();
               $email->add_recipient($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
                     ->set_subject($subject)
                     ->add_body($message)

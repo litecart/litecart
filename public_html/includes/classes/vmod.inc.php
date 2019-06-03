@@ -13,6 +13,7 @@
         if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqmod.php')) {
           require_once FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqmod.php';
           vqmod::$replaces['#^(admin/)#'] = substr(WS_DIR_ADMIN, strlen(WS_DIR_HTTP_HOME));
+          vqmod::$replaces['#^(includes/controllers/ctrl_)#'] = 'includes/entities/ent_';
           vqmod::bootup(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, true);
         }
       }

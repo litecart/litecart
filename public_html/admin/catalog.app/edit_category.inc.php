@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['category_id'])) {
-    $category = new ctrl_category($_GET['category_id']);
+    $category = new ent_category($_GET['category_id']);
   } else {
-    $category = new ctrl_category();
+    $category = new ent_category();
   }
 
   if (empty($_POST)) {

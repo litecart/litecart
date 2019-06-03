@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_email {
+  class ent_email {
     public $_data = array();
 
     public function __construct($email_id=null, $charset=null) {

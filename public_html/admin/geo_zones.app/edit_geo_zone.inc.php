@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['geo_zone_id'])) {
-    $geo_zone = new ctrl_geo_zone($_GET['geo_zone_id']);
+    $geo_zone = new ent_geo_zone($_GET['geo_zone_id']);
   } else {
-    $geo_zone = new ctrl_geo_zone();
+    $geo_zone = new ent_geo_zone();
   }
 
   if (empty($_POST)) {

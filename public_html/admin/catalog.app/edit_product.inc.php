@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['product_id'])) {
-    $product = new ctrl_product($_GET['product_id']);
+    $product = new ent_product($_GET['product_id']);
   } else {
-    $product = new ctrl_product();
+    $product = new ent_product();
   }
 
   if (empty($_POST)) {

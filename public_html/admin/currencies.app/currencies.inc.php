@@ -14,7 +14,7 @@
           throw new Exception(language::translate('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
         }
 
-        $currency = new ctrl_currency($_POST['currencies'][$currency_code]);
+        $currency = new ent_currency($_POST['currencies'][$currency_code]);
         $currency->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $currency->save();
       }

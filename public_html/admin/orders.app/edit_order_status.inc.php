@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['order_status_id'])) {
-    $order_status = new ctrl_order_status($_GET['order_status_id']);
+    $order_status = new ent_order_status($_GET['order_status_id']);
   } else {
-    $order_status = new ctrl_order_status();
+    $order_status = new ent_order_status();
   }
 
   if (empty($_POST)) {

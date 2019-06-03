@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_geo_zone {
+  class ent_geo_zone {
     public $data;
     public $previous;
 

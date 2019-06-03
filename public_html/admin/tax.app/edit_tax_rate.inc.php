@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['tax_rate_id'])) {
-    $tax_rate = new ctrl_tax_rate($_GET['tax_rate_id']);
+    $tax_rate = new ent_tax_rate($_GET['tax_rate_id']);
   } else {
-    $tax_rate = new ctrl_tax_rate();
+    $tax_rate = new ent_tax_rate();
   }
 
   if (empty($_POST)) {

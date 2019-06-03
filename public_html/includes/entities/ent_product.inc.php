@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_product {
+  class ent_product {
     public $data;
     public $previous;
 
@@ -609,7 +609,7 @@
 
       if (!is_dir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'products/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'products/', 0777);
 
-      if (!$image = new ctrl_image($file)) return false;
+      if (!$image = new ent_image($file)) return false;
 
     // 456-Fancy-product-title-N.jpg
       $i=1;

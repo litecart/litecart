@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['customer_id'])) {
-    $customer = new ctrl_customer($_GET['customer_id']);
+    $customer = new ent_customer($_GET['customer_id']);
   } else {
-    $customer = new ctrl_customer();
+    $customer = new ent_customer();
   }
 
   if (empty($_POST)) {

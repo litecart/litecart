@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['country_code'])) {
-    $country = new ctrl_country($_GET['country_code']);
+    $country = new ent_country($_GET['country_code']);
   } else {
-    $country = new ctrl_country();
+    $country = new ent_country();
   }
 
   if (empty($_POST)) {

@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['currency_code'])) {
-    $currency = new ctrl_currency($_GET['currency_code']);
+    $currency = new ent_currency($_GET['currency_code']);
   } else {
-    $currency = new ctrl_currency();
+    $currency = new ent_currency();
   }
 
   if (empty($_POST)) {

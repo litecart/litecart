@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['tax_class_id'])) {
-    $tax_class = new ctrl_tax_class($_GET['tax_class_id']);
+    $tax_class = new ent_tax_class($_GET['tax_class_id']);
   } else {
-    $tax_class = new ctrl_tax_class();
+    $tax_class = new ent_tax_class();
   }
 
   if (empty($_POST)) {

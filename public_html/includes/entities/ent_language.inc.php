@@ -1,6 +1,6 @@
 <?php
 
-  class ctrl_language {
+  class ent_language {
     public $data;
     public $previous;
 

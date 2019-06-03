@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['pages_id'])) {
-    $page = new ctrl_page($_GET['pages_id']);
+    $page = new ent_page($_GET['pages_id']);
   } else {
-    $page = new ctrl_page();
+    $page = new ent_page();
   }
 
   if (empty($_POST)) {
