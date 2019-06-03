@@ -5,7 +5,7 @@
 
     ob_start();
 
-    $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
+    $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_APP);
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 
     $found_files = 0;

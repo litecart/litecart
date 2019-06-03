@@ -295,10 +295,10 @@
 <?php
   if (isset($product->data['id']) && !empty($product->data['images'])) {
     $image = current($product->data['images']);
-    echo '<img class="main-image" src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
     reset($product->data['images']);
   } else {
-    echo '<img class="main-image" src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
   }
 ?>
                 </div>
@@ -313,7 +313,7 @@
                     <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
                     <div class="thumbnail pull-left">
-                      <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -331,7 +331,7 @@
                 <div class="new-images">
                   <div class="image form-group">
                     <div class="thumbnail pull-left">
-                      <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -784,7 +784,7 @@
     e.preventDefault();
     var output = '<div class="image form-group">'
                + '  <div class="thumbnail pull-left">'
-               + '    <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
+               + '    <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
                + '  </div>'
                + '  '
                + '  <div class="input-group">'
@@ -819,7 +819,7 @@
       return;
     }
 
-    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>');
+    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>');
   }
 
 // Technical Data

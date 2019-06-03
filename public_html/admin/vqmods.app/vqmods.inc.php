@@ -7,11 +7,11 @@
       foreach ($_POST['vqmods'] as $vqmod) {
 
         if (!empty($_POST['enable'])) {
-          if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled')) continue;
-          rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_FILENAME) .'.xml');
+          if (!is_file(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled')) continue;
+          rename(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml');
         } else {
-          if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_FILENAME) .'.xml')) continue;
-          rename(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_FILENAME) .'.xml', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled');
+          if (!is_file(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml')) continue;
+          rename(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml', FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled');
         }
       }
 
@@ -30,7 +30,7 @@
       if (empty($_POST['vqmods'])) throw new Exception(language::translate('error_must_select_vqmods', 'You must select vQmods'));
 
       foreach ($_POST['vqmods'] as $vqmod) {
-        unlink(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($vqmod, PATHINFO_BASENAME));
+        unlink(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_BASENAME));
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -61,7 +61,7 @@
         throw new Exception(language::translate('error_xml_file_is_not_valid_vqmod', 'XML file is not a valid vQmod file'));
       }
 
-      $filename = FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'vqmod/xml/'. pathinfo($_FILES['vqmod']['name'], PATHINFO_FILENAME) .'.xml';
+      $filename = FS_DIR_APP . 'vqmod/xml/' . pathinfo($_FILES['vqmod']['name'], PATHINFO_FILENAME) .'.xml';
 
       if (is_file($filename)) {
         unlink($filename);
@@ -81,7 +81,7 @@
 // Table Rows
   $vqmods = array();
 
-  foreach (glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE) as $file) {
+  foreach (glob(FS_DIR_APP . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE) as $file) {
     $xml = simplexml_load_file($file);
     $vqmods[] = array(
       'filename' => pathinfo($file, PATHINFO_BASENAME),

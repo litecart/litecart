@@ -41,9 +41,9 @@
       'description' => $manufacturer->description,
       'link' => $manufacturer->link,
       'image' => array(
-        'original' => WS_DIR_IMAGES . $manufacturer->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200, 0, 'FIT_ONLY_BIGGER'),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200*2, 0, 'FIT_ONLY_BIGGER'),
+        'original' => 'images/' . $manufacturer->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer->image, 200, 0, 'FIT_ONLY_BIGGER'),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer->image, 200*2, 0, 'FIT_ONLY_BIGGER'),
       ),
       'products' => array(),
       'sort_alternatives' => array(

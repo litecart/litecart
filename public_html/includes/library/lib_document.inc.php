@@ -29,18 +29,19 @@
         self::$template = settings::get('store_template_catalog');
       }
 
-      define('WS_DIR_TEMPLATE', WS_DIR_TEMPLATES . self::$template .'/');
+      define('FS_DIR_TEMPLATE', FS_DIR_APP .'includes/templates/'. self::$template .'/');
+      define('WS_DIR_TEMPLATE', WS_DIR_APP .'includes/templates/'. self::$template .'/');
 
     // Set some snippets
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['text_direction'] = in_array(language::$selected['code'], array('ar', 'he')) ? 'rtl' : 'ltr';
       self::$snippets['charset'] = language::$selected['charset'];
-      self::$snippets['home_path'] = WS_DIR_HTTP_HOME;
+      self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
 
       self::$snippets['title'] = array(settings::get('store_name'));
 
-      self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">';
+      self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_APP . 'favicon.ico">';
 
     // CDN content
       //self::$snippets['head_tags']['dns-prefetch-jsdelivr'] = '<link rel="dns-prefetch" href="//cdn.jsdelivr.net">';
@@ -48,8 +49,8 @@
       //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>';
 
     // Local content
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-3.4.1.min.js"></script>';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/css/font-awesome.min.css" />';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.4.1.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -64,8 +65,8 @@
       }
 
     // Get template settings
-      $template_config = include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
-      if (!is_array($template_config)) include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
+      $template_config = include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php');
+      if (!is_array($template_config)) include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
       self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
       foreach (array_keys($template_config) as $i) {
         if (!isset(self::$settings[$template_config[$i]['key']])) self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
@@ -256,7 +257,7 @@
         $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         if ($inherit_params === null) $inherit_params = true;
       } else {
-        $route = WS_DIR_HTTP_HOME . $route;
+        $route = WS_DIR_APP . $route;
       }
 
       return link::create_link($route, $new_params, $inherit_params, $skip_params, $language_code);

@@ -2,7 +2,7 @@
   <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
     <div class="image-wrapper">
-      <img class="image img-responsive" src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
+      <img class="image img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
       <?php echo $sticker; ?>
     </div>
 

@@ -21,7 +21,7 @@
         'id' => $category['id'],
         'title' => $category['name'],
         'link' => document::ilink('category', array('category_id' => $category['id'])),
-        'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], 24, 24, 'CROP'),
+        'image' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], 24, 24, 'CROP'),
         'priority' => $category['priority'],
       );
     }

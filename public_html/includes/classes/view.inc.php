@@ -13,8 +13,8 @@
 
       // Relative path
         } else {
-          $file = vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/'. $view .'.inc.php');
-          if (!is_file($file)) $file = vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/'. $view .'.inc.php');
+          $file = vmod::check(FS_DIR_APP . 'includes/templates/' . document::$template .'/'. $view .'.inc.php');
+          if (!is_file($file)) $file = vmod::check(FS_DIR_APP . 'includes/templates/default.catalog/'. $view .'.inc.php');
         }
 
         $this->html = $this->_process_view($file, $this->snippets);

@@ -17,7 +17,7 @@
     //}
 
     public static function before_capture() {
-      self::add(language::translate('title_home', 'Home'), WS_DIR_HTTP_HOME);
+      self::add(language::translate('title_home', 'Home'), WS_DIR_APP);
     }
 
     //public static function after_capture() {

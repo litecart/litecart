@@ -2,45 +2,45 @@
 
 // Delete old files
   $deleted_files = array(
-    FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery-3.3.1.min.js',
-    FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'email.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_attribute_group.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_category.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_country.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_currency.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_customer.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_delivery_status.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_email.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_geo_zone.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_image.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_language.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_manufacturer.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_module.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_option_group.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_order.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_order_status.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_page.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_product.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_quantity_unit.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_slide.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_sold_out_status.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_supplier.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_tax_class.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_tax_rate.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_user.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . 'func_email.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_catalog.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'http_request_last.log',
-    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/column_left.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/listing_product.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/views/site_cookie_notice.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_cart.html.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_customer.html.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_payment.html.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_shipping.html.inc.php',
-    FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_summary.html.inc.php',
+    FS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
+    FS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
+    FS_DIR_APP . 'ext/jquery/jquery-3.3.1.min.js',
+    FS_DIR_APP . 'includes/classes/email.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_attribute_group.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_category.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_country.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_currency.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_customer.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_delivery_status.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_email.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_geo_zone.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_image.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_language.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_manufacturer.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_module.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_option_group.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_order.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_order_status.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_page.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_product.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_quantity_unit.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_slide.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_sold_out_status.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_supplier.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_tax_class.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_tax_rate.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_user.inc.php',
+    FS_DIR_APP . 'includes/functions/func_email.inc.php',
+    FS_DIR_APP . 'includes/library/lib_catalog.inc.php',
+    FS_DIR_APP . 'logs/http_request_last.log',
+    FS_DIR_APP . 'includes/templates/default.catalog/views/column_left.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/views/site_cookie_notice.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_cart.html.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_customer.html.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_payment.html.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_shipping.html.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_summary.html.inc.php',
   );
 
   foreach ($deleted_files as $pattern) {
@@ -49,16 +49,54 @@
     }
   }
 
+  if (preg_match("#define\('WS_DIR_ADMIN',\s+?WS_DIR_HTTP_HOME \. '(.*?)'\);#", $matches)) {
+    $admin_folder_name = $matches[1];
+  }
+
 // Modify some files
   $modified_files = array(
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "    //if (is_writable(__FILE__)) chmod(__FILE__, 0444);" . PHP_EOL . PHP_EOL,
+      'replace' => "",
+    ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '". $admin_folder_name ."/');" . PHP_EOL,
+      'replace' => "",
+    ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "## Files and Directory  ##############################################" . PHP_EOL
+                 . "######################################################################" . PHP_EOL,
+      'replace' => "## Files and Directory  ##############################################" . PHP_EOL
+                 . "######################################################################" . PHP_EOL
+                 . PHP_EOL
+                 . "  define('BACKEND_ALIAS', '". $admin_folder_name ."');" . PHP_EOL
+                 . PHP_EOL
+                 . "// File System" . PHP_EOL
+                 . "  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(\$_SERVER['DOCUMENT_ROOT'])), '/'));" . PHP_EOL
+                 . PHP_EOL
+                 . "  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
+                 . "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                 . PHP_EOL
+                 . "// Web System" . PHP_EOL
+                 . "  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
+                 . "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                 . PHP_EOL
+                 . "######################################################################" . PHP_EOL
+                 . "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######" . PHP_EOL
+                 . "######################################################################" . PHP_EOL
+                 . PHP_EOL,
+    ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');" . PHP_EOL,
       'replace' => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities" . PHP_EOL
                  . "  define('WS_DIR_ENTITIES',    WS_DIR_INCLUDES  . 'entities/');" . PHP_EOL,
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');" . PHP_EOL
                  . "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');" . PHP_EOL
@@ -67,52 +105,52 @@
                  . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
                  . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_filters`');" . PHP_EOL
                  . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL
                  . "  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'emails`');" . PHP_EOL,
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups`');" . PHP_EOL,
       'replace' => "",
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_info`');" . PHP_EOL,
       'replace' => "",
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values`');" . PHP_EOL,
       'replace' => "",
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES_INFO',        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values_info`');" . PHP_EOL,
       'replace' => "",
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'includes/config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL
                  . "  define('DB_TABLE_PRODUCTS_ATTRIBUTES',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_attributes`');" . PHP_EOL,
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . '.htaccess',
+      'file'    => FS_DIR_APP . 'install/.htaccess',
       'search'  => '<FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
       'replace' => '<FilesMatch "\.(eot|gif|ico|jpg|jpeg|js|otf|pdf|png|svg|ttf|woff|woff2)$">',
     ),
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
-      'search'  => "  define('WS_DIR_AJAX',        WS_DIR_HTTP_HOME . 'ajax/');\r\n",
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('WS_DIR_AJAX',        WS_DIR_APP . 'ajax/');\r\n",
       'replace' => '',
     ),
   );

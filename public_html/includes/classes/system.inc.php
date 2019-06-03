@@ -8,7 +8,7 @@
   // Autoload library modules
     public static function init() {
 
-      foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_*.inc.php') as $file) {
+      foreach(glob(FS_DIR_APP . 'includes/library/lib_*.inc.php') as $file) {
         self::load($file);
       }
     }

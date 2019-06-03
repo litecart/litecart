@@ -34,7 +34,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_HTTP_HOME);
+          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_APP);
         }
       }
 

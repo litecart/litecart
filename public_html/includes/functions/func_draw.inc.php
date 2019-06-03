@@ -46,9 +46,9 @@
       'name' => $category['name'],
       'link' => document::ilink('category', array('category_id' => $category['id'])),
       'image' => array(
-        'original' => WS_DIR_IMAGES . $category['image'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width, $height, settings::get('category_image_clipping')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width*2, $height*2, settings::get('category_image_clipping')),
+        'original' => 'images/' . $category['image'],
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], $width, $height, settings::get('category_image_clipping')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], $width*2, $height*2, settings::get('category_image_clipping')),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
@@ -82,9 +82,9 @@
       'name' => $product['name'],
       'link' => document::ilink('product', array('product_id' => $product['id']), $inherit_params),
       'image' => array(
-        'original' => ltrim($product['image'] ? WS_DIR_IMAGES . $product['image'] : '', '/'),
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+        'original' => ltrim($product['image'] ? 'images/' . $product['image'] : '', '/'),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
@@ -107,7 +107,7 @@
 
   // Watermark Original Image
     if (settings::get('product_image_watermark')) {
-      $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $listing_product->snippets['image']['original'], array('watermark' => true));
+      $listing_product->snippets['image']['original'] = functions::image_process(DOCUMENT_ROOT . $listing_product->snippets['image']['original'], array('watermark' => true));
     }
 
     return $listing_product->stitch('views/listing_product_'.$listing_type);
@@ -117,8 +117,8 @@
 
     $selector = str_replace("'", '"', $selector);
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'featherlight/featherlight.min.css" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_EXT .'featherlight/featherlight.min.js"></script>';
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/featherlight/featherlight.min.css" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_APP .'ext/featherlight/featherlight.min.js"></script>';
     document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL

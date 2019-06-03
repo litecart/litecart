@@ -57,7 +57,7 @@
 
       switch(true) {
         case ($component == 'ref'):
-        case (!$component && is_file(vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'ref_'.basename($resource).'.inc.php'))):
+        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/references/ref_'.basename($resource).'.inc.php'))):
 
           $class_name = 'ref_'.$resource;
 
@@ -73,7 +73,7 @@
           return self::$_cache[$resource][$checksum];
 
         case ($component == 'ctrl'):
-        case (!$component && is_file(vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ent_'.basename($resource).'.inc.php'))):
+        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/controllers/ent_'.basename($resource).'.inc.php'))):
 
           $class_name = 'ent_'.$resource;
           $object = new $class_name($arguments[0]);

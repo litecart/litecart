@@ -2,7 +2,7 @@
   switch ($_GET['doc']) {
     case 'customer':
       $title = language::translate('title_customer_modules', 'Customer Modules');
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/*.inc.php');
+      $files = glob(FS_DIR_APP . 'includes/modules/customer/*.inc.php');
       $mod_class = new mod_customer();
       $type = 'customer';
       $edit_doc = 'edit_customer';
@@ -10,7 +10,7 @@
 
     case 'jobs':
       $title = language::translate('title_job_modules', 'Job Modules');
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/*.inc.php');
+      $files = glob(FS_DIR_APP . 'includes/modules/jobs/*.inc.php');
       $mod_class = new mod_jobs();
       $type = 'job';
       $edit_doc = 'edit_job';
@@ -18,7 +18,7 @@
 
     case 'order':
       $title = language::translate('title_order_modules', 'Order Modules');
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order/*.inc.php');
+      $files = glob(FS_DIR_APP . 'includes/modules/order/*.inc.php');
       $mod_class = new mod_order();
       $type = 'order';
       $edit_doc = 'edit_order';
@@ -26,7 +26,7 @@
 
     case 'order_total':
       $title = language::translate('title_order_total_modules', 'Order Total Modules');
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/*.inc.php');
+      $files = glob(FS_DIR_APP . 'includes/modules/order_total/*.inc.php');
       $mod_class = new mod_order_total();
       $type = 'order_total';
       $edit_doc = 'edit_order_total';
@@ -34,7 +34,7 @@
 
     case 'payment':
       $title = language::translate('title_payment_modules', 'Payment Modules');
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/*.inc.php');
+      $files = glob(FS_DIR_APP . 'includes/modules/payment/*.inc.php');
       $mod_class = new mod_payment();
       $type = 'payment';
       $edit_doc = 'edit_payment';
@@ -42,7 +42,7 @@
 
     case 'shipping':
       $title = language::translate('title_shipping_modules', 'Shipping Modules');
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/*.inc.php');
+      $files = glob(FS_DIR_APP . 'includes/modules/shipping/*.inc.php');
       $mod_class = new mod_shipping();
       $type = 'shipping';
       $edit_doc = 'edit_shipping';

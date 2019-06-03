@@ -26,6 +26,8 @@
 
   if (!PLATFORM_VERSION) die('Could not identify target version.');
 
+  if (!defined('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
+
 // Get current platform database version
   $platform_database_version_query = database::query(
     "select `value` from ". DB_TABLE_SETTINGS ."
@@ -36,7 +38,7 @@
 
   if (!empty($platform_database_version)) {
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
-    if (empty($_POST['from_version'])) $_POST['from_version'] = PLATFORM_DATABASE_VERSION;
+    if (empty($_REQUEST['from_version'])) $_REQUEST['from_version'] = PLATFORM_DATABASE_VERSION;
   }
 
 // List supported upgrades
@@ -165,12 +167,12 @@
       limit 1;"
     );
 
-    foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+    foreach(glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file){
       if (is_file($file)) unlink($file);
     }
 
-    if (is_file($file = FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/chekced.cache')) unlink($file);
-    if (is_file($file = FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/mods.cache')) unlink($file);
+    if (is_file($file = FS_DIR_APP . 'vqmod/chekced.cache')) unlink($file);
+    if (is_file($file = FS_DIR_APP . 'vqmod/mods.cache')) unlink($file);
 
     echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 

@@ -137,8 +137,8 @@
     public function save_image($file) {
 
       if (!empty($this->data['image'])) {
-        if (is_file(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . basename($this->data['image']))) {
-          unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . basename($this->data['image']));
+        if (is_file(FS_DIR_APP . 'images/' . basename($this->data['image']))) {
+          unlink(FS_DIR_APP . 'images/' . basename($this->data['image']));
         }
         $this->data['image'] = '';
       }
@@ -151,10 +151,10 @@
       if (preg_match('#^<svg#m', file_get_contents($file))) {
         $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.svg';
 
-        if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/', 0777);
-        if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+        if (!file_exists(FS_DIR_APP . 'images/slides/')) mkdir(FS_DIR_APP . 'images/slides/', 0777);
+        if (file_exists(FS_DIR_APP . 'images/' . $filename)) unlink(FS_DIR_APP . 'images/' . $filename);
 
-        copy($file, FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+        copy($file, FS_DIR_APP . 'images/' . $filename);
 
     // Image
       } else {
@@ -162,10 +162,10 @@
 
         $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
 
-        if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/')) mkdir(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES .'slides/', 0777);
-        if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename)) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+        if (!file_exists(FS_DIR_APP . 'images/slides/')) mkdir(FS_DIR_APP . 'images/slides/', 0777);
+        if (file_exists(FS_DIR_APP . 'images/' . $filename)) unlink(FS_DIR_APP . 'images/' . $filename);
 
-        $image->write(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $filename);
+        $image->write(FS_DIR_APP . 'images/' . $filename);
       }
 
       $this->data['image'] = $filename;
@@ -185,7 +185,7 @@
         limit 1;"
       );
 
-      if (!empty($this->data['image']) && file_exists(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image'])) unlink(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $this->data['image']);
+      if (!empty($this->data['image']) && file_exists(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
 
       cache::clear_cache('slides');
 

@@ -55,7 +55,7 @@
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link('images/' . $product->image) .'"/>';
   }
 
   if (!empty($_GET['category_id'])) {
@@ -92,7 +92,7 @@
     'sku' => $product->sku,
     'gtin14' => $product->gtin,
     'name' => $product->name,
-    'image' => document::link(!empty($product->image) ? WS_DIR_IMAGES . $product->image : WS_DIR_IMAGES . 'no_image.png'),
+    'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
     'description' => !empty($product->description) ? strip_tags($product->description) : '',
     'brand' => array(),
     'offers' => array(
@@ -123,9 +123,9 @@
     'attributes' => $product->attributes,
     'keywords' => $product->keywords,
     'image' => array(
-      'original' => ltrim(!empty($product->images) ? WS_DIR_IMAGES . $product->image : WS_DIR_IMAGES . 'no_image.png', '/'),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => array(
         'width' => $width,
         'height' => $height,
@@ -155,9 +155,9 @@
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = array(
-      'original' => ltrim(WS_DIR_IMAGES . $image, '/'),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'original' => ltrim('images/' . $image, '/'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => array(
         'width' => $width,
         'height' => $height,
@@ -167,9 +167,9 @@
 
 // Watermark Images
   if (settings::get('product_image_watermark')) {
-    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $_page->snippets['image']['original'], array('watermark' => true));
+    $_page->snippets['image']['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['image']['original'], array('watermark' => true));
     foreach (array_keys($_page->snippets['extra_images']) as $key) {
-      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
+      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
     }
   }
 
@@ -193,9 +193,9 @@
 
     if (!empty($product->manufacturer->image)) {
       $_page->snippets['manufacturer']['image'] = array(
-        'original' => WS_DIR_IMAGES . $product->manufacturer->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer->image, 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer->image, 400, 120),
+        'original' => 'images/' . $product->manufacturer->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 400, 120),
         'viewport' => array(
           'width' => $width,
           'height' => $height,

@@ -292,7 +292,7 @@
 
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon"><img src="'. document::href_link(WS_DIR_IMAGES .'languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-addon"><img src="'. document::href_link('images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -300,7 +300,7 @@
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_IMAGES .'languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link('images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_textarea($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -308,7 +308,7 @@
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_IMAGES .'languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link('images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_wysiwyg_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -478,13 +478,13 @@
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_APP .'ext/trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
+                                                  . '<link href="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
 
-    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
-                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_APP .'ext/trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
+                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_APP .'ext/trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
+                                                  . '<script src="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_APP .'ext/trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
                                         . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
@@ -1390,7 +1390,7 @@
 
   function form_draw_templates_list($type='catalog', $name, $input=true, $multiple=false, $parameters='') {
 
-    $folders = glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'*.'. $type);
+    $folders = glob(FS_DIR_APP . 'includes/templates/*.'. $type);
 
     $options = array();
 

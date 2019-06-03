@@ -38,7 +38,7 @@
         if ($do_login && !empty($customer['id'])) {
           self::load($customer['id']);
         } else {
-          setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
+          setcookie('customer_remember_me', null, -1, WS_DIR_APP);
         }
       }
 
@@ -73,7 +73,7 @@
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
             if (!empty($_COOKIE['cookies_accepted'])) {
-              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_APP);
             }
           }
         }

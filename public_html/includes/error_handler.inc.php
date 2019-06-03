@@ -4,7 +4,7 @@
 
     if (!(error_reporting() & $errno)) return;
 
-    $errfile = preg_replace('#^'. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .'#', '~/', str_replace('\\', '/', $errfile));
+    $errfile = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '~/', str_replace('\\', '/', $errfile));
 
     switch($errno) {
       case E_STRICT:
@@ -42,7 +42,7 @@
     if (!empty($backtraces)) {
       foreach ($backtraces as $backtrace) {
         if (empty($backtrace['file'])) continue;
-        $backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .'#', '~/', str_replace('\\', '/', $backtrace['file']));
+        $backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '~/', str_replace('\\', '/', $backtrace['file']));
         $backtrace_output .= " ← <strong>{$backtrace['file']}</strong> on line <strong>{$backtrace['line']}</strong> in <strong>{$backtrace['function']}()</strong><br />" . PHP_EOL;
       }
     }

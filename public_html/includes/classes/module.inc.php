@@ -15,10 +15,10 @@
 
       switch($type) {
         case 'job':
-          $directory = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/';
+          $directory = FS_DIR_APP . 'includes/modules/jobs/';
           break;
         default:
-          $directory = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $type . '/';
+          $directory = FS_DIR_APP . 'includes/modules/' . $type . '/';
           break;
       }
 

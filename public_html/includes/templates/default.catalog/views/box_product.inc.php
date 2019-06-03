@@ -35,7 +35,7 @@
       <div class="manufacturer">
         <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>">
           <?php if ($manufacturer['image']) { ?>
-          <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_HTTP_HOME . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_HTTP_HOME . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $manufacturer['name']; ?></h3>
           <?php } ?>

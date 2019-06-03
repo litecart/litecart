@@ -88,14 +88,14 @@
 
   if (!empty($shipping->data['selected'])) {
     $box_checkout_summary->snippets['selected_shipping'] = array(
-      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $shipping->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $shipping->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'icon' => is_file(FS_DIR_APP . $shipping->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_APP . $shipping->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $shipping->data['selected']['title'],
     );
   }
 
   if (!empty($payment->data['selected'])) {
     $box_checkout_summary->snippets['selected_payment'] = array(
-      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'icon' => is_file(FS_DIR_APP . $payment->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_APP . $payment->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $payment->data['selected']['title'],
     );
   }

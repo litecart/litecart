@@ -76,7 +76,7 @@
         limit 1;"
       );
 
-      $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
+      $htpasswd = file_get_contents(FS_DIR_ADMIN . '.htpasswd');
 
     // Rename .htpasswd user
       if (empty($this->previous) && $this->data['username'] != $this->previous['username']) {
@@ -90,7 +90,7 @@
         $htpasswd = preg_replace('#^(?:\#+)?('. preg_quote($this->data['username'], '#') .'):(.*)$#m', '#${1}:${2}', $htpasswd);
       }
 
-      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
+      file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
 
       cache::clear_cache('users');
     }
@@ -111,7 +111,7 @@
 
       $this->data['password'] = $password_hash;
 
-      $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
+      $htpasswd = file_get_contents(FS_DIR_ADMIN . '.htpasswd');
 
       if (preg_match('#^(?:\#+)?('. preg_quote($this->data['username'], '#') .'):(.*)$#m', $htpasswd)) {
         $htpasswd = preg_replace('#^(?:(\#)+)?('. preg_quote($this->data['username'], '#') .'):.*(?:(\r|\n)+)?$#m', '${1}${2}:{SHA}'.base64_encode(sha1($password, true)) . PHP_EOL, $htpasswd);
@@ -119,16 +119,16 @@
         $htpasswd .= $this->data['username'] .':{SHA}'. base64_encode(sha1($password, true)) . PHP_EOL;
       }
 
-      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
+      file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
 
       $this->save();
     }
 
     public function delete() {
 
-      $htpasswd = file_get_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd');
+      $htpasswd = file_get_contents(FS_DIR_ADMIN . '.htpasswd');
       $htpasswd = preg_replace('#^(?:\#+)?'. preg_quote($this->data['username'], '#') .':.*(?:\r?\n?)+#m', '', $htpasswd);
-      file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . '.htpasswd', $htpasswd);
+      file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
 
       database::query(
         "delete from ". DB_TABLE_USERS ."

@@ -4,6 +4,22 @@
 ## Files and Directories #############################################
 ######################################################################
 
+  define('BACKEND_ALIAS', '{ADMIN_FOLDER}');
+
+// File System
+  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
+
+  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');
+
+// Web System
+  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');
+
+######################################################################
+## Backwards Compatible Directory Definitions  #######################
+######################################################################
+
 // File System
   define('FS_DIR_HTTP_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
 
@@ -22,7 +38,7 @@
 
   define('WS_DIR_BOXES',       WS_DIR_INCLUDES  . 'boxes/');
   define('WS_DIR_CLASSES',     WS_DIR_INCLUDES  . 'classes/');
-  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');
+  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities
   define('WS_DIR_FUNCTIONS',   WS_DIR_INCLUDES  . 'functions/');
   define('WS_DIR_LIBRARY',     WS_DIR_INCLUDES  . 'library/');
   define('WS_DIR_MODULES',     WS_DIR_INCLUDES  . 'modules/');

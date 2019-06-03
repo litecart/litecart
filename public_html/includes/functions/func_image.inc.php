@@ -22,10 +22,10 @@
 
     try {
 
-      if (!is_file($source)) $source = FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png';
+      if (!is_file($source)) $source = FS_DIR_APP . 'images/no_image.png';
 
       $options = array(
-        'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_HTTP_ROOT . WS_DIR_CACHE,
+        'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_APP . 'cache/',
         'width' => !empty($options['width']) ? $options['width'] : 0,
         'height' => !empty($options['height']) ? $options['height'] : 0,
         'clipping' => !empty($options['clipping']) ? $options['clipping'] : 'FIT_ONLY_BIGGER',
@@ -69,7 +69,7 @@
             return;
         }
 
-        $source_webpath = preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .')#', '', str_replace('\\', '/', realpath($source)));
+        $source_webpath = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
         $options['destination'] .= implode('', array(
             sha1($source_webpath),
             !empty($options['trim']) ? '_t' : null,
@@ -86,7 +86,7 @@
         if (!empty($options['overwrite'])) {
           unlink($options['destination']);
         } else {
-          return preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+          return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
         }
       }
 
@@ -105,7 +105,7 @@
       }
 
       if (!empty($options['watermark'])) {
-        if ($options['watermark'] === true) $options['watermark'] = FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png';
+        if ($options['watermark'] === true) $options['watermark'] = FS_DIR_APP . 'images/logotype.png';
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
@@ -125,7 +125,7 @@
 
       if (!$image->write($options['destination'], $options['extension'], $options['quality'], !empty($options['interlaced']))) return;
 
-      return preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
 
     } catch (Exception $e) {
       trigger_error($e->getMessage() , E_USER_WARNING);
@@ -147,7 +147,7 @@
   function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=false) {
 
     return image_process($source, array(
-      'destination' => FS_DIR_HTTP_ROOT . WS_DIR_CACHE,
+      'destination' => FS_DIR_APP . 'cache/',
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,
@@ -159,11 +159,11 @@
 
   function image_delete_cache($file) {
 
-    $webpath = str_replace(FS_DIR_HTTP_ROOT, '', $file);
+    $webpath = str_replace(DOCUMENT_ROOT, '', $file);
 
     $cachename = sha1($webpath);
 
-    $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . $cachename .'*');
+    $files = glob(FS_DIR_APP . 'cache/' . $cachename .'*');
 
     if ($files) foreach($files as $file) {
       unlink($file);

@@ -1,1 +1,1 @@
-<?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/box_product.inc.php'); ?>
+<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_product.inc.php'); ?>

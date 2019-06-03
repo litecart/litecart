@@ -2,7 +2,7 @@
   header('X-Robots-Tag: noindex');
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
+    require_once(FS_DIR_APP . 'includes/app_header.inc.php');
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
   } else {
@@ -35,9 +35,9 @@
       customer::$data['display_prices_including_tax'] = $_POST['display_prices_including_tax'];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        setcookie('country_code', $_POST['country_code'], strtotime('+3 months'), WS_DIR_HTTP_HOME);
-        setcookie('zone_code', $_POST['zone_code'], strtotime('+3 months'), WS_DIR_HTTP_HOME);
-        setcookie('display_prices_including_tax', $_POST['display_prices_including_tax'], strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('country_code', $_POST['country_code'], strtotime('+3 months'), WS_DIR_APP);
+        setcookie('zone_code', $_POST['zone_code'], strtotime('+3 months'), WS_DIR_APP);
+        setcookie('display_prices_including_tax', $_POST['display_prices_including_tax'], strtotime('+3 months'), WS_DIR_APP);
       }
 
       if (empty($_GET['redirect_url'])) {

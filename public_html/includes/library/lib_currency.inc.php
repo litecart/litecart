@@ -70,7 +70,7 @@
       session::$data['currency'] = self::$currencies[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        setcookie('currency_code', $code, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('currency_code', $code, strtotime('+3 months'), WS_DIR_APP);
       }
     }
 

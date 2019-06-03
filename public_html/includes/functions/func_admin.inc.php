@@ -8,8 +8,8 @@
 
       foreach (glob('*.app/') as $dir) {
         $code = rtrim($dir, '.app/');
-        $app_config = require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
-        if (!is_array($app_config)) require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
+        $app_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
+        if (!is_array($app_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
         $apps[$code] = array_merge(array('code' => $code, 'dir' => $dir), $app_config);
       }
 
@@ -34,8 +34,8 @@
 
       foreach (glob('*.widget/') as $dir) {
         $code = rtrim($dir, '.widget/');
-        $widget_config = require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
-        if (!is_array($widget_config)) require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
+        $widget_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
+        if (!is_array($widget_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
         $widgets[$code] = array_merge(array('code' => $code, 'dir' => $dir), $widget_config);
       }
 

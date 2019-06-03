@@ -1,9 +1,9 @@
 <div id="sidebar">
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_category_tree.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_filter.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
 
 </div>
 
@@ -36,7 +36,7 @@
         <div class="carousel-inner">
           <?php foreach ($images as $key => $image) { ?>
           <div class="item<?php echo (($key == 0) ? ' active' : ''); ?>">
-            <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image); ?>" alt="" style="width: 100%;" /></a>
+            <img src="<?php echo document::href_link(WS_DIR_APP . $image); ?>" alt="" style="width: 100%;" /></a>
           </div>
           <?php } ?>
         </div>
@@ -59,7 +59,7 @@
 
     <?php if ($_GET['page'] == 1 && count($images) == 1) { ?>
     <div class="thumbnail">
-      <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . $image); ?>" />
+      <img src="<?php echo document::href_link(WS_DIR_APP . $image); ?>" />
     </div>
     <?php } ?>
 

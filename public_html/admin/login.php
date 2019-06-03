@@ -21,7 +21,7 @@
 
     try {
 
-      setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
+      setcookie('remember_me', null, -1, WS_DIR_APP);
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
 
@@ -97,9 +97,9 @@
 
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       } else {
-        setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
+        setcookie('remember_me', null, -1, WS_DIR_APP);
       }
 
       if (empty($_REQUEST['redirect_url']) || basename(parse_url($_REQUEST['redirect_url'], PHP_URL_PATH)) != basename(__FILE__)) {
@@ -119,4 +119,4 @@
   $page_login = new view();
   echo $page_login->stitch('pages/login');
 
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

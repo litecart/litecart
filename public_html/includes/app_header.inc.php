@@ -14,24 +14,24 @@
   require_once __DIR__ . '/config.inc.php';
 
 // Compatibility and Polyfills
-  require_once FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php';
+  require_once FS_DIR_APP . 'includes/compatibility.inc.php';
 
 // Virtual Modifications System
-  require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'vmod.inc.php';
+  require_once FS_DIR_APP . 'includes/classes/vmod.inc.php';
 
 // Autoloader
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'autoloader.inc.php');
-  if (is_file(FS_DIR_HTTP_ROOT . '/vendor/autoload.php')) {
-    require_once FS_DIR_HTTP_ROOT . '/vendor/autoload.php';
+  require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
+  if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
+    require_once FS_DIR_APP . 'vendor/autoload.php';
   }
 
 // 3rd party autoloader (If present)
-  if (is_file(FS_DIR_HTTP_ROOT . '/vendor/autoload.php')) {
-    require_once FS_DIR_HTTP_ROOT . '/vendor/autoload.php';
+  if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
+    require_once FS_DIR_APP . 'vendor/autoload.php';
   }
 
 // Set error handler
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'error_handler.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
 // Set up the system object
   system::init();

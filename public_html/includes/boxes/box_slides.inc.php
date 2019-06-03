@@ -23,7 +23,7 @@
         $box_slides->snippets['slides'][] = array(
           'id' => $slide['id'],
           'link' => $slide['link'],
-          'image' => WS_DIR_IMAGES . $slide['image'],
+          'image' => 'images/' . $slide['image'],
           'caption' => $slide['caption'],
         );
       }

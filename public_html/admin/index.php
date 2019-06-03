@@ -69,7 +69,7 @@
         notices::add('warnings', language::translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
       }
 
-      if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
+      if (file_exists(FS_DIR_APP . 'install/')) {
         notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
       }
 
@@ -83,7 +83,7 @@
 
       foreach (functions::admin_get_widgets() as $widget) {
         ob_start();
-        include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $widget['dir'] . $widget['file']);
+        include vmod::check(FS_DIR_ADMIN . $widget['dir'] . $widget['file']);
 
         $box_widgets->snippets['widgets'][] = array(
           'code' => basename($widget['dir'], '.widget'),
@@ -98,7 +98,7 @@
 
       if (empty(user::$data['permissions']) || (!empty(user::$data['permissions'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['permissions'][$_GET['app']]['docs']))) {
 
-        require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
+        require vmod::check(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
 
         if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
 
@@ -124,10 +124,10 @@
 
         ob_start();
         if (!empty($_GET['doc'])) {
-          if (empty($app_config['docs'][$_GET['doc']]) || !file_exists(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']])) trigger_error($_GET['app'] .'.app/'. htmlspecialchars($_GET['doc']) . ' is not a valid admin document', E_USER_ERROR);
-          include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
+          if (empty($app_config['docs'][$_GET['doc']]) || !file_exists(FS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']])) trigger_error($_GET['app'] .'.app/'. htmlspecialchars($_GET['doc']) . ' is not a valid admin document', E_USER_ERROR);
+          include vmod::check(FS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
         } else {
-          include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
+          include vmod::check(FS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
         }
         $_page->snippets['doc'] = ob_get_clean();
 
@@ -143,4 +143,4 @@
       }
     }
 
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

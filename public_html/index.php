@@ -24,15 +24,15 @@
       )));
     } else {
       http_response_code(503);
-      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'pages/maintenance_mode.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+      include vmod::check(FS_DIR_APP . 'pages/maintenance_mode.inc.php');
+      require_once(FS_DIR_APP . 'includes/app_footer.inc.php');
       exit;
     }
   }
 
-  if (!empty(route::$route) && is_file(vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . route::$route['page'] .'.inc.php'))) {
+  if (!empty(route::$route) && is_file(vmod::check(FS_DIR_APP . 'pages/' . route::$route['page'] .'.inc.php'))) {
 
-    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . route::$route['page'] .'.inc.php');
+    include vmod::check(FS_DIR_APP . 'pages/' . route::$route['page'] .'.inc.php');
 
   } else {
 
@@ -40,7 +40,7 @@
 
     if (preg_match('#\.[a-z]{2,4}$#', route::$request)) exit;
 
-    $not_found_file = FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'not_found.log';
+    $not_found_file = FS_DIR_APP . 'logs/not_found.log';
 
     $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : array();
     $lines[] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -65,4 +65,4 @@
        . '</div>';
   }
 
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

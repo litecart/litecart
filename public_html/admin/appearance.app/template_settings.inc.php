@@ -4,8 +4,8 @@
   breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
 
 // Get template settings structure
-  $settings = include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php');
-  if (!is_array($settings)) include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
+  $settings = include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php');
+  if (!is_array($settings)) include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
 
   if (empty($settings)) $settings = array();
 

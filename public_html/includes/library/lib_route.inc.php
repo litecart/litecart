@@ -19,7 +19,7 @@
       self::$_links_cache = cache::get(self::$_links_cache_token);
 
     // Load external/dynamic routes
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . 'url_*.inc.php');
+      $files = glob(FS_DIR_APP . 'includes/routes/url_*.inc.php');
 
       foreach($files as $file) {
         $file = str_replace("\\", '/', $file); // Convert windows paths
@@ -71,7 +71,7 @@
 
         $route['page'] = preg_replace($matched_pattern, $route['page'], self::$request);
 
-        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . $route['page'] .'.inc.php')) continue;
+        if (!is_file(FS_DIR_APP . 'pages/' . $route['page'] .'.inc.php')) continue;
 
         if (!empty($route['params'])) {
           mb_parse_str(preg_replace($matched_pattern, $route['params'], self::$request), $params);
@@ -83,7 +83,7 @@
       }
 
     // Forward to rewritten URL (if necessary)
-      if (!empty(self::$route['page']) && is_file(vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . self::$route['page'] .'.inc.php'))) {
+      if (!empty(self::$route['page']) && is_file(vmod::check(FS_DIR_APP . 'pages/' . self::$route['page'] .'.inc.php'))) {
 
         $rewritten_url = document::ilink(self::$route['page'], $_GET);
 
@@ -105,7 +105,7 @@
           }
 
           if ($do_redirect) {
-            if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_HTTP_HOME) {
+            if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_APP) {
               header('Location: '. $rewritten_url, true, 302);
             } else {
               header('Location: '. $rewritten_url, true, 301);
@@ -139,7 +139,7 @@
 
       $link = parse_url($link, PHP_URL_PATH);
 
-      $link = preg_replace('#^'. WS_DIR_HTTP_HOME .'(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $link);
+      $link = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $link);
 
       return $link;
     }
@@ -206,9 +206,9 @@
 
     // Set base (/index.php/ or /)
       if ($use_rewrite) {
-        $http_route_base = WS_DIR_HTTP_HOME;
+        $http_route_base = WS_DIR_APP;
       } else {
-        $http_route_base = WS_DIR_HTTP_HOME . 'index.php/';
+        $http_route_base = WS_DIR_APP . 'index.php/';
       }
 
     // Append language prefix to base

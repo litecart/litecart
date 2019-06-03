@@ -51,7 +51,7 @@
         if ($do_login) {
           self::load($user['id']);
         } else {
-          setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
+          setcookie('remember_me', null, -1, WS_DIR_APP);
         }
       }
     }

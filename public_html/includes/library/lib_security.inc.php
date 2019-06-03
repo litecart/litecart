@@ -10,12 +10,12 @@
 
     public static function construct() {
 
-      if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt', '');
-      if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt', '');
+      if (!file_exists(FS_DIR_APP . 'data/blacklist.txt')) file_put_contents(FS_DIR_APP . 'data/blacklist.txt', '');
+      if (!file_exists(FS_DIR_APP . 'data/whitelist.txt')) file_put_contents(FS_DIR_APP . 'data/whitelist.txt', '');
 
-      self::$_bad_urls = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt';
-      self::$_blacklist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt';
-      self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt';
+      self::$_bad_urls = FS_DIR_APP . 'data/bad_urls.txt';
+      self::$_blacklist = FS_DIR_APP . 'data/blacklist.txt';
+      self::$_whitelist = FS_DIR_APP . 'data/whitelist.txt';
     }
 
     //public static function load_dependencies() {
@@ -139,7 +139,7 @@
     // Bad Bot Trap - Rig the trap
       if (settings::get('security_bot_trap')) {
         if (document::$layout == 'default') {
-          $pixel_trap = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: none;"></a>';
+          $pixel_trap = '<a rel="nofollow" href="'. document::link(WS_DIR_APP, array(self::$_trigger['key'] => '')) .'" style="display: none;"></a>';
           $GLOBALS['output'] = preg_replace('#(<body.*?>)#s', '$1' . PHP_EOL . PHP_EOL . $pixel_trap, $GLOBALS['output']);
         }
       }

@@ -105,7 +105,7 @@
       session::$data['language'] = self::$languages[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        setcookie('language_code', $code, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('language_code', $code, strtotime('+3 months'), WS_DIR_APP);
       }
 
     // Set system locale
@@ -141,7 +141,7 @@
       }
 
     // Return language from URI path
-      $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_HTTP_HOME))));
+      $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
       if (in_array($code, $all_languages)) return $code;
 
     // Return language from session

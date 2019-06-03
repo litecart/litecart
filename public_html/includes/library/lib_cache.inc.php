@@ -34,7 +34,7 @@
           limit 1;"
         );
 
-        foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+        foreach(glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file){
           if (is_file($file)) unlink($file);
         }
 
@@ -44,7 +44,7 @@
       }
 
       if (settings::get('cache_clear_thumbnails')) {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '*');
+        $files = glob(FS_DIR_APP . 'cache/' . '*');
 
         if (!empty($files)) foreach($files as $file) {
           if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
@@ -147,7 +147,7 @@
             $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
             break;
           case 'site':
-            $hash_string .= document::link(WS_DIR_HTTP_HOME);
+            $hash_string .= document::link(WS_DIR_APP);
             break;
           case 'template':
             $hash_string .= document::$template;
@@ -195,7 +195,7 @@
           return;
 
         case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$token['id'];
+          $cache_file = FS_DIR_APP . 'cache/' . '_cache_'.$token['id'];
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
 
@@ -238,7 +238,7 @@
           return false;
 
         case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $token['id'];
+          $cache_file = FS_DIR_APP . 'cache/' . '_cache_' . $token['id'];
 
           if (strtolower(language::$selected['charset']) != 'utf-8') {
             $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
@@ -321,9 +321,9 @@
 
     // Clear files
       if (!empty($keyword)) {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache*_'. $keyword .'_*');
+        $files = glob(FS_DIR_APP . 'cache/' .'_cache*_'. $keyword .'_*');
       } else {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
+        $files = glob(FS_DIR_APP . 'cache/' .'_cache_*');
       }
 
       if ($files) foreach ($files as $file) unlink($file);

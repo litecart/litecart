@@ -28,10 +28,10 @@
   if (isset($_POST['confirm_order'])) {
 
     ob_start();
-    include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_customer.html.inc.php');
-    include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_shipping.html.inc.php');
-    include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_payment.html.inc.php');
-    include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_summary.html.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_customer.html.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_shipping.html.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_payment.html.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_summary.html.inc.php');
     ob_end_clean();
 
     if (!empty(notices::$data['errors'])) {
@@ -91,7 +91,7 @@
 
           case 'HTML':
             echo $gateway['content'];
-            require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+            require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
             exit;
 
           case 'GET':

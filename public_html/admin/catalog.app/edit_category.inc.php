@@ -190,10 +190,10 @@
 <?php
   if (isset($category->data['id']) && !empty($category->data['images'])) {
     $image = current($category->data['images']);
-    echo '<img class="main-image" src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $image['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
     reset($category->data['images']);
   } else {
-    echo '<img class="main-image" src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
   }
 ?>
                 </div>
@@ -208,7 +208,7 @@
                     <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
                     <div class="thumbnail pull-left">
-                      <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['images'][$key]['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->data['images'][$key]['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -226,7 +226,7 @@
                 <div class="new-images">
                   <div class="image form-group">
                     <div class="thumbnail pull-left">
-                      <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -374,7 +374,7 @@
     e.preventDefault();
     var output = '<div class="image form-group">'
                + '  <div class="thumbnail pull-left">'
-               + '    <img src="<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />'
+               + '    <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />'
                + '  </div>'
                + '  '
                + '  <div class="input-group">'
@@ -407,7 +407,7 @@
       return;
     }
 
-    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
+    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
   }
 
 // Head Title & H1 Title
