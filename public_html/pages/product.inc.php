@@ -155,7 +155,7 @@
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = array(
-      'original' => ltrim('images/' . $image, '/'),
+      'original' => 'images/' . $image,
       'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => array(
