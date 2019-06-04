@@ -13,22 +13,16 @@
       );
     }
 
-    function rewrite($parsed_link, $language_code) {
+    function rewrite(object $link, $language_code) {
 
-      if (empty($parsed_link['query']['manufacturer_id'])) return;
+      if (empty($link->query['manufacturer_id'])) return;
 
-      $manufacturer_query = database::query(
-        "select id, name from ". DB_TABLE_MANUFACTURERS ."
-        where id = ". (int)$parsed_link['query']['manufacturer_id'] ."
-        limit 1;"
-      );
+      $manufacturer = reference::manufacturer($link->query['manufacturer_id'], $language_code);
+      if (empty($manufacturer->id)) return $link;
 
-      if (!$manufacturer = database::fetch($manufacturer_query)) return;
+      $link->path = functions::general_path_friendly($manufacturer->name, $language_code) .'-m-'. $manufacturer->id .'/';
+      $link->unset_query('manufacturer_id');
 
-      $parsed_link['path'] = functions::general_path_friendly($manufacturer['name'], $language_code) .'-m-'. $manufacturer['id'] .'/';
-
-      unset($parsed_link['query']['manufacturer_id']);
-
-      return $parsed_link;
+      return $link;
     }
   }

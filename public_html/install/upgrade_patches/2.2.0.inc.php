@@ -33,6 +33,7 @@
     FS_DIR_APP . 'includes/controllers/ctrl_user.inc.php',
     FS_DIR_APP . 'includes/functions/func_email.inc.php',
     FS_DIR_APP . 'includes/library/lib_catalog.inc.php',
+    FS_DIR_APP . 'includes/library/lib_link.inc.php',
     FS_DIR_APP . 'logs/http_request_last.log',
     FS_DIR_APP . 'includes/templates/default.catalog/views/column_left.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product.inc.php',

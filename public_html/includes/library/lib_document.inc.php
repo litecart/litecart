@@ -260,7 +260,7 @@
         $route = WS_DIR_APP . $route;
       }
 
-      return link::create_link($route, $new_params, $inherit_params, $skip_params, $language_code);
+      return route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
     }
 
     public static function href_ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
@@ -268,7 +268,7 @@
     }
 
     public static function link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
-      return link::create_link($document, $new_params, $inherit_params, $skip_params, $language_code, false);
+      return route::create_link($document, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
     public static function href_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
