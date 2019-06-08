@@ -1,13 +1,10 @@
 <?php
 
   class notices {
+
     public static $data = array();
 
-
-    public static function construct() {
-    }
-
-    public static function load_dependencies() {
+    public static function init() {
       if (empty(session::$data['notices'])) {
         session::$data['notices'] = array(
           'errors' => array(),
@@ -18,16 +15,9 @@
       }
 
       self::$data = &session::$data['notices'];
+
+      event::register('after_capture', array(__CLASS__, 'after_capture'));
     }
-
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
 
     public static function after_capture() {
 
@@ -40,15 +30,6 @@
         self::reset();
       }
     }
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

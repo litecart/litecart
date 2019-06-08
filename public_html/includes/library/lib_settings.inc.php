@@ -1,12 +1,10 @@
 <?php
 
   class settings {
+
     private static $_cache;
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
       $configuration_query = database::query(
         "select * from ". DB_TABLE_SETTINGS ."
@@ -24,27 +22,6 @@
     // Set time zone
       date_default_timezone_set(self::get('store_timezone'));
     }
-
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

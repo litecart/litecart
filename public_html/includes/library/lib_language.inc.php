@@ -7,10 +7,7 @@
     private static $_cache_token;
     private static $_loaded_translations = array();
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
     // Bind selected language to session
       if (!isset(session::$data['language'])) session::$data['language'] = array();
@@ -41,29 +38,19 @@
           self::$_cache['translations'][self::$selected['code']][$translation['code']] = $translation['text'];
         }
       }
-    }
 
-    //public static function initiate() {
-    //}
-
-    public static function startup() {
-
-      header('Content-Language: '. self::$selected['code']);
+      event::register('before_capture', array(__CLASS__, 'before_capture'));
+      event::register('before_output', array(__CLASS__, 'before_output'));
+      event::register('shutdown', array(__CLASS__, 'shutdown'));
     }
 
     public static function before_capture() {
-
-      if (empty(self::$selected['code'])) trigger_error('Error: No language set', E_USER_ERROR);
+      header('Content-Language: '. self::$selected['code']);
     }
 
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
+    public static function before_output() {
+      if (empty(self::$selected['code'])) trigger_error('Error: No language set', E_USER_ERROR);
+    }
 
     public static function shutdown() {
 

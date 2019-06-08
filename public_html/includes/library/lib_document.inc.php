@@ -7,20 +7,15 @@
     public static $snippets = array();
     public static $settings = array();
 
-    public static function construct() {
-      header('X-Powered-By: '. PLATFORM_NAME);
+    public static function init() {
+      event::register('before_capture', array(__CLASS__, 'before_capture'));
+      event::register('prepare_output', array(__CLASS__, 'prepare_output'));
+      event::register('before_output',  array(__CLASS__, 'before_output'));
     }
 
-    //public static function load_dependencies() {
-    //}
-
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
     public static function before_capture() {
+
+      header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template
       if (preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
@@ -88,9 +83,6 @@
       );
       self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, JSON_UNESCAPED_SLASHES) .";</script>";
     }
-
-    //public static function after_capture() {
-    //}
 
     public static function prepare_output() {
 
@@ -231,9 +223,6 @@
         stats::set('output_optimization', microtime(true) - $microtime_start);
       }
     }
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

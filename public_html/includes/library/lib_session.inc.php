@@ -4,7 +4,7 @@
 
     public static $data;
 
-    public static function construct() {
+    public static function init() {
 
       @ini_set('session.name', 'LCSESSID');
       @ini_set('session.gc_maxlifetime', 65535);
@@ -18,16 +18,6 @@
 
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
 
-    // (Un)register Globals
-      if (version_compare(phpversion(), '5.4.0', '<') == true) {
-        if (ini_get('register_globals')) {
-          foreach (array_keys($_SESSION) as $key) {
-            $_SESSION[$key] = $GLOBALS[$key];
-            unset($GLOBALS[$key]);
-          }
-        }
-      }
-
       self::$data = &$_SESSION;
 
       if (!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
@@ -37,27 +27,6 @@
         self::regenerate_id();
       }
     }
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

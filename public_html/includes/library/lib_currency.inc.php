@@ -4,17 +4,11 @@
     public static $currencies;
     public static $selected;
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
     // Bind selected to session
       if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) session::$data['currency'] = array();
       self::$selected = &session::$data['currency'];
-    }
-
-    public static function initiate() {
 
     // Load currencies
       self::load();
@@ -22,24 +16,6 @@
     // Identify/set currency
       self::set();
     }
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

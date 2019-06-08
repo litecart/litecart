@@ -51,6 +51,8 @@
 
       self::query("set names '". database::input($charset) ."';", $link);
 
+      event::register('shutdown', array(__CLASS__, 'disconnect'));
+
       return self::$_links[$link];
     }
 

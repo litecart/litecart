@@ -3,21 +3,14 @@
   class customer {
     public static $data;
 
-    //public static function construct() {
-    //}
+    public static function init() {
 
-    public static function load_dependencies() {
-
-    // Bind customer to session
-      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) session::$data['customer'] = array();
-      self::$data = &session::$data['customer'];
-    }
-
-    public static function initiate() {
-
-      if (empty(self::$data)) {
+      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
         self::reset();
       }
+
+    // Bind customer to session
+      self::$data = &session::$data['customer'];
 
       if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
         list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
@@ -43,13 +36,10 @@
       }
 
       self::identify();
+
+      event::register('after_capture', array(__CLASS__, 'after_capture'));
+      event::register('before_output', array(__CLASS__, 'before_output'));
     }
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
 
     public static function after_capture() {
 
@@ -62,9 +52,6 @@
         }
       }
     }
-
-    //public static function prepare_output() {
-    //}
 
     public static function before_output() {
 
@@ -79,9 +66,6 @@
         }
       }
     }
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

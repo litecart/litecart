@@ -1,24 +1,17 @@
 <?php
 
   class user {
+
     public static $data;
 
-    //public static function construct() {
-    //}
+    public static function init() {
 
-    public static function load_dependencies() {
+      if (empty(session::$data['user']) || !is_array(session::$data['user'])) {
+        self::reset();
+      }
 
     // Bind user to session
-      if (empty(session::$data['user']) || !is_array(session::$data['user'])) session::$data['user'] = array();
       self::$data = &session::$data['user'];
-    }
-
-    //public static function initiate() {
-    //}
-
-    public static function startup() {
-
-      if (empty(self::$data)) self::reset();
 
       if (!empty(self::$data['id'])) {
         ini_set('display_errors', 'On');
@@ -55,21 +48,6 @@
         }
       }
     }
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

@@ -33,17 +33,14 @@
 // Set error handler
   require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
-// Set up the system object
-  system::init();
-
-// Load dependencies
-  system::run('load_dependencies');
-
-// Initiate system modules
-  system::run('initiate');
-
-// Run start operations
-  system::run('startup');
+// Jump-Start some library modules
+  class_exists('compression');
+  //class_exists('document');
+  class_exists('stats');
+  if (file_get_contents('php://input')) {
+    class_exists('form');
+  }
+  class_exists('security');
 
 // Run operations before capture
-  system::run('before_capture');
+  event::fire('before_capture');

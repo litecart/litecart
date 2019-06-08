@@ -1,17 +1,7 @@
 <?php
-
   class form {
 
-    //public static function construct() {
-    //}
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function initiate() {
-    //}
-
-    public static function startup() {
+    public static function init() {
 
     // Is there incoming ajax data that needs decoding?
       if (!empty($_POST) && strtolower(language::$selected['charset']) != 'utf-8') {
@@ -33,21 +23,6 @@
         }
       }
     }
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

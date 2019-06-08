@@ -5,16 +5,7 @@
     private static $_data;
     public static $enabled = true;
 
-    public static function construct() {
-    }
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function initiate() {
-    //}
-
-    public static function startup() {
+    public static function init() {
 
       self::$enabled = settings::get('cache_enabled') ? true : false;
 
@@ -62,16 +53,6 @@
         }
       }
     }
-
-    public static function before_capture() {}
-
-    public static function after_capture() {}
-
-    public static function prepare_output() {}
-
-    public static function before_output() {}
-
-    public static function shutdown() {}
 
     ######################################################################
 
