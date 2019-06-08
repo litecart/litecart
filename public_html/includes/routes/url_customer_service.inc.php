@@ -8,7 +8,9 @@
           'pattern' => '#^.*-s-([0-9]+)/?$#',
           'page' => 'customer_service',
           'params' => 'page_id=$1',
-          'redirect' => true,
+          'options' => array(
+            'redirect' => true,
+          ),
         ),
       );
     }

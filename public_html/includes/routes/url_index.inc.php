@@ -8,7 +8,9 @@
           'pattern' => '#^(?:index\.php)?$#',
           'page' => 'index',
           'params' => '',
-          'redirect' => true,
+          'options' => array(
+            'redirect' => true,
+          ),
         ),
       );
     }
