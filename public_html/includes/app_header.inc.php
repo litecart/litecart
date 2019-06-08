@@ -21,9 +21,6 @@
 
 // Autoloader
   require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
-  if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
-    require_once FS_DIR_APP . 'vendor/autoload.php';
-  }
 
 // 3rd party autoloader (If present)
   if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
