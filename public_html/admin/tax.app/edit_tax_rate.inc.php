@@ -51,7 +51,7 @@
       $tax_rate->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_rates'), true, array('tax_rate_id')));
       exit;
 
     } catch (Exception $e) {
@@ -67,7 +67,7 @@
       $tax_rate->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'tax_rates'), true, array('tax_rate_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_rates'), true, array('tax_rate_id')));
       exit;
 
     } catch (Exception $e) {

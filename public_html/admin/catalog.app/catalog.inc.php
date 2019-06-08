@@ -79,7 +79,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
-      header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
       exit;
 
     } catch (Exception $e) {
@@ -101,7 +101,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
-      header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
       exit;
 
     } catch (Exception $e) {
@@ -143,7 +143,7 @@
         notices::add('success', sprintf(language::translate('success_moved_d_categories', 'Moved %d categories'), count($_POST['categories'])));
       }
 
-      header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
       exit;
 
     } catch (Exception $e) {
@@ -183,7 +183,7 @@
 
       if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
 
-      header('Location: '. document::link('', array(), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array(), true));
       exit;
 
     } catch (Exception $e) {
@@ -224,8 +224,8 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc'=> 'edit_product'), array('category_id')), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc'=> 'edit_product'), array('category_id')), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -233,7 +233,7 @@
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>

@@ -49,7 +49,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'manufacturers'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'manufacturers'), array('app')));
       exit;
 
     } catch (Exception $e) {
@@ -65,7 +65,7 @@
       $manufacturer->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'manufacturers'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'manufacturers'), array('app')));
       exit;
 
     } catch (Exception $e) {

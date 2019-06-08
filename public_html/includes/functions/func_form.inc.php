@@ -214,6 +214,11 @@
   }
 
   function form_draw_link_button($url, $title, $parameters='', $icon='') {
+
+    if (empty($url)) {
+      $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    }
+
     if (!empty($icon)) {
       switch($icon) {
         case 'add':

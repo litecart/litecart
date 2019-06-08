@@ -33,7 +33,7 @@
       $tax_class->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_classes'), true, array('tax_class_id')));
       exit;
 
     } catch (Exception $e) {
@@ -49,7 +49,7 @@
       $tax_class->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'tax_classes'), true, array('tax_class_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_classes'), true, array('tax_class_id')));
       exit;
 
     } catch (Exception $e) {

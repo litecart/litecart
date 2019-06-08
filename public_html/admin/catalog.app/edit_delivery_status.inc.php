@@ -32,7 +32,7 @@
       $delivery_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
       exit;
 
     } catch (Exception $e) {
@@ -48,7 +48,7 @@
       $delivery_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
       exit;
 
     } catch (Exception $e) {

@@ -33,7 +33,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_quantity_unit'), true), language::translate('title_add_new_unit', 'Add New Unit'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_quantity_unit'), true), language::translate('title_add_new_unit', 'Add New Unit'), '', 'add'); ?></li>
     </ul>
   </div>
 

@@ -44,7 +44,7 @@
       $order_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'order_statuses'), true, array('order_status_id')));
       exit;
 
     } catch (Exception $e) {
@@ -60,7 +60,7 @@
       $order_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'order_statuses'), true, array('order_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'order_statuses'), true, array('order_status_id')));
       exit;
 
     } catch (Exception $e) {

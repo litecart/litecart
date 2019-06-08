@@ -102,7 +102,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'currencies'), true, array('action', 'currency_code')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'currencies'), true, array('action', 'currency_code')));
       exit;
 
     } catch (Exception $e) {
@@ -126,7 +126,7 @@
       $currency->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'currencies'), true, array('action', 'currency_code')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'currencies'), true, array('action', 'currency_code')));
       exit;
 
     } catch (Exception $e) {

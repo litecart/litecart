@@ -42,7 +42,7 @@
       $slide->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'slides'), true, array('action', 'slide_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'slides'), true, array('action', 'slide_id')));
       exit;
 
     } catch (Exception $e) {
@@ -58,7 +58,7 @@
       $slide->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'slides'), true, array('action', 'slide_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'slides'), true, array('action', 'slide_id')));
       exit;
 
     } catch (Exception $e) {

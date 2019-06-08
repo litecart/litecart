@@ -36,7 +36,7 @@
       $sold_out_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
       exit;
 
     } catch (Exception $e) {
@@ -52,7 +52,7 @@
       $sold_out_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
       exit;
 
     } catch (Exception $e) {

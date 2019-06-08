@@ -49,7 +49,7 @@
         notices::add('success', sprintf(language::translate('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
       }
 
-      header('Location: '. document::link('', array('page_id' => $_POST['page_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('page_id' => $_POST['page_id']), true));
       exit;
 
     } catch (Exception $e) {
@@ -91,7 +91,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_page'), true), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_page'), true), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?></li>
     </ul>
   </div>
 

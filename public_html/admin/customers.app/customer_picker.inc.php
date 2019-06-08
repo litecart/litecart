@@ -47,7 +47,7 @@
       type: 'get',
       async: true,
       cache: false,
-      url: '<?php echo document::link('', array('app' => 'customers', 'doc' => 'customers.json')); ?>&query=' + $(this).val(),
+      url: '<?php echo document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')); ?>&query=' + $(this).val(),
       dataType: 'json',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));

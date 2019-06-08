@@ -77,7 +77,7 @@
       }
 
       notices::add('success', language::translate('success_customers_imported', 'Customers successfully imported.'));
-      header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
 
     } catch (Exception $e) {

@@ -33,7 +33,7 @@
       $attribute_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
       exit;
 
     } catch (Exception $e) {
@@ -49,7 +49,7 @@
       $attribute_group->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
       exit;
 
     } catch (Exception $e) {

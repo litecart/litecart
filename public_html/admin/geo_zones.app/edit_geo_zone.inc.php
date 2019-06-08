@@ -31,7 +31,7 @@
       $geo_zone->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'geo_zones'), true, array('geo_zone_id')));
       exit;
 
     } catch (Exception $e) {
@@ -47,7 +47,7 @@
       $geo_zone->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'geo_zones'), true, array('geo_zone_id')));
       exit;
 
     } catch (Exception $e) {

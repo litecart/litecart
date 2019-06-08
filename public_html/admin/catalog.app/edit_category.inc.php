@@ -57,7 +57,7 @@
       $category->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
       exit;
 
     } catch (Exception $e) {
@@ -73,7 +73,7 @@
       $category->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
       exit;
 
     } catch (Exception $e) {

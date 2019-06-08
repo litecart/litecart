@@ -121,7 +121,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'languages'), true, array('action', 'language_code')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'languages'), true, array('action', 'language_code')));
       exit;
 
     } catch (Exception $e) {
@@ -149,7 +149,7 @@
       $language->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'languages'), true, array('action', 'language_code')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'languages'), true, array('action', 'language_code')));
       exit;
 
     } catch (Exception $e) {

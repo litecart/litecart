@@ -94,7 +94,7 @@ form[name="filter_form"] li {
       <tbody>
         <?php foreach ($customers as $customer) { ?>
         <tr>
-          <td><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+          <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
           <td><?php echo $customer['email']; ?></td>
           <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
         </tr>

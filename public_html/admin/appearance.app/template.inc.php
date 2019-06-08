@@ -56,7 +56,7 @@
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
       if (!empty($redirect_to_settings)) {
-        $redirect_url = document::link('', array('doc' => 'template_settings'), array('app'));
+        $redirect_url = document::link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app'));
       } else {
         $redirect_url = document::link();
       }

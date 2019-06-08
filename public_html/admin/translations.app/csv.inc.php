@@ -83,7 +83,7 @@
 
       notices::add('success', sprintf(language::translate('success_d_translations_imported', 'Inserted %d new translations, updated %d translations'), $num_inserted_translations, $num_updated_translations));
 
-      header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
 
     } catch (Exception $e) {

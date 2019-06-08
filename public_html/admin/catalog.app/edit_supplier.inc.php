@@ -38,7 +38,7 @@
       $supplier->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'suppliers'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'suppliers'), array('app')));
       exit;
 
     } catch (Exception $e) {
@@ -54,7 +54,7 @@
       $supplier->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'suppliers'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'suppliers'), array('app')));
       exit;
 
     } catch (Exception $e) {

@@ -37,7 +37,7 @@
       $option_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'option_groups'), array('app')));
       exit;
 
     } catch (Exception $e) {
@@ -53,7 +53,7 @@
       $option_group->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'option_groups'), array('app')));
       exit;
 
     } catch (Exception $e) {

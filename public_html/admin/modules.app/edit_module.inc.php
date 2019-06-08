@@ -50,7 +50,7 @@
       $module->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => $return_doc), array('app')));
       exit;
 
     } catch (Exception $e) {
@@ -64,7 +64,7 @@
       $module->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => $return_doc), array('app')));
       exit;
 
     } catch (Exception $e) {
