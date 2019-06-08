@@ -9,6 +9,7 @@
     FS_DIR_APP . 'includes/classes/http_client.inc.php',
     FS_DIR_APP . 'includes/classes/module.inc.php',
     FS_DIR_APP . 'includes/classes/smtp.inc.php',
+    FS_DIR_APP . 'includes/classes/vmod.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_attribute_group.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_category.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_country.inc.php',
