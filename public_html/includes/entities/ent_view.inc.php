@@ -1,5 +1,5 @@
 <?php
-  class view {
+  class ent_view {
     public $snippets = array();
     public $html = '';
 

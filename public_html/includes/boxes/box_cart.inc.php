@@ -1,7 +1,7 @@
 <?php
   if (settings::get('catalog_only_mode')) return;
 
-  $box_cart = new view();
+  $box_cart = new ent_view();
   $box_cart->snippets = array(
     'items' => array(),
     'link' => document::ilink('checkout'),

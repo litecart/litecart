@@ -7,7 +7,7 @@
   $manufacturers_cache_token = cache::token('manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
   if (cache::capture($manufacturers_cache_token)) {
 
-    $_page = new view();
+    $_page = new ent_view();
 
     $manufacturers_query = database::query(
       "select m.id, m.name, m.image, mi.short_description, mi.link

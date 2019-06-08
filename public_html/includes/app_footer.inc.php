@@ -7,7 +7,7 @@
   system::run('after_capture');
 
 // Stitch content
-  $_page = new view();
+  $_page = new ent_view();
   $_page->snippets = array('content' => $content);
   $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
 

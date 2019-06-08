@@ -94,7 +94,7 @@
     }
   }
 
-  $_page = new view();
+  $_page = new ent_view();
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     echo $_page->stitch('pages/login.ajax');

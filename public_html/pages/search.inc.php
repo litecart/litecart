@@ -12,7 +12,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new view();
+  $_page = new ent_view();
   $_page->snippets = array(
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
     'products' => array(),

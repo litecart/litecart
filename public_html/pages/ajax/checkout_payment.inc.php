@@ -51,7 +51,7 @@
   && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
 */
 
-  $box_checkout_payment = new view();
+  $box_checkout_payment = new ent_view();
 
   $box_checkout_payment->snippets = array(
     'selected' => !empty($payment->data['selected']) ? $payment->data['selected'] : array(),

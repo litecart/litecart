@@ -26,7 +26,7 @@
     public static function prepare_output() {
 
       if (count(self::$data) > 1) {
-        $breadcrumbs = new view();
+        $breadcrumbs = new ent_view();
 
         $breadcrumbs->snippets['breadcrumbs'] = array();
         foreach (self::$data as $breadcrumb) {

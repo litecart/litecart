@@ -9,7 +9,7 @@
       $current_page_path = array();
     }
 
-    $box_information_links = new view();
+    $box_information_links = new ent_view();
 
     $box_information_links->snippets['pages'] = array();
 

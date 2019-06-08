@@ -29,7 +29,7 @@
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   breadcrumbs::add($manufacturer->name);
 
-  $_page = new view();
+  $_page = new ent_view();
 
   $manufacturer_cache_token = cache::token('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
   if (!$_page->snippets = cache::get($manufacturer_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {

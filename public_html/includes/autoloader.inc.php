@@ -88,6 +88,11 @@
         class_alias('wrap_smtp', 'smtp', true);
         break;
 
+      case ($class == 'view'):
+        //trigger_error('Class object view() is deprecated. Use instead ent_view()', E_USER_DEPRECATED);
+        class_alias('ent_view', 'view', true);
+        break;
+
       default:
         require_once vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php');
         break;

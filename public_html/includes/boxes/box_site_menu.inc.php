@@ -1,6 +1,6 @@
 <?php
 
-  $box_site_menu = new view();
+  $box_site_menu = new ent_view();
 
   $box_site_menu_cache_token = cache::token('box_site_menu', array('language'), 'file');
   if (!$box_site_menu->snippets = cache::get($box_site_menu_cache_token)) {

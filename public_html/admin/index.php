@@ -9,7 +9,7 @@
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
 
 // Build apps list menu
-    $box_apps_menu = new view();
+    $box_apps_menu = new ent_view();
     $box_apps_menu->snippets['apps'] = array();
 
     foreach (functions::admin_get_apps() as $app) {
@@ -78,7 +78,7 @@
       }
 
     // Widgets
-      $box_widgets = new view();
+      $box_widgets = new ent_view();
       $box_widgets->snippets['widgets'] = array();
 
       foreach (functions::admin_get_widgets() as $widget) {
@@ -104,7 +104,7 @@
 
         breadcrumbs::add($app_config['name'], document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $app_config['default'])));
 
-        $_page = new view();
+        $_page = new ent_view();
         $_page->snippets = array(
           'app' => $_GET['app'],
           'doc' => !empty($_GET['doc']) ? $_GET['doc'] : $app_config['default'],

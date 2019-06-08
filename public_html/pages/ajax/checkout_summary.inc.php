@@ -59,7 +59,7 @@
   }
 
 // Output
-  $box_checkout_summary = new view();
+  $box_checkout_summary = new ent_view();
 
   $box_checkout_summary->snippets = array(
     'items' => array(),

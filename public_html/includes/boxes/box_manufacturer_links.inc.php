@@ -11,7 +11,7 @@
 
     if (database::num_rows($manufacturers_query)) {
 
-      $box_manufacturer_links = new view();
+      $box_manufacturer_links = new ent_view();
 
       $box_manufacturer_links->snippets['manufacturers'] = array();
 

@@ -37,7 +37,7 @@
 
   function draw_listing_category($category) {
 
-    $listing_category = new view();
+    $listing_category = new ent_view();
 
     list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
@@ -62,7 +62,7 @@
 
   function draw_listing_product($product, $listing_type='column', $inherit_params=array()) {
 
-    $listing_product = new view();
+    $listing_product = new ent_view();
 
     $sticker = '';
     if ((float)$product['campaign_price']) {
@@ -173,7 +173,7 @@
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
 
-    $pagination = new view();
+    $pagination = new ent_view();
 
     $pagination->snippets['items'][] = array(
       'title' => language::translate('title_previous', 'Previous'),

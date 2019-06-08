@@ -13,7 +13,7 @@
 
     if (database::num_rows($manufacturers_query)) {
 
-      $box_manufacturer_logotypes = new view();
+      $box_manufacturer_logotypes = new ent_view();
 
       $box_manufacturer_logotypes->snippets['logotypes'] = array();
 

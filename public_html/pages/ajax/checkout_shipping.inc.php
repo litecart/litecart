@@ -51,7 +51,7 @@
   && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
 */
 
-  $box_checkout_shipping = new view();
+  $box_checkout_shipping = new ent_view();
 
   $box_checkout_shipping->snippets = array(
     'selected' => !empty($shipping->data['selected']) ? $shipping->data['selected'] : array(),

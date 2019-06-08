@@ -37,7 +37,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new view();
+  $_page = new ent_view();
 
   $box_category_cache_token = cache::token('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
   if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {

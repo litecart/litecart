@@ -13,7 +13,7 @@
 
     if (database::num_rows($products_query)) {
 
-      $box_latest_products = new view();
+      $box_latest_products = new ent_view();
 
       $box_latest_products->snippets['products'] = array();
       while ($listing_product = database::fetch($products_query)) {

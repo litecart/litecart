@@ -23,7 +23,7 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
-  $_page = new view();
+  $_page = new ent_view();
   $_page->snippets = array(
     'order' => $order->data,
     'comments' => array(),

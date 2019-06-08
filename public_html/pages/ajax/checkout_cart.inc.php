@@ -11,7 +11,7 @@
     return;
   }
 
-  $box_checkout_cart = new view();
+  $box_checkout_cart = new ent_view();
 
   $box_checkout_cart->snippets = array(
     'items' => array(),

@@ -15,7 +15,7 @@
 
     if (database::num_rows($slides_query)) {
 
-      $box_slides = new view();
+      $box_slides = new ent_view();
 
       $box_slides->snippets['slides'] = array();
 

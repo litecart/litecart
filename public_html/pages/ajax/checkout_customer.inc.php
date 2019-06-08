@@ -157,7 +157,7 @@
     $account_exists = true;
   }
 
-  $box_checkout_customer = new view();
+  $box_checkout_customer = new ent_view();
   $box_checkout_customer->snippets['account_exists'] = $account_exists;
 
   echo $box_checkout_customer->stitch('views/box_checkout_customer');

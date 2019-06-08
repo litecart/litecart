@@ -8,7 +8,7 @@
       $current_page_path = array();
     }
 
-    $box_customer_service_links = new view();
+    $box_customer_service_links = new ent_view();
 
     $box_customer_service_links->snippets['pages'] = array();
 

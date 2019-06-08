@@ -34,7 +34,7 @@
       notices::$data = array_filter(notices::$data);
 
       if (!empty(notices::$data)) {
-        $notices = new view();
+        $notices = new ent_view();
         $notices->snippets['notices'] = notices::$data;
         document::$snippets['notices'] = $notices->stitch('views/notices');
         self::reset();

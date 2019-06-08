@@ -116,7 +116,7 @@
     }
   }
 
-  $page_login = new view();
+  $page_login = new ent_view();
   echo $page_login->stitch('pages/login');
 
   require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

@@ -53,7 +53,7 @@
     }
   }
 
-  $_page = new view();
+  $_page = new ent_view();
 
   $_page->snippets = array(
     'currencies' => array(),

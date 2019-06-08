@@ -6,7 +6,7 @@
   $box_campaign_products_cache_token = cache::token('box_campaign_products', array('language', 'currency', 'prices'), 'file');
   if (cache::capture($box_campaign_products_cache_token)) {
 
-    $box_campaign_products = new view();
+    $box_campaign_products = new ent_view();
 
     $products_query = functions::catalog_products_query(array(
       'campaign' => true,

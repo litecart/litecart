@@ -83,7 +83,7 @@
   );
 
 // Page
-  $_page = new view();
+  $_page = new ent_view();
 
   $schema_json = array(
     '@context' => 'http://schema.org/',

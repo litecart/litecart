@@ -10,5 +10,5 @@
 
   functions::draw_lightbox();
 
-  $_page = new view();
+  $_page = new ent_view();
   echo $_page->stitch('pages/checkout');
