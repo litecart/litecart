@@ -1,6 +1,6 @@
 <?php
 
-  class smtp {
+  class wrap_smtp {
     private $_socket = null;
     private $_host = null;
     private $_port = null;

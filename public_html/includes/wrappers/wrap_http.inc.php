@@ -1,6 +1,6 @@
 <?php
 
-  class http_client {
+  class wrap_http {
     public $follow_redirects = false;
     public $timeout = 20;
     public $last_request;

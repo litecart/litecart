@@ -6,7 +6,7 @@
 
       $url = document::link('https://www.litecart.net/feeds/discussions.rss');
 
-      $client = new http_client();
+      $client = new wrap_http();
       $client->timeout = 10;
       $response = @$client->call('GET', $url);$response = 'fishy';
       libxml_use_internal_errors(true);

@@ -69,9 +69,23 @@
         require vmod::check(FS_DIR_APP . 'includes/routes/' . $class . '.inc.php');
         break;
 
+      case (substr($class, 0, 5) == 'wrap_'):
+        require vmod::check(FS_DIR_APP . 'includes/wrappers/' . $class . '.inc.php');
+        break;
+
       case ($class == 'email'):
         //trigger_error('Class object email() is deprecated. Use instead ent_email()', E_USER_DEPRECATED);
         class_alias('ent_email', 'email', true);
+        break;
+
+      case ($class == 'http_client'):
+        //trigger_error('Class object http_client() is deprecated. Use instead wrap_http()', E_USER_DEPRECATED);
+        class_alias('wrap_http', 'http_client', true);
+        break;
+
+      case ($class == 'wrap_smtp'):
+        //trigger_error('Class object smtp() is deprecated. Use instead wrap_smtp()', E_USER_DEPRECATED);
+        class_alias('wrap_smtp', 'smtp', true);
         break;
 
       default:

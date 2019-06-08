@@ -16,7 +16,7 @@
         'url' => document::ilink(''),
       );
 
-      $client = new http_client();
+      $client = new wrap_http();
       $client->timeout = 10;
       $response = @$client->call('POST', $url, $store_info);
       libxml_use_internal_errors(true);
