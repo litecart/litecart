@@ -17,7 +17,7 @@
   require_once FS_DIR_APP . 'includes/compatibility.inc.php';
 
 // Virtual Modifications System
-  require_once FS_DIR_APP . 'includes/classes/vmod.inc.php';
+  require_once FS_DIR_APP . 'includes/library/lib_vmod.inc.php';
 
 // Autoloader
   require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
