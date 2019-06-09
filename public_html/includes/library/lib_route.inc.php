@@ -201,7 +201,7 @@
       return (string)$link;
     }
 
-    public static function rewrite(object $link, $language_code=null) {
+    public static function rewrite(ent_link $link, $language_code=null) {
 
       if ($link->host != $_SERVER['HTTP_HOST']) return $link;
 

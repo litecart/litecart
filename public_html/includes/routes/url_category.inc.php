@@ -14,7 +14,7 @@
       );
     }
 
-    function rewrite(object $link, $language_code) {
+    function rewrite(ent_link $link, $language_code) {
 
       if (empty($link->query['category_id'])) return;
 

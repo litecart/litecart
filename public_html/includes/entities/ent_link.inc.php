@@ -63,7 +63,7 @@
         case 'scheme':
 
           if (empty($value)) {
-            if ($this->_components['host'] == $_SERVER['HTTP_HOST']) {
+            if ($this->host == $_SERVER['HTTP_HOST']) {
               if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) {
                 $value = 'https';
               } else {

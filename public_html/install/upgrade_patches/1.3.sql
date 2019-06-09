@@ -40,7 +40,7 @@ INSERT INTO `lc_quantity_units` (`id`, `decimals`, `separate`, `priority`, `date
 INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`, `name`) VALUES
 (1, 1, 'en', 'pcs');
 -- --------------------------------------------------------
-ALTER TABLE `lc_products` ADD `quantity_unit_id` TINYINT(2) NOT NULL AFTER  `quantity`;
+ALTER TABLE `lc_products` ADD `quantity_unit_id` INT(11) NOT NULL AFTER  `quantity`;
 -- --------------------------------------------------------
 UPDATE `lc_products` set quantity_unit_id = 1 WHERE quantity_unit_id = 0;
 -- --------------------------------------------------------

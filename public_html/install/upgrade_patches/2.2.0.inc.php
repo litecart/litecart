@@ -57,8 +57,10 @@
     }
   }
 
-  if (preg_match("#define\('WS_DIR_ADMIN',\s+?WS_DIR_HTTP_HOME \. '(.*?)'\);#", $matches)) {
+  if (preg_match("#define\('WS_DIR_ADMIN',\s?+WS_DIR_HTTP_HOME \. '(.*?)'\);#", FS_DIR_APP . 'includes/config.inc.php', $matches)) {
     $admin_folder_name = $matches[1];
+  } else {
+    die('Could not extract name of admin folder');
   }
 
 // Modify some files
@@ -68,6 +70,25 @@
       'search'  => "    //if (is_writable(__FILE__)) chmod(__FILE__, 0444);" . PHP_EOL . PHP_EOL,
       'replace' => "",
     ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '{ADMIN_FOLDER}/');" . PHP_EOL,
+      'replace' => '',
+    ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('WS_DIR_AJAX',        WS_DIR_APP . 'ajax/');" . PHP_EOL,
+      'replace' => '',
+    ),
+  );
+
+  foreach ($modified_files as $modification) {
+    $result = file_modify($modification['file'], $modification['search'], $modification['replace']);
+    echo output_results_table($result);
+  }
+
+// Modify some files
+  $modified_files = array(
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '". $admin_folder_name ."/');" . PHP_EOL,
@@ -155,11 +176,6 @@
       'file'    => FS_DIR_APP . 'install/.htaccess',
       'search'  => '<FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
       'replace' => '<FilesMatch "\.(eot|gif|ico|jpg|jpeg|js|otf|pdf|png|svg|ttf|woff|woff2)$">',
-    ),
-    array(
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('WS_DIR_AJAX',        WS_DIR_APP . 'ajax/');\r\n",
-      'replace' => '',
     ),
   );
 

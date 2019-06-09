@@ -5,16 +5,25 @@
     public static $_callbacks = array();
     public static $_fired_events = array();
 
-    public static function register($event, $function) {
+    public static function register($event, $callback) {
 
-      $checksum = md5(json_encode($function));
+      $checksum = md5(json_encode($callback));
 
       if (!empty(self::$_callbacks[$event][$checksum])) {
-        trigger_error('Callback already registered', E_USER_WARNING);
+        trigger_error("Callback already registered ($event)", E_USER_WARNING);
         return;
       }
 
-      self::$_callbacks[$event][$checksum] = $function;
+      if (in_array($event, self::$_fired_events)) {
+        if (is_callable($callback)) {
+          $callback();
+        } else {
+          call_user_func($callback);
+        }
+        return;
+      }
+
+      self::$_callbacks[$event][$checksum] = $callback;
     }
 
     public static function fire($event) {
@@ -30,14 +39,10 @@
 
       foreach (self::$_callbacks[$event] as $callback) {
 
-        switch(true) {
-          case (is_callable($callback)):
-            $callback($args);
-            break;
-
-          default:
-            call_user_func($callback, $args);
-            break;
+        if (is_callable($callback)) {
+          $callback($args);
+        } else {
+          call_user_func($callback, $args);
         }
       }
 

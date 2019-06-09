@@ -15,7 +15,7 @@
       );
     }
 
-    function rewrite(object $link, $language_code) {
+    function rewrite(ent_link $link, $language_code) {
 
       $link->path = ''; // Remove index file for site root
 

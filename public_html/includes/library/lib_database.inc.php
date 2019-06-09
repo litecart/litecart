@@ -3,6 +3,10 @@
   class database {
     private static $_links = array();
 
+    public static function init() {
+      event::register('shutdown', array(__CLASS__, 'disconnect'));
+    }
+
     public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset=DB_CONNECTION_CHARSET) {
 
       if (!isset(self::$_links[$link])) {
@@ -50,8 +54,6 @@
       self::query("SET @@session.sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
 
       self::query("set names '". database::input($charset) ."';", $link);
-
-      event::register('shutdown', array(__CLASS__, 'disconnect'));
 
       return self::$_links[$link];
     }
