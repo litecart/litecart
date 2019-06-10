@@ -19,17 +19,17 @@
 
       $xml = simplexml_load_file($vqmod);
 
-      foreach($xml->file as $file) {
-        foreach(explode(',', $file['name']) as $filename) {
-          $filename = FS_DIR_APP . 'pages/' . (isset($file['path']) ? $file['path'] : '') . $filename;
+      foreach ($xml->file as $file) {
+        foreach (explode(',', $file['name']) as $filename) {
+          $filename = FS_DIR_APP . (isset($file['path']) ? $file['path'] : '') . $filename;
 
           if (!empty(VQMod::$replaces)) {
-            foreach(VQMod::$replaces as $search => $replace) {
+            foreach (VQMod::$replaces as $search => $replace) {
               $filename = preg_replace($search, $replace, $filename);
             }
           }
 
-          foreach(glob($filename) as $file) {
+          foreach (glob($filename) as $file) {
             if (in_array($file, array('.', '..'))) continue;
             $files_to_modify[] = $file;
           }
