@@ -3,7 +3,7 @@
 
 ## Character Encoding
 
-  Foreign characters should not be present in the source code. If such do, the script must be encoded with character set UTF-8 w/o Byte Order Mark (BOM).
+  UTF-8 (without Byte Order Mark a.k.a. BOM)
 
 
 ## Indentation
@@ -120,13 +120,13 @@
 
   Non-HTML PHP output scripts should be named by their output format extension like the following:
 
-    script_name.xml.php
-    script_name.rss.php
-    script_name.json.php
+    .php
+    .json.php
 
   Included files should be named:
 
-    script_name.inc.php
+    .inc.php
+    .json.inc.php
 
 
 ## Beginning & Ending PHP Logic
@@ -144,6 +144,8 @@
       echo "Hello World!";
       ...
     ?>
+
+  Avoid ending ?> at the end of file
 
 
 ## PHP Variable Scope
@@ -174,7 +176,7 @@
 
 Inline arrays
 
-    my_function(array('this', 'that'));
+    do_something(array('this', 'that'));
 
 Defining a variable with more than a handful of values
 
@@ -194,7 +196,7 @@ Defining a variable with more than a handful of values
     echo 'Hello World!' . PHP_EOL
        . 'This is a new row';
 
-  Incorrect, unless it's JavaScript
+  For emails use \r\n accoarding to RFC standrard
 
     echo "Hello World!\r\nThis is a new row";
 
@@ -251,7 +253,7 @@ Defining a variable with more than a handful of values
 
 ## Function Results in PHP
 
-  General functions shall always return data, not output data to buffer.
+  General functions should always return data, not output data to buffer.
 
   For example:
 
@@ -272,11 +274,11 @@ Defining a variable with more than a handful of values
 
   Incorrect:
 
-    if (true == condition) {
+    if (true === condition) {
 
   Correct:
 
-    if (condition == true) {
+    if (condition === true) {
 
 
 ## Repetitive Statements in PHP
@@ -314,7 +316,7 @@ Defining a variable with more than a handful of values
       if ($node['first'] == 'a') {
         if ($node['second'] == 'b') {
           if ($node['third'] == 'c') {
-            return true;
+            do_something();
           }
         }
       }
@@ -326,7 +328,7 @@ Defining a variable with more than a handful of values
       if ($node['first'] != 'a') continue;
       if ($node['second'] != 'b') continue;
       if ($node['third'] != 'c') continue;
-      return true;
+      do_something();
     }
 
 
