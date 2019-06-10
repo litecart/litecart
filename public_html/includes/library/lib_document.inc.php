@@ -256,11 +256,17 @@
       return htmlspecialchars(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
-    public static function link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
-      return route::create_link($document, $new_params, $inherit_params, $skip_params, $language_code, false);
+    public static function link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+
+      if (empty($path)) {
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if ($inherit_params === null) $inherit_params = true;
+      }
+
+      return route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
-    public static function href_link($document=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
-      return htmlspecialchars(self::link($document, $new_params, $inherit_params, $skip_params, $language_code));
+    public static function href_link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+      return htmlspecialchars(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
     }
   }

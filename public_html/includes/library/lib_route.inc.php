@@ -162,7 +162,10 @@
 
       $link = new ent_link((string)$path);
 
-      if ($path === null && $inherit_params === null) $inherit_params = true;
+      if ($path === null && $inherit_params === null) {
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $inherit_params = true;
+      }
 
     // Remove index file from links
       $link->path = preg_replace('#/(index\.php)$#', '', $link->path);
