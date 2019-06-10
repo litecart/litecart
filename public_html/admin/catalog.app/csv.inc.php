@@ -641,16 +641,16 @@
                   <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
                   <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
-              </div>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
+                  <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+                </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_output', 'Output'); ?></label>
-                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_output', 'Output'); ?></label>
+                  <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+                </div>
               </div>
 
               <?php echo functions::form_draw_button('export_categories', language::translate('title_export', 'Export'), 'submit'); ?>
@@ -695,16 +695,16 @@
                   <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
                   <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
-              </div>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
+                  <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+                </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_output', 'Output'); ?></label>
-                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_output', 'Output'); ?></label>
+                  <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+                </div>
               </div>
 
               <?php echo functions::form_draw_button('export_products', language::translate('title_export', 'Export'), 'submit'); ?>
