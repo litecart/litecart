@@ -149,7 +149,7 @@ h1 {
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo htmlspecialchars(link::decode_idn(document::ilink(''))); ?></div>
+        <div class="value"><?php echo document::ilink(''); ?></div>
       </div>
 
       <div class="col-xs-3">

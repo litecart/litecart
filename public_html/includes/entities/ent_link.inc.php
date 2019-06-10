@@ -145,11 +145,7 @@
         $output .= '@';
       }
 
-      if (function_exists('idn_to_utf8')) {
-        $output .= idn_to_utf8($this->host);
-      } else {
-        $output .= $this->host;
-      }
+      $output .= $this->host;
 
       if (!empty($this->port)) {
         if ($this->scheme == 'https' && $this->port != 443) {
