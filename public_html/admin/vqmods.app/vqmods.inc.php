@@ -109,7 +109,7 @@
           <tr>
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
-            <th><?php echo language::translate('title_file', 'File'); ?></th>
+            <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th></th>
             <th><?php echo language::translate('title_version', 'Version'); ?></th>
@@ -120,7 +120,7 @@
 
         <tbody>
           <?php foreach ($vqmods as $vqmod) { ?>
-          <tr class="<?php echo $vqmod['enabled'] ? 'semi-transparent' : null; ?>">
+          <tr class="<?php echo $vqmod['enabled'] ? null : 'semi-transparent'; ?>">
             <td><?php echo functions::form_draw_checkbox('vqmods['. $vqmod['filename'] .']', $vqmod['filename']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($vqmod['enabled'] ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><a href="<?php echo document::link(null,  array('doc' => 'view', 'vqmod' => $vqmod['filename']), true); ?>"><?php echo $vqmod['filename']; ?></a></td>

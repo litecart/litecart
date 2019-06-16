@@ -24,6 +24,8 @@
   } catch (Exception $e) {
     notices::add('errors', $e->getMessage());
   }
+
+  breadcrumbs::add(basename($_GET['vqmod']));
 ?>
 <style>
 pre {
@@ -49,7 +51,7 @@ pre {
 
   <div class="panel-body">
 
-    <h1><?php echo htmlspecialchars($_GET['vqmod']); ?></h1>
+    <h1><?php echo $xml->id; ?></h1>
 
     <ul class="list-unstyled">
       <?php foreach ($xml->file as $file) { ?>
