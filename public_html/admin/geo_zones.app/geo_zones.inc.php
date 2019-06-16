@@ -1,6 +1,35 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
+  if (isset($_POST['duplicate'])) {
+
+    try {
+      if (empty($_POST['geo_zones'])) throw new Exception(language::translate('error_must_select_geo_zones', 'You must select geo zones'));
+
+      foreach ($_POST['geo_zones'] as $geo_zone_id) {
+        $original = new ent_geo_zone($geo_zone_id);
+        $geo_zone = new ent_geo_zone();
+
+        $geo_zone->data = $original->data;
+        $geo_zone->data['id'] = null;
+        $geo_zone->data['name'] .= ' (Copy)';
+
+        foreach (array_keys($geo_zone->data['zones']) as $key) {
+          $geo_zone->data['zones'][$key]['id'] = null;
+        }
+
+        $geo_zone->save();
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Table Rows
   $geo_zones = array();
 
@@ -66,6 +95,8 @@
           </tr>
         </tfoot>
       </table>
+
+      <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
