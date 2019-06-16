@@ -22,7 +22,7 @@
         else if (is_file($file = FS_DIR_APP . 'includes/entities/' . $new_class . '.inc.php')) {
           //trigger_error("Class $class is deprecated. Use instead $new_class", E_USER_DEPRECATED);
           require_once vmod::check($file);
-          if (!class_exists($new_class, false)) {
+          if (!class_exists($class, false)) {
             class_alias($new_class, $class);
           }
         }
