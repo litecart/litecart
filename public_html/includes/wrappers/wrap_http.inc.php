@@ -164,7 +164,7 @@
           $in = substr($in, $lf_pos + 1);
           continue;
         }
-        $chunk_len = hexdec($chunk_hex);
+        $chunk_len = (int)hexdec($chunk_hex);
         if($chunk_len) {
           $out .= substr($in, $lf_pos + 1, $chunk_len);
           $in = substr($in, $lf_pos + 2 + $chunk_len);
