@@ -291,10 +291,11 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('defaults', 'Defaults', 'Store default settings', 20),
 ('email', 'Email', 'Email and SMTP', 30),
 ('listings', 'Listings', 'Settings for the catalog listing', 40),
-('images', 'Images', 'Settings for graphical elements', 50),
-('checkout', 'Checkout', 'Checkout settings', 60),
-('advanced', 'Advanced', 'Advanced settings', 70),
-('security', 'Security', 'Site security and protection against threats', 80);
+('legal', 'Legal', 'Legal settings and information', 50),
+('images', 'Images', 'Settings for graphical elements', 60),
+('checkout', 'Checkout', 'Checkout settings', 70),
+('advanced', 'Advanced', 'Advanced settings', 80),
+('security', 'Security', 'Site security and protection against threats', 90);
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('', 'global', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', '', 0, NOW(), NOW()),
@@ -340,6 +341,9 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_campaign_products_num_items', '4', 'number()', 19, NOW(), NOW()),
 ('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum number of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'number()', 20, NOW(), NOW()),
 ('listings', 'local', 'Auto Decimals', 'Don\'t show decimals for integers. Will turn 99.00 into 99 but leave 99.99.', 'auto_decimals', '1', 'toggle("e/d")', 20, NOW(), NOW()),
+('legal', 'global', 'Cookie Policy', 'Select a page for the cookie policy or leave blank to disable.', 'cookie_policy', '', 'page()', 10, NOW(), NOW()),
+('legal', 'local', 'Privacy Policy', 'Select a page for the privacy policy consent or leave blank to disable.', 'privacy_policy', '', 'page()', 11, NOW(), NOW()),
+('legal', 'local', 'Terms of Purchase', 'Select a page for the terms of purchase or leave blank to disable.', 'terms_of_purchase', '', 'page()', 12, NOW(), NOW()),
 ('images', 'global', 'Clear Thumbnails Cache', 'Remove all cached image thumbnails from disk.', 'cache_clear_thumbnails', '0', 'toggle()', 1, NOW(), NOW()),
 ('images', 'local', 'Category Images: Aspect Ratio', 'The aspect ratio of the category thumbnails', 'category_image_ratio', '2:3', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '10', NOW(), NOW()),
 ('images', 'local', 'Category Images: Clipping Method', 'The clipping method used for scaled category thumbnails.', 'category_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '11', NOW(), NOW()),

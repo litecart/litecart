@@ -104,6 +104,14 @@
         </label>
       </div>
 
+      <?php if ($consent) { ?>
+      <p class="consent">
+        <div class="checkbox">
+          <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required="required"') .' '. $consent .'</label>'; ?>
+        </div>
+      </p>
+      <?php } ?>
+
       <?php if (settings::get('captcha_enabled')) { ?>
       <div class="row">
         <div class="form-group col-md-6">

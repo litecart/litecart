@@ -129,6 +129,13 @@ WHERE `key` = 'job_error_reporter:last_run';
 INSERT INTO `lc_settings` (`setting_group_key`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('email', 'Send Emails', 'Wheither or not the platform should deliver outgoing emails.', 'email_status', '1', 'toggle("y/n")', '1', NOW(), NOW());
 -- --------------------------------------------------------
+INSERT IGNORE INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES ('legal', 'Legal', 'Legal settings and information', 50);
+-- --------------------------------------------------------
+INSERT IGNORE INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('legal', 'local', 'Cookie Policy', 'Select a page for the cookie policy or leave blank to disable.', 'cookie_policy', '', 'page()', 10, NOW(), NOW()),
+('legal', 'local', 'Privacy Policy', 'Select a page for the privacy policy consent or leave blank to disable.', 'privacy_policy', '', 'page()', 11, NOW(), NOW()),
+('legal', 'local', 'Terms of Purchase', 'Select a page for the terms of purchase or leave blank to disable.', 'terms_of_purchase', '', 'page()', 12, NOW(), NOW());
+-- --------------------------------------------------------
 ALTER TABLE `lc_sold_out_statuses`
 ADD COLUMN `hidden` TINYINT(1) NOT NULL AFTER `id`;
 -- --------------------------------------------------------
