@@ -140,3 +140,10 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 </div>
+
+<script>
+  $('input[name^="title"]').bind('input propertyChange', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+</script>
