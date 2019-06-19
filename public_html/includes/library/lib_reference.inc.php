@@ -22,7 +22,7 @@
       }
 
       $component = null;
-      if (preg_match('#^(ref|ctrl)_#', $resource, $matches)) {
+      if (preg_match('#^(ref|ent)_#', $resource, $matches)) {
         $component = $matches[1];
         $resource = preg_replace('#^'. preg_quote($component, '#') .'_(.*)$#', '$1', $resource);
       }
@@ -44,8 +44,8 @@
 
           return self::$_cache[$resource][$checksum];
 
-        case ($component == 'ctrl'):
-        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/controllers/ent_'.basename($resource).'.inc.php'))):
+        case ($component == 'ent'):
+        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/entities/ent_'.basename($resource).'.inc.php'))):
 
           $class_name = 'ent_'.$resource;
           $object = new $class_name($arguments[0]);
