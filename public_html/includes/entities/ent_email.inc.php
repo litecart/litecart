@@ -148,7 +148,12 @@
 
       $data = $parse_as_string ? $file : file_get_contents($file);
 
-      $mime_type = mime_content_type($filename);
+      if ($parse_as_string) {
+        file_put_contents($tmpfile=tmpfile(), $data);
+        $mime_type = mime_content_type($tmpfile);
+      } else {
+        $mime_type = mime_content_type($file);
+      }
 
       $this->data['multiparts'][] = 'Content-Type: '. $mime_type . "\r\n"
                                    . 'Content-Disposition: attachment; filename="'. basename($filename) . '"' . "\r\n"
