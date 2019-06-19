@@ -103,7 +103,7 @@
 
       $email = trim($email);
 
-      if (!$this->validate_email_address($email)) throw new Exception('Invalid email address ('. $email .')');
+      if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
       $this->data['sender'] = array(
         'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
@@ -162,7 +162,7 @@
 
       $email = trim($email);
 
-      if (!$this->validate_email_address($email)) throw new Exception('Invalid email address ('. $email .')');
+      if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
       $this->data['recipients'][] = array(
         'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
@@ -176,7 +176,7 @@
 
       $email = trim($email);
 
-      if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+      if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
       $this->data['ccs'][] = array(
         'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
@@ -190,7 +190,7 @@
 
       $email = trim($email);
 
-      if (!$this->validate_email_address($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+      if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
       $this->data['bccs'][] = array(
         'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
@@ -213,11 +213,6 @@
       }
 
       return $contact['name'] .' <'. $contact['email'] .'>';
-    }
-
-    public function validate_email_address($email) {
-
-      return preg_match('#^([a-zA-Z0-9])+([a-zA-Z0-9\+\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$#', $email) ? true : false;
     }
 
     public function cleanup($time_ago='-30 days') {
