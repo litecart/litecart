@@ -121,13 +121,11 @@
 
   if ($privacy_policy_id = settings::get('privacy_policy')) {
 
-      $_page->snippets['consent'] = language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.');
-
       $aliases = array(
         '%privacy_policy_link' => document::href_ilink('information', array('page_id' => $privacy_policy_id)),
       );
 
-      $_page->snippets['consent'] = strtr($_page->snippets['consent'], $aliases);
+      $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
   }
 
   echo $_page->stitch('pages/create_account');
