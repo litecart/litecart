@@ -158,6 +158,7 @@
   }
 
   $box_checkout_customer = new ent_view();
-  $box_checkout_customer->snippets['account_exists'] = $account_exists;
-
+  $box_checkout_customer->snippets = array(
+    'account_exists' => $account_exists,
+  );
   echo $box_checkout_customer->stitch('views/box_checkout_customer');
