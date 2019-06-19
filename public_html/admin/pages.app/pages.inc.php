@@ -30,16 +30,6 @@
       if (isset($_POST['page_id']) && $_POST['page_id'] == '') throw new Exception(language::translate('error_must_select_destination', 'You must select a destination'));
       if (isset($_POST['page_id']) && isset($_POST['pages']) && in_array($_POST['page_id'], $_POST['pages'])) throw new Exception(language::translate('error_cant_move_page_to_itself', 'You can\'t move a page to itself'));
 
-      if (isset($_POST['page_id']) && isset($_POST['pages'])) {
-        foreach ($_POST['pages'] as $page_id) {
-
-          if (in_array($_POST['page_id'], array_keys(reference::page($page_id)->descendants))) {
-            throw new Exception(language::translate('error_cant_move_page_to_descendant', 'You can\'t move a page to a descendant'));
-            break;
-          }
-        }
-      }
-
       if (!empty($_POST['pages'])) {
         foreach ($_POST['pages'] as $page_id) {
           $page = new ent_page($page_id);

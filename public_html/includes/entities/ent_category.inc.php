@@ -99,6 +99,14 @@
 
     public function save() {
 
+      if (!empty($this->data['id']) && $this->data['parent_id'] == $this->data['id']) {
+        throw new Exception(language::translate('error_cannot_atatch_category_to_self', 'Cannot attach category to itself'));
+      }
+
+      if (!empty($this->data['id']) && !empty($this->data['parent_id']) && in_array($this->data['parent_id'], array_keys(reference::category($this->data['id'])->descendants))) {
+        throw new Exception(language::translate('error_cannot_attach_category_to_descendant', 'You cannot attach a category to a descendant'));
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_CATEGORIES ."

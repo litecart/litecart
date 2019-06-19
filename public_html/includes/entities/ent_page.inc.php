@@ -77,6 +77,14 @@
 
     public function save() {
 
+      if (!empty($this->data['parent_id']) && $this->data['parent_id'] == $this->data['id']) {
+        throw new Exception(language::translate('error_cannot_attach_page_to_itself', 'You cannot attach a page to itself'));
+      }
+
+      if (!empty($this->data['id']) && !empty($this->data['parent_id']) && in_array($this->data['parent_id'], array_keys(reference::page($this->data['id'])->descendants))) {
+        throw new Exception(language::translate('error_cannot_attach_page_to_descendant', 'You cannot attach a page to a descendant'));
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_PAGES ."
@@ -134,15 +142,6 @@
 
     public function delete() {
 
-      $pages_query = database::query(
-        "select id from ". DB_TABLE_PAGES ."
-        where parent_id = ". (int)$this->data['id'] .";"
-      );
-
-      if (database::num_rows($pages_query)) {
-        throw new Exception('Cannot delete page when there are other pages mounted to it');
-      }
-
       database::query(
         "delete from ". DB_TABLE_PAGES_INFO ."
         where page_id = ". (int)$this->data['id'] .";"
@@ -151,6 +150,12 @@
       database::query(
         "delete from ". DB_TABLE_PAGES ."
         where id = ". (int)$this->data['id'] .";"
+      );
+
+      database::query(
+        "update ". DB_TABLE_PAGES ."
+        set parent_id = ". (int)$this->data['parent_id'] ."
+        where parent_id = ". (int)$this->data['id'] .";"
       );
 
       $this->data['id'] = null;
