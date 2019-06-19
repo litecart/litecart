@@ -130,7 +130,7 @@
           $bccs[] = $email;
         }
 
-        $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['id']);
+        $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
       }
 
       if (!empty($_GET['redirect_url'])) {
