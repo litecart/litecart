@@ -8,12 +8,6 @@
 
     public function call($method, $url='', $data=null, $headers=array(), $asynchronous=false) {
 
-    // Backwards compatibility (where first param was URL supporting only GET/POST)
-      if (strpos($method, '://') !== false) {
-        list($url, $data, $headers) = func_get_args();
-        $method = !empty($data) ? 'POST' : 'GET';
-      }
-
       $this->last_request = array();
       $this->last_response = array();
 
