@@ -401,8 +401,6 @@
 
         <div id="tab-attributes" class="tab-pane" style="max-width: 960px;">
 
-          <?php echo language::translate('title_attributes', 'Attributes'); ?>
-
           <table class="table table-striped data-table">
             <thead>
               <tr>
