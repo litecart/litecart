@@ -16,7 +16,7 @@
 
   <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
-  <header id="header">
+  <header id="header" class="hidden-print">
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
       <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
     </a>
@@ -40,7 +40,7 @@
   <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_footer.inc.php'); ?>
 </div>
 
-<a id="scroll-up" href="#">
+<a id="scroll-up" class="hidden-print" href="#">
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
