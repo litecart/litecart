@@ -38,7 +38,6 @@
     order by priority;"
   );
 
-  $this->data['filters'] = array();
   while ($group = database::fetch($category_filters_query)) {
 
     $attribute_values_query = database::query(
