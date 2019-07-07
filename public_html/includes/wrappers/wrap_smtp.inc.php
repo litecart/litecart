@@ -78,7 +78,7 @@
       if (!empty($this->_username)) {
 
         $auths = array();
-        if (preg_match('#250.AUTH ([^\R]+)#', $this->_last_response, $matches)) {
+        if (preg_match('#250.AUTH (.*?)\R#', $this->_last_response, $matches)) {
           $auths = explode(' ', $matches[1]);
         }
 
