@@ -4,6 +4,8 @@
   ob_start();
 
   require_once('../includes/config.inc.php');
+  if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
+  if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
   require_once('../includes/error_handler.inc.php');
   require_once('../includes/library/lib_database.inc.php');
   require_once('includes/header.inc.php');
@@ -25,8 +27,6 @@
   define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 
   if (!PLATFORM_VERSION) die('Could not identify target version.');
-
-  if (!defined('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME));
 
 // Get current platform database version
   $platform_database_version_query = database::query(
