@@ -139,34 +139,13 @@
       return $response_body;
     }
 
-    public function http_decode_chunked_data($in) {
-
-      $out = '';
-
-      while($in != '') {
-        $lf_pos = strpos($in, "\012");
-        if($lf_pos === false) {
-          $out .= $in;
-          break;
-        }
-        $chunk_hex = trim(substr($in, 0, $lf_pos));
-        $sc_pos = strpos($chunk_hex, ';');
-        if($sc_pos !== false)
-          $chunk_hex = substr($chunk_hex, 0, $sc_pos);
-        if($chunk_hex == '') {
-          $out .= substr($in, 0, $lf_pos);
-          $in = substr($in, $lf_pos + 1);
-          continue;
-        }
-        $chunk_len = (int)hexdec($chunk_hex);
-        if($chunk_len) {
-          $out .= substr($in, $lf_pos + 1, $chunk_len);
-          $in = substr($in, $lf_pos + 2 + $chunk_len);
-        } else {
-          $in = '';
-        }
+    public function http_decode_chunked_data($data) {
+      for ($result = ''; !empty($data); $data = trim($data)) {
+        $position = strpos($data, "\r\n");
+        $length = hexdec(substr($data, 0, $position));
+        $result .= substr($data, $position + 2, $length);
+        $data = substr($data, $position + 2 + $length);
       }
-
-      return $out;
+      return $result;
     }
   }
