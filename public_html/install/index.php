@@ -5,24 +5,7 @@
 
   ini_set('display_errors', 'On');
 
-// Function to get object from a relative path to this script
-  function get_absolute_path($path=null) {
-    if (empty($path)) $path = dirname(__FILE__);
-    $path = str_replace('\\', '/', $path);
-    $parts = array_filter(explode('/', $path), 'strlen');
-    $absolutes = array();
-    foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
-      }
-    }
-    return ((substr(PHP_OS, 0, 3) == 'WIN') ? '' : '/') . implode('/', $absolutes);
-  }
-
-  $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
+  $document_root = file_absolute_path(dirname(__FILE__) . '/..') .'/';
 
   function return_bytes($string) {
     sscanf($string, '%u%c', $number, $suffix);
