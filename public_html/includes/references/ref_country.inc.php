@@ -75,6 +75,8 @@
     public function format_address($address) {
 
       $address = array(
+        '%code' => !empty($address['code']) ? $address['code'] : '',
+        '%tax_id' => !empty($address['tax_id']) ? $address['tax_id'] : '',
         '%company' => !empty($address['company']) ? $address['company'] : '',
         '%firstname' => !empty($address['firstname']) ? $address['firstname'] : '',
         '%lastname' => !empty($address['lastname']) ? $address['lastname'] : '',
