@@ -37,10 +37,10 @@
 
       } else if (!empty($link->query['manufacturer_id'])) {
 
-        $manufacturer = reference::manufacturer($link->query['manufacturer_id']);
+        $manufacturer = reference::manufacturer($link->query['manufacturer_id'], $language_code);
 
         if (!empty($manufacturer->id)) {
-          $new_path .= functions::catalog_category_trail($manufacturer->name, $language_code) .'-m-'. $manufacturer->id .'/';
+          $new_path .= functions::general_path_friendly($manufacturer->name, $language_code) .'-m-'. $manufacturer->id .'/';
         }
 
         $link->path = $new_path;
