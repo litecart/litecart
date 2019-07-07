@@ -52,9 +52,8 @@
   );
 
   foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      die('<span class="error">[Error]</span></p>');
-    }
+    $results = file_delete($pattern);
+    echo output_results_table($results);
   }
 
   if (preg_match("#define\('WS_DIR_ADMIN',\s?+WS_DIR_HTTP_HOME \. '(.*?)'\);#", FS_DIR_APP . 'includes/config.inc.php', $matches)) {
@@ -180,9 +179,8 @@
   );
 
   foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span></p>');
-    }
+    $result = file_modify($modification['file'], $modification['search'], $modification['replace']);
+    echo output_results_table($result);
   }
 
 // Complete Order Items
