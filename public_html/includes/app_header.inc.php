@@ -32,12 +32,12 @@
 
 // Jump-Start some library modules
   class_exists('compression');
-  //class_exists('document');
+  class_exists('notices');
   class_exists('stats');
+  class_exists('security');
   if (file_get_contents('php://input')) {
     class_exists('form');
   }
-  class_exists('security');
 
 // Run operations before capture
   event::fire('before_capture');
