@@ -80,9 +80,11 @@
 
           if (empty($value)) {
             $value = $_SERVER['HTTP_HOST'];
-          } else if (function_exists('idn_to_ascii')) {
-            $value = idn_to_ascii($value);
           }
+
+          //if (function_exists('idn_to_ascii')) {
+          //  $value = idn_to_ascii($value, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+          //}
 
           break;
 
