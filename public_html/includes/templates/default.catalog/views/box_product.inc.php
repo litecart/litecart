@@ -5,16 +5,16 @@
       <div class="images row">
 
         <div class="col-xs-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_link('/' . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link('/' . $image['thumbnail']); ?>" srcset="<?php echo document::href_link('/' . $image['thumbnail']); ?> 1x, <?php echo document::href_link('/' . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+          <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
             <?php echo $sticker; ?>
           </a>
         </div>
 
         <?php foreach ($extra_images as $image) { ?>
         <div class="col-xs-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_link('/' . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link('/' . $image['thumbnail']); ?>" srcset="<?php echo document::href_link('/' . $image['thumbnail']); ?> 1x, <?php echo document::href_link('/' . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
           </a>
         </div>
         <?php } ?>
