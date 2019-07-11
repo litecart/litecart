@@ -1,4 +1,5 @@
 <?php
+  $_GET['vqmod'] = basename($_GET['vqmod']);
 
   try {
     if (empty($_GET['vqmod'])) throw new Exception(language::translate('error_must_provide_vqmod', 'You must provide a vQmod'));
