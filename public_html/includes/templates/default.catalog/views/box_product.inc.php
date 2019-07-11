@@ -250,10 +250,10 @@
       }
     });
 
-    $('#box-product .regular-price').text(regular_price.toMoney());
-    $('#box-product .campaign-price').text(sales_price.toMoney());
-    $('#box-product .price').text(sales_price.toMoney());
-    $('#box-product .total-tax').text(tax.toMoney());
+    $(this).find('.regular-price').text(regular_price.toMoney());
+    $(this).find('.campaign-price').text(sales_price.toMoney());
+    $(this).find('.price').text(sales_price.toMoney());
+    $(this).find('.total-tax').text(tax.toMoney());
   });
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().click(function(e){
