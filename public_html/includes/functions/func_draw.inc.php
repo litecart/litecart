@@ -169,15 +169,15 @@
 
     if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
 
-    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
+    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link(null, array('page' => $_GET['page']-1), true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, array('page' => $_GET['page']+1), true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, array('page' => $_GET['page']+1), true) .'" />';
 
     $pagination = new ent_view();
 
     $pagination->snippets['items'][] = array(
       'title' => language::translate('title_previous', 'Previous'),
-      'link' => document::ilink(null, array('page' => $_GET['page']-1), true),
+      'link' => document::link(null, array('page' => $_GET['page']-1), true),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
       'active' => false,
     );
@@ -189,7 +189,7 @@
           $rewind = round(($_GET['page']-1)/2);
           $pagination->snippets['items'][] = array(
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
-            'link' => document::ilink(null, array('page' => $rewind), true),
+            'link' => document::link(null, array('page' => $rewind), true),
             'disabled' => false,
             'active' => false,
           );
@@ -203,7 +203,7 @@
           $forward = round(($_GET['page']+1+$pages)/2);
           $pagination->snippets['items'][] = array(
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
-            'link' => document::ilink(null, array('page' => $forward), true),
+            'link' => document::link(null, array('page' => $forward), true),
             'disabled' => false,
             'active' => false,
           );
@@ -213,7 +213,7 @@
 
       $pagination->snippets['items'][] = array(
         'title' => $i,
-        'link' => document::ilink(null, array('page' => $i), true),
+        'link' => document::link(null, array('page' => $i), true),
         'disabled' => false,
         'active' => ($i == $_GET['page']) ? true : false,
       );
@@ -221,7 +221,7 @@
 
     $pagination->snippets['items'][] = array(
       'title' => language::translate('title_next', 'Next'),
-      'link' => document::ilink(null, array('page' => $_GET['page']+1), true),
+      'link' => document::link(null, array('page' => $_GET['page']+1), true),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,
       'active' => false,
     );
