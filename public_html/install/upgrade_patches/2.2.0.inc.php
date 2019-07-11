@@ -79,6 +79,11 @@
       'search'  => "  define('WS_DIR_AJAX',        WS_DIR_APP . 'ajax/');" . PHP_EOL,
       'replace' => '',
     ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');" . PHP_EOL,
+      'replace' => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
+    ),
   );
 
   foreach ($modified_files as $modification) {
