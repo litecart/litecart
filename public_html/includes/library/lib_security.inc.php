@@ -124,7 +124,7 @@
       if (settings::get('security_bot_trap')) {
         if (document::$layout == 'default') {
           $pixel_trap = '<a rel="nofollow" href="'. document::link(WS_DIR_APP, array(self::$_trigger['key'] => '')) .'" style="display: none;"></a>';
-          $GLOBALS['output'] = preg_replace('#(<body.*?>)#s', '$1' . PHP_EOL . PHP_EOL . $pixel_trap, $GLOBALS['output']);
+          $GLOBALS['content'] = preg_replace('#(<body.*?>)#s', '$1' . PHP_EOL . PHP_EOL . $pixel_trap, $GLOBALS['content']);
         }
       }
     }
