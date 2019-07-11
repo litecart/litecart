@@ -1,15 +1,16 @@
 <?php
 
 // Store the captured output buffer
-  $content = ob_get_clean();
+  $GLOBALS['content'] = ob_get_clean();
 
 // Run after capture processes
   event::fire('after_capture');
 
 // Stitch content
   $_page = new ent_view();
-  $_page->snippets = array('content' => $content);
+  $_page->snippets = array('content' => $GLOBALS['content']);
   $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
+  unset($GLOBALS['content']);
 
 // Prepare output
   event::fire('prepare_output');
