@@ -2,6 +2,8 @@
   $_GET['debug'] = true;
   $_GET['vqmod'] = basename($_GET['vqmod']);
 
+  breadcrumbs::add(basename($_GET['vqmod']));
+
   foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
     unlink($file);
   }
