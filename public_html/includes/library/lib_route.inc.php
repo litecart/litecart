@@ -117,7 +117,7 @@
 
         http_response_code(404);
 
-        if (preg_match('#\.[a-z]{2,4}$#', self::$request)) exit;
+        if (preg_match('#\.[a-z]{2,4}$#', self::$request)) exit; // Don't return an error page for content with a defined extension (presumably static)
 
         $not_found_file = FS_DIR_APP . 'logs/not_found.log';
 
@@ -138,7 +138,7 @@
           file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
         }
 
-        echo '<div>'
+        echo '<div id="content">'
            . '  <h1>HTTP 404 - Not Found</h1>'
            . '  <p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>'
            . '</div>';
