@@ -21,10 +21,10 @@
 ######################################################################
 
 // File System
-  define('FS_DIR_HTTP_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
+  define('FS_DIR_HTTP_ROOT', DOCUMENT_ROOT);
 
 // Web System
-  define('WS_DIR_HTTP_HOME', rtrim(str_replace(FS_DIR_HTTP_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('WS_DIR_HTTP_HOME', rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
 
   define('WS_DIR_CACHE',       WS_DIR_HTTP_HOME . 'cache/');
   define('WS_DIR_DATA',        WS_DIR_HTTP_HOME . 'data/');
