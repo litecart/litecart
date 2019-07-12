@@ -117,7 +117,7 @@ ADD COLUMN `user_agent` VARCHAR(256) NOT NULL AFTER `client_ip`,
 ADD COLUMN `domain` VARCHAR(64) NOT NULL AFTER `user_agent`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_modules`
-ADD COLUMN `date_pushed` DATETIME NOT NULL AFTER `last_log`
+ADD COLUMN `date_pushed` DATETIME NOT NULL AFTER `last_log`,
 CHANGE `date_updated` `date_updated` DATETIME NOT NULL,
 CHANGE `date_created` `date_created` DATETIME NOT NULL;
 -- --------------------------------------------------------
