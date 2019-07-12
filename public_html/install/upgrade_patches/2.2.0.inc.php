@@ -52,12 +52,13 @@
   );
 
   foreach ($deleted_files as $pattern) {
-    $results = file_delete($pattern);
-    echo output_results_table($results);
+    if (!file_delete($pattern)) {
+      echo '<span class="error">[Skipped]</span></p>';
+    }
   }
 
-  if (preg_match("#define\('WS_DIR_ADMIN',\s?+WS_DIR_HTTP_HOME \. '(.*?)'\);#", FS_DIR_APP . 'includes/config.inc.php', $matches)) {
-    $admin_folder_name = $matches[1];
+  if (preg_match("#define\('WS_DIR_ADMIN',\s+WS_DIR_HTTP_HOME \. '(.*?)'\);#", file_get_contents(FS_DIR_APP . 'includes/config.inc.php'), $matches)) {
+    $admin_folder_name = rtrim($matches[1], '/');
   } else {
     die('Could not extract name of admin folder');
   }
@@ -87,8 +88,9 @@
   );
 
   foreach ($modified_files as $modification) {
-    $result = file_modify($modification['file'], $modification['search'], $modification['replace']);
-    echo output_results_table($result);
+    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
+      echo '<span class="error">[Skipped]</span></p>';
+    }
   }
 
 // Modify some files
@@ -184,8 +186,9 @@
   );
 
   foreach ($modified_files as $modification) {
-    $result = file_modify($modification['file'], $modification['search'], $modification['replace']);
-    echo output_results_table($result);
+    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
+      die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
+    }
   }
 
 // Complete Order Items
