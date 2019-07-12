@@ -2,7 +2,7 @@
 
   class notices {
 
-    public static $data = array();
+    public static $data;
 
     public static function init() {
       if (empty(session::$data['notices'])) {
