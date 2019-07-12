@@ -249,8 +249,8 @@
     // Categories
       database::query(
         "delete from " . DB_TABLE_PRODUCTS_TO_CATEGORIES . "
-        where product_id = ". (int)$this->data['id'] ."
-        and category_id not in ('". implode(", ", database::input($this->data['categories'])) ."');"
+        where product_id = '". (int)$this->data['id'] ."'
+        and category_id not in ('". @implode("', '", database::input($this->data['categories'])) ."');"
       );
 
       foreach ($this->data['categories'] as $category_id) {
