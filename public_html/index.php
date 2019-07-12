@@ -1,5 +1,3 @@
-hello world
-
 <?php
 /*!
  * LiteCart® 2.2.0
