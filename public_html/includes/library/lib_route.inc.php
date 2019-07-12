@@ -75,7 +75,11 @@
 
       if (empty(self::$route)) self::identify();
 
-      $page = FS_DIR_APP . 'pages/' . self::$route['page'] .'.inc.php';
+      if (!empty(self::$route['page'])) {
+        $page = FS_DIR_APP . 'pages/' . self::$route['page'] .'.inc.php';
+      } else {
+        $page = false;
+      }
 
     // Forward to rewritten URL (if necessary)
       if (!empty(self::$route['page']) && is_file(vmod::check($page))) {
