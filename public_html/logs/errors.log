@@ -1,0 +1,59 @@
+[12-Jul-2019 13:42:04 America/New_York] Warning: session_start(): Cannot send session cache limiter - headers already sent (output started at /Users/Shared/Sites/repo-litecart/litecart/public_html/index.php:1) in ~/includes/library/lib_session.inc.php on line 34
+ ← ~/includes/library/lib_session.inc.php on line 19 in start()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/includes/library/lib_notices.inc.php on line 8 in spl_autoload_call()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/includes/app_header.inc.php on line 35 in class_exists()
+ ← ~/index.php on line 18 in require_once()
+Request: GET / HTTP/1.1
+Host: repo-litecart.local
+Client: ::1 (localhost)
+User Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0) Gecko/20100101 Firefox/68.0
+
+[12-Jul-2019 13:42:04 America/New_York] Warning: Failed to start a session in ~/includes/library/lib_session.inc.php on line 19
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/includes/library/lib_notices.inc.php on line 8 in spl_autoload_call()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/includes/app_header.inc.php on line 35 in class_exists()
+ ← ~/index.php on line 18 in require_once()
+Request: GET / HTTP/1.1
+Host: repo-litecart.local
+Client: ::1 (localhost)
+User Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0) Gecko/20100101 Firefox/68.0
+
+[12-Jul-2019 13:42:04 America/New_York] Warning: Cannot modify header information - headers already sent by (output started at /Users/Shared/Sites/repo-litecart/litecart/public_html/index.php:1) in ~/includes/library/lib_document.inc.php on line 18
+ ← ~/includes/library/lib_event.inc.php on line 19 in before_capture()
+ ← ~/includes/library/lib_document.inc.php on line 11 in register()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/includes/library/lib_cache.inc.php on line 131 in spl_autoload_call()
+ ← ~/includes/library/lib_language.inc.php on line 28 in token()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/includes/library/lib_route.inc.php on line 158 in spl_autoload_call()
+ ← ~/includes/library/lib_route.inc.php on line 14 in strip_url_logic()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/index.php on line 36 in spl_autoload_call()
+Request: GET / HTTP/1.1
+Host: repo-litecart.local
+Client: ::1 (localhost)
+User Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0) Gecko/20100101 Firefox/68.0
+
+[12-Jul-2019 13:42:04 America/New_York] Warning: Cannot modify header information - headers already sent by (output started at /Users/Shared/Sites/repo-litecart/litecart/public_html/index.php:1) in ~/includes/library/lib_language.inc.php on line 48
+ ← ~/includes/library/lib_event.inc.php on line 19 in before_capture()
+ ← ~/includes/library/lib_language.inc.php on line 42 in register()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/includes/library/lib_route.inc.php on line 158 in spl_autoload_call()
+ ← ~/includes/library/lib_route.inc.php on line 14 in strip_url_logic()
+ ← ~/includes/autoloader.inc.php on line 104 in init()
+ ← ~/index.php on line 36 in spl_autoload_call()
+Request: GET / HTTP/1.1
+Host: repo-litecart.local
+Client: ::1 (localhost)
+User Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0) Gecko/20100101 Firefox/68.0
+
+[12-Jul-2019 13:42:04 America/New_York] Warning: Cannot modify header information - headers already sent by (output started at /Users/Shared/Sites/repo-litecart/litecart/public_html/index.php:1) in ~/includes/app_footer.inc.php on line 27
+ ← ~/index.php on line 44 in require_once()
+Request: GET / HTTP/1.1
+Host: repo-litecart.local
+Client: ::1 (localhost)
+User Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0) Gecko/20100101 Firefox/68.0
+
