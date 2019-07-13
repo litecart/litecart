@@ -288,7 +288,7 @@
           break;
 
         case 'radio':
-
+          $_radios = '';
           foreach ($group['values'] as $value) {
 
             $price_adjust_text = '';
@@ -300,10 +300,14 @@
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            $values .= '<div class="radio">' . PHP_EOL
+            $_radios .= '<div class="radio">' . PHP_EOL
                      . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                      . '</div>';
           }
+          if (false === strpos($_radios, 'checked="checked"')) {
+            $_radios = preg_replace('#(type="radio")#', '$1 checked="checked"', $_radios, 1);
+          }
+          $values .= $_radios;
           break;
 
         case 'select':

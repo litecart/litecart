@@ -256,6 +256,8 @@
     $(this).find('.total-tax').text(tax.toMoney());
   });
 
+  $('#box-product form[name=buy_now_form]').trigger('propertyChange');
+
   $('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().click(function(e){
     e.preventDefault();
     prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '<?php echo $link; ?>');
