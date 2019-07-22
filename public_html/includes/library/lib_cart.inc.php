@@ -377,7 +377,7 @@
       self::_calculate_total();
 
       if (!$force) {
-        header('Location: '. document::ilink());
+        header('Location: '. document::link());
         exit;
       }
     }
@@ -398,7 +398,7 @@
       self::_calculate_total();
 
       if (!$force) {
-        header('Location: '. document::ilink());
+        header('Location: '. document::link());
         exit;
       }
     }

@@ -16,7 +16,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -34,7 +34,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {

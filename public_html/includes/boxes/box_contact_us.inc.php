@@ -25,7 +25,7 @@
       }
 
       notices::add('success', language::translate('success_your_email_was_sent', 'Your email has successfully been sent'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
