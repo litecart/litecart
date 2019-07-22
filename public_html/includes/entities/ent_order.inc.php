@@ -452,9 +452,9 @@
 
         if (!empty($notify_comments)) {
 
-          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added');
+          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
 
-          $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order') . ":\r\n\r\n";
+          $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
           foreach ($notify_comments as $comment) {
             $message .= language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])) ." – ". trim($comment['text']) . "\r\n\r\n";
           }
