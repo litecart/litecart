@@ -2,6 +2,7 @@
   require('../includes/compatibility.inc.php');
   require('../includes/functions/func_draw.inc.php');
   require('includes/header.inc.php');
+  require('includes/functions.inc.php');
 
   ini_set('display_errors', 'On');
 
