@@ -97,19 +97,16 @@
 
     public function set_password($password) {
 
-      if (empty($this->data['id'])) $this->save();
-
-      $password_hash = functions::password_checksum($this->data['id'], $password, PASSWORD_SALT);
+      if (empty($this->data['id'])) {
+        $this->save();
+      }
 
       database::query(
         "update ". DB_TABLE_USERS ."
-        set
-          password = '". $password_hash ."'
+        set password_hash = '". database::input(password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
-
-      $this->data['password'] = $password_hash;
 
       $htpasswd = file_get_contents(FS_DIR_ADMIN . '.htpasswd');
 
@@ -120,8 +117,6 @@
       }
 
       file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
-
-      $this->save();
     }
 
     public function delete() {

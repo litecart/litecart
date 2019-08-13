@@ -134,24 +134,16 @@
 
     public function set_password($password) {
 
-      if (empty($this->data['email'])) throw new Exception('Cannot set password without an email address');
-
       if (empty($this->data['id'])) {
         $this->save();
       }
 
-      $password_hash = functions::password_checksum($this->data['email'], $password, PASSWORD_SALT);
-
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set
-          password = '". $password_hash ."',
-          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        set password_hash = '". database::input(password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
-
-      $this->data['password'] = $password_hash;
     }
 
     public function delete() {

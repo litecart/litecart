@@ -20,18 +20,15 @@
           where email = '". database::input($email) ."'
           limit 1;"
         );
-        $customer = database::fetch($customer_query);
 
-        $do_login = false;
-        if (!empty($customer)) {
-          $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-          if ($checksum == $key) $do_login = true;
-        }
+        if ($customer = database::fetch($customer_query)) {
+          $checksum = sha1($customer['email'] . $customer['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
 
-        if ($do_login && !empty($customer['id'])) {
-          self::load($customer['id']);
-        } else {
-          setcookie('customer_remember_me', null, -1, WS_DIR_APP);
+          if ($checksum == $key) {
+            self::load($customer['id']);
+          } else {
+            setcookie('customer_remember_me', null, -1, WS_DIR_APP);
+          }
         }
       }
 

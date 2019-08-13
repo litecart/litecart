@@ -14,6 +14,7 @@
       self::$data = &session::$data['user'];
 
       if (!empty(self::$data['id'])) {
+
         ini_set('display_errors', 'On');
 
         database::query(
@@ -22,6 +23,7 @@
           where id = '". self::$data['id'] ."'
           limit 1;"
         );
+
         self::load(self::$data['id']);
       }
 
@@ -30,20 +32,56 @@
 
         $user_query = database::query(
           "select * from ". DB_TABLE_USERS ."
-          where username = '". database::input($username) ."'
+          where lower(username) = lower('". database::input($username) ."')
+          and status
+          and date_valid_from < '". date('Y-m-d H:i:s') ."'
+          and (date_valid_to < '1971-01-01' or date_valid_to > '". date('Y-m-d H:i:s') ."')
           limit 1;"
         );
-        $user = database::fetch($user_query);
 
-        $do_login = false;
-        if (!empty($user)) {
-          $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-          if ($checksum == $key) $do_login = true;
-        }
+        if ($user = database::fetch($user_query)) {
+          $checksum = sha1($user['username'] . $user['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
 
-        if ($do_login) {
-          self::load($user['id']);
+          if ($checksum == $key) {
+
+            self::load($user['id']);
+
+            database::query(
+              "update ". DB_TABLE_USERS ."
+              set
+                last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+                last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+                login_attempts = 0,
+                total_logins = total_logins + 1,
+                date_login = '". date('Y-m-d H:i:s') ."'
+              where id = ". (int)$user['id'] ."
+              limit 1;"
+            );
+
+          } else {
+
+            setcookie('remember_me', null, -1, WS_DIR_APP);
+
+            if (++$user['login_attempts'] < 3) {
+              database::query(
+                "update ". DB_TABLE_USERS ."
+                set login_attempts = login_attempts + 1
+                where id = ". (int)$user['id'] ."
+                limit 1;"
+              );
+            } else {
+              database::query(
+                "update ". DB_TABLE_USERS ."
+                set login_attempts = 0,
+                date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+                where id = ". (int)$user['id'] ."
+                limit 1;"
+              );
+            }
+          }
+
         } else {
+
           setcookie('remember_me', null, -1, WS_DIR_APP);
         }
       }
@@ -72,6 +110,7 @@
         where id = ". (int)$user_id ."
         limit 1;"
       );
+
       $user = database::fetch($user_query);
 
       $user['permissions'] = @json_decode($user['permissions'], true);
