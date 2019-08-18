@@ -149,15 +149,15 @@
       }
     }
 
-    public static function strip_url_logic($link) {
+    public static function strip_url_logic($path) {
 
-      if (empty($link)) return;
+      if (empty($path)) return;
 
-      $link = parse_url($link, PHP_URL_PATH);
+      $path = parse_url($path, PHP_URL_PATH);
 
-      $link = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $link);
+      $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
 
-      return $link;
+      return $path;
     }
 
     public static function create_link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null, $rewrite=false) {
