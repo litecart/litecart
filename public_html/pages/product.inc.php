@@ -76,6 +76,10 @@
     unset(session::$data['recently_viewed_products'][$product->id]);
   }
 
+  if (!is_array(session::$data['recently_viewed_products'])) {
+    session::$data['recently_viewed_products'] = array();
+  }
+
   session::$data['recently_viewed_products'][$product->id] = array(
     'id' => $product->id,
     'name' => $product->name,
