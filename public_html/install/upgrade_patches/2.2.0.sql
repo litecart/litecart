@@ -119,10 +119,10 @@ ADD COLUMN `domain` VARCHAR(64) NOT NULL AFTER `user_agent`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_modules`
 ADD COLUMN `date_pushed` DATETIME NOT NULL AFTER `last_log`,
-CHANGE `date_updated` `date_updated` DATETIME NOT NULL,
-CHANGE `date_created` `date_created` DATETIME NOT NULL;
+CHANGE COLUMN `date_updated` `date_updated` DATETIME NOT NULL,
+CHANGE COLUMN `date_created` `date_created` DATETIME NOT NULL;
 -- --------------------------------------------------------
-ALTER TABLE `lc_settings` CHANGE `value` `value` VARCHAR(8192) NOT NULL;
+ALTER TABLE `lc_settings` CHANGE COLUMN `value` `value` VARCHAR(8192) NOT NULL;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings`
 WHERE `key` = 'job_error_reporter:last_run';
@@ -148,7 +148,7 @@ ALTER TABLE `lc_pages`
 ADD COLUMN `parent_id` INT(11) NOT NULL AFTER `status`,
 ADD KEY `parent_id` (`parent_id`);
 -- --------------------------------------------------------
-ALTER TABLE `lc_products` CHANGE `quantity_unit_id` `quantity_unit_id` INT(11) NOT NULL;
+ALTER TABLE `lc_products` CHANGE COLUMN `quantity_unit_id` `quantity_unit_id` INT(11) NOT NULL;
 -- --------------------------------------------------------
 DROP TABLE `lc_product_groups`;
 -- --------------------------------------------------------
@@ -213,7 +213,7 @@ UPDATE `lc_orders` SET currency_value = 1 / currency_value;
 DELETE FROM `lc_translations` WHERE code = 'terms_cookies_acceptance';
 -- --------------------------------------------------------
 ALTER TABLE `lc_tax_rates`
-CHANGE `address_type` `address_type` ENUM('payment','shipping') NOT NULL DEFAULT 'shipping' AFTER `type`,
+CHANGE COLUMN `address_type` `address_type` ENUM('payment','shipping') NOT NULL DEFAULT 'shipping' AFTER `type`,
 ADD COLUMN `rule_companies_with_tax_id` TINYINT(1) NOT NULL AFTER `tax_id_rule`,
 ADD COLUMN `rule_companies_without_tax_id` TINYINT(1) NOT NULL AFTER `rule_companies_with_tax_id`,
 ADD COLUMN `rule_individuals_with_tax_id` TINYINT(1) NOT NULL AFTER `rule_companies_without_tax_id`,
@@ -231,7 +231,7 @@ ALTER TABLE `lc_tax_rates`
 DROP COLUMN `customer_type`,
 DROP COLUMN `tax_id_rule`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_translations` CHANGE `frontend` `frontend` TINYINT(1) NOT NULL AFTER `html`;
+ALTER TABLE `lc_translations` CHANGE COLUMN `frontend` `frontend` TINYINT(1) NOT NULL AFTER `html`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_categories`
 DROP COLUMN `dock`;
