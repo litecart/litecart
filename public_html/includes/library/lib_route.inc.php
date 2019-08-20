@@ -171,9 +171,6 @@
         $inherit_params = true;
       }
 
-    // Remove index file from links
-      $link->path = preg_replace('#/(index\.php)$#', '', $link->path);
-
     // Set params that are inherited from the current page
       if ($inherit_params === true) {
         $link->query = $_GET;
