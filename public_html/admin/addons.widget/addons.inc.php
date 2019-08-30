@@ -1,6 +1,6 @@
 <?php
 
-  $widget_addons_cache_token = cache::token('widget_addons', array(), 'file');
+  $widget_addons_cache_token = cache::token('widget_addons', array(), 'file', 43200);
   if (cache::capture($widget_addons_cache_token, 43200, true)) {
 
     try {
