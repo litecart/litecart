@@ -29,6 +29,7 @@
     FS_DIR_APP . 'includes/controllers/ctrl_order_status.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_page.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_product.inc.php',
+    FS_DIR_APP . 'includes/controllers/ctrl_product_group.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_quantity_unit.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_slide.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_sold_out_status.inc.php',
@@ -36,6 +37,7 @@
     FS_DIR_APP . 'includes/controllers/ctrl_tax_class.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_tax_rate.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_user.inc.php',
+    FS_DIR_APP . 'includes/controllers/index.html',
     FS_DIR_APP . 'includes/functions/func_email.inc.php',
     FS_DIR_APP . 'includes/functions/func_http.inc.php',
     FS_DIR_APP . 'includes/library/lib_catalog.inc.php',
@@ -82,7 +84,7 @@
     ),
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');" . PHP_EOL,
+      'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');",
       'replace' => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
     ),
     array(
@@ -115,13 +117,13 @@
                  . "  define('BACKEND_ALIAS', '". $admin_folder_name ."');" . PHP_EOL
                  . PHP_EOL
                  . "// File System" . PHP_EOL
-                 . "  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(\$_SERVER['DOCUMENT_ROOT'])), '/'));" . PHP_EOL
+                 . "  define('DOCUMENT_ROOT',      rtrim(str_replace(\"\\\\\", '/', realpath(\$_SERVER['DOCUMENT_ROOT'])), '/'));" . PHP_EOL
                  . PHP_EOL
-                 . "  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
+                 . "  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
                  . "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
                  . PHP_EOL
                  . "// Web System" . PHP_EOL
-                 . "  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
+                 . "  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
                  . "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
                  . PHP_EOL
                  . "######################################################################" . PHP_EOL
