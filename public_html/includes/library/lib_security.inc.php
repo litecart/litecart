@@ -5,7 +5,7 @@
     private static $_bad_urls;
     private static $_blacklist;
     private static $_whitelist;
-    private static $_ban_time = '12 hours';
+    private static $_ban_time = '6 hours';
     private static $_trigger;
 
     public static function init() {

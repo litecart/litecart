@@ -88,55 +88,71 @@
 
       foreach ($dependencies as $dependency) {
         switch ($dependency) {
+
           case 'basename':
             $hash_string .= $_SERVER['PHP_SELF'];
             break;
+
           case 'currency':
             $hash_string .= currency::$selected['code'];
             break;
+
           case 'customer':
             $hash_string .= serialize(customer::$data);
             break;
+
           case 'domain':
           case 'host':
             $hash_string .= $_SERVER['HTTP_HOST'];
             break;
+
           case 'endpoint':
             $hash_string .= preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? 'backend' : 'frontend';
             break;
+
           case 'get':
             $hash_string .= serialize($_GET);
             break;
+
           case 'language':
             $hash_string .= language::$selected['code'];
             break;
+
           case 'layout':
             $hash_string .= document::$layout;
             break;
+
           case 'login':
             $hash_string .= !empty(customer::$data['id']) ? '1' : '0';
             break;
+
           case 'prices':
             $hash_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
             $hash_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
             $hash_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
             break;
+
           case 'post':
             $hash_string .= serialize($_POST);
             break;
+
           case 'region':
             $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
             break;
+
           case 'site':
             $hash_string .= document::link(WS_DIR_APP);
             break;
+
           case 'template':
             $hash_string .= document::$template;
             break;
+
           case 'uri':
           case 'url':
             $hash_string .= $_SERVER['REQUEST_URI'];
             break;
+
           default:
             $hash_string .= is_array($dependency) ? implode('', $dependency) : $dependency;
             break;

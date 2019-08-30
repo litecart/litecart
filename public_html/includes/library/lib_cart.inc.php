@@ -92,9 +92,9 @@
         database::query(
           "update ". DB_TABLE_CART_ITEMS ." set
           cart_uid = '". database::input(self::$data['uid']) ."',
-          customer_id = ".(int)customer::$data['id'] ."
+          customer_id = ". (int)customer::$data['id'] ."
           where cart_uid = '". database::input(self::$data['uid']) ."'
-          or customer_id = ".(int)customer::$data['id'] .";"
+          or customer_id = ". (int)customer::$data['id'] .";"
         );
       }
 

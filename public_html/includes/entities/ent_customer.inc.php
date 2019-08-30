@@ -73,7 +73,7 @@
         database::query(
           "insert into ". DB_TABLE_CUSTOMERS ."
           (email, date_created)
-          values ('". database::input($this->data['email']) ."', '". date('Y-m-d H:i:s') ."');"
+          values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
 

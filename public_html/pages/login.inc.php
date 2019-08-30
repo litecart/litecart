@@ -91,10 +91,6 @@
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       }
 
-      if (empty($_REQUEST['redirect_url'])) {
-        $_REQUEST['redirect_url'] = document::ilink('');
-      }
-
       notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
         '%firstname' => customer::$data['firstname'],
         '%lastname' => customer::$data['lastname'],

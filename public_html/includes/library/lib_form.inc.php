@@ -1,4 +1,5 @@
 <?php
+
   class form {
 
     public static function init() {
