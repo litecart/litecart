@@ -13,6 +13,3 @@
   echo $_page->stitch('pages/printable_order_copy');
 
   language::set($session_language);
-
-  require_once vmod::check('includes/app_footer.inc.php');
-  exit;
