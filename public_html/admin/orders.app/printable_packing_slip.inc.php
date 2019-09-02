@@ -13,3 +13,6 @@
   echo $_page->stitch('pages/printable_packing_slip');
 
   language::set($session_language);
+
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+  exit;
