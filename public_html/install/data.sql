@@ -379,8 +379,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'template("admin")', 0, NOW(), NOW()),
 ('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, NOW(), NOW()),
-('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'text()', 0, NOW(), NOW()),
-('', 'local', 'Errors Last Reported', 'Time when errors were last reported by the background job.', 'job_error_reporter:last_run', NOW(), 'text()', 0, NOW(), NOW());
+('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'text()', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
 (1, 1, '', 'Family At The Beach', 'slides/1-family-at-the-beach.svg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
