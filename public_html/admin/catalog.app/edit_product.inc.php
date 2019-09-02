@@ -411,7 +411,7 @@
               </tr>
             </thead>
             <tbody>
-              <?php foreach (array_keys($_POST['attributes']) as $key) { ?>
+              <?php if (!empty($_POST['attributes'])) foreach (array_keys($_POST['attributes']) as $key) { ?>
               <tr>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_id]', true); ?>
