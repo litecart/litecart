@@ -39,6 +39,8 @@
 
       $this->data['filters'] = array();
       $this->data['images'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($category_id) {

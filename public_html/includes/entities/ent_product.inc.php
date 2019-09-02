@@ -45,6 +45,8 @@
       $this->data['campaigns'] = array();
       $this->data['options'] = array();
       $this->data['options_stock'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($product_id) {

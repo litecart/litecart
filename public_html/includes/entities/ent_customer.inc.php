@@ -29,6 +29,8 @@
       }
 
       $this->data['status'] = 1;
+
+      $this->previous = $this->data;
     }
 
     public function load($customer_id) {

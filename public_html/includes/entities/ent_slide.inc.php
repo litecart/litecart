@@ -73,6 +73,8 @@
           $this->data[$key][$slide_info['language_code']] = $value;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function save() {

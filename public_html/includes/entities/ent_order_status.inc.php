@@ -36,6 +36,8 @@
           $this->data[$field['Field']][$language_code] = null;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($order_status_id) {

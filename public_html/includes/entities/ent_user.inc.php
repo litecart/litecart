@@ -25,6 +25,8 @@
       }
 
       $this->data['permissions'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($user_id) {

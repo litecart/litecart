@@ -81,6 +81,8 @@
         'subtotal' => array('amount' => 0, 'tax' => 0),
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
       ));
+
+      $this->previous = $this->data;
     }
 
     private function load($order_id) {

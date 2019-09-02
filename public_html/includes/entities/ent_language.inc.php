@@ -23,6 +23,8 @@
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($language_code) {

@@ -25,6 +25,8 @@
       }
 
       $this->data['zones'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($geo_zone_id) {

@@ -37,6 +37,8 @@
       $this->data['bccs'] = array();
       $this->data['multiparts'] = array();
 
+      $this->previous = $this->data;
+
       return $this;
     }
 

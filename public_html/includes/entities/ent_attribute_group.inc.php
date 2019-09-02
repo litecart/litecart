@@ -38,6 +38,8 @@
       }
 
       $this->data['values'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($group_id) {

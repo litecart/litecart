@@ -35,6 +35,8 @@
       }
 
       $this->load($module_id, $type);
+
+      $this->previous = $this->data;
     }
 
     public function reset() {
