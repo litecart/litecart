@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_USERS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -94,6 +95,8 @@
 
       file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
 
+      $this->previous = $this->data;
+
       cache::clear_cache('users');
     }
 
@@ -105,7 +108,7 @@
 
       database::query(
         "update ". DB_TABLE_USERS ."
-        set password_hash = '". database::input(password_hash($password, PASSWORD_DEFAULT)) ."'
+        set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -119,6 +122,8 @@
       }
 
       file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
+
+      $this->previous['password_hash'] = $this->data['password_hash'];
     }
 
     public function delete() {
@@ -133,7 +138,7 @@
         limit 1;"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('users');
     }

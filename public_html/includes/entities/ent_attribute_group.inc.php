@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_ATTRIBUTE_GROUPS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -219,6 +220,8 @@
         }
       }
 
+      $this->previous = $this->data;
+
       cache::clear_cache('attributes');
     }
 
@@ -249,7 +252,7 @@
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('attributes');
     }

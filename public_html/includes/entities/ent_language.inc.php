@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_LANGUAGES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -84,8 +85,8 @@
             foreach ($info_tables as $table) {
               database::query(
                 "update ". $table ."
-                set language_code = '". $this->data['code'] ."'
-                where language_code = '". $this->previous['code'] ."';"
+                set language_code = '". database::input($this->data['code']) ."'
+                where language_code = '". database::input($this->previous['code']) ."';"
               );
             }
           }
@@ -147,6 +148,8 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('languages');
     }
 
@@ -154,12 +157,10 @@
 
       if ($this->data['code'] == 'en') {
         throw new Exception('English is the PHP framework language and must not be deleted, but it can be disabled.');
-        return;
       }
 
       if ($this->data['code'] == settings::get('default_language_code')) {
         throw new Exception('Cannot delete the default language');
-        return;
       }
 
       database::query(
@@ -172,6 +173,7 @@
         "show fields from ". DB_TABLE_TRANSLATIONS ."
         where `Field` = 'text_". database::input($this->data['code']) ."';"
       );
+
       if (database::num_rows($translations_query) == 1) {
         database::query(
           "alter table ". DB_TABLE_TRANSLATIONS ."
@@ -194,15 +196,16 @@
         DB_TABLE_SLIDES_INFO,
         DB_TABLE_SOLD_OUT_STATUSES_INFO,
       );
+
       foreach ($info_tables as $table) {
         database::query(
           "delete from ". $table ."
-          where language_code = '". $this->data['code'] ."';"
+          where language_code = '". database::input($this->data['code']) ."';"
         );
       }
 
-      cache::clear_cache('languages');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('languages');
     }
   }

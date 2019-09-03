@@ -39,6 +39,24 @@
       $this->previous = $this->data;
     }
 
+    private function _encode_settings($data) {
+
+      language::convert_characters($data, 'UTF-8', language::$selected['charset']);
+
+      return json_encode($data, JSON_UNESCAPED_SLASHES);
+    }
+
+    private function _decode_settings($data) {
+
+      if (empty($data)) return;
+
+      $data = json_decode($data, true);
+
+      language::convert_characters($data, language::$selected['charset'], 'UTF-8');
+
+      return $data;
+    }
+
     public function reset() {
 
       $this->data = array();
@@ -46,6 +64,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_MODULES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -133,6 +152,8 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('modules');
     }
 
@@ -148,24 +169,8 @@
         limit 1;"
       );
 
+      $this->reset();
+
       cache::clear_cache('modules');
-    }
-
-    private function _encode_settings($data) {
-
-      language::convert_characters($data, 'UTF-8', language::$selected['charset']);
-
-      return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
-
-    private function _decode_settings($data) {
-
-      if (empty($data)) return;
-
-      $data = json_decode($data, true);
-
-      language::convert_characters($data, language::$selected['charset'], 'UTF-8');
-
-      return $data;
     }
   }

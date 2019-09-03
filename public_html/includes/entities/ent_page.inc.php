@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_PAGES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -112,7 +113,7 @@
         $page_info_query = database::query(
           "select * from ". DB_TABLE_PAGES_INFO ."
           where page_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
 
@@ -120,7 +121,7 @@
           database::query(
             "insert into ". DB_TABLE_PAGES_INFO ."
             (page_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $page_info['id'] = database::insert_id();
         }
@@ -134,10 +135,12 @@
             meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
           where id = ". (int)$page_info['id'] ."
           and page_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('pages');
     }
@@ -160,7 +163,7 @@
         where parent_id = ". (int)$this->data['id'] .";"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('pages');
     }

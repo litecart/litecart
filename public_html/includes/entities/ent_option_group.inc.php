@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_OPTION_GROUPS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -185,7 +186,7 @@
           database::query(
             "insert into ". DB_TABLE_OPTION_VALUES ."
             (group_id)
-            values ('". $this->data['id'] ."');"
+            values (". (int)$this->data['id'] .");"
           );
           $option_value['id'] = database::insert_id();
         }
@@ -212,7 +213,7 @@
             database::query(
               "insert into ". DB_TABLE_OPTION_VALUES_INFO ."
               (value_id, language_code)
-              values ('". $option_value['id'] ."', '". database::input($language_code) ."');"
+              values (". (int)$option_value['id'] .", '". database::input($language_code) ."');"
             );
             $option_value_info['id'] = database::insert_id();
           }
@@ -227,6 +228,8 @@
           );
         }
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('option_groups');
     }
@@ -282,8 +285,8 @@
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      cache::clear_cache('option_groups');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('option_groups');
     }
   }

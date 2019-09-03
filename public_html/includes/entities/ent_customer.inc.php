@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_CUSTOMERS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
           $this->data['shipping_address'][$matches[1]] = '';
@@ -131,6 +132,8 @@
         $customer_modules->update($this->data);
       }
 
+      $this->previous = $this->data;
+
       cache::clear_cache('customers');
     }
 
@@ -142,10 +145,12 @@
 
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set password_hash = '". database::input(password_hash($password, PASSWORD_DEFAULT)) ."'
+        set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
+
+      $this->previous['password_hash'] = $this->data['password_hash'];
     }
 
     public function delete() {
@@ -165,8 +170,8 @@
       $customer_modules = new mod_customer();
       $customer_modules->delete($this->data);
 
-      cache::clear_cache('customers');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('customers');
     }
   }

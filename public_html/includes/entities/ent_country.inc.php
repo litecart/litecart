@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_COUNTRIES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -118,18 +119,20 @@
           );
         }
       }
+
+      $this->previous = $this->data;
+
+      cache::clear_cache('countries');
     }
 
     public function delete() {
 
       if ($this->data['code'] == settings::get('store_country_code')) {
         throw new Exception('Cannot delete the store country');
-        return;
       }
 
       if ($this->data['code'] == settings::get('default_country_code')) {
         throw new Exception('Cannot delete the default country');
-        return;
       }
 
       database::query(
@@ -143,6 +146,8 @@
         limit 1;"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
+
+      cache::clear_cache('countries');
     }
   }

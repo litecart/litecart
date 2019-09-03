@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_CURRENCIES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -52,12 +53,10 @@
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('store_currency_code')) {
         throw new Exception('You cannot disable the store currency.');
-        return;
       }
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_currency_code')) {
         throw new Exception('You cannot disable the default currency.');
-        return;
       }
 
       if (!empty($this->previous)) {
@@ -145,6 +144,8 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('currencies');
     }
 
@@ -152,12 +153,10 @@
 
       if ($this->data['code'] == settings::get('store_currency_code')) {
         throw new Exception('Cannot delete the store currency');
-        return;
       }
 
       if ($this->data['code'] == settings::get('default_currency_code')) {
         throw new Exception('Cannot delete the default currency');
-        return;
       }
 
       database::query(
@@ -178,8 +177,8 @@
         "alter table ". DB_TABLE_PRODUCTS_OPTIONS ." drop `". database::input($this->data['code']) ."`;"
       );
 
-      cache::clear_cache('currencies');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('currencies');
     }
   }

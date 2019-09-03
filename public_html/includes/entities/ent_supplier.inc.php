@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_SUPPLIERS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -72,6 +73,8 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('suppliers');
     }
 
@@ -93,11 +96,11 @@
 
       database::query(
         "delete from ". DB_TABLE_SUPPLIERS ."
-        where id = '". $this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('suppliers');
     }

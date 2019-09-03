@@ -23,6 +23,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_EMAILS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -96,9 +97,11 @@
         where id = ". (int)$this->data['id'] .";"
       );
 
-      cache::clear_cache('email');
+      $this->previous = $this->data;
 
       $this->cleanup();
+
+      cache::clear_cache('email');
     }
 
     public function set_sender($email, $name=null) {
@@ -386,11 +389,11 @@
 
       database::query(
         "delete from ". DB_TABLE_EMAILS ."
-        where id = '". (int)$this->data['id'] ."';"
+        where id = ". (int)$this->data['id'] .";"
       );
 
-      cache::clear_cache('email');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('email');
     }
   }

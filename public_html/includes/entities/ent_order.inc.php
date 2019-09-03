@@ -479,28 +479,7 @@
       $order_modules = new mod_order();
       $order_modules->update($this->data);
 
-      cache::clear_cache('order');
-    }
-
-    public function delete() {
-
-      if (empty($this->data['id'])) return;
-
-      $order_modules = new mod_order();
-      $order_modules->delete($this->data);
-
-    // Empty order first..
-      $this->data['items'] = array();
-      $this->data['order_total'] = array();
-      $this->refresh_total();
-      $this->save();
-
-    // ..then delete
-      database::query(
-        "delete from ". DB_TABLE_ORDERS ."
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
+      $this->previous = $this->data;
 
       cache::clear_cache('order');
     }
@@ -829,5 +808,30 @@
             ->set_subject($subject)
             ->add_body($message, true)
             ->send();
+    }
+
+    public function delete() {
+
+      if (empty($this->data['id'])) return;
+
+      $order_modules = new mod_order();
+      $order_modules->delete($this->data);
+
+    // Empty order first..
+      $this->data['items'] = array();
+      $this->data['order_total'] = array();
+      $this->refresh_total();
+      $this->save();
+
+    // ..then delete
+      database::query(
+        "delete from ". DB_TABLE_ORDERS ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      $this->reset();
+
+      cache::clear_cache('order');
     }
   }

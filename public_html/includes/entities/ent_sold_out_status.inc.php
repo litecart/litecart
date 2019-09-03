@@ -20,6 +20,7 @@
       $sold_out_status_query = database::query(
         "show fields from ". DB_TABLE_SOLD_OUT_STATUSES .";"
       );
+
       while ($field = database::fetch($sold_out_status_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -98,7 +99,7 @@
         $sold_out_status_info_query = database::query(
           "select * from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
           where sold_out_status_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
 
@@ -106,7 +107,7 @@
           database::query(
             "insert into ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
             (sold_out_status_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $sold_out_status_info['id'] = database::insert_id();
         }
@@ -118,10 +119,12 @@
             description = '". database::input($this->data['description'][$language_code]) ."'
           where id = ". (int)$sold_out_status_info['id'] ."
           and sold_out_status_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('sold_out_statuses');
     }
@@ -130,7 +133,6 @@
 
       if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where sold_out_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
         throw new Exception('Cannot delete the sold out status because there are products using it');
-        return;
       }
 
       database::query(
@@ -143,7 +145,7 @@
         where id = ". (int)$this->data['id'] .";"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('sold_out_statuses');
     }

@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_PRODUCTS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -75,8 +76,6 @@
       $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : array();
 
     // Categories
-      $this->data['categories'] = array();
-
       $categories_query = database::query(
         "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
          where product_id = ". (int)$product_id .";"
@@ -117,6 +116,7 @@
         "select * from ". DB_TABLE_PRODUCTS_PRICES ."
         where product_id = ". (int)$this->data['id'] .";"
       );
+
       while ($product_price = database::fetch($products_prices_query)) {
         foreach (array_keys(currency::$currencies) as $currency_code) {
           $this->data['prices'][$currency_code] = $product_price[$currency_code];
@@ -129,6 +129,7 @@
         where product_id = ". (int)$this->data['id'] ."
         order by start_date;"
       );
+
       while ($product_campaign = database::fetch($product_campaigns_query)) {
         $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
       }
@@ -139,6 +140,7 @@
         where product_id = ". (int)$this->data['id'] ."
         order by priority asc;"
       );
+
       while($option = database::fetch($products_options_query)) {
         $this->data['options'][$option['id']] = $option;
       }
@@ -149,6 +151,7 @@
         where product_id = ". (int)$this->data['id'] ."
         order by priority;"
       );
+
       while($option_stock = database::fetch($products_options_stock_query)) {
 
         $this->data['options_stock'][$option_stock['id']] = $option_stock;
@@ -161,6 +164,7 @@
             "select ovi.value_id, ovi.name, ovi.language_code from ". DB_TABLE_OPTION_VALUES_INFO ." ovi
             where ovi.value_id = ". (int)$value_id .";"
           );
+
           while($option_value = database::fetch($options_values_query)) {
             if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']])) {
               $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] = '';
@@ -178,6 +182,7 @@
         where product_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
       );
+
       while($image = database::fetch($products_images_query)) {
         $this->data['images'][$image['id']] = $image;
       }
@@ -199,6 +204,7 @@
     // Calculate product quantity from options
       if (!empty($this->data['options_stock'])) {
         $this->data['quantity'] = 0;
+
         foreach ($this->data['options_stock'] as $option) {
           $this->data['quantity'] += @$option['quantity'];
         }
@@ -277,7 +283,7 @@
           database::query(
             "insert into ". DB_TABLE_PRODUCTS_INFO ."
             (product_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
@@ -495,9 +501,14 @@
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
+
       while ($product_image = database::fetch($products_images_query)) {
-        if (is_file(FS_DIR_APP . 'images/' . $product_image['filename'])) unlink(FS_DIR_APP . 'images/' . $product_image['filename']);
+        if (is_file(FS_DIR_APP . 'images/' . $product_image['filename'])) {
+          unlink(FS_DIR_APP . 'images/' . $product_image['filename']);
+        }
+
         functions::image_delete_cache(FS_DIR_APP . 'images/' . $product_image['filename']);
+
         database::query(
           "delete from ". DB_TABLE_PRODUCTS_IMAGES ."
           where product_id = ". (int)$this->data['id'] ."
@@ -509,6 +520,7 @@
     // Update images
       if (!empty($this->data['images'])) {
         $image_priority = 1;
+
         foreach (array_keys($this->data['images']) as $key) {
           if (empty($this->data['images'][$key]['id'])) {
             database::query(
@@ -553,47 +565,10 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('product_'.$this->data['id']);
       cache::clear_cache('products');
-    }
-
-    public function delete() {
-
-      if (empty($this->data['id'])) return;
-
-      $this->data['images'] = array();
-      $this->data['campaigns'] = array();
-      $this->data['options'] = array();
-      $this->data['options_stock'] = array();
-      $this->save();
-
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS ."
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_INFO ."
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-         where product_id = ". (int)$this->data['id'] .";"
-      );
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_PRICES ."
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-
-      cache::clear_cache('products');
-
-      $this->data['id'] = null;
     }
 
     public function add_image($file, $filename='') {
@@ -643,5 +618,46 @@
         'checksum' => $checksum,
         'priority' => $priority,
       );
+
+      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
+    }
+
+    public function delete() {
+
+      if (empty($this->data['id'])) return;
+
+      $this->data['images'] = array();
+      $this->data['campaigns'] = array();
+      $this->data['options'] = array();
+      $this->data['options_stock'] = array();
+      $this->save();
+
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_INFO ."
+        where product_id = ". (int)$this->data['id'] .";"
+      );
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+         where product_id = ". (int)$this->data['id'] .";"
+      );
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_PRICES ."
+        where product_id = ". (int)$this->data['id'] .";"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        where product_id = ". (int)$this->data['id'] .";"
+      );
+
+      $this->reset();
+
+      cache::clear_cache('products');
     }
   }

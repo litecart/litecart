@@ -20,6 +20,7 @@
       $categories_query = database::query(
         "show fields from ". DB_TABLE_CATEGORIES .";"
       );
+
       while ($field = database::fetch($categories_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -152,7 +153,7 @@
           database::query(
             "insert into ". DB_TABLE_CATEGORIES_INFO ."
             (category_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
@@ -266,9 +267,10 @@
         }
       }
 
+      $this->previous = $this->data;
+
       cache::clear_cache('category_tree');
       cache::clear_cache('categories');
-      cache::clear_cache('category_'. (int)$this->data['id']);
     }
 
     public function add_image($file, $filename='') {
@@ -318,6 +320,8 @@
         'checksum' => $checksum,
         'priority' => $priority,
       );
+
+      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
     }
 
     public function delete() {
@@ -363,10 +367,9 @@
         where category_id = ". (int)$this->data['id'] .";"
       );
 
+      $this->reset();
+
       cache::clear_cache('category_tree');
       cache::clear_cache('categories');
-      cache::clear_cache('category_'. (int)$this->data['id']);
-
-      $this->data['id'] = null;
     }
   }

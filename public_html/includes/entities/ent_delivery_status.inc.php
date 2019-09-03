@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_DELIVERY_STATUSES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -96,7 +97,7 @@
         $delivery_status_info_query = database::query(
           "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
           where delivery_status_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
 
@@ -104,7 +105,7 @@
           database::query(
             "insert into ". DB_TABLE_DELIVERY_STATUSES_INFO ."
             (delivery_status_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $delivery_status_info['id'] = database::insert_id();
         }
@@ -116,10 +117,12 @@
             description = '". database::input($this->data['description'][$language_code]) ."'
           where id = ". (int)$delivery_status_info['id'] ."
           and delivery_status_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('delivery_statuses');
     }
@@ -128,7 +131,6 @@
 
       if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where delivery_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
         throw new Exception('Cannot delete the delivery status because there are products using it');
-        return;
       }
 
       database::query(
@@ -142,8 +144,8 @@
         limit 1;"
       );
 
-      cache::clear_cache('delivery_statuses');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('delivery_statuses');
     }
   }

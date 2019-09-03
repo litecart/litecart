@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_TAX_CLASSES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -70,6 +71,8 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('tax_classes');
     }
 
@@ -81,7 +84,7 @@
         limit 1;"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('tax_classes');
     }

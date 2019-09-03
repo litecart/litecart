@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_SLIDES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -128,25 +129,27 @@
             link = '". database::input($this->data['link'][$language_code]) ."'
           where id = ". (int)$slide_info['id'] ."
           and slide_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('slides');
     }
 
     public function save_image($file) {
 
+      if (empty($this->data['id'])) {
+        $this->save();
+      }
+
       if (!empty($this->data['image'])) {
         if (is_file(FS_DIR_APP . 'images/' . basename($this->data['image']))) {
           unlink(FS_DIR_APP . 'images/' . basename($this->data['image']));
         }
         $this->data['image'] = '';
-      }
-
-      if (empty($this->data['id'])) {
-        $this->save();
       }
 
     // SVG
@@ -170,8 +173,14 @@
         $image->write(FS_DIR_APP . 'images/' . $filename);
       }
 
-      $this->data['image'] = $filename;
-      $this->save();
+      database::query(
+        "update ". DB_TABLE_SLIDES ."
+        set image = '" . database::input($filename) . "',
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      $this->previous['image'] = $this->data['image'] = $filename;
     }
 
     public function delete() {
@@ -187,10 +196,12 @@
         limit 1;"
       );
 
-      if (!empty($this->data['image']) && file_exists(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      if (!empty($this->data['image']) && file_exists(FS_DIR_APP . 'images/' . $this->data['image'])) {
+        unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      }
+
+      $this->reset();
 
       cache::clear_cache('slides');
-
-      $this->data['id'] = null;
     }
   }

@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_QUANTITY_UNITS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -99,7 +100,7 @@
         $quantity_unit_info_query = database::query(
           "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
           where quantity_unit_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
 
@@ -107,7 +108,7 @@
           database::query(
             "insert into ". DB_TABLE_QUANTITY_UNITS_INFO ."
             (quantity_unit_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $quantity_unit_info['id'] = database::insert_id();
         }
@@ -119,10 +120,12 @@
             description = '". database::input($this->data['description'][$language_code]) ."'
           where id = ". (int)$quantity_unit_info['id'] ."
           and quantity_unit_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('quantity_units');
     }
@@ -144,8 +147,8 @@
         limit 1;"
       );
 
-      cache::clear_cache('quantity_units');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('quantity_units');
     }
   }
