@@ -174,12 +174,13 @@
 
       $tax_class_query = database::query(
         "select name from ". DB_TABLE_TAX_CLASSES ."
-        where id = '" . (int)$tax_class_id . "'
+        where id = " . (int)$tax_class_id . "
         limit 1;"
       );
-      $tax_class = database::fetch($tax_class_query);
 
-      if (isset($tax_class['name'])) return $tax_class['name'];
+      if ($tax_class = database::fetch($tax_class_query)) {
+        return $tax_class['name'];
+      }
 
       return false;
     }
@@ -188,12 +189,13 @@
 
       $tax_rates_query = database::query(
         "select name from ". DB_TABLE_TAX_RATES ."
-        where id = '" . (int)$tax_rate_id . "'
+        where id = " . (int)$tax_rate_id . "
         limit 1;"
       );
-      $tax_rate = database::fetch($tax_rates_query);
 
-      if (isset($tax_rate['name'])) return $tax_rate['name'];
+      if ($tax_rate = database::fetch($tax_rates_query)) {
+        return $tax_rate['name'];
+      }
 
       return false;
     }

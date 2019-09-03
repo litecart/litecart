@@ -54,7 +54,7 @@
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
+          if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
             echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
@@ -271,7 +271,7 @@
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {

@@ -20,7 +20,7 @@
         database::query(
           "update ". DB_TABLE_USERS ."
           set date_active = '". date('Y-m-d H:i:s') ."'
-          where id = '". self::$data['id'] ."'
+          where id = ". (int)self::$data['id'] ."
           limit 1;"
         );
 

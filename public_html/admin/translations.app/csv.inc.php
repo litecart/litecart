@@ -25,7 +25,7 @@
 
         $translation_query = database::query(
           "select * from ". DB_TABLE_TRANSLATIONS ."
-          where code = '". $row['code'] ."'
+          where code = '". database::input($row['code']) ."'
           limit 1;"
         );
 

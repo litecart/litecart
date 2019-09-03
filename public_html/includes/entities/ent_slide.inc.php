@@ -117,7 +117,7 @@
           database::query(
             "insert into ". DB_TABLE_SLIDES_INFO ."
             (slide_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $slide_info['id'] = database::insert_id();
         }

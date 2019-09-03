@@ -179,7 +179,7 @@
           database::query(
             "insert into ". DB_TABLE_ATTRIBUTE_VALUES ."
             (group_id, date_created)
-            values ('". $this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
+            values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
           );
           $value['id'] = database::insert_id();
         }
