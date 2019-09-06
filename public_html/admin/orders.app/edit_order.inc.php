@@ -1344,13 +1344,14 @@
     $(row).find('*[name$="[quantity]"]').val(item.quantity);
     $(row).find('*[name$="[price]"]').val(item.price);
     $(row).find('*[name$="[tax]"]').val(item.tax);
+
     $(row).find('[data-type="currency"]').parent().find('.input-group-addon').text($(':input[name="currency_code"]').val());
-    $(row).find('.weight').val(item.weight).trim('.0');
-    $(row).find('.weight_class').val(item.weight_class);
-    $(row).find('.dim_x').val(item.dim_x).trim('.0');
-    $(row).find('.dim_y').val(item.dim_y).trim('.0');
-    $(row).find('.dim_z').val(item.dim_z).trim('.0');
-    $(row).find('.dim_class').val(item.dim_class);
+    $(row).find('.weight').text(String(item.weight).trim('.0'));
+    $(row).find('.weight_class').text(item.weight_class);
+    $(row).find('.dim_x').text(String(item.dim_x).trim('.0'));
+    $(row).find('.dim_y').text(String(item.dim_y).trim('.0'));
+    $(row).find('.dim_z').text(String(item.dim_z).trim('.0'));
+    $(row).find('.dim_class').text(item.dim_class);
 
     if (item.options) {
       var product_options = '';
