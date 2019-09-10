@@ -77,6 +77,7 @@
           'code',
           'keywords',
           'image',
+          'priority',
         );
 
         foreach ($fields as $field) {
