@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_sign_in', 'Sign In'));
 
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
-  if (empty($_REQUEST['redirect_url'])) $_REQUEST['redirect_url'] = '';
+  if (empty($_REQUEST['redirect_url'])) $_REQUEST['redirect_url'] = document::ilink('');
 
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
 
