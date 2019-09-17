@@ -99,7 +99,7 @@
     if (!function_exists('array_column')) {
       function array_column(array $array, $column_key, $index_key=null) {
         $result = array();
-        foreach($array as $arr){
+        foreach ($array as $arr) {
           if(!is_array($arr)) continue;
           if (is_null($column_key)) {
             $value = $arr;

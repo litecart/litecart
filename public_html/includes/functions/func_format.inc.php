@@ -30,7 +30,7 @@
         $c = mb_strlen($string);
         $parts[] = mb_substr($string, 0, 1);
         $string = mb_substr($string, 1);
-      } while(!empty($string));
+      } while (!empty($string));
 
     } else {
       $parts = array($string);

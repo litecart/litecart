@@ -367,7 +367,7 @@
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
 
-              while($option_value_info = database::fetch($options_values_query)) {
+              while ($option_value_info = database::fetch($options_values_query)) {
                 foreach ($option_value_info as $key => $value) {
                   if (in_array($key, array('id', 'value_id', 'language_code'))) continue;
                   if (empty($row[$key][$option_value_info['value_id']])) $row[$key][$option_value_info['value_id']] = $value;

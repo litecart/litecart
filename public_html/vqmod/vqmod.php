@@ -109,8 +109,8 @@
       $fileHash = sha1_file($sourcePath);
       $fileData = file_get_contents($sourcePath);
 
-      foreach(self::$_mods as $modObject) {
-        foreach($modObject->mods as $path => $mods) {
+      foreach (self::$_mods as $modObject) {
+        foreach ($modObject->mods as $path => $mods) {
           if (self::_checkMatch($path, $modificationsPath)) {
             $modObject->applyMod($mods, $fileData, $modObject);
           }
@@ -184,7 +184,7 @@
       self::$_modFileList = glob(self::path('vqmod/xml/', true) . '*.xml');
 
       if (!empty(self::$_modFileList)) {
-        foreach(self::$_modFileList as $file) {
+        foreach (self::$_modFileList as $file) {
           if (file_exists($file)) {
             $lastMod = filemtime($file);
             if ($lastMod > self::$_lastModifiedTime){
@@ -229,7 +229,7 @@
       set_error_handler(array('VQMod', 'handleXMLError'));
 
       $dom = new DOMDocument('1.0', 'UTF-8');
-      foreach(self::$_modFileList as $modFileKey => $modFile) {
+      foreach (self::$_modFileList as $modFileKey => $modFile) {
         if (file_exists($modFile)) {
           try {
             $dom->load($modFile);
@@ -280,7 +280,7 @@
         $paths = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if (!empty($paths)) {
 
-          foreach($paths as $path) {
+          foreach ($paths as $path) {
             $fullPath = self::path($path);
             if ($fullPath && !in_array($fullPath, self::$_doNotMod)) {
               self::$_doNotMod[] = $fullPath;
@@ -303,7 +303,7 @@
       if ($file && is_file($file)) {
         $paths = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if (!empty($paths)) {
-          foreach($paths as $path) {
+          foreach ($paths as $path) {
             $fullPath = self::path($path, true);
             if ($fullPath) {
               self::$_doNotMod[] = $fullPath;
@@ -365,7 +365,7 @@
 
           $toCheck = array_diff_assoc($modParts, $checkParts);
 
-          foreach($toCheck as $k => $part) {
+          foreach ($toCheck as $k => $part) {
             if ($part === '*') {
               continue;
             } elseif (strpos($part, '*') !== false) {
@@ -428,7 +428,7 @@
      */
     public function __construct(DOMNode $node, $modFile) {
       if ($node->hasChildNodes()) {
-        foreach($node->childNodes as $child) {
+        foreach ($node->childNodes as $child) {
           $name = (string) $child->nodeName;
           if (isset($this->$name)) {
             $this->$name = (string) $child->nodeValue;
@@ -462,7 +462,7 @@
       if ($this->_skip) return;
       $tmp = $data;
 
-      foreach($mods as $mod) {
+      foreach ($mods as $mod) {
         VQMod::$fileModding = $mod['fileToMod'] . '(' . $mod['opIndex'] . ')';
         if (!empty($mod['ignoreif'])) {
           if ($mod['ignoreif']->regex == 'true') {
@@ -506,7 +506,7 @@
 
           default:
             $changed = false;
-            foreach($tmp as $lineNum => $line) {
+            foreach ($tmp as $lineNum => $line) {
               if (strlen($mod['search']->getContent()) == 0) {
                 if ($mod['error'] == 'log' || $mod['error'] == 'abort') {
                   trigger_error(__METHOD__.'('. basename($this->modFile) .') - Empty search content in "'. $modObject->id  .'": '. VQMod::$fileModding . $skip, E_USER_WARNING);
@@ -618,15 +618,15 @@
      */
     private function _parseMods(DOMNode $node){
 
-      foreach($node->getElementsByTagName('file') as $file) {
+      foreach ($node->getElementsByTagName('file') as $file) {
         $path = $file->getAttribute('path') ? $file->getAttribute('path') : '';
         $filesToMod = explode(',', $file->getAttribute('name'));
 
-        foreach($filesToMod as $filename) {
+        foreach ($filesToMod as $filename) {
 
           $fileToMod = $path . $filename;
           if (!empty(VQMod::$replaces)) {
-            foreach(VQMod::$replaces as $search => $replace) {
+            foreach (VQMod::$replaces as $search => $replace) {
               $fileToMod = preg_replace($search, $replace, $fileToMod);
             }
           }
@@ -653,7 +653,7 @@
 
           $operations = $file->getElementsByTagName('operation');
 
-          foreach($operations as $opIndex => $operation) {
+          foreach ($operations as $opIndex => $operation) {
             VQMod::$fileModding = $fileToMod . '(' . $opIndex . ')';
             $skipOperation = false;
 
@@ -717,7 +717,7 @@
       $this->_content = $node->nodeValue;
 
       if ($node->hasAttributes()) {
-        foreach($node->attributes as $attr) {
+        foreach ($node->attributes as $attr) {
           $name = $attr->nodeName;
           if (isset($this->$name)) {
             $this->$name = $attr->nodeValue;
@@ -760,7 +760,7 @@
         return false;
       }
       $tmp = explode(',', $this->index);
-      foreach($tmp as $k => $v) {
+      foreach ($tmp as $k => $v) {
         if (!is_int($v)) {
           unset($k);
         }

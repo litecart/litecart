@@ -165,7 +165,7 @@
 
     $files = glob(FS_DIR_APP . 'cache/' . $cachename .'*');
 
-    if ($files) foreach($files as $file) {
+    if ($files) foreach ($files as $file) {
       unlink($file);
     }
   }

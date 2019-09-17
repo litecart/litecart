@@ -166,7 +166,7 @@
       limit 1;"
     );
 
-    foreach(glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file){
+    foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
       if (is_file($file)) unlink($file);
     }
 

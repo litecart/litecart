@@ -81,7 +81,7 @@
          where product_id = ". (int)$product_id .";"
       );
 
-      while ($category = database::fetch($categories_query)){
+      while ($category = database::fetch($categories_query)) {
         $this->data['categories'][] = $category['category_id'];
       }
 
@@ -141,7 +141,7 @@
         order by priority asc;"
       );
 
-      while($option = database::fetch($products_options_query)) {
+      while ($option = database::fetch($products_options_query)) {
         $this->data['options'][$option['id']] = $option;
       }
 
@@ -152,7 +152,7 @@
         order by priority;"
       );
 
-      while($option_stock = database::fetch($products_options_stock_query)) {
+      while ($option_stock = database::fetch($products_options_stock_query)) {
 
         $this->data['options_stock'][$option_stock['id']] = $option_stock;
         $this->data['options_stock'][$option_stock['id']]['name'] = array();
@@ -165,7 +165,7 @@
             where ovi.value_id = ". (int)$value_id .";"
           );
 
-          while($option_value = database::fetch($options_values_query)) {
+          while ($option_value = database::fetch($options_values_query)) {
             if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']])) {
               $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] = '';
             } else {
@@ -183,7 +183,7 @@
         order by priority asc, id asc;"
       );
 
-      while($image = database::fetch($products_images_query)) {
+      while ($image = database::fetch($products_images_query)) {
         $this->data['images'][$image['id']] = $image;
       }
 
@@ -211,7 +211,7 @@
       }
 
       $this->data['categories'] = array_map('trim', $this->data['categories']);
-      $this->data['categories'] = array_filter($this->data['categories'], function($var){ return ($var != ''); }); // Don't filter root ('0')
+      $this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
       $this->data['categories'] = array_unique($this->data['categories']);
 
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
@@ -550,7 +550,7 @@
       }
 
     // Update product image
-      if (!empty($this->data['images'])){
+      if (!empty($this->data['images'])) {
         $images = array_values($this->data['images']);
         $image = array_shift($images);
         $this->data['image'] = $image['filename'];

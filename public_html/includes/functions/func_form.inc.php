@@ -885,7 +885,7 @@
       order by email;"
     );
 
-    while($customer = database::fetch($customers_query)) {
+    while ($customer = database::fetch($customers_query)) {
       $options[] = array($customer['email'], $customer['id']);
     }
 
@@ -1241,7 +1241,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    while($module = database::fetch($modules_query)) {
+    while ($module = database::fetch($modules_query)) {
       $module = new $module();
       $options[] = array($module->name, $module->id);
     }
@@ -1316,7 +1316,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    while($module = database::fetch($modules_query)) {
+    while ($module = database::fetch($modules_query)) {
       $module = new $module();
       $options[] = array($module->name, $module->id);
     }
@@ -1413,7 +1413,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    foreach($folders as $folder) {
+    foreach ($folders as $folder) {
       $options[] = array(basename($folder));
     }
 

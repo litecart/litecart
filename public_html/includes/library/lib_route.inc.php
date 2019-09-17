@@ -28,7 +28,7 @@
 
     public static function load($path) {
 
-      foreach(glob($path) as $file) {
+      foreach (glob($path) as $file) {
         $name = preg_replace('#^.*/url_(.*)\.inc\.php$#', '$1', $file);
         $class = 'url_'.$name;
 

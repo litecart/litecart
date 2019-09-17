@@ -28,7 +28,7 @@
         ". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
       );
 
-      while($module = database::fetch($modules_query)){
+      while ($module = database::fetch($modules_query)) {
 
         if (!is_file(vmod::check($directory . $module['module_id'] .'.inc.php'))) {
 

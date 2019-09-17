@@ -389,7 +389,7 @@
           }
 
           $i=0;
-          foreach($row['images'] as $image) {
+          foreach ($row['images'] as $image) {
             if (!in_array($image, $current_images)) {
               $product_images['new'.++$i] = array('filename' => $image);
             }
@@ -399,7 +399,7 @@
         }
 
         if (isset($row['new_images'])) {
-          foreach(explode(';', $row['new_images']) as $new_image) {
+          foreach (explode(';', $row['new_images']) as $new_image) {
             $product->add_image($new_image);
           }
         }

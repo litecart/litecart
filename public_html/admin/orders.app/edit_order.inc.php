@@ -544,7 +544,7 @@
 
           <div class="bubbles">
 <?php
-  foreach(array_keys($_POST['comments']) as $key) {
+  foreach (array_keys($_POST['comments']) as $key) {
 
     switch($_POST['comments'][$key]['author']) {
       case 'customer':

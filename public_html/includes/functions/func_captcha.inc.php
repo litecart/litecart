@@ -62,7 +62,7 @@
 
   // Remove expired captchas
     if (isset(session::$data['captcha']) && is_array(session::$data['captcha'])) {
-      foreach(session::$data['captcha'] as $key => $captcha) {
+      foreach (session::$data['captcha'] as $key => $captcha) {
         if ($captcha['expires'] < date('Y-m-d H:i:s')) unset(session::$data['captcha'][$key]);
       }
     }

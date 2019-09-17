@@ -192,7 +192,7 @@
 
       // Build options structure
         $sanitized_options = array();
-        foreach($product->options as $option) {
+        foreach ($product->options as $option) {
 
         // Check group
           $possible_groups = array_filter(array_unique(reference::option_group($option['id'])->name));
@@ -212,7 +212,7 @@
             case 'checkbox':
 
               $matched_values = array();
-              foreach($option['values'] as $value) {
+              foreach ($option['values'] as $value) {
                 $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
                 $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
                 if (!empty($matched_value)) {
@@ -236,7 +236,7 @@
             case 'radio':
             case 'select':
 
-              foreach($option['values'] as $value) {
+              foreach ($option['values'] as $value) {
                 $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
                 $matched_value = @reset(array_intersect(array($options[$matched_group]), array_values($possible_values)));
                 if (!empty($matched_value)) {

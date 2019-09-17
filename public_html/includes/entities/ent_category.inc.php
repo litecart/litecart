@@ -80,7 +80,7 @@
         where category_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
       );
-      while($image = database::fetch($category_images_query)) {
+      while ($image = database::fetch($category_images_query)) {
         $this->data['images'][$image['id']] = $image;
       }
 
@@ -220,7 +220,7 @@
       }
 
     // Update category image
-      if (!empty($this->data['images'])){
+      if (!empty($this->data['images'])) {
         $images = array_values($this->data['images']);
         $image = array_shift($images);
         $this->data['image'] = $image['filename'];

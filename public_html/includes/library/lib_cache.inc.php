@@ -25,7 +25,7 @@
           limit 1;"
         );
 
-        foreach(glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file){
+        foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
           if (is_file($file)) unlink($file);
         }
 
@@ -37,7 +37,7 @@
       if (settings::get('cache_clear_thumbnails')) {
         $files = glob(FS_DIR_APP . 'cache/' . '*');
 
-        if (!empty($files)) foreach($files as $file) {
+        if (!empty($files)) foreach ($files as $file) {
           if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
         }
 

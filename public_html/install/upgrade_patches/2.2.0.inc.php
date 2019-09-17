@@ -198,7 +198,7 @@
     "select * from ". DB_TABLE_ORDERS_ITEMS .";"
   );
 
-  while($order_item = database::fetch($order_items_query)) {
+  while ($order_item = database::fetch($order_items_query)) {
     if (empty($order_item['product_id'])) continue;
 
   // Get stock option

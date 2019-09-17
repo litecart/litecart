@@ -26,7 +26,7 @@
     );
 
     $monthly_sales = array();
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales'] = (int)$orders['total_sales'];
     }
 
@@ -38,7 +38,7 @@
       order by month asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales_last_year'] = (int)$orders['total_sales'];
     }
 
@@ -65,7 +65,7 @@
       order by weekday asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $daily_sales[$orders['weekday']]['total_sales'] = (int)$orders['total_sales'];
     }
 
@@ -77,7 +77,7 @@
       order by weekday asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $daily_sales[$orders['weekday']]['average_sales'] = (int)$orders['average_sales'];
     }
 

@@ -61,7 +61,7 @@
   );
 
   $installed_modules = array();
-  while($module = database::fetch($installed_modules_query)){
+  while ($module = database::fetch($installed_modules_query)) {
     $installed_modules[] = $module['module_id'];
   }
 

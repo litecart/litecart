@@ -103,7 +103,7 @@
         throw new Exception('Could not find order in database (ID: '. (int)$order_id .')');
       }
 
-      foreach($order as $field => $value) {
+      foreach ($order as $field => $value) {
 
         switch ($field) {
           case 'customer_id':
@@ -301,7 +301,7 @@
         and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
-      while($previous_order_item = database::fetch($previous_order_items_query)) {
+      while ($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
           "delete from ". DB_TABLE_ORDERS_ITEMS ."
           where order_id = ". (int)$this->data['id'] ."
@@ -541,7 +541,7 @@
 
       $this->data['items']['new_'.$i]['id'] = null;
 
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
         $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
       }
 
@@ -734,7 +734,7 @@
         '%store_url' => document::ilink('', array(), false, array(), $language_code),
       );
 
-      foreach($this->data['items'] as $item) {
+      foreach ($this->data['items'] as $item) {
         $product = reference::product($item['product_id'], $language_code);
 
         $options = array();

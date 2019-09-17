@@ -1,5 +1,5 @@
 <ul class="pagination">
-  <?php foreach($items as $item) { ?>
+  <?php foreach ($items as $item) { ?>
     <?php if ($item['disabled']) { ?>
     <li class="disabled"><span><?php echo $item['title']; ?></span></li>
     <?php } else { ?>
