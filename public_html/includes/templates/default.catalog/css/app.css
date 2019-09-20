@@ -341,7 +341,6 @@ html {
 }
 .listing .product-column .link,
 .listing .product-row .link {
-  position: relative;
   text-decoration: none;
 }
 .listing .product-column .image-wrapper,
