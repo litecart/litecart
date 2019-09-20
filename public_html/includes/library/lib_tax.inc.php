@@ -135,33 +135,32 @@
 
       $tax_rates_query = database::query(
         "select * from ". DB_TABLE_TAX_RATES ."
-        where tax_class_id = ". (int)$tax_class_id .";"
+        where tax_class_id = ". (int)$tax_class_id ."
+        and (
+          (
+            address_type = 'payment'
+            and geo_zone_id in (
+              select geo_zone_id from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+              where country_code = '". database::input($customer['country_code']) ."'
+              and (zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
+            )
+          ) or (
+            address_type = 'shipping'
+            and geo_zone_id in (
+              select geo_zone_id from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+              where country_code = '". database::input($customer['shipping_address']['country_code']) ."'
+              and (zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
+            )
+          )
+        )
+        ". ((!empty($customer['company']) && !empty($customer['tax_id'])) ? "and rule_companies_with_tax_id" : "") ."
+        ". ((!empty($customer['company']) && empty($customer['tax_id'])) ? "and rule_companies_without_tax_id" : "") ."
+        ". ((empty($customer['company']) && !empty($customer['tax_id'])) ? "and rule_individuals_with_tax_id" : "") ."
+        ". ((empty($customer['company']) && empty($customer['tax_id'])) ? "and rule_individuals_without_tax_id" : "") ."
+        ;"
       );
 
       while ($rate = database::fetch($tax_rates_query)) {
-        switch($rate['address_type']) {
-          case 'payment':
-            if (!functions::reference_in_geo_zone($rate['geo_zone_id'], $customer['country_code'], $customer['zone_code'])) continue 2;
-            break;
-
-          case 'shipping':
-            if (!functions::reference_in_geo_zone($rate['geo_zone_id'], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue 2;
-            break;
-
-          default:
-            trigger_error('Unknown address type', E_USER_WARNING);
-            break;
-        }
-
-        $does_apply = false;
-
-        if (!empty($rate['rule_companies_with_tax_id'])      && !empty($customer['company']) && !empty($customer['tax_id'])) $does_apply = true;
-        if (!empty($rate['rule_companies_without_tax_id'])   && !empty($customer['company']) &&  empty($customer['tax_id'])) $does_apply = true;
-        if (!empty($rate['rule_individuals_with_tax_id'])    &&  empty($customer['company']) && !empty($customer['tax_id'])) $does_apply = true;
-        if (!empty($rate['rule_individuals_without_tax_id']) &&  empty($customer['company']) &&  empty($customer['tax_id'])) $does_apply = true;
-
-        if (!$does_apply) continue;
-
         $tax_rates[$rate['id']] = $rate;
       }
 
