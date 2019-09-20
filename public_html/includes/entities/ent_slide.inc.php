@@ -175,7 +175,7 @@
 
       database::query(
         "update ". DB_TABLE_SLIDES ."
-        set image = '" . database::input($filename) . "',
+        set image = '" . database::input($filename) . "'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
