@@ -93,6 +93,10 @@
             $hash_string .= $_SERVER['PHP_SELF'];
             break;
 
+          case 'country':
+            $hash_string .= customer::$data['country_code'];
+            break;
+
           case 'currency':
             $hash_string .= currency::$selected['code'];
             break;
