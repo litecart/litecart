@@ -102,7 +102,7 @@
             break;
 
           case 'customer':
-            $hash_string .= serialize(customer::$data);
+            $hash_string .= customer::$data['id'];
             break;
 
           case 'domain':
