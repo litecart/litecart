@@ -1,5 +1,5 @@
 <?php
-  breadcrumbs::add(language::translate('title_import_export_csv', 'Inport/Export CSV'));
+  breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
   if (isset($_POST['import_categories'])) {
 
