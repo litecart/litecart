@@ -107,8 +107,6 @@
 
       if ($from == $to) return $value;
 
-      if (empty(self::$classes)) self::load();
-
       if (!isset(self::$classes[$from])) trigger_error('The unit '. $from .' is not a valid volume class.', E_USER_WARNING);
       if (!isset(self::$classes[$to])) trigger_error('The unit '. $to .' is not a valid volume class.', E_USER_WARNING);
 
@@ -116,8 +114,6 @@
     }
 
     public static function format($value, $class) {
-
-      if (empty(self::$classes)) self::load();
 
       if (!isset(self::$classes[$class])) {
         trigger_error('Invalid volume class ('. $class .')', E_USER_WARNING);

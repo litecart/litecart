@@ -32,7 +32,7 @@
 
     public function load($user_id) {
 
-      if (!preg_match('#^[0-9]+$#', $user_id)) throw new Exception('Invalid user id (ID: '. $user_id .')');
+      if (!preg_match('#^[0-9]+$#', $user_id)) throw new Exception('Invalid user (ID: '. $user_id .')');
 
       $this->reset();
 
@@ -54,8 +54,6 @@
     }
 
     public function save() {
-
-      $previous_user = new ent_user($this->data['id']);
 
       if (empty($this->data['id'])) {
         database::query(

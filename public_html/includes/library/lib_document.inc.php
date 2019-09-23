@@ -67,7 +67,7 @@
         if (!isset(self::$settings[$template_config[$i]['key']])) self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
       }
 
-    // LiteCart JavaScript Environment
+    // JavaScript Environment
       $config = array(
         'platform' => array(
           'url' => document::ilink(''),

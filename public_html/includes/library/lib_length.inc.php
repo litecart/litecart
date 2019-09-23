@@ -65,8 +65,6 @@
 
       if ($from == $to) return $value;
 
-      if (empty(self::$classes)) self::load();
-
       if (!isset(self::$classes[$from])) trigger_error('The unit '. $from .' is not a valid length class.', E_USER_WARNING);
       if (!isset(self::$classes[$to])) trigger_error('The unit '. $to .' is not a valid length class.', E_USER_WARNING);
 
@@ -74,8 +72,6 @@
     }
 
     public static function format($value, $unit) {
-
-      if (empty(self::$classes)) self::load();
 
       if (!isset(self::$classes[$unit])) {
         trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);

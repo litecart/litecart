@@ -1,19 +1,17 @@
 <?php
 
   class ent_email {
-    public $_data = array();
+    public $data;
 
     public function __construct($email_id=null, $charset=null) {
 
       if ($email_id !== null) {
-        $this->load((int)$email_id);
+        $this->load($email_id);
       } else {
         $this->reset();
       }
 
       $this->data['charset'] = $charset ? $charset : language::$selected['charset'];
-
-      return $this;
     }
 
     public function reset() {
@@ -44,6 +42,8 @@
     }
 
     public function load($email_id) {
+
+      if (!preg_match('#^[0-9]+$#', $email_id)) throw new Exception('Invalid email (ID: '. $email_id .')');
 
       $this->reset();
 
