@@ -83,7 +83,7 @@
         class_alias('wrap_http', 'http_client', true);
         break;
 
-      case ($class == 'wrap_smtp'):
+      case ($class == 'smtp'):
         //trigger_error('Class object smtp() is deprecated. Use instead wrap_smtp()', E_USER_DEPRECATED);
         class_alias('wrap_smtp', 'smtp', true);
         break;
