@@ -133,6 +133,8 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
+  $store_currency = reference::currency(settings::get('store_currency_code'));
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
@@ -176,7 +178,10 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_value', 'Value'); ?></label>
-          <?php echo functions::form_draw_decimal_field('value', true, 4); ?>
+          <div class="input-group">
+            <span class="input-group-addon"><?php echo (float)$store_currency->value; ?> <?php echo $store_currency->code; ?> = </span>
+            <?php echo functions::form_draw_decimal_field('value', true, 4); ?>
+          </div>
         </div>
 
         <div class="form-group col-md-6">
