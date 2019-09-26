@@ -55,8 +55,42 @@
         throw new Exception('You cannot disable the default language.');
       }
 
-      if (!empty($this->previous)) {
+      if (empty($this->data['id'])) {
+        database::query(
+          "insert into ". DB_TABLE_LANGUAGES ."
+          (date_created)
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+        );
+        $this->data['id'] = database::insert_id();
+      }
+
+      database::query(
+        "update ". DB_TABLE_LANGUAGES ."
+        set
+          status = ". (int)$this->data['status'] .",
+          code = '". database::input($this->data['code']) ."',
+          code2 = '". database::input($this->data['code2']) ."',
+          name = '". database::input($this->data['name']) ."',
+          charset = '". database::input($this->data['charset']) ."',
+          locale = '". database::input($this->data['locale']) ."',
+          raw_date = '". database::input($this->data['raw_date']) ."',
+          raw_time = '". database::input($this->data['raw_time']) ."',
+          raw_datetime = '". database::input($this->data['raw_datetime']) ."',
+          format_date = '". database::input($this->data['format_date']) ."',
+          format_time = '". database::input($this->data['format_time']) ."',
+          format_datetime = '". database::input($this->data['format_datetime']) ."',
+          decimal_point = '". database::input($this->data['decimal_point']) ."',
+          thousands_sep = '". database::input($this->data['thousands_sep']) ."',
+          currency_code = '". database::input($this->data['currency_code']) ."',
+          priority = ". (int)$this->data['priority'] .",
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      if (!empty($this->previous['code'])) {
         if ($this->data['code'] != $this->previous['code']) {
+
           if ($this->previous['code'] == 'en') {
             throw new Exception('You cannot not rename the english language because it is used for the PHP framework.');
 
@@ -91,62 +125,21 @@
             }
           }
         }
-      }
 
-      if (empty($this->data['id'])) {
-        $languages_query = database::query(
-          "select id from ". DB_TABLE_LANGUAGES ."
-          where code = '". database::input($this->data['code']) ."'
-          limit 1;"
+      } else {
+
+        $translations_query = database::query(
+          "show fields from ". DB_TABLE_TRANSLATIONS ."
+          where `Field` = 'text_". database::input($this->data['code']) ."';"
         );
 
-        if (database::num_rows($languages_query)) {
-          throw new Exception('Language already exists');
+        if (!database::num_rows($translations_query)) {
+          database::query(
+            "alter table ". DB_TABLE_TRANSLATIONS ."
+            add `text_". database::input($this->data['code']) ."` text not null after text_en;"
+          );
         }
-
-        database::query(
-          "insert into ". DB_TABLE_LANGUAGES ."
-          (date_created)
-          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
-        );
-        $this->data['id'] = database::insert_id();
       }
-
-      $translations_query = database::query(
-        "show fields from ". DB_TABLE_TRANSLATIONS ."
-        where `Field` = 'text_". database::input($this->data['code']) ."';"
-      );
-
-      if (!database::num_rows($translations_query)) {
-        database::query(
-          "alter table ". DB_TABLE_TRANSLATIONS ."
-          add `text_". database::input($this->data['code']) ."` text not null after text_en;"
-        );
-      }
-
-      database::query(
-        "update ". DB_TABLE_LANGUAGES ."
-        set
-          status = ". (int)$this->data['status'] .",
-          code = '". database::input($this->data['code']) ."',
-          code2 = '". database::input($this->data['code2']) ."',
-          name = '". database::input($this->data['name']) ."',
-          charset = '". database::input($this->data['charset']) ."',
-          locale = '". database::input($this->data['locale']) ."',
-          raw_date = '". database::input($this->data['raw_date']) ."',
-          raw_time = '". database::input($this->data['raw_time']) ."',
-          raw_datetime = '". database::input($this->data['raw_datetime']) ."',
-          format_date = '". database::input($this->data['format_date']) ."',
-          format_time = '". database::input($this->data['format_time']) ."',
-          format_datetime = '". database::input($this->data['format_datetime']) ."',
-          decimal_point = '". database::input($this->data['decimal_point']) ."',
-          thousands_sep = '". database::input($this->data['thousands_sep']) ."',
-          currency_code = '". database::input($this->data['currency_code']) ."',
-          priority = ". (int)$this->data['priority'] .",
-          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
 
       $this->previous = $this->data;
 
