@@ -10,4 +10,4 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Goods and Services', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
-(1, @AU_VAT_ZONE, 'percent', 'Goods and Services Tax 10%', '', 10, 'both', 'both', NOW(), NOW());
+(1, @AU_VAT_ZONE, 'percent', 'Goods and Services Tax 10%', '', 10, 1, 1, 1, 1, NOW(), NOW());
