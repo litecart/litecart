@@ -11,6 +11,7 @@
     FS_DIR_APP . 'includes/classes/module.inc.php',
     FS_DIR_APP . 'includes/classes/smtp.inc.php',
     FS_DIR_APP . 'includes/classes/system.inc.php',
+    FS_DIR_APP . 'includes/classes/view.inc.php',
     FS_DIR_APP . 'includes/classes/vmod.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_attribute_group.inc.php',
     FS_DIR_APP . 'includes/controllers/ctrl_category.inc.php',
