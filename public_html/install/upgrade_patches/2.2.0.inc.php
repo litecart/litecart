@@ -69,6 +69,11 @@
   $modified_files = array(
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "## Files and Directory  ##############################################",
+      'replace' => "## Files and Directories #############################################",
+    ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "    //if (is_writable(__FILE__)) chmod(__FILE__, 0444);" . PHP_EOL . PHP_EOL,
       'replace' => "",
     ),
@@ -109,9 +114,9 @@
     ),
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "## Files and Directory  ##############################################" . PHP_EOL
+      'search'  => "## Files and Directories #############################################" . PHP_EOL
                  . "######################################################################" . PHP_EOL,
-      'replace' => "## Files and Directory  ##############################################" . PHP_EOL
+      'replace' => "## Files and Directories #############################################" . PHP_EOL
                  . "######################################################################" . PHP_EOL
                  . PHP_EOL
                  . "  define('BACKEND_ALIAS', '". $admin_folder_name ."');" . PHP_EOL
