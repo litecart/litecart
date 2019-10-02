@@ -874,8 +874,6 @@
 
     if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_draw_customers_list()', E_USER_ERROR);
 
-    if ($input === true) $input = form_reinsert_value($name);
-
     $options = array();
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
@@ -925,8 +923,6 @@
   }
 
   function form_draw_encodings_list($name, $input=true, $multiple=false, $parameters='') {
-
-    if ($input === true) $input = form_reinsert_value($name);
 
     $options = array();
 
