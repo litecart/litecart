@@ -147,7 +147,7 @@
       }
       foreach ($browser_locales as $browser_locale) {
         if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
-          if (!empty($reg[1]) && isset(self::$languages[$reg[1]])) return $reg[1];
+          if (!empty($reg[1]) && in_array($reg[1], $enabled_languages)) return $reg[1];
         }
       }
 
