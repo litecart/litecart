@@ -80,7 +80,7 @@
           format_time = '". database::input($this->data['format_time']) ."',
           format_datetime = '". database::input($this->data['format_datetime']) ."',
           decimal_point = '". database::input($this->data['decimal_point']) ."',
-          thousands_sep = '". database::input($this->data['thousands_sep']) ."',
+          thousands_sep = '". database::input($this->data['thousands_sep'], false, false) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
           priority = ". (int)$this->data['priority'] .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
