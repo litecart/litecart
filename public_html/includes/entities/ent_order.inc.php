@@ -230,18 +230,18 @@
         }
       }
 
+      if (empty($this->data['public_key'])) {
+        $this->data['public_key'] = md5($this->data['id'] . $this->data['uid'] . $this->data['customer']['email'] . $this->data['date_created']. rand(1, 65535));
+      }
+
     // Insert/update order
       if (empty($this->data['id'])) {
-
-        if (empty($this->data['public_key'])) {
-          $this->data['public_key'] = md5($this->data['id'] . $this->data['uid'] . $this->data['customer']['email'] . $this->data['date_created']. rand(1, 65535));
-        }
-
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
-          (uid, client_ip, user_agent, domain, public_key, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". database::input($this->data['public_key']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          (uid, client_ip, user_agent, domain, date_created)
+          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
 
@@ -289,6 +289,7 @@
         display_prices_including_tax = ". (int)$this->data['display_prices_including_tax'] .",
         payment_due = ". (float)$this->data['payment_due'] .",
         tax_total = ". (float)$this->data['tax_total'] .",
+        public_key = '". database::input($this->data['public_key']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
