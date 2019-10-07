@@ -5,7 +5,7 @@
 
   $_GET['query'] = trim($_GET['query']);
 
-  if (empty($_GET['product_id'])) {
+  if (empty($_GET['query'])) {
     http_response_code(400);
     notices::add('errors', language::translate('error_must_provide_search_query', 'You must provide a search query'));
     return;
