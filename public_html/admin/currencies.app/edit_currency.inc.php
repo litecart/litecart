@@ -179,8 +179,8 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_value', 'Value'); ?></label>
           <div class="input-group">
-            <span class="input-group-addon"><?php echo (float)$store_currency->value; ?> <?php echo $store_currency->code; ?> = </span>
             <?php echo functions::form_draw_decimal_field('value', true, 4); ?>
+            <span class="input-group-addon"><?php echo $store_currency->code; ?></span>
           </div>
         </div>
 
