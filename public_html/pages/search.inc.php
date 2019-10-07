@@ -5,6 +5,12 @@
 
   $_GET['query'] = trim($_GET['query']);
 
+  if (empty($_GET['product_id'])) {
+    http_response_code(400);
+    notices::add('errors', language::translate('error_must_provide_search_query', 'You must provide a search query'));
+    return;
+  }
+
   document::$snippets['title'][] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])) : language::translate('title_search_results', 'Search Results');
 
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
