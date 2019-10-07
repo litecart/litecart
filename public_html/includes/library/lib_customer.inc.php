@@ -95,13 +95,6 @@
         }
       }
 
-    // Get country from browser locale
-      if (empty(self::$data['country_code'])) {
-        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#(^[a-z]{2}-([A-Z]{2}))#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
-          if (!empty($matches[2]) && in_array($matches[2], $countries)) self::$data['country_code'] = $matches[2];
-        }
-      }
-
     // Get country from HTTP header (CloudFlare)
       if (empty(self::$data['country_code'])) {
         if (!empty($_SERVER['HTTP_CF_IPCOUNTRY']) && in_array($_SERVER['HTTP_CF_IPCOUNTRY'], $countries)) {
@@ -120,6 +113,13 @@
           );
           $country = database::fetch($countries_query);
           if (!empty($country['iso_code_2']) && in_array($country['iso_code_2'], $countries)) self::$data['country_code'] = $country['iso_code_2'];
+        }
+      }
+
+    // Get country from browser locale
+      if (empty(self::$data['country_code'])) {
+        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#(^[a-z]{2}-([A-Z]{2}))#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+          if (!empty($matches[2]) && in_array($matches[2], $countries)) self::$data['country_code'] = $matches[2];
         }
       }
 
