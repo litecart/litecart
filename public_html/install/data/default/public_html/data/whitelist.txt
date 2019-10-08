@@ -3,8 +3,13 @@
 # Example [ip="127.0.0.1"][agent="chrome"] Must match IP and user agent containing the word chrome
 
 # Search engines
-MSN Bot [ip=""][hostname=".search.msn.com"][agent=""]
-Google Bot [ip=""][hostname=".googlebot.com"][agent=""]
+[ip=""][hostname=".applebot.apple.com"][agent=""]
+[ip=""][hostname=".ahrefs.com"][agent=""]
+[ip=""][hostname=".baidu.com"][agent=""]
+[ip=""][hostname=".googlebot.com"][agent=""]
+[ip=""][hostname=".search.msn.com"][agent=""]
+[ip=""][hostname=".spider.yandex.com"][agent=""]
+[ip=""][hostname="duckduckbot.duckduckgo.com"][agent=""]
 
 # Other
 CloudFlare-AlwaysOnline [ip=""][hostname=""][agent="CloudFlare"]
