@@ -97,7 +97,7 @@
       $cacheFile = self::$_cachePathFull . 'vq2-' . preg_replace('#[/\\\\]+#', '_', $stripped_filename);
       $file_last_modified = filemtime($sourcePath);
 
-      if (!isset(self::$_debug) && file_exists($cacheFile) && filemtime($cacheFile) >= self::$_lastModifiedTime && filemtime($cacheFile) >= $file_last_modified) {
+      if (!self::$_debug && file_exists($cacheFile) && filemtime($cacheFile) >= self::$_lastModifiedTime && filemtime($cacheFile) >= $file_last_modified) {
         return $cacheFile;
       }
 
