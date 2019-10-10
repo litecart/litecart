@@ -15,7 +15,7 @@
 
   $order_module = new mod_order();
 
-  $_page = new view();
+  $_page = new ent_view();
 
   $_page->snippets = array(
     'order' => $order->data,

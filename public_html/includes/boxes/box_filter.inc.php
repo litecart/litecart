@@ -1,6 +1,6 @@
 <?php
 
-  $box_filter = new view();
+  $box_filter = new ent_view();
 
   $box_filter->snippets = array(
     'manufacturers' => array(),
@@ -38,7 +38,6 @@
     order by priority;"
   );
 
-  $this->data['filters'] = array();
   while ($group = database::fetch($category_filters_query)) {
 
     $attribute_values_query = database::query(

@@ -5,16 +5,7 @@
     private static $_data;
     public static $enabled = true;
 
-    public static function construct() {
-    }
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function initiate() {
-    //}
-
-    public static function startup() {
+    public static function init() {
 
       self::$enabled = settings::get('cache_enabled') ? true : false;
 
@@ -34,7 +25,7 @@
           limit 1;"
         );
 
-        foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+        foreach(glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file){
           if (is_file($file)) unlink($file);
         }
 
@@ -44,7 +35,7 @@
       }
 
       if (settings::get('cache_clear_thumbnails')) {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '*');
+        $files = glob(FS_DIR_APP . 'cache/' . '*');
 
         if (!empty($files)) foreach($files as $file) {
           if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
@@ -62,16 +53,6 @@
         }
       }
     }
-
-    public static function before_capture() {}
-
-    public static function after_capture() {}
-
-    public static function prepare_output() {}
-
-    public static function before_output() {}
-
-    public static function shutdown() {}
 
     ######################################################################
 
@@ -147,7 +128,7 @@
             $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
             break;
           case 'site':
-            $hash_string .= document::link(WS_DIR_HTTP_HOME);
+            $hash_string .= document::link(WS_DIR_APP);
             break;
           case 'template':
             $hash_string .= document::$template;
@@ -195,7 +176,7 @@
           return;
 
         case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_'.$token['id'];
+          $cache_file = FS_DIR_APP . 'cache/' . '_cache_'.$token['id'];
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
 
@@ -238,13 +219,13 @@
           return false;
 
         case 'file':
-          $cache_file = FS_DIR_HTTP_ROOT . WS_DIR_CACHE . '_cache_' . $token['id'];
+          $cache_file = FS_DIR_APP . 'cache/' . '_cache_' . $token['id'];
 
           if (strtolower(language::$selected['charset']) != 'utf-8') {
             $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
           }
 
-          return @file_put_contents($cache_file, json_encode($data));
+          return @file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
 
         case 'session':
           self::$_data[$token['id']] = array(
@@ -321,9 +302,9 @@
 
     // Clear files
       if (!empty($keyword)) {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache*_'. $keyword .'_*');
+        $files = glob(FS_DIR_APP . 'cache/' .'_cache*_'. $keyword .'_*');
       } else {
-        $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_CACHE .'_cache_*');
+        $files = glob(FS_DIR_APP . 'cache/' .'_cache_*');
       }
 
       if ($files) foreach ($files as $file) unlink($file);

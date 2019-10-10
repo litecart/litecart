@@ -136,7 +136,7 @@
           $('#cart .items').append('<li class="divider"></li>');
         }
         $('#cart .items').append('<li><a href="' + config.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
-        $('#cart .quantity').html(json['quantity']);
+        $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
         $('#cart .formatted_value').html(json['formatted_value']);
         if (json['quantity'] > 0) {
           $('#cart img').attr('src', config.template.url + 'images/cart_filled.svg');

@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_account', 'Account'));
   breadcrumbs::add(language::translate('title_order_history', 'Order History'));
 
-  $_page = new view();
+  $_page = new ent_view();
 
   $_page->snippets['orders'] = array();
 
@@ -30,6 +30,7 @@
       $_page->snippets['orders'][] = array(
         'id' => $order['id'],
         'link' => document::ilink('order', array('order_id' => $order['id'], 'public_key' => $order['public_key'])),
+        'printable_link' => document::ilink('printable_order_copy', array('order_id' => $order['id'], 'public_key' => $order['public_key'])),
         'order_status' => $order['order_status_name'],
         'date_created' => language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
         'payment_due' => currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']),

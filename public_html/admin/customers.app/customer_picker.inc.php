@@ -47,7 +47,7 @@
       type: 'get',
       async: true,
       cache: false,
-      url: '<?php echo document::link('', array('app' => 'customers', 'doc' => 'customers.json')); ?>&query=' + $(this).val(),
+      url: '<?php echo document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')); ?>&query=' + $(this).val(),
       dataType: 'json',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -88,7 +88,7 @@
       name = '(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)';
     }
 
-    var field = $.featherlight.current().$currentTarget.closest('.form-control');
+    var field = $.featherlight.current().$currentTarget.closest('.input-group');
 
     $(field).find(':input').val(id).trigger('change');
     $(field).find('.id').text(id);
@@ -98,7 +98,7 @@
 
   $('#modal-customer-picker .set-guest').click(function(){
 
-    var field = $.featherlight.current().$currentTarget.closest('.form-control');
+    var field = $.featherlight.current().$currentTarget.closest('.input-group');
 
     $(field).find(':input').val('0').trigger('change');
     $(field).find('.id').text('0');

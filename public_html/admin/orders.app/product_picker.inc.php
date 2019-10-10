@@ -48,7 +48,7 @@
       type: 'get',
       async: true,
       cache: false,
-      url: '<?php echo document::link('', array('app' => 'catalog', 'doc' => 'products.json')); ?>&query=' + $(this).val(),
+      url: '<?php echo document::link(WS_DIR_ADMIN, array('app' => 'catalog', 'doc' => 'products.json')); ?>&query=' + $(this).val(),
       dataType: 'json',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -85,7 +85,7 @@
     var id = $(row).find('.id').text();
     if (!id) return;
 
-    var url = String('<?php echo document::link('', array('doc' => 'add_product', 'product_id' => '__id__'), true); ?>').replace(/__id__/, id);
+    var url = String('<?php echo document::link(WS_DIR_ADMIN, array('doc' => 'add_product', 'product_id' => '__id__'), true); ?>').replace(/__id__/, id);
     $.get(url, function(data) {
       $('.featherlight-content').html(data);
     }, 'html');

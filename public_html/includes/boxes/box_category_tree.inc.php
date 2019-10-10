@@ -9,7 +9,7 @@
       $category_path = array();
     }
 
-    $box_category_tree = new view();
+    $box_category_tree = new ent_view();
 
     $box_category_tree->snippets = array(
       'title' => language::translate('title_categories', 'Categories'),

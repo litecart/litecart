@@ -269,7 +269,7 @@ body {
     <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
 
       <div class="content">
-        <?php echo functions::form_draw_hidden_field('redirect_url', $action); ?>
+        <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 
         {snippet:notices}
 

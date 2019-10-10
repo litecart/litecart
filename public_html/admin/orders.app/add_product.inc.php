@@ -44,7 +44,7 @@
         <div class="thumbnail">
 <?php
   list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
-  echo '<img src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->image, $width, $height, settings::get('product_image_clipping'))) .'" />';
+  echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'))) .'" />';
 ?>
         </div>
       </div>
@@ -148,10 +148,10 @@
         <?php } ?>
       </div>
 
-      <p class="btn-group">
+      <div class="btn-group">
         <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
-      </p>
+      </div>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
@@ -184,7 +184,7 @@
       tax: parseFloat($(form).find(':input[name="tax"]').val())
     };
 
-    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->stock_options) : '[]'; ?>;
+    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->stock_options, JSON_UNESCAPED_SLASHES) : '[]'; ?>;
 
     $.each(available_stock_options, function(i, stock_option) {
       var matched = false;

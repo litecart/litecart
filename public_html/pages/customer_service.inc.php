@@ -8,10 +8,10 @@
     breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'));
   }
 
-  $_page = new view();
+  $_page = new ent_view();
 
   ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php');
+  include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php');
   $_page->snippets['box_customer_service_links'] = ob_get_clean();
 
 // Custom page
@@ -46,7 +46,7 @@
   } else {
 
     ob_start();
-    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_contact_us.inc.php');
+    include vmod::check(FS_DIR_APP . 'includes/boxes/box_contact_us.inc.php');
     $_page->snippets['content'] = ob_get_clean();
   }
 

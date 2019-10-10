@@ -11,6 +11,7 @@
     public $priority = 0;
 
     public function __construct() {
+      $this->name = language::translate(__CLASS__.':title', 'Cash on Delivery');
     }
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -24,8 +25,8 @@
       }
 
       $method = array(
-        'title' => language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
-        'description' => '',
+        'title' => $this->name,
+        'description' => language::translate(__CLASS__.':description', ''),
         'options' => array(
           array(
             'id' => 'cod',

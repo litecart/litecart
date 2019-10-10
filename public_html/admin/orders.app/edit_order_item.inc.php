@@ -72,10 +72,10 @@
       </div>
     </div>
 
-    <p class="btn-group">
+    <div class="btn-group">
       <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'button', '', 'save'); ?>
       <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
-    </p>
+    </div>
   </div>
 
 </div>

@@ -4,6 +4,9 @@
   ob_start();
 
   require_once('../includes/config.inc.php');
+  if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
+  if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
+
   require_once('../includes/error_handler.inc.php');
   require_once('../includes/library/lib_database.inc.php');
   require_once('includes/header.inc.php');
@@ -60,23 +63,23 @@
     foreach ($supported_versions as $version) {
       if (version_compare($_REQUEST['from_version'], $version, '<')) {
         if (file_exists('upgrade_patches/'. $version .'.sql')) {
-          echo '<p>Upgrading database to '. $version .'... ';
-            $sql = file_get_contents('upgrade_patches/'. $version .'.sql');
-            $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+          echo '<p>Upgrading database to '. $version .'... ' . PHP_EOL;
+          $sql = file_get_contents('upgrade_patches/'. $version .'.sql');
+          $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
-            $sql = explode('-- --------------------------------------------------------', $sql);
+          $sql = explode('-- --------------------------------------------------------', $sql);
 
-            foreach ($sql as $query) {
-              $query = preg_replace('#--.*\s#', '', $query);
+          foreach ($sql as $query) {
+            $query = preg_replace('#--.*\s#', '', $query);
+            if (!empty($query)) {
               database::query($query);
             }
-          echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+          }
         }
 
         if (file_exists('upgrade_patches/'. $version .'.inc.php')) {
           echo '<p>Upgrading system to '. $version .'... ' . PHP_EOL;
           include('upgrade_patches/'. $version .'.inc.php');
-          echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
         }
       }
     }
@@ -163,12 +166,12 @@
       limit 1;"
     );
 
-    foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+    foreach(glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file){
       if (is_file($file)) unlink($file);
     }
 
-    if (is_file($file = FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/chekced.cache')) unlink($file);
-    if (is_file($file = FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/mods.cache')) unlink($file);
+    if (is_file($file = FS_DIR_APP . 'vqmod/chekced.cache')) unlink($file);
+    if (is_file($file = FS_DIR_APP . 'vqmod/mods.cache')) unlink($file);
 
     echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 
@@ -198,7 +201,7 @@ input[name="development_type"] + div {
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 15px;
   width: 250px;
-  height: 125px;
+  height: 145px;
   text-align: center;
   cursor: pointer;
 }

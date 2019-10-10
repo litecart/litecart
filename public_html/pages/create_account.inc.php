@@ -47,7 +47,7 @@
       $result = $mod_customer->validate($_POST);
       if (!empty($result['error'])) throw new Exception($result['error']);
 
-      $customer = new ctrl_customer();
+      $customer = new ent_customer();
 
       $customer->data['status'] = 1;
 
@@ -98,7 +98,7 @@
       $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
       $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
 
-      $email = new email();
+      $email = new ent_email();
       $email->add_recipient($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
             ->set_subject($subject)
             ->add_body($message)
@@ -113,5 +113,19 @@
     }
   }
 
-  $_page = new view();
+  $_page = new ent_view();
+
+  $_page->snippets = array(
+    'consent' => null,
+  );
+
+  if ($privacy_policy_id = settings::get('privacy_policy')) {
+
+      $aliases = array(
+        '%privacy_policy_link' => document::href_ilink('information', array('page_id' => $privacy_policy_id)),
+      );
+
+      $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
+  }
+
   echo $_page->stitch('pages/create_account');

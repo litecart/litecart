@@ -4,14 +4,28 @@
 ## Files and Directories #############################################
 ######################################################################
 
+  define('BACKEND_ALIAS', '{ADMIN_FOLDER}');
+
 // File System
-  define('FS_DIR_HTTP_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
+  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
+
+  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');
 
 // Web System
-  define('WS_DIR_HTTP_HOME', rtrim(str_replace(FS_DIR_HTTP_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');
 
-  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '{ADMIN_FOLDER}/');
-  define('WS_DIR_AJAX',        WS_DIR_HTTP_HOME . 'ajax/');
+######################################################################
+## Backwards Compatible Directory Definitions (LiteCart <2.2) ########
+######################################################################
+
+// File System
+  define('FS_DIR_HTTP_ROOT', DOCUMENT_ROOT);
+
+// Web System
+  define('WS_DIR_HTTP_HOME', rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+
   define('WS_DIR_CACHE',       WS_DIR_HTTP_HOME . 'cache/');
   define('WS_DIR_DATA',        WS_DIR_HTTP_HOME . 'data/');
   define('WS_DIR_EXT',         WS_DIR_HTTP_HOME . 'ext/');
@@ -22,7 +36,7 @@
 
   define('WS_DIR_BOXES',       WS_DIR_INCLUDES  . 'boxes/');
   define('WS_DIR_CLASSES',     WS_DIR_INCLUDES  . 'classes/');
-  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');
+  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities
   define('WS_DIR_FUNCTIONS',   WS_DIR_INCLUDES  . 'functions/');
   define('WS_DIR_LIBRARY',     WS_DIR_INCLUDES  . 'library/');
   define('WS_DIR_MODULES',     WS_DIR_INCLUDES  . 'modules/');
@@ -59,6 +73,7 @@
   define('DB_TABLE_CUSTOMERS',                         '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'customers`');
   define('DB_TABLE_DELIVERY_STATUSES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses`');
   define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');
+  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'emails`');
   define('DB_TABLE_GEO_ZONES',                         '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'geo_zones`');
   define('DB_TABLE_LANGUAGES',                         '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'languages`');
   define('DB_TABLE_MANUFACTURERS',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers`');
@@ -112,7 +127,7 @@
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'On');
-  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');
+  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');
   ini_set('display_startup_errors', 'Off');
   ini_set('display_errors', 'Off');
   if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '{CLIENT_IP}'))) {

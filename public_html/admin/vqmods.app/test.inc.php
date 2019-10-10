@@ -2,15 +2,17 @@
   $_GET['debug'] = true;
   $_GET['vqmod'] = basename($_GET['vqmod']);
 
-  foreach (glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file) {
+  breadcrumbs::add(basename($_GET['vqmod']));
+
+  foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
     unlink($file);
   }
 
   try {
     if (!empty($_GET['vqmod'])) {
-      $vqmods = array(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/'. basename($_GET['vqmod']));
+      $vqmods = array(FS_DIR_APP . 'vqmod/xml/'. basename($_GET['vqmod']));
     } else {
-      $vqmods = glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*.xml');
+      $vqmods = glob(FS_DIR_APP . 'vqmod/xml/*.xml');
     }
 
     $files_to_modify = array();
@@ -19,17 +21,17 @@
 
       $xml = simplexml_load_file($vqmod);
 
-      foreach($xml->file as $file) {
-        foreach(explode(',', $file['name']) as $filename) {
-          $filename = FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . (isset($file['path']) ? $file['path'] : '') . $filename;
+      foreach ($xml->file as $file) {
+        foreach (explode(',', $file['name']) as $filename) {
+          $filename = FS_DIR_APP . (isset($file['path']) ? $file['path'] : '') . $filename;
 
           if (!empty(VQMod::$replaces)) {
-            foreach(VQMod::$replaces as $search => $replace) {
+            foreach (VQMod::$replaces as $search => $replace) {
               $filename = preg_replace($search, $replace, $filename);
             }
           }
 
-          foreach(glob($filename) as $file) {
+          foreach (glob($filename) as $file) {
             if (in_array($file, array('.', '..'))) continue;
             $files_to_modify[] = $file;
           }
@@ -60,7 +62,7 @@
     <?php foreach($files_to_modify as $file) { ?>
     <tr>
       <td>
-        <div><?php echo 'Testing ' . preg_replace('#^('. preg_quote(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME, '#') .')#', '', $file) . PHP_EOL; ?></div>
+        <div><?php echo 'Testing ' . preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file) . PHP_EOL; ?></div>
         <div><?php ob_start(); vmod::check($file); $buffer = ob_get_clean(); ?></div>
       </td>
       <td class="text-center">

@@ -6,6 +6,11 @@
     exit;
   }
 
+  if (!empty($_GET['attributes'])) {
+    $_GET['attributes'] = array_map('array_filter', $_GET['attributes']);
+    $_GET['attributes'] = array_filter($_GET['attributes']);
+  }
+
   $category = reference::category($_GET['category_id']);
 
   if (empty($category->id)) {
@@ -32,7 +37,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new view();
+  $_page = new ent_view();
 
   $box_category_cache_token = cache::token('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
   if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
@@ -60,10 +65,12 @@
   // Images
     list($width, $height) = functions::image_scale_by_width(980, settings::get('category_image_ratio'));
     foreach ($category->images as $image) {
-      $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, 'CROP');
+      $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('category_image_clipping'));
     }
 
-    $_page->snippets['image'] = $_page->snippets['images'][0];
+    if (!empty($_page->snippets['images'])) {
+      $_page->snippets['image'] = $_page->snippets['images'][0];
+    }
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
@@ -95,7 +102,7 @@
     $products_query = functions::catalog_products_query(array(
       'categories' => array($category->id),
       'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
-      'attributes' => $attributes,
+      'attributes' => !empty($_GET['attributes']) ? $_GET['attributes'] : null,
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ));

@@ -44,7 +44,7 @@ h1 {
   <header class="header">
     <div class="row">
       <div class="col-xs-6">
-        <img class="logotype" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </div>
 
       <div class="col-xs-6 text-right">
@@ -111,8 +111,26 @@ h1 {
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
           <td><?php echo $item['sku']; ?></td>
-          <td style="white-space: normal;"><?php echo $item['name']; ?></td>
-          <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
+          <td style="white-space: normal;"><?php echo $item['name']; ?>
+<?php
+    if (!empty($item['options'])) {
+      foreach ($item['options'] as $key => $value) {
+        if (is_array($value)) {
+          echo '<br />- '.$key .': ';
+          $useComa = false;
+          foreach ($value as $v) {
+            if ($useComa) echo ', ';
+            echo $v;
+            $useComa = true;
+          }
+        } else {
+          echo '<br />- '.$key .': '. $value;
+        }
+      }
+    }
+?>
+          </td>
+          <?php if (!empty($order['display_prices_including_tax'])) { ?>
           <td class="text-right"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
           <td class="text-right"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
@@ -129,7 +147,7 @@ h1 {
     <table class="order-total table data-table">
       <tbody>
         <?php foreach ($order['order_total'] as $ot_row) { ?>
-        <?php if (!empty(customer::$data['display_prices_including_tax'])) { ?>
+        <?php if (!empty($order['display_prices_including_tax'])) { ?>
         <tr>
           <td class="text-right"><?php echo $ot_row['title']; ?>:</td>
           <td class="text-right"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
@@ -144,7 +162,7 @@ h1 {
 
         <?php if (!empty($order['tax_total']) && $order['tax_total'] != 0) { ?>
         <tr>
-          <td class="text-right"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+          <td class="text-right"><?php echo !empty($order['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
           <td class="text-right"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
         <?php } ?>
@@ -173,7 +191,7 @@ h1 {
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo htmlspecialchars(link::decode_idn(document::ilink(''))); ?></div>
+        <div class="value"><?php echo document::ilink(''); ?></div>
       </div>
 
       <div class="col-xs-3">

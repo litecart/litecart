@@ -8,6 +8,10 @@
     $_POST['username'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
   }
 
+  if (empty($_POST['redirect_url'])) {
+    $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
+  }
+
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
@@ -17,7 +21,7 @@
 
     try {
 
-      setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
+      setcookie('remember_me', null, -1, WS_DIR_APP);
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
 
@@ -93,9 +97,9 @@
 
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       } else {
-        setcookie('remember_me', null, -1, WS_DIR_HTTP_HOME);
+        setcookie('remember_me', null, -1, WS_DIR_APP);
       }
 
       if (empty($_REQUEST['redirect_url']) || basename(parse_url($_REQUEST['redirect_url'], PHP_URL_PATH)) != basename(__FILE__)) {
@@ -107,16 +111,12 @@
       exit;
 
     } catch (Exception $e) {
-      http_response_code(401);
+      //http_response_code(401); // Troublesome with HTTP Auth
       notices::add('errors', $e->getMessage());
     }
   }
 
-  $page_login = new view();
-  $page_login->snippets = array(
-    'action' => $_REQUEST['redirect_url'],
-  );
-
+  $page_login = new ent_view();
   echo $page_login->stitch('pages/login');
 
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

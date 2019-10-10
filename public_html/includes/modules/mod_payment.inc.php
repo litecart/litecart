@@ -1,6 +1,6 @@
 <?php
 
-  class mod_payment extends module {
+  class mod_payment extends abs_module {
     public $data = array();
 
     public function __construct() {

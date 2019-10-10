@@ -101,30 +101,52 @@
 
           break;
 
-        case 'descendants':
+        case 'siblings':
 
-          $this->data['descendants'] = array();
+          $this->_data['siblings'] = array();
 
-          if (!defined('custom_page_descendants')) {
-            function custom_page_descendants($parent_id) {
-              $descendants = array();
-              $pages_query = database::query(
-                "select id from ". DB_TABLE_PAGES ."
-                where parent_id = ". (int)$parent_id .";"
-              );
-              while ($page = database::fetch($pages_query)) {
-                $descendants[$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
-                $descendants += custom_page_descendants($page['id']);
-              }
-              return $descendants;
-            }
+          if (empty($this->parent_id)) return;
+
+          $query = database::query(
+            "select id from ". DB_TABLE_PAGES ."
+            where status
+            and parent_id = ". (int)$this->parent_id ."
+            and id != ". (int)$this->_id .";"
+          );
+
+          while ($row = database::fetch($query)) {
+            $this->_data['siblings'][$row['id']] = reference::page($row['id'], $this->_language_codes[0]);
           }
-
-          $this->data['descendants'] = custom_page_descendants($this->_id);
 
           break;
 
-        case 'subpages':
+        case 'descendants':
+
+          $this->_data['descendants'] = array();
+
+          $iterator = function($parent_id, &$iterator) {
+
+            $descendants = array();
+
+            $pages_query = database::query(
+              "select id from ". DB_TABLE_PAGES ."
+              where parent_id = ". (int)$parent_id .";"
+            );
+
+            while ($page = database::fetch($pages_query)) {
+              $descendants[$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
+              $descendants += $iterator($page['id'], $iterator);
+            }
+
+            return $descendants;
+          };
+
+          $this->_data['descendants'] = $iterator($this->_id, $iterator);
+
+          break;
+
+        case 'subpages': // To be deprecated
+        case 'children':
 
           $this->_data['subpages'] = array();
 
@@ -146,9 +168,8 @@
             where id = ". (int)$this->_id ."
             limit 1;"
           );
-          $row = database::fetch($query);
 
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) $this->_data[$key] = $value;
 

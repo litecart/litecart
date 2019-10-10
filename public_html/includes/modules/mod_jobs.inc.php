@@ -1,6 +1,6 @@
 <?php
 
-  class mod_jobs extends module {
+  class mod_jobs extends abs_module {
 
     public function __construct() {
       $this->load('job');

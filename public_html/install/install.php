@@ -42,8 +42,8 @@
 
   echo '<p>Checking PHP version... ';
 
-  if (version_compare(PHP_VERSION, '5.3', '<')) {
-    die('<span class="error">[Error] PHP 5.3+ required - Detected '. PHP_VERSION .'</span></p>');
+  if (version_compare(PHP_VERSION, '5.4', '<')) {
+    die('<span class="error">[Error] PHP 5.4+ required - Detected '. PHP_VERSION .'</span></p>');
   } else if (version_compare(PHP_VERSION, '7.1', '<')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
        . '<span class="warning">[Warning] PHP 7.3+ recommended - Detected '. PHP_VERSION .' that has reached end of life</span></span></p>';
@@ -454,7 +454,7 @@
       echo 'Modify '. $file . PHP_EOL;
       $contents = file_get_contents($file);
       $search_replace = array(
-        'app.min.css'  => 'app.css',
+        'app.min.css' => 'app.css',
         'checkout.min.css'  => 'checkout.css',
         'framework.min.css' => 'framework.css',
         'printable.min.css' => 'printable.css',

@@ -1,4 +1,4 @@
-<nav id="site-menu" class="navbar">
+<nav id="site-menu" class="navbar hidden-print">
 
   <div class="navbar-header">
     <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-form"'); ?>

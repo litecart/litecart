@@ -15,7 +15,7 @@
 
     if (database::num_rows($slides_query)) {
 
-      $box_slides = new view();
+      $box_slides = new ent_view();
 
       $box_slides->snippets['slides'] = array();
 
@@ -23,7 +23,7 @@
         $box_slides->snippets['slides'][] = array(
           'id' => $slide['id'],
           'link' => $slide['link'],
-          'image' => WS_DIR_IMAGES . $slide['image'],
+          'image' => 'images/' . $slide['image'],
           'caption' => $slide['caption'],
         );
       }

@@ -18,7 +18,7 @@
 
     try {
 
-      setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
+      setcookie('customer_remember_me', null, -1, WS_DIR_APP);
 
       if (empty($_POST['email']) || empty($_POST['password'])) {
         throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
@@ -73,7 +73,7 @@
 
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       }
 
       if (empty($_REQUEST['redirect_url'])) {
@@ -89,12 +89,12 @@
       exit;
 
     } catch (Exception $e) {
-      http_response_code(401);
+      //http_response_code(401); // Troublesome with HTTP Auth
       notices::add('errors', $e->getMessage());
     }
   }
 
-  $_page = new view();
+  $_page = new ent_view();
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     echo $_page->stitch('pages/login.ajax');

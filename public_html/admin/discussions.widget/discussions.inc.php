@@ -1,21 +1,26 @@
 <?php
   $widget_discussions_cache_token = cache::token('widget_discussions', array(), 'file');
-  if (cache::capture($widget_discussions_cache_token, 21600, true)) {
+  if (cache::capture($widget_discussions_cache_token, 0, true)) {
 
-    $url = document::link('https://www.litecart.net/feeds/discussions.rss');
+    try {
 
-    $client = new http_client();
-    $client->timeout = 10;
-    $response = @$client->call('GET', $url);
-    $rss = simplexml_load_string($response);
+      $url = document::link('https://www.litecart.net/feeds/discussions.rss');
 
-    if (!empty($rss->channel->item)) {
+      $client = new wrap_http();
+      $client->timeout = 10;
+      $response = @$client->call('GET', $url);$response = 'fishy';
+      libxml_use_internal_errors(true);
+      $rss = simplexml_load_string($response);
 
-      $discussions = array();
-      foreach ($rss->channel->item as $item) {
-        $discussions[] = $item;
-        if (count($discussions) == 16) break;
-      }
+      foreach (libxml_get_errors() as $error) throw new Exception($error->message);
+
+      if (!empty($rss->channel->item)) {
+
+        $discussions = array();
+        foreach ($rss->channel->item as $item) {
+          $discussions[] = $item;
+          if (count($discussions) == 16) break;
+        }
 ?>
 <style>
 #widget-discussions .row [class^="col-"] > * {
@@ -42,7 +47,9 @@
   </div>
 </div>
 <?php
+      }
+    } catch(Exception $e) {
+      // Do nothing
     }
     cache::end_capture($widget_discussions_cache_token);
   }
-?>

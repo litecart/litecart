@@ -40,10 +40,8 @@
             where id = '". database::input($this->_id) ."'
             limit 1;"
           );
-          $row = database::fetch($query);
-          if (empty($row)) trigger_error('Could not find customer ('. $this->_id .') in database.', E_USER_WARNING);
 
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           $map = array(
             'id',

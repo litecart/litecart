@@ -139,10 +139,10 @@
             "select id from ". DB_TABLE_CATEGORIES ."
             where status
             and parent_id = ". (int)$this->parent_id ."
-            and id != '". database::input($this->_id) ."';"
+            and id != ". (int)$this->_id .";"
           );
 
-          while($row = database::fetch($query)) {
+          while ($row = database::fetch($query)) {
             $this->_data['siblings'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
           }
 
@@ -166,7 +166,7 @@
 
           break;
 
-        case 'subcategories':
+        case 'subcategories': // To be deprecated
         case 'children':
 
           $this->_data['subcategories'] = array();
@@ -192,9 +192,7 @@
             limit 1;"
           );
 
-          $row = database::fetch($query);
-
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) {
             switch($key) {

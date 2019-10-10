@@ -9,7 +9,7 @@
       $current_page_path = array();
     }
 
-    $box_information_links = new view();
+    $box_information_links = new ent_view();
 
     $box_information_links->snippets['pages'] = array();
 
@@ -20,6 +20,8 @@
     );
 
     $iterator = function($parent_id, $level, $current_page_path, &$iterator) {
+
+      $output = array();
 
       $pages_query = database::query(
         "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PAGES ." p

@@ -14,36 +14,31 @@
   require_once __DIR__ . '/config.inc.php';
 
 // Compatibility and Polyfills
-  require_once FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'compatibility.inc.php';
+  require_once FS_DIR_APP . 'includes/compatibility.inc.php';
 
 // Virtual Modifications System
-  require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'vmod.inc.php';
+  require_once FS_DIR_APP . 'includes/library/lib_vmod.inc.php';
+  vmod::init(); // Jump start the library
 
 // Autoloader
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'autoloader.inc.php');
-  if (is_file(FS_DIR_HTTP_ROOT . '/vendor/autoload.php')) {
-    require_once FS_DIR_HTTP_ROOT . '/vendor/autoload.php';
-  }
+  require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
 
 // 3rd party autoloader (If present)
-  if (is_file(FS_DIR_HTTP_ROOT . '/vendor/autoload.php')) {
-    require_once FS_DIR_HTTP_ROOT . '/vendor/autoload.php';
+  if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
+    require_once FS_DIR_APP . 'vendor/autoload.php';
   }
 
 // Set error handler
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'error_handler.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
-// Set up the system object
-  system::init();
-
-// Load dependencies
-  system::run('load_dependencies');
-
-// Initiate system modules
-  system::run('initiate');
-
-// Run start operations
-  system::run('startup');
+// Jump-Start some library modules
+  class_exists('compression');
+  class_exists('notices');
+  class_exists('stats');
+  class_exists('security');
+  if (file_get_contents('php://input')) {
+    class_exists('form');
+  }
 
 // Run operations before capture
-  system::run('before_capture');
+  event::fire('before_capture');

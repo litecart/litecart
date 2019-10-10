@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{snippet:language}">
+<html lang="{snippet:language}" dir="{snippet:text_direction}">
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
@@ -16,7 +16,7 @@
 <header id="header" class="twelve-eighty">
 
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-    <img src="<?php echo document::href_link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+    <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
   </a>
 
   <div class="customer-service hidden-xs">

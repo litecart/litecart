@@ -1,6 +1,6 @@
 <?php
   $deleted_files = array(
-    FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'get_address/',
+    FS_DIR_APP . 'includes/modules/get_address/',
   );
 
   foreach ($deleted_files as $pattern) {

@@ -8,7 +8,7 @@
 
 @blur-size: 10px;
 @gutter-size: 20px;
-@border-radius: 6px;
+@border-radius: 4px;
 
 body.featherlight-open {
   /* prevent scrolling */
@@ -79,15 +79,15 @@ body.featherlight-open {
 
   .featherlight-close-icon {
     position: absolute;
-    top: -.5em;
-    right: -.5em;
+    top: -.75em;
+    right: -.75em;
     z-index: 9999;
 
     width: 2em;
     line-height: 2em;
 
     background: #c00;
-    border-radius: 4px;
+    border-radius: @border-radius;
     border: none;
     color: #fff;
     font-weight: bold;
@@ -95,10 +95,6 @@ body.featherlight-open {
     cursor: pointer;
     text-align: center;
     font-family: Arial, sans-serif;
-  }
-
-  .featherlight-content h1 {
-    margin-top: 0;
   }
 
   .featherlight-content > img {

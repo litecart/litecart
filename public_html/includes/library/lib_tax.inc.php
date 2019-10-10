@@ -1,34 +1,8 @@
 <?php
 
   class tax {
+
     private static $_cache = array();
-
-    public static function construct() {
-    }
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 
@@ -126,11 +100,19 @@
               'country_code' => customer::$data['country_code'],
               'zone_code' => customer::$data['zone_code'],
               'shipping_address' => array(
-                'company' => !empty(customer::$data['different_shipping_address']) ? (!empty(customer::$data['shipping_address']['company']) ? true : false) : customer::$data['company'],
-                'country_code' => !empty(customer::$data['different_shipping_address']) ? customer::$data['shipping_address']['country_code'] : customer::$data['country_code'],
-                'zone_code' => !empty(customer::$data['different_shipping_address']) ? customer::$data['shipping_address']['zone_code'] : customer::$data['zone_code'],
+                'company' => customer::$data['shipping_address']['company'],
+                'country_code' => customer::$data['shipping_address']['country_code'],
+                'zone_code' => customer::$data['shipping_address']['zone_code'],
               ),
             );
+
+            if (empty(customer::$data['different_shipping_address'])) {
+              $customer['shipping_address'] = array(
+                'company' => customer::$data['company'],
+                'country_code' => customer::$data['country_code'],
+                'zone_code' => customer::$data['zone_code'],
+              );
+            }
             break;
 
           default:

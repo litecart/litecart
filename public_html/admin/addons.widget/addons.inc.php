@@ -3,30 +3,34 @@
   $widget_addons_cache_token = cache::token('widget_addons', array(), 'file');
   if (cache::capture($widget_addons_cache_token, 43200, true)) {
 
-    $url = document::link('https://www.litecart.net/feeds/addons');
+    try {
+      $url = document::link('https://www.litecart.net/feeds/addons');
 
-    $store_info = array(
-      'platform' => PLATFORM_NAME,
-      'version' => PLATFORM_VERSION,
-      'name' => settings::get('store_name'),
-      'email' => settings::get('store_email'),
-      'language_code' => settings::get('store_language_code'),
-      'country_code' => settings::get('store_country_code'),
-      'url' => document::ilink(''),
-    );
+      $store_info = array(
+        'platform' => PLATFORM_NAME,
+        'version' => PLATFORM_VERSION,
+        'name' => settings::get('store_name'),
+        'email' => settings::get('store_email'),
+        'language_code' => settings::get('store_language_code'),
+        'country_code' => settings::get('store_country_code'),
+        'url' => document::ilink(''),
+      );
 
-    $client = new http_client();
-    $client->timeout = 10;
-    $response = @$client->call('POST', $url, $store_info);
-    $rss = simplexml_load_string($response);
+      $client = new wrap_http();
+      $client->timeout = 10;
+      $response = @$client->call('POST', $url, $store_info);
+      libxml_use_internal_errors(true);
+      $rss = simplexml_load_string($response);
 
-    if (!empty($rss->channel->item)) {
+      foreach (libxml_get_errors() as $error) throw new Exception($error->message);
 
-      $addons = array();
-      foreach ($rss->channel->item as $item) {
-        $addons[] = $item;
-        if (count($addons) == 16) break;
-      }
+      if (!empty($rss->channel->item)) {
+
+        $addons = array();
+        foreach ($rss->channel->item as $item) {
+          $addons[] = $item;
+          if (count($addons) == 16) break;
+        }
 ?>
 <style>
 #widget-addons .row [class^="col-"] > * {
@@ -53,6 +57,9 @@
   </div>
 </div>
 <?php
+      }
+    } catch(Exception $e) {
+      // Do nothing
     }
     cache::end_capture($widget_addons_cache_token);
   }

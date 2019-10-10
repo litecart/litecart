@@ -1,4 +1,6 @@
 <?php
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
+
   if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
@@ -10,7 +12,7 @@
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          $category = new ctrl_category($category_id);
+          $category = new ent_category($category_id);
           $category->data['status'] = !empty($_POST['enable']) ? 1 : 0;
           $category->save();
         }
@@ -18,13 +20,13 @@
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
-          $product = new ctrl_product($product_id);
+          $product = new ent_product($product_id);
           $product->data['status'] = !empty($_POST['enable']) ? 1 : 0;
           $product->save();
         }
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link());
       exit;
 
@@ -41,8 +43,8 @@
       if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
-        $original = new ctrl_product($product_id);
-        $product = new ctrl_product();
+        $original = new ent_product($product_id);
+        $product = new ent_product();
 
         $product->data = $original->data;
         $product->data['id'] = null;
@@ -64,7 +66,7 @@
 
         if (!empty($original->data['images'])) {
           foreach ($original->data['images'] as $image) {
-            $product->add_image(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename']);
+            $product->add_image(FS_DIR_APP . 'images/' . $image['filename']);
           }
         }
 
@@ -77,7 +79,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
-      header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
       exit;
 
     } catch (Exception $e) {
@@ -93,13 +95,13 @@
       if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
-        $product = new ctrl_product($product_id);
+        $product = new ent_product($product_id);
         $product->data['categories'][] = $_POST['category_id'];
         $product->save();
       }
 
       notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
-      header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
       exit;
 
     } catch (Exception $e) {
@@ -125,7 +127,7 @@
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
-          $product = new ctrl_product($product_id);
+          $product = new ent_product($product_id);
           $product->data['categories'] = array($_POST['category_id']);
           $product->save();
         }
@@ -134,14 +136,14 @@
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          $category = new ctrl_category($category_id);
+          $category = new ent_category($category_id);
           $category->data['parent_id'] = $_POST['category_id'];
           $category->save();
         }
         notices::add('success', sprintf(language::translate('success_moved_d_categories', 'Moved %d categories'), count($_POST['categories'])));
       }
 
-      header('Location: '. document::link('', array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
       exit;
 
     } catch (Exception $e) {
@@ -157,7 +159,7 @@
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          $category = new ctrl_category($category_id);
+          $category = new ent_category($category_id);
           if ($category->data['parent_id'] == $_GET['category_id']) {
             $category->data['parent_id'] = 0;
             $category->save();
@@ -168,7 +170,7 @@
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
-          $product = new ctrl_product($product_id);
+          $product = new ent_product($product_id);
           foreach (array_keys($product->data['categories']) as $key) {
             if ($product->data['categories'][$key] == $_GET['category_id']) {
               unset($product->data['categories'][$key]);
@@ -181,7 +183,7 @@
 
       if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
 
-      header('Location: '. document::link('', array(), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, array(), true));
       exit;
 
     } catch (Exception $e) {
@@ -196,7 +198,7 @@
       if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
 
       foreach ($_POST['products'] as $product_id) {
-        $product = new ctrl_product($product_id);
+        $product = new ent_product($product_id);
         $product->delete();
       }
 
@@ -215,28 +217,42 @@
 }
 </style>
 
-<ul class="list-inline pull-right">
-  <li><?php echo functions::form_draw_form_begin('search_form', 'get', '', false, 'onsubmit="return false;"') . functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"') . functions::form_draw_form_end(); ?></li>
-  <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
-  <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc'=> 'edit_product'), array('category_id')), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
-</ul>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
+  </div>
 
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_catalog', 'Catalog'); ?></h1>
+  <div class="panel-action">
+    <ul class="list-inline">
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc'=> 'edit_product'), array('category_id')), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+    </ul>
+  </div>
 
-<?php echo functions::form_draw_form_begin('catalog_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+    <?php echo functions::form_draw_hidden_field('app', true); ?>
+    <?php echo functions::form_draw_hidden_field('doc', true); ?>
+    <div class="panel-filter">
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+    </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
-  <table class="table table-striped table-hover data-table">
-    <thead>
-      <tr>
-        <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-        <th></th>
-        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('catalog_form', 'post'); ?>
+
+      <table class="table table-striped table-hover data-table">
+        <thead>
+          <tr>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th></th>
+            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
 <?php
   $num_category_rows = 0;
   $num_product_rows = 0;
@@ -246,27 +262,30 @@
     $code_regex = functions::format_regex_code($_GET['query']);
 
     $products_query = database::query(
-      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name
+      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name,
+      (
+        if(p.id = '". database::input($_GET['query']) ."', 10, 0)
+        + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
+        + (match(pi.short_description) against ('*". database::input($_GET['query']) ."*') / 2)
+        + (match(pi.description) against ('*". database::input($_GET['query']) ."*') / 3)
+        + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
+          + if (p.id in (
+            select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+            where sku regexp '". database::input($code_regex) ."'
+          ), 5, 0)
+      ) as relevance
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (p.manufacturer_id = m.id)
       left join ". DB_TABLE_SUPPLIERS ." s on (p.supplier_id = s.id)
-      where (
-        p.id = '". database::input($_GET['query']) ."'
-        or pi.name like '%". database::input($_GET['query']) ."%'
-        or p.code regexp '". database::input($code_regex) ."'
-        or p.sku regexp '". database::input($code_regex) ."'
-        or p.mpn regexp '". database::input($code_regex) ."'
-        or p.gtin regexp '". database::input($code_regex) ."'
-        or pi.short_description like '%". database::input($_GET['query']) ."%'
-        or pi.description like '%". database::input($_GET['query']) ."%'
-        or m.name like '%". database::input($_GET['query']) ."%'
-        or s.name like '%". database::input($_GET['query']) ."%'
-      )
-      order by pi.name asc;"
+      having relevance > 0
+      order by relevance desc;"
     );
 
-    if (database::num_rows($products_query) > 0) {
+    if (database::num_rows($products_query)) {
       while ($product = database::fetch($products_query)) {
         $num_product_rows++;
 
@@ -289,24 +308,24 @@
           $warning = $e->getMessage();
         }
 ?>
-      <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
-        <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
-        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-        <td><?php echo '<img src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
-        <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
-        <td><a href="<?php echo document::href_ilink('product', array('product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-eye'); ?></a></td>
-        <td class="text-right"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-      </tr>
+          <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
+            <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+            <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
+            <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
+            <td><a href="<?php echo document::href_ilink('product', array('product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          </tr>
 <?php
       }
     }
 ?>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="5"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-      </tr>
-    </tfoot>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+          </tr>
+        </tfoot>
 <?php
 
   } else {
@@ -440,13 +459,13 @@
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
 
         if ($display_images) {
-          $output .= '  <td><img src="'. document::href_link(WS_DIR_HTTP_HOME . functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
           $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
 
         $output .= '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : '') .'</td>' . PHP_EOL
-                 . '  <td><a href="'. document::href_ilink('product', array('product_id' => $product['id'])) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-eye') .'</a></td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('product', array('product_id' => $product['id'])) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
@@ -457,45 +476,47 @@
 
     echo $category_iterator(0, 1, $category_iterator);
 ?>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="5"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-      </tr>
-    </tfoot>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+          </tr>
+        </tfoot>
 <?php
   }
 ?>
-  </table>
+      </table>
 
-  <p>
-    <ul class="list-inline">
-      <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-      <li>
-        <div class="btn-group">
-          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-        </div>
-      </li>
-      <li>
-        <div>
-          <?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?>
-        </div>
-      </li>
-      <li>
-        <div class="btn-group">
-          <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?>
-          <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
-          <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
-        </div>
-      </li>
-      <li>
-        <div class="btn-group">
-          <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
-          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-        </div>
-      </li>
-    </ul>
-  </p>
+      <p>
+        <ul class="list-inline">
+          <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+            </div>
+          </li>
+          <li>
+            <div>
+              <?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?>
+            </div>
+          </li>
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?>
+              <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
+              <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+            </div>
+          </li>
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
+              <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+            </div>
+          </li>
+        </ul>
+      </p>
 
-<?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
+</div>

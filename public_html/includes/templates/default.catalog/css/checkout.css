@@ -54,6 +54,9 @@
 #box-checkout-cart .subtotal {
   font-size: 1.5em;
 }
+#box-checkout-customer fieldset {
+  border: none;
+}
 #box-checkout-customer button[type=submit]:not([disabled]) {
   font-weight: bold;
   color: #ff0000;

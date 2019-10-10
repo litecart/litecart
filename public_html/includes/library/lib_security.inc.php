@@ -8,20 +8,16 @@
     private static $_ban_time = '12 hours';
     private static $_trigger;
 
-    public static function construct() {
+    public static function init() {
 
-      if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt', '');
-      if (!file_exists(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt')) file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt', '');
+      self::$_bad_urls = FS_DIR_APP . 'data/bad_urls.txt';
+      self::$_blacklist = FS_DIR_APP . 'data/blacklist.txt';
+      self::$_whitelist = FS_DIR_APP . 'data/whitelist.txt';
 
-      self::$_bad_urls = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'bad_urls.txt';
-      self::$_blacklist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'blacklist.txt';
-      self::$_whitelist = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'whitelist.txt';
-    }
+      if (!file_exists(self::$_blacklist)) file_put_contents(self::$_blacklist, '');
+      if (!file_exists(self::$_whitelist)) file_put_contents(self::$_whitelist, '');
 
-    //public static function load_dependencies() {
-    //}
-
-    public static function initiate() {
+      event::register('after_capture', array(__CLASS__, 'after_capture'));
 
     // Bad Bot Trap - Establish trigger
       if (empty(session::$data['bottrap']['trigger'])) session::$data['bottrap'] = array('trigger' => null);
@@ -33,9 +29,6 @@
           'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
         );
       }
-    }
-
-    public static function startup() {
 
     // Check if client is blacklisted
       if (settings::get('security_blacklist')) {
@@ -125,28 +118,16 @@
       }
     }
 
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    public static function before_output() {
+    public static function after_capture() {
 
     // Bad Bot Trap - Rig the trap
       if (settings::get('security_bot_trap')) {
         if (document::$layout == 'default') {
-          $pixel_trap = '<a rel="nofollow" href="'. document::link(WS_DIR_HTTP_HOME, array(self::$_trigger['key'] => '')) .'" style="display: none;"></a>';
-          $GLOBALS['output'] = preg_replace('#(<body.*?>)#s', '$1' . PHP_EOL . PHP_EOL . $pixel_trap, $GLOBALS['output']);
+          $pixel_trap = '<a rel="nofollow" href="'. document::link(WS_DIR_APP, array(self::$_trigger['key'] => '')) .'" style="display: none;"></a>';
+          $GLOBALS['content'] = preg_replace('#(<body.*?>)#s', '$1' . PHP_EOL . PHP_EOL . $pixel_trap, $GLOBALS['content']);
         }
       }
     }
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

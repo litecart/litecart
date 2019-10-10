@@ -1,6 +1,6 @@
 <div id="sidebar">
   <div id="column-left">
-    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php'); ?>
   </div>
 </div>
 
@@ -103,6 +103,14 @@
           <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
         </label>
       </div>
+
+      <?php if ($consent) { ?>
+      <p class="consent">
+        <div class="checkbox">
+          <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required="required"') .' '. $consent .'</label>'; ?>
+        </div>
+      </p>
+      <?php } ?>
 
       <?php if (settings::get('captcha_enabled')) { ?>
       <div class="row">

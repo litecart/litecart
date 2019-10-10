@@ -1,27 +1,11 @@
 <?php
   require('../includes/compatibility.inc.php');
+  require('../includes/functions/func_draw.inc.php');
   require('includes/header.inc.php');
 
   ini_set('display_errors', 'On');
 
-// Function to get object from a relative path to this script
-  function get_absolute_path($path=null) {
-    if (empty($path)) $path = dirname(__FILE__);
-    $path = str_replace('\\', '/', $path);
-    $parts = array_filter(explode('/', $path), 'strlen');
-    $absolutes = array();
-    foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
-      }
-    }
-    return ((substr(PHP_OS, 0, 3) == 'WIN') ? '' : '/') . implode('/', $absolutes);
-  }
-
-  $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
+  $document_root = file_absolute_path(dirname(__FILE__) . '/..') .'/';
 
   function return_bytes($string) {
     sscanf($string, '%u%c', $number, $suffix);
@@ -272,11 +256,28 @@
     'ZW' => 'Zimbabwe',
   );
 
-
-  if (file_exists('../includes/config.inc.php')) {
-    $upgrade_detected = true;
-  }
 ?>
+
+<?php if (file_exists('../includes/config.inc.php')) { ?>
+<link rel="stylesheet" href="../ext/featherlight/featherlight.min.css" />
+
+<div id="modal-warning-existing-installation" style="display: none; width: 320px;">
+  <h2>Existing Installation Detected</h2>
+  <p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
+  <p><a href="upgrade.php">Click here to upgrade instead.</a></p>
+</div>
+
+<script src="../ext/jquery/jquery-3.4.1.min.js"></script>
+<script src="../ext/featherlight/featherlight.min.js"></script>
+<script>
+  $.featherlight.autoBind = '[data-toggle="lightbox"]';
+  $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
+  $.featherlight.defaults.closeIcon = '&#x2716;';
+  $.featherlight.defaults.targetAttr = 'data-target';
+  $.featherlight('#modal-warning-existing-installation');
+</script>
+<?php } ?>
+
 <style>
 input[name="development_type"] {
   display: none;
@@ -288,7 +289,7 @@ input[name="development_type"] + div {
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 15px;
   width: 250px;
-  height: 125px;
+  height: 145px;
   text-align: center;
   cursor: pointer;
 }
@@ -308,22 +309,16 @@ input[name="development_type"]:checked + div {
 
 <h1>Installer</h1>
 
-<?php if (!empty($upgrade_detected)) { ?>
-<p class="alert alert-danger">
-  <strong>Danger!</strong> An existing installation has been detected. The existing installation <strong>WILL BE DELETED</strong> if you continue! <a href="upgrade.php">Upgraders click here to for the upgrade tool</a>.
-</p>
-<?php } ?>
-
 <div class="row">
   <div class="col-md-6">
     <h2>System Requirements</h2>
 
     <ul class="list-unstyled">
-      <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
+      <li>PHP 5.4+ <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
         <ul>
           <li>Settings
             <ul>
-              <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+              <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
               <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
               <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
             </ul>

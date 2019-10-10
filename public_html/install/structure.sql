@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
   `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
-  KEY `group_id` (`group_id`)
-  KEY `language_code` (`language_code`),
+  KEY `group_id` (`group_id`),
+  KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
@@ -73,13 +73,13 @@ CREATE TABLE `lc_categories` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_filters` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`category_id` INT NOT NULL,
-	`select_multiple` TINYINT NOT NULL,
-	`attribute_group_id` INT NOT NULL,
-  `priority` INT(11) NOT NULL AFTER `attribute_group_id`,
-	INDEX `category_id` (`category_id`),
+	`category_id` INT(11) NOT NULL,
+	`select_multiple` TINYINT(1) NOT NULL,
+	`attribute_group_id` INT(11) NOT NULL,
+  `priority` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),
-	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`)
+	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),
+	INDEX `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_images` (
@@ -181,7 +181,7 @@ CREATE TABLE `lc_customers` (
   `password_reset_token` VARCHAR(128) NOT NULL,
   `num_logins` INT(11) NOT NULL,
   `last_ip` VARCHAR(39) NOT NULL,
-  `last_host` VARCHAR(64) NOT NULL,
+  `last_host` VARCHAR(128) NOT NULL,
   `last_agent` VARCHAR(256) NOT NULL,
   `date_login` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,
@@ -207,6 +207,28 @@ CREATE TABLE `lc_delivery_statuses_info` (
   UNIQUE KEY `delivery_status` (`delivery_status_id`, `language_code`),
   KEY `delivery_status_id` (`delivery_status_id`),
   KEY `language_code` (`language_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_emails` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
+	`code` VARCHAR(256) NOT NULL,
+	`charset` VARCHAR(16) NOT NULL,
+	`sender` VARCHAR(256) NOT NULL,
+	`recipients` TEXT NOT NULL,
+	`ccs` TEXT NOT NULL,
+	`bccs` TEXT NOT NULL,
+	`subject` VARCHAR(256) NOT NULL,
+	`multiparts` MEDIUMTEXT NOT NULL,
+	`date_scheduled` DATETIME NOT NULL,
+	`date_sent` DATETIME NOT NULL,
+	`date_updated` DATETIME NOT NULL,
+	`date_created` DATETIME NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `date_scheduled` (`date_scheduled`),
+	KEY `code` (`code`),
+	KEY `date_created` (`date_created`),
+	KEY `sender_email` (`sender`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_geo_zones` (
@@ -337,6 +359,7 @@ CREATE TABLE `lc_orders` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(13) NOT NULL,
   `starred` TINYINT(1) NOT NULL,
+  `unread` TINYINT(1) NOT NULL,
   `order_status_id` INT(11) NOT NULL,
   `customer_id` INT(11) NOT NULL,
   `customer_company` VARCHAR(64) NOT NULL,
@@ -373,7 +396,8 @@ CREATE TABLE `lc_orders` (
   `weight_total` DECIMAL(11,4) NOT NULL,
   `weight_class` VARCHAR(2) NOT NULL,
   `currency_code` VARCHAR(3) NOT NULL,
-  `currency_value` DECIMAL(11,6)NOT NULL,
+  `currency_value` DECIMAL(11,6) NOT NULL,
+  `display_prices_including_tax` TINYINT(1) NOT NULL,
   `payment_due` DECIMAL(11,4) NOT NULL,
   `tax_total` DECIMAL(11,4) NOT NULL,
   `client_ip` VARCHAR(39) NOT NULL,
@@ -384,7 +408,8 @@ CREATE TABLE `lc_orders` (
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_status_id` (`order_status_id`),
-  KEY `starred` (`starred`)
+  KEY `starred` (`starred`),
+  KEY `unread` (`unread`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_comments` (
@@ -506,7 +531,7 @@ CREATE TABLE `lc_products` (
   `gtin` VARCHAR(32) NOT NULL,
   `taric` VARCHAR(16) NOT NULL,
   `quantity` DECIMAL(11,4) NOT NULL,
-  `quantity_unit_id` INT(1) NOT NULL,
+  `quantity_unit_id` INT(11) NOT NULL,
   `weight` DECIMAL(10,4) NOT NULL,
   `weight_class` VARCHAR(2) NOT NULL,
   `dim_x` DECIMAL(10,4) NOT NULL,
@@ -540,10 +565,10 @@ CREATE TABLE `lc_products` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_attributes` (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`product_id` INT NOT NULL,
-	`group_id` INT NOT NULL,
-	`value_id` INT NOT NULL,
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) NOT NULL,
+	`group_id` INT(11) NOT NULL,
+	`value_id` INT(11) NOT NULL,
 	`custom_value` VARCHAR(256) NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
@@ -809,12 +834,12 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `email` VARCHAR(128) NOT NULL,
   `password` VARCHAR(128) NOT NULL,
   `permissions` VARCHAR(4096) NOT NULL,
-  `last_ip` VARCHAR(15) NOT NULL,
-  `last_host` VARCHAR(64) NOT NULL,
+  `last_ip` VARCHAR(39) NOT NULL,
+  `last_host` VARCHAR(128) NOT NULL,
   `login_attempts` INT(11) NOT NULL,
   `total_logins` INT(11) NOT NULL,
-  `date_blocked` DATETIME NOT NULL,
-  `date_expires` DATETIME NOT NULL,
+  `date_valid_from` DATETIME NOT NULL,
+  `date_valid_to` DATETIME NOT NULL,
   `date_active` DATETIME NOT NULL,
   `date_login` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,

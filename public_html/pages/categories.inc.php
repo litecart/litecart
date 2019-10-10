@@ -4,5 +4,5 @@
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'));
 
-  $_page = new view();
+  $_page = new ent_view();
   echo $_page->stitch('pages/categories');

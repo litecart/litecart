@@ -1,6 +1,6 @@
 <?php
 
-  class mod_shipping extends module {
+  class mod_shipping extends abs_module {
     public $data = array();
     public $items = array();
 

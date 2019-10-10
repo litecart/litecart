@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_appearance', 'Appearance'),
     'default' => 'template',
+    'priority' => 0,
     'theme' => array(
       'color' => '#ff2a72',
       'icon' => 'fa-adjust',

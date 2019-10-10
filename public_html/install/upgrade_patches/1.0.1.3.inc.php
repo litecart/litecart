@@ -1,8 +1,8 @@
 <?php
   $deleted_files = array(
-    FS_DIR_HTTP_ROOT . WS_DIR_EXT .'jquery/jquery-1.9.1.min.js',
-    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery/jquery-migrate-1.1.1.min.js',
-    FS_DIR_HTTP_ROOT . WS_DIR_FUNCTIONS . 'functions/error.inc.php',
+    FS_DIR_APP . 'ext/jquery/jquery-1.9.1.min.js',
+    FS_DIR_APP . 'ext/jquery/jquery-migrate-1.1.1.min.js',
+    FS_DIR_APP . 'includes/functions/functions/error.inc.php',
   );
 
   foreach ($deleted_files as $pattern) {

@@ -37,18 +37,18 @@
 
   function draw_listing_category($category) {
 
-    $listing_category = new view();
+    $listing_category = new ent_view();
 
-    list($width, $height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
+    list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
     $listing_category->snippets = array(
       'category_id' => $category['id'],
       'name' => $category['name'],
       'link' => document::ilink('category', array('category_id' => $category['id'])),
       'image' => array(
-        'original' => WS_DIR_IMAGES . $category['image'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width, $height, settings::get('category_image_clipping')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category['image'], $width*2, $height*2, settings::get('category_image_clipping')),
+        'original' => 'images/' . $category['image'],
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], $width, $height, settings::get('category_image_clipping')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], $width*2, $height*2, settings::get('category_image_clipping')),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
@@ -62,7 +62,7 @@
 
   function draw_listing_product($product, $listing_type='column', $inherit_params=array()) {
 
-    $listing_product = new view();
+    $listing_product = new ent_view();
 
     $sticker = '';
     if ((float)$product['campaign_price']) {
@@ -82,9 +82,9 @@
       'name' => $product['name'],
       'link' => document::ilink('product', array('product_id' => $product['id']), $inherit_params),
       'image' => array(
-        'original' => ltrim($product['image'] ? WS_DIR_IMAGES . $product['image'] : '', '/'),
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+        'original' => ltrim($product['image'] ? 'images/' . $product['image'] : '', '/'),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
@@ -107,35 +107,29 @@
 
   // Watermark Original Image
     if (settings::get('product_image_watermark')) {
-      $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $listing_product->snippets['image']['original'], array('watermark' => true));
+      $listing_product->snippets['image']['original'] = functions::image_process(DOCUMENT_ROOT . $listing_product->snippets['image']['original'], array('watermark' => true));
     }
 
     return $listing_product->stitch('views/listing_product_'.$listing_type);
   }
 
-  function draw_lightbox($selector='*[data-toggle="lightbox"]', $params=array()) {
+  function draw_lightbox($selector='', $params=array()) {
 
     $selector = str_replace("'", '"', $selector);
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'featherlight/featherlight.min.css" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_EXT .'featherlight/featherlight.min.js"></script>';
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/featherlight/featherlight.min.css" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_APP .'ext/featherlight/featherlight.min.js"></script>';
+    document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.targetAttr = \'data-target\';';
+    if (empty($selector)) return;
 
     if (preg_match('#^(https?:)?//#', $selector)) {
       document::$snippets['javascript']['featherlight-'.$selector] = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
     } else {
       document::$snippets['javascript']['featherlight-'.$selector] = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
     }
-
-    $default_params = array(
-      'loading'     => '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>',
-      'closeIcon'   => '&#x2716;',
-      'targetAttr'  => 'data-target',
-    );
-
-    foreach (array_keys($default_params) as $key) {
-      if (!isset($params[$key])) $params[$key] = $default_params[$key];
-    }
-    ksort($params);
 
     foreach ($params as $key => $value) {
       switch (gettype($params[$key])) {
@@ -175,15 +169,15 @@
 
     if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
 
-    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
+    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link(null, array('page' => $_GET['page']-1), true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, array('page' => $_GET['page']+1), true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, array('page' => $_GET['page']+1), true) .'" />';
 
-    $pagination = new view();
+    $pagination = new ent_view();
 
     $pagination->snippets['items'][] = array(
       'title' => language::translate('title_previous', 'Previous'),
-      'link' => document::ilink(null, array('page' => $_GET['page']-1), true),
+      'link' => document::link(null, array('page' => $_GET['page']-1), true),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
       'active' => false,
     );
@@ -195,7 +189,7 @@
           $rewind = round(($_GET['page']-1)/2);
           $pagination->snippets['items'][] = array(
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
-            'link' => document::ilink(null, array('page' => $rewind), true),
+            'link' => document::link(null, array('page' => $rewind), true),
             'disabled' => false,
             'active' => false,
           );
@@ -209,7 +203,7 @@
           $forward = round(($_GET['page']+1+$pages)/2);
           $pagination->snippets['items'][] = array(
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
-            'link' => document::ilink(null, array('page' => $forward), true),
+            'link' => document::link(null, array('page' => $forward), true),
             'disabled' => false,
             'active' => false,
           );
@@ -219,7 +213,7 @@
 
       $pagination->snippets['items'][] = array(
         'title' => $i,
-        'link' => document::ilink(null, array('page' => $i), true),
+        'link' => document::link(null, array('page' => $i), true),
         'disabled' => false,
         'active' => ($i == $_GET['page']) ? true : false,
       );
@@ -227,7 +221,7 @@
 
     $pagination->snippets['items'][] = array(
       'title' => language::translate('title_next', 'Next'),
-      'link' => document::ilink(null, array('page' => $_GET['page']+1), true),
+      'link' => document::link(null, array('page' => $_GET['page']+1), true),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,
       'active' => false,
     );

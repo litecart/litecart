@@ -29,7 +29,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   &:not([class*="col-"]) {
     margin-bottom: @default-gutter-size;
   }
-  label {
+  > label {
     display: inline-block;
     padding-bottom: @form-input-padding/2;
   }
@@ -52,7 +52,7 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   padding: @form-input-padding @form-input-padding * 2;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   &[type="color"] {
-    height: (@form-input-padding * 2) + 22px;
+    height: calc((@form-input-padding * 2) + 22px);
   }
   &[type="file"] {
     font-size: 12px;
@@ -156,7 +156,9 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
     .btn {
       border-top: none;
       border-bottom: none;
-      padding: 7px 12px;
+    }
+    .form-control {
+      padding: .4em 1em;
     }
   }
   .form-control:first-child,

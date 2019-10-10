@@ -3,7 +3,7 @@
 
   $product = reference::product($_GET['product_id']);
 
-  if (settings::get('box_similar_products_num_items') == 0) return;
+  if (!settings::get('box_similar_products_num_items')) return;
 
   functions::draw_lightbox();
 
@@ -21,7 +21,7 @@
 
     if (database::num_rows($products_query) > 0) {
 
-      $box_similar_products = new view();
+      $box_similar_products = new ent_view();
 
       $box_similar_products->snippets['products'] = array();
       while ($listing_product = database::fetch($products_query)) {

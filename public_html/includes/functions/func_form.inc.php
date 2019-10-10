@@ -214,6 +214,11 @@
   }
 
   function form_draw_link_button($url, $title, $parameters='', $icon='') {
+
+    if (empty($url)) {
+      $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    }
+
     if (!empty($icon)) {
       switch($icon) {
         case 'add':
@@ -292,7 +297,7 @@
 
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon"><img src="'. document::href_link(WS_DIR_IMAGES .'languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-addon"><img src="'. document::href_link('images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -300,7 +305,7 @@
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_IMAGES .'languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link('images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_textarea($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -308,7 +313,7 @@
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_IMAGES .'languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link('images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_wysiwyg_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -453,11 +458,9 @@
         break;
     }
 
-    return '<div>' . PHP_EOL
-         . '  <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL
-         . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label>'. PHP_EOL
-         . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
-         . '  </div>' . PHP_EOL
+    return '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL
+         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label>'. PHP_EOL
+         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
          . '</div>';
   }
 
@@ -480,13 +483,13 @@
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_APP .'ext/trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
+                                                  . '<link href="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
 
-    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
-                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_APP .'ext/trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
+                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_APP .'ext/trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
+                                                  . '<script src="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_APP .'ext/trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
                                         . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
@@ -621,7 +624,8 @@
       case 'order_statuses':
         return form_draw_order_status_list($name, $input, true);
 
-      case 'regional_input':
+      case 'regional_input': //Deprecated
+      case 'regional_text':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
           $output .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input);
@@ -823,8 +827,10 @@
 
   function form_draw_countries_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_country_code');
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_country_code');
+    }
 
     $countries_query = database::query(
       "select * from ". DB_TABLE_COUNTRIES ."
@@ -892,8 +898,10 @@
 
   function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_delivery_status_id');
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_delivery_status_id');
+    }
 
     $query = database::query(
       "select ds.id, dsi.name , dsi.description from ". DB_TABLE_DELIVERY_STATUSES ." ds
@@ -983,7 +991,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    if (database::num_rows($geo_zones_query) == 0) {
+    if (!database::num_rows($geo_zones_query)) {
       return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
 
@@ -1017,8 +1025,10 @@
 
   function form_draw_length_classes_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_class');
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_class');
+    }
 
     $options = array();
 
@@ -1196,8 +1206,10 @@
 
   function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_quantity_unit_id');
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_quantity_unit_id');
+    }
 
     $quantity_units_query = database::query(
       "select qu.*, qui.name, qui.description from ". DB_TABLE_QUANTITY_UNITS ." qu
@@ -1246,8 +1258,10 @@
 
   function form_draw_sold_out_statuses_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_sold_out_status_id');
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_sold_out_status_id');
+    }
 
     $query = database::query(
       "select sos.id, sosi.name, sosi.description from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
@@ -1294,8 +1308,10 @@
 
   function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
+    }
 
     $tax_classes_query = database::query(
       "select * from ". DB_TABLE_TAX_CLASSES ."
@@ -1319,7 +1335,7 @@
 
   function form_draw_templates_list($type='catalog', $name, $input=true, $multiple=false, $parameters='') {
 
-    $folders = glob(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES .'*.'. $type);
+    $folders = glob(FS_DIR_APP . 'includes/templates/*.'. $type);
 
     $options = array();
 
@@ -1385,8 +1401,10 @@
 
   function form_draw_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_class');
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_class');
+    }
 
     $options = array();
 
@@ -1430,7 +1448,7 @@
         break;
     }
 
-    if (database::num_rows($zones_query) == 0) {
+    if (!database::num_rows($zones_query)) {
       $parameters .= ' disabled="disabled"';
     }
 

@@ -1,18 +1,19 @@
 <?php
 
 // Store the captured output buffer
-  $content = ob_get_clean();
+  $GLOBALS['content'] = ob_get_clean();
 
 // Run after capture processes
-  system::run('after_capture');
+  event::fire('after_capture');
 
 // Stitch content
-  $_page = new view();
-  $_page->snippets = array('content' => $content);
+  $_page = new ent_view();
+  $_page->snippets = array('content' => $GLOBALS['content']);
   $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
+  unset($GLOBALS['content']);
 
 // Prepare output
-  system::run('prepare_output');
+  event::fire('prepare_output');
 
 // Stitch global snippets
   $_page->snippets = document::$snippets;
@@ -20,14 +21,14 @@
   $GLOBALS['output'] = $_page->stitch(null, true);
 
 // Run before output processes
-  system::run('before_output');
+  event::fire('before_output');
 
 // Output page
   header('Content-Language: '. language::$selected['code']);
   echo $GLOBALS['output'];
 
 // Run after processes
-  system::run('shutdown');
+  event::fire('shutdown');
 
 // Execute background jobs
   if (strtotime(settings::get('jobs_last_push')) < strtotime('-'. (settings::get('jobs_interval')+1) .' minutes')) {

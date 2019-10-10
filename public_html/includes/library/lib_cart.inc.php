@@ -6,10 +6,7 @@
     public static $items = array();
     public static $total = array();
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
       if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
         session::$data['cart'] = array(
@@ -18,9 +15,6 @@
       }
 
       self::$data = &session::$data['cart'];
-    }
-
-    public static function initiate() {
 
     // Recover a previous cart uid if possible
       if (empty(self::$data['uid'])) {
@@ -34,7 +28,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_HTTP_HOME);
+          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_APP);
         }
       }
 
@@ -42,9 +36,6 @@
         "delete from ". DB_TABLE_CART_ITEMS ."
         where date_created < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
       );
-    }
-
-    public static function startup() {
 
     // Load/Refresh
       self::load();
@@ -65,21 +56,6 @@
         self::clear();
       }
     }
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

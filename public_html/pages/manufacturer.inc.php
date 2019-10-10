@@ -29,7 +29,7 @@
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   breadcrumbs::add($manufacturer->name);
 
-  $_page = new view();
+  $_page = new ent_view();
 
   $manufacturer_cache_token = cache::token('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
   if (!$_page->snippets = cache::get($manufacturer_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
@@ -41,9 +41,9 @@
       'description' => $manufacturer->description,
       'link' => $manufacturer->link,
       'image' => array(
-        'original' => WS_DIR_IMAGES . $manufacturer->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200, 0, 'FIT_ONLY_BIGGER'),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200*2, 0, 'FIT_ONLY_BIGGER'),
+        'original' => 'images/' . $manufacturer->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer->image, 200, 0, 'FIT_ONLY_BIGGER'),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer->image, 200*2, 0, 'FIT_ONLY_BIGGER'),
       ),
       'products' => array(),
       'sort_alternatives' => array(

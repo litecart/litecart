@@ -8,13 +8,16 @@
 
       foreach (glob('*.app/') as $dir) {
         $code = rtrim($dir, '.app/');
-        $app_config = require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
-        if (!is_array($app_config)) require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
+        $app_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
+        if (!is_array($app_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
         $apps[$code] = array_merge(array('code' => $code, 'dir' => $dir), $app_config);
       }
 
       usort($apps, function($a, $b) use ($apps) {
-        return ($a['name'] < $b['name']) ? -1 : 1;
+        if (@$a['priority'] == @$b['priority']) {
+          return ($a['name'] < $b['name']) ? -1 : 1;
+        }
+        return (@$a['priority'] < @$b['priority']) ? -1 : 1;
       });
 
       cache::set($apps_cache_token, $apps);
@@ -31,13 +34,15 @@
 
       foreach (glob('*.widget/') as $dir) {
         $code = rtrim($dir, '.widget/');
-        $widget_config = require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php');
-        if (!is_array($widget_config)) require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
+        $widget_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
+        if (!is_array($widget_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
         $widgets[$code] = array_merge(array('code' => $code, 'dir' => $dir), $widget_config);
       }
 
       usort($widgets, function($a, $b) use ($widgets) {
-        //return ($a['name'] < $b['name']) ? -1 : 1;
+        if ($a['priority'] == $b['priority']) {
+          return ($a['name'] < $b['name']) ? -1 : 1;
+        }
         return ($a['priority'] < $b['priority']) ? -1 : 1;
       });
 

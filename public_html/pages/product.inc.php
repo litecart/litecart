@@ -55,7 +55,7 @@
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link('images/' . $product->image) .'"/>';
   }
 
   if (!empty($_GET['category_id'])) {
@@ -83,7 +83,7 @@
   );
 
 // Page
-  $_page = new view();
+  $_page = new ent_view();
 
   $schema_json = array(
     '@context' => 'http://schema.org/',
@@ -92,7 +92,7 @@
     'sku' => $product->sku,
     'gtin14' => $product->gtin,
     'name' => $product->name,
-    'image' => document::link(!empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png'),
+    'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
     'description' => !empty($product->description) ? strip_tags($product->description) : '',
     'brand' => array(),
     'offers' => array(
@@ -105,7 +105,7 @@
     ),
   );
 
-  list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
+  list($width, $height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
 
   $_page->snippets = array(
     'product_id' => $product->id,
@@ -123,9 +123,9 @@
     'attributes' => $product->attributes,
     'keywords' => $product->keywords,
     'image' => array(
-      'original' => ltrim(!empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png', '/'),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . @array_shift(array_values($product->images)), $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => array(
         'width' => $width,
         'height' => $height,
@@ -142,7 +142,7 @@
     'tax_rates' => array(),
     'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
     'quantity_unit' => $product->quantity_unit,
-    'stock_status' => settings::get('display_stock_count') ? round($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock'),
+    'stock_status' => settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock'),
     'delivery_status' => !empty($product->delivery_status['name']) ? $product->delivery_status['name'] : '',
     'sold_out_status' => !empty($product->sold_out_status['name']) ? $product->sold_out_status['name'] : '',
     'orderable' => $product->sold_out_status['orderable'],
@@ -155,9 +155,9 @@
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = array(
-      'original' => ltrim(WS_DIR_IMAGES . $image, '/'),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'original' => 'images/' . $image,
+      'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => array(
         'width' => $width,
         'height' => $height,
@@ -167,9 +167,9 @@
 
 // Watermark Images
   if (settings::get('product_image_watermark')) {
-    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $_page->snippets['image']['original'], array('watermark' => true));
+    $_page->snippets['image']['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['image']['original'], array('watermark' => true));
     foreach (array_keys($_page->snippets['extra_images']) as $key) {
-      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
+      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
     }
   }
 
@@ -193,9 +193,9 @@
 
     if (!empty($product->manufacturer->image)) {
       $_page->snippets['manufacturer']['image'] = array(
-        'original' => WS_DIR_IMAGES . $product->manufacturer->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer->image, 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer->image, 400, 120),
+        'original' => 'images/' . $product->manufacturer->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 400, 120),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
@@ -246,7 +246,7 @@
     }
   }
 
-  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json) .'</script>';
+  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     echo $_page->stitch('pages/product.ajax');

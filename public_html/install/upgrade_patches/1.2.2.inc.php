@@ -1,7 +1,7 @@
 <?php
   $modified_files = array(
     array(
-      'file'    => FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'config.inc.php',
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'seo_links_cache`');" . PHP_EOL,
       'replace' => "",
     ),
@@ -14,8 +14,8 @@
   }
 
   $deleted_files = array(
-    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery-1.11.1.min.js',
-    FS_DIR_HTTP_ROOT . WS_DIR_EXT . 'jquery-1.11.1.min.map',
+    FS_DIR_APP . 'ext/jquery-1.11.1.min.js',
+    FS_DIR_APP . 'ext/jquery-1.11.1.min.map',
   );
 
   foreach ($deleted_files as $pattern) {

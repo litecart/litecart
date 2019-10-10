@@ -17,16 +17,23 @@
       <?php foreach ($attributes as $group) { ?>
       <div class="group">
         <h2><?php echo $group['name']; ?></h2>
+        <?php if (!empty($group['select_multiple'])) { ?>
         <div class="form-control">
           <?php foreach ($group['values'] as $value) { ?>
           <div>
-            <label>
-              <?php echo (!empty($group['select_multiple'])) ? functions::form_draw_checkbox('attributes[]', $group['id'] .'-'. (!empty($value['id']) ? $value['id'] : $value['value']), true) : functions::form_draw_radio_button('attributes[]', $group['id'] .'-'. (!empty($value['id']) ? $value['id'] : $value['value']), true); ?>
-              <?php echo $value['value']; ?>
-            </label>
+            <label><?php echo functions::form_draw_checkbox('attributes['. $group['id'] .'][]', !empty($value['id']) ? $value['id'] : $value['value'], true); ?> <?php echo $value['value']; ?></label>
           </div>
           <?php } ?>
         </div>
+        <?php } else { ?>
+<?php
+  $options = array(array('-- '. language::translate('title_select', 'Select') . ' --', ''));
+  foreach ($group['values'] as $value) {
+    $options[] = array($value['value'], $value['id']);
+  }
+  echo functions::form_draw_select_field('attributes['. $group['id'] .'][]', $options, true);
+?>
+        <?php } ?>
       </div>
       <?php } ?>
     </div>
@@ -37,6 +44,8 @@
 
 <script>
   $('form[name="filter_form"]').change(function(){
-    $("#content").load('?' + $('form[name="filter_form"]').serialize() + ' #content');
+    var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize() + '&sort=<?php echo isset($_GET['sort']) ? $_GET['sort'] : ''; ?>');
+    //window.location = url.href;
+    $("#content").load(url.href + ' #content');
   });
 </script>

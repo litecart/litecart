@@ -5,7 +5,7 @@
     $categories_query = functions::catalog_categories_query();
     if (database::num_rows($categories_query)) {
 
-      $box_categories = new view();
+      $box_categories = new ent_view();
 
       $box_categories->snippets = array(
         'categories' => array(),

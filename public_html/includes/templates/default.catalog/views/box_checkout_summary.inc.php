@@ -34,15 +34,15 @@
 
   <div class="confirm row">
     <div class="col-md-9">
-
       <?php if ($error) { ?>
-        <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-      <?php } else { ?>
-        <p class="terms-of-purchase text-center" style="font-size: 1.25em; margin-top: 0.5em;">
-          <?php echo language::translate('checkout_summary:terms_of_purchase', 'By proceeding you hereby confirm and accept the Terms and Conditions of Purchase.'); ?>
-        </p>
+      <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
       <?php } ?>
 
+      <?php if (!$error && $consent) { ?>
+      <div class="consent text-center" style="font-size: 1.25em; margin-top: 0.5em;">
+        <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required="required"') .' '. $consent .'</label>'; ?>
+      </div>
+      <?php } ?>
     </div>
 
     <div class="col-md-3">

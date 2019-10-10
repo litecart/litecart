@@ -178,6 +178,15 @@ h3 {
     box-shadow: 0 0 10px 1px #ff0000;
   }
 }
+@keyframes pulsating {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -193,7 +202,6 @@ html {
   font: 15px Arial, 'Helvetica Neue', Helvetica, sans-serif;
   line-height: 1.333333;
   color: #333;
-  letter-spacing: 0.025em;
 }
 html,
 body {
@@ -252,7 +260,7 @@ ul.breadcrumb li a {
 .btn {
   cursor: pointer;
   display: inline-block;
-  padding: 7px 14px;
+  padding: 0.5em 1em;
   text-decoration: none;
   font-weight: normal;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -309,11 +317,9 @@ ul.breadcrumb li a {
   border-color: transparent;
 }
 .btn.btn-sm {
-  padding: 0 5px;
   font-size: 0.8em;
 }
 .btn.btn-lg {
-  padding: 12px 18px;
   font-size: 1.25em;
 }
 .btn.active,
@@ -831,9 +837,6 @@ tr.semi-transparent td {
   grid-gap: 20px;
   margin-bottom: 20px;
 }
-.row.half-gutter {
-  grid-gap: 10px;
-}
 .row.column {
   flex-direction: column;
 }
@@ -1044,9 +1047,9 @@ input[data-type="decimal"] {
 .form-group:not([class*="col-"]) {
   margin-bottom: 20px;
 }
-.form-group label {
+.form-group > label {
   display: inline-block;
-  padding-bottom: 3.5px;
+  padding-bottom: 0.25em;
 }
 .form-control {
   position: relative;
@@ -1058,12 +1061,12 @@ input[data-type="decimal"] {
   display: block;
   width: 100%;
   min-width: 1px;
-  padding: 7px 14px;
+  padding: 0.5em 1em;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: all 50ms;
 }
 .form-control[type="color"] {
-  height: 36px;
+  height: 23em;
 }
 .form-control[type="file"] {
   font-size: 12px;
@@ -1085,7 +1088,7 @@ input[data-type="decimal"] {
   top: 50%;
   width: 0;
   height: 0;
-  right: 14px;
+  right: 1em;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid #000;
@@ -1101,7 +1104,7 @@ input[data-type="decimal"] {
   padding: 0;
 }
 .select-wrapper.multiple option {
-  padding: 7px 14px;
+  padding: 0.5em 1em;
 }
 .input-unstyled {
   margin: 0;
@@ -1112,10 +1115,10 @@ input[data-type="decimal"] {
 }
 .checkbox,
 .radio {
-  padding: 7px 14px;
+  padding: 0.5em 1em;
 }
 .form-control .checkbox {
-  padding: 7px 0;
+  padding: 0.5em 0;
 }
 .input-group {
   position: relative;
@@ -1136,7 +1139,7 @@ input[data-type="decimal"] {
 .input-group .input-group-addon {
   flex: 1 0 auto;
   margin: 0 -1px;
-  padding: 7px 14px;
+  padding: 0.5em 1em;
   background-color: #fcfcfc;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -1147,10 +1150,10 @@ input[data-type="decimal"] {
 }
 .input-group .input-group-addon .select-wrapper {
   background: none;
-  margin: -7px -14px;
+  margin: -0.5em -1em;
 }
 .input-group .input-group-addon .select-wrapper:before {
-  right: -14px;
+  right: -1em;
 }
 .input-group .input-group-addon select {
   width: auto;
@@ -1159,7 +1162,7 @@ input[data-type="decimal"] {
 }
 .input-group .input-group-icon {
   flex: 1 0 auto;
-  padding: 7px 14px;
+  padding: 0.5em 1em;
   margin-right: -12px;
 }
 .input-group .input-group-btn {
@@ -1237,7 +1240,6 @@ ul.list-unstyled li {
 ul.list-unstyled ul {
   margin-left: 18px;
   padding: 0;
-  border: 1px solid #000;
 }
 ul.list-inline {
   margin: 0;
@@ -1302,13 +1304,13 @@ ul.list-inline li {
   padding: 0;
 }
 .nav > li > ul > li > a {
-  padding-left: 40px;
+  padding-left: 30px;
 }
 .nav > li > ul > li > ul > li > a {
-  padding-left: 60px;
+  padding-left: 45px;
 }
 .nav > li > ul > li > ul > li > ul > li > a {
-  padding-left: 80px;
+  padding-left: 60px;
 }
 .nav.nav-justified > li {
   flex: 1 0 auto;
@@ -1354,11 +1356,8 @@ ul.list-inline li {
   margin-left: 2px;
 }
 .nav-tabs {
-  margin: 0 -1px;
+  background: #f3f3f3;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-.nav-tabs > li {
-  margin: 0 1px;
 }
 .nav-tabs > li > a {
   margin-right: 2px;
@@ -1442,7 +1441,6 @@ ul.list-inline li {
   border-top: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  padding: 10px;
 }
 .navbar .dropdown-menu li > a {
   padding: 10px 20px;
@@ -1573,7 +1571,7 @@ ul.list-inline li {
 .alert {
   border-radius: 4px;
   margin-bottom: 20px;
-  padding: 7px 14px;
+  padding: 0.5em 1em;
 }
 .alert .close {
   float: right;
@@ -1613,6 +1611,7 @@ ul.list-inline li {
   padding-left: 0;
   margin: 20px 0;
   border-radius: 4px;
+  flex-wrap: wrap;
 }
 .pagination > li {
   display: inline;
@@ -1620,7 +1619,8 @@ ul.list-inline li {
 .pagination > li > a,
 .pagination > li > span {
   position: relative;
-  padding: 7px 14px;
+  display: inline-block;
+  padding: 0.5em 1em;
   text-decoration: none;
   color: inherit;
   background-color: #fff;
@@ -1702,11 +1702,28 @@ ul.list-inline li {
 .table > * > tr > th.border-bottom {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+@media print {
+  .table > * > tr > td.border-top,
+  .table > * > tr > th.border-top,
+  .table > * > tr > td.border-left,
+  .table > * > tr > th.border-left,
+  .table > * > tr > td.border-right,
+  .table > * > tr > th.border-right,
+  .table > * > tr > td.border-bottom,
+  .table > * > tr > th.border-bottom {
+    border-color: #000 !important;
+  }
+}
 .table > thead > tr > th {
   padding: 6px 12px;
   text-align: left;
   vertical-align: bottom;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+@media print {
+  .table > thead > tr > th {
+    border-color: #000 !important;
+  }
 }
 .table > thead > tr > th.main {
   width: 100%;
@@ -1716,17 +1733,32 @@ ul.list-inline li {
   text-align: left;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+@media print {
+  .table > tfoot {
+    border-color: #000 !important;
+  }
+}
 .table.table-bordered {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .table.table-bordered > * > tr > td {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+@media print {
+  .table.table-bordered > * > tr > td {
+    border-color: #000 !important;
+  }
+}
 .table.table-striped > tbody > tr:nth-of-type(odd) {
   background: #f9f9f9;
 }
 .table.table-striped > tbody > tr:nth-of-type(even) {
   background: #fff;
+}
+@media print {
+  .table.table-striped > tbody > tr {
+    border-bottom: 1px solid #000;
+  }
 }
 .table.table-hover > tbody > tr {
   transition: background 125ms linear;

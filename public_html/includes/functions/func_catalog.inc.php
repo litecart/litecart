@@ -120,26 +120,26 @@
     }
 
     $sql_where_categories = array();
-    if (!empty($filter['categories'])) {
+    if (!empty($filter['categories']) && is_array($filter['categories'])) {
       foreach ($filter['categories'] as $category) {
         $sql_where_categories[] = "find_in_set('". database::input($category) ."', ptc.categories)";
       }
       $sql_where_categories = "and (". implode(" and ", $sql_where_categories) .")";
     }
-
     $sql_where_attributes = array();
-    if (!empty($filter['attributes'])) {
+    if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
       foreach ($filter['attributes'] as $group => $values) {
+        if (empty($values) || !is_array($values)) continue;
         foreach ($values as $value) {
           $sql_where_attributes[$group][] = "find_in_set('". database::input($group.'-'.$value) ."', pa.attributes)";
         }
-        $sql_where_attributes[$group] = implode(" or ", $sql_where_attributes[$group]);
+        $sql_where_attributes[$group] = "(". implode(" or ", $sql_where_attributes[$group]) .")";
       }
       $sql_where_attributes = "and (". implode(" and ", $sql_where_attributes) .")";
     }
 
     $sql_where_prices = array();
-    if (!empty($filter['price_ranges'])) {
+    if (!empty($filter['price_ranges']) && is_array($filter['price_ranges'])) {
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
         $sql_where_prices[] = "(if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
@@ -344,7 +344,7 @@
 
   function catalog_purchase_count_adjust($product_id, $quantity) {
 
-    $products_options_query = database::query(
+    database::query(
       "update ". DB_TABLE_PRODUCTS ."
       set purchases = purchases + ". (int)$quantity ."
       where id = ". (int)$product_id ."

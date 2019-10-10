@@ -11,7 +11,7 @@
     die('Missing order or key');
   }
 
-  $order = new ctrl_order($_GET['order_id']);
+  $order = new ent_order($_GET['order_id']);
 
   if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
     http_response_code(401);
@@ -23,7 +23,7 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
-  $_page = new view();
+  $_page = new ent_view();
   $_page->snippets = array(
     'order' => $order->data,
     'comments' => array(),

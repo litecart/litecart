@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_orders', 'Orders'),
     'default' => 'orders',
+    'priority' => 0,
     'theme' => array(
       'color' => '#9dd238',
       'icon' => 'fa-shopping-cart',
@@ -26,7 +27,6 @@
       'order_statuses' => 'order_statuses.inc.php',
       'edit_order_status' => 'edit_order_status.inc.php',
       'add_product' => 'add_product.inc.php',
-      'get_address.json' => 'get_address.json.inc.php',
       'printable_order_copy' => 'printable_order_copy.inc.php',
       'printable_packing_slip' => 'printable_packing_slip.inc.php',
       'product_picker' => 'product_picker.inc.php',

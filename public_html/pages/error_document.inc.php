@@ -17,7 +17,7 @@
   }
 
   if (preg_match('#\.(jpg|png|gif)$#', route::$request)) {
-    echo file_get_contents(WS_DIR_IMAGES . 'no_image.png');
+    echo file_get_contents('images/no_image.png');
     exit;
   }
 

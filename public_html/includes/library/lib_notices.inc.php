@@ -1,13 +1,10 @@
 <?php
 
   class notices {
-    public static $data = array();
 
+    public static $data;
 
-    public static function construct() {
-    }
-
-    public static function load_dependencies() {
+    public static function init() {
       if (empty(session::$data['notices'])) {
         session::$data['notices'] = array(
           'errors' => array(),
@@ -18,37 +15,21 @@
       }
 
       self::$data = &session::$data['notices'];
+
+      event::register('after_capture', array(__CLASS__, 'after_capture'));
     }
-
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
 
     public static function after_capture() {
 
       notices::$data = array_filter(notices::$data);
 
       if (!empty(notices::$data)) {
-        $notices = new view();
+        $notices = new ent_view();
         $notices->snippets['notices'] = notices::$data;
         document::$snippets['notices'] = $notices->stitch('views/notices');
         self::reset();
       }
     }
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

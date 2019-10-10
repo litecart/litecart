@@ -4,17 +4,11 @@
     public static $currencies;
     public static $selected;
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
     // Bind selected to session
       if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) session::$data['currency'] = array();
       self::$selected = &session::$data['currency'];
-    }
-
-    public static function initiate() {
 
     // Load currencies
       self::load();
@@ -22,24 +16,6 @@
     // Identify/set currency
       self::set();
     }
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 
@@ -70,29 +46,36 @@
       session::$data['currency'] = self::$currencies[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        setcookie('currency_code', $code, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('currency_code', $code, strtotime('+3 months'), WS_DIR_APP);
       }
     }
 
     public static function identify() {
 
+      $all_currencies = array_keys(self::$currencies);
+
+      $enabled_currencies = array();
+      foreach (self::$currencies as $currency) {
+        if (!empty(user::$data['id']) || $currency['status'] == 1) $enabled_currencies[] = $currency['code'];
+      }
+
     // Return chained currency with language
       if (!empty(language::$selected['currency_code'])) {
-        if (!empty(self::$currencies[language::$selected['currency_code']])) {
+        if (in_array(language::$selected['currency_code'], $all_currencies)) {
           return language::$selected['currency_code'];
         }
       }
 
     // Return currency from URI query
       if (!empty($_GET['currency'])) {
-        if (isset(self::$currencies[$_GET['currency']])) return $_GET['currency'];
+        if (in_array($_GET['currency'], $all_currencies)) return $_GET['currency'];
       }
 
     // Return currency from session
-      if (isset(self::$selected['code']) && isset(self::$currencies[self::$selected['code']])) return self::$selected['code'];
+      if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_currencies)) return self::$selected['code'];
 
     // Set currency from cookie
-      if (!empty($_COOKIE['currency_code']) && isset(self::$currencies[$_COOKIE['currency_code']])) {
+      if (!empty($_COOKIE['currency_code']) && in_array($_COOKIE['currency_code'], $all_currencies)) {
         return $_COOKIE['currency_code'];
       }
 
@@ -109,7 +92,7 @@
           );
           $country = database::fetch($countries_query);
 
-          if (!empty($country['currency_code']) && isset(self::$currencies[$country['currency_code']])) {
+          if (!empty($country['currency_code']) && in_array($country['currency_code'], $enabled_currencies)) {
             return $country['currency_code'];
           }
         }
@@ -123,18 +106,19 @@
           limit 1;"
         );
         $country = database::fetch($countries_query);
-        if (!empty($country['currency_code']) && isset(self::$currencies[$country['currency_code']])) return $country['currency_code'];
+        if (!empty($country['currency_code']) && in_array($country['currency_code'], $enabled_currencies)) {
+          return $country['currency_code'];
+        }
       }
 
     // Return default currency
-      if (isset(self::$currencies[settings::get('default_currency_code')])) return settings::get('default_currency_code');
+      if (in_array(settings::get('default_currency_code'), $all_currencies)) return settings::get('default_currency_code');
 
     // Return store currency
-      if (isset(self::$currencies[settings::get('store_currency_code')])) return settings::get('store_currency_code');
+      if (in_array(settings::get('store_currency_code'), $all_currencies)) return settings::get('store_currency_code');
 
     // Return first currency
-      $currencies = array_keys(self::$currencies);
-      return array_shift($currencies);
+      return (!empty($enabled_currencies)) ? $enabled_currencies[0] : $all_currencies[0];
     }
 
     public static function calculate($value, $to, $from=null) {

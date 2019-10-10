@@ -26,6 +26,8 @@ DROP TABLE IF EXISTS `lc_delivery_statuses`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_delivery_statuses_info`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_emails`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_geo_zones`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_languages`;

@@ -3,21 +3,14 @@
   class customer {
     public static $data;
 
-    //public static function construct() {
-    //}
+    public static function init() {
 
-    public static function load_dependencies() {
-
-    // Bind customer to session
-      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) session::$data['customer'] = array();
-      self::$data = &session::$data['customer'];
-    }
-
-    public static function initiate() {
-
-      if (empty(self::$data)) {
+      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
         self::reset();
       }
+
+    // Bind customer to session
+      self::$data = &session::$data['customer'];
 
       if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
         list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
@@ -38,18 +31,15 @@
         if ($do_login && !empty($customer['id'])) {
           self::load($customer['id']);
         } else {
-          setcookie('customer_remember_me', null, -1, WS_DIR_HTTP_HOME);
+          setcookie('customer_remember_me', null, -1, WS_DIR_APP);
         }
       }
 
       self::identify();
+
+      event::register('after_capture', array(__CLASS__, 'after_capture'));
+      event::register('before_output', array(__CLASS__, 'before_output'));
     }
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
 
     public static function after_capture() {
 
@@ -57,14 +47,11 @@
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
         if (settings::get('regional_settings_screen_enabled')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
-            functions::draw_lightbox(document::ilink('regional_settings', array('redirect' => $_SERVER['REQUEST_URI'])));
+            functions::draw_lightbox(document::ilink('regional_settings'));
           }
         }
       }
     }
-
-    //public static function prepare_output() {
-    //}
 
     public static function before_output() {
 
@@ -73,15 +60,12 @@
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
             if (!empty($_COOKIE['cookies_accepted'])) {
-              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_APP);
             }
           }
         }
       }
     }
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

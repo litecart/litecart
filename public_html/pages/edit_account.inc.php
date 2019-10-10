@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'));
 
-  $customer = new ctrl_customer(customer::$data['id']);
+  $customer = new ent_customer(customer::$data['id']);
 
   if (empty($_POST)) {
     foreach ($customer->data as $key => $value) {
@@ -49,7 +49,7 @@
       $customer->save();
       customer::$data = $customer->data;
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
@@ -144,7 +144,7 @@
       $customer->save();
       customer::$data = $customer->data;
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
@@ -153,5 +153,5 @@
     }
   }
 
-  $_page = new view();
+  $_page = new ent_view();
   echo $_page->stitch('pages/edit_account');

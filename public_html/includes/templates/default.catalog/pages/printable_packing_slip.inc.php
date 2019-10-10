@@ -44,7 +44,7 @@ h1 {
   <header class="header">
     <div class="row">
       <div class="col-xs-6">
-        <img class="logotype" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </div>
 
       <div class="col-xs-6 text-right">
@@ -108,7 +108,25 @@ h1 {
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
           <td><?php echo $item['sku']; ?></td>
-          <td style="white-space: normal;"><?php echo $item['name']; ?></td>
+          <td style="white-space: normal;"><?php echo $item['name']; ?>
+<?php
+    if (!empty($item['options'])) {
+      foreach ($item['options'] as $key => $value) {
+        if (is_array($value)) {
+          echo '<br />- '.$key .': ';
+          $useComa = false;
+          foreach ($value as $v) {
+            if ($useComa) echo ', ';
+            echo $v;
+            $useComa = true;
+          }
+        } else {
+          echo '<br />- '.$key .': '. $value;
+        }
+      }
+    }
+?>
+          </td>
         </tr>
         <?php } ?>
       </tbody>
@@ -131,7 +149,7 @@ h1 {
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo htmlspecialchars(link::decode_idn(document::ilink(''))); ?></div>
+        <div class="value"><?php echo document::ilink(''); ?></div>
       </div>
 
       <div class="col-xs-3">

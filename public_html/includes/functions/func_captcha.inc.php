@@ -11,7 +11,7 @@
   function captcha_generate($width, $height, $length=6, $id='default', $set='numbers', $parameters='') {
 
     $code = '';
-    $font = FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'captcha.ttf';
+    $font = FS_DIR_APP . 'data/captcha.ttf';
 
     switch ($set) {
       case 'alphabet':

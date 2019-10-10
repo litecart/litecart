@@ -3,6 +3,7 @@
   return $app_config = array(
     'name' => language::translate('title_tax', 'Tax'),
     'default' => 'tax_rates',
+    'priority' => 0,
     'theme' => array(
       'color' => '#c0cc82',
       'icon' => 'fa-university',

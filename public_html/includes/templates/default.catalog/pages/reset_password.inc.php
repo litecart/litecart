@@ -1,5 +1,5 @@
 <div id="sidebar">
-    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php'); ?>
 </div>
 
 <div id="content">
@@ -31,6 +31,13 @@
       <div class="form-group">
         <label><?php echo language::translate('title_confirmed_password', 'Confirmed Password'); ?></label>
         <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
+      </div>
+      <?php } ?>
+
+      <?php if (settings::get('captcha_enabled')) { ?>
+      <div class="form-group">
+        <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+        <?php echo functions::form_draw_captcha_field('captcha', 'reset_password', 'required="required"'); ?>
       </div>
       <?php } ?>
 

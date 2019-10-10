@@ -3,5 +3,5 @@
 
   http_response_code(503);
 
-  $_page = new view();
+  $_page = new ent_view();
   echo $_page->stitch('pages/maintenance_mode');
