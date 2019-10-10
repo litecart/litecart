@@ -20,6 +20,7 @@
       $categories_query = database::query(
         "show fields from ". DB_TABLE_CATEGORIES .";"
       );
+
       while ($field = database::fetch($categories_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -39,6 +40,8 @@
 
       $this->data['filters'] = array();
       $this->data['images'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($category_id) {
@@ -77,7 +80,7 @@
         where category_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
       );
-      while($image = database::fetch($category_images_query)) {
+      while ($image = database::fetch($category_images_query)) {
         $this->data['images'][$image['id']] = $image;
       }
 
@@ -150,7 +153,7 @@
           database::query(
             "insert into ". DB_TABLE_CATEGORIES_INFO ."
             (category_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
@@ -217,7 +220,7 @@
       }
 
     // Update category image
-      if (!empty($this->data['images'])){
+      if (!empty($this->data['images'])) {
         $images = array_values($this->data['images']);
         $image = array_shift($images);
         $this->data['image'] = $image['filename'];
@@ -264,9 +267,10 @@
         }
       }
 
+      $this->previous = $this->data;
+
       cache::clear_cache('category_tree');
       cache::clear_cache('categories');
-      cache::clear_cache('category_'. (int)$this->data['id']);
     }
 
     public function add_image($file, $filename='') {
@@ -316,6 +320,8 @@
         'checksum' => $checksum,
         'priority' => $priority,
       );
+
+      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
     }
 
     public function delete() {
@@ -361,10 +367,9 @@
         where category_id = ". (int)$this->data['id'] .";"
       );
 
+      $this->reset();
+
       cache::clear_cache('category_tree');
       cache::clear_cache('categories');
-      cache::clear_cache('category_'. (int)$this->data['id']);
-
-      $this->data['id'] = null;
     }
   }

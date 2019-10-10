@@ -66,7 +66,7 @@
       return $output;
     };
 
-    if ($box_customer_service_links->snippets['pages'] = $iterator(0, 0, $current_page_path, $box_customer_service_links->snippets['pages'], $iterator)) {
+    if ($box_customer_service_links->snippets['pages'] = $iterator(0, 0, $current_page_path, $iterator)) {
       echo $box_customer_service_links->stitch('views/box_customer_service_links');
     }
 

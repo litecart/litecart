@@ -23,7 +23,7 @@
     try {
       if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' and id != '". $customer->data['id'] ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database.'));
+      if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' and id != ". (int)$customer->data['id'] ." limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database.'));
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_email_missing', 'You must enter an email address.'));
 
@@ -50,7 +50,7 @@
       customer::$data = $customer->data;
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -145,7 +145,7 @@
       customer::$data = $customer->data;
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {

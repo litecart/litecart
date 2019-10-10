@@ -1,6 +1,6 @@
 <?php
 
-   $app_config = array(
+  $app_config = array(
     'name' => language::translate('title_settings', 'Settings'),
     'default' => 'store_info',
     'priority' => 0,
@@ -16,6 +16,7 @@
     "select * from ". DB_TABLE_SETTINGS_GROUPS ."
     order by priority, `key`;"
   );
+
   while ($group = database::fetch($settings_groups_query)) {
     $app_config['menu'][] = array(
       'title' => language::translate('settings_group:title_'.$group['key'], $group['name']),

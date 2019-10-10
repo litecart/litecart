@@ -31,7 +31,7 @@
           $search_replace['{snippet:'.$key.'}'] = &$this->snippets[$key];
         }
 
-        foreach(array_keys($search_replace) as $key) {
+        foreach (array_keys($search_replace) as $key) {
           $search_replace[$key] = str_replace(array_keys($search_replace), array_values($search_replace), $search_replace[$key]);
         }
 

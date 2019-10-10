@@ -318,8 +318,8 @@
 
   database::query(
     "insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_users`') ."
-    (`id`, `status`, `username`, `password`, `date_updated`, `date_created`)
-    values ('1', '1', '". database::input($_REQUEST['username']) ."', '". password_checksum('1', $_REQUEST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+    (`id`, `status`, `username`, `password_hash`, `date_updated`, `date_created`)
+    values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
 
   ### Set platform database version #############################
@@ -356,7 +356,7 @@
         if ($dir == 'demo') continue;
         if ($dir == 'default') continue;
 
-        foreach(glob('data/'. $dir .'/*.sql') as $file) {
+        foreach (glob('data/'. $dir .'/*.sql') as $file) {
           $sql = file_get_contents($file);
 
           if (empty($sql)) continue;

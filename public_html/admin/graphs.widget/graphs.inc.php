@@ -3,8 +3,8 @@
   document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/chartist/chartist.min.css" />';
   document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_APP .'ext/chartist/chartist.min.js"></script>';
 
-  $widget_graphs_cache_token = cache::token('widget_graphs', array('site'), 'file');
-  if (cache::capture($widget_graphs_cache_token, 300)) {
+  $widget_graphs_cache_token = cache::token('widget_graphs', array('site'), 'file', 300);
+  if (cache::capture($widget_graphs_cache_token)) {
 
   // Order Statuses flagged as Sale
     $order_statuses = array();
@@ -26,7 +26,7 @@
     );
 
     $monthly_sales = array();
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales'] = (int)$orders['total_sales'];
     }
 
@@ -38,7 +38,7 @@
       order by month asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales_last_year'] = (int)$orders['total_sales'];
     }
 
@@ -65,7 +65,7 @@
       order by weekday asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $daily_sales[$orders['weekday']]['total_sales'] = (int)$orders['total_sales'];
     }
 
@@ -77,7 +77,7 @@
       order by weekday asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $daily_sales[$orders['weekday']]['average_sales'] = (int)$orders['average_sales'];
     }
 

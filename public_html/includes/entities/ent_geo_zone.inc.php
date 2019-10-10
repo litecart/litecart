@@ -20,11 +20,14 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_GEO_ZONES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
 
       $this->data['zones'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($geo_zone_id) {
@@ -92,6 +95,7 @@
 
       if (!empty($this->data['zones'])) {
         foreach ($this->data['zones'] as $zone) {
+
           if (empty($zone['id'])) {
             database::query(
               "insert into ". DB_TABLE_ZONES_TO_GEO_ZONES ."
@@ -100,6 +104,7 @@
             );
             $zone['id'] = database::insert_id();
           }
+
           database::query(
             "update ". DB_TABLE_ZONES_TO_GEO_ZONES ."
             set country_code = '". database::input($zone['country_code']) ."',
@@ -111,6 +116,8 @@
           );
         }
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('geo_zones');
     }
@@ -128,8 +135,8 @@
         limit 1;"
       );
 
-      cache::clear_cache('geo_zones');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('geo_zones');
     }
   }

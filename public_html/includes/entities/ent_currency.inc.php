@@ -20,9 +20,12 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_CURRENCIES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($currency_code) {
@@ -50,35 +53,10 @@
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('store_currency_code')) {
         throw new Exception('You cannot disable the store currency.');
-        return;
       }
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_currency_code')) {
         throw new Exception('You cannot disable the default currency.');
-        return;
-      }
-
-      if (!empty($this->previous)) {
-        if ($this->data['code'] != $this->previous['code']) {
-          if ($this->previous['code'] == settings::get('store_currency_code')) {
-            throw new Exception('Cannot rename the store currency.');
-          }
-
-          database::query(
-            "alter table ". DB_TABLE_PRODUCTS_PRICES ."
-            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-          );
-
-          database::query(
-            "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-          );
-
-          database::query(
-            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
-            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-          );
-        }
       }
 
       if (empty($this->data['id'])) {
@@ -88,42 +66,6 @@
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
-      }
-
-      $products_prices_query = database::query(
-        "show fields from ". DB_TABLE_PRODUCTS_PRICES ."
-        where `Field` = '". database::input($this->data['code']) ."';"
-      );
-
-      if (!database::num_rows($products_prices_query)) {
-        database::query(
-          "alter table ". DB_TABLE_PRODUCTS_PRICES ."
-          add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-        );
-      }
-
-      $products_campaigns_query = database::query(
-        "show fields from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-        where `Field` = '". database::input($this->data['code']) ."';"
-      );
-
-      if (!database::num_rows($products_campaigns_query)) {
-        database::query(
-          "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-          add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-        );
-      }
-
-      $products_options_query = database::query(
-        "show fields from ". DB_TABLE_PRODUCTS_OPTIONS ."
-        where `Field` = '". database::input($this->data['code']) ."';"
-      );
-
-      if (!database::num_rows($products_options_query)) {
-        database::query(
-          "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
-          add `". database::input($this->data['code']) ."` decimal(11, 4) not null after `price_operator`;"
-        );
       }
 
       database::query(
@@ -143,6 +85,70 @@
         limit 1;"
       );
 
+      if (!empty($this->previous['code'])) {
+        if ($this->data['code'] != $this->previous['code']) {
+
+          if ($this->previous['code'] == settings::get('store_currency_code')) {
+            throw new Exception('Cannot rename the store currency.');
+          }
+
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_PRICES ."
+            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
+
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
+
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
+            change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
+        }
+
+      } else {
+
+        $products_prices_query = database::query(
+          "show fields from ". DB_TABLE_PRODUCTS_PRICES ."
+          where `Field` = '". database::input($this->data['code']) ."';"
+        );
+
+        if (!database::num_rows($products_prices_query)) {
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_PRICES ."
+            add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
+        }
+
+        $products_campaigns_query = database::query(
+          "show fields from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+          where `Field` = '". database::input($this->data['code']) ."';"
+        );
+
+        if (!database::num_rows($products_campaigns_query)) {
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+            add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+          );
+        }
+
+        $products_options_query = database::query(
+          "show fields from ". DB_TABLE_PRODUCTS_OPTIONS ."
+          where `Field` = '". database::input($this->data['code']) ."';"
+        );
+
+        if (!database::num_rows($products_options_query)) {
+          database::query(
+            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
+            add `". database::input($this->data['code']) ."` decimal(11, 4) not null after `price_operator`;"
+          );
+        }
+      }
+
+      $this->previous = $this->data;
+
       cache::clear_cache('currencies');
     }
 
@@ -150,12 +156,10 @@
 
       if ($this->data['code'] == settings::get('store_currency_code')) {
         throw new Exception('Cannot delete the store currency');
-        return;
       }
 
       if ($this->data['code'] == settings::get('default_currency_code')) {
         throw new Exception('Cannot delete the default currency');
-        return;
       }
 
       database::query(
@@ -176,8 +180,8 @@
         "alter table ". DB_TABLE_PRODUCTS_OPTIONS ." drop `". database::input($this->data['code']) ."`;"
       );
 
-      cache::clear_cache('currencies');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('currencies');
     }
   }

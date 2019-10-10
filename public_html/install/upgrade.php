@@ -39,7 +39,7 @@
 
   if (!empty($platform_database_version)) {
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
-    if (empty($_POST['from_version'])) $_POST['from_version'] = PLATFORM_DATABASE_VERSION;
+    if (empty($_REQUEST['from_version'])) $_REQUEST['from_version'] = PLATFORM_DATABASE_VERSION;
   }
 
 // List supported upgrades
@@ -166,7 +166,7 @@
       limit 1;"
     );
 
-    foreach(glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file){
+    foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
       if (is_file($file)) unlink($file);
     }
 
@@ -230,7 +230,7 @@ input[name="development_type"]:checked + div {
     <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
     <select class="form-control" name="from_version">
       <option value="">-- Select Version --</option>
-      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_POST['from_version']) && $_POST['from_version'] == $version) ? 'selected="selected"' : '') .'>LiteCart '. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
+      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>LiteCart '. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
     </select>
   </div>
 

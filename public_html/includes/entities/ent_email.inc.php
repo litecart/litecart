@@ -1,19 +1,17 @@
 <?php
 
   class ent_email {
-    public $_data = array();
+    public $data;
 
     public function __construct($email_id=null, $charset=null) {
 
       if ($email_id !== null) {
-        $this->load((int)$email_id);
+        $this->load($email_id);
       } else {
         $this->reset();
       }
 
       $this->data['charset'] = $charset ? $charset : language::$selected['charset'];
-
-      return $this;
     }
 
     public function reset() {
@@ -23,6 +21,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_EMAILS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -37,10 +36,14 @@
       $this->data['bccs'] = array();
       $this->data['multiparts'] = array();
 
+      $this->previous = $this->data;
+
       return $this;
     }
 
     public function load($email_id) {
+
+      if (!preg_match('#^[0-9]+$#', $email_id)) throw new Exception('Invalid email (ID: '. $email_id .')');
 
       $this->reset();
 
@@ -94,9 +97,11 @@
         where id = ". (int)$this->data['id'] .";"
       );
 
-      cache::clear_cache('email');
+      $this->previous = $this->data;
 
       $this->cleanup();
+
+      cache::clear_cache('email');
     }
 
     public function set_sender($email, $name=null) {
@@ -384,11 +389,11 @@
 
       database::query(
         "delete from ". DB_TABLE_EMAILS ."
-        where id = '". (int)$this->data['id'] ."';"
+        where id = ". (int)$this->data['id'] .";"
       );
 
-      cache::clear_cache('email');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('email');
     }
   }

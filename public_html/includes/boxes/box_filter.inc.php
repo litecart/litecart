@@ -20,7 +20,7 @@
     );
     if (database::num_rows($manufacturers_query)) {
 
-      while($manufacturer = database::fetch($manufacturers_query)) {
+      while ($manufacturer = database::fetch($manufacturers_query)) {
         $box_filter->snippets['manufacturers'][] = array(
           'id' => $manufacturer['id'],
           'name' => $manufacturer['name'],

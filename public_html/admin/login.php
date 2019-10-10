@@ -45,43 +45,64 @@
         throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))));
       }
 
-      $user_query = database::query(
-        "select * from ". DB_TABLE_USERS ."
-        where lower(username) = lower('". database::input($_POST['username']) ."')
-        and password = '". functions::password_checksum($user['id'], $_POST['password']) ."'
-        limit 1;"
-      );
+    // Compatibility with older passwords (prior to LiteCart 2.2.0)
+      if (substr($user['password_hash'], 0, 1) != '$') {
 
-      if (!database::num_rows($user_query)) {
-        $user['login_attempts']++;
+        if (functions::password_checksum($user['id'], $_POST['password']) != $user['password_hash']) {
+          throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
+        }
 
-        if ($user['login_attempts'] < 3) {
-          $user_query = database::query(
+      // Migrate password
+        database::query(
+          "update ". DB_TABLE_USERS ."
+          set password_hash = '". database::input($user['password_hash'] = password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
+          where id = ". (int)$user['id'] ."
+          limit 1;"
+        );
+      }
+
+      if (!password_verify($_POST['password'], $user['password_hash'])) {
+        if (++$user['login_attempts'] < 3) {
+
+          database::query(
             "update ". DB_TABLE_USERS ."
             set login_attempts = login_attempts + 1
             where id = ". (int)$user['id'] ."
             limit 1;"
           );
+
           notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), 3 - $user['login_attempts']));
+
         } else {
-          $user_query = database::query(
+
+          database::query(
             "update ". DB_TABLE_USERS ."
             set login_attempts = 0,
             date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
             where id = ". (int)$user['id'] ."
             limit 1;"
           );
+
           notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), 15));
         }
 
         throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
       }
 
+      if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
+        database::query(
+          "update ". DB_TABLE_USERS ."
+          set password_hash = '". database::input(password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
+          where id = ". (int)$user['id'] ."
+          limit 1;"
+        );
+      }
+
       if (!empty($user['last_host']) && $user['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
         notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), array('%hostname' => $user['last_host'])));
       }
 
-      $user_query = database::query(
+      database::query(
         "update ". DB_TABLE_USERS ."
         set
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
@@ -96,7 +117,7 @@
       user::load($user['id']);
 
       if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($user['username'] . $user['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        $checksum = sha1($user['username'] . $user['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       } else {
         setcookie('remember_me', null, -1, WS_DIR_APP);

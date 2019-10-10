@@ -4,16 +4,13 @@
     header('X-Robots-Tag: noindex');
   }
 
-  if (!empty($_GET['product_id'])) {
-    $product = reference::product($_GET['product_id']);
+  if (empty($_GET['product_id'])) {
+    http_response_code(400);
+    echo 'Missing product_id';
+    exit;
   }
 
-  if (empty($_GET['category_id']) && empty($product->manufacturer)) {
-    if ($product->category_ids) {
-      $category_ids = array_values($product->category_ids);
-      $_GET['category_id'] = array_shift($category_ids);
-    }
-  }
+  $product = reference::product($_GET['product_id']);
 
   if (empty($product->id)) {
     http_response_code(410);
@@ -33,6 +30,13 @@
 
   if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && substr($product->date_valid_to, 0, 4) > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
     notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
+  }
+
+  if (empty($_GET['category_id']) && empty($product->manufacturer)) {
+    if ($product->category_ids) {
+      $category_ids = array_values($product->category_ids);
+      $_GET['category_id'] = array_shift($category_ids);
+    }
   }
 
   database::query(
@@ -74,6 +78,10 @@
 // Recently viewed products
   if (isset(session::$data['recently_viewed_products'][$product->id])) {
     unset(session::$data['recently_viewed_products'][$product->id]);
+  }
+
+  if (empty(session::$data['recently_viewed_products']) || !is_array(session::$data['recently_viewed_products'])) {
+    session::$data['recently_viewed_products'] = array();
   }
 
   session::$data['recently_viewed_products'][$product->id] = array(

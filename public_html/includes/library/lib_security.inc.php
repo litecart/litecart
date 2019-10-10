@@ -5,7 +5,7 @@
     private static $_bad_urls;
     private static $_blacklist;
     private static $_whitelist;
-    private static $_ban_time = '12 hours';
+    private static $_ban_time = '6 hours';
     private static $_trigger;
 
     public static function init() {
@@ -67,9 +67,10 @@
         $sanitize_string = function(&$item, &$key) {
           $filter_list = array(
             //'/<script(.*?)>(.*?)<\/script>/is' => '',  // Enabling this will prevent administrators from storing javascripts in the WYSIWYG editor
-            '/eval(?:[\s]+)?\((.*)\)/is' => '',
-            '/base64_/is' => '',
-            '/union(?:[\s]+)?select/is' => '',
+            '#eval(?:[\s]+)?\((.*)\)#is' => '',
+            '#base64_#is' => '',
+            '#union(?:[\s]+)?select#is' => '',
+            '#\'A=[0-9]#s' => '',
           );
 
           $item = preg_replace(array_keys($filter_list), array_values($filter_list), $item);
@@ -172,7 +173,7 @@
       return $blacklisted;
     }
 
-    public static function is_whitelisted($list='') {
+    public static function is_whitelisted() {
 
       $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
       $longip = ip2long($_SERVER['REMOTE_ADDR']);

@@ -81,6 +81,8 @@
         'subtotal' => array('amount' => 0, 'tax' => 0),
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
       ));
+
+      $this->previous = $this->data;
     }
 
     private function load($order_id) {
@@ -101,7 +103,7 @@
         throw new Exception('Could not find order in database (ID: '. (int)$order_id .')');
       }
 
-      foreach($order as $field => $value) {
+      foreach ($order as $field => $value) {
 
         switch ($field) {
           case 'customer_id':
@@ -228,18 +230,18 @@
         }
       }
 
+      if (empty($this->data['public_key'])) {
+        $this->data['public_key'] = md5($this->data['id'] . $this->data['uid'] . $this->data['customer']['email'] . $this->data['date_created']. rand(1, 65535));
+      }
+
     // Insert/update order
       if (empty($this->data['id'])) {
-
-        if (empty($this->data['public_key'])) {
-          $this->data['public_key'] = md5($this->data['id'] . $this->data['uid'] . $this->data['customer']['email'] . $this->data['date_created']. rand(1, 65535));
-        }
-
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
-          (uid, client_ip, user_agent, domain, public_key, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". database::input($this->data['public_key']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          (uid, client_ip, user_agent, domain, date_created)
+          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
 
@@ -287,6 +289,7 @@
         display_prices_including_tax = ". (int)$this->data['display_prices_including_tax'] .",
         payment_due = ". (float)$this->data['payment_due'] .",
         tax_total = ". (float)$this->data['tax_total'] .",
+        public_key = '". database::input($this->data['public_key']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -299,7 +302,7 @@
         and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
-      while($previous_order_item = database::fetch($previous_order_items_query)) {
+      while ($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
           "delete from ". DB_TABLE_ORDERS_ITEMS ."
           where order_id = ". (int)$this->data['id'] ."
@@ -451,9 +454,9 @@
 
         if (!empty($notify_comments)) {
 
-          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added');
+          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
 
-          $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order') . ":\r\n\r\n";
+          $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
           foreach ($notify_comments as $comment) {
             $message .= language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])) ." – ". trim($comment['text']) . "\r\n\r\n";
           }
@@ -476,28 +479,7 @@
       $order_modules = new mod_order();
       $order_modules->update($this->data);
 
-      cache::clear_cache('order');
-    }
-
-    public function delete() {
-
-      if (empty($this->data['id'])) return;
-
-      $order_modules = new mod_order();
-      $order_modules->delete($this->data);
-
-    // Empty order first..
-      $this->data['items'] = array();
-      $this->data['order_total'] = array();
-      $this->refresh_total();
-      $this->save();
-
-    // ..then delete
-      database::query(
-        "delete from ". DB_TABLE_ORDERS ."
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
+      $this->previous = $this->data;
 
       cache::clear_cache('order');
     }
@@ -559,7 +541,7 @@
 
       $this->data['items']['new_'.$i]['id'] = null;
 
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
         $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
       }
 
@@ -752,7 +734,7 @@
         '%store_url' => document::ilink('', array(), false, array(), $language_code),
       );
 
-      foreach($this->data['items'] as $item) {
+      foreach ($this->data['items'] as $item) {
         $product = reference::product($item['product_id'], $language_code);
 
         $options = array();
@@ -826,5 +808,30 @@
             ->set_subject($subject)
             ->add_body($message, true)
             ->send();
+    }
+
+    public function delete() {
+
+      if (empty($this->data['id'])) return;
+
+      $order_modules = new mod_order();
+      $order_modules->delete($this->data);
+
+    // Empty order first..
+      $this->data['items'] = array();
+      $this->data['order_total'] = array();
+      $this->refresh_total();
+      $this->save();
+
+    // ..then delete
+      database::query(
+        "delete from ". DB_TABLE_ORDERS ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      $this->reset();
+
+      cache::clear_cache('order');
     }
   }

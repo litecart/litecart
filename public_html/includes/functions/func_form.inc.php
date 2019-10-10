@@ -874,8 +874,6 @@
 
     if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_draw_customers_list()', E_USER_ERROR);
 
-    if ($input === true) $input = form_reinsert_value($name);
-
     $options = array();
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
@@ -885,7 +883,7 @@
       order by email;"
     );
 
-    while($customer = database::fetch($customers_query)) {
+    while ($customer = database::fetch($customers_query)) {
       $options[] = array($customer['email'], $customer['id']);
     }
 
@@ -925,8 +923,6 @@
   }
 
   function form_draw_encodings_list($name, $input=true, $multiple=false, $parameters='') {
-
-    if ($input === true) $input = form_reinsert_value($name);
 
     $options = array();
 
@@ -1088,6 +1084,29 @@
     }
   }
 
+  function form_draw_mysql_engines_list($name, $input=true, $multiple=false, $parameters='') {
+
+    $collations_query = database::query(
+      "SHOW ENGINES;"
+    );
+
+    $options = array();
+
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+
+    while ($row = database::fetch($collations_query)) {
+      if (!in_array(strtoupper($row['Support']), array('YES', 'DEFAULT'))) continue;
+      if (!in_array($row['Engine'], array('CSV', 'InnoDB', 'MyISAM', 'Aria'))) continue;
+      $options[] = array($row['Engine'] . ' -- '. $row['Comment'], $row['Engine']);
+    }
+
+    if ($multiple) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_draw_order_status_list($name, $input=true, $multiple=false, $parameters='') {
 
     $query = database::query(
@@ -1169,7 +1188,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    while($module = database::fetch($modules_query)) {
+    while ($module = database::fetch($modules_query)) {
       $module = new $module();
       $options[] = array($module->name, $module->id);
     }
@@ -1244,7 +1263,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    while($module = database::fetch($modules_query)) {
+    while ($module = database::fetch($modules_query)) {
       $module = new $module();
       $options[] = array($module->name, $module->id);
     }
@@ -1341,7 +1360,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    foreach($folders as $folder) {
+    foreach ($folders as $folder) {
       $options[] = array(basename($folder));
     }
 

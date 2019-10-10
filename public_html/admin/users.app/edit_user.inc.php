@@ -183,17 +183,21 @@
 <script>
   $('input[name="permissions_toggle"]').change(function(){
     if ($(this).is(':checked')) {
-      $(this).closest('.form-group').find('input[name^="permissions"][name$="[status]"]').removeAttr('disabled');
+      $('input[name^="permissions"][name$="[status]"]').removeAttr('disabled');
+      $('input[name^="permissions"][name$="[docs][]"]').removeAttr('disabled');
     } else {
-      $(this).closest('.form-group').find('input[name^="permissions"][name$="[status]"]').attr('disabled', 'disabled').prop('checked', false).trigger('change');
+      $('input[name^="permissions"][name$="[status]"]').attr('disabled', 'disabled');
+      $('input[name^="permissions"][name$="[docs][]"]').attr('disabled', 'disabled');
     }
   }).trigger('change');
 
   $('input[name^="permissions"][name$="[status]"]').change(function(){
     if ($(this).is(':checked')) {
-      $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').removeAttr('disabled').prop('checked', true);
+      if (!$(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]:checked').length) {
+        $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').prop('checked', true);
+      }
     } else {
-      $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').attr('disabled', 'disabled').prop('checked', false);
+      $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').prop('checked', false);
     }
   }).trigger('change');
 </script>

@@ -25,6 +25,7 @@
     return $password;
   }
 
+// Deprecated in LiteCart 2.2.0 in favour of PHP password_hash() - Keep for backwards compatibility and migration
   function password_checksum($login, $password) {
     if (!defined('PASSWORD_SALT')) trigger_error('There is no password salt defined.', E_USER_ERROR);
     if (strlen($password) < 2) {

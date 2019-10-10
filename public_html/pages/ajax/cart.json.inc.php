@@ -9,7 +9,7 @@
     'text_total' => language::translate('title_total', 'Total'),
   );
 
-  foreach(cart::$items as $item) {
+  foreach (cart::$items as $item) {
     $json['items'][] = array(
       'product_id' => $item['product_id'],
       'name' => $item['name'],

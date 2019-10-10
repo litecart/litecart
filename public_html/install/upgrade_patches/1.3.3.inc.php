@@ -13,7 +13,7 @@
       or `key` like 'order_total_module_%'
     );"
   );
-  while($row = database::fetch($query)) {
+  while ($row = database::fetch($query)) {
     $new_key = preg_replace('#^((customer|jobs|shipping|payment|order_action|order_success|order_total)_module_)#', '', $row['key']);
     database::query(
       "update  ". DB_TABLE_SETTINGS ."

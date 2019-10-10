@@ -20,6 +20,7 @@
       $manufacturer_query = database::query(
         "show fields from ". DB_TABLE_MANUFACTURERS .";"
       );
+
       while ($field = database::fetch($manufacturer_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -35,6 +36,8 @@
           $this->data[$field['Field']][$language_code] = null;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($manufacturer_id) {
@@ -111,7 +114,7 @@
           database::query(
             "insert into ". DB_TABLE_MANUFACTURERS_INFO ."
             (manufacturer_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
@@ -129,43 +132,9 @@
         );
       }
 
-      cache::clear_cache('manufacturers');
-    }
-
-    public function delete() {
-
-      if (empty($this->data['id'])) return;
-
-      $products_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS ."
-        where manufacturer_id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      if (database::num_rows($products_query) > 0) {
-        notices::add('errors', language::translate('error_delete_manufacturer_not_empty_products', 'The manufacturer could not be deleted because there are products linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
-      }
-
-      if (!empty($this->data['image']) && is_file(FS_DIR_APP . 'images/manufacturers/' . $this->data['image'])) {
-        unlink(FS_DIR_APP . 'images/manufacturers/' . $this->data['image']);
-      }
-
-      database::query(
-        "delete from ". DB_TABLE_MANUFACTURERS ."
-        where id = '". $this->data['id'] ."'
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_MANUFACTURERS_INFO ."
-        where manufacturer_id = '". $this->data['id'] ."';"
-      );
+      $this->previous = $this->data;
 
       cache::clear_cache('manufacturers');
-
-      $this->data['id'] = null;
     }
 
     public function save_image($file) {
@@ -200,12 +169,12 @@
         where id = ". (int)$this->data['id'] .";"
       );
 
-      $this->data['image'] = $filename;
+      $this->previous['image'] = $this->data['image'] = $filename;
     }
 
     public function delete_image() {
 
-      if (empty($this->data['image'])) return;
+      if (empty($this->data['id'])) return;
 
       if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
 
@@ -217,6 +186,42 @@
         where id = ". (int)$this->data['id'] .";"
       );
 
-      $this->data['image'] = '';
+      $this->previous['image'] = $this->data['image'] = '';
+    }
+
+    public function delete() {
+
+      if (empty($this->data['id'])) return;
+
+      $products_query = database::query(
+        "select id from ". DB_TABLE_PRODUCTS ."
+        where manufacturer_id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      if (database::num_rows($products_query) > 0) {
+        notices::add('errors', language::translate('error_delete_manufacturer_not_empty_products', 'The manufacturer could not be deleted because there are products linked to it.'));
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
+      }
+
+      if (!empty($this->data['image']) && is_file(FS_DIR_APP . 'images/manufacturers/' . $this->data['image'])) {
+        unlink(FS_DIR_APP . 'images/manufacturers/' . $this->data['image']);
+      }
+
+      database::query(
+        "delete from ". DB_TABLE_MANUFACTURERS ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_MANUFACTURERS_INFO ."
+        where manufacturer_id = ". (int)$this->data['id'] .";"
+      );
+
+      $this->reset();
+
+      cache::clear_cache('manufacturers');
     }
   }

@@ -2,6 +2,7 @@
   require('../includes/compatibility.inc.php');
   require('../includes/functions/func_draw.inc.php');
   require('includes/header.inc.php');
+  require('includes/functions.inc.php');
 
   ini_set('display_errors', 'On');
 
@@ -373,7 +374,7 @@ input[name="development_type"]:checked + div {
     'vqmod/mods.cache',
     '.htaccess',
   );
-  foreach($paths as $path) {
+  foreach ($paths as $path) {
     if (file_exists($path) && is_writable('../' . $path)) {
       echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {

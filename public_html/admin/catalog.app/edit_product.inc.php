@@ -191,7 +191,7 @@
 
       $output .= '  <div class="checkbox"><label>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label></div>' . PHP_EOL;
 
-      if (database::num_rows(database::query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
+      if (database::num_rows(database::query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = ". (int)$category['id'] ." limit 1;")) > 0) {
         $output .= custom_catalog_tree($category['id'], $depth+1, $count);
       }
     }
@@ -409,7 +409,7 @@
               </tr>
             </thead>
             <tbody>
-              <?php foreach (array_keys($_POST['attributes']) as $key) { ?>
+              <?php if (!empty($_POST['attributes'])) foreach (array_keys($_POST['attributes']) as $key) { ?>
               <tr>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_id]', true); ?>

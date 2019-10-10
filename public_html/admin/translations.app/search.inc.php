@@ -24,7 +24,7 @@
         html = ". (!empty($translation['html']) ? 1 : 0) .",
           ". $sql_update_fields ."
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where id = '". database::input($translation['id']) ."'
+        where id = ". (int)$translation['id'] ."
         limit 1;"
       );
     }

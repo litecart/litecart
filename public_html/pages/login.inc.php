@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_sign_in', 'Sign In'));
 
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
-  if (empty($_REQUEST['redirect_url'])) $_REQUEST['redirect_url'] = '';
+  if (empty($_REQUEST['redirect_url'])) $_REQUEST['redirect_url'] = document::ilink('');
 
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
 
@@ -34,31 +34,46 @@
         throw new Exception(language::translate('error_email_not_found_in_database', 'The email does not exist in our database'));
       }
 
-      if ($customer['password'] != functions::password_checksum($customer['email'], $_POST['password'])) {
-        throw new Exception(language::translate('error_wrong_password', 'Wrong password or the account does not exist'));
-      }
-
       if (empty($customer['status'])) {
         throw new Exception(language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
       }
 
-      if (empty($customer['password'])) {
-        $customer['password'] = functions::password_checksum($customer['email'], $_POST['password']);
+    // Compatibility with older passwords (prior to LiteCart 2.2.0)
+      if (substr($customer['password_hash'], 0, 1) != '$') {
+
+        if (functions::password_checksum($customer['email'], $_POST['password']) != $customer['password_hash']) {
+          throw new Exception(language::translate('error_wrong_password', 'Wrong password or the account does not exist'));
+        }
+
+      // Migrate password
         database::query(
           "update ". DB_TABLE_CUSTOMERS ."
-          set password = '". database::input($customer['password']) ."'
+          set password_hash = '". database::input($customer['password_hash'] = password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
+          where id = ". (int)$customer['id'] ."
+          limit 1;"
+        );
+      }
+
+      if (!password_verify($_POST['password'], $customer['password_hash'])) {
+        throw new Exception(language::translate('error_wrong_password', 'Wrong password or the account does not exist'));
+      }
+
+      if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
+        database::query(
+          "update ". DB_TABLE_CUSTOMERS ."
+          set password_hash = '". database::input(password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
           where id = ". (int)$customer['id'] ."
           limit 1;"
         );
       }
 
       database::query(
-        "update ". DB_TABLE_CUSTOMERS ."
-        set num_logins = num_logins + 1,
-            last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-            last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-            last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
-            date_login = '". date('Y-m-d H:i:s') ."'
+        "update ". DB_TABLE_CUSTOMERS ." set
+          num_logins = num_logins + 1,
+          last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+          last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+          last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+          date_login = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$customer['id'] ."
         limit 1;"
       );
@@ -72,12 +87,8 @@
       }
 
       if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($customer['email'] . $customer['password'] . PASSWORD_SALT . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        $checksum = sha1($customer['email'] . $customer['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
-      }
-
-      if (empty($_REQUEST['redirect_url'])) {
-        $_REQUEST['redirect_url'] = document::ilink('');
       }
 
       notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(

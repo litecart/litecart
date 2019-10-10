@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_ORDER_STATUSES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -36,6 +37,8 @@
           $this->data[$field['Field']][$language_code] = null;
         }
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($order_status_id) {
@@ -107,7 +110,7 @@
         $order_status_info_query = database::query(
           "select * from ". DB_TABLE_ORDER_STATUSES_INFO ."
           where order_status_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
 
@@ -115,7 +118,7 @@
           database::query(
             "insert into ". DB_TABLE_ORDER_STATUSES_INFO ."
             (order_status_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
           $order_status_info['id'] = database::insert_id();
         }
@@ -129,10 +132,12 @@
             email_message = '". database::input($this->data['email_message'][$language_code], true) ."'
           where id = ". (int)$order_status_info['id'] ."
           and order_status_id = ". (int)$this->data['id'] ."
-          and language_code = '". $language_code ."'
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
+
+      $this->previous = $this->data;
 
       cache::clear_cache('order_statuses');
     }
@@ -141,7 +146,6 @@
 
       if (database::num_rows(database::query("select id from ". DB_TABLE_ORDERS ." where order_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
         throw new Exception('Cannot delete the order status because there are orders using it');
-        return;
       }
 
       database::query(
@@ -155,8 +159,8 @@
         limit 1;"
       );
 
-      cache::clear_cache('order_statuses');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('order_statuses');
     }
   }

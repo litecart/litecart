@@ -1,6 +1,6 @@
 <?php
-  $widget_discussions_cache_token = cache::token('widget_discussions', array(), 'file');
-  if (cache::capture($widget_discussions_cache_token, 0, true)) {
+  $widget_discussions_cache_token = cache::token('widget_discussions', array(), 'file', 43200);
+  if (cache::capture($widget_discussions_cache_token, 43200, true)) {
 
     try {
 
@@ -8,7 +8,7 @@
 
       $client = new wrap_http();
       $client->timeout = 10;
-      $response = @$client->call('GET', $url);$response = 'fishy';
+      $response = @$client->call('GET', $url);
       libxml_use_internal_errors(true);
       $rss = simplexml_load_string($response);
 

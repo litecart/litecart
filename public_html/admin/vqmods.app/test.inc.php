@@ -59,7 +59,7 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach($files_to_modify as $file) { ?>
+    <?php foreach ($files_to_modify as $file) { ?>
     <tr>
       <td>
         <div><?php echo 'Testing ' . preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file) . PHP_EOL; ?></div>

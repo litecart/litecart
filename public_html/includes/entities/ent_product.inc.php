@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_PRODUCTS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -45,6 +46,8 @@
       $this->data['campaigns'] = array();
       $this->data['options'] = array();
       $this->data['options_stock'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($product_id) {
@@ -73,14 +76,12 @@
       $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : array();
 
     // Categories
-      $this->data['categories'] = array();
-
       $categories_query = database::query(
         "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
          where product_id = ". (int)$product_id .";"
       );
 
-      while ($category = database::fetch($categories_query)){
+      while ($category = database::fetch($categories_query)) {
         $this->data['categories'][] = $category['category_id'];
       }
 
@@ -115,6 +116,7 @@
         "select * from ". DB_TABLE_PRODUCTS_PRICES ."
         where product_id = ". (int)$this->data['id'] .";"
       );
+
       while ($product_price = database::fetch($products_prices_query)) {
         foreach (array_keys(currency::$currencies) as $currency_code) {
           $this->data['prices'][$currency_code] = $product_price[$currency_code];
@@ -127,6 +129,7 @@
         where product_id = ". (int)$this->data['id'] ."
         order by start_date;"
       );
+
       while ($product_campaign = database::fetch($product_campaigns_query)) {
         $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
       }
@@ -137,7 +140,8 @@
         where product_id = ". (int)$this->data['id'] ."
         order by priority;"
       );
-      while($option_stock = database::fetch($products_options_stock_query)) {
+
+      while ($option_stock = database::fetch($products_options_stock_query)) {
 
         $this->data['options_stock'][$option_stock['id']] = $option_stock;
         $this->data['options_stock'][$option_stock['id']]['name'] = array();
@@ -149,7 +153,8 @@
             "select ovi.value_id, ovi.name, ovi.language_code from ". DB_TABLE_OPTION_VALUES_INFO ." ovi
             where ovi.value_id = ". (int)$value_id .";"
           );
-          while($option_value = database::fetch($options_values_query)) {
+
+          while ($option_value = database::fetch($options_values_query)) {
             if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']])) {
               $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] = '';
             } else {
@@ -166,7 +171,8 @@
         where product_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
       );
-      while($image = database::fetch($products_images_query)) {
+
+      while ($image = database::fetch($products_images_query)) {
         $this->data['images'][$image['id']] = $image;
       }
 
@@ -187,13 +193,14 @@
     // Calculate product quantity from options
       if (!empty($this->data['options_stock'])) {
         $this->data['quantity'] = 0;
+
         foreach ($this->data['options_stock'] as $option) {
           $this->data['quantity'] += @$option['quantity'];
         }
       }
 
       $this->data['categories'] = array_map('trim', $this->data['categories']);
-      $this->data['categories'] = array_filter($this->data['categories'], function($var){ return ($var != ''); }); // Don't filter root ('0')
+      $this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
       $this->data['categories'] = array_unique($this->data['categories']);
 
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
@@ -239,7 +246,7 @@
     // Categories
       database::query(
         "delete from " . DB_TABLE_PRODUCTS_TO_CATEGORIES . "
-        where product_id = '". (int)$this->data['id'] ."'
+        where product_id = ". (int)$this->data['id'] ."
         and category_id not in ('". @implode("', '", database::input($this->data['categories'])) ."');"
       );
 
@@ -265,7 +272,7 @@
           database::query(
             "insert into ". DB_TABLE_PRODUCTS_INFO ."
             (product_id, language_code)
-            values (". (int)$this->data['id'] .", '". $language_code ."');"
+            values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
@@ -441,9 +448,14 @@
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
+
       while ($product_image = database::fetch($products_images_query)) {
-        if (is_file(FS_DIR_APP . 'images/' . $product_image['filename'])) unlink(FS_DIR_APP . 'images/' . $product_image['filename']);
+        if (is_file(FS_DIR_APP . 'images/' . $product_image['filename'])) {
+          unlink(FS_DIR_APP . 'images/' . $product_image['filename']);
+        }
+
         functions::image_delete_cache(FS_DIR_APP . 'images/' . $product_image['filename']);
+
         database::query(
           "delete from ". DB_TABLE_PRODUCTS_IMAGES ."
           where product_id = ". (int)$this->data['id'] ."
@@ -455,6 +467,7 @@
     // Update images
       if (!empty($this->data['images'])) {
         $image_priority = 1;
+
         foreach (array_keys($this->data['images']) as $key) {
           if (empty($this->data['images'][$key]['id'])) {
             database::query(
@@ -484,7 +497,7 @@
       }
 
     // Update product image
-      if (!empty($this->data['images'])){
+      if (!empty($this->data['images'])) {
         $images = array_values($this->data['images']);
         $image = array_shift($images);
         $this->data['image'] = $image['filename'];
@@ -499,46 +512,10 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('product_'.$this->data['id']);
       cache::clear_cache('products');
-    }
-
-    public function delete() {
-
-      if (empty($this->data['id'])) return;
-
-      $this->data['images'] = array();
-      $this->data['campaigns'] = array();
-      $this->data['options_stock'] = array();
-      $this->save();
-
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS ."
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_INFO ."
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-         where product_id = ". (int)$this->data['id'] .";"
-      );
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_PRICES ."
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-
-      cache::clear_cache('products');
-
-      $this->data['id'] = null;
     }
 
     public function add_image($file, $filename='') {
@@ -588,5 +565,46 @@
         'checksum' => $checksum,
         'priority' => $priority,
       );
+
+      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
+    }
+
+    public function delete() {
+
+      if (empty($this->data['id'])) return;
+
+      $this->data['images'] = array();
+      $this->data['campaigns'] = array();
+      $this->data['options'] = array();
+      $this->data['options_stock'] = array();
+      $this->save();
+
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_INFO ."
+        where product_id = ". (int)$this->data['id'] .";"
+      );
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+         where product_id = ". (int)$this->data['id'] .";"
+      );
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_PRICES ."
+        where product_id = ". (int)$this->data['id'] .";"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        where product_id = ". (int)$this->data['id'] .";"
+      );
+
+      $this->reset();
+
+      cache::clear_cache('products');
     }
   }

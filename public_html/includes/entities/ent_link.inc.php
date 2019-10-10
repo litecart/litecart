@@ -22,8 +22,6 @@
       foreach ($components as $component => $value) {
         $this->$component = $value;
       }
-
-      return $this;
     }
 
     public function __isset($component) {
@@ -90,13 +88,6 @@
 
         case 'path':
 
-        // Relative to absolute path
-          if (substr($value, 0, 1) != '/') {
-            if (substr($this->scheme, 0, 4) == 'http' && $this->host == $_SERVER['HTTP_HOST']) {
-              $value = WS_DIR_APP . $value;
-            }
-          }
-
         // Pop path
           if (strpos($value, '..') !== false) {
             $parts = array_filter(explode('/', $value), 'strlen');
@@ -156,6 +147,15 @@
           $output .= ':'.$this->port;
         } else {
           $output .= ':'.$this->port;
+        }
+      }
+
+    // Relative to absolute path
+      if (substr($this->path, 0, 1) != '/') {
+        if (substr($this->scheme, 0, 4) == 'http' && $this->host == $_SERVER['HTTP_HOST']) {
+          $output .= WS_DIR_APP;
+        } else {
+          $output .= '/';
         }
       }
 

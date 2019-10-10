@@ -121,7 +121,7 @@
     }
 
   // Convert other foreign characters
-    foreach($foreign_characters as $characters) {
+    foreach ($foreign_characters as $characters) {
       $text = strtr($text, $characters);
     }
 

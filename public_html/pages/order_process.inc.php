@@ -28,10 +28,10 @@
   if (isset($_POST['confirm_order'])) {
 
     ob_start();
-    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_customer.html.inc.php');
-    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_shipping.html.inc.php');
-    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_payment.html.inc.php');
-    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_summary.html.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_customer.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_shipping.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_payment.inc.php');
+    include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_summary.inc.php');
     ob_end_clean();
 
     if (!empty(notices::$data['errors'])) {

@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_CUSTOMERS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
           $this->data['shipping_address'][$matches[1]] = '';
@@ -29,6 +30,8 @@
       }
 
       $this->data['status'] = 1;
+
+      $this->previous = $this->data;
     }
 
     public function load($customer_id) {
@@ -73,7 +76,7 @@
         database::query(
           "insert into ". DB_TABLE_CUSTOMERS ."
           (email, date_created)
-          values ('". database::input($this->data['email']) ."', '". date('Y-m-d H:i:s') ."');"
+          values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
 
@@ -129,29 +132,25 @@
         $customer_modules->update($this->data);
       }
 
+      $this->previous = $this->data;
+
       cache::clear_cache('customers');
     }
 
     public function set_password($password) {
 
-      if (empty($this->data['email'])) throw new Exception('Cannot set password without an email address');
-
       if (empty($this->data['id'])) {
         $this->save();
       }
 
-      $password_hash = functions::password_checksum($this->data['email'], $password, PASSWORD_SALT);
-
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set
-          password = '". $password_hash ."',
-          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
-      $this->data['password'] = $password_hash;
+      $this->previous['password_hash'] = $this->data['password_hash'];
     }
 
     public function delete() {
@@ -171,8 +170,8 @@
       $customer_modules = new mod_customer();
       $customer_modules->delete($this->data);
 
-      cache::clear_cache('customers');
+      $this->reset();
 
-      $this->data['id'] = null;
+      cache::clear_cache('customers');
     }
   }

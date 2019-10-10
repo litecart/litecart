@@ -20,9 +20,12 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_TAX_CLASSES .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($tax_class_id) {
@@ -52,7 +55,7 @@
         database::query(
           "insert into ". DB_TABLE_TAX_CLASSES ."
           (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
+          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -68,6 +71,8 @@
         limit 1;"
       );
 
+      $this->previous = $this->data;
+
       cache::clear_cache('tax_classes');
     }
 
@@ -79,7 +84,7 @@
         limit 1;"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('tax_classes');
     }

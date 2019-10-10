@@ -19,7 +19,7 @@
 
     $_page->snippets['manufacturers'] = array();
 
-    while($manufacturer = database::fetch($manufacturers_query)) {
+    while ($manufacturer = database::fetch($manufacturers_query)) {
       $_page->snippets['manufacturers'][] = array(
         'id' => $manufacturer['id'],
         'name' => $manufacturer['name'],

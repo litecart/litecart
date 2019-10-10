@@ -84,9 +84,9 @@
         database::query(
           "update ". DB_TABLE_CART_ITEMS ." set
           cart_uid = '". database::input(self::$data['uid']) ."',
-          customer_id = ".(int)customer::$data['id'] ."
+          customer_id = ". (int)customer::$data['id'] ."
           where cart_uid = '". database::input(self::$data['uid']) ."'
-          or customer_id = ".(int)customer::$data['id'] .";"
+          or customer_id = ". (int)customer::$data['id'] .";"
         );
       }
 
@@ -289,7 +289,7 @@
       self::_calculate_total();
 
       if (!$force) {
-        header('Location: '. document::ilink());
+        header('Location: '. document::link());
         exit;
       }
     }
@@ -310,7 +310,7 @@
       self::_calculate_total();
 
       if (!$force) {
-        header('Location: '. document::ilink());
+        header('Location: '. document::link());
         exit;
       }
     }

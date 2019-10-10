@@ -20,6 +20,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_ATTRIBUTE_GROUPS .";"
       );
+
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
@@ -38,6 +39,8 @@
       }
 
       $this->data['values'] = array();
+
+      $this->previous = $this->data;
     }
 
     public function load($group_id) {
@@ -176,7 +179,7 @@
           database::query(
             "insert into ". DB_TABLE_ATTRIBUTE_VALUES ."
             (group_id, date_created)
-            values ('". $this->data['id'] ."', '". date('Y-m-d H:i:s') ."');"
+            values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
           );
           $value['id'] = database::insert_id();
         }
@@ -217,6 +220,8 @@
         }
       }
 
+      $this->previous = $this->data;
+
       cache::clear_cache('attributes');
     }
 
@@ -247,7 +252,7 @@
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      $this->data['id'] = null;
+      $this->reset();
 
       cache::clear_cache('attributes');
     }

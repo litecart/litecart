@@ -126,7 +126,7 @@
     "select * from ". DB_TABLE_SETTINGS ."
     where `key` in ('order_action_modules', 'order_success_modules');"
   );
-  while($module_type = database::fetch($module_types_query)) {
+  while ($module_type = database::fetch($module_types_query)) {
     foreach (explode(';', $module_type['value']) as $module) {
       database::query(
         "delete from ". DB_TABLE_SETTINGS ."
@@ -152,7 +152,7 @@
     where `key` in ('job_modules', 'customer_modules', 'order_modules', 'order_total_modules', 'shipping_modules', 'payment_modules');"
   );
 
-  while($installed_modules = database::fetch($installed_modules_query)) {
+  while ($installed_modules = database::fetch($installed_modules_query)) {
     foreach (explode(';', $installed_modules['value']) as $module) {
 
       $module_query = database::query(
@@ -213,7 +213,7 @@
     "select * from ". DB_TABLE_SLIDES .";"
   );
 
-  while($slide = database::fetch($slides_query)) {
+  while ($slide = database::fetch($slides_query)) {
 
     if (!empty($slide['language_code'])) {
       $languages = array($slide['language_code']);

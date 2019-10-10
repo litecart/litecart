@@ -1,5 +1,5 @@
 <?php
-  breadcrumbs::add(language::translate('title_import_export_csv', 'Inport/Export CSV'));
+  breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
   if (isset($_POST['import_categories'])) {
 
@@ -54,7 +54,7 @@
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
+          if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
             echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
@@ -77,6 +77,7 @@
           'code',
           'keywords',
           'image',
+          'priority',
         );
 
         foreach ($fields as $field) {
@@ -271,7 +272,7 @@
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". $row['language_code'] ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
             echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
           } else {
@@ -388,7 +389,7 @@
           }
 
           $i=0;
-          foreach($row['images'] as $image) {
+          foreach ($row['images'] as $image) {
             if (!in_array($image, $current_images)) {
               $product_images['new'.++$i] = array('filename' => $image);
             }
@@ -398,7 +399,7 @@
         }
 
         if (isset($row['new_images'])) {
-          foreach(explode(';', $row['new_images']) as $new_image) {
+          foreach (explode(';', $row['new_images']) as $new_image) {
             $product->add_image($new_image);
           }
         }
