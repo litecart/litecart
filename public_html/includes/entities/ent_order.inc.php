@@ -231,7 +231,7 @@
       }
 
       if (empty($this->data['public_key'])) {
-        $this->data['public_key'] = md5($this->data['id'] . $this->data['uid'] . $this->data['customer']['email'] . $this->data['date_created']. rand(1, 65535));
+        $this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
       }
 
     // Insert/update order
