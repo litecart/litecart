@@ -269,7 +269,8 @@
   );
 
   $orders_query = database::query(
-    "select * from ". DB_TABLE_ORDERS .";"
+    "select * from ". DB_TABLE_ORDERS ."
+    where public_key = '';"
   );
 
   while ($order = database::fetch($orders_query)) {
