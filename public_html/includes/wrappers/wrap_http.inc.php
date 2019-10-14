@@ -111,7 +111,7 @@
         'head' => $response_headers,
         'body' => $response_body,
         'duration' => round(microtime(true) - $microtime_start, 3),
-        'bytes' => strlen($response_headers . "\r\n" . $response_body,
+        'bytes' => strlen($response_headers . "\r\n" . $response_body),
       );
 
       file_put_contents(FS_DIR_APP . 'logs/http_request_last-'. $parts['host'] .'.log',
