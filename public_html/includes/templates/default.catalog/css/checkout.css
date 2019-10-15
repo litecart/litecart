@@ -113,3 +113,6 @@
   text-align: center;
   line-height: 24px;
 }
+#box-checkout-summary input[type=checkbox][required]:not(:checked) {
+  animation: flasher 1s linear infinite;
+}
