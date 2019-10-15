@@ -179,7 +179,7 @@
   // Workaround as overloaded array items cannot be set
     public function set_query($name, $value) {
 
-      $this->_components['query'][$name] = $value;
+      $this->_components['query'][$name] = is_object($value) ? (string)$value : $value;
 
       return $this;
     }
