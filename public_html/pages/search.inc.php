@@ -38,17 +38,20 @@
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
     (
       if(p.id = '". database::input($_GET['query']) ."', 10, 0)
-      + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
-      + (match(pi.short_description) against ('*". database::input($_GET['query']) ."*') / 2)
-      + (match(pi.description) against ('*". database::input($_GET['query']) ."*') / 3)
+      + (match(pi.name) against ('". database::input($_GET['query']) ."' in boolean mode))
+      + (match(pi.short_description) against ('". database::input($_GET['query']) ."' in boolean mode) / 2)
+      + (match(pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) / 3)
+      + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
+      + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
+      + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
       + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
       + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
       + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
       + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
-        + if (p.id in (
-          select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-          where sku regexp '". database::input($code_regex) ."'
-        ), 5, 0)
+      + if (p.id in (
+        select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        where sku regexp '". database::input($code_regex) ."'
+      ), 5, 0)
     ) as relevance
 
     from (
