@@ -608,17 +608,14 @@
                 <td>
                   <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('product', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][option_stock_combination]', true); ?>
-
+                  <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][gtin]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][taric]', true); ?>
-
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][weight]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][weight_class]', true); ?>
-
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_x]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_y]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_z]', true); ?>
@@ -1308,8 +1305,17 @@
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][options]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][gtin]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][taric]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][weight]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][weight_class]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_x]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_y]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_z]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_class]', '')); ?>'
                + '    </td>'
-               + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'+ item.sku +'</td>'
+               + '    <td>'+ item.sku +'</td>'
                + '    <td>'
                + '      <span class="weight"></span> <span class="weight_class"></span>'
                + '    </td>'
