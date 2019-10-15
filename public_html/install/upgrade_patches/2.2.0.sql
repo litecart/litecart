@@ -271,3 +271,5 @@ UPDATE `lc_settings` SET `function` = 'template("catalog")' WHERE `function` = '
 ALTER TABLE `lc_users`
 CHANGE COLUMN `password` `password_hash` VARCHAR(256) NOT NULL,
 CHANGE COLUMN `date_created` `date_created` DATETIME NOT NULL AFTER `date_updated`;
+-- --------------------------------------------------------
+DELETE FROM `lc_settings` WHERE `key` IN ('security_blacklist', 'security_session_hijacking', 'security_http_post', 'security_bot_trap', 'security_xss', 'security_bad_urls');

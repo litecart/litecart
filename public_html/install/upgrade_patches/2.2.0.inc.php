@@ -4,6 +4,9 @@
   $deleted_files = array(
     FS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
     FS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
+    FS_DIR_APP . 'data/bad_urls.txt',
+    FS_DIR_APP . 'data/blacklist.txt',
+    FS_DIR_APP . 'data/whitelist.txt',
     FS_DIR_APP . 'ext/jquery/jquery-3.3.1.min.js',
     FS_DIR_APP . 'includes/classes/email.inc.php',
     FS_DIR_APP . 'includes/classes/http_client.inc.php',
@@ -43,6 +46,7 @@
     FS_DIR_APP . 'includes/functions/func_http.inc.php',
     FS_DIR_APP . 'includes/library/lib_catalog.inc.php',
     FS_DIR_APP . 'includes/library/lib_link.inc.php',
+    FS_DIR_APP . 'includes/library/lib_security.inc.php',
     FS_DIR_APP . 'logs/http_request_last.log',
     FS_DIR_APP . 'includes/templates/default.catalog/views/column_left.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product.inc.php',
