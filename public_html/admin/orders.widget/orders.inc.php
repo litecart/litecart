@@ -39,7 +39,9 @@
         <tr>
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_customer', 'Customer'); ?></th>
+          <th class="main"><?php echo language::translate('title_customer', 'Customer'); ?></th>
+          <th><?php echo language::translate('title_country', 'Country'); ?></th>
+          <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
           <th><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
           <th><?php echo language::translate('title_amount', 'Amount'); ?></th>
           <th><?php echo language::translate('title_date', 'Date'); ?></th>
@@ -53,6 +55,8 @@
           <td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
           <td><?php echo $order['id']; ?></td>
           <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
+          <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
+          <td><?php echo $order['payment_option_name']; ?></td>
           <td><?php echo ($order['order_status_id'] == 0) ? language::translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
           <td><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
