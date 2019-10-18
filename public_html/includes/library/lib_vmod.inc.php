@@ -1,7 +1,10 @@
 <?php
   class vmod {
+    private static $_time_elapsed = 0;
 
     public static function check($file) {
+
+      $timestamp = microtime(true);
 
       $file = str_replace('\\', '/', $file);
 
@@ -19,9 +22,15 @@
       }
 
       if (class_exists('vqmod', false)) {
-        return vqmod::modcheck($file);
+        $modified_file = vqmod::modcheck($file);
       }
 
-      return $file;
+      self::$_time_elapsed += microtime(true) - $timestamp;
+
+      return !empty($modified_file) ? $modified_file : $file;
+    }
+
+    public static function get_time_elapsed() {
+      return self::$_time_elapsed;
     }
   }
