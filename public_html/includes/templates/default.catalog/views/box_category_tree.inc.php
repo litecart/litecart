@@ -40,7 +40,9 @@
 
   $('#box-category-tree > ul.compact').on('click', 'a[data-toggle="showall"]', function(e){
     e.preventDefault();
-    $(this).slideUp();
+    $(this).parent().slideUp(function(){
+      $(this).remove();
+    });
     $('#box-category-tree > ul > li:hidden').slideDown();
   });
 </script>
