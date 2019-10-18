@@ -98,6 +98,9 @@ ul.filter li {
   display: table-cell;
   vertical-align: middle;
 }
+th:not(:last-child) {
+  min-width: 250px;
+}
 </style>
 
 <div class="panel panel-app">

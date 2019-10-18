@@ -74,8 +74,8 @@ CREATE TABLE `lc_categories` (
 CREATE TABLE `lc_categories_filters` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`category_id` INT(11) NOT NULL,
-	`select_multiple` TINYINT(1) NOT NULL,
 	`attribute_group_id` INT(11) NOT NULL,
+	`select_multiple` TINYINT(1) NOT NULL,
   `priority` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),

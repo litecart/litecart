@@ -28,6 +28,8 @@
     foreach ($fields as $field) {
       if (isset($product->$field)) $_POST[$field] = $product->$field;
     }
+
+    $_POST['price'] = currency::format_raw($_POST['price'], $_GET['currency_code'], $_GET['currency_value']);
   }
 ?>
 

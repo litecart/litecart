@@ -1066,7 +1066,7 @@ input[data-type="decimal"] {
   transition: all 50ms;
 }
 .form-control[type="color"] {
-  height: 23em;
+  height: 37px;
 }
 .form-control[type="file"] {
   font-size: 12px;

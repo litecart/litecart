@@ -188,19 +188,4 @@
 
       return $value;
     }
-
-  // Align an amount - friendly price
-    public static function align($value, $step=1, $subtract=0) {
-
-      /* Examples:
-       *   currency::align(12.34, 0.5, 0.01); // Returns 12.49
-       *   currency::align(12.34, 5, 0.01);   // Returns 9.99
-       *   currency::align(10.7, 2);          // Returns 10
-       */
-
-      $value += $subtract;
-      if ($step == 0 || $step == 1) return round($value) - $subtract;
-
-      return (round($value / $step) * $step) - $subtract;
-    }
   }

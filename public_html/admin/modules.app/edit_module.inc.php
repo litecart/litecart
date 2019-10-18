@@ -80,7 +80,7 @@
 
 ?>
 <style>
-pre.last-log {
+#box-last-log pre {
   max-height: 800px;
   overflow-y: auto;
 }
@@ -133,9 +133,9 @@ pre.last-log {
     <?php echo functions::form_draw_form_end(); ?>
 
     <?php if (!empty($module->data['last_log'])) { ?>
-    <div class="form-group">
-      <label><?php echo language::translate('title_last_log', 'Last Log'); ?></label>
-      <pre class="last-log form-control"><?php echo $module->data['last_log']; ?></pre>
+    <div id="box-last-log">
+      <h2><?php echo language::translate('title_last_log', 'Last Log'); ?></h2>
+      <pre class="form-control"><?php echo $module->data['last_log']; ?></pre>
     </div>
     <?php } ?>
   </div>
