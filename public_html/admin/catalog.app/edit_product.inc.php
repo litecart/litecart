@@ -444,6 +444,16 @@
 
             <div class="row">
               <div class="form-group col-md-6">
+                <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
+                <div class="input-group">
+                  <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 0, null); ?>
+                  <span class="input-group-addon">
+                    <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
                 <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
               </div>
