@@ -5,9 +5,9 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=1600">
-{snippet:head_tags}
 <link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
+{snippet:head_tags}
 {snippet:style}
 </head>
 <body>
