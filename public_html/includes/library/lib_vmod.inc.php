@@ -1,7 +1,7 @@
 <?php
 
   class vmod {
-    public static $enabled = true;                      // Bool wheither or not to enable this feature
+    public static $enabled = true;                      // Bool whether or not to enable this feature
     private static $_modifications = array();           // Array of modifications to apply
     private static $_files_to_modifications = array();  // Array of modifications to apply
     private static $_checked = array();                 // Array of files that have already passed check() and
@@ -15,42 +15,71 @@
       self::$_aliases['#^(admin/)#'] = BACKEND_ALIAS . '/';
       self::$_aliases['#^(includes/controllers/ctrl_)#'] = 'includes/entities/ent_';
 
-/*
       $last_modified = null;
-
-    // Compare last modification date
-      $folder_last_modified = filemtime();
-      if ($folder_last_modified > $last_modified) {
-        $last_modified = $folder_last_modified;
-      }
-
-      foreach (glob(FS_DIR_APP .'modifications/*.xml') as $file) {
-        $file_last_modified = filemtime();
-        if ($file_last_modified > $last_modified) {
-          $last_modified = $file_last_modified;
-        }
-      }
-*/
 
     // If no cache is requested by browser
       if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) $last_modified = time();
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) $last_modified = time();
+        //if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) $last_modified = time();
+        //if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) $last_modified = time();
+
+      } else {
+
+      // Get last modification date for modifications
+        $folder_last_modified = filemtime(FS_DIR_APP .'vmods/');
+        if ($folder_last_modified > $last_modified) {
+          $last_modified = $folder_last_modified;
+        }
+
+        foreach (glob(FS_DIR_APP .'vmods/*.xml') as $file) {
+          $file_last_modified = filemtime($file);
+          if ($file_last_modified > $last_modified) {
+            $last_modified = $file_last_modified;
+          }
+        }
+
+        //database::query(
+        //"select update_time from information_schema.tables
+        //where TABLE_SCHEMA = '". DB_DATABASE ."'
+        //and table_name = '". DB_TABLE_PREFIX ."modifications'
+        //limit 1;"
       }
 
-    // Get a cached list of modifications
-      $modifications_file = FS_DIR_APP . 'cache/modifications.cache';
-      if (is_file($modifications_file) && filemtime($modifications_file) >= $last_modified) {
-        if ($modifications = file_get_contents($modifications_file)) {
-          self::$_modifications = @json_decode($modifications, true);
+    // Get modifications from cache
+      $cache_file = FS_DIR_APP . 'cache/vmod_modifications.cache';
+      if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
+        if ($cache = file_get_contents($cache_file)) {
+          if ($cache = json_decode($cache, true)) {
+            self::$_modifications = $cache['modifications'];
+            self::$_files_to_modifications = $cache['index'];
+          }
         }
+      }
+
+      $checked_file = FS_DIR_APP . 'cache/vmod_checked.cache';
+      if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
+        foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+          list($short_file, $modified_file, $checksum) = explode(';', $line);
+          self::$_checked[$short_file] = $modified_file;
+          self::$_checksums[$short_file] = $checksum;
+        }
+      } else {
+        file_put_contents($checked_file, '', LOCK_EX);
       }
 
     // Load modifications from disk
       if (empty(self::$_modifications)) {
-        foreach (glob(FS_DIR_APP .'modifications/*.xml') as $file) {
+        foreach (glob(FS_DIR_APP .'vmods/*.xml') as $file) {
           self::_load_file($file);
         }
+
+      // Store modifications to cache
+        $serialized = json_encode(array(
+          'modifications' => self::$_modifications,
+          'index' => self::$_files_to_modifications,
+        //), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        ), JSON_UNESCAPED_SLASHES);
+
+        file_put_contents($cache_file, $serialized);
       }
     }
 
@@ -62,7 +91,10 @@
         return $file;
       }
 
-      if (is_file($file)) {
+      if (!is_file($file)) {
+        // check here if there is a modification creating the file
+        return $file;
+      } else {
         $file = str_replace('\\', '/', realpath($file));
       }
 
@@ -70,11 +102,11 @@
       $modified_file = FS_DIR_APP . 'cache/modifications/' . preg_replace('#[/\\\\]+#', '_', $short_file);
 
     // Returned already checked file
-      if (!empty(self::$_checked[$short_file])) {
+      if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
         return self::$_checked[$short_file];
       }
 
-    // Gather some info from modifications
+    // Add modifications to queue and calculate checksum
       $queue = array();
       $digest = array(filemtime($file));
 
@@ -90,15 +122,15 @@
 
       $checksum = md5(implode('', $digest));
 
-    // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$short_file]) && self::$_checksums[$short_file] == $checksum) {
-        return self::$_checked[$short_file] = $modified_file;
-      }
-
     // Return original if nothing to modify
       if (empty($queue)) {
         if (is_file($modified_file)) unset($modified_file);
         return self::$_checked[$short_file] = $file;
+      }
+
+    // Return modified file if checksum matches
+      if (!empty(self::$_checksums[$short_file]) && self::$_checksums[$short_file] == $checksum) {
+        return self::$_checked[$short_file] = $modified_file;
       }
 
     // Modify file
@@ -112,7 +144,7 @@
         foreach ($modifications as $modification) {
 
           if (!$vmod = self::$_modifications[$modification['id']]) continue;
-          if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['index']]['operations']) continue;
+          if (!$operations = self::$_modifications[$modification['id']]['files'][$short_file]['operations']) continue;
 
           $tmp = $buffer; $i=0;
           foreach ($operations as $operation) {
@@ -143,12 +175,17 @@
                 $index = $index - 1; // [0] is the 1st in computer language
 
                 if ($found > $index) {
-                  $tmp = substr_replace($tmp, preg_replace($operation['find']['pattern'], $operation['replace']['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+                  $tmp = substr_replace($tmp, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
                 }
               }
 
             } else {
-              $tmp = preg_replace($operation['find']['pattern'], $operation['replace']['insert'], $tmp);
+              $tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
+
+              if (!$count && $operation['onerror'] != 'skip') {
+                trigger_error("Vmod failed to perform insert", E_USER_ERROR);
+                continue 2;
+              }
             }
           }
 
@@ -156,6 +193,7 @@
         }
       }
 
+    // Create cache folder for modified files if missing
       if (!is_dir(FS_DIR_APP . 'cache/modifications/')) {
         if (!mkdir(FS_DIR_APP . 'cache/modifications/', 0777)) {
           throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
@@ -168,16 +206,17 @@
 
     // Return original if nothing was modified
       if ($buffer == $original) {
-
         return self::$_checked[$short_file] = $file;
       }
 
     // Write modified file
       file_put_contents($modified_file, $buffer);
 
+      self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
+      file_put_contents(FS_DIR_APP . 'cache/vmod_checked.cache', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
-      return self::$_checked[$short_file] = $modified_file;
+      return $modified_file;
     }
 
     public static function _load_file($file) {
@@ -185,18 +224,25 @@
       try {
 
         $xml = file_get_contents($file);
+        $xml = preg_replace('#(\r\n|\r|\n)#', PHP_EOL, $xml);
 
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
-        $dom->loadXml($xml);
+
+        if (!$dom->loadXml($xml)) {
+          throw new Exception(libxml_get_errors());
+        }
 
         switch ($dom->documentElement->tagName) {
+
           case 'vmod': // LiteCart Modification
-            $vmod = self::_parse_vmod($xml);
+            $vmod = self::_parse_vmod($dom);
             break;
+
           case 'modification': // vQmod
-            $vmod = self::_parse_vqmod($xml);
+            $vmod = self::_parse_vqmod($dom);
             break;
+
           default:
             throw new \Exception("File ($file) is not a valid vmod or vQmod");
         }
@@ -215,7 +261,7 @@
 
             self::$_files_to_modifications[$path_file_pattern][] = array(
               'id' => $vmod['id'],
-              'index' => $vmod['files'][$key]['path'].$vmod['files'][$key]['name'],
+              //'index' => $vmod['files'][$key]['path'].$vmod['files'][$key]['name'],
               'date_modified' => $vmod['date_modified'],
             );
           }
@@ -226,13 +272,7 @@
       }
     }
 
-    private static function _parse_vmod($xml) {
-
-      $xml = preg_replace('#(\r\n|\r|\n)#', PHP_EOL, $xml);
-
-      $dom = new \DOMDocument('1.0', 'UTF-8');
-      $dom->preserveWhiteSpace = false;
-      $dom->loadXml($xml);
+    private static function _parse_vmod($dom) {
 
       if ($dom->documentElement->tagName != 'vmod') {
         throw new \Exception('File is not a valid vmod');
@@ -248,6 +288,11 @@
         'files' => array(),
       );
 
+      $aliases = array();
+      foreach ($dom->getElementsByTagName('alias') as $alias_node) {
+        $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+      }
+
       if (empty($dom->getElementsByTagName('file'))) {
         throw new \Exception('File has no defined files to modify');
       }
@@ -262,32 +307,65 @@
 
         foreach ($file_node->getElementsByTagName('operation') as $operation) {
 
-          $find_node = $operation->getElementsByTagName('find')->item(0);
-          $insert_node = $operation->getElementsByTagName('insert')->item(0);
+        // Ignoreif
+          if ($ignoreif_node = $operation->getElementsByTagName('ignoreif')->item(0)) {
 
-        // Find
-          if (!in_array($insert_node->getAttribute('position'), array('top', 'bottom'))) {
-            $find = $find_node->textContent;
+            if ($ignoreif_node->getAttribute('regex') == 'true') {
+              $ignoreif = $ignoreif_node->textContent;
 
-            $multiline = preg_match('#^([ \t]+)?\R#', $find) ? PHP_EOL : '';
+            } else {
 
-            if ($find_node->getAttribute('regex') != 'true') {
-              if ($find_node->getAttribute('trim') != 'false') $find = trim($find);
-
-              if ($multiline) {
-                $find = '#'. preg_replace('#([^\s])\s+([^\s])#m', '$1\s+?$2', preg_quote($find, '#')) .'#';
-              } else {
-                $find = '#'. preg_quote($find, '#s') .'#';
+              if ($ignoreif_node->getAttribute('trim') != 'false') {
+                $ignoreif = trim($ignoreif);
               }
-            }
 
-          // Indexes
-            if ($indexes = $find_node->getAttribute('index')) {
-              $indexes = preg_split('#, ?#', $indexes);
+              $ignoreif = '#'. preg_quote($ignoreif_node->textContent, '#') .'#';
             }
           }
 
+        // Find
+          $find_node = $operation->getElementsByTagName('find')->item(0);
+          $find = strtr($find_node->textContent, $aliases);
+
+          if ($find_node->getAttribute('regex') == 'true') {
+            $find = trim($find);
+
+          } else {
+
+          // Trim
+            if ($find_node->getAttribute('trim') != 'false') {
+              $find = ltrim(rtrim($find, " "), "\r\n");
+
+              if ($insert_node->getAttribute('position') == 'replace') {
+                $find = rtrim($find, "\r\n");
+              }
+            }
+
+          // Offset
+            $offset_before = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-before'));
+            $offset_after  = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-after')+1);
+
+          // Whitespace
+            $find = preg_split('#(\r\n|\r|\n)#', $find);
+            for ($i=0; $i<count($find); $i++) {
+              if ($find[$i] = trim($find[$i])) {
+                $find[$i] = '(?:[ \\t]+)?' . preg_quote($find[$i], '#') . '(?:[ \\t]+)?';
+              } else {
+                $find[$i] = '(?:[ \\t]+)?';
+              }
+            }
+            $find = implode(PHP_EOL . '', $find);
+
+            $find = '#'. $offset_before . $find . $offset_after .'#';
+          }
+
+        // Indexes
+          if ($indexes = $find_node->getAttribute('index')) {
+            $indexes = preg_split('#, ?#', $indexes);
+          }
+
         // Ignoreif
+          $ignoreif = '';
           if ($ignoreif_node = $operation->getElementsByTagName('ignoreif')->item(0)) {
 
             if ($ignoreif_node->getAttribute('regex') == 'true') {
@@ -298,52 +376,57 @@
           }
 
         // Insert
-          $insert = $insert_node->textContent;
+          $insert_node = $operation->getElementsByTagName('insert')->item(0);
+          $insert = strtr($insert_node->textContent, $aliases);
 
           if ($insert_node->getAttribute('regex') != 'true') {
 
-            $multiline = preg_match('#^([ \t]+)?\R#', $insert) ? PHP_EOL : '';
-
             if ($insert_node->getAttribute('trim') != 'false') {
-              $insert = preg_replace('#^(\s+)?\R#', '', $insert); // Trim leading whitespace
-              $insert = preg_replace('#\R(\s+)?$#', '', $insert); // Trim trailing whitespace
-              $insert = trim($insert, "\r\n");
+              $insert = ltrim(rtrim($insert, " "), "\r\n");
+
+              if ($insert_node->getAttribute('position') == 'replace') {
+                $insert = rtrim($insert, "\r\n");
+              }
             }
 
             switch($position = $insert_node->getAttribute('position')) {
 
               case 'before':
               case 'prepend':
-                $insert = addcslashes($insert . $multiline, '\\$').'$0';
+                $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'after':
               case 'append':
-                $insert = '$0'. addcslashes($multiline . $insert, '\\$');
+                $insert = '$0'. addcslashes($insert, '\\$');
                 break;
 
               case 'top':
                 $find = '#^.*$#s';
                 $indexes = '';
-                $insert = addcslashes($insert . $multiline, '\\$').'$0';
+                $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
                 $find = '#^.*$#s';
                 $indexes = '';
-                $insert = '$0'.addcslashes($multiline . $insert, '\\$');
+                $insert = '$0'.addcslashes($insert, '\\$');
                 break;
 
               case 'replace':
-                $insert = addcslashes($multiline . $insert . $multiline, '\\$');
+                $insert = addcslashes($insert, '\\$');
+                break;
+
+              case 'all':
+                $find = '#^.*$#s';
+                $indexes = '';
+                $insert = addcslashes($insert, '\\$');
                 break;
 
               default:
                 throw new \Exception("Unknown value \"$position\" for attribute position (replace|before|after|ireplace|iafter|ibefore)");
                 continue 2;
             }
-
-            $offset = (int)$insert_node->getAttribute('offset');
           }
 
         // Gather
@@ -354,10 +437,8 @@
               'indexes' => $indexes,
               'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
             ),
-            'replace' => array(
-              'insert' => $insert,
-              'offset' => !empty($offset) ? $offset : 0,
-            ),
+            'ignoreif' => $ignoreif,
+            'insert' => $insert,
           );
         }
 
@@ -367,13 +448,7 @@
       return $vmod;
     }
 
-    private static function _parse_vqmod($xml) {
-
-      $xml = preg_replace('#(\r\n|\r|\n)#', PHP_EOL, $xml);
-
-      $dom = new \DOMDocument('1.0', 'UTF-8');
-      $dom->preserveWhiteSpace = false;
-      $dom->loadXml($xml);
+    private static function _parse_vqmod($dom) {
 
       if ($dom->documentElement->tagName != 'modification') {
         throw new \Exception("File is not a valid vQmod");
@@ -406,9 +481,53 @@
           $search_node = $operation->getElementsByTagName('search')->item(0);
           $search = $search_node->textContent;
 
-          if ($search_node->getAttribute('regex') != 'true') {
-            if ($search_node->getAttribute('trim') != 'false') $search = trim($search);
-            $search = '#'. preg_quote($search, '#') .'#';
+        // Regex
+          if ($search_node->getAttribute('regex') == 'true') {
+            $search = trim($search);
+
+          } else {
+
+          // Trim
+            if ($search_node->getAttribute('trim') != 'false') {
+              $search = ltrim(rtrim($search, " "), "\r\n");
+
+              if ($search_node->getAttribute('position') == 'replace') {
+                $search = rtrim($search, "\r\n");
+              }
+            }
+
+          // Whitespace
+            $search = preg_split('#(\r\n|\r|\n)#', $search);
+            for ($i=0; $i<count($search); $i++) {
+              if ($search[$i] = trim($search[$i])) {
+                $search[$i] = '(?:[ \\t]+)?' . preg_quote($search[$i], '#') . '(?:[ \\t]+)?';
+              } else {
+                $search[$i] = '(?:[ \\t]+)?';
+              }
+            }
+            $search = implode(PHP_EOL . '', $search);
+
+          // Offset
+            if ($search_node->getAttribute('offset') && in_array($search_node->getAttribute('position'), array('before', 'after', 'replace'))) {
+              switch ($search_node->getAttribute('position')) {
+                case 'before':
+                  $offset_before = str_repeat('.*?(?:\r\n|\r|\n)', (int)$search_node->getAttribute('offset'));
+                  $offset_after  = '';
+                  break;
+                case 'after':
+                case 'replace':
+                  $offset_before = '';
+                  $offset_after = str_repeat('.*?(?:\r\n|\r|\n)', (int)$search_node->getAttribute('offset')+1);
+                  break;
+                default:
+                  $offset_before = '';
+                  $offset_after = '';
+                  break;
+              }
+              $search = $offset_before . $search . $offset_after;
+            }
+
+            $search = '#'. $search .'#';
           }
 
         // Indexes
@@ -417,11 +536,18 @@
           }
 
         // Ignoreif
+          $ignoreif = '';
           if ($ignoreif_node = $operation->getElementsByTagName('ignoreif')->item(0)) {
 
             if ($ignoreif_node->getAttribute('regex') == 'true') {
               $ignoreif = $ignoreif_node->textContent;
+
             } else {
+
+              if ($ignoreif_node->getAttribute('trim') != 'false') {
+                $ignoreif = trim($ignoreif);
+              }
+
               $ignoreif = '#'. preg_quote($ignoreif_node->textContent, '#') .'#';
             }
           }
@@ -443,33 +569,39 @@
             switch($search_node->getAttribute('position')) {
 
               case 'before':
-                $add = addcslashes($multiline . $add . $multiline, '\\$').'$0';
+                $add = addcslashes($add, '\\$').'$0';
                 break;
 
               case 'after':
-                $add = '$0'. addcslashes($multiline . $add . $multiline, '\\$');
+                $add = '$0'. addcslashes($add, '\\$');
                 break;
 
               case 'top':
                 $search = '#^.*$#s';
-                $add = addcslashes($add . $multiline, '\\$').'$0';
+                $indexes = '';
+                $add = addcslashes($add, '\\$').'$0';
                 break;
 
               case 'bottom':
                 $search = '#^.*$#s';
-                $add = '$0'.addcslashes($multiline . $add, '\\$');
+                $indexes = '';
+                $add = '$0'.addcslashes($add, '\\$');
                 break;
 
               case 'replace':
-                $add = addcslashes($multiline . $add . $multiline, '\\$');
+                $add = addcslashes($add, '\\$');
+                break;
+
+              case 'all':
+                $search = '#^.*$#s';
+                $indexes = '';
+                $add = addcslashes($add, '\\$');
                 break;
 
               default:
                 throw new \Exception('Unknown value for attribute position ('. $search_node->getAttribute('position') .')');
                 continue 2;
             }
-
-            $offset = (int)$search_node->getAttribute('offset');
           }
 
         // Gather
@@ -478,12 +610,9 @@
             'find' => array(
               'pattern' => $search,
               'indexes' => $indexes,
-              'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
             ),
-            'replace' => array(
-              'insert' => $add,
-              'offset' => !empty($offset) ? $offset : 0,
-            ),
+            'ignoreif' => $ignoreif,
+            'insert' => $add,
           );
         }
 
