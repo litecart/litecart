@@ -54,6 +54,8 @@ pre {
 
     <h1><?php echo $xml->id; ?></h1>
 
+    <p><?php echo language::translate('description_view_vqmod', 'Please note: These are the contents of the virtual modification to give you a good understanding of what it does. Do NOT make these changes yourself.'); ?></p>
+
     <ul class="list-unstyled">
       <?php foreach ($xml->file as $file) { ?>
       <li>
