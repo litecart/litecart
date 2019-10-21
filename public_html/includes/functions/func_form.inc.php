@@ -1066,7 +1066,8 @@
   function form_draw_mysql_collations_list($name, $input=true, $multiple=false, $parameters='') {
 
     $collations_query = database::query(
-      "SHOW COLLATION;"
+      "SELECT * FROM `information_schema`.`COLLATIONS`
+      order by COLLATION_NAME;"
     );
 
     $options = array();
@@ -1074,7 +1075,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     while ($row = database::fetch($collations_query)) {
-      $options[] = array($row['Collation'], $row['Collation']);
+      $options[] = array($row['COLLATION_NAME'], $row['COLLATION_NAME']);
     }
 
     if ($multiple) {
