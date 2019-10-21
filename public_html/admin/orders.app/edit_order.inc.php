@@ -489,11 +489,6 @@
                       <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
                       <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
                     </div>
-
-                    <div class="form-group col-md-6">
-                      <label><?php echo language::translate('title_date_paid', 'Date Paid'); ?></label>
-                      <?php echo functions::form_draw_date_field('date_paid', true); ?>
-                    </div>
                   </div>
                 </div>
               </div>
