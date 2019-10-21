@@ -4,11 +4,8 @@
 
   if (settings::get('catalog_only_mode')) return;
 
-  if (empty(session::$data['shipping'])) session::$data['shipping'] = new mod_shipping();
-  $shipping = &session::$data['shipping'];
-
-  if (empty(session::$data['payment'])) session::$data['payment'] = new mod_payment();
-  $payment = &session::$data['payment'];
+  $shipping = new mod_shipping();
+  $payment = new mod_payment();
 
   if (empty(session::$data['order'])) {
     notices::add('errors', 'Missing order object');
@@ -39,7 +36,7 @@
       exit;
     }
 
-    if (!empty($payment->modules) && count($payment->options()) > 0) {
+    if (!empty($payment->modules) && count($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
       if (empty($payment->data['selected'])) {
         notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
         header('Location: '. document::ilink('checkout'));
@@ -104,7 +101,7 @@
   }
 
 // Verify transaction
-  if (!empty($payment->modules) && count($payment->options()) > 0) {
+  if (!empty($payment->modules) && count($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
     $result = $payment->verify($order);
 
   // If payment error

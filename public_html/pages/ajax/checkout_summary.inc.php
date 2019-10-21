@@ -7,11 +7,8 @@
 
   if (empty(cart::$items)) return;
 
-  if (empty(session::$data['shipping'])) session::$data['shipping'] = new mod_shipping();
-  $shipping = &session::$data['shipping'];
-
-  if (empty(session::$data['payment'])) session::$data['payment'] = new mod_payment();
-  $payment = &session::$data['payment'];
+  if (empty($shipping)) $shipping = new mod_shipping();
+  if (empty($payment)) $payment = new mod_payment();
 
 // Resume incomplete order in session
   if (!empty(session::$data['order']->data['id'])) {

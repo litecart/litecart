@@ -9,10 +9,8 @@
 
   if (empty(customer::$data['country_code'])) return;
 
-  session::$data['shipping'] = new mod_shipping();
-  $shipping = &session::$data['shipping'];
-
-  $options = $shipping->options(cart::$items, cart::$total['value'], cart::$total['tax'], currency::$selected['code'], customer::$data);
+  $shipping = new mod_shipping();
+  $options = $shipping->options(cart::$items, currency::$selected['code'], customer::$data);
 
   if (file_get_contents('php://input') != '' && !empty($_POST['shipping'])) {
     list($module_id, $option_id) = explode(':', $_POST['shipping']['option_id']);
@@ -37,8 +35,7 @@
 
   if (empty($shipping->data['selected'])) {
     if ($cheapest_shipping = $shipping->cheapest()) {
-      $cheapest_shipping = explode(':', $cheapest_shipping);
-      $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
+      $shipping->select($cheapest_shipping['module_id'], $cheapest_shipping['option_id']);
     }
   }
 
