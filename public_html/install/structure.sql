@@ -305,6 +305,7 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   `settings` TEXT NOT NULL,
   `last_log` TEXT NOT NULL,
   `date_pushed` DATETIME NOT NULL,
+  `date_processed` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),

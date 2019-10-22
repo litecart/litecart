@@ -58,6 +58,7 @@
 
         if ($type == 'job') {
           $object->date_pushed = $module['date_pushed'];
+          $object->date_processed = $module['date_processed'];
         }
 
       // Add module to list
