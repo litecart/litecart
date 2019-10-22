@@ -726,16 +726,22 @@
       );
 
       foreach ($this->data['items'] as $item) {
-        $product = reference::product($item['product_id'], $language_code);
 
-        $options = array();
-        if (!empty($item['options'])) {
-          foreach ($item['options'] as $k => $v) {
-            $options[] = $k .': '. $v;
+        if (!empty($item['product_id'])) {
+          $product = reference::product($item['product_id'], $language_code);
+
+          $options = array();
+          if (!empty($item['options'])) {
+            foreach ($item['options'] as $k => $v) {
+              $options[] = $k .': '. $v;
+            }
           }
-        }
 
-        $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+
+        } else {
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+        }
       }
 
       $aliases['%order_items'] = trim($aliases['%order_items']);
