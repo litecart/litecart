@@ -142,6 +142,8 @@
         }
       }
 
+      if (empty($cheapest)) return false;
+
       return $cheapest;
     }
 
