@@ -60,12 +60,19 @@
       }
 
     // Get template settings
-      $template_config = include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php');
-      if (!is_array($template_config)) include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
+      $template_config = include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php');
+      if (!is_array($template_config)) include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
+
       self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
+
       foreach (array_keys($template_config) as $i) {
-        if (!isset(self::$settings[$template_config[$i]['key']])) self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
+        if (!isset(self::$settings[$template_config[$i]['key']])) {
+          self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
+        }
       }
+    }
+
+    public static function prepare_output() {
 
     // JavaScript Environment
       $config = array(
@@ -82,10 +89,8 @@
           'settings' => self::$settings,
         ),
       );
-      self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, JSON_UNESCAPED_SLASHES) .";</script>";
-    }
 
-    public static function prepare_output() {
+      self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, JSON_UNESCAPED_SLASHES) .";</script>";
 
     // Prepare title
       if (!empty(self::$snippets['title'])) {
