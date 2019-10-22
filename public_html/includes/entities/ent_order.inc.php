@@ -706,16 +706,6 @@
       if (empty($language_code)) $language_code = $this->data['language_code'];
       if (empty($this->data['order_status_id'])) return;
 
-      /*
-      $action_button = '<div itemscope itemtype="https://schema.org/EmailMessage" style="display:none">' . PHP_EOL
-                     . '  <div itemprop="potentialAction" itemscope itemtype="https://schema.org/ViewAction">' . PHP_EOL
-                     . '    <link itemprop="target url" href="'. document::href_ilink('order', array('order_id' => $this->data['id'], 'public_key' => $this->data['public_key'])) .'" />' . PHP_EOL
-                     . '    <meta itemprop="name" content="'. htmlspecialchars(language::translate('title_view_order', 'View Order', $language_code)) .'" />' . PHP_EOL
-                     . '  </div>' . PHP_EOL
-                     . '  <meta itemprop="description" content="'. htmlspecialchars(language::translate('title_view_order', 'View order', $language_code)) .'" />' . PHP_EOL
-                     . '</div>';
-      */
-
       $order_status = reference::order_status($this->data['order_status_id'], $language_code);
 
       $aliases = array(
