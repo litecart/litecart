@@ -876,7 +876,7 @@
       </div>
     </div>
 
-    <div class="panel-action btn-group">
+    <div class="btn-group">
       <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
       <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
     </div>
@@ -957,6 +957,11 @@
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', ''); ?>
       </div>
+    </div>
+
+    <div class="btn-group">
+      <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
+      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
     </div>
   </div>
 </div>
