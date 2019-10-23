@@ -1,15 +1,8 @@
 <?php
   header('X-Robots-Tag: noindex');
 
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    require_once(FS_DIR_APP . 'includes/app_header.inc.php');
-    header('Content-type: text/html; charset='. language::$selected['charset']);
-    document::$layout = 'ajax';
-  } else {
-    document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
-  }
-
   document::$snippets['title'][] = language::translate('regional_settings:head_title', 'Regional Settings');
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
   breadcrumbs::add(language::translate('title_regional_settings', 'Regional Settings'));
 

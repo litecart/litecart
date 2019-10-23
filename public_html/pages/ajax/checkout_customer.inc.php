@@ -1,9 +1,6 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    header('Content-type: text/html; charset='. language::$selected['charset']);
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
+
+  header('X-Robots-Tag: noindex');
 
   functions::draw_lightbox();
 

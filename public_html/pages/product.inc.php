@@ -1,8 +1,4 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
 
   if (empty($_GET['product_id'])) {
     http_response_code(400);

@@ -27,6 +27,11 @@
       define('FS_DIR_TEMPLATE', FS_DIR_APP .'includes/templates/'. self::$template .'/');
       define('WS_DIR_TEMPLATE', WS_DIR_APP .'includes/templates/'. self::$template .'/');
 
+    // Set AJAX layout on AJAX request
+      if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        self::$layout = 'ajax';
+      }
+
     // Set some snippets
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['text_direction'] = in_array(language::$selected['code'], array('ar', 'he')) ? 'rtl' : 'ltr';
