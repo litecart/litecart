@@ -531,10 +531,10 @@
             $this->data['images'][$key]['id'] = database::insert_id();
           }
 
-          if (!empty($this->data['images'][$key]['new_filename'])
-					    && !is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename'])
-					    && is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename'])
-					) {
+        if (!empty($this->data['images'][$key]['new_filename'])
+	    && !is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename'])
+	    && is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename'])
+	) {
             functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename']);
             functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
             rename(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
