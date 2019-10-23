@@ -84,7 +84,7 @@
       }
 
       if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($customer['email'] . $customer['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       }
 

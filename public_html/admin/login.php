@@ -117,7 +117,7 @@
       user::load($user['id']);
 
       if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($user['username'] . $user['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       } else {
         setcookie('remember_me', null, -1, WS_DIR_APP);
