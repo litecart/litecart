@@ -21,14 +21,14 @@
       preg_match('#define\(\'BACKEND_ALIAS\',\s+\'(.*?)\'\);#', $config, $matches);
       vqmod::$replaces['#^admin/#'] = $matches[1] . '/';
 
-      vqmod::bootup(self::$_root, true);
+      vqmod::bootup();
 
       self::$_time_elapsed += microtime(true) - $timestamp;
     }
 
     public static function check($file) {
 
-      if (class_exists('vqmod', false)) return $file;
+      if (!class_exists('vqmod', false)) return $file;
 
       $timestamp = microtime(true);
 
