@@ -52,7 +52,7 @@
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
-        throw new Exception(language::translate('error_wrong_password', 'Wrong password or the account does not exist'));
+        throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
       }
 
       if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {

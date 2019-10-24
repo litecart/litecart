@@ -123,7 +123,7 @@
         setcookie('remember_me', null, -1, WS_DIR_APP);
       }
 
-      if (empty($_REQUEST['redirect_url']) || basename(parse_url($_REQUEST['redirect_url'], PHP_URL_PATH)) != basename(__FILE__)) {
+      if (empty($_REQUEST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN . basename(__FILE__), '#') . '#', $_SERVER['REQUEST_URI'])) {
         $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
       }
 
